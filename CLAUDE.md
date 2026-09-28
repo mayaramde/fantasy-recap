@@ -50,7 +50,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
   `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
   week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
-  Redundant once the cloud live update is working; kept as a fallback until Maya retires it.
+  **Paused 2026-09-28** now that the cloud live update works. Re-enable it only if the cloud run can't be fixed
+  (e.g. while waiting on fresh ESPN cookies).
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
   and opens a draft PR. Maya approves before the recap reaches the league site.
 - Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
