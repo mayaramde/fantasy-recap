@@ -247,8 +247,8 @@ def analyze(week, history):
     games = [(a, b) for a, b in combinations(teams, 2) if a["opponent_id"] == b["team_id"]]
 
     league = {
-        "high_score": {k: ranked[0][k] for k in ("manager", "points")},
-        "low_score": {k: ranked[-1][k] for k in ("manager", "points")},
+        "high_score": {k: ranked[0][k] for k in ("manager", "points", "score_rank")},
+        "low_score": {k: ranked[-1][k] for k in ("manager", "points", "score_rank")},
         "median_score": median,
         "mid_pack": {"teams": [{k: t[k] for k in ("manager", "points", "score_rank")} for t in mid_teams],
                      "points": median},

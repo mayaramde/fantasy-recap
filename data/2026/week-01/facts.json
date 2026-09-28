@@ -6,11 +6,13 @@
  "league": {
   "high_score": {
    "manager": "Amie",
-   "points": 177.96
+   "points": 177.96,
+   "score_rank": 1
   },
   "low_score": {
    "manager": "Maddie",
-   "points": 95.12
+   "points": 95.12,
+   "score_rank": 8
   },
   "median_score": 127.21,
   "mid_pack": {

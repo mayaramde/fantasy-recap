@@ -137,11 +137,15 @@
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
   .dek a { color: var(--accent); font-weight: 700; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .pill { padding: 6px 12px; border-radius: 999px; font-size: 13px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border-radius: 999px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
   .pill-top { background: var(--lime); transform: rotate(-1.5deg); }
-  .pill-bot { background: var(--pink); transform: rotate(1deg); }
   .pill-mid { background: var(--orange); transform: rotate(-1deg); }
-  .pill b { font-weight: 700; }
+  .pill-bot { background: var(--pink); transform: rotate(1deg); }
+  /* the rank medallion: where this score landed among the eight */
+  .pill .medal { flex: none; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 999px; background: var(--board); color: var(--on-board); border: 2px solid var(--edge); text-align: center; white-space: nowrap; font: 800 15px/30px var(--display); letter-spacing: 0.02em; }
+  .pill .medal .ord { font-size: 9.5px; vertical-align: 6px; letter-spacing: 0; }
+  .pill .txt { display: grid; gap: 1px; font: 600 11px/1.1 var(--body); text-transform: uppercase; letter-spacing: 0.07em; }
+  .pill .txt b { font: 700 14px/1.15 var(--body); text-transform: none; letter-spacing: 0; }
   .pill .amp { font-weight: 400; opacity: .65; }
 
   .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
@@ -495,23 +499,31 @@
       </div>`;
   }
 
-  /* Top team, bottom team, middle of the pack: same three stickers on the recap page
-     and the live page, each one naming the team it belongs to. */
+  /* Top score, middle of the pack, bottom score: same three stickers on the recap page and
+     the live page, each one naming its team and carrying the rank it landed on. */
+  const ORD = (n) => { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; };
+  const medal = (ranks) => `<span class="medal">${ranks.join('–')}<span class="ord">${ORD(ranks[ranks.length - 1])}</span></span>`;
+
   function scorePills(w) {
-    const done = w.complete;
-    const mid = (w.mid_pack && w.mid_pack.teams.length) ? w.mid_pack
-      : { teams: [], points: w.median };
+    const sofar = w.complete ? '' : ' so far';
+    const mid = (w.mid_pack && w.mid_pack.teams.length) ? w.mid_pack : { teams: [], points: w.median };
     const midBody = mid.teams.length
       ? mid.teams.map((t) => `${esc(t.manager)} <span class="num">${f2(t.points)}</span>`).join(' <span class="amp">&amp;</span> ')
       : `<span class="num">${f2(mid.points)}</span>`;
     const midTip = mid.teams.length > 1
       ? `The middle two scores of the week. Half the league finished above ${f2(mid.teams[0].points)}, half below ${f2(mid.teams[mid.teams.length - 1].points)}.`
       : 'The middle score of the week: half the league finished above it, half below.';
+    const pill = (cls, rank, label, body, tip) =>
+      `<span class="pill ${cls}" title="${esc(tip)}">${medal(rank)}<span class="txt">${label}<b>${body}</b></span></span>`;
     return `
       <div class="pills">
-        <span class="pill pill-top" title="The week's highest team score.">${done ? 'Top team' : 'Leading team'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
-        <span class="pill pill-bot" title="The week's lowest team score.">${done ? 'Bottom team' : 'Trailing team'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
-        <span class="pill pill-mid" title="${esc(midTip)}">Middle of the pack <b>${midBody}</b></span>
+        ${pill('pill-top', [w.high_score.score_rank], `Top score${sofar}`,
+               `${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span>`,
+               "The week's highest team score.")}
+        ${pill('pill-mid', mid.teams.map((t) => t.score_rank), 'Middle of the pack', midBody, midTip)}
+        ${pill('pill-bot', [w.low_score.score_rank], `Bottom score${sofar}`,
+               `${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span>`,
+               "The week's lowest team score.")}
       </div>`;
   }
 

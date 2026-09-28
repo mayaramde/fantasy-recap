@@ -6,11 +6,13 @@
  "league": {
   "high_score": {
    "manager": "Maya",
-   "points": 158.46
+   "points": 158.46,
+   "score_rank": 1
   },
   "low_score": {
    "manager": "Cambri",
-   "points": 93.44
+   "points": 93.44,
+   "score_rank": 8
   },
   "median_score": 122.97,
   "mid_pack": {
