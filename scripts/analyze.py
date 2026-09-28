@@ -28,6 +28,30 @@ SLOT_OK = {"QB": {"QB"}, "RB": {"RB"}, "WR": {"WR"}, "TE": {"TE"},
 
 NAME_CACHE = ROOT / "data" / "player_names.json"
 
+# ESPN serves every athlete's photo from one public CDN path, keyed by the same player id
+# the fantasy API uses. A D/ST has no photo, so it gets its team's logo instead: its
+# fantasy player id is -16000 minus the pro team id, so go by pro_team_id.
+HEADSHOT_URL = "https://a.espncdn.com/i/headshots/nfl/players/full/{}.png"
+TEAM_LOGO_URL = "https://a.espncdn.com/i/teamlogos/nfl/500/{}.png"
+PRO_TEAM_ABBR = {
+    1: "atl", 2: "buf", 3: "chi", 4: "cin", 5: "cle", 6: "dal", 7: "den", 8: "det",
+    9: "gb", 10: "ten", 11: "ind", 12: "kc", 13: "lv", 14: "lar", 15: "mia", 16: "min",
+    17: "ne", 18: "no", 19: "nyg", 20: "nyj", 21: "phi", 22: "ari", 23: "pit", 24: "lac",
+    25: "sf", 26: "sea", 27: "tb", 28: "wsh", 29: "car", 30: "jax", 33: "bal", 34: "hou",
+}
+
+
+def headshot(player):
+    """Photo URL for a player, team logo for a D/ST, None when we can't name the team.
+
+    ESPN 404s players it has no photo for yet (rookies, practice-squad call-ups), so the
+    site falls back to a silhouette on image error rather than checking each URL here.
+    """
+    if player["pos"] == "DST":
+        abbr = PRO_TEAM_ABBR.get(player.get("pro_team_id"))
+        return TEAM_LOGO_URL.format(abbr) if abbr else None
+    return HEADSHOT_URL.format(player["player_id"])
+
 
 # ---------- player names (ESPN public athlete API, cached) ----------
 
@@ -234,7 +258,8 @@ def analyze(week, history):
                             for t in teams if t["result"] == "L" and t["points"] > median],
         "lucky_wins": [{"manager": t["manager"], "points": t["points"], "score_rank": t["score_rank"]}
                        for t in teams if t["result"] == "W" and t["points"] < median],
-        "top_performers": [{k: s[k] for k in ("name", "manager", "slot", "points", "projected")}
+        "top_performers": [{**{k: s[k] for k in ("name", "manager", "slot", "points", "projected")},
+                            "headshot": headshot(s)}
                            for s in sorted(starters, key=lambda s: s["points"], reverse=True)[:5]],
         "biggest_busts": [{k: s[k] for k in ("name", "manager", "slot", "points", "projected", "beat_projection")}
                           for s in sorted(starters, key=lambda s: s["beat_projection"])[:5]],

@@ -43,35 +43,40 @@
     "manager": "Amie",
     "slot": "WR",
     "points": 42.5,
-    "projected": 18.49
+    "projected": 18.49,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png"
    },
    {
     "name": "Josh Allen",
     "manager": "Samantha",
     "slot": "QB",
     "points": 40.82,
-    "projected": 22.65
+    "projected": 22.65,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png"
    },
    {
     "name": "Davante Adams",
     "manager": "Maya",
     "slot": "WR",
     "points": 39.5,
-    "projected": 15.5
+    "projected": 15.5,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/16800.png"
    },
    {
     "name": "CeeDee Lamb",
     "manager": "Amie",
     "slot": "WR",
     "points": 35.3,
-    "projected": 18
+    "projected": 18,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png"
    },
    {
     "name": "Amon-Ra St. Brown",
     "manager": "Marlee",
     "slot": "WR",
     "points": 35.2,
-    "projected": 20.39
+    "projected": 20.39,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png"
    }
   ],
   "biggest_busts": [
