@@ -135,6 +135,7 @@
   .kicker { justify-self: start; font: 600 14px/1 var(--script); color: var(--on-accent); background: var(--accent); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .page-head h1 { font: 800 clamp(36px, 6.2vw, 62px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; }
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .dek a { color: var(--accent); font-weight: 700; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
   .pill { padding: 6px 12px; border-radius: 999px; font-size: 13px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
   .pill:nth-child(1) { background: var(--lime); transform: rotate(-1.5deg); }
@@ -333,7 +334,7 @@
       <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
     </a>
     <nav class="site-nav" id="nav" aria-label="Site">
-      <a href="#" data-nav="week">This week</a>
+      <a href="#" data-nav="week">Recaps</a>
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
       <a href="#standings" data-nav="standings">Standings</a>
       <a href="#archive" data-nav="archive">Archive</a>
@@ -486,13 +487,12 @@
   function weekPage(w) {
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
-    const behind = w.week !== latest().week;
     return `
       ${LIVE && w.week === latest().week ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
       ${weekSwitch(w)}
       ${draftBanner(w)}
       <div class="page-head">
-        <div class="kicker">Week ${w.week} recap${w.complete ? '' : ' (in progress)'}</div>
+        <div class="kicker">Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
         <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
         ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
         <div class="pills">
@@ -519,12 +519,12 @@
         <div class="two-col">
           <div>
             ${secHead('board', 'Standings', '<a class="more" href="#standings">Full standings →</a>')}
-            <p class="sec-sub">Season so far${behind ? `, through Week ${latest().week}` : ''}.</p>
+            <p class="sec-sub">Final standings through Week ${latest().week}. Only finished, recapped weeks count${LIVE ? `, so Week ${LIVE.week} joins after its recap` : ''}.</p>
             <div class="std-card">${standingsTable(SEASON.standings, { compact: true })}</div>
           </div>
           <div>
             ${secHead('ball', 'Top scorers')}
-            <p class="sec-sub">The five best starters in the league this week.</p>
+            <p class="sec-sub">The five best starters in the league in Week ${w.week}.</p>
             <ol class="leaders">${w.top_performers.map((p) => `
               <li><span class="pname">${esc(p.name)}</span><span class="pts">${f1(p.points)}</span>
               <span class="meta">${mgrLink(p.manager)} · ${esc(p.slot)} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
@@ -535,7 +535,7 @@
 
       ${w.glossary.length ? `
       <section>
-        ${secHead('book', 'New words this week', '<a class="more" href="#glossary">Full glossary →</a>')}
+        ${secHead('book', `New words from Week ${w.week}`, '<a class="more" href="#glossary">Full glossary →</a>')}
         <div class="chips">${w.glossary.map((g) => `<a href="#glossary" title="${esc(g.definition)}">${esc(g.term)}</a>`).join('')}</div>
       </section>` : ''}`;
   }
@@ -672,7 +672,7 @@
       <div class="page-head">
         <div class="kicker">${DATA.league.season} season</div>
         <h1>Standings</h1>
-        <p class="dek">Ranked by wins, then total points scored. Tap a name to see her season.</p>
+        <p class="dek">Ranked by wins, then total points scored${weeks.length ? `, through Week ${weeks[weeks.length - 1]}` : ''}. Only finished, recapped weeks count${LIVE ? `; Week ${LIVE.week} is on the <a href="#live">Live</a> page until its recap drops` : ''}. Tap a name to see her season.</p>
       </div>
 
       <section style="margin-top:18px">
@@ -783,7 +783,7 @@
       </section>`;
   }
 
-  const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="#" style="color:var(--accent)">Back to this week</a></p></div>`;
+  const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="#" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
   /* ---------- router: every page is a #hash inside this one file ---------- */
   function route() {
