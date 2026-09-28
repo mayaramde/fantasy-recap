@@ -4,6 +4,9 @@ Writes two self-contained single-file sites (pages are hash routes inside one HT
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
 
+A "live" page shows the newest captured week that has no recap in that output yet
+(in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
+
 Season stats (standings, all-play, streaks, team pages) are computed only from the
 weeks included in each output, so the league site never leaks a draft week's results.
 
@@ -27,6 +30,8 @@ def side(t):
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
         "points_left": t["points_left_on_bench"], "result": t["result"],
+        "live_projection": t.get("live_projection"), "win_probability": t.get("win_probability"),
+        "yet_to_play": t.get("yet_to_play", 0),
         "swaps": [{k: s[k] for k in ("started", "started_points", "benched", "benched_points", "slot", "gain")}
                   for s in t["lineup_swaps"]],
         "starters": [{k: p[k] for k in PLAYER_KEYS} for p in t["starters"]],
@@ -64,6 +69,23 @@ def week_payload(facts, recap):
         "low_score": lg["low_score"],
         "median": lg["median_score"],
     }
+
+
+def live_payload(facts, espn):
+    """The in-progress (or final but not yet recapped) week: data only, no commentary."""
+    w = week_payload(facts, {"status": "live"})
+    manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
+    moves = []
+    for t in espn["transactions"]:
+        if t["type"] not in ("FREEAGENT", "WAIVER", "TRADE_ACCEPT"):
+            continue
+        added = [i["name"] for i in t["items"] if i["type"] in ("ADD", "TRADE") and i["to_team_id"] == t["team_id"]]
+        dropped = [i["name"] for i in t["items"] if i["type"] == "DROP"]
+        if added or dropped:
+            moves.append({"date": t["date"], "manager": manager.get(t["team_id"], "?"), "added": added, "dropped": dropped})
+    moves.sort(key=lambda m: m["date"], reverse=True)
+    w.update(live=True, captured_at=espn["captured_at"], moves=moves)
+    return w
 
 
 def season_payload(facts_list, weeks):
@@ -121,19 +143,24 @@ def season_payload(facts_list, weeks):
     return {"standings": table, "weeks_played": [f["week"] for f in facts_list]}
 
 
-def render(recap_weeks, preview):
+def render(recap_weeks, captured, preview):
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
     weeks = [w for _, w in included]
+    # Live page: the newest captured week that isn't in this output's recaps yet
+    last = max((w["week"] for w in weeks), default=0)
+    pending = [c for c in captured if c[0]["week"] > last]
+    live = live_payload(*pending[-1]) if pending else None
     data = {
         "league": {"name": LEAGUE["name"].strip(), "season": LEAGUE["season"], "scoring": LEAGUE["scoring"]},
         "preview": preview,
         "weeks": weeks,
         "season": season_payload([f for f, _ in included], weeks),
+        "live": live,
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     title = "Flag on the Play Preview" if preview else "Flag on the Play"
     template = (SITE / "template.html").read_text()
-    return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks
+    return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks + ([live] if live else [])
 
 
 def main():
@@ -151,12 +178,19 @@ def main():
         recap_weeks.append((facts, week_payload(facts, recap)))
     recap_weeks.sort(key=lambda fw: fw[1]["week"])
 
+    # Every captured week (facts + raw capture), for the live page
+    captured = []
+    for d in sorted((ROOT / "data" / str(args.season)).glob("week-*")):
+        if (d / "facts.json").exists() and (d / "espn.json").exists():
+            captured.append((json.loads((d / "facts.json").read_text()), json.loads((d / "espn.json").read_text())))
+    captured.sort(key=lambda c: c[0]["week"])
+
     dist = SITE / "dist"
     dist.mkdir(exist_ok=True)
-    html, weeks = render(recap_weeks, preview=False)
+    html, weeks = render(recap_weeks, captured, preview=False)
     (dist / "index.html").write_text(html)
-    print(f"index.html: weeks {[w['week'] for w in weeks] or 'none yet'}")
-    html, weeks = render(recap_weeks, preview=True)
+    print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
+    html, weeks = render(recap_weeks, captured, preview=True)
     (dist / "preview.html").write_text(html)
     print(f"preview.html: weeks {[(w['week'], w['status']) for w in weeks]}")
 
