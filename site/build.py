@@ -172,8 +172,7 @@ FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' view
            "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
 
 
-def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league.",
-               analytics=False):
+def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league."):
     head = (
         '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -186,11 +185,7 @@ def standalone(html, description="Weekly recaps, live scores and standings for o
         # this unset and so never calls it, and keeps rendering from its baked data.
         '<script>window.FANTASY_LIVE_API="/api/live"</script>\n'
     )
-    # Vercel Web Analytics, on the league site only — not the draft preview, and not the
-    # artifact build. Needs Web Analytics enabled on the Vercel project; until then the
-    # script 404s and nothing else changes.
-    tail = '<script defer src="/_vercel/insights/script.js"></script>\n' if analytics else ""
-    return head + html + "\n" + tail + "</html>\n"
+    return head + html + "\n</html>\n"
 
 
 def main():
@@ -222,7 +217,7 @@ def main():
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
     web.mkdir(exist_ok=True)
-    (web / "index.html").write_text(standalone(html, analytics=True))
+    (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
     html, weeks = render(recap_weeks, captured, preview=True)

@@ -24,7 +24,7 @@ FORBIDDEN = [
 ]
 # Files that mention those strings on purpose (the names of the cookie environment
 # variables, never a value).
-SKIP = {"CLAUDE.md", "scripts/check.py", "scripts/capture_node.mjs",
+SKIP = {"CLAUDE.md", "docs/vercel.md", "scripts/check.py", "scripts/capture_node.mjs",
         "scripts/espn_fetch.py", "scripts/deploy.sh", "api/live.py"}
 
 
