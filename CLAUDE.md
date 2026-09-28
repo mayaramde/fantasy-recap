@@ -48,4 +48,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Good decisions: waiver pickups that paid off, smart benchings/starts
 - Bench blunders: points left on the bench (optimal lineup vs actual)
 - Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost)
-- Tone: playful roast among friends, never mean. Maya's own team gets roasted too.
+- Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
+
+## Voice
+- The league is "Fantasy Football for the Girls," and for most members this is their first season following football.
+- Cheeky and funny, like a friend explaining the game at a watch party. Roast lineup decisions, never people. Maya's own team gets roasted too.
+- Explain jargon in passing ("flex, the wild-card spot"), never assume football knowledge, and never talk down.
+- Pop-culture asides are welcome when accurate. The jokes can exaggerate, but every number stays exact.
