@@ -1,0 +1,19 @@
+{
+  "name": "Fantasy Football for the Girls",
+  "host": "ESPN",
+  "espn_league_id": 698468554,
+  "season": 2026,
+  "fantasypros_league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
+  "scoring": "PPR",
+  "roster_slots": { "QB": 1, "RB": 2, "WR": 2, "TE": 1, "FLEX (RB/WR/TE)": 1, "DST": 1, "K": 1, "BENCH": 7 },
+  "teams": [
+    { "team_id": 1, "team_name": "Amon Raw, Next Question", "manager": "Marlee" },
+    { "team_id": 2, "team_name": "JSN Derulo", "manager": "Amie" },
+    { "team_id": 3, "team_name": "Waddle Deez Nutz", "manager": "Maddie" },
+    { "team_id": 4, "team_name": "Tara's Turf", "manager": "Tara" },
+    { "team_id": 5, "team_name": "MARTY SUPREME", "manager": "Maya", "is_owner_of_this_project": true },
+    { "team_id": 6, "team_name": "(Foot)Balls Deep", "manager": "Kyra" },
+    { "team_id": 7, "team_name": "Cloff Campus", "manager": "Samantha (Sam)" },
+    { "team_id": 8, "team_name": "Cleated Rivalry", "manager": "Cambri" }
+  ]
+}

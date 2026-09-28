@@ -1,0 +1,5 @@
+# Raw ESPN captures contain members' personal info; keep local only
+data/**/raw/
+*.raw.json
+.DS_Store
+__pycache__/
