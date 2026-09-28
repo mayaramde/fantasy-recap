@@ -303,6 +303,25 @@
 
   .empty { padding: 70px 0; text-align: center; color: var(--muted); }
   .empty h1 { font: 800 42px/1 var(--display); color: var(--ink); margin-bottom: 10px; }
+  /* ---------- live ---------- */
+  .live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--loss); margin-right: 6px; vertical-align: 1px; }
+  @media (prefers-reduced-motion: no-preference) { .live-dot { animation: pulse 1.6s ease-in-out infinite; } }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .live-banner { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--accent); text-decoration: none; font-weight: 700; }
+  .live-banner .go { color: var(--accent); white-space: nowrap; }
+  .live-strip { display: grid; gap: 8px; padding: 10px 16px; border-bottom: 2px solid var(--edge); background: var(--accent-soft); font-size: 12.5px; }
+  .live-strip .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+  .prob { display: flex; gap: 2px; height: 10px; border-radius: 5px; background: var(--card); border: 1.5px solid var(--edge); overflow: hidden; }
+  .prob span { display: block; height: 100%; }
+  .prob .a { background: var(--accent); }
+  .prob .b { background: var(--orange); }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; border: 1px solid var(--edge); margin-right: 5px; vertical-align: 0; }
+  .moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .moves li { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
+  .moves .when { grid-row: span 2; font: 500 11.5px/1.3 var(--mono); color: var(--muted); padding-top: 2px; }
+  .moves .add { color: var(--win); font-weight: 700; }
+  .moves .drop { color: var(--loss); font-weight: 700; }
+
   footer { margin-top: 56px; padding-top: 14px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   footer .script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; display: inline-block; transform: rotate(-2deg); }
 </style>
@@ -315,6 +334,7 @@
     </a>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#" data-nav="week">This week</a>
+      <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
       <a href="#standings" data-nav="standings">Standings</a>
       <a href="#archive" data-nav="archive">Archive</a>
       <a href="#glossary" data-nav="glossary">Glossary</a>
@@ -332,6 +352,11 @@
   const DATA = JSON.parse(document.getElementById('recap-data').textContent);
   const WEEKS = DATA.weeks;
   const SEASON = DATA.season;
+  const LIVE = DATA.live;
+  if (LIVE) document.getElementById('nav-live').hidden = false;
+  const base = (w) => (w.live ? '#live' : `#week-${w.week}`);
+  const updated = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' });
+  const liveLabel = (w) => (w.complete ? `Week ${w.week} is final. The official recap drops Tuesday.` : `Week ${w.week} is happening now.`);
   const TEAMS = Object.fromEntries(SEASON.standings.map((t) => [t.team_id, t]));
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -373,7 +398,7 @@
 
   function scoreBox(g, w) {
     return `
-      <a class="game" href="#week-${w.week}.game-${g.key}" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}. Open matchup">
+      <a class="game" href="${base(w)}.game-${g.key}" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}. Open matchup">
         <div class="bug">
           ${[['winner', g.winner, 'W'], ['loser', g.loser, 'L']].map(([cls, s, r]) => `
             <div class="bug-row ${cls}">
@@ -381,11 +406,22 @@
               <div class="bug-score">${f2(s.points)}${w.complete ? `<span class="wl ${r}">${r}</span>` : ''}</div>
             </div>`).join('')}
         </div>
+        ${w.live && !w.complete ? liveStrip(g) : ''}
         <div class="game-body">
           ${g.blurb ? `<p class="blurb">${esc(g.blurb)}</p>` : ''}
-          <span class="open">Box score and lineup calls →</span>
+          <span class="open">${w.live ? 'Live box score →' : 'Box score and lineup calls →'}</span>
         </div>
       </a>`;
+  }
+
+  function liveStrip(g) {
+    return `<div class="live-strip">${[g.winner, g.loser].map((s) => `
+      <div class="row">
+        <span><span class="swatch" style="background:var(--${s === g.winner ? 'accent' : 'orange'})" aria-hidden="true"></span><b>${esc(s.manager)}</b> · projected ${f1(s.live_projection)} · ${s.yet_to_play} starter${s.yet_to_play === 1 ? '' : 's'} left to play</span>
+        <span class="num">${s.win_probability == null ? '' : `${Math.round(s.win_probability * 100)}% to win`}</span>
+      </div>`).join('')}
+      ${g.winner.win_probability == null ? '' : `<div class="prob" role="img" aria-label="Chance to win: ${esc(g.winner.manager)} ${Math.round(g.winner.win_probability * 100)}%, ${esc(g.loser.manager)} ${Math.round((1 - g.winner.win_probability) * 100)}%"><span class="a" style="flex:${g.winner.win_probability.toFixed(3)}"></span><span class="b" style="flex:${(1 - g.winner.win_probability).toFixed(3)}"></span></div>`}
+    </div>`;
   }
 
   function awardCard(c, kind) {
@@ -452,6 +488,7 @@
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
     const behind = w.week !== latest().week;
     return `
+      ${LIVE && w.week === latest().week ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
       ${weekSwitch(w)}
       ${draftBanner(w)}
       <div class="page-head">
@@ -503,6 +540,49 @@
       </section>` : ''}`;
   }
 
+  function livePage(w) {
+    const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    return `
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
+        <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
+        <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.</p>
+        <div class="pills">
+          <span class="pill">${w.complete ? 'High score' : 'Leading'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
+          <span class="pill">${w.complete ? 'Low score' : 'Trailing'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
+          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
+        </div>
+      </div>
+
+      <section>
+        ${secHead('board', 'Scoreboard')}
+        <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. "Left to play" counts starters with no stats yet this week. Tap a game for the live box score.'}</p>
+        <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
+      </section>
+
+      <section>
+        <div class="two-col">
+          <div>
+            ${secHead('ball', w.complete ? 'Top scorers' : 'Top scorers so far')}
+            <ol class="leaders">${w.top_performers.map((p) => `
+              <li><span class="pname">${esc(p.name)}</span><span class="pts">${f1(p.points)}</span>
+              <span class="meta">${mgrLink(p.manager)} · ${esc(p.slot)} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
+            </ol>
+          </div>
+          <div>
+            ${secHead('flag', 'On the wire this week')}
+            <p class="sec-sub">Waiver pickups, free-agent adds and drops.</p>
+            ${w.moves.length ? `<ul class="moves">${w.moves.map((m) => `
+              <li><span class="when">${fmtDate(m.date)}</span>
+                <span><b>${mgrLink(m.manager)}</b></span>
+                <span>${m.added.length ? `<span class="add">+ ${m.added.map(esc).join(', ')}</span>` : ''}${m.added.length && m.dropped.length ? ' · ' : ''}${m.dropped.length ? `<span class="drop">− ${m.dropped.map(esc).join(', ')}</span>` : ''}</span>
+              </li>`).join('')}</ul>` : '<p class="sec-sub">No moves yet this week.</p>'}
+          </div>
+        </div>
+      </section>
+      <p class="sec-sub" style="margin-top:28px">Standings only count finished weeks, so this week shows up there once the recap drops Tuesday.</p>`;
+  }
+
   function awardsPage(w) {
     return `
       <div class="crumbs"><a href="#week-${w.week}">Week ${w.week}</a><span>›</span><span>Awards</span></div>
@@ -546,20 +626,22 @@
     }
     const related = AWARD_KINDS.flatMap((k) => w[k].filter((c) => c.manager === W.manager || c.manager === L.manager).map((c) => awardCard(c, k)));
     const others = w.games.filter((x) => x.key !== key);
+    const lead = w.live && !w.complete;
     return `
-      <div class="crumbs"><a href="#week-${w.week}">Week ${w.week}</a><span>›</span><span>${esc(W.manager)} vs ${esc(L.manager)}</span></div>
+      <div class="crumbs"><a href="${base(w)}">${w.live ? 'Live · ' : ''}Week ${w.week}</a><span>›</span><span>${esc(W.manager)} vs ${esc(L.manager)}</span></div>
       ${draftBanner(w)}
       <div class="versus">
         <div class="side winner"><div class="mgr">${mgrLink(W.manager)}</div><div class="team">${esc(W.team_name)}</div><div class="score">${f2(W.points)}</div></div>
         <div class="vs" aria-hidden="true">vs</div>
         <div class="side right loser"><div class="mgr">${mgrLink(L.manager)}</div><div class="team">${esc(L.team_name)}</div><div class="score">${f2(L.points)}</div></div>
-        <div class="foot"><span>Week ${w.week} · ${w.complete ? 'Final' : 'In progress'}</span><span>${esc(W.manager)} by ${f2(W.points - L.points)}</span></div>
+        <div class="foot"><span>Week ${w.week} · ${w.complete ? 'Final' : `In progress · updated ${updated(w.captured_at)}`}</span><span>${esc(W.manager)} ${lead ? 'leads' : 'by'} ${f2(W.points - L.points)}</span></div>
       </div>
+      ${lead ? `<div style="margin-top:14px" class="a-live">${liveStrip(g).replace('class="live-strip"', 'class="live-strip" style="border:2px solid var(--edge);border-radius:14px"')}</div>` : ''}
       ${g.blurb ? `<p class="dek" style="color:var(--ink);margin-top:22px">${esc(g.blurb)}</p>` : ''}
 
       <section>
-        ${secHead('flag', 'How it was decided')}
-        <p class="sec-sub">The lineup swaps each manager made that stuck, and how many points each left on the bench.</p>
+        ${secHead('flag', lead ? 'So far' : 'How it was decided')}
+        <p class="sec-sub">${lead ? 'Lineup swaps and bench points so far. These change as games are played.' : 'The lineup swaps each manager made that stuck, and how many points each left on the bench.'}</p>
         <ul class="decided">${items.map((i) => `<li><span class="tag ${i.tag}">${esc(i.label)}</span><span>${i.text}</span></li>`).join('')}</ul>
       </section>
 
@@ -571,7 +653,7 @@
         <div class="box-grid">${lineupCard(W, true)}${lineupCard(L, false)}</div>
       </section>
 
-      ${others.length ? `<section>${secHead('board', 'Other games this week')}<div class="other-games">${others.map((o) => `<a href="#week-${w.week}.game-${o.key}">${esc(o.winner.manager)} ${f2(o.winner.points)} · ${esc(o.loser.manager)} ${f2(o.loser.points)}</a>`).join('')}</div></section>` : ''}`;
+      ${others.length ? `<section>${secHead('board', 'Other games this week')}<div class="other-games">${others.map((o) => `<a href="${base(w)}.game-${o.key}">${esc(o.winner.manager)} ${f2(o.winner.points)} · ${esc(o.loser.manager)} ${f2(o.loser.points)}</a>`).join('')}</div></section>` : ''}`;
   }
 
   function standingsPage() {
@@ -708,6 +790,9 @@
     const h = location.hash.replace(/^#/, '');
     let m, html, nav = 'week';
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
+    else if (h === 'live' && LIVE) { html = livePage(LIVE); nav = 'live'; }
+    else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
+    else if (!WEEKS.length && LIVE && h === '') { html = livePage(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
     else if (h === 'archive') { html = archivePage(); nav = 'archive'; }

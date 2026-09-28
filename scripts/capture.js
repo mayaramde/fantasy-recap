@@ -4,13 +4,19 @@
 //
 // Usage (scripts/receive.py must be running; it serves this file and saves results):
 //   eval(await fetch('http://127.0.0.1:8765/capture.js').then(r => r.text()));
-//   await fantasyCapture([3]);          // one or more weeks
+//   await fantasyCapture([3]);          // one or more weeks, or 'current'
 // Each week is trimmed (no member names, ESPN IDs or settings) and POSTed to the
 // receiver, which writes data/<season>/week-NN/espn.json verbatim.
 // Note: `teams` records are season-to-date as of capture time; per-week
 // standings are rebuilt from matchup results in site/build.py.
 
+// weeks: an array of week numbers, or 'current' for ESPN's current matchup week
 window.fantasyCapture = async (weeks) => {
+if (weeks === 'current') {
+  const st = await fetch('https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=mStatus',
+    { credentials: 'include' }).then((r) => r.json());
+  weeks = [st.status.currentMatchupPeriod];
+}
 const out = [];
 for (const WEEK of weeks) out.push(await captureWeek(WEEK));
 return out;
@@ -62,6 +68,7 @@ const side = (s) => {
     team_id: s.teamId,
     points: round2(s.totalPointsLive ?? s.totalPoints),
     projected: round2(s.totalProjectedPointsLive ?? s.totalProjectedPoints ?? null),
+    win_probability: s.winProbability ?? null,
     lineup,
   };
 };

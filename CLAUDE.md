@@ -40,8 +40,14 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
 
 ## Schedule
-- Local scheduled task `fantasy-weekly-recap` runs Tuesdays around 8:15 AM (while the Claude app is open) and does steps 1-6,
-  then opens a draft PR. Maya approves before anything reaches the league site.
+- `fantasy-live-update` runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), rebuilds, and
+  republishes the league site so its **Live** page is current. Data only, no commentary, no commits. The in-progress
+  week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
+- `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
+  and opens a draft PR. Maya approves before the recap reaches the league site.
+- Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
+- The Live page shows the newest captured week without a recap in that build: "live" while games are on,
+  "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
 
 ## Published pages
 - Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
