@@ -19,14 +19,27 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html` (the published page, with all weeks)
-- `scripts/`: data capture/normalize helpers
+- `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
+- `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Weekly routine (Tuesday, after MNF is final)
-1. Capture the week's ESPN data via Chrome; trim → `data/`.
-2. Pull FantasyPros context (injuries/news for notable players).
-3. Draft the recap: every callout must be backed by numbers in `data/`.
-4. Build the site and publish as a **draft**. Maya reviews and approves before it's shared.
-5. Commit and push.
+1. **Capture.** Start `python3 scripts/receive.py --count 1` (background). In Chrome, open a tab at
+   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=mStatus`
+   and run in it (javascript_tool):
+   `eval(await fetch('http://127.0.0.1:8765/capture.js').then(r => r.text())); await fantasyCapture([N])`
+   → writes `data/2026/week-NN/espn.json`. Never retype the captured JSON by hand. Check `complete: true`.
+2. **Analyze.** `python3 scripts/analyze.py` → `facts.json` per week.
+3. **Context.** FantasyPros MCP for injury/news on notable players (only claim an injury if a source says so).
+4. **Write.** `recaps/2026/week-NN.json` with `"status": "draft"`. Schema: `headline`, `dek`,
+   `matchups` (keys `"<lowTeamId>-<highTeamId>"`), `game_balls` / `flags` / `tough_breaks`
+   (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
+5. **Build.** `python3 site/build.py` → `site/dist/preview.html` (drafts included) and `site/dist/index.html` (published only).
+6. **Review.** Republish the preview artifact: https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87. Maya reviews.
+7. **Ship.** Only after Maya approves: set `"status": "published"`, rebuild, republish the league artifact, commit and push.
+
+## Published pages
+- Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
+- League page: not published yet (from `site/dist/index.html`)
 
 ## Recap content
 - Matchup results, high/low scores, standings

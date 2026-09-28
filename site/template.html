@@ -1,0 +1,393 @@
+<title>__PAGE_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Libre+Franklin:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #eceff2;
+    --card: #ffffff;
+    --ink: #121a26;
+    --muted: #5b6675;
+    --rule: #d3d9e0;
+    --flag: #f2c230;
+    --flag-ink: #3a2c00;
+    --turf: #1d7a4d;
+    --loss: #b93a2f;
+    --bug: #16233a;
+    --bug-2: #22314d;
+    --bug-ink: #f3f5f8;
+    --bug-muted: #9aa8bd;
+    --draft: #fff4cc;
+    --shadow: 0 1px 0 rgba(18, 26, 38, 0.06), 0 6px 18px -10px rgba(18, 26, 38, 0.25);
+    --display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", sans-serif;
+    --body: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #0c1219;
+      --card: #141c27;
+      --ink: #e7ebf0;
+      --muted: #93a0b2;
+      --rule: #263243;
+      --flag: #f5c842;
+      --flag-ink: #2b2000;
+      --turf: #3db07a;
+      --loss: #e3675b;
+      --bug: #0a1422;
+      --bug-2: #16233a;
+      --bug-ink: #f3f5f8;
+      --bug-muted: #8d9bb0;
+      --draft: #3a3012;
+      --shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #0c1219;
+    --card: #141c27;
+    --ink: #e7ebf0;
+    --muted: #93a0b2;
+    --rule: #263243;
+    --flag: #f5c842;
+    --flag-ink: #2b2000;
+    --turf: #3db07a;
+    --loss: #e3675b;
+    --bug: #0a1422;
+    --bug-2: #16233a;
+    --bug-ink: #f3f5f8;
+    --bug-muted: #8d9bb0;
+    --draft: #3a3012;
+    --shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 15px/1.55 var(--body);
+    padding-inline: 16px;
+    padding-block: 0 48px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; border-radius: 4px; }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px;
+    padding-block: 28px 16px; border-bottom: 2px solid var(--ink);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .flag-mark {
+    width: 30px; height: 34px; flex: none; background: var(--flag);
+    clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
+    transform: rotate(-8deg);
+  }
+  .brand-name { font: 900 34px/0.9 var(--display); letter-spacing: 0.01em; text-transform: uppercase; }
+  .brand-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+  .weeks { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; max-width: 100%; }
+  .weeks button {
+    font: 700 15px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase;
+    border: 1.5px solid var(--rule); background: var(--card); color: var(--ink);
+    padding: 9px 12px; border-radius: 3px; cursor: pointer; white-space: nowrap;
+  }
+  .weeks button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .weeks button .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--flag); margin-left: 6px; vertical-align: 2px; }
+
+  .draft-banner {
+    margin-top: 16px; padding: 10px 14px; background: var(--draft); border-left: 4px solid var(--flag);
+    font-size: 13px; font-weight: 600;
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: 28px 8px; display: grid; gap: 10px; }
+  .eyebrow { font: 700 16px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .eyebrow .live { color: var(--loss); }
+  .hero h1 { font: 800 clamp(36px, 6.4vw, 64px)/0.95 var(--display); text-transform: uppercase; letter-spacing: 0.005em; max-width: 18ch; }
+  .dek { font-size: 17px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 6px; font-size: 13px; color: var(--muted); }
+  .hero-stats b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- section heads ---------- */
+  section { margin-top: 40px; }
+  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .sec-head h2 { font: 800 26px/1 var(--display); text-transform: uppercase; letter-spacing: 0.03em; }
+  .sec-head p { margin: 0; color: var(--muted); font-size: 13px; }
+  .sec-head .rule { flex: 1; height: 2px; background: var(--rule); }
+  .marker { width: 18px; height: 20px; flex: none; }
+  .marker.flag { background: var(--flag); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); }
+  .marker.ball { background: var(--turf); border-radius: 50% / 38%; transform: rotate(-30deg); width: 22px; height: 14px; }
+  .marker.break { background: var(--loss); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .marker.board { background: var(--bug); border-radius: 2px; }
+
+  /* ---------- scoreboard ---------- */
+  .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
+  .game { background: var(--card); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  .bug { background: var(--bug); color: var(--bug-ink); display: grid; }
+  .bug-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 10px 14px 10px 16px; }
+  .bug-row + .bug-row { border-top: 1px solid var(--bug-2); }
+  .bug-row.loser { color: var(--bug-muted); }
+  .bug-mgr { font: 800 22px/1 var(--display); text-transform: uppercase; letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; }
+  .bug-team { font-size: 11px; color: var(--bug-muted); letter-spacing: 0.04em; margin-top: 3px; }
+  .bug-score { font: 800 34px/1 var(--display); font-variant-numeric: tabular-nums; }
+  .bug-row.winner .bug-score::after {
+    content: ""; display: inline-block; width: 0; height: 0; margin-left: 8px; vertical-align: 6px;
+    border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-right: 9px solid var(--flag);
+  }
+  .bug-foot {
+    display: flex; justify-content: space-between; gap: 8px; padding: 6px 16px; background: var(--bug-2);
+    font: 500 11px/1.4 var(--mono); color: var(--bug-muted); letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .game-body { padding: 14px 16px 12px; display: grid; gap: 10px; flex: 1; align-content: start; }
+  .blurb { margin: 0; font-size: 14px; }
+  details.box summary {
+    cursor: pointer; font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    list-style: none; display: inline-flex; align-items: center; gap: 6px; padding-block: 4px;
+  }
+  details.box summary::-webkit-details-marker { display: none; }
+  details.box summary::before { content: "+"; font-family: var(--mono); font-size: 14px; }
+  details.box[open] summary::before { content: "−"; }
+  .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px; margin-top: 10px; }
+  .lineup h4 { margin: 0 0 4px; font: 700 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: 0.05em; }
+  .lineup table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .lineup td { padding: 3px 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+  .lineup td.slot { width: 38px; color: var(--muted); font: 500 10.5px/1 var(--mono); }
+  .lineup td.pts { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 8px; }
+  .lineup td.pts small { color: var(--muted); font-size: 10.5px; margin-left: 4px; }
+  .lineup tr.bench td { color: var(--muted); }
+  .lineup tr.bench.hot td { color: var(--ink); }
+  .lineup tr.bench.hot td.pts { color: var(--loss); font-weight: 500; }
+  .lineup .opt { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+  .lineup .opt b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- callouts ---------- */
+  .callouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+  .callout { background: var(--card); border-radius: 6px; padding: 14px 16px 16px; box-shadow: var(--shadow); display: grid; gap: 6px; align-content: start; }
+  .callout-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .who { font: 800 13px/1 var(--display); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .stat {
+    font: 500 12px/1 var(--mono); font-variant-numeric: tabular-nums; padding: 5px 7px; border-radius: 3px; white-space: nowrap;
+    background: var(--paper); color: var(--ink);
+  }
+  .flags .stat { background: var(--flag); color: var(--flag-ink); }
+  .balls .stat { background: color-mix(in srgb, var(--turf) 16%, transparent); color: var(--turf); }
+  .breaks .stat { background: color-mix(in srgb, var(--loss) 14%, transparent); color: var(--loss); }
+  .callout h3 { font: 800 21px/1.05 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .callout p { margin: 0; font-size: 14px; }
+
+  /* ---------- standings + leaders ---------- */
+  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px 28px; }
+  .table-scroll { overflow-x: auto; }
+  table.standings { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.standings th {
+    text-align: left; font: 700 12px/1 var(--display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    padding: 0 8px 8px 0; border-bottom: 2px solid var(--ink);
+  }
+  table.standings td { padding: 9px 8px 9px 0; border-bottom: 1px solid var(--rule); }
+  table.standings .r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  table.standings th.r { text-align: right; }
+  table.standings .rank { width: 26px; font: 800 18px/1 var(--display); color: var(--muted); }
+  table.standings .mgr { font-weight: 600; }
+  table.standings .tname { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .leaders { list-style: none; margin: 0; padding: 0; display: grid; }
+  .leaders li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .leaders .pname { font-weight: 600; }
+  .leaders .meta { font-size: 12px; color: var(--muted); grid-column: 1; }
+  .leaders .pts { grid-row: 1 / span 2; grid-column: 2; align-self: center; font: 800 26px/1 var(--display); font-variant-numeric: tabular-nums; }
+
+  .empty { padding: 60px 0; text-align: center; color: var(--muted); }
+  .empty h1 { font: 800 40px/1 var(--display); text-transform: uppercase; color: var(--ink); margin-bottom: 10px; }
+  footer { margin-top: 48px; padding-top: 14px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .game, .callout { transition: transform 0.15s ease; }
+    .game:hover, .callout:hover { transform: translateY(-1px); }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <div class="flag-mark" aria-hidden="true"></div>
+      <div>
+        <div class="brand-name">Flag on the Play</div>
+        <div class="brand-sub" id="league-line"></div>
+      </div>
+    </div>
+    <nav class="weeks" id="weeks" aria-label="Choose a week"></nav>
+  </header>
+  <main id="main"></main>
+  <footer id="footer"></footer>
+</div>
+
+<script id="recap-data" type="application/json">__RECAP_DATA__</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById('recap-data').textContent);
+  const weeks = DATA.weeks;
+  const $ = (sel) => document.querySelector(sel);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const fmt = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
+  const fmt1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  const SLOT_ORDER = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
+
+  $('#league-line').textContent = `${DATA.league.name.trim()} · ${DATA.league.season} · ${DATA.league.scoring}`;
+  $('#footer').innerHTML = DATA.preview
+    ? 'Preview copy for review. Weeks marked draft are not on the league page yet.'
+    : 'Scores and projections from ESPN. Updated after every Monday night game.';
+
+  if (!weeks.length) {
+    $('#main').innerHTML = `<div class="empty"><h1>First recap coming soon</h1><p>Check back after this week's Monday night game.</p></div>`;
+    return;
+  }
+
+  function pickWeek() {
+    const m = /^#week-(\d+)$/.exec(location.hash);
+    const n = m && Number(m[1]);
+    return weeks.find((w) => w.week === n) || weeks[weeks.length - 1];
+  }
+
+  function renderTabs(active) {
+    $('#weeks').innerHTML = weeks.map((w) => `
+      <button type="button" data-week="${w.week}" aria-pressed="${w.week === active.week}">
+        Week ${w.week}${DATA.preview && w.status !== 'published' ? '<span class="dot" title="Draft"></span>' : ''}
+      </button>`).join('');
+  }
+
+  function lineupTable(side, benchHotThreshold) {
+    const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
+    const bench = [...side.bench].sort((a, b) => b.points - a.points);
+    const row = (p, cls) => `<tr class="${cls}"><td class="slot">${esc(cls.includes('bench') ? 'BN' : p.slot)}</td><td>${esc(p.name)}</td><td class="pts">${fmt(p.points)}<small>${fmt1(p.projected)}</small></td></tr>`;
+    const left = Math.max(0, side.optimal - side.points);
+    return `
+      <div class="lineup">
+        <h4>${esc(side.manager)} <span class="num" style="font-size:12px;color:var(--muted)">${fmt(side.points)}</span></h4>
+        <table>
+          ${starters.map((p) => row(p, 'starter')).join('')}
+          ${bench.map((p) => row(p, `bench${p.points >= benchHotThreshold(p) ? ' hot' : ''}`)).join('')}
+        </table>
+        <div class="opt">Best possible lineup <b class="num">${fmt(side.optimal)}</b>${left > 0.005 ? ` · <b class="num">${fmt(left)}</b> left on bench` : ' · perfect lineup'}</div>
+      </div>`;
+  }
+
+  function gameCard(g, week) {
+    // A bench player is "hot" if he outscored the lowest starter he could have replaced
+    const hot = (side) => (p) => {
+      const ok = { QB: ['QB'], RB: ['RB', 'FLEX'], WR: ['WR', 'FLEX'], TE: ['TE', 'FLEX'], DST: ['DST'], K: ['K'] }[p.pos] || [];
+      const cands = side.starters.filter((s) => ok.includes(s.slot));
+      return cands.length ? Math.min(...cands.map((s) => s.points)) + 0.005 : Infinity;
+    };
+    const status = week.complete ? 'Final' : 'In progress';
+    const margin = g.winner.points - g.loser.points;
+    return `
+      <article class="game">
+        <div class="bug" role="group" aria-label="${esc(g.winner.manager)} ${fmt(g.winner.points)}, ${esc(g.loser.manager)} ${fmt(g.loser.points)}">
+          ${[['winner', g.winner], ['loser', g.loser]].map(([cls, s]) => `
+            <div class="bug-row ${cls}">
+              <div><div class="bug-mgr">${esc(s.manager)}</div><div class="bug-team">${esc(s.team_name)}</div></div>
+              <div class="bug-score">${fmt(s.points)}</div>
+            </div>`).join('')}
+          <div class="bug-foot"><span>${status}</span><span>Margin ${fmt(margin)}</span></div>
+        </div>
+        <div class="game-body">
+          ${g.blurb ? `<p class="blurb">${esc(g.blurb)}</p>` : ''}
+          <details class="box">
+            <summary>Box score</summary>
+            <div class="box-grid">${lineupTable(g.winner, hot(g.winner))}${lineupTable(g.loser, hot(g.loser))}</div>
+          </details>
+        </div>
+      </article>`;
+  }
+
+  function callouts(items, cls, marker, title, sub) {
+    if (!items || !items.length) return '';
+    return `
+      <section class="${cls}">
+        <div class="sec-head"><span class="marker ${marker}" aria-hidden="true"></span><h2>${title}</h2><div class="rule"></div></div>
+        ${sub ? `<p style="margin:-6px 0 14px;color:var(--muted);font-size:13px">${sub}</p>` : ''}
+        <div class="callouts">
+          ${items.map((c) => `
+            <article class="callout">
+              <div class="callout-top"><span class="who">${esc(c.manager)}</span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
+              <h3>${esc(c.title)}</h3>
+              <p>${esc(c.text)}</p>
+            </article>`).join('')}
+        </div>
+      </section>`;
+  }
+
+  function render() {
+    const w = pickWeek();
+    renderTabs(w);
+    const status = w.complete ? 'Final' : '<span class="live">In progress</span>';
+    $('#main').innerHTML = `
+      ${DATA.preview && w.status !== 'published' ? `<div class="draft-banner">Draft. This week isn't on the league page yet.</div>` : ''}
+      <div class="hero">
+        <div class="eyebrow">Week ${w.week} · ${status}</div>
+        <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
+        ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
+        <div class="hero-stats">
+          <span>High score <b>${esc(w.high_score.manager)} <span class="num">${fmt(w.high_score.points)}</span></b></span>
+          <span>Low score <b>${esc(w.low_score.manager)} <span class="num">${fmt(w.low_score.points)}</span></b></span>
+          <span>League median <b class="num">${fmt(w.median)}</b></span>
+        </div>
+      </div>
+
+      <section>
+        <div class="sec-head"><span class="marker board" aria-hidden="true"></span><h2>Scoreboard</h2><div class="rule"></div></div>
+        <div class="games">${w.games.map((g) => gameCard(g, w)).join('')}</div>
+      </section>
+
+      ${callouts(w.game_balls, 'balls', 'ball', 'Game balls', 'Pickups and lineup calls that paid off.')}
+      ${callouts(w.flags, 'flags', 'flag', 'Flags on the play', 'Points left on the bench.')}
+      ${callouts(w.tough_breaks, 'breaks', 'break', 'Tough breaks', 'Bad luck that nobody could have planned around.')}
+
+      <section>
+        <div class="two-col">
+          <div>
+            <div class="sec-head"><span class="marker board" aria-hidden="true"></span><h2>Standings</h2><div class="rule"></div></div>
+            <div class="table-scroll">
+              <table class="standings">
+                <thead><tr><th></th><th>Manager</th><th class="r">W–L</th><th class="r">PF</th><th class="r">PA</th></tr></thead>
+                <tbody>
+                  ${w.standings.map((s, i) => `
+                    <tr>
+                      <td class="rank">${i + 1}</td>
+                      <td class="mgr">${esc(s.manager)}<span class="tname">${esc(s.team_name)}</span></td>
+                      <td class="r">${s.wins}–${s.losses}${s.ties ? `–${s.ties}` : ''}</td>
+                      <td class="r">${fmt(s.points_for)}</td>
+                      <td class="r">${fmt(s.points_against)}</td>
+                    </tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="sec-head"><span class="marker ball" aria-hidden="true"></span><h2>Top starters</h2><div class="rule"></div></div>
+            <ol class="leaders">
+              ${w.top_performers.map((p) => `
+                <li>
+                  <span class="pname">${esc(p.name)}</span>
+                  <span class="pts">${fmt1(p.points)}</span>
+                  <span class="meta">${esc(p.manager)} · ${esc(p.slot)} · projected <span class="num">${fmt1(p.projected)}</span></span>
+                </li>`).join('')}
+            </ol>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  $('#weeks').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-week]');
+    if (!b) return;
+    history.replaceState(null, '', `#week-${b.dataset.week}`);
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  window.addEventListener('hashchange', render);
+  render();
+})();
+</script>

@@ -1,0 +1,79 @@
+{
+  "season": 2026,
+  "week": 2,
+  "status": "draft",
+  "headline": "Maya's Davante Adams call pays off with 39.5",
+  "dek": "Marlee and Kyra stay perfect, Amie loses with a perfect lineup, and Cambri's bench outscored her starting tight end by 23.7.",
+  "matchups": {
+    "2-5": "The week's high score. Maya started Davante Adams (39.5) over Mike Evans (8.4) and Dak Prescott (29.76) over Trevor Lawrence (6.16). Amie started her best possible lineup and still lost.",
+    "7-8": "The blowout of the week, by 52.18. Josh Allen scored 40.82 for Sam, and Cambri started Dallas Goedert (1.4) with Travis Kelce (25.1) on her bench.",
+    "4-6": "The closest game of the week, decided by 5.82. Kyra started Matthew Stafford (26.98) over Joe Burrow (16.18), a 10.8-point swing in a game decided by less than six.",
+    "1-3": "Marlee won with the sixth-best score of the week, with Jared Goff's 29.78 on her bench. Maddie started Jaxson Dart (0.8) over Drake Maye (8.02)."
+  },
+  "game_balls": [
+    {
+      "manager": "Maya",
+      "title": "Call of the week",
+      "text": "Started Davante Adams over Mike Evans. Adams scored 39.5, the third-best starter in the league, and Evans scored 8.4. She also put Dak Prescott back in over Trevor Lawrence, worth another 23.6.",
+      "stat": "+31.1 vs Evans"
+    },
+    {
+      "manager": "Kyra",
+      "title": "The QB call that won the game",
+      "text": "Started Matthew Stafford over Joe Burrow. Stafford outscored Burrow by 10.8, and Kyra won by 5.82.",
+      "stat": "+10.8 vs Burrow"
+    },
+    {
+      "manager": "Maddie",
+      "title": "Waddle over Metcalf",
+      "text": "Started Jaylen Waddle over DK Metcalf. Waddle scored 21.8 and Metcalf 6.7.",
+      "stat": "+15.1 vs Metcalf"
+    },
+    {
+      "manager": "Marlee",
+      "title": "Andrews keeps paying",
+      "text": "Mark Andrews, whom Maya held for seven hours in Week 1, scored 10.9 in her lineup.",
+      "stat": "10.9 pts"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Cambri",
+      "title": "Kelce on the bench",
+      "text": "Travis Kelce scored 25.1 on the bench while Dallas Goedert scored 1.4 at tight end.",
+      "stat": "−23.7 at TE"
+    },
+    {
+      "manager": "Marlee",
+      "title": "Goff on the bench",
+      "text": "Jared Goff scored 29.78 on the bench while Lamar Jackson scored 14.8. She still won, but her 28.58 points left on the bench were the most in the league this week.",
+      "stat": "28.58 pts left"
+    },
+    {
+      "manager": "Samantha",
+      "title": "Kincaid on the bench",
+      "text": "Dalton Kincaid scored 22.5 on the bench while Rome Odunze scored 7.3 at flex. She won by 52 anyway.",
+      "stat": "−15.2 at flex"
+    },
+    {
+      "manager": "Maddie",
+      "title": "The Dart start",
+      "text": "Started Jaxson Dart (0.8, projected 18.2) over Drake Maye (8.02).",
+      "stat": "−7.2 at QB"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Amie",
+      "title": "A perfect lineup and a loss",
+      "text": "Amie started her best possible lineup, got 42.5 from Jaxon Smith-Njigba (the top starter in the league), and scored 144.02, the third-best total this week. She lost to the week's high score.",
+      "stat": "#3 score, L"
+    },
+    {
+      "manager": "Tara",
+      "title": "Saquon's 3 points",
+      "text": "Saquon Barkley was projected for 17.6 and scored 3. Tara lost by 5.82, and her best possible lineup (131.16) would have won.",
+      "stat": "−14.6 vs proj"
+    }
+  ]
+}

@@ -189,6 +189,9 @@ def analyze(week, history):
         t["lineup_swaps"] = lineup_swaps(week, t["team_id"], r)
         t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2))
                          for p in r if p["slot"] in STARTING]
+        # ESPN drops the team projection once games are final; rebuild it from starters
+        t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
+        t["bench"] = [p for p in r if p["slot"] in ("BENCH", "IR")]
         t["zero_point_starters"] = [p["name"] for p in r if p["slot"] in STARTING and (not p["played"] or p["points"] == 0)]
         t["pickups_started"] = [dict(name=p["name"], points=p["points"], slot=p["slot"], **adds[(t["team_id"], p["player_id"])])
                                 for p in r if p["slot"] in STARTING and (t["team_id"], p["player_id"]) in adds]
