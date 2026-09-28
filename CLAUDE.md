@@ -9,6 +9,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   Never ask for, copy, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
   The one exception: the cloud live update reads them from GitHub Actions secrets (`ESPN_S2`, `ESPN_SWID`)
   that Maya set herself. Claude never sees, prints, sets or rotates those values; when they expire, Maya updates them.
+- **ESPN CDN headshots** (public, no auth): `https://a.espncdn.com/i/headshots/nfl/players/full/<espnId>.png`,
+  and `https://a.espncdn.com/i/teamlogos/nfl/500/<abbr>.png` for a D/ST. `scripts/analyze.py` writes the URL into
+  each week's top scorers; the site falls back to a silhouette when ESPN has no photo (rookies, call-ups).
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown.
 

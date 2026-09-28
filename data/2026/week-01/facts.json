@@ -43,35 +43,40 @@
     "manager": "Amie",
     "slot": "QB",
     "points": 37.26,
-    "projected": 16.39
+    "projected": 16.39,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4431611.png"
    },
    {
     "name": "Josh Allen",
     "manager": "Samantha",
     "slot": "QB",
     "points": 35.66,
-    "projected": 19.32
+    "projected": 19.32,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png"
    },
    {
     "name": "Derrick Henry",
     "manager": "Cambri",
     "slot": "RB",
     "points": 35.3,
-    "projected": 16.36
+    "projected": 16.36,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3043078.png"
    },
    {
     "name": "Kenneth Walker III",
     "manager": "Amie",
     "slot": "RB",
     "points": 34.1,
-    "projected": 14.7
+    "projected": 14.7,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4567048.png"
    },
    {
     "name": "Jahmyr Gibbs",
     "manager": "Kyra",
     "slot": "RB",
     "points": 33.6,
-    "projected": 22.43
+    "projected": 22.43,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4429795.png"
    }
   ],
   "biggest_busts": [
