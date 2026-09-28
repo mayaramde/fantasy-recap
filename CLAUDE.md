@@ -55,3 +55,11 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Cheeky and funny, like a friend explaining the game at a watch party. Roast lineup decisions, never people. Maya's own team gets roasted too.
 - Explain jargon in passing ("flex, the wild-card spot"), never assume football knowledge, and never talk down.
 - Pop-culture asides are welcome when accurate. The jokes can exaggerate, but every number stays exact.
+
+## Design
+- Palette "Tailgate pop": cobalt (navigation, links, scoreboard), tangerine (game balls), bubblegum pink (flags),
+  lime (highlight badges), navy ink. Pop colors are fills with ink text on top, never text on white.
+  Green/red only as small W/L labels. All tokens live in `site/template.html` `:root` (plus dark-mode blocks).
+- UI style "Sticker book": 2px ink outlines, hard offset shadows, a few slightly tilted badges.
+- Fonts: Big Shoulders Display (headings, scores), Figtree (body), DM Mono (numbers), Fredoka (small badge labels).
+  Maya found the cursive script (Yellowtail) hard to read, so no script fonts.
