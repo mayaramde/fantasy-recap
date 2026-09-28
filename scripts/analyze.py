@@ -41,6 +41,17 @@ PRO_TEAM_ABBR = {
 }
 
 
+def team_abbr(player):
+    """The player's NFL team as ESPN writes it ("buf"), or None for a free agent."""
+    return PRO_TEAM_ABBR.get(player.get("pro_team_id"))
+
+
+def team_logo(player):
+    """The player's NFL team logo, or None for a free agent or a team we can't name."""
+    abbr = team_abbr(player)
+    return TEAM_LOGO_URL.format(abbr) if abbr else None
+
+
 def headshot(player):
     """Photo URL for a player, team logo for a D/ST, None when we can't name the team.
 
@@ -48,8 +59,7 @@ def headshot(player):
     site falls back to a silhouette on image error rather than checking each URL here.
     """
     if player["pos"] == "DST":
-        abbr = PRO_TEAM_ABBR.get(player.get("pro_team_id"))
-        return TEAM_LOGO_URL.format(abbr) if abbr else None
+        return team_logo(player)
     return HEADSHOT_URL.format(player["player_id"])
 
 
@@ -262,7 +272,9 @@ def analyze(week, history):
         "lucky_wins": [{"manager": t["manager"], "points": t["points"], "score_rank": t["score_rank"]}
                        for t in teams if t["result"] == "W" and t["points"] < median],
         "top_performers": [{**{k: s[k] for k in ("name", "manager", "pos", "slot", "points", "projected")},
-                            "headshot": headshot(s)}
+                            "headshot": headshot(s),
+                            "logo": None if s["pos"] == "DST" else team_logo(s),
+                            "team": None if s["pos"] == "DST" else (team_abbr(s) or "").upper() or None}
                            for s in sorted(starters, key=lambda s: s["points"], reverse=True)[:5]],
         "biggest_busts": [{k: s[k] for k in ("name", "manager", "slot", "points", "projected", "beat_projection")}
                           for s in sorted(starters, key=lambda s: s["beat_projection"])[:5]],

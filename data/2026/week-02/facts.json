@@ -45,7 +45,9 @@
     "slot": "WR",
     "points": 42.5,
     "projected": 18.49,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+    "team": "SEA"
    },
    {
     "name": "Josh Allen",
@@ -54,7 +56,9 @@
     "slot": "QB",
     "points": 40.82,
     "projected": 22.65,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+    "team": "BUF"
    },
    {
     "name": "Davante Adams",
@@ -63,7 +67,9 @@
     "slot": "WR",
     "points": 39.5,
     "projected": 15.5,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/16800.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/16800.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+    "team": "LAR"
    },
    {
     "name": "CeeDee Lamb",
@@ -72,7 +78,9 @@
     "slot": "WR",
     "points": 35.3,
     "projected": 18,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+    "team": "DAL"
    },
    {
     "name": "Amon-Ra St. Brown",
@@ -81,7 +89,9 @@
     "slot": "WR",
     "points": 35.2,
     "projected": 20.39,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+    "team": "DET"
    }
   ],
   "biggest_busts": [
