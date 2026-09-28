@@ -335,8 +335,8 @@
       <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
     </a>
     <nav class="site-nav" id="nav" aria-label="Site">
-      <a href="#" data-nav="week">Recaps</a>
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
+      <a href="#" data-nav="week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
       <a href="#archive" data-nav="archive">Archive</a>
       <a href="#glossary" data-nav="glossary">Glossary</a>
@@ -499,7 +499,7 @@
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
     return `
-      ${LIVE && w.week === latest().week ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
+      ${LIVE ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
       ${weekSwitch(w)}
       ${draftBanner(w)}
       <div class="page-head">
