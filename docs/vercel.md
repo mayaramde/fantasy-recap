@@ -16,7 +16,7 @@ Almost everything in the dashboard is one of these:
   nothing is ever edited in place. Each gets its own permanent URL like
   `fantasy-recap-ptbjydozg-maya-fd13.vercel.app`. Old ones stay reachable forever.
 - **Domain / alias** — the friendly name pointing at whichever deployment is
-  currently "the site". Ours is **fantasy-recap-eight.vercel.app**. Deploying to
+  currently "the site". Ours is **fantasyforthegirls.vercel.app**. Deploying to
   production means: make a new deployment, then move this pointer to it.
 - **Environment variable** — a named secret or setting handed to code at runtime,
   so it isn't written in the repo. Ours will hold the ESPN login cookies.
@@ -30,8 +30,8 @@ destructive. The previous one still exists, and rolling back just moves the poin
 |---|---|
 | Scope (workspace) | `maya-fd13` |
 | Project | `fantasy-recap` |
-| Live site | https://fantasy-recap-eight.vercel.app |
-| Same site, second alias | https://fantasyforthegirls.vercel.app (what the CLI prints) |
+| Live site | https://fantasyforthegirls.vercel.app |
+| Older alias, same site | https://fantasy-recap-eight.vercel.app |
 | Plan | Hobby (free) |
 | Search engines | Blocked — `noindex` header, meta tag and robots.txt |
 
@@ -169,7 +169,7 @@ handed out). Both are listed in the header comment of
   whether dashboards work.
 - **Deployment URLs are private; the aliases are public.** A long
   `fantasy-recap-xxxxx-maya-fd13.vercel.app` URL redirects to a Vercel login, so it's
-  useless to send to the league — share `fantasy-recap-eight.vercel.app` instead. Handy
+  useless to send to the league — share `fantasyforthegirls.vercel.app` instead. Handy
   the other way round too: a stray deployment link can't leak the site.
 - **Rolling back is safe.** Deployments → pick a good one → promote. The pointer
   moves; nothing is rebuilt or lost.
