@@ -91,17 +91,20 @@ Speed Insights) is for things this project doesn't use. You can ignore all of it
 
 ### a. Turn on Web Analytics
 
-The page already carries the analytics tag — `site/build.py` adds it to the league
-page. But the endpoint it calls doesn't exist until analytics is switched on for
-the project, so right now the tag does nothing.
+Analytics needs three things, and missing any one means no numbers:
 
-Two halves, both needed:
-
-1. Enable it on the project — either **Analytics → Enable** in the dashboard, or:
+1. **Enabled on the project** — **Analytics → Enable** in the dashboard, or:
    ```bash
    vercel project web-analytics
    ```
-2. Deploy, so the page carrying the tag is the page that's live:
+   Done on 2026-09-28. This is a one-time switch.
+2. **The tag on the page.** `site/build.py`'s `standalone()` writes
+   `<script defer src="/_vercel/insights/script.js">` when passed `analytics=True`,
+   which only the league page does — deliberately not the `/me/` dashboards, because
+   Vercel records the path of every view and a dashboard's path *is* its secret.
+3. **A deployment made after step 1.** The `/_vercel/insights/*` routes are added to
+   a deployment when it's created, so deployments built before analytics was enabled
+   don't serve them however long you wait:
    ```bash
    scripts/deploy.sh
    ```
@@ -112,8 +115,9 @@ Then check it took:
 curl -s -o /dev/null -w "%{http_code}\n" https://fantasy-recap-eight.vercel.app/_vercel/insights/script.js
 ```
 
-`200` means it's on. `404` means analytics is still off — that URL is served by
-Vercel, not by our build, so a 404 there is a settings problem, never a code one.
+`200` means it's working. `404` means either analytics is off, or no deployment has
+been made since it was switched on — that URL is served by Vercel rather than by our
+build, so a 404 there is never a bug in our code.
 
 Numbers appear a minute or so after the first real visit. Note that the tabs are
 hash links (`#live`, `#recaps`), and Vercel counts the path, not the hash — so
@@ -174,8 +178,8 @@ handed out). Both are listed in the header comment of
 
 - **Changing an environment variable doesn't change the live site.** It applies to
   the *next* deployment. Always redeploy after.
-- **A 404 on anything starting `/_vercel/`** is a Vercel feature that isn't enabled,
-  not a bug in our code.
+- **A 404 on anything starting `/_vercel/`** means that feature is off *or* hasn't
+  been deployed since it was turned on — never a bug in our code.
 - **`scripts/deploy.sh --preview` leaves out the private dashboards** on purpose —
   those tokens should exist at one URL, not two. Don't use a preview URL to check
   whether dashboards work.
