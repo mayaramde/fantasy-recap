@@ -499,7 +499,7 @@
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
     return `
-      ${LIVE && w.week === latest().week ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
+      ${LIVE ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
       ${weekSwitch(w)}
       ${draftBanner(w)}
       <div class="page-head">
