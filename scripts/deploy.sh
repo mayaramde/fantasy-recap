@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Deploy the league site to Vercel.
 #
-# Builds locally (so it includes this Mac's uncommitted live-week data), packages
-# site/dist/web as a Vercel Build Output API bundle, and uploads it with --prebuilt.
+# Builds locally (so it includes this Mac's uncommitted live-week data) with `vercel
+# build`, then uploads the result with --prebuilt.
 # Git-triggered deploys are off in vercel.json, so this script is the only way the
 # production site changes. Needs a one-time `vercel login` and `vercel link`
 # (or, in GitHub Actions, the VERCEL_* settings described in live-update.yml).
@@ -26,52 +26,22 @@ if [ $# -gt 0 ]; then
   exit 2
 fi
 
-python3 site/build.py
-
-out=.vercel/output
-rm -rf "$out"
-mkdir -p "$out/static"
-if $preview; then
-  cp site/dist/web-preview/index.html site/dist/web-preview/robots.txt "$out/static/"
-else
-  cp site/dist/web/index.html site/dist/web/robots.txt "$out/static/"
-fi
-
-# /api/live: a Python function whose bundle mirrors the repo layout, so the analyze.py
-# and build.py inside it resolve league.json and data/ exactly as they do here — that is
-# what keeps the Live page's numbers identical to the ones the recap will quote. Only the
-# current week is fetched from ESPN; earlier weeks come from the captures shipped here.
-fn="$out/functions/api/live.func"
-mkdir -p "$fn/scripts" "$fn/site" "$fn/data"
-cp api/live.py "$fn/live.py"
-cp league.json "$fn/"
-cp scripts/analyze.py scripts/espn_fetch.py "$fn/scripts/"
-cp site/build.py "$fn/site/"
-cp data/player_names.json "$fn/data/"
-for capture in data/*/week-*/espn.json; do
-  mkdir -p "$fn/$(dirname "$capture")"
-  cp "$capture" "$fn/$capture"
-done
-cat > "$fn/.vc-config.json" <<'EOF'
-{ "runtime": "python3.12", "handler": "live.py", "maxDuration": 30 }
-EOF
-
-# /api/ is excluded from the header rule so the function's own Cache-Control (which lets
-# the CDN answer eight refreshes from one ESPN request) isn't overwritten by the page's.
-cat > "$out/config.json" <<'EOF'
-{
-  "version": 3,
-  "routes": [
-    { "src": "/((?!api/).*)", "headers": { "X-Robots-Tag": "noindex, nofollow", "Cache-Control": "public, max-age=0, must-revalidate" }, "continue": true },
-    { "handle": "filesystem" }
-  ]
-}
-EOF
-
+# Vercel's own build produces the bundle (see vercel.json and scripts/vercel_build.sh).
+# It has to be Vercel's build and not a hand-assembled one, because a Python function
+# only works with the launcher Vercel generates for it: hand-writing .vc-config.json
+# leaves Lambda calling the BaseHTTPRequestHandler subclass with (event, context), which
+# raises TypeError. The launcher and its vendored runtime are ~180 files, so replicating
+# them is not an option. `vercel build` runs here, on this Mac, so the uncommitted
+# live-week capture still reaches the site.
 # On this Mac the CLI uses `vercel login`; the cloud live update passes VERCEL_TOKEN
 # (plus VERCEL_ORG_ID / VERCEL_PROJECT_ID in place of `vercel link`).
+token=(${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"})
+# scripts/vercel_build.sh reads this to choose which tree to publish. Passed explicitly
+# because `vercel build --prod` leaves VERCEL_ENV unset in the build command.
 if $preview; then
-  vercel deploy --prebuilt --yes ${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"}
+  FANTASY_TARGET=preview vercel build --yes "${token[@]}"
+  vercel deploy --prebuilt --yes "${token[@]}"
 else
-  vercel deploy --prebuilt --prod --yes ${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"}
+  FANTASY_TARGET=production vercel build --prod --yes "${token[@]}"
+  vercel deploy --prebuilt --prod --yes "${token[@]}"
 fi
