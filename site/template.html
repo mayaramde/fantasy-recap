@@ -546,7 +546,7 @@
       <div class="page-head">
         <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
         <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
-        <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.</p>
+        <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
         <div class="pills">
           <span class="pill">${w.complete ? 'High score' : 'Leading'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
           <span class="pill">${w.complete ? 'Low score' : 'Trailing'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
@@ -812,6 +812,36 @@
     window.scrollTo({ top: 0 });
     $('#main').focus({ preventScroll: true });
   });
+
+  /* ---------- live refresh (Vercel builds only; see api/live.py) ----------
+     Strictly an upgrade on top of what's already on screen: the page paints from its
+     baked data first, then asks /api/live for a fresher copy of the same week. The
+     artifact build leaves FANTASY_LIVE_API unset and so never calls it, and any failure
+     here leaves the baked numbers exactly as they were. */
+  async function refreshLive() {
+    if (!LIVE || !window.FANTASY_LIVE_API) return;
+    try {
+      const res = await fetch(window.FANTASY_LIVE_API, { cache: 'no-store' });
+      if (!res.ok) return;
+      const fresh = await res.json();
+      // A new week may have started since this build was deployed; only ever patch the
+      // week this page is actually showing.
+      if (fresh.week !== LIVE.week) return;
+      Object.assign(LIVE, fresh);
+      const h = location.hash.replace(/^#/, '');
+      if (h.startsWith('live') || (!WEEKS.length && h === '')) route();
+    } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
+  }
+
   route();
+  // Always upgrade once, even in a background tab: a page opened and read later should
+  // still show fresh numbers, and a finished week has no interval to catch it later.
+  refreshLive();
+  // Repeating is only worth it while games are on, and only for a tab someone is looking
+  // at. The CDN caches each answer for a minute, so eight people watching the same game
+  // still costs ESPN about one request a minute.
+  if (LIVE && !LIVE.complete) {
+    setInterval(() => { if (document.visibilityState === 'visible') refreshLive(); }, 60000);
+  }
 })();
 </script>

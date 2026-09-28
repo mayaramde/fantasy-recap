@@ -50,7 +50,12 @@ def resolve_names(weeks):
                         continue
                 i["name"] = cache[pid]
     if changed:
-        NAME_CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n")
+        try:
+            NAME_CACHE.write_text(json.dumps(cache, indent=1, sort_keys=True) + "\n")
+        except OSError:
+            # /api/live runs this on Vercel, where the bundle is read-only. Losing the
+            # cache write there only costs a repeat lookup on the next cold start.
+            pass
 
 
 # ---------- lineup math ----------
