@@ -50,7 +50,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
 
 ## Published pages
-- **League website (Vercel, what the league uses):** https://fantasy-recap-eight.vercel.app, built from `site/dist/web/`.
+- **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
