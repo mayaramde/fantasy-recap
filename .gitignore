@@ -4,6 +4,9 @@ data/**/raw/
 .DS_Store
 __pycache__/
 site/dist/
+# Written by `vercel build` when it sets up its Python environment.
+pyproject.toml
+uv.lock
 .vercel
 .env*
 node_modules/
