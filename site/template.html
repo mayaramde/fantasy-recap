@@ -140,11 +140,17 @@
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
   .dek a { color: var(--accent); font-weight: 700; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .pill { padding: 6px 12px; border-radius: 999px; font-size: 13px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
-  .pill:nth-child(1) { background: var(--lime); transform: rotate(-1.5deg); }
-  .pill:nth-child(2) { background: var(--pink); transform: rotate(1deg); }
-  .pill:nth-child(3) { background: var(--orange); transform: rotate(-1deg); }
-  .pill b { font-weight: 700; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 4px 14px 4px 4px; border-radius: 999px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
+  .pill-plain { padding-left: 14px; }
+  .pill-top { background: var(--lime); transform: rotate(-1.5deg); }
+  .pill-mid { background: var(--orange); transform: rotate(-1deg); }
+  .pill-bot { background: var(--pink); transform: rotate(1deg); }
+  /* the rank medallion: where this score landed among the eight */
+  .pill .medal { flex: none; min-width: 34px; height: 34px; padding: 0 8px; border-radius: 999px; background: var(--board); color: var(--on-board); border: 2px solid var(--edge); display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; font: 800 15px/1 var(--display); letter-spacing: 0.02em; }
+  /* the ordinal rides high without taking part in the line box, so the numeral stays centred */
+  .pill .medal .ord { font-size: 9.5px; line-height: 1; align-self: center; margin: -7px 0 0 0.5px; letter-spacing: 0; }
+  .pill .txt { display: grid; gap: 1px; font: 600 11px/1.1 var(--body); text-transform: uppercase; letter-spacing: 0.07em; }
+  .pill .txt b { font: 700 14px/1.15 var(--body); text-transform: none; letter-spacing: 0; }
 
   .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
   .week-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
@@ -507,6 +513,37 @@
       </div>`;
   }
 
+  /* Top, middle and bottom score: the same three stickers on the recap page and the live
+     page, each carrying the rank it landed on. */
+  const ORD = (n) => { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; };
+  const medal = (ranks) => `<span class="medal">${ranks.join('–')}<span class="ord">${ORD(ranks[ranks.length - 1])}</span></span>`;
+
+  function scorePills(w) {
+    const sofar = w.complete ? '' : ' so far';
+    const mid = (w.mid_pack && w.mid_pack.teams.length) ? w.mid_pack : { teams: [], points: w.median };
+    // With an even league nobody scores the middle score exactly, so the sticker shows the
+    // score itself; with an odd one it belongs to a real team, so that team gets named.
+    const midBody = mid.teams.length === 1
+      ? `${esc(mid.teams[0].manager)} <span class="num">${f2(mid.teams[0].points)}</span>`
+      : `<span class="num">${f2(mid.points)}</span>`;
+    const midTip = mid.teams.length > 1
+      ? `Halfway between ${mid.teams.map((t) => `${t.manager} ${f2(t.points)}`).join(' and ')}, the middle two scores of the week: half the league finished above, half below.`
+      : 'The middle score of the week: half the league finished above it, half below.';
+    // The middle score belongs to no single team in an even league, so it carries no rank medallion.
+    const pill = (cls, ranks, label, body, tip) =>
+      `<span class="pill ${cls}${ranks.length ? '' : ' pill-plain'}" title="${esc(tip)}">${ranks.length ? medal(ranks) : ''}<span class="txt">${label}<b>${body}</b></span></span>`;
+    return `
+      <div class="pills">
+        ${pill('pill-top', [w.high_score.score_rank], `Top score${sofar}`,
+               `${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span>`,
+               "The week's highest team score.")}
+        ${pill('pill-mid', [], 'Middle score', midBody, midTip)}
+        ${pill('pill-bot', [w.low_score.score_rank], `Bottom score${sofar}`,
+               `${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span>`,
+               "The week's lowest team score.")}
+      </div>`;
+  }
+
   /* ---------- pages ---------- */
   function weekPage(w) {
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
@@ -519,11 +556,7 @@
         <div class="kicker">Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
         <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
         ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
-        <div class="pills">
-          <span class="pill">High score <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
-          <span class="pill">Low score <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
-          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
-        </div>
+        ${scorePills(w)}
       </div>
 
       <section>
@@ -568,11 +601,7 @@
         <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
         <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
         <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
-        <div class="pills">
-          <span class="pill">${w.complete ? 'High score' : 'Leading'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
-          <span class="pill">${w.complete ? 'Low score' : 'Trailing'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
-          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
-        </div>
+        ${scorePills(w)}
       </div>
 
       <section>

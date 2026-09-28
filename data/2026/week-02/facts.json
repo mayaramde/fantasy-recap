@@ -6,13 +6,30 @@
  "league": {
   "high_score": {
    "manager": "Maya",
-   "points": 158.46
+   "points": 158.46,
+   "score_rank": 1
   },
   "low_score": {
    "manager": "Cambri",
-   "points": 93.44
+   "points": 93.44,
+   "score_rank": 8
   },
   "median_score": 122.97,
+  "mid_pack": {
+   "teams": [
+    {
+     "manager": "Kyra",
+     "points": 125.88,
+     "score_rank": 4
+    },
+    {
+     "manager": "Tara",
+     "points": 120.06,
+     "score_rank": 5
+    }
+   ],
+   "points": 122.97
+  },
   "closest_game": {
    "winner": "Kyra",
    "loser": "Tara",

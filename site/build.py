@@ -70,6 +70,7 @@ def week_payload(facts, recap):
         "high_score": lg["high_score"],
         "low_score": lg["low_score"],
         "median": lg["median_score"],
+        "mid_pack": lg["mid_pack"],
     }
 
 
