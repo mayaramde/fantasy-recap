@@ -3,6 +3,7 @@
 Writes two self-contained single-file sites (pages are hash routes inside one HTML file):
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
+  site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt)
 
 A "live" page shows the newest captured week that has no recap in that output yet
 (in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
@@ -163,6 +164,27 @@ def render(recap_weeks, captured, preview):
     return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks + ([live] if live else [])
 
 
+# The Claude artifact host wraps pages in its own document shell. The standalone web build
+# (Vercel) needs its own: charset, viewport, no-index, favicon, and the small reset the
+# artifact shell used to provide.
+FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E"
+           "%3Cpolygon points='6,4 28,4 22,15 28,26 6,26' fill='%23ff6fb5' stroke='%23151a33' stroke-width='2'/%3E"
+           "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
+
+
+def standalone(html):
+    head = (
+        '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+        '<meta name="robots" content="noindex, nofollow">\n'
+        '<meta name="description" content="Weekly recaps, live scores and standings for our fantasy league.">\n'
+        f'<link rel="icon" href="{FAVICON}">\n'
+        '<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}'
+        ':root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
+    )
+    return head + html + "\n</html>\n"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", type=int, default=LEAGUE["season"])
@@ -189,6 +211,11 @@ def main():
     dist.mkdir(exist_ok=True)
     html, weeks = render(recap_weeks, captured, preview=False)
     (dist / "index.html").write_text(html)
+    # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
+    web = dist / "web"
+    web.mkdir(exist_ok=True)
+    (web / "index.html").write_text(standalone(html))
+    (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
     html, weeks = render(recap_weeks, captured, preview=True)
     (dist / "preview.html").write_text(html)

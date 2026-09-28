@@ -18,7 +18,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
-- `site/`: template + build script → `site/dist/index.html` (the published page, with all weeks)
+- `site/`: template + build script → `site/dist/index.html` (league page), `preview.html`, and `web/` (standalone site for Vercel)
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
@@ -35,13 +35,13 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
 5. **Build.** `python3 site/build.py` → `site/dist/preview.html` (drafts included) and `site/dist/index.html` (published only).
 6. **Review.** Republish the preview artifact: https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87. Maya reviews.
-7. **Ship.** Only after Maya approves: set `"status": "published"`, rebuild, republish the league artifact.
+7. **Ship.** Only after Maya approves: set `"status": "published"`, then run `scripts/deploy.sh` to update the website.
 8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
 
 ## Schedule
-- `fantasy-live-update` runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), rebuilds, and
-  republishes the league site so its **Live** page is current. Data only, no commentary, no commits. The in-progress
+- `fantasy-live-update` runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
+  `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
   week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
   and opens a draft PR. Maya approves before the recap reaches the league site.
@@ -50,8 +50,14 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
 
 ## Published pages
-- Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
-- League page (shared with the league): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ (from `site/dist/index.html`). Launched with Weeks 1-2 on 2026-09-28.
+- **League website (Vercel, what the league uses):** https://fantasy-recap-eight.vercel.app, built from `site/dist/web/`.
+  Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
+  bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
+  `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
+  Needs `vercel login` on this Mac. Never read or print `.env.local` or Vercel tokens.
+- Preview (Claude artifact, private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`).
+  Drafts are reviewed here before they go to the website.
+- Old league artifact (retired 2026-09-28, no longer updated): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ
 
 ## Recap content
 - Matchup results, high/low scores, standings
