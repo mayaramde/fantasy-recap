@@ -1,0 +1,77 @@
+name: live-update
+
+# Refreshes the website's Live page from ESPN, hourly while NFL games are on.
+# Data only: capture, analyze, build, deploy. Nothing is committed.
+#
+# Repo settings (Settings → Secrets and variables → Actions), set by Maya:
+#   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN
+#   variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (from .vercel/project.json)
+# When the ESPN cookies expire the capture step fails with "ESPN 401".
+
+on:
+  schedule:
+    # Times are UTC; NFL kickoffs are Eastern (UTC-4 until early November, then UTC-5).
+    - cron: "0 13-23 * * 0"     # Sunday games (incl. 9:30 AM ET international games)
+    - cron: "0 0-5 * * 1,2,5"   # Sunday, Monday and Thursday night games
+    - cron: "0 17-23 * 12 6"    # December Saturday games
+    - cron: "0 0-5 * 12 0"      # ...and Saturday nights
+    - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT)
+  workflow_dispatch:
+
+concurrency:
+  group: live-update
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Capture current week from ESPN
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+        run: node scripts/capture_node.mjs current | tee "$RUNNER_TEMP/capture.json"
+
+      - name: Skip if that week's recap is already published
+        id: gate
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          week = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "capture.json")))[0]["week"]
+          recap = Path(f"recaps/2026/week-{week:02d}.json")
+          done = recap.exists() and json.loads(recap.read_text()).get("status") == "published"
+          print(f"week {week}: " + ("recap published, nothing live to show" if done else "live"))
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"skip={'true' if done else 'false'}\n")
+          PY
+
+      - name: Analyze and check
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          python3 scripts/analyze.py
+          python3 scripts/check.py
+
+      - name: Don't remove a published recap from the site
+        if: steps.gate.outputs.skip != 'true'
+        run: python3 scripts/site_guard.py
+
+      - name: Deploy to Vercel
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+        run: |
+          npm install --global vercel@60
+          scripts/deploy.sh
+          test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasy-recap-eight.vercel.app)" = 200
