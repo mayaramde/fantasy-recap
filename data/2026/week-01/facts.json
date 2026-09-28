@@ -1,0 +1,1498 @@
+{
+ "season": 2026,
+ "week": 1,
+ "complete": true,
+ "captured_at": "2026-09-28T17:35:26.151Z",
+ "league": {
+  "high_score": {
+   "manager": "Amie",
+   "points": 177.96
+  },
+  "low_score": {
+   "manager": "Maddie",
+   "points": 95.12
+  },
+  "median_score": 127.21,
+  "closest_game": {
+   "winner": "Kyra",
+   "loser": "Maddie",
+   "margin": 16.44
+  },
+  "biggest_blowout": {
+   "winner": "Amie",
+   "loser": "Cambri",
+   "margin": 24.0
+  },
+  "bad_luck_losses": [
+   {
+    "manager": "Cambri",
+    "points": 153.96,
+    "score_rank": 2
+   }
+  ],
+  "lucky_wins": [
+   {
+    "manager": "Kyra",
+    "points": 111.56,
+    "score_rank": 6
+   }
+  ],
+  "top_performers": [
+   {
+    "name": "Caleb Williams",
+    "manager": "Amie",
+    "slot": "QB",
+    "points": 37.26,
+    "projected": 16.39
+   },
+   {
+    "name": "Josh Allen",
+    "manager": "Samantha",
+    "slot": "QB",
+    "points": 35.66,
+    "projected": 19.32
+   },
+   {
+    "name": "Derrick Henry",
+    "manager": "Cambri",
+    "slot": "RB",
+    "points": 35.3,
+    "projected": 16.36
+   },
+   {
+    "name": "Kenneth Walker III",
+    "manager": "Amie",
+    "slot": "RB",
+    "points": 34.1,
+    "projected": 14.7
+   },
+   {
+    "name": "Jahmyr Gibbs",
+    "manager": "Kyra",
+    "slot": "RB",
+    "points": 33.6,
+    "projected": 22.43
+   }
+  ],
+  "biggest_busts": [
+   {
+    "name": "Ja'Marr Chase",
+    "manager": "Samantha",
+    "slot": "WR",
+    "points": 3.2,
+    "projected": 19.95,
+    "beat_projection": -16.75
+   },
+   {
+    "name": "Colston Loveland",
+    "manager": "Maddie",
+    "slot": "TE",
+    "points": 0,
+    "projected": 12.03,
+    "beat_projection": -12.03
+   },
+   {
+    "name": "Jaylen Waddle",
+    "manager": "Maddie",
+    "slot": "FLEX",
+    "points": 1.2,
+    "projected": 12.24,
+    "beat_projection": -11.04
+   },
+   {
+    "name": "Kyle Pitts Sr.",
+    "manager": "Amie",
+    "slot": "TE",
+    "points": 0,
+    "projected": 9.83,
+    "beat_projection": -9.83
+   },
+   {
+    "name": "Omarion Hampton",
+    "manager": "Maya",
+    "slot": "RB",
+    "points": 8.3,
+    "projected": 17.58,
+    "beat_projection": -9.28
+   }
+  ],
+  "biggest_surprises": [
+   {
+    "name": "Caleb Williams",
+    "manager": "Amie",
+    "slot": "QB",
+    "points": 37.26,
+    "projected": 16.39,
+    "beat_projection": 20.87
+   },
+   {
+    "name": "Kenneth Walker III",
+    "manager": "Amie",
+    "slot": "RB",
+    "points": 34.1,
+    "projected": 14.7,
+    "beat_projection": 19.4
+   },
+   {
+    "name": "Derrick Henry",
+    "manager": "Cambri",
+    "slot": "RB",
+    "points": 35.3,
+    "projected": 16.36,
+    "beat_projection": 18.94
+   },
+   {
+    "name": "Josh Allen",
+    "manager": "Samantha",
+    "slot": "QB",
+    "points": 35.66,
+    "projected": 19.32,
+    "beat_projection": 16.34
+   },
+   {
+    "name": "Ashton Jeanty",
+    "manager": "Amie",
+    "slot": "RB",
+    "points": 32.7,
+    "projected": 17.95,
+    "beat_projection": 14.75
+   }
+  ],
+  "most_points_left_on_bench": [
+   {
+    "manager": "Maddie",
+    "points_left": 53.68,
+    "would_have_won": true
+   },
+   {
+    "manager": "Tara",
+    "points_left": 34.5,
+    "would_have_won": false
+   },
+   {
+    "manager": "Marlee",
+    "points_left": 34.2,
+    "would_have_won": false
+   },
+   {
+    "manager": "Maya",
+    "points_left": 24.5,
+    "would_have_won": true
+   },
+   {
+    "manager": "Amie",
+    "points_left": 21.2,
+    "would_have_won": false
+   },
+   {
+    "manager": "Samantha",
+    "points_left": 20.5,
+    "would_have_won": true
+   },
+   {
+    "manager": "Kyra",
+    "points_left": 8.0,
+    "would_have_won": false
+   },
+   {
+    "manager": "Cambri",
+    "points_left": 4.1,
+    "would_have_won": false
+   }
+  ],
+  "best_pickups": [
+   {
+    "name": "Michael Mayer",
+    "points": 9.2,
+    "slot": "TE",
+    "week_added": 1,
+    "type": "FREEAGENT",
+    "date": "2026-09-10T05:21:37.543Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Mark Andrews",
+    "points": 8.9,
+    "slot": "TE",
+    "week_added": 1,
+    "type": "FREEAGENT",
+    "date": "2026-09-10T17:06:59.426Z",
+    "bid": 0,
+    "manager": "Marlee"
+   }
+  ],
+  "best_lineup_calls": [
+   {
+    "date": "2026-09-01T03:44:48.675Z",
+    "started": "Trevor Lawrence",
+    "started_points": 26.1,
+    "benched": "Dak Prescott",
+    "benched_points": 14.4,
+    "slot": "QB",
+    "gain": 11.7,
+    "manager": "Maya"
+   },
+   {
+    "date": "2026-09-10T17:07:03.667Z",
+    "started": "Mark Andrews",
+    "started_points": 8.9,
+    "benched": "George Kittle",
+    "benched_points": 3.2,
+    "slot": "TE",
+    "gain": 5.7,
+    "manager": "Marlee"
+   },
+   {
+    "date": "2026-09-09T21:35:26.723Z",
+    "started": "Travis Etienne Jr.",
+    "started_points": 14.8,
+    "benched": "Jeremiyah Love",
+    "benched_points": 13,
+    "slot": "RB",
+    "gain": 1.8,
+    "manager": "Cambri"
+   }
+  ],
+  "worst_lineup_calls": [
+   {
+    "date": "2026-09-01T03:30:48.733Z",
+    "started": "Davante Adams",
+    "started_points": 5.6,
+    "benched": "Bucky Irving",
+    "benched_points": 20.3,
+    "slot": "FLEX",
+    "gain": -14.7,
+    "manager": "Maya"
+   },
+   {
+    "date": "2026-09-13T16:36:34.223Z",
+    "started": "DK Metcalf",
+    "started_points": 8,
+    "benched": "Malik Nabers",
+    "benched_points": 12.9,
+    "slot": "WR",
+    "gain": -4.9,
+    "manager": "Maddie"
+   },
+   {
+    "date": "2026-09-01T03:27:43.941Z",
+    "started": "Christian McCaffrey",
+    "started_points": 13.8,
+    "benched": "Rhamondre Stevenson",
+    "benched_points": 14.5,
+    "slot": "RB",
+    "gain": -0.7,
+    "manager": "Tara"
+   }
+  ],
+  "dropped_and_regretted": [
+   {
+    "name": "Mark Andrews",
+    "points": 8.9,
+    "dropped_by": "Maya",
+    "week_dropped": 1,
+    "now_with": "Marlee"
+   }
+  ]
+ },
+ "teams": [
+  {
+   "team_id": 4,
+   "points": 145.22,
+   "projected": null,
+   "opponent_id": 7,
+   "opponent_points": 126.76,
+   "result": "W",
+   "margin": 18.46,
+   "score_rank": 3,
+   "manager": "Tara",
+   "team_name": "Tara's Turf",
+   "optimal_points": 179.72,
+   "points_left_on_bench": 34.5,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Christian Watson",
+    "benched_points": 32.7,
+    "benched_projected": 10.92,
+    "started": "Quinshon Judkins",
+    "started_points": 7,
+    "started_projected": 13.15,
+    "slot": "FLEX",
+    "gap": 25.7
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-09-01T03:27:43.941Z",
+     "started": "Christian McCaffrey",
+     "started_points": 13.8,
+     "benched": "Rhamondre Stevenson",
+     "benched_points": 14.5,
+     "slot": "RB",
+     "gain": -0.7
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "pos": "RB",
+     "pro_team_id": 25,
+     "slot": "RB",
+     "points": 13.8,
+     "projected": 18.52,
+     "played": true,
+     "beat_projection": -4.72
+    },
+    {
+     "player_id": 3929630,
+     "name": "Saquon Barkley",
+     "pos": "RB",
+     "pro_team_id": 21,
+     "slot": "RB",
+     "points": 9,
+     "projected": 17.67,
+     "played": true,
+     "beat_projection": -8.67
+    },
+    {
+     "player_id": 4361307,
+     "name": "Trey McBride",
+     "pos": "TE",
+     "pro_team_id": 22,
+     "slot": "TE",
+     "points": 24.5,
+     "projected": 14.34,
+     "played": true,
+     "beat_projection": 10.16
+    },
+    {
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "pos": "WR",
+     "pro_team_id": 18,
+     "slot": "WR",
+     "points": 28.2,
+     "projected": 14.78,
+     "played": true,
+     "beat_projection": 13.42
+    },
+    {
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "pos": "WR",
+     "pro_team_id": 33,
+     "slot": "WR",
+     "points": 26,
+     "projected": 14.21,
+     "played": true,
+     "beat_projection": 11.79
+    },
+    {
+     "player_id": 4685702,
+     "name": "Quinshon Judkins",
+     "pos": "RB",
+     "pro_team_id": 5,
+     "slot": "FLEX",
+     "points": 7,
+     "projected": 13.15,
+     "played": true,
+     "beat_projection": -6.15
+    },
+    {
+     "player_id": 4040715,
+     "name": "Jalen Hurts",
+     "pos": "QB",
+     "pro_team_id": 21,
+     "slot": "QB",
+     "points": 24.72,
+     "projected": 21.05,
+     "played": true,
+     "beat_projection": 3.67
+    },
+    {
+     "player_id": 2473037,
+     "name": "Jason Myers",
+     "pos": "K",
+     "pro_team_id": 26,
+     "slot": "K",
+     "points": 7,
+     "projected": 9.38,
+     "played": true,
+     "beat_projection": -2.38
+    },
+    {
+     "player_id": -16021,
+     "name": "Eagles D/ST",
+     "pos": "DST",
+     "pro_team_id": 21,
+     "slot": "DST",
+     "points": 5,
+     "projected": 6.14,
+     "played": true,
+     "beat_projection": -1.14
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": []
+  },
+  {
+   "team_id": 7,
+   "points": 126.76,
+   "projected": null,
+   "opponent_id": 4,
+   "opponent_points": 145.22,
+   "result": "L",
+   "margin": -18.46,
+   "score_rank": 5,
+   "manager": "Samantha",
+   "team_name": "Cloff Campus",
+   "optimal_points": 147.26,
+   "points_left_on_bench": 20.5,
+   "would_have_won_with_optimal": true,
+   "worst_bench_call": {
+    "benched": "Stefon Diggs",
+    "benched_points": 15.5,
+    "benched_projected": 9.7,
+    "started": "Ja'Marr Chase",
+    "started_points": 3.2,
+    "started_projected": 19.95,
+    "slot": "WR",
+    "gap": 12.3
+   },
+   "lineup_swaps": [],
+   "starters": [
+    {
+     "player_id": 4362628,
+     "name": "Ja'Marr Chase",
+     "pos": "WR",
+     "pro_team_id": 4,
+     "slot": "WR",
+     "points": 3.2,
+     "projected": 19.95,
+     "played": true,
+     "beat_projection": -16.75
+    },
+    {
+     "player_id": 4429160,
+     "name": "De'Von Achane",
+     "pos": "RB",
+     "pro_team_id": 15,
+     "slot": "RB",
+     "points": 10.6,
+     "projected": 18.2,
+     "played": true,
+     "beat_projection": -7.6
+    },
+    {
+     "player_id": 3918298,
+     "name": "Josh Allen",
+     "pos": "QB",
+     "pro_team_id": 2,
+     "slot": "QB",
+     "points": 35.66,
+     "projected": 19.32,
+     "played": true,
+     "beat_projection": 16.34
+    },
+    {
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "pos": "WR",
+     "pro_team_id": 12,
+     "slot": "WR",
+     "points": 9.9,
+     "projected": 14.36,
+     "played": true,
+     "beat_projection": -4.46
+    },
+    {
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "pos": "RB",
+     "pro_team_id": 20,
+     "slot": "RB",
+     "points": 19.8,
+     "projected": 16.5,
+     "played": true,
+     "beat_projection": 3.3
+    },
+    {
+     "player_id": 4882093,
+     "name": "Bhayshul Tuten",
+     "pos": "RB",
+     "pro_team_id": 30,
+     "slot": "FLEX",
+     "points": 9.8,
+     "projected": 11.96,
+     "played": true,
+     "beat_projection": -2.16
+    },
+    {
+     "player_id": 4430027,
+     "name": "Sam LaPorta",
+     "pos": "TE",
+     "pro_team_id": 8,
+     "slot": "TE",
+     "points": 9.8,
+     "projected": 10.95,
+     "played": true,
+     "beat_projection": -1.15
+    },
+    {
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "pos": "DST",
+     "pro_team_id": 26,
+     "slot": "DST",
+     "points": 14,
+     "projected": 7.22,
+     "played": true,
+     "beat_projection": 6.78
+    },
+    {
+     "player_id": 4697745,
+     "name": "Tyler Loop",
+     "pos": "K",
+     "pro_team_id": 33,
+     "slot": "K",
+     "points": 14,
+     "projected": 8.49,
+     "played": true,
+     "beat_projection": 5.51
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": []
+  },
+  {
+   "team_id": 2,
+   "points": 177.96,
+   "projected": null,
+   "opponent_id": 8,
+   "opponent_points": 153.96,
+   "result": "W",
+   "margin": 24.0,
+   "score_rank": 1,
+   "manager": "Amie",
+   "team_name": "JSN Derulo",
+   "optimal_points": 199.16,
+   "points_left_on_bench": 21.2,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "D'Andre Swift",
+    "benched_points": 32.4,
+    "benched_projected": 12.31,
+    "started": "Emeka Egbuka",
+    "started_points": 11.3,
+    "started_projected": 14.04,
+    "slot": "FLEX",
+    "gap": 21.1
+   },
+   "lineup_swaps": [],
+   "starters": [
+    {
+     "player_id": 4430878,
+     "name": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "pro_team_id": 26,
+     "slot": "WR",
+     "points": 26.2,
+     "projected": 18.98,
+     "played": true,
+     "beat_projection": 7.22
+    },
+    {
+     "player_id": 4241389,
+     "name": "CeeDee Lamb",
+     "pos": "WR",
+     "pro_team_id": 6,
+     "slot": "WR",
+     "points": 15.4,
+     "projected": 17.26,
+     "played": true,
+     "beat_projection": -1.86
+    },
+    {
+     "player_id": 4890973,
+     "name": "Ashton Jeanty",
+     "pos": "RB",
+     "pro_team_id": 13,
+     "slot": "RB",
+     "points": 32.7,
+     "projected": 17.95,
+     "played": true,
+     "beat_projection": 14.75
+    },
+    {
+     "player_id": 4567048,
+     "name": "Kenneth Walker III",
+     "pos": "RB",
+     "pro_team_id": 12,
+     "slot": "RB",
+     "points": 34.1,
+     "projected": 14.7,
+     "played": true,
+     "beat_projection": 19.4
+    },
+    {
+     "player_id": 4567750,
+     "name": "Emeka Egbuka",
+     "pos": "WR",
+     "pro_team_id": 27,
+     "slot": "FLEX",
+     "points": 11.3,
+     "projected": 14.04,
+     "played": true,
+     "beat_projection": -2.74
+    },
+    {
+     "player_id": 4360248,
+     "name": "Kyle Pitts Sr.",
+     "pos": "TE",
+     "pro_team_id": 1,
+     "slot": "TE",
+     "points": 0,
+     "projected": 9.83,
+     "played": true,
+     "beat_projection": -9.83
+    },
+    {
+     "player_id": 4431611,
+     "name": "Caleb Williams",
+     "pos": "QB",
+     "pro_team_id": 3,
+     "slot": "QB",
+     "points": 37.26,
+     "projected": 16.39,
+     "played": true,
+     "beat_projection": 20.87
+    },
+    {
+     "player_id": 4362081,
+     "name": "Cameron Dicker",
+     "pos": "K",
+     "pro_team_id": 24,
+     "slot": "K",
+     "points": 2,
+     "projected": 10.26,
+     "played": true,
+     "beat_projection": -8.26
+    },
+    {
+     "player_id": -16023,
+     "name": "Steelers D/ST",
+     "pos": "DST",
+     "pro_team_id": 23,
+     "slot": "DST",
+     "points": 19,
+     "projected": 7.22,
+     "played": true,
+     "beat_projection": 11.78
+    }
+   ],
+   "zero_point_starters": [
+    "Kyle Pitts Sr."
+   ],
+   "pickups_started": []
+  },
+  {
+   "team_id": 8,
+   "points": 153.96,
+   "projected": null,
+   "opponent_id": 2,
+   "opponent_points": 177.96,
+   "result": "L",
+   "margin": -24.0,
+   "score_rank": 2,
+   "manager": "Cambri",
+   "team_name": "Cleated Rivalry",
+   "optimal_points": 158.06,
+   "points_left_on_bench": 4.1,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Jeremiyah Love",
+    "benched_points": 13,
+    "benched_projected": 13.86,
+    "started": "Tee Higgins",
+    "started_points": 8.9,
+    "started_projected": 12.96,
+    "slot": "FLEX",
+    "gap": 4.1
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-09-09T21:35:26.723Z",
+     "started": "Travis Etienne Jr.",
+     "started_points": 14.8,
+     "benched": "Jeremiyah Love",
+     "benched_points": 13,
+     "slot": "RB",
+     "gain": 1.8
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4426515,
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "pro_team_id": 14,
+     "slot": "WR",
+     "points": 12.4,
+     "projected": 21.05,
+     "played": true,
+     "beat_projection": -8.65
+    },
+    {
+     "player_id": 4262921,
+     "name": "Justin Jefferson",
+     "pos": "WR",
+     "pro_team_id": 16,
+     "slot": "WR",
+     "points": 31.2,
+     "projected": 17.08,
+     "played": true,
+     "beat_projection": 14.12
+    },
+    {
+     "player_id": 3043078,
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "pro_team_id": 33,
+     "slot": "RB",
+     "points": 35.3,
+     "projected": 16.36,
+     "played": true,
+     "beat_projection": 18.94
+    },
+    {
+     "player_id": 4239996,
+     "name": "Travis Etienne Jr.",
+     "pos": "RB",
+     "pro_team_id": 18,
+     "slot": "RB",
+     "points": 14.8,
+     "projected": 15.08,
+     "played": true,
+     "beat_projection": -0.28
+    },
+    {
+     "player_id": 4239993,
+     "name": "Tee Higgins",
+     "pos": "WR",
+     "pro_team_id": 4,
+     "slot": "FLEX",
+     "points": 8.9,
+     "projected": 12.96,
+     "played": true,
+     "beat_projection": -4.06
+    },
+    {
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "pos": "QB",
+     "pro_team_id": 28,
+     "slot": "QB",
+     "points": 17.66,
+     "projected": 16.84,
+     "played": true,
+     "beat_projection": 0.82
+    },
+    {
+     "player_id": 3953687,
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "pro_team_id": 6,
+     "slot": "K",
+     "points": 2,
+     "projected": 9.93,
+     "played": true,
+     "beat_projection": -7.93
+    },
+    {
+     "player_id": 3121023,
+     "name": "Dallas Goedert",
+     "pos": "TE",
+     "pro_team_id": 21,
+     "slot": "TE",
+     "points": 23.7,
+     "projected": 10.93,
+     "played": true,
+     "beat_projection": 12.77
+    },
+    {
+     "player_id": -16033,
+     "name": "Ravens D/ST",
+     "pos": "DST",
+     "pro_team_id": 33,
+     "slot": "DST",
+     "points": 8,
+     "projected": 6.65,
+     "played": true,
+     "beat_projection": 1.35
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": []
+  },
+  {
+   "team_id": 3,
+   "points": 95.12,
+   "projected": null,
+   "opponent_id": 6,
+   "opponent_points": 111.56,
+   "result": "L",
+   "margin": -16.44,
+   "score_rank": 8,
+   "manager": "Maddie",
+   "team_name": "Waddle Deez Nutz",
+   "optimal_points": 148.8,
+   "points_left_on_bench": 53.68,
+   "would_have_won_with_optimal": true,
+   "worst_bench_call": {
+    "benched": "Chuba Hubbard",
+    "benched_points": 23.7,
+    "benched_projected": 12.22,
+    "started": "Jaylen Waddle",
+    "started_points": 1.2,
+    "started_projected": 12.24,
+    "slot": "FLEX",
+    "gap": 22.5
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-09-13T16:36:34.223Z",
+     "started": "DK Metcalf",
+     "started_points": 8,
+     "benched": "Malik Nabers",
+     "benched_points": 12.9,
+     "slot": "WR",
+     "gain": -4.9
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "pro_team_id": 11,
+     "slot": "RB",
+     "points": 25.1,
+     "projected": 17.75,
+     "played": true,
+     "beat_projection": 7.35
+    },
+    {
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "pos": "RB",
+     "pro_team_id": 4,
+     "slot": "RB",
+     "points": 18.8,
+     "projected": 16.03,
+     "played": true,
+     "beat_projection": 2.77
+    },
+    {
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "pos": "WR",
+     "pro_team_id": 34,
+     "slot": "WR",
+     "points": 21.2,
+     "projected": 15.59,
+     "played": true,
+     "beat_projection": 5.61
+    },
+    {
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "pos": "TE",
+     "pro_team_id": 3,
+     "slot": "TE",
+     "points": 0,
+     "projected": 12.03,
+     "played": true,
+     "beat_projection": -12.03
+    },
+    {
+     "player_id": 4431452,
+     "name": "Drake Maye",
+     "pos": "QB",
+     "pro_team_id": 17,
+     "slot": "QB",
+     "points": 9.82,
+     "projected": 16.25,
+     "played": true,
+     "beat_projection": -6.43
+    },
+    {
+     "player_id": 4372016,
+     "name": "Jaylen Waddle",
+     "pos": "WR",
+     "pro_team_id": 7,
+     "slot": "FLEX",
+     "points": 1.2,
+     "projected": 12.24,
+     "played": true,
+     "beat_projection": -11.04
+    },
+    {
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "pos": "WR",
+     "pro_team_id": 23,
+     "slot": "WR",
+     "points": 8,
+     "projected": 12.19,
+     "played": true,
+     "beat_projection": -4.19
+    },
+    {
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "pos": "K",
+     "pro_team_id": 34,
+     "slot": "K",
+     "points": 9,
+     "projected": 9.77,
+     "played": true,
+     "beat_projection": -0.77
+    },
+    {
+     "player_id": -16007,
+     "name": "Broncos D/ST",
+     "pos": "DST",
+     "pro_team_id": 7,
+     "slot": "DST",
+     "points": 2,
+     "projected": 5.86,
+     "played": true,
+     "beat_projection": -3.86
+    }
+   ],
+   "zero_point_starters": [
+    "Colston Loveland"
+   ],
+   "pickups_started": []
+  },
+  {
+   "team_id": 6,
+   "points": 111.56,
+   "projected": null,
+   "opponent_id": 3,
+   "opponent_points": 95.12,
+   "result": "W",
+   "margin": 16.44,
+   "score_rank": 6,
+   "manager": "Kyra",
+   "team_name": "(Foot)Balls Deep",
+   "optimal_points": 119.56,
+   "points_left_on_bench": 8.0,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Michael Pittman Jr.",
+    "benched_points": 8.8,
+    "benched_projected": 12.31,
+    "started": "Drake London",
+    "started_points": 5.5,
+    "started_projected": 13.82,
+    "slot": "WR",
+    "gap": 3.3
+   },
+   "lineup_swaps": [],
+   "starters": [
+    {
+     "player_id": 4429795,
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "pro_team_id": 8,
+     "slot": "RB",
+     "points": 33.6,
+     "projected": 22.43,
+     "played": true,
+     "beat_projection": 11.17
+    },
+    {
+     "player_id": 4426502,
+     "name": "Drake London",
+     "pos": "WR",
+     "pro_team_id": 1,
+     "slot": "WR",
+     "points": 5.5,
+     "projected": 13.82,
+     "played": true,
+     "beat_projection": -8.32
+    },
+    {
+     "player_id": 4047646,
+     "name": "A.J. Brown",
+     "pos": "WR",
+     "pro_team_id": 17,
+     "slot": "WR",
+     "points": 5.6,
+     "projected": 14.18,
+     "played": true,
+     "beat_projection": -8.58
+    },
+    {
+     "player_id": 4430737,
+     "name": "Kyren Williams",
+     "pos": "RB",
+     "pro_team_id": 14,
+     "slot": "RB",
+     "points": 15.5,
+     "projected": 13.67,
+     "played": true,
+     "beat_projection": 1.83
+    },
+    {
+     "player_id": 4569618,
+     "name": "Garrett Wilson",
+     "pos": "WR",
+     "pro_team_id": 20,
+     "slot": "FLEX",
+     "points": 13.9,
+     "projected": 14.78,
+     "played": true,
+     "beat_projection": -0.88
+    },
+    {
+     "player_id": 4431459,
+     "name": "Tyler Warren",
+     "pos": "TE",
+     "pro_team_id": 11,
+     "slot": "TE",
+     "points": 10.3,
+     "projected": 12.22,
+     "played": true,
+     "beat_projection": -1.92
+    },
+    {
+     "player_id": 3915511,
+     "name": "Joe Burrow",
+     "pos": "QB",
+     "pro_team_id": 4,
+     "slot": "QB",
+     "points": 14.16,
+     "projected": 18.15,
+     "played": true,
+     "beat_projection": -3.99
+    },
+    {
+     "player_id": -16014,
+     "name": "Rams D/ST",
+     "pos": "DST",
+     "pro_team_id": 14,
+     "slot": "DST",
+     "points": 1,
+     "projected": 6.17,
+     "played": true,
+     "beat_projection": -5.17
+    },
+    {
+     "player_id": 4686361,
+     "name": "Cam Little",
+     "pos": "K",
+     "pro_team_id": 30,
+     "slot": "K",
+     "points": 12,
+     "projected": 8.81,
+     "played": true,
+     "beat_projection": 3.19
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": []
+  },
+  {
+   "team_id": 1,
+   "points": 127.66,
+   "projected": null,
+   "opponent_id": 5,
+   "opponent_points": 105.3,
+   "result": "W",
+   "margin": 22.36,
+   "score_rank": 4,
+   "manager": "Marlee",
+   "team_name": "Amon Raw, Next Question",
+   "optimal_points": 161.86,
+   "points_left_on_bench": 34.2,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "David Montgomery",
+    "benched_points": 28.9,
+    "benched_projected": 12.67,
+    "started": "James Cook III",
+    "started_points": 9.9,
+    "started_projected": 15.88,
+    "slot": "RB",
+    "gap": 19.0
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-09-10T17:07:03.667Z",
+     "started": "Mark Andrews",
+     "started_points": 8.9,
+     "benched": "George Kittle",
+     "benched_points": 3.2,
+     "slot": "TE",
+     "gain": 5.7
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4374302,
+     "name": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "pro_team_id": 8,
+     "slot": "WR",
+     "points": 28.7,
+     "projected": 18.82,
+     "played": true,
+     "beat_projection": 9.88
+    },
+    {
+     "player_id": 4379399,
+     "name": "James Cook III",
+     "pos": "RB",
+     "pro_team_id": 2,
+     "slot": "RB",
+     "points": 9.9,
+     "projected": 15.88,
+     "played": true,
+     "beat_projection": -5.98
+    },
+    {
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "pos": "WR",
+     "pro_team_id": 6,
+     "slot": "WR",
+     "points": 5.8,
+     "projected": 14.69,
+     "played": true,
+     "beat_projection": -8.89
+    },
+    {
+     "player_id": 4361579,
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "pro_team_id": 6,
+     "slot": "RB",
+     "points": 24.2,
+     "projected": 15.29,
+     "played": true,
+     "beat_projection": 8.91
+    },
+    {
+     "player_id": 4612826,
+     "name": "Ladd McConkey",
+     "pos": "WR",
+     "pro_team_id": 24,
+     "slot": "FLEX",
+     "points": 19.2,
+     "projected": 13.74,
+     "played": true,
+     "beat_projection": 5.46
+    },
+    {
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "pos": "QB",
+     "pro_team_id": 33,
+     "slot": "QB",
+     "points": 24.96,
+     "projected": 19.13,
+     "played": true,
+     "beat_projection": 5.83
+    },
+    {
+     "player_id": -16008,
+     "name": "Lions D/ST",
+     "pos": "DST",
+     "pro_team_id": 8,
+     "slot": "DST",
+     "points": 5,
+     "projected": 7.31,
+     "played": true,
+     "beat_projection": -2.31
+    },
+    {
+     "player_id": 4574716,
+     "name": "Harrison Mevis",
+     "pos": "K",
+     "pro_team_id": 14,
+     "slot": "K",
+     "points": 1,
+     "projected": 9.41,
+     "played": true,
+     "beat_projection": -8.41
+    },
+    {
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "pos": "TE",
+     "pro_team_id": 33,
+     "slot": "TE",
+     "points": 8.9,
+     "projected": 10.07,
+     "played": true,
+     "beat_projection": -1.17
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Mark Andrews",
+     "points": 8.9,
+     "slot": "TE",
+     "week_added": 1,
+     "type": "FREEAGENT",
+     "date": "2026-09-10T17:06:59.426Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 5,
+   "points": 105.3,
+   "projected": null,
+   "opponent_id": 1,
+   "opponent_points": 127.66,
+   "result": "L",
+   "margin": -22.36,
+   "score_rank": 7,
+   "manager": "Maya",
+   "team_name": "MARTY SUPREME",
+   "optimal_points": 129.8,
+   "points_left_on_bench": 24.5,
+   "would_have_won_with_optimal": true,
+   "worst_bench_call": {
+    "benched": "Bucky Irving",
+    "benched_points": 20.3,
+    "benched_projected": 13.5,
+    "started": "Davante Adams",
+    "started_points": 5.6,
+    "started_projected": 13.82,
+    "slot": "FLEX",
+    "gap": 14.7
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-09-01T03:30:48.733Z",
+     "started": "Davante Adams",
+     "started_points": 5.6,
+     "benched": "Bucky Irving",
+     "benched_points": 20.3,
+     "slot": "FLEX",
+     "gain": -14.7
+    },
+    {
+     "date": "2026-09-01T03:44:48.675Z",
+     "started": "Trevor Lawrence",
+     "started_points": 26.1,
+     "benched": "Dak Prescott",
+     "benched_points": 14.4,
+     "slot": "QB",
+     "gain": 11.7
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4430807,
+     "name": "Bijan Robinson",
+     "pos": "RB",
+     "pro_team_id": 1,
+     "slot": "RB",
+     "points": 31.3,
+     "projected": 18.9,
+     "played": true,
+     "beat_projection": 12.4
+    },
+    {
+     "player_id": 4685382,
+     "name": "Omarion Hampton",
+     "pos": "RB",
+     "pro_team_id": 24,
+     "slot": "RB",
+     "points": 8.3,
+     "projected": 17.58,
+     "played": true,
+     "beat_projection": -9.28
+    },
+    {
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "pos": "WR",
+     "pro_team_id": 21,
+     "slot": "WR",
+     "points": 8.3,
+     "projected": 14.83,
+     "played": true,
+     "beat_projection": -6.53
+    },
+    {
+     "player_id": 4685472,
+     "name": "Tetairoa McMillan",
+     "pos": "WR",
+     "pro_team_id": 29,
+     "slot": "WR",
+     "points": 10.5,
+     "projected": 14.78,
+     "played": true,
+     "beat_projection": -4.28
+    },
+    {
+     "player_id": 16800,
+     "name": "Davante Adams",
+     "pos": "WR",
+     "pro_team_id": 14,
+     "slot": "FLEX",
+     "points": 5.6,
+     "projected": 13.82,
+     "played": true,
+     "beat_projection": -8.22
+    },
+    {
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "pos": "QB",
+     "pro_team_id": 30,
+     "slot": "QB",
+     "points": 26.1,
+     "projected": 16.91,
+     "played": true,
+     "beat_projection": 9.19
+    },
+    {
+     "player_id": -16034,
+     "name": "Texans D/ST",
+     "pos": "DST",
+     "pro_team_id": 34,
+     "slot": "DST",
+     "points": -4,
+     "projected": 5.25,
+     "played": true,
+     "beat_projection": -9.25
+    },
+    {
+     "player_id": 4034949,
+     "name": "Eddy Pineiro",
+     "pos": "K",
+     "pro_team_id": 25,
+     "slot": "K",
+     "points": 10,
+     "projected": 8.7,
+     "played": true,
+     "beat_projection": 1.3
+    },
+    {
+     "player_id": 4429086,
+     "name": "Michael Mayer",
+     "pos": "TE",
+     "pro_team_id": 13,
+     "slot": "TE",
+     "points": 9.2,
+     "projected": 9.32,
+     "played": true,
+     "beat_projection": -0.12
+    }
+   ],
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Michael Mayer",
+     "points": 9.2,
+     "slot": "TE",
+     "week_added": 1,
+     "type": "FREEAGENT",
+     "date": "2026-09-10T05:21:37.543Z",
+     "bid": 0
+    }
+   ]
+  }
+ ],
+ "standings": [
+  {
+   "team_id": 2,
+   "manager": "Amie",
+   "team_name": "JSN Derulo",
+   "wins": 1,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 177.96,
+   "points_against": 153.96
+  },
+  {
+   "team_id": 4,
+   "manager": "Tara",
+   "team_name": "Tara's Turf",
+   "wins": 1,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 145.22,
+   "points_against": 126.76
+  },
+  {
+   "team_id": 1,
+   "manager": "Marlee",
+   "team_name": "Amon Raw, Next Question",
+   "wins": 1,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 127.66,
+   "points_against": 105.3
+  },
+  {
+   "team_id": 6,
+   "manager": "Kyra",
+   "team_name": "(Foot)Balls Deep",
+   "wins": 1,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 111.56,
+   "points_against": 95.12
+  },
+  {
+   "team_id": 8,
+   "manager": "Cambri",
+   "team_name": "Cleated Rivalry",
+   "wins": 0,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 153.96,
+   "points_against": 177.96
+  },
+  {
+   "team_id": 7,
+   "manager": "Samantha",
+   "team_name": "Cloff Campus",
+   "wins": 0,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 126.76,
+   "points_against": 145.22
+  },
+  {
+   "team_id": 5,
+   "manager": "Maya",
+   "team_name": "MARTY SUPREME",
+   "wins": 0,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 105.3,
+   "points_against": 127.66
+  },
+  {
+   "team_id": 3,
+   "manager": "Maddie",
+   "team_name": "Waddle Deez Nutz",
+   "wins": 0,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 95.12,
+   "points_against": 111.56
+  }
+ ]
+}

@@ -1,0 +1,4050 @@
+{
+ "season": 2026,
+ "week": 1,
+ "captured_at": "2026-09-28T17:35:26.151Z",
+ "espn_status": {
+  "current_matchup_period": 3,
+  "latest_scoring_period": 3
+ },
+ "complete": true,
+ "matchups": [
+  {
+   "id": 1,
+   "winner": "HOME",
+   "home": {
+    "team_id": 4,
+    "points": 145.22,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 3117251,
+      "name": "Christian McCaffrey",
+      "pos": "RB",
+      "pro_team_id": 25,
+      "slot": "RB",
+      "points": 13.8,
+      "projected": 18.52,
+      "played": true
+     },
+     {
+      "player_id": 3929630,
+      "name": "Saquon Barkley",
+      "pos": "RB",
+      "pro_team_id": 21,
+      "slot": "RB",
+      "points": 9,
+      "projected": 17.67,
+      "played": true
+     },
+     {
+      "player_id": 4361307,
+      "name": "Trey McBride",
+      "pos": "TE",
+      "pro_team_id": 22,
+      "slot": "TE",
+      "points": 24.5,
+      "projected": 14.34,
+      "played": true
+     },
+     {
+      "player_id": 4361370,
+      "name": "Chris Olave",
+      "pos": "WR",
+      "pro_team_id": 18,
+      "slot": "WR",
+      "points": 28.2,
+      "projected": 14.78,
+      "played": true
+     },
+     {
+      "player_id": 4429615,
+      "name": "Zay Flowers",
+      "pos": "WR",
+      "pro_team_id": 33,
+      "slot": "WR",
+      "points": 26,
+      "projected": 14.21,
+      "played": true
+     },
+     {
+      "player_id": 4685702,
+      "name": "Quinshon Judkins",
+      "pos": "RB",
+      "pro_team_id": 5,
+      "slot": "FLEX",
+      "points": 7,
+      "projected": 13.15,
+      "played": true
+     },
+     {
+      "player_id": 4040715,
+      "name": "Jalen Hurts",
+      "pos": "QB",
+      "pro_team_id": 21,
+      "slot": "QB",
+      "points": 24.72,
+      "projected": 21.05,
+      "played": true
+     },
+     {
+      "player_id": 3121422,
+      "name": "Terry McLaurin",
+      "pos": "WR",
+      "pro_team_id": 28,
+      "slot": "BENCH",
+      "points": 3.4,
+      "projected": 12.23,
+      "played": true
+     },
+     {
+      "player_id": 4569173,
+      "name": "Rhamondre Stevenson",
+      "pos": "RB",
+      "pro_team_id": 17,
+      "slot": "BENCH",
+      "points": 14.5,
+      "projected": 13.97,
+      "played": true
+     },
+     {
+      "player_id": 4248528,
+      "name": "Christian Watson",
+      "pos": "WR",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "points": 32.7,
+      "projected": 10.92,
+      "played": true
+     },
+     {
+      "player_id": 4038941,
+      "name": "Justin Herbert",
+      "pos": "QB",
+      "pro_team_id": 24,
+      "slot": "BENCH",
+      "points": 13.26,
+      "projected": 18.99,
+      "played": true
+     },
+     {
+      "player_id": 4432620,
+      "name": "Parker Washington",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "BENCH",
+      "points": 19.3,
+      "projected": 11.34,
+      "played": true
+     },
+     {
+      "player_id": 4361050,
+      "name": "Isaiah Likely",
+      "pos": "TE",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "points": 27.8,
+      "projected": 9.48,
+      "played": true
+     },
+     {
+      "player_id": 4432773,
+      "name": "Brian Thomas Jr.",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "BENCH",
+      "points": 7,
+      "projected": 10.13,
+      "played": true
+     },
+     {
+      "player_id": 2473037,
+      "name": "Jason Myers",
+      "pos": "K",
+      "pro_team_id": 26,
+      "slot": "K",
+      "points": 7,
+      "projected": 9.38,
+      "played": true
+     },
+     {
+      "player_id": -16021,
+      "name": "Eagles D/ST",
+      "pos": "DST",
+      "pro_team_id": 21,
+      "slot": "DST",
+      "points": 5,
+      "projected": 6.14,
+      "played": true
+     }
+    ]
+   },
+   "away": {
+    "team_id": 7,
+    "points": 126.76,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4362628,
+      "name": "Ja'Marr Chase",
+      "pos": "WR",
+      "pro_team_id": 4,
+      "slot": "WR",
+      "points": 3.2,
+      "projected": 19.95,
+      "played": true
+     },
+     {
+      "player_id": 4429160,
+      "name": "De'Von Achane",
+      "pos": "RB",
+      "pro_team_id": 15,
+      "slot": "RB",
+      "points": 10.6,
+      "projected": 18.2,
+      "played": true
+     },
+     {
+      "player_id": 3918298,
+      "name": "Josh Allen",
+      "pos": "QB",
+      "pro_team_id": 2,
+      "slot": "QB",
+      "points": 35.66,
+      "projected": 19.32,
+      "played": true
+     },
+     {
+      "player_id": 4428331,
+      "name": "Rashee Rice",
+      "pos": "WR",
+      "pro_team_id": 12,
+      "slot": "WR",
+      "points": 9.9,
+      "projected": 14.36,
+      "played": true
+     },
+     {
+      "player_id": 4427366,
+      "name": "Breece Hall",
+      "pos": "RB",
+      "pro_team_id": 20,
+      "slot": "RB",
+      "points": 19.8,
+      "projected": 16.5,
+      "played": true
+     },
+     {
+      "player_id": 4882093,
+      "name": "Bhayshul Tuten",
+      "pos": "RB",
+      "pro_team_id": 30,
+      "slot": "FLEX",
+      "points": 9.8,
+      "projected": 11.96,
+      "played": true
+     },
+     {
+      "player_id": 4431299,
+      "name": "Rome Odunze",
+      "pos": "WR",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "points": 7.2,
+      "projected": 12.4,
+      "played": true
+     },
+     {
+      "player_id": 4432710,
+      "name": "TreVeyon Henderson",
+      "pos": "RB",
+      "pro_team_id": 17,
+      "slot": "BENCH",
+      "points": 0,
+      "projected": 0,
+      "played": true
+     },
+     {
+      "player_id": 3128429,
+      "name": "Courtland Sutton",
+      "pos": "WR",
+      "pro_team_id": 7,
+      "slot": "BENCH",
+      "points": 3.1,
+      "projected": 11.7,
+      "played": true
+     },
+     {
+      "player_id": 4430027,
+      "name": "Sam LaPorta",
+      "pos": "TE",
+      "pro_team_id": 8,
+      "slot": "TE",
+      "points": 9.8,
+      "projected": 10.95,
+      "played": true
+     },
+     {
+      "player_id": 4678008,
+      "name": "Jonathon Brooks",
+      "pos": "RB",
+      "pro_team_id": 29,
+      "slot": "BENCH",
+      "points": 7.2,
+      "projected": 10.71,
+      "played": true
+     },
+     {
+      "player_id": 2976212,
+      "name": "Stefon Diggs",
+      "pos": "WR",
+      "pro_team_id": 28,
+      "slot": "BENCH",
+      "points": 15.5,
+      "projected": 9.7,
+      "played": true
+     },
+     {
+      "player_id": 4361741,
+      "name": "Brock Purdy",
+      "pos": "QB",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "points": 21.1,
+      "projected": 15.48,
+      "played": true
+     },
+     {
+      "player_id": 4385690,
+      "name": "Dalton Kincaid",
+      "pos": "TE",
+      "pro_team_id": 2,
+      "slot": "BENCH",
+      "points": 18,
+      "projected": 8.65,
+      "played": true
+     },
+     {
+      "player_id": -16026,
+      "name": "Seahawks D/ST",
+      "pos": "DST",
+      "pro_team_id": 26,
+      "slot": "DST",
+      "points": 14,
+      "projected": 7.22,
+      "played": true
+     },
+     {
+      "player_id": 4697745,
+      "name": "Tyler Loop",
+      "pos": "K",
+      "pro_team_id": 33,
+      "slot": "K",
+      "points": 14,
+      "projected": 8.49,
+      "played": true
+     }
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "winner": "HOME",
+   "home": {
+    "team_id": 2,
+    "points": 177.96,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4430878,
+      "name": "Jaxon Smith-Njigba",
+      "pos": "WR",
+      "pro_team_id": 26,
+      "slot": "WR",
+      "points": 26.2,
+      "projected": 18.98,
+      "played": true
+     },
+     {
+      "player_id": 4241389,
+      "name": "CeeDee Lamb",
+      "pos": "WR",
+      "pro_team_id": 6,
+      "slot": "WR",
+      "points": 15.4,
+      "projected": 17.26,
+      "played": true
+     },
+     {
+      "player_id": 4890973,
+      "name": "Ashton Jeanty",
+      "pos": "RB",
+      "pro_team_id": 13,
+      "slot": "RB",
+      "points": 32.7,
+      "projected": 17.95,
+      "played": true
+     },
+     {
+      "player_id": 4567048,
+      "name": "Kenneth Walker III",
+      "pos": "RB",
+      "pro_team_id": 12,
+      "slot": "RB",
+      "points": 34.1,
+      "projected": 14.7,
+      "played": true
+     },
+     {
+      "player_id": 4567750,
+      "name": "Emeka Egbuka",
+      "pos": "WR",
+      "pro_team_id": 27,
+      "slot": "FLEX",
+      "points": 11.3,
+      "projected": 14.04,
+      "played": true
+     },
+     {
+      "player_id": 4259545,
+      "name": "D'Andre Swift",
+      "pos": "RB",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "points": 32.4,
+      "projected": 12.31,
+      "played": true
+     },
+     {
+      "player_id": 4696981,
+      "name": "Cam Skattebo",
+      "pos": "RB",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "points": 14.1,
+      "projected": 13.71,
+      "played": true
+     },
+     {
+      "player_id": 4685512,
+      "name": "Jadarian Price",
+      "pos": "RB",
+      "pro_team_id": 26,
+      "slot": "BENCH",
+      "points": 7.8,
+      "projected": 14.1,
+      "played": true
+     },
+     {
+      "player_id": 4432708,
+      "name": "Marvin Harrison Jr.",
+      "pos": "WR",
+      "pro_team_id": 22,
+      "slot": "BENCH",
+      "points": 4.3,
+      "projected": 11.47,
+      "played": true
+     },
+     {
+      "player_id": 4360248,
+      "name": "Kyle Pitts Sr.",
+      "pos": "TE",
+      "pro_team_id": 1,
+      "slot": "TE",
+      "points": 0,
+      "projected": 9.83,
+      "played": true
+     },
+     {
+      "player_id": 4431611,
+      "name": "Caleb Williams",
+      "pos": "QB",
+      "pro_team_id": 3,
+      "slot": "QB",
+      "points": 37.26,
+      "projected": 16.39,
+      "played": true
+     },
+     {
+      "player_id": 4701936,
+      "name": "Matthew Golden",
+      "pos": "WR",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "points": 15.5,
+      "projected": 11,
+      "played": true
+     },
+     {
+      "player_id": 4362081,
+      "name": "Cameron Dicker",
+      "pos": "K",
+      "pro_team_id": 24,
+      "slot": "K",
+      "points": 2,
+      "projected": 10.26,
+      "played": true
+     },
+     {
+      "player_id": -16023,
+      "name": "Steelers D/ST",
+      "pos": "DST",
+      "pro_team_id": 23,
+      "slot": "DST",
+      "points": 19,
+      "projected": 7.22,
+      "played": true
+     },
+     {
+      "player_id": 4575131,
+      "name": "Jacory Croskey-Merritt",
+      "pos": "RB",
+      "pro_team_id": 28,
+      "slot": "BENCH",
+      "points": 12.6,
+      "projected": 8.28,
+      "played": true
+     },
+     {
+      "player_id": 4608686,
+      "name": "Kyle Monangai",
+      "pos": "RB",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "points": 20.4,
+      "projected": 10.25,
+      "played": true
+     }
+    ]
+   },
+   "away": {
+    "team_id": 8,
+    "points": 153.96,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4426515,
+      "name": "Puka Nacua",
+      "pos": "WR",
+      "pro_team_id": 14,
+      "slot": "WR",
+      "points": 12.4,
+      "projected": 21.05,
+      "played": true
+     },
+     {
+      "player_id": 4262921,
+      "name": "Justin Jefferson",
+      "pos": "WR",
+      "pro_team_id": 16,
+      "slot": "WR",
+      "points": 31.2,
+      "projected": 17.08,
+      "played": true
+     },
+     {
+      "player_id": 3043078,
+      "name": "Derrick Henry",
+      "pos": "RB",
+      "pro_team_id": 33,
+      "slot": "RB",
+      "points": 35.3,
+      "projected": 16.36,
+      "played": true
+     },
+     {
+      "player_id": 4870808,
+      "name": "Jeremiyah Love",
+      "pos": "RB",
+      "pro_team_id": 22,
+      "slot": "BENCH",
+      "points": 13,
+      "projected": 13.86,
+      "played": true
+     },
+     {
+      "player_id": 4239996,
+      "name": "Travis Etienne Jr.",
+      "pos": "RB",
+      "pro_team_id": 18,
+      "slot": "RB",
+      "points": 14.8,
+      "projected": 15.08,
+      "played": true
+     },
+     {
+      "player_id": 4239993,
+      "name": "Tee Higgins",
+      "pos": "WR",
+      "pro_team_id": 4,
+      "slot": "FLEX",
+      "points": 8.9,
+      "projected": 12.96,
+      "played": true
+     },
+     {
+      "player_id": 4426348,
+      "name": "Jayden Daniels",
+      "pos": "QB",
+      "pro_team_id": 28,
+      "slot": "QB",
+      "points": 17.66,
+      "projected": 16.84,
+      "played": true
+     },
+     {
+      "player_id": 4426388,
+      "name": "Jameson Williams",
+      "pos": "WR",
+      "pro_team_id": 8,
+      "slot": "BENCH",
+      "points": 8.5,
+      "projected": 12.12,
+      "played": true
+     },
+     {
+      "player_id": 4871023,
+      "name": "Carnell Tate",
+      "pos": "WR",
+      "pro_team_id": 10,
+      "slot": "BENCH",
+      "points": 7.8,
+      "projected": 12,
+      "played": true
+     },
+     {
+      "player_id": 4429023,
+      "name": "MarShawn Lloyd",
+      "pos": "RB",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "points": 3.7,
+      "projected": 12.75,
+      "played": true
+     },
+     {
+      "player_id": 3953687,
+      "name": "Brandon Aubrey",
+      "pos": "K",
+      "pro_team_id": 6,
+      "slot": "K",
+      "points": 2,
+      "projected": 9.93,
+      "played": true
+     },
+     {
+      "player_id": 3121023,
+      "name": "Dallas Goedert",
+      "pos": "TE",
+      "pro_team_id": 21,
+      "slot": "TE",
+      "points": 23.7,
+      "projected": 10.93,
+      "played": true
+     },
+     {
+      "player_id": 4426338,
+      "name": "Bo Nix",
+      "pos": "QB",
+      "pro_team_id": 7,
+      "slot": "BENCH",
+      "points": 5.44,
+      "projected": 16.13,
+      "played": true
+     },
+     {
+      "player_id": 15847,
+      "name": "Travis Kelce",
+      "pos": "TE",
+      "pro_team_id": 12,
+      "slot": "BENCH",
+      "points": 10.1,
+      "projected": 9.81,
+      "played": true
+     },
+     {
+      "player_id": -16033,
+      "name": "Ravens D/ST",
+      "pos": "DST",
+      "pro_team_id": 33,
+      "slot": "DST",
+      "points": 8,
+      "projected": 6.65,
+      "played": true
+     },
+     {
+      "player_id": 4241985,
+      "name": "J.K. Dobbins",
+      "pos": "RB",
+      "pro_team_id": 7,
+      "slot": "BENCH",
+      "points": 3.6,
+      "projected": 9.53,
+      "played": true
+     }
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "winner": "AWAY",
+   "home": {
+    "team_id": 3,
+    "points": 95.12,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4242335,
+      "name": "Jonathan Taylor",
+      "pos": "RB",
+      "pro_team_id": 11,
+      "slot": "RB",
+      "points": 25.1,
+      "projected": 17.75,
+      "played": true
+     },
+     {
+      "player_id": 4362238,
+      "name": "Chase Brown",
+      "pos": "RB",
+      "pro_team_id": 4,
+      "slot": "RB",
+      "points": 18.8,
+      "projected": 16.03,
+      "played": true
+     },
+     {
+      "player_id": 4258173,
+      "name": "Nico Collins",
+      "pos": "WR",
+      "pro_team_id": 34,
+      "slot": "WR",
+      "points": 21.2,
+      "projected": 15.59,
+      "played": true
+     },
+     {
+      "player_id": 4595348,
+      "name": "Malik Nabers",
+      "pos": "WR",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "points": 12.9,
+      "projected": 12.71,
+      "played": true
+     },
+     {
+      "player_id": 4723086,
+      "name": "Colston Loveland",
+      "pos": "TE",
+      "pro_team_id": 3,
+      "slot": "TE",
+      "points": 0,
+      "projected": 12.03,
+      "played": true
+     },
+     {
+      "player_id": 4431452,
+      "name": "Drake Maye",
+      "pos": "QB",
+      "pro_team_id": 17,
+      "slot": "QB",
+      "points": 9.82,
+      "projected": 16.25,
+      "played": true
+     },
+     {
+      "player_id": 4372016,
+      "name": "Jaylen Waddle",
+      "pos": "WR",
+      "pro_team_id": 7,
+      "slot": "FLEX",
+      "points": 1.2,
+      "projected": 12.24,
+      "played": true
+     },
+     {
+      "player_id": 3916148,
+      "name": "Tony Pollard",
+      "pos": "RB",
+      "pro_team_id": 10,
+      "slot": "BENCH",
+      "points": 4.4,
+      "projected": 11.53,
+      "played": true
+     },
+     {
+      "player_id": 4047650,
+      "name": "DK Metcalf",
+      "pos": "WR",
+      "pro_team_id": 23,
+      "slot": "WR",
+      "points": 8,
+      "projected": 12.19,
+      "played": true
+     },
+     {
+      "player_id": 4572680,
+      "name": "Tucker Kraft",
+      "pos": "TE",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "points": 9.5,
+      "projected": 8.97,
+      "played": true
+     },
+     {
+      "player_id": 4241416,
+      "name": "Chuba Hubbard",
+      "pos": "RB",
+      "pro_team_id": 29,
+      "slot": "BENCH",
+      "points": 23.7,
+      "projected": 12.22,
+      "played": true
+     },
+     {
+      "player_id": 4689114,
+      "name": "Jaxson Dart",
+      "pos": "QB",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "points": 26.6,
+      "projected": 18.52,
+      "played": true
+     },
+     {
+      "player_id": 3042519,
+      "name": "Aaron Jones Sr.",
+      "pos": "RB",
+      "pro_team_id": 16,
+      "slot": "BENCH",
+      "points": 10,
+      "projected": 10.42,
+      "played": true
+     },
+     {
+      "player_id": 2971573,
+      "name": "Ka'imi Fairbairn",
+      "pos": "K",
+      "pro_team_id": 34,
+      "slot": "K",
+      "points": 9,
+      "projected": 9.77,
+      "played": true
+     },
+     {
+      "player_id": -16007,
+      "name": "Broncos D/ST",
+      "pos": "DST",
+      "pro_team_id": 7,
+      "slot": "DST",
+      "points": 2,
+      "projected": 5.86,
+      "played": true
+     },
+     {
+      "player_id": 4360078,
+      "name": "Alec Pierce",
+      "pos": "WR",
+      "pro_team_id": 11,
+      "slot": "BENCH",
+      "points": 10.1,
+      "projected": 9.7,
+      "played": true
+     }
+    ]
+   },
+   "away": {
+    "team_id": 6,
+    "points": 111.56,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4429795,
+      "name": "Jahmyr Gibbs",
+      "pos": "RB",
+      "pro_team_id": 8,
+      "slot": "RB",
+      "points": 33.6,
+      "projected": 22.43,
+      "played": true
+     },
+     {
+      "player_id": 4426502,
+      "name": "Drake London",
+      "pos": "WR",
+      "pro_team_id": 1,
+      "slot": "WR",
+      "points": 5.5,
+      "projected": 13.82,
+      "played": true
+     },
+     {
+      "player_id": 4047646,
+      "name": "A.J. Brown",
+      "pos": "WR",
+      "pro_team_id": 17,
+      "slot": "WR",
+      "points": 5.6,
+      "projected": 14.18,
+      "played": true
+     },
+     {
+      "player_id": 4430737,
+      "name": "Kyren Williams",
+      "pos": "RB",
+      "pro_team_id": 14,
+      "slot": "RB",
+      "points": 15.5,
+      "projected": 13.67,
+      "played": true
+     },
+     {
+      "player_id": 4569618,
+      "name": "Garrett Wilson",
+      "pos": "WR",
+      "pro_team_id": 20,
+      "slot": "FLEX",
+      "points": 13.9,
+      "projected": 14.78,
+      "played": true
+     },
+     {
+      "player_id": 4431459,
+      "name": "Tyler Warren",
+      "pos": "TE",
+      "pro_team_id": 11,
+      "slot": "TE",
+      "points": 10.3,
+      "projected": 12.22,
+      "played": true
+     },
+     {
+      "player_id": 3915511,
+      "name": "Joe Burrow",
+      "pos": "QB",
+      "pro_team_id": 4,
+      "slot": "QB",
+      "points": 14.16,
+      "projected": 18.15,
+      "played": true
+     },
+     {
+      "player_id": 4035687,
+      "name": "Michael Pittman Jr.",
+      "pos": "WR",
+      "pro_team_id": 23,
+      "slot": "BENCH",
+      "points": 8.8,
+      "projected": 12.31,
+      "played": true
+     },
+     {
+      "player_id": 4569987,
+      "name": "Jaylen Warren",
+      "pos": "RB",
+      "pro_team_id": 23,
+      "slot": "BENCH",
+      "points": 10.3,
+      "projected": 12.62,
+      "played": true
+     },
+     {
+      "player_id": 5083076,
+      "name": "Harold Fannin Jr.",
+      "pos": "TE",
+      "pro_team_id": 5,
+      "slot": "BENCH",
+      "points": 4.1,
+      "projected": 11.12,
+      "played": true
+     },
+     {
+      "player_id": 12483,
+      "name": "Matthew Stafford",
+      "pos": "QB",
+      "pro_team_id": 14,
+      "slot": "BENCH",
+      "points": 4.1,
+      "projected": 17.5,
+      "played": true
+     },
+     {
+      "player_id": 4870795,
+      "name": "Makai Lemon",
+      "pos": "WR",
+      "pro_team_id": 21,
+      "slot": "BENCH",
+      "points": 2.5,
+      "projected": 8.45,
+      "played": true
+     },
+     {
+      "player_id": 4429096,
+      "name": "Blake Corum",
+      "pos": "RB",
+      "pro_team_id": 14,
+      "slot": "BENCH",
+      "points": 5.4,
+      "projected": 9.37,
+      "played": true
+     },
+     {
+      "player_id": 4685415,
+      "name": "Travis Hunter",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "BENCH",
+      "points": 2.1,
+      "projected": 0,
+      "played": true
+     },
+     {
+      "player_id": -16014,
+      "name": "Rams D/ST",
+      "pos": "DST",
+      "pro_team_id": 14,
+      "slot": "DST",
+      "points": 1,
+      "projected": 6.17,
+      "played": true
+     },
+     {
+      "player_id": 4686361,
+      "name": "Cam Little",
+      "pos": "K",
+      "pro_team_id": 30,
+      "slot": "K",
+      "points": 12,
+      "projected": 8.81,
+      "played": true
+     }
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "winner": "HOME",
+   "home": {
+    "team_id": 1,
+    "points": 127.66,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4374302,
+      "name": "Amon-Ra St. Brown",
+      "pos": "WR",
+      "pro_team_id": 8,
+      "slot": "WR",
+      "points": 28.7,
+      "projected": 18.82,
+      "played": true
+     },
+     {
+      "player_id": 4379399,
+      "name": "James Cook III",
+      "pos": "RB",
+      "pro_team_id": 2,
+      "slot": "RB",
+      "points": 9.9,
+      "projected": 15.88,
+      "played": true
+     },
+     {
+      "player_id": 4426354,
+      "name": "George Pickens",
+      "pos": "WR",
+      "pro_team_id": 6,
+      "slot": "WR",
+      "points": 5.8,
+      "projected": 14.69,
+      "played": true
+     },
+     {
+      "player_id": 4361579,
+      "name": "Javonte Williams",
+      "pos": "RB",
+      "pro_team_id": 6,
+      "slot": "RB",
+      "points": 24.2,
+      "projected": 15.29,
+      "played": true
+     },
+     {
+      "player_id": 4612826,
+      "name": "Ladd McConkey",
+      "pos": "WR",
+      "pro_team_id": 24,
+      "slot": "FLEX",
+      "points": 19.2,
+      "projected": 13.74,
+      "played": true
+     },
+     {
+      "player_id": 3916387,
+      "name": "Lamar Jackson",
+      "pos": "QB",
+      "pro_team_id": 33,
+      "slot": "QB",
+      "points": 24.96,
+      "projected": 19.13,
+      "played": true
+     },
+     {
+      "player_id": 4035538,
+      "name": "David Montgomery",
+      "pos": "RB",
+      "pro_team_id": 34,
+      "slot": "BENCH",
+      "points": 28.9,
+      "projected": 12.67,
+      "played": true
+     },
+     {
+      "player_id": 3915416,
+      "name": "DJ Moore",
+      "pos": "WR",
+      "pro_team_id": 2,
+      "slot": "BENCH",
+      "points": 21,
+      "projected": 11.57,
+      "played": true
+     },
+     {
+      "player_id": 4047365,
+      "name": "Josh Jacobs",
+      "pos": "RB",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "points": 0,
+      "projected": 0,
+      "played": true
+     },
+     {
+      "player_id": 3040151,
+      "name": "George Kittle",
+      "pos": "TE",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "points": 3.2,
+      "projected": 8.37,
+      "played": true
+     },
+     {
+      "player_id": 4371733,
+      "name": "Kenny Gainwell",
+      "pos": "RB",
+      "pro_team_id": 27,
+      "slot": "BENCH",
+      "points": 2.8,
+      "projected": 12.03,
+      "played": true
+     },
+     {
+      "player_id": 4360761,
+      "name": "Michael Wilson",
+      "pos": "WR",
+      "pro_team_id": 22,
+      "slot": "BENCH",
+      "points": 10.6,
+      "projected": 10.46,
+      "played": true
+     },
+     {
+      "player_id": 3046779,
+      "name": "Jared Goff",
+      "pos": "QB",
+      "pro_team_id": 8,
+      "slot": "BENCH",
+      "points": 16.44,
+      "projected": 15.78,
+      "played": true
+     },
+     {
+      "player_id": -16008,
+      "name": "Lions D/ST",
+      "pos": "DST",
+      "pro_team_id": 8,
+      "slot": "DST",
+      "points": 5,
+      "projected": 7.31,
+      "played": true
+     },
+     {
+      "player_id": 4574716,
+      "name": "Harrison Mevis",
+      "pos": "K",
+      "pro_team_id": 14,
+      "slot": "K",
+      "points": 1,
+      "projected": 9.41,
+      "played": true
+     },
+     {
+      "player_id": 3116365,
+      "name": "Mark Andrews",
+      "pos": "TE",
+      "pro_team_id": 33,
+      "slot": "TE",
+      "points": 8.9,
+      "projected": 10.07,
+      "played": true
+     }
+    ]
+   },
+   "away": {
+    "team_id": 5,
+    "points": 105.3,
+    "projected": null,
+    "lineup": [
+     {
+      "player_id": 4430807,
+      "name": "Bijan Robinson",
+      "pos": "RB",
+      "pro_team_id": 1,
+      "slot": "RB",
+      "points": 31.3,
+      "projected": 18.9,
+      "played": true
+     },
+     {
+      "player_id": 4685382,
+      "name": "Omarion Hampton",
+      "pos": "RB",
+      "pro_team_id": 24,
+      "slot": "RB",
+      "points": 8.3,
+      "projected": 17.58,
+      "played": true
+     },
+     {
+      "player_id": 4432665,
+      "name": "Brock Bowers",
+      "pos": "TE",
+      "pro_team_id": 13,
+      "slot": "BENCH",
+      "points": 0,
+      "projected": 0,
+      "played": true
+     },
+     {
+      "player_id": 4241478,
+      "name": "DeVonta Smith",
+      "pos": "WR",
+      "pro_team_id": 21,
+      "slot": "WR",
+      "points": 8.3,
+      "projected": 14.83,
+      "played": true
+     },
+     {
+      "player_id": 4685472,
+      "name": "Tetairoa McMillan",
+      "pos": "WR",
+      "pro_team_id": 29,
+      "slot": "WR",
+      "points": 10.5,
+      "projected": 14.78,
+      "played": true
+     },
+     {
+      "player_id": 4596448,
+      "name": "Bucky Irving",
+      "pos": "RB",
+      "pro_team_id": 27,
+      "slot": "BENCH",
+      "points": 20.3,
+      "projected": 13.5,
+      "played": true
+     },
+     {
+      "player_id": 16800,
+      "name": "Davante Adams",
+      "pos": "WR",
+      "pro_team_id": 14,
+      "slot": "FLEX",
+      "points": 5.6,
+      "projected": 13.82,
+      "played": true
+     },
+     {
+      "player_id": 4685278,
+      "name": "Luther Burden III",
+      "pos": "WR",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "points": 9.5,
+      "projected": 12,
+      "played": true
+     },
+     {
+      "player_id": 16737,
+      "name": "Mike Evans",
+      "pos": "WR",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "points": 16.9,
+      "projected": 10.65,
+      "played": true
+     },
+     {
+      "player_id": 4038815,
+      "name": "Rico Dowdle",
+      "pos": "RB",
+      "pro_team_id": 23,
+      "slot": "BENCH",
+      "points": 4.1,
+      "projected": 12.5,
+      "played": true
+     },
+     {
+      "player_id": 2577417,
+      "name": "Dak Prescott",
+      "pos": "QB",
+      "pro_team_id": 6,
+      "slot": "BENCH",
+      "points": 14.4,
+      "projected": 16.75,
+      "played": true
+     },
+     {
+      "player_id": 4429025,
+      "name": "Quentin Johnston",
+      "pos": "WR",
+      "pro_team_id": 24,
+      "slot": "BENCH",
+      "points": 3.7,
+      "projected": 10.35,
+      "played": true
+     },
+     {
+      "player_id": 4360310,
+      "name": "Trevor Lawrence",
+      "pos": "QB",
+      "pro_team_id": 30,
+      "slot": "QB",
+      "points": 26.1,
+      "projected": 16.91,
+      "played": true
+     },
+     {
+      "player_id": -16034,
+      "name": "Texans D/ST",
+      "pos": "DST",
+      "pro_team_id": 34,
+      "slot": "DST",
+      "points": -4,
+      "projected": 5.25,
+      "played": true
+     },
+     {
+      "player_id": 4034949,
+      "name": "Eddy Pineiro",
+      "pos": "K",
+      "pro_team_id": 25,
+      "slot": "K",
+      "points": 10,
+      "projected": 8.7,
+      "played": true
+     },
+     {
+      "player_id": 4429086,
+      "name": "Michael Mayer",
+      "pos": "TE",
+      "pro_team_id": 13,
+      "slot": "TE",
+      "points": 9.2,
+      "projected": 9.32,
+      "played": true
+     }
+    ]
+   }
+  }
+ ],
+ "teams": [
+  {
+   "team_id": 1,
+   "wins": 2,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 238.86,
+   "points_against": 202.3
+  },
+  {
+   "team_id": 2,
+   "wins": 1,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 321.98,
+   "points_against": 312.42
+  },
+  {
+   "team_id": 3,
+   "wins": 0,
+   "losses": 2,
+   "ties": 0,
+   "points_for": 192.12,
+   "points_against": 222.76
+  },
+  {
+   "team_id": 4,
+   "wins": 1,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 265.28,
+   "points_against": 252.64
+  },
+  {
+   "team_id": 5,
+   "wins": 1,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 263.76,
+   "points_against": 271.68
+  },
+  {
+   "team_id": 6,
+   "wins": 2,
+   "losses": 0,
+   "ties": 0,
+   "points_for": 237.44,
+   "points_against": 215.18
+  },
+  {
+   "team_id": 7,
+   "wins": 1,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 272.38,
+   "points_against": 238.66
+  },
+  {
+   "team_id": 8,
+   "wins": 0,
+   "losses": 2,
+   "ties": 0,
+   "points_for": 247.4,
+   "points_against": 323.58
+  }
+ ],
+ "transactions": [
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 16737,
+     "name": "Mike Evans",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3915511,
+     "name": "Joe Burrow",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4371733,
+     "name": "Kenny Gainwell",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4431459,
+     "name": "Tyler Warren",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4360761,
+     "name": "Michael Wilson",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4569987,
+     "name": "Jaylen Warren",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3121422,
+     "name": "Terry McLaurin",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4374302,
+     "name": "Amon-Ra St. Brown",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3042519,
+     "name": "Aaron Jones Sr.",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4360248,
+     "name": "Kyle Pitts Sr.",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4038941,
+     "name": "Justin Herbert",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4432773,
+     "name": "Brian Thomas Jr.",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4372016,
+     "name": "Jaylen Waddle",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4572680,
+     "name": "Tucker Kraft",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4361579,
+     "name": "Javonte Williams",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685415,
+     "name": "Travis Hunter",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4890973,
+     "name": "Ashton Jeanty",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4569587,
+     "name": "Player 4569587",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4882093,
+     "name": "Bhayshul Tuten",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4430737,
+     "name": "Kyren Williams",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4047365,
+     "name": "Josh Jacobs",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 5083076,
+     "name": "Harold Fannin Jr.",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4430878,
+     "name": "Jaxon Smith-Njigba",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 16800,
+     "name": "Davante Adams",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4430027,
+     "name": "Sam LaPorta",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 12483,
+     "name": "Matthew Stafford",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685512,
+     "name": "Jadarian Price",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4432710,
+     "name": "TreVeyon Henderson",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4242355,
+     "name": "Player 4242355",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3915416,
+     "name": "DJ Moore",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4379399,
+     "name": "James Cook III",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4431611,
+     "name": "Caleb Williams",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429160,
+     "name": "De'Von Achane",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4241416,
+     "name": "Chuba Hubbard",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429023,
+     "name": "MarShawn Lloyd",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4870795,
+     "name": "Makai Lemon",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4432708,
+     "name": "Marvin Harrison Jr.",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4432620,
+     "name": "Parker Washington",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3918298,
+     "name": "Josh Allen",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426388,
+     "name": "Jameson Williams",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4432665,
+     "name": "Brock Bowers",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3046779,
+     "name": "Jared Goff",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4035538,
+     "name": "David Montgomery",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426338,
+     "name": "Bo Nix",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 15847,
+     "name": "Travis Kelce",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4239996,
+     "name": "Travis Etienne Jr.",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4035687,
+     "name": "Michael Pittman Jr.",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4431452,
+     "name": "Drake Maye",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4608686,
+     "name": "Kyle Monangai",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426502,
+     "name": "Drake London",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4259545,
+     "name": "D'Andre Swift",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4040715,
+     "name": "Jalen Hurts",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429025,
+     "name": "Quentin Johnston",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4047646,
+     "name": "A.J. Brown",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3929630,
+     "name": "Saquon Barkley",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3121023,
+     "name": "Dallas Goedert",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4689114,
+     "name": "Jaxson Dart",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426515,
+     "name": "Puka Nacua",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3916148,
+     "name": "Tony Pollard",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4596448,
+     "name": "Bucky Irving",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4871023,
+     "name": "Carnell Tate",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3043078,
+     "name": "Derrick Henry",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685472,
+     "name": "Tetairoa McMillan",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4612826,
+     "name": "Ladd McConkey",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685382,
+     "name": "Omarion Hampton",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4361307,
+     "name": "Trey McBride",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4701936,
+     "name": "Matthew Golden",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4262921,
+     "name": "Justin Jefferson",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4431299,
+     "name": "Rome Odunze",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4239993,
+     "name": "Tee Higgins",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3953687,
+     "name": "Brandon Aubrey",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4362628,
+     "name": "Ja'Marr Chase",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4385690,
+     "name": "Dalton Kincaid",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429096,
+     "name": "Blake Corum",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4567750,
+     "name": "Emeka Egbuka",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4569618,
+     "name": "Garrett Wilson",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4241389,
+     "name": "CeeDee Lamb",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4362081,
+     "name": "Cameron Dicker",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 2976212,
+     "name": "Stefon Diggs",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 3128429,
+     "name": "Courtland Sutton",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4038815,
+     "name": "Rico Dowdle",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4685702,
+     "name": "Quinshon Judkins",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4678008,
+     "name": "Jonathon Brooks",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4430807,
+     "name": "Bijan Robinson",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4429795,
+     "name": "Jahmyr Gibbs",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4567048,
+     "name": "Kenneth Walker III",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4696981,
+     "name": "Cam Skattebo",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.601Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4870808,
+     "name": "Jeremiyah Love",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16033,
+     "name": "Ravens D/ST",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 8,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4241985,
+     "name": "J.K. Dobbins",
+     "from_team_id": 0,
+     "to_team_id": 8,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 2473037,
+     "name": "Jason Myers",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4686361,
+     "name": "Cam Little",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 4,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16021,
+     "name": "Eagles D/ST",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 6,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16014,
+     "name": "Rams D/ST",
+     "from_team_id": 0,
+     "to_team_id": 6,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4574716,
+     "name": "Harrison Mevis",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16023,
+     "name": "Steelers D/ST",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16034,
+     "name": "Texans D/ST",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4360078,
+     "name": "Alec Pierce",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 7,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4697745,
+     "name": "Tyler Loop",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 1,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16008,
+     "name": "Lions D/ST",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 5,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4034949,
+     "name": "Eddy Pineiro",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 2,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": 4575131,
+     "name": "Jacory Croskey-Merritt",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "DRAFT",
+   "team_id": 3,
+   "date": "2026-09-01T03:23:00.602Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DRAFT",
+     "player_id": -16007,
+     "name": "Broncos D/ST",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-09-01T03:27:36.133Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-09-01T03:27:43.941Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-09-01T03:30:48.733Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 16800,
+     "name": "Davante Adams",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4596448,
+     "name": "Bucky Irving",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-09-01T03:32:04.626Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-09-01T03:42:54.248Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-09-01T03:44:48.675Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-09-08T02:16:08.149Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4242355,
+     "name": "Player 4242355",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-09-09T05:32:57.111Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4242355,
+     "name": "Player 4242355",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 8,
+   "date": "2026-09-09T21:35:17.793Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4239993,
+     "name": "Tee Higgins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4239996,
+     "name": "Travis Etienne Jr.",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 8,
+   "date": "2026-09-09T21:35:26.723Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4239996,
+     "name": "Travis Etienne Jr.",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4870808,
+     "name": "Jeremiyah Love",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-09-09T21:59:39.771Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4608686,
+     "name": "Kyle Monangai",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-09-09T21:59:49.007Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4432665,
+     "name": "Brock Bowers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-09-10T05:21:37.543Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4429086,
+     "name": "Michael Mayer",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "TE"
+    },
+    {
+     "type": "DROP",
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 1,
+   "date": "2026-09-10T17:06:59.426Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4242355,
+     "name": "Player 4242355",
+     "from_team_id": 1,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-09-10T17:07:03.667Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3116365,
+     "name": "Mark Andrews",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "WAIVER",
+   "team_id": 2,
+   "date": "2026-09-11T07:29:11.581Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4608686,
+     "name": "Kyle Monangai",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4569587,
+     "name": "Player 4569587",
+     "from_team_id": 2,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-09-13T16:36:34.223Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    }
+   ]
+  }
+ ]
+}
