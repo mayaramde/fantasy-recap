@@ -158,7 +158,7 @@ def render(recap_weeks, captured, preview):
         "live": live,
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-    title = "Flag on the Play Preview" if preview else "Flag on the Play"
+    title = "Fantasy Football for the Girls (Preview)" if preview else "Fantasy Football for the Girls"
     template = (SITE / "template.html").read_text()
     return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks + ([live] if live else [])
 
