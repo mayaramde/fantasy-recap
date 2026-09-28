@@ -90,27 +90,24 @@ Speed Insights) is for things this project doesn't use. You can ignore all of it
 
 ## 5. Two things worth knowing
 
-### a. Web Analytics — enabled, and it still can't work here
+### a. Web Analytics — enabled and configured
 
-Switched on for the project on 2026-09-28. It collects nothing, and it can't. Written
-down so nobody loses another afternoon to it.
+Enabled for the project on 2026-09-28, and configured to use Vercel's CDN-based
+analytics script on 2026-09-28.
 
-Vercel's analytics script is served from your own domain, at a path Vercel adds to a
-deployment **while it builds it**. This project never lets Vercel build — it uploads a
-finished bundle (§3) — so that path is never registered, and requests for it 404. The
-dashboard's own setup instructions are `npm i @vercel/analytics` and `inject()`, which
-assume a JavaScript build step this project doesn't have and won't get.
+This project uses the CDN approach (`https://cdn.vercel-insights.com/v1/script.js`)
+rather than the npm package approach, because the CDN script reports directly to
+Vercel's servers without needing any build-time integration. The script tag is added
+in `site/build.py` in the `standalone()` function, so it's included in every generated
+HTML page.
 
-So the two halves can't meet: a tag on the page would have nowhere to report to.
-Nothing is broken; the feature just isn't reachable from here.
+The standard `@vercel/analytics` npm package approach wouldn't work here because:
+- Vercel's package-based analytics requires paths added during Vercel's build step
+- This project uses `--prebuilt` which skips Vercel's build (§3)
+- The CDN script bypasses this limitation by reporting to Vercel's own servers
 
-If it ever matters enough, the way in is to let Vercel run the build: set a
-`buildCommand` in `vercel.json` and run `vercel build` before deploying, instead of
-assembling `.vercel/output` by hand. That means re-expressing the whole routing config
-as Vercel project settings, so it's a real rewrite of `scripts/deploy.sh` — hard to
-justify for a page eight people read. Any analytics tool that's a plain script tag
-reporting to its own servers would work unchanged, because it needs nothing from the
-platform.
+Analytics data appears in the Vercel dashboard after the site receives traffic. The
+script loads with `defer`, so it doesn't block page rendering.
 
 ### b. The ESPN cookies as environment variables
 
