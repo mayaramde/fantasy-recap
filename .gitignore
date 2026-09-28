@@ -3,3 +3,4 @@ data/**/raw/
 *.raw.json
 .DS_Store
 __pycache__/
+site/dist/
