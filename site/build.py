@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 LEAGUE = json.loads((ROOT / "league.json").read_text())
 
-CALLOUT_KEYS = ("game_balls", "flags", "tough_breaks")
+CALLOUT_KEYS = ("game_balls", "flags", "tough_breaks", "glossary")
 PLAYER_KEYS = ("name", "pos", "slot", "points", "projected")
 
 

@@ -2,78 +2,84 @@
   "season": 2026,
   "week": 1,
   "status": "draft",
-  "headline": "Amie drops 177.96 and puts the league on notice",
-  "dek": "Opening week brought four winners, one 53-point bench disaster, and Cambri losing with the second-best score in the league.",
+  "headline": "Amie scores 177.96 and makes the rest of us look like we're still reading the rules",
+  "dek": "Week 1 is in the books. We learned what a flex spot is (some of us the hard way), Maddie left a small fortune on her bench, and Cambri found out you can score the second-most points in the league and still lose.",
   "matchups": {
-    "2-8": "Cambri scored 153.96, the second-best total of the week, and still lost by 24. Amie's Caleb Williams (37.26), Kenneth Walker III (34.1) and Ashton Jeanty (32.7) all roughly doubled their projections.",
-    "4-7": "Sam's Ja'Marr Chase scored 3.2 on a 19.9 projection while Stefon Diggs put up 15.5 on her bench. Tara won even with Christian Watson's 32.7 sitting on hers.",
-    "3-6": "Kyra won with the sixth-best score of the week. Maddie had 53.68 points on her bench, enough to win this one comfortably.",
-    "1-5": "Maya started Davante Adams (5.6) at flex over Bucky Irving (20.3), and her best possible lineup would have won. Marlee benched David Montgomery's 28.9 and still won by 22.36."
+    "2-8": "Cambri scored 153.96, the second-highest total in the whole league, and lost by 24. Why? Amie's Caleb Williams (37.26), Kenneth Walker III (34.1) and Ashton Jeanty (32.7) each scored about double what the experts predicted. Cambri did nothing wrong. She just ran into a buzzsaw.",
+    "4-7": "Sam's Ja'Marr Chase, one of the best receivers in football, scored 3.2. Meanwhile Stefon Diggs scored 15.5 for her... from the bench, where points don't count. Tara won even though her own bench had Christian Watson scoring 32.7, so nobody here should get too comfortable.",
+    "3-6": "Kyra won with the sixth-best score of the week, which is the fantasy football version of passing the exam with a C-minus. Maddie had 53.68 points sitting on her bench, enough to win this game with room to spare. Oof.",
+    "1-5": "Maya played Davante Adams (5.6) in her flex spot and left Bucky Irving (20.3) on the bench. With the right lineup she'd have won. Marlee also left David Montgomery's 28.9 on her bench and still won by 22.36, which is honestly rude."
   },
   "game_balls": [
     {
       "manager": "Amie",
-      "title": "High score of the week",
-      "text": "177.96 points. Caleb Williams, Kenneth Walker III and Ashton Jeanty combined for 104.06 against a combined projection of 49.04.",
+      "title": "Queen of Week 1",
+      "text": "177.96 points, the high score of the week. Her three stars (Caleb Williams, Kenneth Walker III and Ashton Jeanty) put up 104.06 combined when the experts said 49.04. The experts would like a word with her.",
       "stat": "177.96 pts"
     },
     {
       "manager": "Marlee",
-      "title": "Pickup of the week",
-      "text": "Maya picked up Mark Andrews and dropped him seven hours later. Marlee grabbed him the next day and started him over George Kittle. Andrews scored 8.9, Kittle 3.2.",
+      "title": "One girl's trash",
+      "text": "Maya picked up tight end Mark Andrews and dropped him seven hours later. Marlee scooped him up the next day, started him over George Kittle, and got 8.9 points to Kittle's 3.2. Thank you for your service, Maya.",
       "stat": "+5.7 vs Kittle"
     },
     {
       "manager": "Maya",
-      "title": "Right call at QB",
-      "text": "Started Trevor Lawrence over Dak Prescott. Lawrence scored 26.1, Prescott 14.4. Enjoy it, because the flex decision is further down this page.",
+      "title": "Got the quarterback right, at least",
+      "text": "Started Trevor Lawrence over Dak Prescott at quarterback. Lawrence scored 26.1, Dak 14.4. Enjoy this one, Maya, because your name shows up again in the flags section.",
       "stat": "+11.7 vs Dak"
     }
   ],
   "flags": [
     {
       "manager": "Maddie",
-      "title": "53.68 points on the bench",
-      "text": "The most points left on the bench this week. Chuba Hubbard scored 23.7 on the bench while Jaylen Waddle scored 1.2 at flex. Her best possible lineup scored 148.8, enough to beat Kyra.",
-      "stat": "53.68 pts left"
+      "title": "The bench was the best team in the league",
+      "text": "Maddie left 53.68 points on her bench, the most of anyone. Chuba Hubbard scored 23.7 on the bench while Jaylen Waddle scored 1.2 in her lineup. Her best possible lineup would have scored 148.8 and beaten Kyra easily. Rookie tip: check your lineup on Sunday morning, before the first game starts.",
+      "stat": "53.68 pts benched"
     },
     {
       "manager": "Maya",
-      "title": "The flex flop",
-      "text": "The person who put this recap together benched Bucky Irving (20.3) for Davante Adams (5.6). Her best possible lineup scored 129.8, enough to beat Marlee's 127.66.",
+      "title": "The person writing this recap flopped her flex",
+      "text": "Benched Bucky Irving (20.3) to play Davante Adams (5.6) in the flex. The right call would have scored 129.8 and beaten Marlee's 127.66. She is fine. She is not fine.",
       "stat": "−14.7 at flex"
     },
     {
       "manager": "Marlee",
-      "title": "Montgomery on the bench",
-      "text": "David Montgomery scored 28.9 on the bench while James Cook III scored 9.9 in the lineup. It didn't matter this time.",
-      "stat": "34.2 pts left"
+      "title": "Won anyway, still flagged",
+      "text": "David Montgomery scored 28.9 on her bench while James Cook III scored 9.9 in her lineup. She won by 22, so she gets a warning instead of a penalty.",
+      "stat": "34.2 pts benched"
     },
     {
       "manager": "Tara",
-      "title": "Watson on the bench",
-      "text": "Christian Watson scored 32.7 on the bench while Quinshon Judkins scored 7 at flex. She won anyway.",
-      "stat": "34.5 pts left"
+      "title": "Watson watched from the bench",
+      "text": "Christian Watson scored 32.7 points on Tara's bench while Quinshon Judkins scored 7 in her flex spot. She won anyway, but those 32.7 points are going to haunt her.",
+      "stat": "34.5 pts benched"
     }
   ],
   "tough_breaks": [
     {
       "manager": "Cambri",
-      "title": "Lost with the second-best score",
-      "text": "153.96 points would have beaten six of the other seven teams. She drew the one that scored 177.96.",
-      "stat": "#2 score, L"
+      "title": "Right score, wrong opponent",
+      "text": "Cambri's 153.96 would have beaten six of the other seven teams this week. She drew the seventh.",
+      "stat": "#2 score, still L"
     },
     {
       "manager": "Samantha",
-      "title": "Chase disappears",
-      "text": "Ja'Marr Chase was projected for 19.9 and scored 3.2, the biggest miss of any starter this week.",
-      "stat": "−16.7 vs proj"
+      "title": "Ja'Marr Chase forgot it was game day",
+      "text": "Projected for 19.9 points, scored 3.2. That was the biggest miss of any starter in the league this week, and there was nothing Sam could have done about it.",
+      "stat": "−16.7 vs projection"
     },
     {
       "manager": "Maddie",
-      "title": "A zero at tight end",
-      "text": "Colston Loveland scored 0 in her lineup. Amie also got a zero from Kyle Pitts Sr., but she scored 177.96, so she was fine.",
+      "title": "The goose egg",
+      "text": "Her tight end, Colston Loveland, scored zero. Amie's tight end Kyle Pitts Sr. also scored zero, but Amie had 177.96 points, so she didn't notice.",
       "stat": "0.0 pts"
     }
+  ],
+  "glossary": [
+    { "term": "Bench", "definition": "Players on your roster who aren't in your lineup. Their points don't count, no matter how many they score (sorry, Maddie)." },
+    { "term": "Flex", "definition": "A wild-card lineup spot. You can put a running back, a wide receiver or a tight end there." },
+    { "term": "Projection", "definition": "How many points the experts expect a player to score. It's a guess, and Week 1 proved it." },
+    { "term": "Tight end", "definition": "A position that blocks like a lineman and catches passes like a receiver. Fantasy scoring from tight ends is famously streaky." }
   ]
 }

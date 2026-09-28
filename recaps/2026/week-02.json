@@ -2,78 +2,84 @@
   "season": 2026,
   "week": 2,
   "status": "draft",
-  "headline": "Maya's Davante Adams call pays off with 39.5",
-  "dek": "Marlee and Kyra stay perfect, Amie loses with a perfect lineup, and Cambri's bench outscored her starting tight end by 23.7.",
+  "headline": "Maya bets on Davante Adams and he pays out 39.5",
+  "dek": "Marlee and Kyra are still undefeated, Amie played a perfect lineup and lost anyway, and Cambri left Travis Kelce on her bench. Yes, that Travis Kelce.",
   "matchups": {
-    "2-5": "The week's high score. Maya started Davante Adams (39.5) over Mike Evans (8.4) and Dak Prescott (29.76) over Trevor Lawrence (6.16). Amie started her best possible lineup and still lost.",
-    "7-8": "The blowout of the week, by 52.18. Josh Allen scored 40.82 for Sam, and Cambri started Dallas Goedert (1.4) with Travis Kelce (25.1) on her bench.",
-    "4-6": "The closest game of the week, decided by 5.82. Kyra started Matthew Stafford (26.98) over Joe Burrow (16.18), a 10.8-point swing in a game decided by less than six.",
-    "1-3": "Marlee won with the sixth-best score of the week, with Jared Goff's 29.78 on her bench. Maddie started Jaxson Dart (0.8) over Drake Maye (8.02)."
+    "2-5": "The week's high score belonged to Maya. She swapped Davante Adams (39.5) in for Mike Evans (8.4) and Dak Prescott (29.76) in for Trevor Lawrence (6.16), and both moves paid off big. Amie started the best possible lineup from her roster and still lost, which feels illegal but isn't.",
+    "7-8": "The blowout of the week: Sam by 52.18. Her quarterback Josh Allen scored 40.82 all by himself. Cambri played Dallas Goedert (1.4) at tight end while Travis Kelce scored 25.1 on her bench. Kelce, the tight end best known these days as Taylor Swift's fiancé, deserved better.",
+    "4-6": "The closest game of the week, decided by 5.82. Kyra started Matthew Stafford (26.98) at quarterback over Joe Burrow (16.18). That swap was worth 10.8 points in a game she won by less than six, so her gut basically won this one.",
+    "1-3": "Marlee won with the sixth-best score of the week, with Jared Goff's 29.78 sitting on her bench. Maddie started Jaxson Dart at quarterback. He scored 0.8. The other quarterback on her roster, Drake Maye, scored 8.02."
   },
   "game_balls": [
     {
       "manager": "Maya",
-      "title": "Call of the week",
-      "text": "Started Davante Adams over Mike Evans. Adams scored 39.5, the third-best starter in the league, and Evans scored 8.4. She also put Dak Prescott back in over Trevor Lawrence, worth another 23.6.",
+      "title": "Redemption arc",
+      "text": "Last week she benched the wrong guy. This week she started Davante Adams over Mike Evans, and Adams scored 39.5 (the third-best starter in the league) while Evans scored 8.4. She also went back to Dak Prescott at quarterback, which was worth another 23.6. Character development!",
       "stat": "+31.1 vs Evans"
     },
     {
       "manager": "Kyra",
-      "title": "The QB call that won the game",
-      "text": "Started Matthew Stafford over Joe Burrow. Stafford outscored Burrow by 10.8, and Kyra won by 5.82.",
+      "title": "The QB swap that won the game",
+      "text": "Chose Matthew Stafford over Joe Burrow. Stafford outscored Burrow by 10.8 points, and Kyra won by 5.82. Without that swap, she loses.",
       "stat": "+10.8 vs Burrow"
     },
     {
       "manager": "Maddie",
-      "title": "Waddle over Metcalf",
-      "text": "Started Jaylen Waddle over DK Metcalf. Waddle scored 21.8 and Metcalf 6.7.",
+      "title": "Waddle-d her way to a good call",
+      "text": "Started Jaylen Waddle (the namesake of her team, Waddle Deez Nutz) over DK Metcalf. Waddle scored 21.8 and Metcalf 6.7. Loyalty pays.",
       "stat": "+15.1 vs Metcalf"
     },
     {
       "manager": "Marlee",
-      "title": "Andrews keeps paying",
-      "text": "Mark Andrews, whom Maya held for seven hours in Week 1, scored 10.9 in her lineup.",
+      "title": "The gift that keeps on giving",
+      "text": "Mark Andrews, the tight end Maya held for all of seven hours in Week 1, scored 10.9 for Marlee this week. Maya is fine about it.",
       "stat": "10.9 pts"
     }
   ],
   "flags": [
     {
       "manager": "Cambri",
-      "title": "Kelce on the bench",
-      "text": "Travis Kelce scored 25.1 on the bench while Dallas Goedert scored 1.4 at tight end.",
+      "title": "Benched Travis Kelce",
+      "text": "Kelce scored 25.1 on her bench while Dallas Goedert scored 1.4 as her starting tight end. The Swifties in this league are disappointed.",
       "stat": "−23.7 at TE"
     },
     {
       "manager": "Marlee",
-      "title": "Goff on the bench",
-      "text": "Jared Goff scored 29.78 on the bench while Lamar Jackson scored 14.8. She still won, but her 28.58 points left on the bench were the most in the league this week.",
-      "stat": "28.58 pts left"
+      "title": "Two quarterbacks, picked the wrong one",
+      "text": "Jared Goff scored 29.78 on her bench while Lamar Jackson scored 14.8 in her lineup. She won anyway, but her 28.58 points left on the bench were the most in the league this week.",
+      "stat": "28.58 pts benched"
     },
     {
       "manager": "Samantha",
-      "title": "Kincaid on the bench",
-      "text": "Dalton Kincaid scored 22.5 on the bench while Rome Odunze scored 7.3 at flex. She won by 52 anyway.",
+      "title": "Kincaid in the dugout",
+      "text": "Dalton Kincaid scored 22.5 on her bench while Rome Odunze scored 7.3 in her flex spot. She won by 52 anyway, so this is purely for the record.",
       "stat": "−15.2 at flex"
     },
     {
       "manager": "Maddie",
-      "title": "The Dart start",
-      "text": "Started Jaxson Dart (0.8, projected 18.2) over Drake Maye (8.02).",
+      "title": "Dart missed the board",
+      "text": "Started Jaxson Dart at quarterback. The experts projected him for 18.2 points. He scored 0.8. Drake Maye scored 8.02 from the bench.",
       "stat": "−7.2 at QB"
     }
   ],
   "tough_breaks": [
     {
       "manager": "Amie",
-      "title": "A perfect lineup and a loss",
-      "text": "Amie started her best possible lineup, got 42.5 from Jaxon Smith-Njigba (the top starter in the league), and scored 144.02, the third-best total this week. She lost to the week's high score.",
-      "stat": "#3 score, L"
+      "title": "Did everything right and lost",
+      "text": "Amie started the best possible lineup from her roster, got 42.5 points from Jaxon Smith-Njigba (the best starter in the entire league this week), and scored 144.02, the third-highest total. Her opponent just happened to post the high score. Fantasy football is cruel.",
+      "stat": "#3 score, still L"
     },
     {
       "manager": "Tara",
-      "title": "Saquon's 3 points",
-      "text": "Saquon Barkley was projected for 17.6 and scored 3. Tara lost by 5.82, and her best possible lineup (131.16) would have won.",
-      "stat": "−14.6 vs proj"
+      "title": "Saquon took the week off",
+      "text": "Saquon Barkley, one of the most famous running backs in football, was projected for 17.6 points and scored 3. Tara lost by 5.82, and her best possible lineup (131.16) would have won.",
+      "stat": "−14.6 vs projection"
     }
+  ],
+  "glossary": [
+    { "term": "Quarterback (QB)", "definition": "The player who throws the ball. You start one, and they usually score a lot of fantasy points." },
+    { "term": "Perfect lineup", "definition": "Starting the highest-scoring players you have at every spot. Amie pulled it off this week, and it still wasn't enough." },
+    { "term": "Blowout", "definition": "A game won by a lot. Sam's 52-point win qualifies." },
+    { "term": "PPR", "definition": "Points per reception. Our league gives 1 point every time a player catches a pass, on top of points for yards and touchdowns." }
   ]
 }

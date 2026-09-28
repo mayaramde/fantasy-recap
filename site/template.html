@@ -122,6 +122,12 @@
   .marker.ball { background: var(--turf); border-radius: 50% / 38%; transform: rotate(-30deg); width: 22px; height: 14px; }
   .marker.break { background: var(--loss); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
   .marker.board { background: var(--bug); border-radius: 2px; }
+  .marker.book { background: var(--muted); border-radius: 1px 3px 3px 1px; width: 16px; }
+
+  .terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0 24px; margin: 0; }
+  .term { padding: 10px 0; border-top: 1px solid var(--rule); }
+  .term dt { font: 800 17px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .term dd { margin: 0; font-size: 13.5px; color: var(--muted); }
 
   /* ---------- scoreboard ---------- */
   .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
@@ -237,10 +243,10 @@
   $('#league-line').textContent = `${DATA.league.name.trim()} · ${DATA.league.season} · ${DATA.league.scoring}`;
   $('#footer').innerHTML = DATA.preview
     ? 'Preview copy for review. Weeks marked draft are not on the league page yet.'
-    : 'Scores and projections from ESPN. Updated after every Monday night game.';
+    : 'Scores and projections from ESPN. A new recap drops every Tuesday, after the Monday night game.';
 
   if (!weeks.length) {
-    $('#main').innerHTML = `<div class="empty"><h1>First recap coming soon</h1><p>Check back after this week's Monday night game.</p></div>`;
+    $('#main').innerHTML = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`;
     return;
   }
 
@@ -319,6 +325,18 @@
       </section>`;
   }
 
+  function glossary(items) {
+    if (!items || !items.length) return '';
+    return `
+      <section class="glossary">
+        <div class="sec-head"><span class="marker book" aria-hidden="true"></span><h2>Rookie glossary</h2><div class="rule"></div></div>
+        <p style="margin:-6px 0 14px;color:var(--muted);font-size:13px">Football words from this week's recap, explained for the rest of us.</p>
+        <dl class="terms">
+          ${items.map((g) => `<div class="term"><dt>${esc(g.term)}</dt><dd>${esc(g.definition)}</dd></div>`).join('')}
+        </dl>
+      </section>`;
+  }
+
   function render() {
     const w = pickWeek();
     renderTabs(w);
@@ -332,7 +350,7 @@
         <div class="hero-stats">
           <span>High score <b>${esc(w.high_score.manager)} <span class="num">${fmt(w.high_score.points)}</span></b></span>
           <span>Low score <b>${esc(w.low_score.manager)} <span class="num">${fmt(w.low_score.points)}</span></b></span>
-          <span>League median <b class="num">${fmt(w.median)}</b></span>
+          <span>Middle of the pack <b class="num">${fmt(w.median)}</b></span>
         </div>
       </div>
 
@@ -341,9 +359,10 @@
         <div class="games">${w.games.map((g) => gameCard(g, w)).join('')}</div>
       </section>
 
-      ${callouts(w.game_balls, 'balls', 'ball', 'Game balls', 'Pickups and lineup calls that paid off.')}
-      ${callouts(w.flags, 'flags', 'flag', 'Flags on the play', 'Points left on the bench.')}
-      ${callouts(w.tough_breaks, 'breaks', 'break', 'Tough breaks', 'Bad luck that nobody could have planned around.')}
+      ${callouts(w.game_balls, 'balls', 'ball', 'Game balls', 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.')}
+      ${callouts(w.flags, 'flags', 'flag', 'Flags on the play', 'When a player breaks a rule, the referee throws a yellow flag. These are lineup crimes, mostly points left on the bench.')}
+      ${callouts(w.tough_breaks, 'breaks', 'break', 'Tough breaks', 'Not your fault. The football gods just chose violence.')}
+      ${glossary(w.glossary)}
 
       <section>
         <div class="two-col">
@@ -351,7 +370,7 @@
             <div class="sec-head"><span class="marker board" aria-hidden="true"></span><h2>Standings</h2><div class="rule"></div></div>
             <div class="table-scroll">
               <table class="standings">
-                <thead><tr><th></th><th>Manager</th><th class="r">W–L</th><th class="r">PF</th><th class="r">PA</th></tr></thead>
+                <thead><tr><th></th><th>Manager</th><th class="r">W–L</th><th class="r" title="Points for: total points scored">Scored</th><th class="r" title="Points against: total points opponents scored">Allowed</th></tr></thead>
                 <tbody>
                   ${w.standings.map((s, i) => `
                     <tr>
@@ -366,7 +385,7 @@
             </div>
           </div>
           <div>
-            <div class="sec-head"><span class="marker ball" aria-hidden="true"></span><h2>Top starters</h2><div class="rule"></div></div>
+            <div class="sec-head"><span class="marker ball" aria-hidden="true"></span><h2>Top scorers</h2><div class="rule"></div></div>
             <ol class="leaders">
               ${w.top_performers.map((p) => `
                 <li>
