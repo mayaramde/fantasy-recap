@@ -39,9 +39,13 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
 
+## Schedule
+- Local scheduled task `fantasy-weekly-recap` runs Tuesdays around 8:15 AM (while the Claude app is open) and does steps 1-6,
+  then opens a draft PR. Maya approves before anything reaches the league site.
+
 ## Published pages
 - Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
-- League page: not published yet (from `site/dist/index.html`)
+- League page (shared with the league): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ (from `site/dist/index.html`). Launched with Weeks 1-2 on 2026-09-28.
 
 ## Recap content
 - Matchup results, high/low scores, standings
@@ -55,3 +59,11 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Cheeky and funny, like a friend explaining the game at a watch party. Roast lineup decisions, never people. Maya's own team gets roasted too.
 - Explain jargon in passing ("flex, the wild-card spot"), never assume football knowledge, and never talk down.
 - Pop-culture asides are welcome when accurate. The jokes can exaggerate, but every number stays exact.
+
+## Design
+- Palette "Tailgate pop": cobalt (navigation, links, scoreboard), tangerine (game balls), bubblegum pink (flags),
+  lime (highlight badges), navy ink. Pop colors are fills with ink text on top, never text on white.
+  Green/red only as small W/L labels. All tokens live in `site/template.html` `:root` (plus dark-mode blocks).
+- UI style "Sticker book": 2px ink outlines, hard offset shadows, a few slightly tilted badges.
+- Fonts: Big Shoulders Display (headings, scores), Figtree (body), DM Mono (numbers), Fredoka (small badge labels).
+  Maya found the cursive script (Yellowtail) hard to read, so no script fonts.
