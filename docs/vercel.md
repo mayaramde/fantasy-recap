@@ -31,6 +31,7 @@ destructive. The previous one still exists, and rolling back just moves the poin
 | Scope (workspace) | `maya-fd13` |
 | Project | `fantasy-recap` |
 | Live site | https://fantasy-recap-eight.vercel.app |
+| Same site, second alias | https://fantasyforthegirls.vercel.app (what the CLI prints) |
 | Plan | Hobby (free) |
 | Search engines | Blocked — `noindex` header, meta tag and robots.txt |
 
@@ -81,72 +82,55 @@ Open the project and you'll see a row of tabs. These are the ones that matter:
   real requests: status codes, errors, how long it took. The only way to see why
   the Live page isn't refreshing.
 - **Settings → Environment Variables** — where the ESPN cookies go. See §5.
-- **Analytics** — visitor and page-view counts, once enabled. See §5.
+- **Analytics** — enabled, but collects nothing on this project. See §5a for why.
 - **Settings → General** — the project name, and the delete button. Rarely needed.
 
 Everything else in that navigation (Storage, Firewall, Flags, AI, Integrations,
 Speed Insights) is for things this project doesn't use. You can ignore all of it.
 
-## 5. The two things currently pending
+## 5. Two things worth knowing
 
-### a. Turn on Web Analytics
+### a. Web Analytics — enabled, and it still can't work here
 
-Analytics needs three things, and missing any one means no numbers:
+Switched on for the project on 2026-09-28. It collects nothing, and it can't. Written
+down so nobody loses another afternoon to it.
 
-1. **Enabled on the project** — **Analytics → Enable** in the dashboard, or:
-   ```bash
-   vercel project web-analytics
-   ```
-   Done on 2026-09-28. This is a one-time switch.
-2. **The tag on the page.** `site/build.py`'s `standalone()` writes
-   `<script defer src="/_vercel/insights/script.js">` when passed `analytics=True`,
-   which only the league page does — deliberately not the `/me/` dashboards, because
-   Vercel records the path of every view and a dashboard's path *is* its secret.
-3. **A deployment made after step 1.** The `/_vercel/insights/*` routes are added to
-   a deployment when it's created, so deployments built before analytics was enabled
-   don't serve them however long you wait:
-   ```bash
-   scripts/deploy.sh
-   ```
+Vercel's analytics script is served from your own domain, at a path Vercel adds to a
+deployment **while it builds it**. This project never lets Vercel build — it uploads a
+finished bundle (§3) — so that path is never registered, and requests for it 404. The
+dashboard's own setup instructions are `npm i @vercel/analytics` and `inject()`, which
+assume a JavaScript build step this project doesn't have and won't get.
 
-Then check it took:
+So the two halves can't meet: a tag on the page would have nowhere to report to.
+Nothing is broken; the feature just isn't reachable from here.
 
-```bash
-curl -s -o /dev/null -w "%{http_code}\n" https://fantasy-recap-eight.vercel.app/_vercel/insights/script.js
-```
+If it ever matters enough, the way in is to let Vercel run the build: set a
+`buildCommand` in `vercel.json` and run `vercel build` before deploying, instead of
+assembling `.vercel/output` by hand. That means re-expressing the whole routing config
+as Vercel project settings, so it's a real rewrite of `scripts/deploy.sh` — hard to
+justify for a page eight people read. Any analytics tool that's a plain script tag
+reporting to its own servers would work unchanged, because it needs nothing from the
+platform.
 
-`200` means it's working. `404` means either analytics is off, or no deployment has
-been made since it was switched on — that URL is served by Vercel rather than by our
-build, so a 404 there is never a bug in our code.
+### b. The ESPN cookies as environment variables
 
-Numbers appear a minute or so after the first real visit. Note that the tabs are
-hash links (`#live`, `#recaps`), and Vercel counts the path, not the hash — so
-every visit records as `/`. You get how many people looked, not which tab.
+`ESPN_S2` and `ESPN_SWID` are set as **Production** variables, added 2026-09-28 and
+marked sensitive — which makes them write-only. Even you can't read them back from the
+dashboard, only overwrite them. That's the right setting for these.
 
-### b. Add the ESPN cookies as environment variables
+Nothing reads them yet. They exist for the `/api/live` function, which recomputes the
+current week from ESPN per request; the PR that added it was closed, so it isn't in the
+repo right now. If that work comes back, these are already in place.
 
-The `/api/live` function reads `ESPN_S2` and `ESPN_SWID` (see
-`scripts/espn_fetch.py`) to fetch the current week from ESPN. The project has no
-environment variables at all right now, so the function answers 503 and the page
-falls back to its baked-in data.
-
-Add them as **Production** variables — dashboard via
-**Settings → Environment Variables → Add**, or:
+To add or replace one:
 
 ```bash
 vercel env add ESPN_S2 production --sensitive
 ```
 
-It prompts for the value; `--sensitive` keeps it hidden in the dashboard
-afterwards. Repeat for `ESPN_SWID`. Then **deploy again** — a deployment gets the
-variables as they were when it was created, so an existing deployment won't pick
-up a new one:
-
-```bash
-scripts/deploy.sh
-```
-
-Check with `vercel env ls`, which lists the names (never the values).
+It prompts for the value. Then **deploy again** — a deployment gets its variables as
+they were when it was created, so an existing deployment won't pick up a new value.
+`vercel env ls` lists the names, never the values.
 
 These are your credentials. Don't paste them into a chat, a commit, or this file.
 
@@ -157,7 +141,7 @@ This is the most confusing part of the setup, and it isn't a mistake:
 | Where | Who reads it | What for |
 |---|---|---|
 | **GitHub Actions secrets** (repo → Settings → Secrets and variables → Actions) | `scripts/capture_node.mjs` in the `live-update` workflow | Capturing the week in CI, before deploying |
-| **Vercel environment variables** (project → Settings) | `api/live.py` on the live site | Answering `/api/live` when someone opens the page |
+| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site, once it exists | Answering `/api/live` when someone opens the page |
 
 Same two values, two completely separate systems. Neither can see the other's
 copy. **When the ESPN cookies expire, both need updating** — otherwise you fix one
@@ -178,15 +162,15 @@ handed out). Both are listed in the header comment of
 
 - **Changing an environment variable doesn't change the live site.** It applies to
   the *next* deployment. Always redeploy after.
-- **A 404 on anything starting `/_vercel/`** means that feature is off *or* hasn't
-  been deployed since it was turned on — never a bug in our code.
+- **Anything under `/_vercel/` 404s on this site.** Those paths are wired up by
+  Vercel's own build step, which we skip (§5a). Never a bug in our code.
 - **`scripts/deploy.sh --preview` leaves out the private dashboards** on purpose —
   those tokens should exist at one URL, not two. Don't use a preview URL to check
   whether dashboards work.
-- **Deployment URLs are permanent.** That long `fantasy-recap-xxxxx-...` URL keeps
-  working after you've moved on. Before sharing one, check what the project's
-  Deployment Protection setting is, so you know whether it's open to anyone with
-  the link.
+- **Deployment URLs are private; the aliases are public.** A long
+  `fantasy-recap-xxxxx-maya-fd13.vercel.app` URL redirects to a Vercel login, so it's
+  useless to send to the league — share `fantasy-recap-eight.vercel.app` instead. Handy
+  the other way round too: a stray deployment link can't leak the site.
 - **Rolling back is safe.** Deployments → pick a good one → promote. The pointer
   moves; nothing is rebuilt or lost.
 
@@ -199,7 +183,6 @@ scripts/deploy.sh                # build locally + publish to the live site
 scripts/deploy.sh --preview      # throwaway URL for reviewing a draft
 vercel env ls                    # variable names on the project (never values)
 vercel env add NAME production   # add one, prompts for the value
-vercel project web-analytics     # turn on Web Analytics
 vercel logs <deployment-url>     # runtime output from a deployment
 ```
 
