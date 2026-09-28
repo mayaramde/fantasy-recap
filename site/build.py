@@ -172,7 +172,7 @@ FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' view
            "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
 
 
-def standalone(html):
+def standalone(html, analytics=False):
     head = (
         '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -182,7 +182,13 @@ def standalone(html):
         '<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}'
         ':root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
     )
-    return head + html + "\n</html>\n"
+    # Vercel Web Analytics, and only where it's passed explicitly. It reports the path
+    # of every page view, so any future page whose path is itself a secret (the private
+    # per-manager dashboards) must be built without it rather than opted out later.
+    # Needs Web Analytics enabled on the Vercel project, and a deploy made after that
+    # was switched on; until both, the script 404s and nothing else changes.
+    tail = '<script defer src="/_vercel/insights/script.js"></script>\n' if analytics else ""
+    return head + html + "\n" + tail + "</html>\n"
 
 
 def main():
@@ -214,7 +220,7 @@ def main():
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
     web.mkdir(exist_ok=True)
-    (web / "index.html").write_text(standalone(html))
+    (web / "index.html").write_text(standalone(html, analytics=True))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
     html, weeks = render(recap_weeks, captured, preview=True)
