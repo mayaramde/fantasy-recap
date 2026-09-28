@@ -26,7 +26,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 2. Pull FantasyPros context (injuries/news for notable players).
 3. Draft the recap: every callout must be backed by numbers in `data/`.
 4. Build the site and publish as a **draft**. Maya reviews and approves before it's shared.
-5. Commit and push.
+5. Commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks` workflow passes (`python scripts/check.py` runs the same checks locally).
 
 ## Recap content
 - Matchup results, high/low scores, standings
