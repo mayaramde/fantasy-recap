@@ -33,7 +33,8 @@ def side(t):
         "points_left": t["points_left_on_bench"], "result": t["result"],
         "live_projection": t.get("live_projection"), "win_probability": t.get("win_probability"),
         "yet_to_play": t.get("yet_to_play", 0),
-        "swaps": [{k: s[k] for k in ("started", "started_points", "benched", "benched_points", "slot", "gain")}
+        "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
+                                     "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
         "starters": [{k: p[k] for k in PLAYER_KEYS} for p in t["starters"]],
         "bench": [{k: p[k] for k in PLAYER_KEYS} for p in t["bench"]],

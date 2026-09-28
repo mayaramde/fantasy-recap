@@ -131,6 +131,7 @@ def lineup_swaps(week, team_id, roster):
     Only swaps that stuck count: X must be starting and Y benched in the final lineup.
     """
     points_by_id = {p["player_id"]: p["points"] for p in roster}
+    pos_by_id = {p["player_id"]: p["pos"] for p in roster}
     final_slot = {p["player_id"]: p["slot"] for p in roster}
     swaps = []
     for t in week["transactions"]:
@@ -146,7 +147,9 @@ def lineup_swaps(week, team_id, roster):
                 continue
             gain = round(points_by_id[i["player_id"]] - points_by_id[o["player_id"]], 2)
             swaps.append({"date": t["date"], "started": i["name"], "started_points": points_by_id[i["player_id"]],
+                          "started_pos": pos_by_id[i["player_id"]],
                           "benched": o["name"], "benched_points": points_by_id[o["player_id"]],
+                          "benched_pos": pos_by_id[o["player_id"]],
                           "slot": i["to_slot"], "gain": gain})
     # Keep only the final state per player pair if they flip-flopped
     seen, final = set(), []
@@ -258,7 +261,7 @@ def analyze(week, history):
                             for t in teams if t["result"] == "L" and t["points"] > median],
         "lucky_wins": [{"manager": t["manager"], "points": t["points"], "score_rank": t["score_rank"]}
                        for t in teams if t["result"] == "W" and t["points"] < median],
-        "top_performers": [{**{k: s[k] for k in ("name", "manager", "slot", "points", "projected")},
+        "top_performers": [{**{k: s[k] for k in ("name", "manager", "pos", "slot", "points", "projected")},
                             "headshot": headshot(s)}
                            for s in sorted(starters, key=lambda s: s["points"], reverse=True)[:5]],
         "biggest_busts": [{k: s[k] for k in ("name", "manager", "slot", "points", "projected", "beat_projection")}

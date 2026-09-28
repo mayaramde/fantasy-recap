@@ -273,6 +273,7 @@
   .leaders li { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 2px dashed var(--rule); }
   .leaders .shot { grid-row: 1 / span 2; grid-column: 1; align-self: center; width: 46px; height: 46px; border: 2px solid var(--edge); border-radius: 50%; background: var(--accent-soft); object-fit: cover; object-position: center; }
   .leaders .pname { font-weight: 700; grid-column: 2; }
+  .leaders .ppos { font-weight: 600; font-size: 12.5px; color: var(--muted); }
   .leaders .meta { font-size: 12.5px; color: var(--muted); grid-column: 2; }
   .leaders .meta a { text-decoration: none; font-weight: 700; }
   .leaders .pts { grid-row: 1 / span 2; grid-column: 3; align-self: center; font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; color: var(--on-pop); background: var(--orange); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 8px; transform: rotate(-2deg); }
@@ -364,6 +365,11 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const f2 = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
   const f1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  // "Joe Burrow (QB)". A defense already says what it is in its name ("Seahawks D/ST"),
+  // and a player's lineup slot can be FLEX, which is a spot on the roster, not a position.
+  const posOf = (pos) => (pos && pos !== 'DST' ? esc(pos) : '');
+  // "(RB, 12.90)" — the position rides in the same parentheses as the points.
+  const scored = (pos, pts) => (posOf(pos) ? `${posOf(pos)}, ` : '') + f2(pts);
   const signed = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + f1(Math.abs(n));
   const SLOT_ORDER = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
   const KIND = {
@@ -384,8 +390,8 @@
   // from reading every leader twice.
   const headshot = (p) => `<img class="shot" src="${esc(p.headshot || NO_HEADSHOT)}" alt="" width="46" height="46" loading="lazy" onerror="this.onerror=null;this.src='${NO_HEADSHOT}'">`;
   const leaderList = (players) => `<ol class="leaders">${players.map((p) => `
-    <li>${headshot(p)}<span class="pname">${esc(p.name)}</span><span class="pts">${f1(p.points)}</span>
-    <span class="meta">${mgrLink(p.manager)} · ${esc(p.slot)} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
+    <li>${headshot(p)}<span class="pname">${esc(p.name)}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
+    <span class="meta">${mgrLink(p.manager)}${p.slot === 'FLEX' ? ' · in the flex' : ''} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
   </ol>`;
   const record = (t) => `${t.wins}–${t.losses}${t.ties ? `–${t.ties}` : ''}`;
   const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
@@ -619,7 +625,7 @@
     for (const [s, won, opp] of [[W, true, L], [L, false, W]]) {
       for (const sw of s.swaps.filter((x) => Math.abs(x.gain) >= 1)) {
         items.push({ tag: sw.gain > 0 ? 'good' : 'bad', label: signed(sw.gain),
-          text: `${esc(s.manager)} started ${esc(sw.started)} (${f2(sw.started_points)}) over ${esc(sw.benched)} (${f2(sw.benched_points)}) at ${esc(sw.slot)}.` });
+          text: `${esc(s.manager)} started ${esc(sw.started)} (${scored(sw.started_pos, sw.started_points)}) over ${esc(sw.benched)} (${scored(sw.benched_pos, sw.benched_points)}) at ${esc(sw.slot)}.` });
       }
       if (s.points_left > 0.5) {
         const flip = !won && s.optimal > opp.points;
