@@ -184,4 +184,6 @@ vercel logs <deployment-url>     # runtime output from a deployment
 ```
 
 One-time setup on a new Mac: `vercel login`, then `vercel link` to connect this
-folder to the project.
+folder to the project. GitHub Actions can't run `vercel link`, so `scripts/deploy.sh`
+runs `vercel pull` there instead, which rebuilds that link from `VERCEL_ORG_ID`,
+`VERCEL_PROJECT_ID` and the token.
