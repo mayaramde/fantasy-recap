@@ -19,7 +19,7 @@ FORBIDDEN = [
     re.compile(r'"notificationSettings"'),
 ]
 # Files that mention those strings on purpose.
-SKIP = {"CLAUDE.md", "scripts/check.py"}
+SKIP = {"CLAUDE.md", "docs/vercel.md", "scripts/check.py", "scripts/capture_node.mjs"}
 
 
 def tracked_files():

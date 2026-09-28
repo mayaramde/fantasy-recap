@@ -7,6 +7,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - **ESPN** (primary): the league is private. Read it through **Claude in Chrome**, which uses Maya's logged-in session:
   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=...&scoringPeriodId=N`
   Never ask for, copy, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
+  The one exception: the cloud live update reads them from GitHub Actions secrets (`ESPN_S2`, `ESPN_SWID`)
+  that Maya set herself. Claude never sees, prints, sets or rotates those values; when they expire, Maya updates them.
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown.
 
@@ -40,9 +42,16 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
 
 ## Schedule
-- `fantasy-live-update` runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
+- **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions): hourly during NFL game windows plus a
+  daily 7:30 AM EDT run. Captures the current week headlessly (`scripts/capture_node.mjs`, same `capture.js` trimming),
+  runs analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published recap that
+  `main` doesn't (a recap shipped from the Mac whose PR hasn't merged). Then `scripts/deploy.sh`. Nothing is committed.
+  A failure email saying "ESPN 401" means the ESPN cookie secrets expired.
+- `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
   `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
   week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
+  **Paused 2026-09-28** now that the cloud live update works. Re-enable it only if the cloud run can't be fixed
+  (e.g. while waiting on fresh ESPN cookies).
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
   and opens a draft PR. Maya approves before the recap reaches the league site.
 - Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
@@ -50,6 +59,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
 
 ## Published pages
+- `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
 - **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends

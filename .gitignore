@@ -6,3 +6,9 @@ __pycache__/
 site/dist/
 .vercel
 .env*
+node_modules/
+
+# Per-manager dashboard link secret. Untracked is not enough: one `git add -A` would
+# publish the key every private dashboard URL is derived from, and the URLs already
+# handed out can only be rotated by changing it, which breaks all eight at once.
+.dashboard-secret

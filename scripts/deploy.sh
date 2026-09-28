@@ -4,7 +4,8 @@
 # Builds locally (so it includes this Mac's uncommitted live-week data), packages
 # site/dist/web as a Vercel Build Output API bundle, and uploads it with --prebuilt.
 # Git-triggered deploys are off in vercel.json, so this script is the only way the
-# production site changes. Needs a one-time `vercel login` and `vercel link`.
+# production site changes. Needs a one-time `vercel login` and `vercel link`
+# (or, in GitHub Actions, the VERCEL_* settings described in live-update.yml).
 #
 # Usage: scripts/deploy.sh
 set -euo pipefail
@@ -26,4 +27,6 @@ cat > "$out/config.json" <<'EOF'
 }
 EOF
 
-vercel deploy --prebuilt --prod --yes
+# On this Mac the CLI uses `vercel login`; the cloud live update passes VERCEL_TOKEN
+# (plus VERCEL_ORG_ID / VERCEL_PROJECT_ID in place of `vercel link`).
+vercel deploy --prebuilt --prod --yes ${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"}
