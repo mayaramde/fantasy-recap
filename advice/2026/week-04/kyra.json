@@ -1,0 +1,94 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Kyra",
+ "team_id": 6,
+ "headline": "The tidiest team in the league",
+ "summary": "You've left 16.5 points on your bench all season, the lowest in the league by some distance, and you're 2–0. That's real management, not luck — though your 'vs. everyone' record of 6–8 says the schedule has helped too. Your one genuine problem is receiver depth: you're starting one ranked WR47, and one of your bench spots has been dead all season.",
+ "waivers": [
+  {
+   "player": "Jordan Addison",
+   "pos": "WR",
+   "nfl_team": "MIN",
+   "priority": "top",
+   "why": "Justin Jefferson left Sunday with an ankle injury and Addison steps straight into the number one role — he already cashed it in for a 41-yard touchdown. You're starting Makai Lemon (WR47) and your other options are Michael Pittman Jr. and Travis Hunter. This is your upgrade, and A.J. Brown is your free roster spot.",
+   "stat": "Ranked WR50 for the rest of the season, set before Jefferson got hurt. Heavily targeted on Sunday including a 41-yard score.",
+   "drop": "A.J. Brown"
+  },
+  {
+   "player": "Chris Godwin Jr.",
+   "pos": "WR",
+   "nfl_team": "TB",
+   "priority": "deep cut",
+   "why": "Ranked WR34, well above what you're currently starting, and available. The catch is he's been quiet all season and his quarterback just dislocated a thumb, so this is depth rather than a fix.",
+   "stat": "3 catches for 25 yards on Sunday. Ranked WR34.",
+   "drop": "A.J. Brown"
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Jaylen Warren",
+   "sit": "Garrett Wilson",
+   "slot": "FLEX",
+   "confidence": "lean",
+   "why": "Conditional on one thing: Garrett Wilson left Sunday's game with an injury on the final drive. If he's limited, Warren is the play — he ran for 127 yards at 7.5 a carry, the back ahead of him is OUT with a toe injury, and his team plays Thursday, so you'll know early. If Wilson is cleared and healthy, keep him in; he did just catch 10 of 13 for 107 yards and a touchdown."
+  }
+ ],
+ "watch": [
+  {
+   "player": "A.J. Brown",
+   "note": "On injured reserve and has been for all three weeks. That roster spot has never done anything for you. Drop him."
+  },
+  {
+   "player": "Garrett Wilson",
+   "note": "Exited on the final drive with an injury. Check his status early in the week — this is the one thing that could cost you week 4."
+  },
+  {
+   "player": "Jaylen Warren",
+   "note": "Questionable with a shoulder, but practised all week and expected to play. Thursday game, so decide early."
+  },
+  {
+   "player": "Michael Pittman Jr.",
+   "note": "Questionable with a foot, and the advice is to avoid him this week regardless. Leave him benched."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Amie",
+   "give": "Harold Fannin Jr.",
+   "get": "Kyle Pitts Sr.",
+   "why": "She'll probably say no — Fannin is ranked TE9 and Pitts TE13 — but she's asked around for tight end help and you have Tyler Warren starting anyway. If she'll add a receiver to even it up, that's your depth problem solved."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Best lineup setter",
+   "tag": "good",
+   "text": "16.5 points benched in two weeks, and never more than 8.5 in a single week. Nobody else is close."
+  },
+  {
+   "title": "Thin at receiver",
+   "tag": "info",
+   "text": "You're 2–0 while starting a receiver ranked WR47 and holding a player who's been on injured reserve since week 1. One claim fixes both."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Flex",
+   "def": "The wild-card starting spot — fill it with a running back, receiver or tight end, whoever you expect to score most."
+  },
+  {
+   "term": "Injured reserve (IR)",
+   "def": "Where long-term injuries go. A player on IR isn't playing, so holding one costs you a roster spot for nothing."
+  },
+  {
+   "term": "Waiver claim",
+   "def": "Your request for an unrostered player. Claims process on Wednesday; if two people want the same player, waiver order decides."
+  },
+  {
+   "term": "Thursday game",
+   "def": "Some weeks start Thursday night. If your player is in that game, your lineup decision is due days earlier than usual."
+  }
+ ]
+}

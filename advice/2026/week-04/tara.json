@@ -1,0 +1,97 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Tara",
+ "team_id": 4,
+ "headline": "Two top-ten receivers are on your bench",
+ "summary": "You have a genuinely strong roster — Christian McCaffrey and Saquon Barkley in the same backfield is a lovely problem to have — and you're 1–1 mostly because of who you left out. Zay Flowers is ranked WR10 and Terry McLaurin is WR29, and both spent Sunday on your bench while a running back the analysts have written off held your flex spot. You've benched 45.6 points in two weeks. Let's get that down.",
+ "waivers": [
+  {
+   "player": "Rachaad White",
+   "pos": "RB",
+   "nfl_team": "WAS",
+   "priority": "worth a look",
+   "why": "Your third running back is Rhamondre Stevenson, who managed 22 rushing yards and whom analysts say shouldn't be started in most leagues. White is ranked RB37 to Stevenson's RB25, but he's trending the right way — he scored on Sunday and he's worth more in our scoring because he catches passes.",
+   "stat": "8 carries for 35 yards plus a receiving touchdown; 40+ yards in each of his first two games.",
+   "drop": "Rhamondre Stevenson"
+  },
+  {
+   "player": "Alvin Kamara",
+   "pos": "RB",
+   "nfl_team": "NO",
+   "priority": "deep cut",
+   "why": "Travis Etienne Jr. left Sunday's game early and Kamara immediately saw his role grow. If Etienne is out this week, Kamara is a flex option. Cambri owns Etienne, so she may want him too — bid accordingly.",
+   "stat": "9 carries for 36 yards with Etienne hurt. Ranked RB53.",
+   "drop": "Rhamondre Stevenson"
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Zay Flowers",
+   "sit": "Quinshon Judkins",
+   "slot": "FLEX",
+   "confidence": "strong",
+   "why": "Flowers is ranked WR10, led his team in every receiving category on Sunday with 5 catches for 84 yards, and looked healthy after missing week 2. Judkins is RB22 and the write-up on him says flatly that he isn't worth starting. Flex is your wild-card spot — it can be a receiver, and this week it should be."
+  },
+  {
+   "start": "Terry McLaurin",
+   "sit": "Parker Washington",
+   "slot": "WR",
+   "confidence": "lean",
+   "why": "Closer than it looks, because Washington is ranked WR12 and McLaurin is WR29. But McLaurin has 50+ yards in each of his last two games and just scored, and he's one of very few players his team can actually get the ball to. Your call."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Zay Flowers",
+   "note": "Questionable with a hamstring, but he practised, played a full game and looked fine. Expected to play — just confirm before kickoff."
+  },
+  {
+   "player": "Brian Thomas Jr.",
+   "note": "One catch for eight yards. The advice is to leave him benched for now, which you're already doing."
+  },
+  {
+   "player": "Rhamondre Stevenson",
+   "note": "Losing carries to a teammate and not producing. He's your cleanest drop."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Samantha",
+   "give": "Rhamondre Stevenson",
+   "get": "Rome Odunze",
+   "why": "Samantha lost both starting running backs this week, so even a running back you don't rate has value to her right now. You'd be turning a player you shouldn't start into a receiver you might."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Flex confusion",
+   "tag": "bad",
+   "text": "45.6 points benched in two weeks, 34.5 in week 1. The pattern is the same both weeks: a mediocre running back in the flex spot while better receivers sit."
+  },
+  {
+   "title": "Nearly there",
+   "tag": "info",
+   "text": "You lost week 2 by 5.82 points with 11.1 on your bench. That game was winnable from your own roster."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Flex",
+   "def": "The wild-card starting spot. You can fill it with a running back, receiver or tight end — whoever you think scores most."
+  },
+  {
+   "term": "Waiver wire",
+   "def": "Players nobody in our league has rostered. Claim one and the league awards them on Wednesday."
+  },
+  {
+   "term": "PPR",
+   "def": "Points Per Reception — our scoring gives a point for every catch, which makes pass-catching running backs more valuable than they'd otherwise be."
+  },
+  {
+   "term": "Questionable",
+   "def": "The team isn't sure he'll play. Usually fine, occasionally ruinous — check before kickoff."
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Cambri",
+ "team_id": 8,
+ "headline": "0–2 and it genuinely isn't your fault",
+ "summary": "In week 1 you scored 153.96 — the second-highest score in the league that week — and lost, because Amie picked that exact week to put up 177.96. You're 0–2 with 247.4 points, more than two of the teams sitting above you. Then this weekend three of your players got hurt at once. The one useful thing you can do about it: the players replacing your injured stars are available, and picking them up hedges your own roster.",
+ "waivers": [
+  {
+   "player": "Alvin Kamara",
+   "pos": "RB",
+   "nfl_team": "NO",
+   "priority": "top",
+   "why": "Travis Etienne Jr. left Sunday's game early — and Kamara is the man who took over that backfield. You own Etienne, so this is the rare pickup that helps you whether the news is good or bad: if Etienne's fine you've got depth, and if he's out you already own his replacement.",
+   "stat": "9 carries for 36 yards after Etienne exited, and named a flex option this week if Etienne sits. Ranked RB53.",
+   "drop": "MarShawn Lloyd"
+  },
+  {
+   "player": "Jordan Addison",
+   "pos": "WR",
+   "nfl_team": "MIN",
+   "priority": "top",
+   "why": "Exactly the same trick at receiver. Justin Jefferson hurt his ankle and Addison steps into the number one role — he took a 41-yard touchdown on Sunday. You own Jefferson. Own his understudy too.",
+   "stat": "Heavily targeted with Jefferson out, including a 41-yard touchdown. Ranked WR50.",
+   "drop": "Carnell Tate"
+  },
+  {
+   "player": "Kendre Miller",
+   "pos": "RB",
+   "nfl_team": "NO",
+   "priority": "worth a look",
+   "why": "The other back sharing Etienne's workload. If you'd rather not spend two claims on the same backfield, take Kamara and leave this one — he's the cheaper version of the same idea.",
+   "stat": "Named alongside Kamara as taking over backfield duties. Ranked RB68.",
+   "drop": null
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Jameson Williams",
+   "sit": "Justin Jefferson",
+   "slot": "WR",
+   "confidence": "lean",
+   "why": "Only if Jefferson can't go — and check, because he left Sunday's game with an ankle injury and was only questionable to return. Williams is ranked WR28 and is the best replacement you already own. A healthy Jefferson (WR7) starts every time."
+  },
+  {
+   "start": "Derrick Henry",
+   "sit": "Jeremiyah Love",
+   "slot": "RB",
+   "confidence": "strong",
+   "why": "You're already doing this. Keeping it here because it's working: Henry has six touchdowns in three games and is called a high-end RB1 this week. No change needed."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Justin Jefferson",
+   "note": "Left Sunday's game late in the second quarter with an ankle injury and was questionable to return. Your most important status check of the week."
+  },
+  {
+   "player": "Travis Etienne Jr.",
+   "note": "Exited Sunday's game for evaluation. Kamara and Kendre Miller took over the backfield in his absence."
+  },
+  {
+   "player": "Puka Nacua",
+   "note": "OUT with a hip injury and didn't practise all week. He's been inactive, so don't leave him in your lineup."
+  },
+  {
+   "player": "Tee Higgins",
+   "note": "Good news for once: 6 catches on 7 targets for 90 yards and his first touchdown of the season."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Marlee",
+   "give": "Jameson Williams",
+   "get": "Javonte Williams",
+   "why": "Marlee is 2–0 but keeps benching Javonte Williams, who ran for 98 yards and a touchdown and is ranked RB13. Someone who doesn't trust a player is the best person to buy him from — and with Etienne hurt you need the help."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Unluckiest team",
+   "tag": "info",
+   "text": "0–2 with 247.4 points. Your week 1 score of 153.96 would have beaten six of the seven other teams; you drew the seventh."
+  },
+  {
+   "title": "Week 2 slipped",
+   "tag": "bad",
+   "text": "93.44 points, last in the league that week, with 25.2 left on your bench. That one was on the lineup, not the schedule."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Handcuff",
+   "def": "Picking up the backup to a player you already own. If your starter gets hurt, you already have the person who inherits his job."
+  },
+  {
+   "term": "Questionable to return",
+   "def": "Said about a player who left mid-game. It means the team is still assessing him — not that he's fine."
+  },
+  {
+   "term": "Inactive",
+   "def": "Officially not playing that day. An inactive player left in your lineup scores exactly zero."
+  },
+  {
+   "term": "Vs. everyone record",
+   "def": "Your record if you'd played all seven teams every week. Yours is 6–8 — a lot better than 0–2 suggests."
+  }
+ ]
+}

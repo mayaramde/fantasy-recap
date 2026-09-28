@@ -1,0 +1,86 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Amie",
+ "team_id": 2,
+ "headline": "The best team with the worst luck",
+ "summary": "You are averaging 160.99 points a week. Nobody else is within 24 of that. Your record if you played everyone every week is 12–2, and yet you're sitting at 1–1, because in week 2 you put up 144.02 — a score that beats five of the other seven teams — and ran into Maya's season high. There is nothing to fix here. Keep setting the same lineups and the record will catch up to the team.",
+ "waivers": [
+  {
+   "player": "Juwan Johnson",
+   "pos": "TE",
+   "nfl_team": "NO",
+   "priority": "worth a look",
+   "why": "Your one soft spot is tight end. Kyle Pitts Sr. is ranked TE13; Johnson is TE12 and just caught all eight balls thrown at him. He's described as a steady weekly play, which is exactly what you want from the position you care least about.",
+   "stat": "8 catches on 8 targets, 53 yards. Ranked TE12, one spot above Pitts.",
+   "drop": "Kyle Monangai"
+  },
+  {
+   "player": "Jake Ferguson",
+   "pos": "TE",
+   "nfl_team": "DAL",
+   "priority": "deep cut",
+   "why": "Same idea as Johnson, different flavour: Ferguson scores touchdowns instead of racking up catches. Three in three games. Take whichever of the two is still there when your claim processes.",
+   "stat": "3 touchdowns in 3 games. Ranked TE15.",
+   "drop": "Kyle Monangai"
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "D'Andre Swift",
+   "sit": "Cam Skattebo",
+   "slot": "RB",
+   "confidence": "lean",
+   "why": "Skattebo had a huge workload — 20 carries and 4 targets — but his offence is in trouble without its starting quarterback, and the analysts are openly saying he isn't a strong play going forward. Swift is ranked RB12; Skattebo is RB19. This is close, and if you'd rather ride the volume, that's defensible."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Cam Skattebo",
+   "note": "His team's quarterback is out with a knee injury, and a bad offence caps how many points even a busy running back can score."
+  },
+  {
+   "player": "Emeka Egbuka",
+   "note": "His quarterback dislocated a thumb late on Sunday. If that quarterback can't play, Egbuka's value drops with him."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Kyra",
+   "give": "Kyle Pitts Sr.",
+   "get": "Harold Fannin Jr.",
+   "why": "Kyra is 2–0 and doesn't need her backup tight end. Fannin is ranked TE9 to Pitts' TE13, and she might do it just to stay friendly with the highest-scoring team in the league. Low stakes, real upgrade."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Perfect lineup",
+   "tag": "good",
+   "text": "You left 0.0 points on your bench in week 2. Not a single benched player outscored a starter. That is genuinely hard to do."
+  },
+  {
+   "title": "Robbed",
+   "tag": "info",
+   "text": "321.98 points in two weeks and a 1–1 record. Your 12–2 'vs. everyone' record is the best in the league by a mile."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Waiver wire",
+   "def": "The pool of players nobody in our league has rostered. You claim one, and the league awards it on Wednesday."
+  },
+  {
+   "term": "Workload / volume",
+   "def": "How many times a player actually gets the ball. High volume on a bad team still scores some points, which is why it's worth tracking."
+  },
+  {
+   "term": "Vs. everyone record",
+   "def": "Your record if you'd played all seven other teams every week. Yours is 12–2, which is why your 1–1 feels so unfair."
+  },
+  {
+   "term": "Streaming",
+   "def": "Not committing to one player at a weak position — picking up whoever has the best matchup that week and moving on."
+  }
+ ]
+}

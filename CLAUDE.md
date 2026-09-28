@@ -20,7 +20,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
-- `site/`: template + build script → `site/dist/index.html` (league page), `preview.html`, and `web/` (standalone site for Vercel)
+- `advice/<season>/week-NN/<manager>.json`: each manager's private dashboard content. Content only, no HTML.
+- `site/`: templates + build script → `site/dist/index.html` (league page), `preview.html`, and `web/` (standalone
+  site for Vercel, including `web/me/<token>/` private dashboards). `site/dashboard.html` reuses `template.html`'s
+  `<style>` block at build time, so the design tokens stay in one file.
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
@@ -38,15 +41,41 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 5. **Build.** `python3 site/build.py` → `site/dist/preview.html` (drafts included) and `site/dist/index.html` (published only).
 6. **Review.** Republish the preview artifact: https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87. Maya reviews.
 7. **Ship.** Only after Maya approves: set `"status": "published"`, then run `scripts/deploy.sh` to update the website.
-8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
+8. **Advice.** Write next week's private dashboards: `advice/2026/week-NN/<manager>.json` for **all 8** managers
+   (the build skips a week unless every manager has a file). Ground every pickup in the data — derive who's available
+   by subtracting all 8 rosters from FantasyPros rankings, and confirm the ones you actually recommend with
+   `get_player_ownership`. Only claim an injury a source states. These publish without Maya's review (see below).
+9. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
+
+## Private dashboards
+Each manager has her own page at `/me/<token>/` with waiver targets, start/sit calls, injuries to watch, trade ideas
+and her own season numbers. It is the one part of this project Maya does **not** review: she plays in this league, so
+reading her opponents' plans would defeat the point. Generate them and let them ship.
+
+- **Privacy is the unguessable URL plus one file per manager.** Every page is built separately and embeds only that
+  manager's advice, so getting hold of one link never exposes anyone else's. Keep it that way: never put more than one
+  manager's advice into a page, and never add a page that lists the links.
+- **Tokens are derived, not stored:** HMAC-SHA256 of `"<season>:<team_id>"` with the secret in `.dashboard-secret`
+  (gitignored, 0600) or `DASHBOARD_SECRET`. Same secret → same links, so rebuilds don't break links already sent.
+  Changing the secret rotates all 8 at once.
+- **Never commit or print the links anywhere they could spread.** `scripts/check.py` fails the build if a derived token
+  appears in a tracked file. `python3 scripts/links.py [names]` prints them for Maya to send one at a time — direct
+  messages, not the group chat.
+- **A deploy must never drop them:** `scripts/deploy.sh` runs `site/build.py --require-dashboards`, which fails rather
+  than ship a site missing pages whose links are already out, and `scripts/site_guard.py` refuses a cloud deploy that
+  would remove a dashboard the live site already has.
+- Advice files carry no `status` field; there is no draft stage. Numbers follow the same rule as recaps: every one must
+  match `facts.json`, `espn.json` or a named FantasyPros result.
 
 ## Schedule
 - **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions): hourly during NFL game windows plus a
   daily 7:30 AM EDT run. Captures the current week headlessly (`scripts/capture_node.mjs`, same `capture.js` trimming),
   runs analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published recap that
   `main` doesn't (a recap shipped from the Mac whose PR hasn't merged). Then `scripts/deploy.sh`. Nothing is committed.
-  A failure email saying "ESPN 401" means the ESPN cookie secrets expired.
+  A failure email saying "ESPN 401" means the ESPN cookie secrets expired. The job also needs the `DASHBOARD_SECRET`
+  repo secret (the contents of `.dashboard-secret`); without it the build refuses to run once any `advice/` files are
+  on `main`, because deploying would take every private dashboard offline.
 - `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
   `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
   week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
@@ -63,6 +92,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
   Needs `vercel login` on this Mac. Never read or print `.env.local` or Vercel tokens.
+- **Private dashboards:** `https://fantasy-recap-eight.vercel.app/me/<token>/`, one per manager, deployed by the same
+  `scripts/deploy.sh`. Served with `Cache-Control: private, no-store` and `Referrer-Policy: no-referrer` so the secret
+  URL isn't cached by a shared proxy or leaked when someone taps a link out of the page.
 - Preview (Claude artifact, private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`).
   Drafts are reviewed here before they go to the website.
 - Old league artifact (retired 2026-09-28, no longer updated): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ
@@ -73,6 +105,14 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Bench blunders: points left on the bench (optimal lineup vs actual)
 - Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost)
 - Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
+
+## Dashboard content
+- Waiver targets: only players confirmed unrostered in this league, each with why, a stat, and who to drop.
+- Start/sit: her own players only, with the ranking or matchup reason. Say when a call is close — don't fake confidence.
+- Watch list: injuries, byes, and anyone whose real-team role is changing, every one traceable to a source.
+- Trade ideas: framed as offers that help both sides, and never phrased as a promise about what someone else will do.
+- Her patterns: bench points, all-play record, lineup habits — the honest read on her season so far.
+- Same voice as the recaps, and the same rule: roast the decision, never the person. Maya's dashboard roasts Maya.
 
 ## Voice
 - The league is "Fantasy Football for the Girls," and for most members this is their first season following football.

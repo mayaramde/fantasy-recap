@@ -1,0 +1,101 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Maya",
+ "team_id": 5,
+ "headline": "You benched the best tight end in football",
+ "summary": "Let's get this out of the way: Brock Bowers played his first game of the season, caught 10 of 13 balls for 116 yards and a touchdown, and did it from your bench, while Dalton Schultz started for you and caught three passes for 30 yards. Bowers is ranked TE2. Schultz is TE14. You are 1–1 with the league's best single week so far (158.46), and you are also the person who wrote this dashboard, so no, there's no getting out of this one.",
+ "waivers": [
+  {
+   "player": "Rachaad White",
+   "pos": "RB",
+   "nfl_team": "WAS",
+   "priority": "worth a look",
+   "why": "Bucky Irving sat out most of the fourth quarter on Sunday and nobody has explained why. You start him in the flex, so a running back who catches passes is worth holding until you know more.",
+   "stat": "Scored a receiving touchdown on Sunday; 40+ yards in each of his first two games. Ranked RB37.",
+   "drop": "Jalen Coker"
+  },
+  {
+   "player": "Kendre Miller",
+   "pos": "RB",
+   "nfl_team": "NO",
+   "priority": "deep cut",
+   "why": "Travis Etienne Jr. left Sunday's game early and Miller is one of two backs taking over that backfield. Pure speculation, but it's free and your last roster spot isn't doing much.",
+   "stat": "Ranked RB68 — this is a lottery ticket, not a starter.",
+   "drop": "Jalen Coker"
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Brock Bowers",
+   "sit": "Dalton Schultz",
+   "slot": "TE",
+   "confidence": "strong",
+   "why": "TE2 versus TE14, and Bowers just put up 116 yards and a touchdown in his season debut. He's listed questionable with a knee but practised and is expected to play. Start him. Keep Schultz on the bench, though — he gets more work while Nico Collins is out, which makes him useful trade bait."
+  },
+  {
+   "start": "Josh Downs",
+   "sit": "Davante Adams",
+   "slot": "WR",
+   "confidence": "lean",
+   "why": "Genuinely close, and you may well leave this alone. Downs led his team in targets and yards and has a clear path now that Alec Pierce is on injured reserve. But Adams put up 137 yards and stays his team's number one receiver for as long as Puka Nacua's hip keeps him out. Sticking with Adams is fine."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Bucky Irving",
+   "note": "Sat out most of the fourth quarter with no explanation given. There should be an update early this week — check it before you set your flex."
+  },
+  {
+   "player": "Mike Evans",
+   "note": "Left Sunday's game early with a rib injury. Bench-only until you know more."
+  },
+  {
+   "player": "Jalen Coker",
+   "note": "Left the game with a quad injury, and his team's number one receiver job has gone to Tetairoa McMillan — whom you also own. Coker is your cleanest drop."
+  },
+  {
+   "player": "Brock Bowers",
+   "note": "Questionable with a knee, but he practised and is expected to play. Start him anyway."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Maddie",
+   "give": "Dalton Schultz",
+   "get": "Tony Pollard",
+   "why": "Maddie's tight end is fine but she's 0–2 and might like a second one, and Schultz picks up work while Nico Collins is out. You'd be turning your now-backup tight end into running back cover for Bucky Irving."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Clean week 2",
+   "tag": "good",
+   "text": "158.46 points and only 4.0 left on the bench — the best single week anyone has had this season."
+  },
+  {
+   "title": "One bad seat",
+   "tag": "bad",
+   "text": "28.5 benched across two weeks, and week 3 is shaping up worse if Bowers stays benched behind Schultz."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "TE1 / TE2",
+   "def": "Shorthand for how good a tight end is relative to everyone else at the position. TE2 means the second-best tight end to own; it is not a compliment to be starting TE14 instead."
+  },
+  {
+   "term": "Trade bait",
+   "def": "A player you don't need in your lineup but who's valuable to someone else — worth keeping precisely so you can trade him."
+  },
+  {
+   "term": "Injured reserve (IR)",
+   "def": "Where teams park long-term injuries. Good news for whoever's next in line for the job."
+  },
+  {
+   "term": "Lottery ticket",
+   "def": "A cheap pickup who probably does nothing but could become a starter if the player ahead of him stays hurt."
+  }
+ ]
+}

@@ -1,0 +1,120 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Samantha",
+ "team_id": 7,
+ "headline": "Both your running backs are gone. Act today.",
+ "summary": "This is the worst injury news anyone in the league got this weekend, so let's be direct. De'Von Achane tore his ACL and his season is over. Breece Hall was ruled out with a thigh injury. Those were both starters for you. The good news: the players who replace them on their real NFL teams are sitting on our waiver wire right now, and you're reading this before Wednesday. Put in claims.",
+ "waivers": [
+  {
+   "player": "Ollie Gordon II",
+   "pos": "RB",
+   "nfl_team": "MIA",
+   "priority": "top",
+   "why": "He is the direct replacement for Achane — he took over as his team's main runner the moment Achane went down, and he's being called the primary pickup of the week across fantasy. This is your number one claim, no hesitation.",
+   "stat": "Took over as primary rusher on Sunday after Achane's injury.",
+   "drop": "Jonathon Brooks"
+  },
+  {
+   "player": "Braelon Allen",
+   "pos": "RB",
+   "nfl_team": "NYJ",
+   "priority": "top",
+   "why": "The same logic for Breece Hall: Allen takes over number one backfield duties with Hall ruled out. Two injuries, two direct replacements, and you can have both.",
+   "stat": "Ranked RB55, which reflects his old backup role, not the job he just inherited.",
+   "drop": "TreVeyon Henderson"
+  },
+  {
+   "player": "Alvin Kamara",
+   "pos": "RB",
+   "nfl_team": "NO",
+   "priority": "worth a look",
+   "why": "A third option if you lose one of the claims above. Travis Etienne Jr. left Sunday's game early and Kamara's role grew immediately — he's in the flex conversation this week if Etienne can't play.",
+   "stat": "Ranked RB53; 9 carries with Etienne hurt.",
+   "drop": null
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Bhayshul Tuten",
+   "sit": "De'Von Achane",
+   "slot": "RB",
+   "confidence": "strong",
+   "why": "Achane's season is over, so this isn't really a choice — but make sure you actually do it, because a player left in your lineup scores zero, not 'a bit less'. Tuten is ranked RB20 and is your best remaining back."
+  },
+  {
+   "start": "Bhayshul Tuten",
+   "sit": "TreVeyon Henderson",
+   "slot": "RB",
+   "confidence": "strong",
+   "why": "If you're wondering whether Henderson covers one of the holes: no. He managed 29 yards on nine touches and the advice is not to start him until his offence sorts itself out."
+  }
+ ],
+ "watch": [
+  {
+   "player": "De'Von Achane",
+   "note": "Torn ACL, out for the season. If our league has an IR slot, put him there so you keep the roster space."
+  },
+  {
+   "player": "Breece Hall",
+   "note": "Ruled OUT with a thigh injury picked up in the fourth quarter. No timeline yet — treat him as week-to-week."
+  },
+  {
+   "player": "Jonathon Brooks",
+   "note": "On injured reserve with a groin injury. He's your free drop for one of the claims above."
+  },
+  {
+   "player": "Rashee Rice",
+   "note": "Some good news: 7 catches on 9 targets for 88 yards, and 80+ yards in each of his last two games. He's fine."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Maddie",
+   "give": "Courtland Sutton",
+   "get": "Aaron Jones Sr.",
+   "why": "Maddie is 0–2 and has four running backs she can't start all at once, including Aaron Jones, who's called an RB2 play this week. You have receivers to spare and a hole the size of two starters. Ask before she reads her own dashboard."
+  },
+  {
+   "with": "Tara",
+   "give": "Rome Odunze",
+   "get": "Rhamondre Stevenson",
+   "why": "Not exciting, but Tara has McCaffrey and Barkley and doesn't need a third back. Any warm body helps you this week."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "You're better than 1–1",
+   "tag": "good",
+   "text": "272.38 points in two weeks and a 9–5 'vs. everyone' record — third best in the league. This roster was working before Sunday."
+  },
+  {
+   "title": "Bench drift",
+   "tag": "bad",
+   "text": "47.0 points benched across two weeks. With your lineup this thin, you can't afford to leave any of it there."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "ACL",
+   "def": "A knee ligament. Tearing it ends a football season, full stop — there's no waiting this one out."
+  },
+  {
+   "term": "Waiver claim",
+   "def": "Your request for an unrostered player. Claims process Wednesday, and if two managers want the same player, waiver order breaks the tie — so put your most important claim first."
+  },
+  {
+   "term": "Handcuff",
+   "def": "The backup to a star. You pick him up because if the starter goes down, the backup inherits all those carries."
+  },
+  {
+   "term": "IR slot",
+   "def": "A roster spot reserved for injured players. Parking someone there frees up a normal spot for a healthy body."
+  },
+  {
+   "term": "Week-to-week",
+   "def": "An injury with no clear return date. Check the injury report every week rather than planning around him."
+  }
+ ]
+}

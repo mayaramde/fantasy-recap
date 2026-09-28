@@ -6,3 +6,6 @@ __pycache__/
 site/dist/
 .vercel
 .env*
+
+# Per-manager dashboard link secret (local only; also a GitHub Actions secret)
+.dashboard-secret

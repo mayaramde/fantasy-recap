@@ -4,6 +4,7 @@ Writes two self-contained single-file sites (pages are hash routes inside one HT
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
   site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt)
+  site/dist/web/me/<token>/index.html   one private dashboard per manager (see scripts/dashboards.py)
 
 A "live" page shows the newest captured week that has no recap in that output yet
 (in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
@@ -16,7 +17,11 @@ Usage: python3 site/build.py [--season 2026]
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+import dashboards  # noqa: E402  (repo-local module, imported after sys.path is set)
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
@@ -172,12 +177,12 @@ FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' view
            "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
 
 
-def standalone(html):
+def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league."):
     head = (
         '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         '<meta name="robots" content="noindex, nofollow">\n'
-        '<meta name="description" content="Weekly recaps, live scores and standings for our fantasy league.">\n'
+        f'<meta name="description" content="{description}">\n'
         f'<link rel="icon" href="{FAVICON}">\n'
         '<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}'
         ':root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
@@ -185,9 +190,68 @@ def standalone(html):
     return head + html + "\n</html>\n"
 
 
+def shared_style():
+    """The league page's <style> block, so both templates share one set of tokens."""
+    html = (SITE / "template.html").read_text()
+    start = html.index("<style>")
+    end = html.index("</style>", start) + len("</style>")
+    return html[start:end]
+
+
+def render_dashboards(out_dir, season_stats, facts_by_week, season, require=False):
+    """One private page per manager, each holding only that manager's data.
+
+    Returns [(manager, token)]. Writing a separate file per manager (rather than one page
+    that filters a league-wide payload) is the point: a teammate who gets hold of one URL
+    still has no way to read anyone else's advice.
+    """
+    teams = LEAGUE["teams"]
+    week = dashboards.latest_advice_week(season, teams)
+    if not week:
+        partial = sorted({d.name for d in (ROOT / "advice" / str(season)).glob("week-*")}) \
+            if (ROOT / "advice" / str(season)).exists() else []
+        if partial:
+            print(f"dashboards: skipped, no week has advice for all {len(teams)} managers ({', '.join(partial)})")
+        return []
+
+    key = dashboards.secret()
+    if not key:
+        # A checkout without the secret (CI running the checks, a fresh clone) can still
+        # build and validate the league page. Only a deploy must never go out without the
+        # dashboards, since that would take every link already handed out offline --- so
+        # scripts/deploy.sh passes --require-dashboards and this becomes an error there.
+        msg = (f"advice/{season}/week-{week:02d} exists but this checkout has no dashboard link secret, "
+               "so the private dashboards cannot be rebuilt. Set DASHBOARD_SECRET, or run "
+               "scripts/links.py on Maya's Mac to create .dashboard-secret.")
+        if require:
+            raise SystemExit(f"{msg}\nRefusing to deploy a site without them.")
+        print(f"dashboards: skipped --- {msg}")
+        return []
+
+    template = (SITE / "dashboard.html").read_text().replace("__SHARED_STYLE__", shared_style())
+    built = []
+    for team in teams:
+        advice = dashboards.load_advice(season, week, team["manager"])
+        data = dashboards.payload(team, season_stats, facts_by_week, advice, LEAGUE)
+        blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+        name = dashboards.short(team["manager"])
+        html = (template.replace("__PAGE_TITLE__", f"{name}'s war room")
+                        .replace("__DASHBOARD_DATA__", blob))
+        token = dashboards.token(season, team["team_id"], key)
+        page = out_dir / "me" / token
+        page.mkdir(parents=True, exist_ok=True)
+        (page / "index.html").write_text(standalone(html, f"{name}'s private fantasy football dashboard."))
+        built.append((name, token))
+    print(f"dashboards: week {week} advice for {', '.join(n for n, _ in built)} "
+          f"(run scripts/links.py for the links)")
+    return built
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", type=int, default=LEAGUE["season"])
+    ap.add_argument("--require-dashboards", action="store_true",
+                    help="fail if advice exists but the dashboards can't be built (used by scripts/deploy.sh)")
     args = ap.parse_args()
 
     recap_weeks = []
@@ -216,6 +280,13 @@ def main():
     web.mkdir(exist_ok=True)
     (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    # Dashboards use the same published-only season stats as the league page, so a manager's
+    # record never disagrees with the standings she sees there, plus the newest captured
+    # week for her current roster.
+    published = [(f, w) for f, w in recap_weeks if w["status"] == "published"]
+    render_dashboards(web, season_payload([f for f, _ in published], [w for _, w in published]),
+                      {f["week"]: f for f, _ in captured}, args.season,
+                      require=args.require_dashboards)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
     html, weeks = render(recap_weeks, captured, preview=True)
     (dist / "preview.html").write_text(html)

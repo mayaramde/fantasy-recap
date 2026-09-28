@@ -1,0 +1,99 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Maddie",
+ "team_id": 3,
+ "headline": "Your bench is beating your starters",
+ "summary": "This is the most fixable 0–2 in the league, and I mean that kindly. You've left 66.5 points on your bench in two weeks — 53.68 of them in week 1 — which is the worst in the league. You don't need new players. You have Malik Nabers, ranked WR15, sitting on your bench while a receiver ranked WR37 starts. Move three names and this team looks completely different.",
+ "waivers": [
+  {
+   "player": "Jordan Addison",
+   "pos": "WR",
+   "nfl_team": "MIN",
+   "priority": "worth a look",
+   "why": "Justin Jefferson hurt his ankle on Sunday, which promotes Addison to his team's number one receiver. He already got a 41-yard touchdown out of it. But be honest with yourself: this is a nice-to-have. Your actual problem is who you're starting.",
+   "stat": "Ranked WR50 for the rest of the season, which is stale — that was before Jefferson got hurt.",
+   "drop": "Alec Pierce"
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Malik Nabers",
+   "sit": "Denzel Boston",
+   "slot": "WR",
+   "confidence": "strong",
+   "why": "Nabers is ranked WR15. Boston is WR37. Nabers has had two quiet weeks and it is still not close — he led his team in targets on Sunday, which means the ball is going his way even when the yards aren't there yet. Start him."
+  },
+  {
+   "start": "Drake Maye",
+   "sit": "Bryce Young",
+   "slot": "QB",
+   "confidence": "strong",
+   "why": "Maye is ranked QB11, Young is QB16. You have the better quarterback on your bench. There's no story here, just swap them."
+  },
+  {
+   "start": "DK Metcalf",
+   "sit": "Denzel Boston",
+   "slot": "WR",
+   "confidence": "lean",
+   "why": "If you only make one change, make it Nabers. But Metcalf (WR35) also just scored a touchdown and outranks Boston, and he gets a friendlier matchup this week."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Alec Pierce",
+   "note": "On injured reserve with a heel problem. He is not playing, so he's your free drop whenever you want one."
+  },
+  {
+   "player": "Nico Collins",
+   "note": "Ruled OUT for the second week in a row with a hamstring. Could miss more time — don't count on him."
+  },
+  {
+   "player": "Tony Pollard",
+   "note": "Getting the carries, but on an offence that can't score. Playable in a pinch, not someone to build around."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Samantha",
+   "give": "Tony Pollard",
+   "get": "Courtland Sutton",
+   "why": "Samantha just lost both of her starting running backs — one to a torn ACL, one ruled out — and she is desperate. You have Jonathan Taylor, Chase Brown, Chuba Hubbard and Aaron Jones already. This is the week her price is lowest."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Points left behind",
+   "tag": "bad",
+   "text": "66.5 points benched in two weeks, the most in the league. Your week 1 bench alone outscored your starters by 53.68 — you scored 95.12 and lost by 16.44."
+  },
+  {
+   "title": "Not actually unlucky",
+   "tag": "info",
+   "text": "Your 'vs. everyone' record is 1–13, so this isn't the schedule. It's the lineup, and the lineup is the one thing entirely in your control."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Optimal lineup",
+   "def": "The best possible score you could have had if you'd known in advance which of your players would do well. Nobody hits it, but the gap is worth watching."
+  },
+  {
+   "term": "Injured reserve (IR)",
+   "def": "A roster list for players who are hurt long-term. Someone on IR is not playing, so holding them is usually a wasted spot."
+  },
+  {
+   "term": "Targets",
+   "def": "Passes thrown in a receiver's direction, caught or not. A receiver getting lots of targets is being trusted, and the points usually follow."
+  },
+  {
+   "term": "Matchup",
+   "def": "Who your player's real NFL team is playing. A great receiver against a great defence can have a quiet day."
+  },
+  {
+   "term": "Vs. everyone record",
+   "def": "What your record would be against all seven teams every week. It separates bad luck from bad decisions."
+  }
+ ]
+}

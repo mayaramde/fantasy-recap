@@ -1,0 +1,97 @@
+{
+ "season": 2026,
+ "week": 4,
+ "generated_at": "2026-09-28T19:20:00Z",
+ "manager": "Marlee",
+ "team_id": 1,
+ "headline": "2–0 and living dangerously",
+ "summary": "You are undefeated, which is fantastic, and you have done it while scoring 4th and then 6th out of 8 teams. Your record if you'd played everyone every week is 6–8. That's not an insult, it's a warning: the schedule has been kind and it won't stay that way. The good news is the fix is sitting on your own bench, because you've left 62.78 points there in two weeks — more than anyone except Maddie.",
+ "waivers": [
+  {
+   "player": "Jordan Addison",
+   "pos": "WR",
+   "nfl_team": "MIN",
+   "priority": "top",
+   "why": "Justin Jefferson left Sunday's game with an ankle injury, and Addison is the one who inherits the target share — Kyler Murray went to him over and over, including a 41-yard touchdown. Nobody in our league has him.",
+   "stat": "Ranked WR50 for the rest of the season, which badly undersells a receiver who just became his team's number one.",
+   "drop": "Josh Jacobs"
+  },
+  {
+   "player": "Jake Ferguson",
+   "pos": "TE",
+   "nfl_team": "DAL",
+   "priority": "worth a look",
+   "why": "Three touchdowns in three games, and he's a tight end, where touchdowns are basically the whole job. You already have George Kittle, so this is only worth it if you'd rather have Ferguson than Mark Andrews.",
+   "stat": "9 catches, 72 yards, 3 TDs through three games. Ranked TE15; Andrews is TE16.",
+   "drop": null
+  }
+ ],
+ "start_sit": [
+  {
+   "start": "Javonte Williams",
+   "sit": "David Montgomery",
+   "slot": "RB",
+   "confidence": "strong",
+   "why": "This is the big one. Williams ran 19 times for 98 yards and a touchdown and took all but six of his team's running-back carries — and he did it from your bench. He's ranked RB13; Montgomery is RB18. Start Williams."
+  },
+  {
+   "start": "George Kittle",
+   "sit": "Mark Andrews",
+   "slot": "TE",
+   "confidence": "strong",
+   "why": "You're already doing this, so: keep doing it. Kittle caught 6 of 7 for 82 yards and two touchdowns, and he gets an even bigger role while Mike Evans is out with a rib injury. Andrews managed 24 yards."
+  }
+ ],
+ "watch": [
+  {
+   "player": "Josh Jacobs",
+   "note": "Listed OUT and taking up a roster spot. He's the obvious drop if you want anyone off the wire."
+  },
+  {
+   "player": "DJ Moore",
+   "note": "Questionable with a shoulder, but he practised and is expected to play. He caught 6 of 10 for 67 yards, so he's fine — just check before kickoff."
+  },
+  {
+   "player": "Mark Andrews",
+   "note": "Briefly left Sunday's game with a hand injury and came back. Worth a glance at the injury report, not a panic."
+  }
+ ],
+ "trade_ideas": [
+  {
+   "with": "Maddie",
+   "give": "David Montgomery",
+   "get": "Malik Nabers",
+   "why": "Maddie is 0–2 and starting a receiver ranked WR37 while Nabers (WR15) rots on her bench. She may not love Nabers right now — his last game was 5 catches for 26 yards — and you have running backs to spare. Worth an ask."
+  }
+ ],
+ "your_habits": [
+  {
+   "title": "Bench problem",
+   "tag": "bad",
+   "text": "62.78 points left on your bench across two weeks, 34.2 of them in week 1 alone. Both wins were closer than they needed to be."
+  },
+  {
+   "title": "Schedule luck",
+   "tag": "info",
+   "text": "2–0 with the 4th and 6th best score of the week. Your 'vs. everyone' record is 6–8. Enjoy it, but don't mistake it for being the best team."
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Waiver wire",
+   "def": "The pool of players nobody in our league has on their roster — you put in a claim, and on Wednesday the league hands them out."
+  },
+  {
+   "term": "Target share",
+   "def": "How much of a quarterback's throwing he aims at one particular receiver. More targets means more chances to score."
+  },
+  {
+   "term": "Vs. everyone record",
+   "def": "What your record would be if you played all seven other teams every week instead of just one. It tells you whether you're good or lucky."
+  },
+  {
+   "term": "Questionable",
+   "def": "An official injury label meaning the team genuinely isn't sure he'll play. Check again right before kickoff."
+  }
+ ]
+}

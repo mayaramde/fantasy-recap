@@ -4,7 +4,10 @@ name: live-update
 # Data only: capture, analyze, build, deploy. Nothing is committed.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
-#   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN
+#   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN,
+#              DASHBOARD_SECRET (contents of .dashboard-secret on Maya's Mac; without it
+#              the build refuses to run once any advice/ files are on main, because a
+#              deploy would take every manager's private dashboard offline)
 #   variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (from .vercel/project.json)
 # When the ESPN cookies expire the capture step fails with "ESPN 401".
 
@@ -26,6 +29,10 @@ jobs:
   live:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Needed by every step that builds the site (the private dashboard links are derived
+    # from it, not stored), so a cloud deploy reproduces exactly the links Maya handed out.
+    env:
+      DASHBOARD_SECRET: ${{ secrets.DASHBOARD_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

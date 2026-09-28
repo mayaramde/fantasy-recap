@@ -1,0 +1,181 @@
+<title>__PAGE_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fredoka:wght@500;600&display=swap">
+__SHARED_STYLE__
+<style>
+  /* Dashboard-only pieces. Everything else (cards, tiles, tables, markers, the sticker
+     outline) is the league site's own CSS above, and every color is a token from it. */
+  .lock { justify-self: start; font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime);
+    border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; transform: rotate(-2deg);
+    box-shadow: 2px 2px 0 var(--drop); }
+  .privacy { display: flex; gap: 11px; align-items: flex-start; background: var(--pink-soft);
+    border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop);
+    padding: 12px 14px; font-size: 13.5px; line-height: 1.5; margin: 18px 0 8px; max-width: 70ch; }
+  .coach { font-size: 16.5px; line-height: 1.6; margin: 0 0 8px; max-width: 68ch; }
+  section { margin-top: 34px; }
+  .tier { justify-self: start; font: 600 11px/1 var(--script); text-transform: uppercase; letter-spacing: .06em;
+    color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; padding: 5px 10px; transform: rotate(-2deg); }
+  .tier.top { background: var(--orange); }
+  .tier.look { background: var(--lime); }
+  .tier.deep { background: var(--accent-soft); color: var(--accent-ink); }
+  .card .meta { font: 500 12.5px/1.45 var(--mono); color: var(--muted); }
+  .card .drop-line { font-size: 13.5px; color: var(--muted); border-top: 1.5px dashed var(--rule); padding-top: 9px; }
+  .card .drop-line b { color: var(--ink); }
+  .swap-head { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+  .swap-head .label { font: 600 10.5px/1 var(--script); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+  .swap-head .name { font: 800 20px/1.05 var(--display); text-transform: uppercase; margin-top: 4px; overflow-wrap: anywhere; }
+  .swap-head .arrow { font: 800 22px/1 var(--display); color: var(--accent); }
+  .asof { font-size: 12.5px; color: var(--muted); margin: 12px 0 0; max-width: 70ch; }
+  .terms { display: grid; }
+  .terms div { border-bottom: 2px dashed var(--rule); padding: 11px 0; font-size: 14.5px; line-height: 1.55; }
+  .terms div:last-child { border-bottom: none; }
+  .empty { font-size: 14.5px; color: var(--muted); background: var(--card); border: 2px dashed var(--edge);
+    border-radius: 14px; padding: 14px 16px; max-width: 70ch; }
+</style>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="flag-mark" aria-hidden="true"></span>
+      <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#waivers">Waivers</a>
+      <a href="#lineup">Lineup</a>
+      <a href="#roster">Roster</a>
+      <a href="#season">Season</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <main id="top" tabindex="-1"></main>
+  <footer id="footer"></footer>
+</div>
+
+<script id="dashboard-data" type="application/json">__DASHBOARD_DATA__</script>
+<script>
+(() => {
+  const D = JSON.parse(document.getElementById('dashboard-data').textContent);
+  const A = D.advice || {};
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const f1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  const f2 = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
+  const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+  const when = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '');
+  const day = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { month: 'long', day: 'numeric' }) : '');
+  const record = `${D.record.wins}–${D.record.losses}${D.record.ties ? `–${D.record.ties}` : ''}`;
+  const secHead = (marker, title, id) =>
+    `<div class="sec-head"${id ? ` id="${id}"` : ''}><span class="marker ${marker}" aria-hidden="true"></span><h2>${title}</h2><div class="rule"></div></div>`;
+  const sub = (text) => `<p class="sec-sub">${text}</p>`;
+  const TIER = { 'top': 'top', 'worth a look': 'look', 'deep cut': 'deep' };
+
+  /* ---------- who you are, and the promise this page makes ---------- */
+  const head = `
+    <div class="page-head">
+      <span class="lock">just for ${esc(D.manager)}</span>
+      <h1>${esc(A.headline || `${D.manager}'s war room`)}</h1>
+    </div>
+    <div class="privacy">
+      <span class="marker flag" aria-hidden="true"></span>
+      <span><b>This page is only yours.</b> Its address is a random string nobody can guess, and it holds only your
+      team — no one else in the league can open it or see what you're planning. Bookmark it. Just don't forward
+      the link to anyone you're about to outbid.</span>
+    </div>
+    <div class="stat-tiles">
+      <div class="tile"><div class="label">Record</div><div class="value">${record}</div><div class="sub">${ordinal(D.rank)} of ${D.teams_in_league}</div></div>
+      <div class="tile"><div class="label">Average score</div><div class="value">${f1(D.avg)}</div><div class="sub">${f2(D.points_for)} total</div></div>
+      <div class="tile"><div class="label">Vs. everyone</div><div class="value">${D.all_play.w}–${D.all_play.l}</div><div class="sub">if you played all ${D.teams_in_league - 1} teams weekly</div></div>
+      <div class="tile"><div class="label">Points benched</div><div class="value">${f1(D.bench_left)}</div><div class="sub">season total</div></div>
+      ${D.streak ? `<div class="tile"><div class="label">Streak</div><div class="value">${esc(D.streak)}</div><div class="sub">${D.streak[0] === 'W' ? 'keep it going' : 'due for a bounce'}</div></div>` : ''}
+    </div>`;
+
+  /* ---------- the written advice ---------- */
+  const coach = A.summary ? `<section>${secHead('board', 'The read')}<p class="coach">${esc(A.summary)}</p></section>` : '';
+
+  const waivers = `<section>${secHead('ball', 'Off the waiver wire', 'waivers')}
+    ${sub('The waiver wire is every player nobody in our league has rostered. These are the ones worth a claim, best first.')}
+    ${(A.waivers || []).length ? `<div class="cards">${A.waivers.map((p) => `
+      <div class="card">
+        <h3>${esc(p.player)}</h3>
+        <div class="meta">${esc(p.pos)}${p.nfl_team ? ` · ${esc(p.nfl_team)}` : ''}</div>
+        ${p.priority ? `<span class="tier ${TIER[p.priority] || 'look'}">${esc(p.priority)}</span>` : ''}
+        <p>${esc(p.why)}</p>
+        ${p.stat ? `<div class="meta">${esc(p.stat)}</div>` : ''}
+        ${p.drop ? `<div class="drop-line">To make room: drop <b>${esc(p.drop)}</b>.</div>` : ''}
+      </div>`).join('')}</div>`
+      : `<div class="empty">Nothing out there beats what you already have. Sit this one out — a claim you don't need just costs you a roster spot.</div>`}
+    </section>`;
+
+  const lineup = `<section>${secHead('flag', 'Start her, not him', 'lineup')}
+    ${sub('Lineup calls for this week, based on projections and matchups. Projections are educated guesses, not promises.')}
+    ${(A.start_sit || []).length ? `<div class="cards">${A.start_sit.map((s) => `
+      <div class="card">
+        <div class="swap-head">
+          <div><div class="label">Start</div><div class="name">${esc(s.start)}</div></div>
+          <div class="arrow" aria-hidden="true">›</div>
+          <div><div class="label">Over</div><div class="name">${esc(s.sit)}</div></div>
+        </div>
+        ${s.slot || s.confidence ? `<div class="meta">${[s.slot, s.confidence].filter(Boolean).map(esc).join(' · ')}</div>` : ''}
+        <p>${esc(s.why)}</p>
+      </div>`).join('')}</div>`
+      : `<div class="empty">No swaps to argue with this week. Start your best players — most weeks it really is that boring.</div>`}
+    </section>`;
+
+  const watch = (A.watch || []).length ? `<section>${secHead('break', 'Keep an eye on')}
+    ${sub('Injuries, byes and anyone whose job on their real NFL team is getting shaky.')}
+    <ul class="decided">${A.watch.map((w) => `
+      <li><span class="tag info">${esc(w.player)}</span><span>${esc(w.note)}</span></li>`).join('')}</ul></section>` : '';
+
+  const trades = (A.trade_ideas || []).length ? `<section>${secHead('ball', 'Trades worth floating')}
+    ${sub('Offers that could help you both — the only kind anyone accepts. Nothing here is sent until you send it.')}
+    <div class="cards">${A.trade_ideas.map((t) => `
+      <div class="card">
+        <h3>${esc(t.give)} → ${esc(t.get)}</h3>
+        <span class="tier look">ask ${esc(t.with)}</span>
+        <p>${esc(t.why)}</p>
+      </div>`).join('')}</div></section>` : '';
+
+  const habits = (A.your_habits || []).length ? `<section>${secHead('flag', 'Your patterns')}
+    ${sub('What your first few weeks say about how you manage this team.')}
+    <ul class="decided">${A.your_habits.map((h) => `
+      <li><span class="tag ${esc(h.tag || 'info')}">${esc(h.title)}</span><span>${esc(h.text)}</span></li>`).join('')}</ul></section>` : '';
+
+  /* ---------- her own numbers, straight from the capture ---------- */
+  const players = (rows) => `<div class="std-card table-scroll"><table class="std">
+    <thead><tr><th>Slot</th><th>Player</th><th class="r">Points</th><th class="r">Projected</th></tr></thead>
+    <tbody>${rows.map((p) => `<tr>
+      <td>${esc(p.slot)}</td>
+      <td><b>${esc(p.name)}</b> <span class="tname">${esc(p.pos)}</span></td>
+      <td class="r">${f2(p.points)}</td><td class="r">${f2(p.projected)}</td></tr>`).join('')}</tbody></table></div>`;
+
+  const roster = D.roster ? `<section>${secHead('board', 'Your roster', 'roster')}
+    ${sub(`As ESPN had it on ${esc(when(D.roster_captured_at))} — week ${D.roster_week}${D.roster_complete ? ', final' : ', still in progress'}. Anything you've changed since then won't show up until the next update.`)}
+    <div class="two-col"><div><h3 class="who">Starting lineup</h3>${players(D.roster.starters)}</div>
+    <div><h3 class="who">Bench</h3>${players(D.roster.bench)}</div></div></section>` : '';
+
+  const season = D.weekly.length ? `<section>${secHead('break', 'Your season', 'season')}
+    <div class="std-card table-scroll"><table class="std">
+      <thead><tr><th>Week</th><th>Opponent</th><th class="r">Score</th><th class="r">Result</th><th class="r" title="Where your score ranked among all ${D.teams_in_league} teams that week">Week rank</th><th class="r">Benched</th></tr></thead>
+      <tbody>${D.weekly.map((g) => `<tr>
+        <td>Week ${g.week}</td><td>${esc(g.opponent)}</td>
+        <td class="r">${f2(g.points)} – ${f2(g.opponent_points)}</td>
+        <td class="r"><span class="res ${esc(g.result)}">${esc(g.result)}</span></td>
+        <td class="r">${g.score_rank} of ${D.teams_in_league}</td>
+        <td class="r">${f2(g.points_left)}</td></tr>`).join('')}</tbody></table></div>
+    <p class="asof">"Benched" is how many points your bench outscored your starters by — points you had and didn't use.
+    "Vs. everyone" up top is your record if you'd played all ${D.teams_in_league - 1} teams every week, which tells you
+    whether you're actually good or just drawing kind opponents.</p></section>` : '';
+
+  const terms = (A.glossary || []).length ? `<section>${secHead('book', 'Words we just used')}
+    <div class="terms">${A.glossary.map((g) => `<div><b>${esc(g.term)}</b> — ${esc(g.def)}</div>`).join('')}</div></section>` : '';
+
+  document.querySelector('#top').innerHTML =
+    [head, coach, waivers, lineup, watch, trades, habits, roster, season, terms].join('');
+
+  document.querySelector('#footer').innerHTML = `
+    <span>${esc(D.team_name)} · ${esc(D.league.scoring)} scoring${A.generated_at ? ` · advice written ${esc(day(A.generated_at))}` : ''}
+      · <a href="../../" style="font-weight:700">the league site</a></span>
+    <span class="script">yours only</span>`;
+})();
+</script>
