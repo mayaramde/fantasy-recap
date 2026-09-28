@@ -36,6 +36,20 @@ fi
 # On this Mac the CLI uses `vercel login`; the cloud live update passes VERCEL_TOKEN
 # (plus VERCEL_ORG_ID / VERCEL_PROJECT_ID in place of `vercel link`).
 token=(${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"})
+
+# `vercel build` needs the project linked, i.e. a .vercel/project.json on disk. This Mac
+# has one from the one-time `vercel link`; a GitHub Actions runner never does, and
+# VERCEL_ORG_ID / VERCEL_PROJECT_ID on their own don't make one, so the build stops with
+# "Could not retrieve Project Settings". `vercel pull` writes it from those two variables
+# along with the project's settings, so run it wherever a token stands in for the link.
+if [ -n "${VERCEL_TOKEN:-}" ]; then
+  if $preview; then
+    vercel pull --yes --environment=preview "${token[@]}"
+  else
+    vercel pull --yes --environment=production "${token[@]}"
+  fi
+fi
+
 # scripts/vercel_build.sh reads this to choose which tree to publish. Passed explicitly
 # because `vercel build --prod` leaves VERCEL_ENV unset in the build command.
 if $preview; then
