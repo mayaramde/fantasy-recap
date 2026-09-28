@@ -41,7 +41,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 
 ## Published pages
 - Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
-- League page: not published yet (from `site/dist/index.html`)
+- League page (shared with the league): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ (from `site/dist/index.html`). Launched with Weeks 1-2 on 2026-09-28.
 
 ## Recap content
 - Matchup results, high/low scores, standings
