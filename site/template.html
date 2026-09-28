@@ -146,7 +146,6 @@
   .pill .medal .ord { font-size: 9.5px; vertical-align: 6px; letter-spacing: 0; }
   .pill .txt { display: grid; gap: 1px; font: 600 11px/1.1 var(--body); text-transform: uppercase; letter-spacing: 0.07em; }
   .pill .txt b { font: 700 14px/1.15 var(--body); text-transform: none; letter-spacing: 0; }
-  .pill .amp { font-weight: 400; opacity: .65; }
 
   .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
   .week-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
@@ -499,19 +498,21 @@
       </div>`;
   }
 
-  /* Top score, middle of the pack, bottom score: same three stickers on the recap page and
-     the live page, each one naming its team and carrying the rank it landed on. */
+  /* Top, middle and bottom score: the same three stickers on the recap page and the live
+     page, each carrying the rank it landed on. */
   const ORD = (n) => { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return s[(v - 20) % 10] || s[v] || s[0]; };
   const medal = (ranks) => `<span class="medal">${ranks.join('–')}<span class="ord">${ORD(ranks[ranks.length - 1])}</span></span>`;
 
   function scorePills(w) {
     const sofar = w.complete ? '' : ' so far';
     const mid = (w.mid_pack && w.mid_pack.teams.length) ? w.mid_pack : { teams: [], points: w.median };
-    const midBody = mid.teams.length
-      ? mid.teams.map((t) => `${esc(t.manager)} <span class="num">${f2(t.points)}</span>`).join(' <span class="amp">&amp;</span> ')
+    // With an even league nobody scores the middle score exactly, so the sticker shows the
+    // score itself; with an odd one it belongs to a real team, so that team gets named.
+    const midBody = mid.teams.length === 1
+      ? `${esc(mid.teams[0].manager)} <span class="num">${f2(mid.teams[0].points)}</span>`
       : `<span class="num">${f2(mid.points)}</span>`;
     const midTip = mid.teams.length > 1
-      ? `The middle two scores of the week. Half the league finished above ${f2(mid.teams[0].points)}, half below ${f2(mid.teams[mid.teams.length - 1].points)}.`
+      ? `Halfway between ${mid.teams.map((t) => `${t.manager} ${f2(t.points)}`).join(' and ')}, the middle two scores of the week: half the league finished above, half below.`
       : 'The middle score of the week: half the league finished above it, half below.';
     const pill = (cls, rank, label, body, tip) =>
       `<span class="pill ${cls}" title="${esc(tip)}">${medal(rank)}<span class="txt">${label}<b>${body}</b></span></span>`;
@@ -520,7 +521,7 @@
         ${pill('pill-top', [w.high_score.score_rank], `Top score${sofar}`,
                `${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span>`,
                "The week's highest team score.")}
-        ${pill('pill-mid', mid.teams.map((t) => t.score_rank), 'Middle of the pack', midBody, midTip)}
+        ${pill('pill-mid', mid.teams.map((t) => t.score_rank), 'Middle score', midBody, midTip)}
         ${pill('pill-bot', [w.low_score.score_rank], `Bottom score${sofar}`,
                `${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span>`,
                "The week's lowest team score.")}
