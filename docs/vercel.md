@@ -185,3 +185,11 @@ vercel logs <deployment-url>     # runtime output from a deployment
 
 One-time setup on a new Mac: `vercel login`, then `vercel link` to connect this
 folder to the project.
+
+Deploying from a Claude Code cloud session instead of the Mac needs three things in
+the environment's settings: `VERCEL_TOKEN`, `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`
+(the same values the live-update workflow uses — the two IDs come from
+`.vercel/project.json`), and network access to `api.vercel.com` and `*.vercel.app`.
+Set the Setup script to `bash scripts/cloud_setup.sh`, which installs the CLI and
+warns if either piece is missing. Those sessions deploy whatever is committed, so the
+Live page will lag the Mac's until the week's data is merged.

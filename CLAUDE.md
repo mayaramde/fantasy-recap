@@ -68,6 +68,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
   Needs `vercel login` on this Mac. Never read or print `.env.local` or Vercel tokens.
+  A Claude Code cloud session can deploy too, once its environment has `VERCEL_TOKEN` / `VERCEL_ORG_ID` /
+  `VERCEL_PROJECT_ID` and network access to `api.vercel.com` and `*.vercel.app`; point its Setup script at
+  `bash scripts/cloud_setup.sh` for the CLI. A cloud deploy publishes only committed data, so the Live page
+  misses the uncommitted live week — prefer the Mac mid-week.
 - Preview (Claude artifact, private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`).
   Drafts are reviewed here before they go to the website.
 - Old league artifact (retired 2026-09-28, no longer updated): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ
