@@ -79,7 +79,8 @@ reading her opponents' plans would defeat the point. Generate them and let them 
 - `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
   `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
   week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
-  Redundant once the cloud live update is working; kept as a fallback until Maya retires it.
+  **Paused 2026-09-28** now that the cloud live update works. Re-enable it only if the cloud run can't be fixed
+  (e.g. while waiting on fresh ESPN cookies).
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
   and opens a draft PR. Maya approves before the recap reaches the league site.
 - Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
@@ -87,7 +88,8 @@ reading her opponents' plans would defeat the point. Generate them and let them 
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
 
 ## Published pages
-- **League website (Vercel, what the league uses):** https://fantasy-recap-eight.vercel.app, built from `site/dist/web/`.
+- `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
+- **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
