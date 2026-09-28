@@ -12,6 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import dashboards  # noqa: E402
+import espn_fetch  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -22,8 +23,10 @@ FORBIDDEN = [
     re.compile(r'"lastName"'),
     re.compile(r'"notificationSettings"'),
 ]
-# Files that mention those strings on purpose.
-SKIP = {"CLAUDE.md", "scripts/check.py", "scripts/capture_node.mjs"}
+# Files that mention those strings on purpose (the names of the cookie environment
+# variables, never a value).
+SKIP = {"CLAUDE.md", "scripts/check.py", "scripts/capture_node.mjs",
+        "scripts/espn_fetch.py", "scripts/deploy.sh", "api/live.py"}
 
 # Every advice file needs these, because the dashboard leads with them.
 ADVICE_REQUIRED = ("season", "week", "manager", "team_id", "generated_at", "summary")
@@ -88,6 +91,25 @@ def check_no_links(files, errors):
                 errors.append(f"{rel}: contains {manager}'s private dashboard link")
 
 
+def check_capture_shape(errors):
+    """espn.json now has two possible authors — scripts/capture.js in Chrome and
+    scripts/espn_fetch.py inside /api/live — and scripts/analyze.py can't tell which one
+    wrote the file it's reading. Hold every capture on disk to the single shape declared in
+    espn_fetch.SHAPE, so a field added, renamed or retyped on one side is caught here
+    instead of quietly changing a number on the site.
+
+    This walks the filesystem rather than tracked files on purpose: the in-progress week is
+    uncommitted, and it's the freshest capture.js output there is."""
+    for path in sorted((ROOT / "data").glob("*/week-*/espn.json")):
+        rel = path.relative_to(ROOT)
+        try:
+            capture = json.loads(path.read_text())
+        except json.JSONDecodeError:
+            continue  # already reported as invalid JSON
+        for problem in espn_fetch.shape_problems(capture):
+            errors.append(f"{rel}: {problem}")
+
+
 def tracked_files():
     out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, check=True,
                          capture_output=True, text=True).stdout
@@ -119,6 +141,7 @@ def main():
 
     check_advice(files, errors)
     check_no_links(files, errors)
+    check_capture_shape(errors)
 
     build = next((p for p in [ROOT / "site/build.py", ROOT / "site/build.js"] if p.exists()), None)
     if build:

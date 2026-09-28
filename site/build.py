@@ -177,7 +177,8 @@ FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' view
            "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
 
 
-def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league."):
+def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league.",
+               analytics=False):
     head = (
         '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -186,8 +187,17 @@ def standalone(html, description="Weekly recaps, live scores and standings for o
         f'<link rel="icon" href="{FAVICON}">\n'
         '<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}'
         ':root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
+        # Only the Vercel builds have api/live.py behind them. The artifact build leaves
+        # this unset and so never calls it, and keeps rendering from its baked data.
+        '<script>window.FANTASY_LIVE_API="/api/live"</script>\n'
     )
-    return head + html + "\n</html>\n"
+    # Vercel Web Analytics, on the league page only. It reports the path of every page
+    # view, and a dashboard's path *is* its secret, so the /me/ pages deliberately don't
+    # load it: counting those visits isn't worth writing eight private links into another
+    # dashboard. Needs Web Analytics enabled on the Vercel project; until then the script
+    # 404s and nothing else changes.
+    tail = '<script defer src="/_vercel/insights/script.js"></script>\n' if analytics else ""
+    return head + html + "\n" + tail + "</html>\n"
 
 
 def shared_style():
@@ -278,7 +288,7 @@ def main():
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
     web.mkdir(exist_ok=True)
-    (web / "index.html").write_text(standalone(html))
+    (web / "index.html").write_text(standalone(html, analytics=True))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
     # Dashboards use the same published-only season stats as the league page, so a manager's
     # record never disagrees with the standings she sees there, plus the newest captured
@@ -290,6 +300,13 @@ def main():
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
     html, weeks = render(recap_weeks, captured, preview=True)
     (dist / "preview.html").write_text(html)
+    # The same preview as a standalone page, for `scripts/deploy.sh --preview` (a real
+    # URL to review a draft on a phone). preview.html itself is the artifact build, which
+    # relies on the artifact host's document shell.
+    web_preview = dist / "web-preview"
+    web_preview.mkdir(exist_ok=True)
+    (web_preview / "index.html").write_text(standalone(html, "Draft recap, not published yet."))
+    (web_preview / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
     print(f"preview.html: weeks {[(w['week'], w['status']) for w in weeks]}")
 
 
