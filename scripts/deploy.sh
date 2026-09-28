@@ -53,7 +53,7 @@ for capture in data/*/week-*/espn.json; do
   cp "$capture" "$fn/$capture"
 done
 cat > "$fn/.vc-config.json" <<'EOF'
-{ "runtime": "python3.12", "handler": "live.py", "maxDuration": 30 }
+{ "runtime": "python3.12", "handler": "live.handler", "maxDuration": 30 }
 EOF
 
 # /api/ is excluded from the header rule so the function's own Cache-Control (which lets
