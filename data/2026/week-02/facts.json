@@ -41,42 +41,57 @@
    {
     "name": "Jaxon Smith-Njigba",
     "manager": "Amie",
+    "pos": "WR",
     "slot": "WR",
     "points": 42.5,
     "projected": 18.49,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+    "team": "SEA"
    },
    {
     "name": "Josh Allen",
     "manager": "Samantha",
+    "pos": "QB",
     "slot": "QB",
     "points": 40.82,
     "projected": 22.65,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/3918298.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+    "team": "BUF"
    },
    {
     "name": "Davante Adams",
     "manager": "Maya",
+    "pos": "WR",
     "slot": "WR",
     "points": 39.5,
     "projected": 15.5,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/16800.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/16800.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+    "team": "LAR"
    },
    {
     "name": "CeeDee Lamb",
     "manager": "Amie",
+    "pos": "WR",
     "slot": "WR",
     "points": 35.3,
     "projected": 18,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4241389.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+    "team": "DAL"
    },
    {
     "name": "Amon-Ra St. Brown",
     "manager": "Marlee",
+    "pos": "WR",
     "slot": "WR",
     "points": 35.2,
     "projected": 20.39,
-    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png"
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4374302.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+    "team": "DET"
    }
   ],
   "biggest_busts": [
@@ -252,8 +267,10 @@
     "date": "2026-09-20T18:49:54.468Z",
     "started": "Davante Adams",
     "started_points": 39.5,
+    "started_pos": "WR",
     "benched": "Mike Evans",
     "benched_points": 8.4,
+    "benched_pos": "WR",
     "slot": "WR",
     "gain": 31.1,
     "manager": "Maya"
@@ -262,8 +279,10 @@
     "date": "2026-09-16T18:26:00.094Z",
     "started": "Dak Prescott",
     "started_points": 29.76,
+    "started_pos": "QB",
     "benched": "Trevor Lawrence",
     "benched_points": 6.16,
+    "benched_pos": "QB",
     "slot": "QB",
     "gain": 23.6,
     "manager": "Maya"
@@ -272,8 +291,10 @@
     "date": "2026-09-19T03:45:22.036Z",
     "started": "Jaylen Waddle",
     "started_points": 21.8,
+    "started_pos": "WR",
     "benched": "DK Metcalf",
     "benched_points": 6.7,
+    "benched_pos": "WR",
     "slot": "WR",
     "gain": 15.1,
     "manager": "Maddie"
@@ -282,8 +303,10 @@
     "date": "2026-09-17T01:33:12.709Z",
     "started": "Matthew Stafford",
     "started_points": 26.98,
+    "started_pos": "QB",
     "benched": "Joe Burrow",
     "benched_points": 16.18,
+    "benched_pos": "QB",
     "slot": "QB",
     "gain": 10.8,
     "manager": "Kyra"
@@ -292,8 +315,10 @@
     "date": "2026-09-20T15:50:16.431Z",
     "started": "Jeremiyah Love",
     "started_points": 7.5,
+    "started_pos": "RB",
     "benched": "Puka Nacua",
     "benched_points": 0,
+    "benched_pos": "WR",
     "slot": "FLEX",
     "gain": 7.5,
     "manager": "Cambri"
@@ -302,8 +327,10 @@
     "date": "2026-09-16T00:40:40.924Z",
     "started": "D'Andre Swift",
     "started_points": 12.9,
+    "started_pos": "RB",
     "benched": "Emeka Egbuka",
     "benched_points": 10.3,
+    "benched_pos": "WR",
     "slot": "FLEX",
     "gain": 2.6,
     "manager": "Amie"
@@ -312,8 +339,10 @@
     "date": "2026-09-17T23:10:08.009Z",
     "started": "Tucker Kraft",
     "started_points": 3.5,
+    "started_pos": "TE",
     "benched": "Colston Loveland",
     "benched_points": 1.3,
+    "benched_pos": "TE",
     "slot": "TE",
     "gain": 2.2,
     "manager": "Maddie"
@@ -322,8 +351,10 @@
     "date": "2026-09-16T18:28:13.874Z",
     "started": "49ers D/ST",
     "started_points": 9,
+    "started_pos": "DST",
     "benched": "Texans D/ST",
     "benched_points": 7,
+    "benched_pos": "DST",
     "slot": "DST",
     "gain": 2,
     "manager": "Maya"
@@ -332,8 +363,10 @@
     "date": "2026-09-17T01:31:14.104Z",
     "started": "Makai Lemon",
     "started_points": 1.9,
+    "started_pos": "WR",
     "benched": "A.J. Brown",
     "benched_points": 0,
+    "benched_pos": "WR",
     "slot": "WR",
     "gain": 1.9,
     "manager": "Kyra"
@@ -344,8 +377,10 @@
     "date": "2026-09-18T02:32:40.257Z",
     "started": "Jaxson Dart",
     "started_points": 0.8,
+    "started_pos": "QB",
     "benched": "Drake Maye",
     "benched_points": 8.02,
+    "benched_pos": "QB",
     "slot": "QB",
     "gain": -7.22,
     "manager": "Maddie"
@@ -354,8 +389,10 @@
     "date": "2026-09-16T17:48:01.495Z",
     "started": "Rome Odunze",
     "started_points": 7.3,
+    "started_pos": "WR",
     "benched": "Bhayshul Tuten",
     "benched_points": 14.2,
+    "benched_pos": "RB",
     "slot": "FLEX",
     "gain": -6.9,
     "manager": "Samantha"
@@ -364,8 +401,10 @@
     "date": "2026-09-15T21:41:23.507Z",
     "started": "Malik Nabers",
     "started_points": 1.1,
+    "started_pos": "WR",
     "benched": "DK Metcalf",
     "benched_points": 6.7,
+    "benched_pos": "WR",
     "slot": "WR",
     "gain": -5.6,
     "manager": "Maddie"
@@ -374,8 +413,10 @@
     "date": "2026-09-19T23:21:43.717Z",
     "started": "David Montgomery",
     "started_points": 4.4,
+    "started_pos": "RB",
     "benched": "Ladd McConkey",
     "benched_points": 6.5,
+    "benched_pos": "WR",
     "slot": "FLEX",
     "gain": -2.1,
     "manager": "Marlee"
@@ -384,8 +425,10 @@
     "date": "2026-09-17T15:34:59.807Z",
     "started": "Saquon Barkley",
     "started_points": 3,
+    "started_pos": "RB",
     "benched": "Rhamondre Stevenson",
     "benched_points": 3.6,
+    "benched_pos": "RB",
     "slot": "RB",
     "gain": -0.6,
     "manager": "Tara"
@@ -433,8 +476,10 @@
      "date": "2026-09-16T17:48:01.495Z",
      "started": "Rome Odunze",
      "started_points": 7.3,
+     "started_pos": "WR",
      "benched": "Bhayshul Tuten",
      "benched_points": 14.2,
+     "benched_pos": "RB",
      "slot": "FLEX",
      "gain": -6.9
     }
@@ -647,8 +692,10 @@
      "date": "2026-09-20T15:50:16.431Z",
      "started": "Jeremiyah Love",
      "started_points": 7.5,
+     "started_pos": "RB",
      "benched": "Puka Nacua",
      "benched_points": 0,
+     "benched_pos": "WR",
      "slot": "FLEX",
      "gain": 7.5
     }
@@ -852,8 +899,10 @@
      "date": "2026-09-17T01:31:14.104Z",
      "started": "Makai Lemon",
      "started_points": 1.9,
+     "started_pos": "WR",
      "benched": "A.J. Brown",
      "benched_points": 0,
+     "benched_pos": "WR",
      "slot": "WR",
      "gain": 1.9
     },
@@ -861,8 +910,10 @@
      "date": "2026-09-17T01:33:12.709Z",
      "started": "Matthew Stafford",
      "started_points": 26.98,
+     "started_pos": "QB",
      "benched": "Joe Burrow",
      "benched_points": 16.18,
+     "benched_pos": "QB",
      "slot": "QB",
      "gain": 10.8
     }
@@ -1075,8 +1126,10 @@
      "date": "2026-09-17T15:34:59.807Z",
      "started": "Saquon Barkley",
      "started_points": 3,
+     "started_pos": "RB",
      "benched": "Rhamondre Stevenson",
      "benched_points": 3.6,
+     "benched_pos": "RB",
      "slot": "RB",
      "gain": -0.6
     }
@@ -1289,8 +1342,10 @@
      "date": "2026-09-16T18:26:00.094Z",
      "started": "Dak Prescott",
      "started_points": 29.76,
+     "started_pos": "QB",
      "benched": "Trevor Lawrence",
      "benched_points": 6.16,
+     "benched_pos": "QB",
      "slot": "QB",
      "gain": 23.6
     },
@@ -1298,8 +1353,10 @@
      "date": "2026-09-16T18:28:13.874Z",
      "started": "49ers D/ST",
      "started_points": 9,
+     "started_pos": "DST",
      "benched": "Texans D/ST",
      "benched_points": 7,
+     "benched_pos": "DST",
      "slot": "DST",
      "gain": 2
     },
@@ -1307,8 +1364,10 @@
      "date": "2026-09-20T18:49:54.468Z",
      "started": "Davante Adams",
      "started_points": 39.5,
+     "started_pos": "WR",
      "benched": "Mike Evans",
      "benched_points": 8.4,
+     "benched_pos": "WR",
      "slot": "WR",
      "gain": 31.1
     }
@@ -1531,8 +1590,10 @@
      "date": "2026-09-16T00:40:40.924Z",
      "started": "D'Andre Swift",
      "started_points": 12.9,
+     "started_pos": "RB",
      "benched": "Emeka Egbuka",
      "benched_points": 10.3,
+     "benched_pos": "WR",
      "slot": "FLEX",
      "gain": 2.6
     }
@@ -1745,8 +1806,10 @@
      "date": "2026-09-19T23:21:43.717Z",
      "started": "David Montgomery",
      "started_points": 4.4,
+     "started_pos": "RB",
      "benched": "Ladd McConkey",
      "benched_points": 6.5,
+     "benched_pos": "WR",
      "slot": "FLEX",
      "gain": -2.1
     }
@@ -1978,8 +2041,10 @@
      "date": "2026-09-15T21:41:23.507Z",
      "started": "Malik Nabers",
      "started_points": 1.1,
+     "started_pos": "WR",
      "benched": "DK Metcalf",
      "benched_points": 6.7,
+     "benched_pos": "WR",
      "slot": "WR",
      "gain": -5.6
     },
@@ -1987,8 +2052,10 @@
      "date": "2026-09-17T23:10:08.009Z",
      "started": "Tucker Kraft",
      "started_points": 3.5,
+     "started_pos": "TE",
      "benched": "Colston Loveland",
      "benched_points": 1.3,
+     "benched_pos": "TE",
      "slot": "TE",
      "gain": 2.2
     },
@@ -1996,8 +2063,10 @@
      "date": "2026-09-18T02:32:40.257Z",
      "started": "Jaxson Dart",
      "started_points": 0.8,
+     "started_pos": "QB",
      "benched": "Drake Maye",
      "benched_points": 8.02,
+     "benched_pos": "QB",
      "slot": "QB",
      "gain": -7.22
     },
@@ -2005,8 +2074,10 @@
      "date": "2026-09-19T03:45:22.036Z",
      "started": "Jaylen Waddle",
      "started_points": 21.8,
+     "started_pos": "WR",
      "benched": "DK Metcalf",
      "benched_points": 6.7,
+     "benched_pos": "WR",
      "slot": "WR",
      "gain": 15.1
     }

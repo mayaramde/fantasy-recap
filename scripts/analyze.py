@@ -41,6 +41,17 @@ PRO_TEAM_ABBR = {
 }
 
 
+def team_abbr(player):
+    """The player's NFL team as ESPN writes it ("buf"), or None for a free agent."""
+    return PRO_TEAM_ABBR.get(player.get("pro_team_id"))
+
+
+def team_logo(player):
+    """The player's NFL team logo, or None for a free agent or a team we can't name."""
+    abbr = team_abbr(player)
+    return TEAM_LOGO_URL.format(abbr) if abbr else None
+
+
 def headshot(player):
     """Photo URL for a player, team logo for a D/ST, None when we can't name the team.
 
@@ -48,8 +59,7 @@ def headshot(player):
     site falls back to a silhouette on image error rather than checking each URL here.
     """
     if player["pos"] == "DST":
-        abbr = PRO_TEAM_ABBR.get(player.get("pro_team_id"))
-        return TEAM_LOGO_URL.format(abbr) if abbr else None
+        return team_logo(player)
     return HEADSHOT_URL.format(player["player_id"])
 
 
@@ -131,6 +141,7 @@ def lineup_swaps(week, team_id, roster):
     Only swaps that stuck count: X must be starting and Y benched in the final lineup.
     """
     points_by_id = {p["player_id"]: p["points"] for p in roster}
+    pos_by_id = {p["player_id"]: p["pos"] for p in roster}
     final_slot = {p["player_id"]: p["slot"] for p in roster}
     swaps = []
     for t in week["transactions"]:
@@ -146,7 +157,9 @@ def lineup_swaps(week, team_id, roster):
                 continue
             gain = round(points_by_id[i["player_id"]] - points_by_id[o["player_id"]], 2)
             swaps.append({"date": t["date"], "started": i["name"], "started_points": points_by_id[i["player_id"]],
+                          "started_pos": pos_by_id[i["player_id"]],
                           "benched": o["name"], "benched_points": points_by_id[o["player_id"]],
+                          "benched_pos": pos_by_id[o["player_id"]],
                           "slot": i["to_slot"], "gain": gain})
     # Keep only the final state per player pair if they flip-flopped
     seen, final = set(), []
@@ -258,8 +271,10 @@ def analyze(week, history):
                             for t in teams if t["result"] == "L" and t["points"] > median],
         "lucky_wins": [{"manager": t["manager"], "points": t["points"], "score_rank": t["score_rank"]}
                        for t in teams if t["result"] == "W" and t["points"] < median],
-        "top_performers": [{**{k: s[k] for k in ("name", "manager", "slot", "points", "projected")},
-                            "headshot": headshot(s)}
+        "top_performers": [{**{k: s[k] for k in ("name", "manager", "pos", "slot", "points", "projected")},
+                            "headshot": headshot(s),
+                            "logo": None if s["pos"] == "DST" else team_logo(s),
+                            "team": None if s["pos"] == "DST" else (team_abbr(s) or "").upper() or None}
                            for s in sorted(starters, key=lambda s: s["points"], reverse=True)[:5]],
         "biggest_busts": [{k: s[k] for k in ("name", "manager", "slot", "points", "projected", "beat_projection")}
                           for s in sorted(starters, key=lambda s: s["beat_projection"])[:5]],
