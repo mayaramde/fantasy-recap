@@ -305,6 +305,8 @@
    "opponent_points": 126.76,
    "result": "W",
    "margin": 18.46,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 3,
    "manager": "Tara",
    "team_name": "Tara's Turf",
@@ -505,6 +507,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -516,6 +519,8 @@
    "opponent_points": 145.22,
    "result": "L",
    "margin": -18.46,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 5,
    "manager": "Samantha",
    "team_name": "Cloff Campus",
@@ -706,6 +711,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -717,6 +723,8 @@
    "opponent_points": 153.96,
    "result": "W",
    "margin": 24.0,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 1,
    "manager": "Amie",
    "team_name": "JSN Derulo",
@@ -907,6 +915,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [
     "Kyle Pitts Sr."
    ],
@@ -920,6 +929,8 @@
    "opponent_points": 177.96,
    "result": "L",
    "margin": -24.0,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 2,
    "manager": "Cambri",
    "team_name": "Cleated Rivalry",
@@ -1120,6 +1131,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -1131,6 +1143,8 @@
    "opponent_points": 111.56,
    "result": "L",
    "margin": -16.44,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 8,
    "manager": "Maddie",
    "team_name": "Waddle Deez Nutz",
@@ -1331,6 +1345,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [
     "Colston Loveland"
    ],
@@ -1344,6 +1359,8 @@
    "opponent_points": 95.12,
    "result": "W",
    "margin": 16.44,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 6,
    "manager": "Kyra",
    "team_name": "(Foot)Balls Deep",
@@ -1534,6 +1551,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -1545,6 +1563,8 @@
    "opponent_points": 105.3,
    "result": "W",
    "margin": 22.36,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 4,
    "manager": "Marlee",
    "team_name": "Amon Raw, Next Question",
@@ -1745,6 +1765,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [
     {
@@ -1766,6 +1787,8 @@
    "opponent_points": 127.66,
    "result": "L",
    "margin": -22.36,
+   "live_projection": null,
+   "win_probability": null,
    "score_rank": 7,
    "manager": "Maya",
    "team_name": "MARTY SUPREME",
@@ -1975,6 +1998,7 @@
      "played": true
     }
    ],
+   "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [
     {

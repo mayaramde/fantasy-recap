@@ -166,7 +166,9 @@ def analyze(week, history):
             teams.append({"team_id": s["team_id"], "points": s["points"], "projected": s["projected"],
                           "opponent_id": o["team_id"], "opponent_points": o["points"],
                           "result": "W" if won else ("T" if m["winner"] == "TIE" else ("L" if m["winner"] in ("HOME", "AWAY") else "-")),
-                          "margin": round(s["points"] - o["points"], 2)})
+                          "margin": round(s["points"] - o["points"], 2),
+                          # ESPN's in-week estimate of the final score (points so far + remaining projections)
+                          "live_projection": s["projected"], "win_probability": s.get("win_probability")})
 
     ranked = sorted(teams, key=lambda t: t["points"], reverse=True)
     for rank, t in enumerate(ranked, 1):
@@ -192,6 +194,8 @@ def analyze(week, history):
         # ESPN drops the team projection once games are final; rebuild it from starters
         t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
         t["bench"] = [p for p in r if p["slot"] in ("BENCH", "IR")]
+        # Starters with no stats yet this week (game not played yet, or player inactive)
+        t["yet_to_play"] = sum(1 for p in t["starters"] if not p["played"])
         t["zero_point_starters"] = [p["name"] for p in r if p["slot"] in STARTING and (not p["played"] or p["points"] == 0)]
         t["pickups_started"] = [dict(name=p["name"], points=p["points"], slot=p["slot"], **adds[(t["team_id"], p["player_id"])])
                                 for p in r if p["slot"] in STARTING and (t["team_id"], p["player_id"]) in adds]

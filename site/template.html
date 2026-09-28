@@ -1,249 +1,349 @@
 <title>__PAGE_TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Libre+Franklin:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fredoka:wght@500;600&display=swap">
 <style>
+  /* Tailgate pop palette, sticker-book UI.
+     Cobalt = navigation, links, scoreboard. Tangerine = game balls. Bubblegum = flags. Lime = highlight badges.
+     Text never takes a pop color on white (contrast); pops are fills with ink text on top. */
   :root {
-    --paper: #f5eef2;
-    --pink: #d0306f;
-    --pink-soft: #fde0ec;
-    --pink-ink: #8a1545;
-    --on-pink: #ffffff;
+    --bg: #f3f5fb;
     --card: #ffffff;
-    --ink: #121a26;
-    --muted: #5b6675;
-    --rule: #e5d8df;
-    --flag: #f2c230;
-    --flag-ink: #3a2c00;
-    --turf: #1d7a4d;
-    --loss: #b93a2f;
-    --bug: #16233a;
-    --bug-2: #22314d;
-    --bug-ink: #f3f5f8;
-    --bug-muted: #9aa8bd;
-    --draft: #fff4cc;
-    --shadow: 0 1px 0 rgba(18, 26, 38, 0.06), 0 6px 18px -10px rgba(18, 26, 38, 0.25);
+    --ink: #151a33;
+    --muted: #565d79;
+    --rule: #dde2ef;
+    --edge: #151a33;
+    --drop: #151a33;
+    --board: #151a33;
+    --board-2: #2b3263;
+    --on-board: #f4f6ff;
+    --on-board-muted: #a9b2dc;
+    --accent: #2e4bf2;
+    --accent-soft: #e2e7ff;
+    --accent-ink: #1a2a9c;
+    --on-accent: #ffffff;
+    --orange: #ff7a1a;
+    --pink: #ff6fb5;
+    --lime: #c7f04a;
+    --on-pop: #151a33;
+    --pink-soft: #ffe0ef;
+    --orange-soft: #ffe6d3;
+    --win: #1c7a50;
+    --loss: #c0392b;
+    --heat-hi: #2e4bf2;
     --display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", sans-serif;
-    --body: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+    --body: "Figtree", "Helvetica Neue", Arial, sans-serif;
     --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --script: "Fredoka", "Figtree", "Helvetica Neue", sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --paper: #0c1219;
-      --pink: #ff6fae;
-      --pink-soft: #3b1528;
-      --pink-ink: #ffc9df;
-      --on-pink: #22060f;
-      --card: #141c27;
-      --ink: #e7ebf0;
-      --muted: #93a0b2;
-      --rule: #263243;
-      --flag: #f5c842;
-      --flag-ink: #2b2000;
-      --turf: #3db07a;
-      --loss: #e3675b;
-      --bug: #0a1422;
-      --bug-2: #16233a;
-      --bug-ink: #f3f5f8;
-      --bug-muted: #8d9bb0;
-      --draft: #3a3012;
-      --shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+      --bg: #0e1127;
+      --card: #1a1f3f;
+      --ink: #f2f4ff;
+      --muted: #a4abd2;
+      --rule: #2d345f;
+      --edge: #4a55a0;
+      --drop: #03040d;
+      --board: #070919;
+      --board-2: #283064;
+      --on-board: #f4f6ff;
+      --on-board-muted: #98a2d6;
+      --accent: #8196ff;
+      --accent-soft: #262f6c;
+      --accent-ink: #e0e6ff;
+      --on-accent: #0b1033;
+      --orange: #ff8a33;
+      --pink: #ff82c0;
+      --lime: #c7f04a;
+      --on-pop: #151a33;
+      --pink-soft: #4a1e3d;
+      --orange-soft: #4a2c15;
+      --win: #55d094;
+      --loss: #ff7d70;
+      --heat-hi: #8196ff;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --paper: #0c1219;
-    --pink: #ff6fae;
-    --pink-soft: #3b1528;
-    --pink-ink: #ffc9df;
-      --on-pink: #22060f;
-    --card: #141c27;
-    --ink: #e7ebf0;
-    --muted: #93a0b2;
-    --rule: #263243;
-    --flag: #f5c842;
-    --flag-ink: #2b2000;
-    --turf: #3db07a;
-    --loss: #e3675b;
-    --bug: #0a1422;
-    --bug-2: #16233a;
-    --bug-ink: #f3f5f8;
-    --bug-muted: #8d9bb0;
-    --draft: #3a3012;
-    --shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 8px 22px -12px rgba(0, 0, 0, 0.8);
+    --bg: #0e1127;
+    --card: #1a1f3f;
+    --ink: #f2f4ff;
+    --muted: #a4abd2;
+    --rule: #2d345f;
+    --edge: #4a55a0;
+    --drop: #03040d;
+    --board: #070919;
+    --board-2: #283064;
+    --on-board: #f4f6ff;
+    --on-board-muted: #98a2d6;
+    --accent: #8196ff;
+    --accent-soft: #262f6c;
+    --accent-ink: #e0e6ff;
+    --on-accent: #0b1033;
+    --orange: #ff8a33;
+    --pink: #ff82c0;
+    --lime: #c7f04a;
+    --on-pop: #151a33;
+    --pink-soft: #4a1e3d;
+    --orange-soft: #4a2c15;
+    --win: #55d094;
+    --loss: #ff7d70;
+    --heat-hi: #8196ff;
   }
 
   * { box-sizing: border-box; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font: 400 15px/1.55 var(--body);
-    padding-inline: 16px;
-    padding-block: 0 48px;
-  }
-  .wrap { max-width: 980px; margin: 0 auto; }
+  body { background: var(--bg); color: var(--ink); font: 400 15.5px/1.55 var(--body); padding-inline: 16px; padding-block: 0 56px; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
   h1, h2, h3 { text-wrap: balance; margin: 0; }
+  a { color: inherit; }
   .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-  :focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; border-radius: 4px; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  main:focus { outline: none; }
 
-  /* ---------- masthead ---------- */
-  .masthead {
-    display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px;
-    padding-block: 28px 16px; border-bottom: 3px solid var(--pink);
+  /* the sticker: every raised surface shares one outline + hard offset shadow */
+  a.game, .card, .lineup, .std-card, .tile, .archive a, .decided li, .other-games a, .versus {
+    border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .flag-mark {
-    width: 30px; height: 34px; flex: none; background: var(--pink);
-    clip-path: polygon(0 0, 100% 0, 78% 50%, 100% 100%, 0 100%);
-    transform: rotate(-8deg);
-  }
-  .brand-name { font: 900 34px/0.9 var(--display); letter-spacing: 0.01em; text-transform: uppercase; }
-  .brand-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
-  .weeks { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; max-width: 100%; }
-  .weeks button {
-    font: 700 15px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase;
-    border: 1.5px solid var(--rule); background: var(--card); color: var(--ink);
-    padding: 9px 12px; border-radius: 3px; cursor: pointer; white-space: nowrap;
-  }
-  .weeks button[aria-pressed="true"] { background: var(--pink); color: var(--on-pink); border-color: var(--pink); }
-  .weeks button:hover { border-color: var(--pink); }
-  .weeks button .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--flag); margin-left: 6px; vertical-align: 2px; }
-
-  .draft-banner {
-    margin-top: 16px; padding: 10px 14px; background: var(--draft); border-left: 4px solid var(--flag);
-    font-size: 13px; font-weight: 600;
-  }
-
-  /* ---------- hero ---------- */
-  .hero { padding-block: 28px 8px; display: grid; gap: 10px; }
-  .eyebrow { font: 700 16px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pink); display: flex; align-items: center; gap: 10px; }
-  .eyebrow::before { content: ""; width: 28px; height: 4px; border-radius: 2px; background: var(--pink); }
-  .eyebrow .live { color: var(--loss); }
-  .hero h1 { font: 800 clamp(36px, 6.4vw, 64px)/0.95 var(--display); text-transform: uppercase; letter-spacing: 0.005em; max-width: 18ch; }
-  .dek { font-size: 17px; color: var(--muted); max-width: 62ch; margin: 0; }
-  .hero-stats { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 6px; font-size: 13px; color: var(--muted); }
-  .hero-stats b { color: var(--ink); font-weight: 600; }
-  .hero-stats > span { background: var(--pink-soft); color: var(--pink-ink); padding: 5px 10px; border-radius: 999px; }
-  .hero-stats > span b { color: inherit; }
-
-  /* ---------- section heads ---------- */
-  section { margin-top: 40px; }
-  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .sec-head h2 { font: 800 26px/1 var(--display); text-transform: uppercase; letter-spacing: 0.03em; }
-  .sec-head p { margin: 0; color: var(--muted); font-size: 13px; }
-  .sec-head .rule { flex: 1; height: 2px; background: var(--rule); }
-  .marker { width: 18px; height: 20px; flex: none; }
-  .marker.flag { background: var(--flag); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); }
-  .marker.ball { background: var(--pink); border-radius: 50% / 38%; transform: rotate(-30deg); width: 22px; height: 14px; }
-  .marker.break { background: var(--loss); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
-  .marker.board { background: var(--bug); border-radius: 2px; }
-  .marker.book { background: var(--pink); border-radius: 1px 3px 3px 1px; width: 16px; }
-
-  .terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0 24px; margin: 0; }
-  .term { padding: 10px 0; border-top: 1px solid var(--rule); }
-  .term dt { font: 800 17px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; color: var(--pink); }
-  .term dd { margin: 0; font-size: 13.5px; color: var(--muted); }
-
-  /* ---------- scoreboard ---------- */
-  .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
-  .game { background: var(--card); border-radius: 6px; box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
-  .bug { background: var(--bug); color: var(--bug-ink); display: grid; box-shadow: inset 5px 0 0 var(--pink); }
-  .bug-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 10px 14px 10px 16px; }
-  .bug-row + .bug-row { border-top: 1px solid var(--bug-2); }
-  .bug-row.loser { color: var(--bug-muted); }
-  .bug-mgr { font: 800 22px/1 var(--display); text-transform: uppercase; letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; }
-  .bug-team { font-size: 11px; color: var(--bug-muted); letter-spacing: 0.04em; margin-top: 3px; }
-  .bug-score { font: 800 34px/1 var(--display); font-variant-numeric: tabular-nums; }
-  .bug-row.winner .bug-score::after {
-    content: ""; display: inline-block; width: 0; height: 0; margin-left: 8px; vertical-align: 6px;
-    border-top: 7px solid transparent; border-bottom: 7px solid transparent; border-right: 9px solid var(--pink);
-  }
-  .bug-foot {
-    display: flex; justify-content: space-between; gap: 8px; padding: 6px 16px; background: var(--bug-2);
-    font: 500 11px/1.4 var(--mono); color: var(--bug-muted); letter-spacing: 0.04em; text-transform: uppercase;
-  }
-  .game-body { padding: 14px 16px 12px; display: grid; gap: 10px; flex: 1; align-content: start; }
-  .blurb { margin: 0; font-size: 14px; }
-  details.box summary {
-    cursor: pointer; font: 700 14px/1 var(--display); text-transform: uppercase; letter-spacing: 0.08em; color: var(--pink);
-    list-style: none; display: inline-flex; align-items: center; gap: 6px; padding-block: 4px;
-  }
-  details.box summary::-webkit-details-marker { display: none; }
-  details.box summary::before { content: "+"; font-family: var(--mono); font-size: 14px; }
-  details.box[open] summary::before { content: "−"; }
-  .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px; margin-top: 10px; }
-  .lineup h4 { margin: 0 0 4px; font: 700 15px/1.2 var(--display); text-transform: uppercase; letter-spacing: 0.05em; }
-  .lineup table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  .lineup td { padding: 3px 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
-  .lineup td.slot { width: 38px; color: var(--muted); font: 500 10.5px/1 var(--mono); }
-  .lineup td.pts { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 8px; }
-  .lineup td.pts small { color: var(--muted); font-size: 10.5px; margin-left: 4px; }
-  .lineup tr.bench td { color: var(--muted); }
-  .lineup tr.bench.hot td { color: var(--ink); }
-  .lineup tr.bench.hot td.pts { color: var(--loss); font-weight: 500; }
-  .lineup .opt { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
-  .lineup .opt b { color: var(--ink); font-weight: 600; }
-
-  /* ---------- callouts ---------- */
-  .callouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
-  .callout { background: var(--card); border-radius: 6px; padding: 14px 16px 16px; box-shadow: var(--shadow); display: grid; gap: 6px; align-content: start; }
-  .callout-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .who { font: 800 13px/1 var(--display); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .stat {
-    font: 500 12px/1 var(--mono); font-variant-numeric: tabular-nums; padding: 5px 7px; border-radius: 3px; white-space: nowrap;
-    background: var(--paper); color: var(--ink);
-  }
-  .flags .stat { background: var(--flag); color: var(--flag-ink); }
-  .balls .stat { background: var(--pink-soft); color: var(--pink-ink); }
-  .balls .callout { border-top: 4px solid var(--pink); }
-  .breaks .stat { background: color-mix(in srgb, var(--loss) 14%, transparent); color: var(--loss); }
-  .callout h3 { font: 800 21px/1.05 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
-  .callout p { margin: 0; font-size: 14px; }
-
-  /* ---------- standings + leaders ---------- */
-  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 16px 28px; }
-  .table-scroll { overflow-x: auto; }
-  table.standings { width: 100%; border-collapse: collapse; font-size: 14px; }
-  table.standings th {
-    text-align: left; font: 700 12px/1 var(--display); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-    padding: 0 8px 8px 0; border-bottom: 2px solid var(--ink);
-  }
-  table.standings td { padding: 9px 8px 9px 0; border-bottom: 1px solid var(--rule); }
-  table.standings .r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
-  table.standings th.r { text-align: right; }
-  table.standings .rank { width: 26px; font: 800 18px/1 var(--display); color: var(--muted); }
-  table.standings tbody tr:first-child .rank { color: var(--pink); }
-  table.standings .mgr { font-weight: 600; }
-  table.standings .tname { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
-  .leaders { list-style: none; margin: 0; padding: 0; display: grid; }
-  .leaders li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
-  .leaders .pname { font-weight: 600; }
-  .leaders .meta { font-size: 12px; color: var(--muted); grid-column: 1; }
-  .leaders .pts { grid-row: 1 / span 2; grid-column: 2; align-self: center; font: 800 26px/1 var(--display); font-variant-numeric: tabular-nums; color: var(--pink); }
-
-  .empty { padding: 60px 0; text-align: center; color: var(--muted); }
-  .empty h1 { font: 800 40px/1 var(--display); text-transform: uppercase; color: var(--ink); margin-bottom: 10px; }
-  footer { margin-top: 48px; padding-top: 14px; border-top: 3px solid var(--pink); font-size: 12px; color: var(--muted); }
-
   @media (prefers-reduced-motion: no-preference) {
-    .game, .callout { transition: transform 0.15s ease; }
-    .game:hover, .callout:hover { transform: translateY(-1px); }
+    a.game, .archive a, .other-games a, .chips a { transition: transform 0.12s ease, box-shadow 0.12s ease; }
   }
+  a.game:hover, .archive a:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
+  a.game:active, .archive a:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  .badge-tilt { display: inline-block; transform: rotate(-3deg); }
+
+  /* ---------- site header ---------- */
+  .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-inline: -16px; padding-inline: 16px; border-bottom: 2px solid var(--edge); }
+  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .flag-mark { width: 24px; height: 28px; flex: none; background: var(--pink); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); transform: rotate(-8deg); filter: drop-shadow(2px 2px 0 var(--drop)); }
+  .brand-name { font: 800 24px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .brand-script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 9px; margin-left: 6px; display: inline-block; transform: rotate(-4deg); vertical-align: 3px; }
+  nav.site-nav { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; padding: 2px 4px 4px 2px; }
+  nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 13px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
+  nav.site-nav a:hover { border-color: var(--edge); }
+  nav.site-nav a[aria-current="page"] { background: var(--accent); color: var(--on-accent); border-color: var(--edge); box-shadow: 2px 2px 0 var(--drop); }
+
+  .draft-banner { margin-top: 18px; padding: 10px 14px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); font-size: 13.5px; font-weight: 700; }
+
+  /* ---------- page heads ---------- */
+  .crumbs { margin-top: 20px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; }
+  .crumbs a { color: var(--accent); text-decoration: none; font-weight: 700; }
+  .crumbs a:hover { text-decoration: underline; }
+  .page-head { padding-block: 22px 6px; display: grid; gap: 10px; }
+  .kicker { justify-self: start; font: 600 14px/1 var(--script); color: var(--on-accent); background: var(--accent); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
+  .page-head h1 { font: 800 clamp(36px, 6.2vw, 62px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; }
+  .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .dek a { color: var(--accent); font-weight: 700; }
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .pill { padding: 6px 12px; border-radius: 999px; font-size: 13px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
+  .pill:nth-child(1) { background: var(--lime); transform: rotate(-1.5deg); }
+  .pill:nth-child(2) { background: var(--pink); transform: rotate(1deg); }
+  .pill:nth-child(3) { background: var(--orange); transform: rotate(-1deg); }
+  .pill b { font-weight: 700; }
+
+  .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
+  .week-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+  .week-switch a:hover { background: var(--accent-soft); }
+  .week-switch a[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .week-switch .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; vertical-align: 1px; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 44px; }
+  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .sec-head h2 { font: 800 28px/1 var(--display); letter-spacing: 0.01em; }
+  .sec-head .rule { flex: 1; height: 2px; background: var(--rule); }
+  .sec-head .more { font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; white-space: nowrap; }
+  .sec-head .more:hover { text-decoration: underline; }
+  .sec-sub { margin: 0 0 16px; color: var(--muted); font-size: 13.5px; max-width: 70ch; }
+  .marker { width: 20px; height: 22px; flex: none; border: 2px solid var(--edge); }
+  .marker.flag { background: var(--pink); border: none; clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); }
+  .marker.ball { background: var(--orange); border-radius: 50% / 38%; transform: rotate(-30deg); width: 24px; height: 15px; }
+  .marker.break { background: var(--ink); border: none; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .marker.board { background: var(--accent); border-radius: 5px; }
+  .marker.book { background: var(--lime); border-radius: 2px 5px 5px 2px; width: 18px; }
+
+  /* ---------- score boxes ---------- */
+  .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr)); gap: 18px; }
+  a.game { background: var(--card); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; }
+  .bug { background: var(--board); color: var(--on-board); display: grid; border-bottom: 2px solid var(--edge); }
+  .bug-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; padding: 11px 16px; }
+  .bug-row + .bug-row { border-top: 1px solid var(--board-2); }
+  .bug-row.loser { color: var(--on-board-muted); }
+  .bug-mgr { font: 800 23px/1 var(--display); letter-spacing: 0.02em; }
+  .bug-team { font-size: 11.5px; color: var(--on-board-muted); margin-top: 3px; }
+  .bug-score { font: 800 34px/1 var(--display); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; }
+  .wl { font: 700 11px/1 var(--mono); padding: 4px 6px; border-radius: 4px; }
+  .bug .wl.W { background: var(--lime); color: var(--on-pop); transform: rotate(-5deg); }
+  .bug .wl.L { background: transparent; color: var(--on-board-muted); border: 1px solid var(--board-2); }
+  .game-body { padding: 14px 16px; display: grid; gap: 10px; flex: 1; align-content: space-between; }
+  .blurb { margin: 0; font-size: 14.5px; }
+  .open { font-size: 13.5px; font-weight: 700; color: var(--accent); }
+  a.game:hover .open { text-decoration: underline; }
+
+  /* ---------- matchup page ---------- */
+  .versus { margin-top: 18px; background: var(--board); color: var(--on-board); padding: 22px 20px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+  .versus .side { display: grid; gap: 4px; }
+  .versus .side.right { text-align: right; justify-items: end; }
+  .versus .mgr { font: 800 clamp(26px, 5vw, 40px)/1 var(--display); }
+  .versus .mgr a { text-decoration: none; }
+  .versus .team { font-size: 12.5px; color: var(--on-board-muted); }
+  .versus .score { font: 900 clamp(40px, 8vw, 68px)/1 var(--display); font-variant-numeric: tabular-nums; }
+  .versus .side.loser .score, .versus .side.loser .mgr { color: var(--on-board-muted); }
+  .versus .vs { font: 600 18px/1 var(--script); color: var(--on-pop); background: var(--lime); border-radius: 999px; padding: 8px 10px; transform: rotate(-6deg); }
+  .versus .foot { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--board-2); padding-top: 12px; margin-top: 6px; font: 500 12px/1.4 var(--mono); color: var(--on-board-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  @media (max-width: 520px) {
+    .versus { grid-template-columns: 1fr; }
+    .versus .side.right { text-align: left; justify-items: start; }
+    .versus .vs { display: none; }
+  }
+  .decided { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .decided li { background: var(--card); padding: 12px 14px; display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; font-size: 14.5px; }
+  .decided .tag { font: 600 11.5px/1 var(--mono); padding: 5px 7px; border-radius: 6px; border: 1.5px solid var(--edge); white-space: nowrap; margin-top: 1px; color: var(--on-pop); }
+  .decided .tag.good { background: var(--lime); }
+  .decided .tag.bad { background: var(--pink); }
+  .decided .tag.info { background: var(--card); color: var(--ink); }
+
+  .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
+  .lineup { background: var(--card); padding: 14px 16px; }
+  .lineup h3 { font: 800 21px/1.1 var(--display); display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .lineup h3 a { text-decoration: none; }
+  .lineup table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .lineup th { text-align: left; font: 600 11px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 0 0 6px; }
+  .lineup th.r, .lineup td.r { text-align: right; }
+  .lineup td { padding: 5px 0; border-top: 1px solid var(--rule); vertical-align: baseline; }
+  .lineup td.slot { width: 44px; color: var(--muted); font: 500 11px/1 var(--mono); }
+  .lineup td.r { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 10px; }
+  .lineup td.proj { color: var(--muted); font-size: 12px; }
+  .lineup tr.bench-head td { padding-top: 12px; border-top: none; font: 700 11px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .lineup tr.bench td { color: var(--muted); }
+  .lineup tr.bench.hot td { color: var(--ink); font-weight: 700; background: var(--pink-soft); }
+  .lineup tr.bench.hot td.slot::after { content: " ⚑"; color: var(--ink); }
+  .lineup .opt { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+  .lineup .opt b { color: var(--ink); }
+
+  .other-games { display: flex; flex-wrap: wrap; gap: 10px; }
+  .other-games a { text-decoration: none; background: var(--card); border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 600; box-shadow: 3px 3px 0 var(--drop); }
+
+  /* ---------- award cards: each kind gets its own colored sticker shadow ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 18px; }
+  .card { background: var(--card); padding: 14px 16px 16px; display: grid; gap: 8px; align-content: start; }
+  .card.balls { box-shadow: 5px 5px 0 var(--orange); }
+  .card.flags { box-shadow: 5px 5px 0 var(--pink); }
+  .card.breaks { box-shadow: 5px 5px 0 var(--drop); }
+  .card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .who { font: 800 14px/1 var(--display); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .who a { text-decoration: none; }
+  .who a:hover { color: var(--accent); }
+  .stat { font: 600 12px/1 var(--mono); font-variant-numeric: tabular-nums; padding: 5px 8px; border-radius: 6px; white-space: nowrap; border: 1.5px solid var(--edge); color: var(--on-pop); transform: rotate(-3deg); }
+  .card.balls .stat { background: var(--orange); }
+  .card.flags .stat { background: var(--pink); }
+  .card.breaks .stat { background: var(--lime); }
+  .card h3 { font: 800 22px/1.05 var(--display); letter-spacing: 0.01em; }
+  .card p { margin: 0; font-size: 14.5px; }
+
+  /* ---------- tables ---------- */
+  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px 32px; }
+  .table-scroll { overflow-x: auto; }
+  table.std { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.std th { text-align: left; font: 600 11.5px/1.2 var(--body); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 0 10px 8px 0; border-bottom: 2px solid var(--edge); white-space: nowrap; }
+  table.std td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule); }
+  table.std tbody tr:last-child td { border-bottom: none; }
+  table.std .r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.std th.r { font-family: var(--body); }
+  table.std .rank { width: 30px; font: 800 19px/1 var(--display); color: var(--muted); }
+  table.std tbody tr:first-child .rank { color: var(--accent); }
+  table.std .mgr a { font-weight: 700; text-decoration: none; }
+  table.std .mgr a:hover { color: var(--accent); text-decoration: underline; }
+  table.std .tname { display: block; font-size: 12px; color: var(--muted); }
+  .res { font: 700 11px/1 var(--mono); padding: 3px 5px; border-radius: 4px; }
+  .res.W { color: var(--win); background: color-mix(in srgb, var(--win) 14%, transparent); }
+  .res.L { color: var(--loss); background: color-mix(in srgb, var(--loss) 12%, transparent); }
+  .std-card { background: var(--card); padding: 16px 16px 6px; }
+
+  .heat td.cell { text-align: center; font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; padding: 9px 6px; border: 3px solid var(--card); border-radius: 8px; white-space: nowrap; }
+  .heat td.cell a { text-decoration: none; }
+  .heat td.cell a:hover { text-decoration: underline; }
+  .heat td.cell .res { margin-left: 4px; background: var(--card); }
+  .heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 8px; font-size: 12px; color: var(--muted); }
+  .heat-legend .ramp { width: 120px; height: 10px; border-radius: 5px; border: 1px solid var(--rule); background: linear-gradient(90deg, color-mix(in srgb, var(--heat-hi) 6%, var(--card)), color-mix(in srgb, var(--heat-hi) 48%, var(--card))); }
+
+  .leaders { list-style: none; margin: 0; padding: 0; display: grid; }
+  .leaders li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 2px dashed var(--rule); }
+  .leaders .pname { font-weight: 700; }
+  .leaders .meta { font-size: 12.5px; color: var(--muted); grid-column: 1; }
+  .leaders .meta a { text-decoration: none; font-weight: 700; }
+  .leaders .pts { grid-row: 1 / span 2; grid-column: 2; align-self: center; font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; color: var(--on-pop); background: var(--orange); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 8px; transform: rotate(-2deg); }
+
+  .stat-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 14px; margin-top: 14px; }
+  .tile { background: var(--card); padding: 12px 14px; }
+  .tile:nth-child(1) { background: var(--lime); color: var(--on-pop); }
+  .tile:nth-child(1) .label, .tile:nth-child(1) .sub { color: var(--on-pop); }
+  .tile .label { font-size: 12px; color: var(--muted); }
+  .tile .value { font: 800 30px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+  .tile .sub { font-size: 12px; color: var(--muted); }
+
+  .terms { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0 28px; margin: 0; }
+  .term { padding: 12px 0; border-top: 2px dashed var(--rule); }
+  .term dt { font: 800 19px/1.1 var(--display); margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .term dt a { font: 600 11.5px/1 var(--body); color: var(--accent); text-decoration: none; }
+  .term dd { margin: 0; font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chips a { text-decoration: none; background: var(--card); color: var(--ink); border: 2px solid var(--edge); padding: 6px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 700; box-shadow: 2px 2px 0 var(--drop); }
+  .chips a:nth-child(3n+1) { background: var(--lime); color: var(--on-pop); }
+  .chips a:nth-child(3n+2) { background: var(--pink); color: var(--on-pop); }
+  .chips a:nth-child(3n) { background: var(--orange); color: var(--on-pop); }
+  .chips a:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--drop); }
+
+  .archive { display: grid; gap: 16px; }
+  .archive a { text-decoration: none; background: var(--card); padding: 16px 18px; display: grid; gap: 6px; }
+  .archive .wk { justify-self: start; font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; transform: rotate(-2deg); }
+  .archive h3 { font: 800 26px/1.05 var(--display); }
+  .archive p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  .empty { padding: 70px 0; text-align: center; color: var(--muted); }
+  .empty h1 { font: 800 42px/1 var(--display); color: var(--ink); margin-bottom: 10px; }
+  /* ---------- live ---------- */
+  .live-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--loss); margin-right: 6px; vertical-align: 1px; }
+  @media (prefers-reduced-motion: no-preference) { .live-dot { animation: pulse 1.6s ease-in-out infinite; } }
+  @keyframes pulse { 50% { opacity: 0.35; } }
+  .live-banner { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--accent); text-decoration: none; font-weight: 700; }
+  .live-banner .go { color: var(--accent); white-space: nowrap; }
+  .live-strip { display: grid; gap: 8px; padding: 10px 16px; border-bottom: 2px solid var(--edge); background: var(--accent-soft); font-size: 12.5px; }
+  .live-strip .row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+  .prob { display: flex; gap: 2px; height: 10px; border-radius: 5px; background: var(--card); border: 1.5px solid var(--edge); overflow: hidden; }
+  .prob span { display: block; height: 100%; }
+  .prob .a { background: var(--accent); }
+  .prob .b { background: var(--orange); }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; border: 1px solid var(--edge); margin-right: 5px; vertical-align: 0; }
+  .moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .moves li { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
+  .moves .when { grid-row: span 2; font: 500 11.5px/1.3 var(--mono); color: var(--muted); padding-top: 2px; }
+  .moves .add { color: var(--win); font-weight: 700; }
+  .moves .drop { color: var(--loss); font-weight: 700; }
+
+  footer { margin-top: 56px; padding-top: 14px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  footer .script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; display: inline-block; transform: rotate(-2deg); }
 </style>
 
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <span class="flag-mark" aria-hidden="true"></span>
+      <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
+    </a>
+    <nav class="site-nav" id="nav" aria-label="Site">
+      <a href="#" data-nav="week">Recaps</a>
+      <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
+      <a href="#standings" data-nav="standings">Standings</a>
+      <a href="#archive" data-nav="archive">Archive</a>
+      <a href="#glossary" data-nav="glossary">Glossary</a>
+    </nav>
+  </div>
+</header>
 <div class="wrap">
-  <header class="masthead">
-    <div class="brand">
-      <div class="flag-mark" aria-hidden="true"></div>
-      <div>
-        <div class="brand-name">Flag on the Play</div>
-        <div class="brand-sub" id="league-line"></div>
-      </div>
-    </div>
-    <nav class="weeks" id="weeks" aria-label="Choose a week"></nav>
-  </header>
-  <main id="main"></main>
+  <main id="main" tabindex="-1"></main>
   <footer id="footer"></footer>
 </div>
 
@@ -251,180 +351,467 @@
 <script>
 (() => {
   const DATA = JSON.parse(document.getElementById('recap-data').textContent);
-  const weeks = DATA.weeks;
-  const $ = (sel) => document.querySelector(sel);
+  const WEEKS = DATA.weeks;
+  const SEASON = DATA.season;
+  const LIVE = DATA.live;
+  if (LIVE) document.getElementById('nav-live').hidden = false;
+  const base = (w) => (w.live ? '#live' : `#week-${w.week}`);
+  const updated = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' });
+  const liveLabel = (w) => (w.complete ? `Week ${w.week} is final. The official recap drops Tuesday.` : `Week ${w.week} is happening now.`);
+  const TEAMS = Object.fromEntries(SEASON.standings.map((t) => [t.team_id, t]));
+  const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-  const fmt = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
-  const fmt1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  const f2 = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
+  const f1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  const signed = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + f1(Math.abs(n));
   const SLOT_ORDER = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
+  const KIND = {
+    game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good',
+      sub: 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.' },
+    flags: { cls: 'flags', label: 'Flag', title: 'Flags on the play', marker: 'flag', tag: 'bad',
+      sub: 'When a player breaks a rule, the referee throws a yellow flag. These are lineup crimes, mostly points left on the bench.' },
+    tough_breaks: { cls: 'breaks', label: 'Tough break', title: 'Tough breaks', marker: 'break', tag: 'info',
+      sub: 'Not your fault. The football gods just chose violence.' },
+  };
+  const AWARD_KINDS = Object.keys(KIND);
+  const teamIdByManager = Object.fromEntries(SEASON.standings.map((t) => [t.manager, t.team_id]));
+  const mgrLink = (name) => (teamIdByManager[name] ? `<a href="#team-${teamIdByManager[name]}">${esc(name)}</a>` : esc(name));
+  const record = (t) => `${t.wins}–${t.losses}${t.ties ? `–${t.ties}` : ''}`;
+  const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+  const latest = () => WEEKS[WEEKS.length - 1];
+  const weekOf = (n) => WEEKS.find((w) => w.week === n);
 
-  $('#league-line').textContent = `${DATA.league.name.trim()} · ${DATA.league.season} · ${DATA.league.scoring}`;
-  $('#footer').innerHTML = DATA.preview
-    ? 'Preview copy for review. Weeks marked draft are not on the league page yet.'
-    : 'Scores and projections from ESPN. A new recap drops every Tuesday, after the Monday night game.';
+  $('#footer').innerHTML = `
+    <span>${esc(DATA.league.name)} · ${DATA.league.season} · ${esc(DATA.league.scoring)} scoring</span>
+    <span>${DATA.preview ? 'Preview copy. Draft weeks are not on the league site yet.' : '<span class="script">new recap every Tuesday</span>'}</span>`;
 
-  if (!weeks.length) {
-    $('#main').innerHTML = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`;
-    return;
+  /* ---------- shared pieces ---------- */
+  const secHead = (marker, title, more = '') =>
+    `<div class="sec-head"><span class="marker ${marker}" aria-hidden="true"></span><h2>${title}</h2><div class="rule"></div>${more}</div>`;
+  const draftBanner = (w) =>
+    DATA.preview && w.status !== 'published' ? `<div class="draft-banner">Draft. Week ${w.week} isn't on the league site yet.</div>` : '';
+
+  function weekSwitch(active, suffix = '') {
+    if (WEEKS.length < 2) return '';
+    return `<nav class="week-switch" aria-label="Choose a week">${WEEKS.map((w) => `
+      <a href="#week-${w.week}${suffix}" ${w.week === active.week ? 'aria-current="page"' : ''}>Week ${w.week}${DATA.preview && w.status !== 'published' ? '<span class="dot" title="Draft"></span>' : ''}</a>`).join('')}</nav>`;
   }
 
-  function pickWeek() {
-    const m = /^#week-(\d+)$/.exec(location.hash);
-    const n = m && Number(m[1]);
-    return weeks.find((w) => w.week === n) || weeks[weeks.length - 1];
-  }
-
-  function renderTabs(active) {
-    $('#weeks').innerHTML = weeks.map((w) => `
-      <button type="button" data-week="${w.week}" aria-pressed="${w.week === active.week}">
-        Week ${w.week}${DATA.preview && w.status !== 'published' ? '<span class="dot" title="Draft"></span>' : ''}
-      </button>`).join('');
-  }
-
-  function lineupTable(side, benchHotThreshold) {
-    const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
-    const bench = [...side.bench].sort((a, b) => b.points - a.points);
-    const row = (p, cls) => `<tr class="${cls}"><td class="slot">${esc(cls.includes('bench') ? 'BN' : p.slot)}</td><td>${esc(p.name)}</td><td class="pts">${fmt(p.points)}<small>${fmt1(p.projected)}</small></td></tr>`;
-    const left = Math.max(0, side.optimal - side.points);
+  function scoreBox(g, w) {
     return `
-      <div class="lineup">
-        <h4>${esc(side.manager)} <span class="num" style="font-size:12px;color:var(--muted)">${fmt(side.points)}</span></h4>
-        <table>
-          ${starters.map((p) => row(p, 'starter')).join('')}
-          ${bench.map((p) => row(p, `bench${p.points >= benchHotThreshold(p) ? ' hot' : ''}`)).join('')}
-        </table>
-        <div class="opt">Best possible lineup <b class="num">${fmt(side.optimal)}</b>${left > 0.005 ? ` · <b class="num">${fmt(left)}</b> left on bench` : ' · perfect lineup'}</div>
-      </div>`;
-  }
-
-  function gameCard(g, week) {
-    // A bench player is "hot" if he outscored the lowest starter he could have replaced
-    const hot = (side) => (p) => {
-      const ok = { QB: ['QB'], RB: ['RB', 'FLEX'], WR: ['WR', 'FLEX'], TE: ['TE', 'FLEX'], DST: ['DST'], K: ['K'] }[p.pos] || [];
-      const cands = side.starters.filter((s) => ok.includes(s.slot));
-      return cands.length ? Math.min(...cands.map((s) => s.points)) + 0.005 : Infinity;
-    };
-    const status = week.complete ? 'Final' : 'In progress';
-    const margin = g.winner.points - g.loser.points;
-    return `
-      <article class="game">
-        <div class="bug" role="group" aria-label="${esc(g.winner.manager)} ${fmt(g.winner.points)}, ${esc(g.loser.manager)} ${fmt(g.loser.points)}">
-          ${[['winner', g.winner], ['loser', g.loser]].map(([cls, s]) => `
+      <a class="game" href="${base(w)}.game-${g.key}" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}. Open matchup">
+        <div class="bug">
+          ${[['winner', g.winner, 'W'], ['loser', g.loser, 'L']].map(([cls, s, r]) => `
             <div class="bug-row ${cls}">
               <div><div class="bug-mgr">${esc(s.manager)}</div><div class="bug-team">${esc(s.team_name)}</div></div>
-              <div class="bug-score">${fmt(s.points)}</div>
+              <div class="bug-score">${f2(s.points)}${w.complete ? `<span class="wl ${r}">${r}</span>` : ''}</div>
             </div>`).join('')}
-          <div class="bug-foot"><span>${status}</span><span>Margin ${fmt(margin)}</span></div>
         </div>
+        ${w.live && !w.complete ? liveStrip(g) : ''}
         <div class="game-body">
           ${g.blurb ? `<p class="blurb">${esc(g.blurb)}</p>` : ''}
-          <details class="box">
-            <summary>Box score</summary>
-            <div class="box-grid">${lineupTable(g.winner, hot(g.winner))}${lineupTable(g.loser, hot(g.loser))}</div>
-          </details>
+          <span class="open">${w.live ? 'Live box score →' : 'Box score and lineup calls →'}</span>
         </div>
+      </a>`;
+  }
+
+  function liveStrip(g) {
+    return `<div class="live-strip">${[g.winner, g.loser].map((s) => `
+      <div class="row">
+        <span><span class="swatch" style="background:var(--${s === g.winner ? 'accent' : 'orange'})" aria-hidden="true"></span><b>${esc(s.manager)}</b> · projected ${f1(s.live_projection)} · ${s.yet_to_play} starter${s.yet_to_play === 1 ? '' : 's'} left to play</span>
+        <span class="num">${s.win_probability == null ? '' : `${Math.round(s.win_probability * 100)}% to win`}</span>
+      </div>`).join('')}
+      ${g.winner.win_probability == null ? '' : `<div class="prob" role="img" aria-label="Chance to win: ${esc(g.winner.manager)} ${Math.round(g.winner.win_probability * 100)}%, ${esc(g.loser.manager)} ${Math.round((1 - g.winner.win_probability) * 100)}%"><span class="a" style="flex:${g.winner.win_probability.toFixed(3)}"></span><span class="b" style="flex:${(1 - g.winner.win_probability).toFixed(3)}"></span></div>`}
+    </div>`;
+  }
+
+  function awardCard(c, kind) {
+    const k = KIND[kind];
+    return `
+      <article class="card ${k.cls}">
+        <div class="card-top"><span class="who">${mgrLink(c.manager)}</span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
+        <h3>${esc(c.title)}</h3>
+        <p>${esc(c.text)}</p>
       </article>`;
   }
 
-  function callouts(items, cls, marker, title, sub) {
-    if (!items || !items.length) return '';
+  function standingsTable(rows, { compact } = {}) {
+    const full = !compact;
     return `
-      <section class="${cls}">
-        <div class="sec-head"><span class="marker ${marker}" aria-hidden="true"></span><h2>${title}</h2><div class="rule"></div></div>
-        ${sub ? `<p style="margin:-6px 0 14px;color:var(--muted);font-size:13px">${sub}</p>` : ''}
-        <div class="callouts">
-          ${items.map((c) => `
-            <article class="callout">
-              <div class="callout-top"><span class="who">${esc(c.manager)}</span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
-              <h3>${esc(c.title)}</h3>
-              <p>${esc(c.text)}</p>
-            </article>`).join('')}
-        </div>
-      </section>`;
+      <div class="table-scroll"><table class="std">
+        <thead><tr>
+          <th></th><th>Team</th><th class="r">Record</th>
+          ${full ? '<th class="r">Streak</th>' : ''}
+          <th class="r" title="Total points scored this season">Scored</th>
+          ${full ? '<th class="r" title="Total points opponents scored">Allowed</th><th class="r" title="Record if this team played every other team every week">Vs. everyone</th><th class="r" title="Season total of points left on the bench">Benched</th>' : ''}
+        </tr></thead>
+        <tbody>${rows.map((t, i) => `
+          <tr>
+            <td class="rank">${i + 1}</td>
+            <td class="mgr"><a href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tname">${esc(t.team_name)}</span></td>
+            <td class="r">${record(t)}</td>
+            ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
+            <td class="r">${f2(t.points_for)}</td>
+            ${full ? `<td class="r">${f2(t.points_against)}</td><td class="r">${t.all_play_w}–${t.all_play_l}</td><td class="r">${f2(t.bench_left)}</td>` : ''}
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`;
   }
 
-  function glossary(items) {
-    if (!items || !items.length) return '';
+  function lineupCard(side, won) {
+    // A bench player is "hot" if he outscored a starter he could have replaced
+    const floor = (p) => {
+      const ok = { QB: ['QB'], RB: ['RB', 'FLEX'], WR: ['WR', 'FLEX'], TE: ['TE', 'FLEX'], DST: ['DST'], K: ['K'] }[p.pos] || [];
+      const c = side.starters.filter((s) => ok.includes(s.slot));
+      return c.length ? Math.min(...c.map((s) => s.points)) : Infinity;
+    };
+    const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
+    const bench = [...side.bench].sort((a, b) => b.points - a.points);
+    const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${esc(p.name)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
     return `
-      <section class="glossary">
-        <div class="sec-head"><span class="marker book" aria-hidden="true"></span><h2>Rookie glossary</h2><div class="rule"></div></div>
-        <p style="margin:-6px 0 14px;color:var(--muted);font-size:13px">Football words from this week's recap, explained for the rest of us.</p>
-        <dl class="terms">
-          ${items.map((g) => `<div class="term"><dt>${esc(g.term)}</dt><dd>${esc(g.definition)}</dd></div>`).join('')}
-        </dl>
-      </section>`;
+      <div class="lineup">
+        <h3><span>${mgrLink(side.manager)}</span><span class="num">${f2(side.points)} <span class="res ${won ? 'W' : 'L'}">${won ? 'W' : 'L'}</span></span></h3>
+        <table>
+          <thead><tr><th>Slot</th><th>Player</th><th class="r">Pts</th><th class="r">Proj</th></tr></thead>
+          <tbody>
+            ${starters.map((p) => row(p, 'starter', p.slot)).join('')}
+            <tr class="bench-head"><td colspan="4">Bench</td></tr>
+            ${bench.map((p) => row(p, `bench${p.points > floor(p) + 0.005 ? ' hot' : ''}`, p.slot === 'IR' ? 'IR' : 'BN')).join('')}
+          </tbody>
+        </table>
+        <div class="opt">Best possible lineup <b class="num">${f2(side.optimal)}</b> · ${side.points_left > 0.005 ? `<b class="num">${f2(side.points_left)}</b> left on the bench` : 'perfect lineup'}</div>
+      </div>`;
   }
 
-  function render() {
-    const w = pickWeek();
-    renderTabs(w);
-    const status = w.complete ? 'Final' : '<span class="live">In progress</span>';
-    $('#main').innerHTML = `
-      ${DATA.preview && w.status !== 'published' ? `<div class="draft-banner">Draft. This week isn't on the league page yet.</div>` : ''}
-      <div class="hero">
-        <div class="eyebrow">Week ${w.week} · ${status}</div>
+  /* ---------- pages ---------- */
+  function weekPage(w) {
+    const kinds = AWARD_KINDS.filter((k) => w[k].length);
+    const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
+    return `
+      ${LIVE && w.week === latest().week ? `<a class="live-banner" href="#live"><span><span class="live-dot" aria-hidden="true"></span>${liveLabel(LIVE)}</span><span class="go">${LIVE.complete ? 'Final scores →' : 'Live scores →'}</span></a>` : ''}
+      ${weekSwitch(w)}
+      ${draftBanner(w)}
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
         <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
         ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
-        <div class="hero-stats">
-          <span>High score <b>${esc(w.high_score.manager)} <span class="num">${fmt(w.high_score.points)}</span></b></span>
-          <span>Low score <b>${esc(w.low_score.manager)} <span class="num">${fmt(w.low_score.points)}</span></b></span>
-          <span>Middle of the pack <b class="num">${fmt(w.median)}</b></span>
+        <div class="pills">
+          <span class="pill">High score <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
+          <span class="pill">Low score <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
+          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
         </div>
       </div>
 
       <section>
-        <div class="sec-head"><span class="marker board" aria-hidden="true"></span><h2>Scoreboard</h2><div class="rule"></div></div>
-        <div class="games">${w.games.map((g) => gameCard(g, w)).join('')}</div>
+        ${secHead('board', 'Scoreboard')}
+        <p class="sec-sub">Tap a game for the full box score and the lineup decisions that settled it.</p>
+        <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
       </section>
 
-      ${callouts(w.game_balls, 'balls', 'ball', 'Game balls', 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.')}
-      ${callouts(w.flags, 'flags', 'flag', 'Flags on the play', 'When a player breaks a rule, the referee throws a yellow flag. These are lineup crimes, mostly points left on the bench.')}
-      ${callouts(w.tough_breaks, 'breaks', 'break', 'Tough breaks', 'Not your fault. The football gods just chose violence.')}
-      ${glossary(w.glossary)}
+      ${kinds.length ? `
+      <section>
+        ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
+        <p class="sec-sub">The top pick from each category. The rest are on the awards page.</p>
+        <div class="cards">${kinds.map((k) => awardCard(w[k][0], k)).join('')}</div>
+      </section>` : ''}
 
       <section>
         <div class="two-col">
           <div>
-            <div class="sec-head"><span class="marker board" aria-hidden="true"></span><h2>Standings</h2><div class="rule"></div></div>
-            <div class="table-scroll">
-              <table class="standings">
-                <thead><tr><th></th><th>Manager</th><th class="r">W–L</th><th class="r" title="Points for: total points scored">Scored</th><th class="r" title="Points against: total points opponents scored">Allowed</th></tr></thead>
-                <tbody>
-                  ${w.standings.map((s, i) => `
-                    <tr>
-                      <td class="rank">${i + 1}</td>
-                      <td class="mgr">${esc(s.manager)}<span class="tname">${esc(s.team_name)}</span></td>
-                      <td class="r">${s.wins}–${s.losses}${s.ties ? `–${s.ties}` : ''}</td>
-                      <td class="r">${fmt(s.points_for)}</td>
-                      <td class="r">${fmt(s.points_against)}</td>
-                    </tr>`).join('')}
-                </tbody>
-              </table>
-            </div>
+            ${secHead('board', 'Standings', '<a class="more" href="#standings">Full standings →</a>')}
+            <p class="sec-sub">Final standings through Week ${latest().week}. Only finished, recapped weeks count${LIVE ? `, so Week ${LIVE.week} joins after its recap` : ''}.</p>
+            <div class="std-card">${standingsTable(SEASON.standings, { compact: true })}</div>
           </div>
           <div>
-            <div class="sec-head"><span class="marker ball" aria-hidden="true"></span><h2>Top scorers</h2><div class="rule"></div></div>
-            <ol class="leaders">
-              ${w.top_performers.map((p) => `
-                <li>
-                  <span class="pname">${esc(p.name)}</span>
-                  <span class="pts">${fmt1(p.points)}</span>
-                  <span class="meta">${esc(p.manager)} · ${esc(p.slot)} · projected <span class="num">${fmt1(p.projected)}</span></span>
-                </li>`).join('')}
+            ${secHead('ball', 'Top scorers')}
+            <p class="sec-sub">The five best starters in the league in Week ${w.week}.</p>
+            <ol class="leaders">${w.top_performers.map((p) => `
+              <li><span class="pname">${esc(p.name)}</span><span class="pts">${f1(p.points)}</span>
+              <span class="meta">${mgrLink(p.manager)} · ${esc(p.slot)} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
             </ol>
           </div>
         </div>
+      </section>
+
+      ${w.glossary.length ? `
+      <section>
+        ${secHead('book', `New words from Week ${w.week}`, '<a class="more" href="#glossary">Full glossary →</a>')}
+        <div class="chips">${w.glossary.map((g) => `<a href="#glossary" title="${esc(g.definition)}">${esc(g.term)}</a>`).join('')}</div>
+      </section>` : ''}`;
+  }
+
+  function livePage(w) {
+    const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    return `
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
+        <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
+        <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.</p>
+        <div class="pills">
+          <span class="pill">${w.complete ? 'High score' : 'Leading'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
+          <span class="pill">${w.complete ? 'Low score' : 'Trailing'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
+          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
+        </div>
+      </div>
+
+      <section>
+        ${secHead('board', 'Scoreboard')}
+        <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. "Left to play" counts starters with no stats yet this week. Tap a game for the live box score.'}</p>
+        <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
+      </section>
+
+      <section>
+        <div class="two-col">
+          <div>
+            ${secHead('ball', w.complete ? 'Top scorers' : 'Top scorers so far')}
+            <ol class="leaders">${w.top_performers.map((p) => `
+              <li><span class="pname">${esc(p.name)}</span><span class="pts">${f1(p.points)}</span>
+              <span class="meta">${mgrLink(p.manager)} · ${esc(p.slot)} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
+            </ol>
+          </div>
+          <div>
+            ${secHead('flag', 'On the wire this week')}
+            <p class="sec-sub">Waiver pickups, free-agent adds and drops.</p>
+            ${w.moves.length ? `<ul class="moves">${w.moves.map((m) => `
+              <li><span class="when">${fmtDate(m.date)}</span>
+                <span><b>${mgrLink(m.manager)}</b></span>
+                <span>${m.added.length ? `<span class="add">+ ${m.added.map(esc).join(', ')}</span>` : ''}${m.added.length && m.dropped.length ? ' · ' : ''}${m.dropped.length ? `<span class="drop">− ${m.dropped.map(esc).join(', ')}</span>` : ''}</span>
+              </li>`).join('')}</ul>` : '<p class="sec-sub">No moves yet this week.</p>'}
+          </div>
+        </div>
+      </section>
+      <p class="sec-sub" style="margin-top:28px">Standings only count finished weeks, so this week shows up there once the recap drops Tuesday.</p>`;
+  }
+
+  function awardsPage(w) {
+    return `
+      <div class="crumbs"><a href="#week-${w.week}">Week ${w.week}</a><span>›</span><span>Awards</span></div>
+      ${weekSwitch(w, '.awards')}
+      ${draftBanner(w)}
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} awards</div>
+        <h1>Game balls, flags and tough breaks</h1>
+      </div>
+      ${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
+        <section>
+          ${secHead(KIND[k].marker, KIND[k].title)}
+          <p class="sec-sub">${KIND[k].sub}</p>
+          <div class="cards">${w[k].map((c) => awardCard(c, k)).join('')}</div>
+        </section>`).join('')}
+      ${w.glossary.length ? `
+      <section>
+        ${secHead('book', 'Rookie glossary', '<a class="more" href="#glossary">Every term →</a>')}
+        <p class="sec-sub">Football words from this week's recap, explained for the rest of us.</p>
+        <dl class="terms">${w.glossary.map((g) => `<div class="term"><dt>${esc(g.term)}</dt><dd>${esc(g.definition)}</dd></div>`).join('')}</dl>
+      </section>` : ''}`;
+  }
+
+  function matchupPage(w, key) {
+    const g = w.games.find((x) => x.key === key);
+    if (!g) return notFound();
+    const W = g.winner, L = g.loser;
+    const items = [];
+    for (const [s, won, opp] of [[W, true, L], [L, false, W]]) {
+      for (const sw of s.swaps.filter((x) => Math.abs(x.gain) >= 1)) {
+        items.push({ tag: sw.gain > 0 ? 'good' : 'bad', label: signed(sw.gain),
+          text: `${esc(s.manager)} started ${esc(sw.started)} (${f2(sw.started_points)}) over ${esc(sw.benched)} (${f2(sw.benched_points)}) at ${esc(sw.slot)}.` });
+      }
+      if (s.points_left > 0.5) {
+        const flip = !won && s.optimal > opp.points;
+        items.push({ tag: flip ? 'bad' : 'info', label: `${f1(s.points_left)} benched`,
+          text: `${esc(s.manager)} left ${f2(s.points_left)} points on the bench. Her best possible lineup scored ${f2(s.optimal)}${flip ? `, enough to beat ${esc(opp.manager)}` : ''}.` });
+      } else {
+        items.push({ tag: 'good', label: 'perfect', text: `${esc(s.manager)} started her best possible lineup.` });
+      }
+    }
+    const related = AWARD_KINDS.flatMap((k) => w[k].filter((c) => c.manager === W.manager || c.manager === L.manager).map((c) => awardCard(c, k)));
+    const others = w.games.filter((x) => x.key !== key);
+    const lead = w.live && !w.complete;
+    return `
+      <div class="crumbs"><a href="${base(w)}">${w.live ? 'Live · ' : ''}Week ${w.week}</a><span>›</span><span>${esc(W.manager)} vs ${esc(L.manager)}</span></div>
+      ${draftBanner(w)}
+      <div class="versus">
+        <div class="side winner"><div class="mgr">${mgrLink(W.manager)}</div><div class="team">${esc(W.team_name)}</div><div class="score">${f2(W.points)}</div></div>
+        <div class="vs" aria-hidden="true">vs</div>
+        <div class="side right loser"><div class="mgr">${mgrLink(L.manager)}</div><div class="team">${esc(L.team_name)}</div><div class="score">${f2(L.points)}</div></div>
+        <div class="foot"><span>Week ${w.week} · ${w.complete ? 'Final' : `In progress · updated ${updated(w.captured_at)}`}</span><span>${esc(W.manager)} ${lead ? 'leads' : 'by'} ${f2(W.points - L.points)}</span></div>
+      </div>
+      ${lead ? `<div style="margin-top:14px" class="a-live">${liveStrip(g).replace('class="live-strip"', 'class="live-strip" style="border:2px solid var(--edge);border-radius:14px"')}</div>` : ''}
+      ${g.blurb ? `<p class="dek" style="color:var(--ink);margin-top:22px">${esc(g.blurb)}</p>` : ''}
+
+      <section>
+        ${secHead('flag', lead ? 'So far' : 'How it was decided')}
+        <p class="sec-sub">${lead ? 'Lineup swaps and bench points so far. These change as games are played.' : 'The lineup swaps each manager made that stuck, and how many points each left on the bench.'}</p>
+        <ul class="decided">${items.map((i) => `<li><span class="tag ${i.tag}">${esc(i.label)}</span><span>${i.text}</span></li>`).join('')}</ul>
+      </section>
+
+      ${related.length ? `<section>${secHead('ball', 'Their awards this week')}<div class="cards">${related.join('')}</div></section>` : ''}
+
+      <section>
+        ${secHead('board', 'Box score')}
+        <p class="sec-sub">Points scored and the experts' projection for every player. A ⚑ on the bench marks a player who outscored a starter he could have replaced.</p>
+        <div class="box-grid">${lineupCard(W, true)}${lineupCard(L, false)}</div>
+      </section>
+
+      ${others.length ? `<section>${secHead('board', 'Other games this week')}<div class="other-games">${others.map((o) => `<a href="${base(w)}.game-${o.key}">${esc(o.winner.manager)} ${f2(o.winner.points)} · ${esc(o.loser.manager)} ${f2(o.loser.points)}</a>`).join('')}</div></section>` : ''}`;
+  }
+
+  function standingsPage() {
+    const rows = SEASON.standings;
+    const weeks = SEASON.weeks_played;
+    const all = rows.flatMap((t) => t.weekly.map((g) => g.points));
+    const lo = Math.min(...all), hi = Math.max(...all);
+    const shade = (p) => `background: color-mix(in srgb, var(--heat-hi) ${(hi > lo ? 6 + ((p - lo) / (hi - lo)) * 42 : 20).toFixed(0)}%, var(--card))`;
+    const luck = rows.map((t) => ({ t, diff: (t.wins + 0.5 * t.ties) / weeks.length - t.all_play_w / Math.max(1, t.all_play_w + t.all_play_l) }))
+      .sort((a, b) => b.diff - a.diff);
+    const lucky = luck[0], unlucky = luck[luck.length - 1];
+    const luckCard = (x, cls, title, text) => `
+      <article class="card ${cls}"><div class="card-top"><span class="who">${mgrLink(x.t.manager)}</span><span class="stat">Real ${record(x.t)} · vs. everyone ${x.t.all_play_w}–${x.t.all_play_l}</span></div>
+        <h3>${title}</h3><p>${text}</p></article>`;
+    return `
+      <div class="page-head">
+        <div class="kicker">${DATA.league.season} season</div>
+        <h1>Standings</h1>
+        <p class="dek">Ranked by wins, then total points scored${weeks.length ? `, through Week ${weeks[weeks.length - 1]}` : ''}. Only finished, recapped weeks count${LIVE ? `; Week ${LIVE.week} is on the <a href="#live">Live</a> page until its recap drops` : ''}. Tap a name to see her season.</p>
+      </div>
+
+      <section style="margin-top:18px">
+        <div class="std-card">${standingsTable(rows)}</div>
+        <p class="sec-sub" style="margin-top:12px"><b>Vs. everyone</b> is the record a team would have if it played all seven other teams every week, so it shows who has been scoring well no matter who they drew. <b>Benched</b> is the season total of points left on the bench.</p>
+      </section>
+
+      ${weeks.length ? `
+      <section>
+        ${secHead('board', 'Points by week')}
+        <p class="sec-sub">Every team's score each week. Darker pink means a higher score. Tap a score to open that game.</p>
+        <div class="std-card table-scroll">
+          <table class="std heat">
+            <thead><tr><th>Team</th>${weeks.map((n) => `<th style="text-align:center">Week ${n}</th>`).join('')}<th class="r">Average</th></tr></thead>
+            <tbody>${rows.map((t) => `
+              <tr>
+                <td class="mgr"><a href="#team-${t.team_id}">${esc(t.manager)}</a></td>
+                ${t.weekly.map((g) => `<td class="cell" style="${shade(g.points)}" title="${esc(t.manager)}, Week ${g.week}: ${f2(g.points)} vs ${esc(g.opponent)} ${f2(g.opponent_points)}"><a href="#week-${g.week}.game-${g.game_key}">${f2(g.points)}</a><span class="res ${g.result}">${g.result}</span></td>`).join('')}
+                <td class="r">${f2(t.avg)}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+          <div class="heat-legend"><span>Lower</span><span class="ramp" aria-hidden="true"></span><span>Higher</span><span>· W = win, L = loss</span></div>
+        </div>
+      </section>
+
+      ${lucky.diff !== unlucky.diff ? `
+      <section>
+        ${secHead('flag', 'The luck report')}
+        <p class="sec-sub">Compare each team's real record with her "vs. everyone" record, and you can see who has been lucky with her opponents.</p>
+        <div class="cards">
+          ${luckCard(lucky, 'balls', 'Luckiest so far', 'Her real record is better than her scores alone would earn. She keeps drawing opponents on their off weeks.')}
+          ${luckCard(unlucky, 'breaks', 'Unluckiest so far', 'Her scores deserve a better record than she has. She keeps running into the hottest team of the week.')}
+        </div>
+      </section>` : ''}` : ''}`;
+  }
+
+  function teamPage(id) {
+    const t = TEAMS[id];
+    if (!t) return notFound();
+    const rank = SEASON.standings.indexOf(t) + 1;
+    return `
+      <div class="crumbs"><a href="#standings">Standings</a><span>›</span><span>${esc(t.manager)}</span></div>
+      <div class="page-head">
+        <div class="kicker">${esc(t.team_name)}</div>
+        <h1>${esc(t.manager)}</h1>
+      </div>
+      <div class="stat-tiles">
+        <div class="tile"><div class="label">Record</div><div class="value">${record(t)}</div><div class="sub">${ordinal(rank)} place</div></div>
+        <div class="tile"><div class="label">Average score</div><div class="value">${f1(t.avg)}</div><div class="sub">${f2(t.points_for)} total</div></div>
+        <div class="tile"><div class="label">Best week</div><div class="value">${t.best ? f1(t.best.points) : '–'}</div><div class="sub">${t.best ? `Week ${t.best.week}` : ''}</div></div>
+        <div class="tile"><div class="label">Vs. everyone</div><div class="value">${t.all_play_w}–${t.all_play_l}</div><div class="sub">if she played all 7 teams weekly</div></div>
+        <div class="tile"><div class="label">Points benched</div><div class="value">${f1(t.bench_left)}</div><div class="sub">season total</div></div>
+      </div>
+
+      <section>
+        ${secHead('board', 'Week by week')}
+        <div class="std-card table-scroll">
+          <table class="std">
+            <thead><tr><th>Week</th><th>Opponent</th><th class="r">Score</th><th class="r">Result</th><th class="r" title="Where her score ranked among all 8 teams that week">Week rank</th><th class="r">Benched</th></tr></thead>
+            <tbody>${t.weekly.map((g) => `
+              <tr>
+                <td><a href="#week-${g.week}.game-${g.game_key}" style="font-weight:700;text-decoration:none;color:var(--accent)">Week ${g.week}</a></td>
+                <td class="mgr"><a href="#team-${g.opponent_id}">${esc(g.opponent)}</a></td>
+                <td class="r">${f2(g.points)} – ${f2(g.opponent_points)}</td>
+                <td class="r"><span class="res ${g.result}">${g.result}</span></td>
+                <td class="r">${g.score_rank} of 8</td>
+                <td class="r">${f2(g.points_left)}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        ${secHead('ball', 'Her awards')}
+        ${t.awards.length ? `<ul class="decided">${t.awards.map((a) => `<li><span class="tag ${KIND[a.kind].tag}">${KIND[a.kind].label}</span><span><a href="#week-${a.week}.awards" style="font-weight:700;text-decoration:none">Week ${a.week}</a> · ${esc(a.title)}</span></li>`).join('')}</ul>`
+          : '<p class="sec-sub">No awards yet. Give it time.</p>'}
       </section>`;
   }
 
-  $('#weeks').addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-week]');
-    if (!b) return;
-    history.replaceState(null, '', `#week-${b.dataset.week}`);
-    render();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  function archivePage() {
+    return `
+      <div class="page-head"><div class="kicker">Every recap</div><h1>Archive</h1></div>
+      <section style="margin-top:18px"><div class="archive">${[...WEEKS].reverse().map((w) => `
+        <a href="#week-${w.week}">
+          <span class="wk">Week ${w.week}${DATA.preview && w.status !== 'published' ? ' · draft' : ''}</span>
+          <h3>${esc(w.headline)}</h3>
+          ${w.dek ? `<p>${esc(w.dek)}</p>` : ''}
+        </a>`).join('')}</div></section>`;
+  }
+
+  function glossaryPage() {
+    const seen = new Map();
+    for (const w of WEEKS) for (const g of w.glossary) {
+      const k = g.term.toLowerCase();
+      if (!seen.has(k)) seen.set(k, { ...g, week: w.week });
+    }
+    const terms = [...seen.values()].sort((a, b) => a.term.localeCompare(b.term));
+    return `
+      <div class="page-head">
+        <div class="kicker">Football, explained</div>
+        <h1>Rookie glossary</h1>
+        <p class="dek">Every term from the recaps so far, in plain English. Nobody here was born knowing what a flex spot is.</p>
+      </div>
+      <section style="margin-top:18px">
+        ${terms.length ? `<dl class="terms">${terms.map((g) => `<div class="term"><dt>${esc(g.term)} <a href="#week-${g.week}">Week ${g.week}</a></dt><dd>${esc(g.definition)}</dd></div>`).join('')}</dl>` : '<p class="sec-sub">Terms show up here once the first recap is out.</p>'}
+      </section>`;
+  }
+
+  const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="#" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
+
+  /* ---------- router: every page is a #hash inside this one file ---------- */
+  function route() {
+    const h = location.hash.replace(/^#/, '');
+    let m, html, nav = 'week';
+    if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
+    else if (h === 'live' && LIVE) { html = livePage(LIVE); nav = 'live'; }
+    else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
+    else if (!WEEKS.length && LIVE && h === '') { html = livePage(LIVE); nav = 'live'; }
+    else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
+    else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
+    else if (h === 'archive') { html = archivePage(); nav = 'archive'; }
+    else if ((m = /^team-(\d+)$/.exec(h))) { html = teamPage(Number(m[1])); nav = 'standings'; }
+    else if ((m = /^week-(\d+)\.awards$/.exec(h)) && weekOf(+m[1])) { html = awardsPage(weekOf(+m[1])); }
+    else if ((m = /^week-(\d+)\.game-(\d+-\d+)$/.exec(h)) && weekOf(+m[1])) { html = matchupPage(weekOf(+m[1]), m[2]); }
+    else if ((m = /^week-(\d+)$/.exec(h)) && weekOf(+m[1])) { html = weekPage(weekOf(+m[1])); }
+    else if (h === '') { html = weekPage(latest()); }
+    else { html = notFound(); }
+    $('#main').innerHTML = html;
+    document.querySelectorAll('#nav a').forEach((a) =>
+      a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  }
+
+  window.addEventListener('hashchange', () => {
+    route();
+    window.scrollTo({ top: 0 });
+    $('#main').focus({ preventScroll: true });
   });
-  window.addEventListener('hashchange', render);
-  render();
+  route();
 })();
 </script>
