@@ -184,6 +184,8 @@ def standalone(html, description="Weekly recaps, live scores and standings for o
         # Only the Vercel builds have api/live.py behind them. The artifact build leaves
         # this unset and so never calls it, and keeps rendering from its baked data.
         '<script>window.FANTASY_LIVE_API="/api/live"</script>\n'
+        # Vercel Web Analytics - CDN approach for static sites
+        '<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>\n'
     )
     return head + html + "\n</html>\n"
 
