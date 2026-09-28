@@ -13,6 +13,21 @@
    "points": 95.12
   },
   "median_score": 127.21,
+  "mid_pack": {
+   "teams": [
+    {
+     "manager": "Marlee",
+     "points": 127.66,
+     "score_rank": 4
+    },
+    {
+     "manager": "Samantha",
+     "points": 126.76,
+     "score_rank": 5
+    }
+   ],
+   "points": 127.21
+  },
   "closest_game": {
    "winner": "Kyra",
    "loser": "Maddie",

@@ -13,6 +13,21 @@
    "points": 93.44
   },
   "median_score": 122.97,
+  "mid_pack": {
+   "teams": [
+    {
+     "manager": "Kyra",
+     "points": 125.88,
+     "score_rank": 4
+    },
+    {
+     "manager": "Tara",
+     "points": 120.06,
+     "score_rank": 5
+    }
+   ],
+   "points": 122.97
+  },
   "closest_game": {
    "winner": "Kyra",
    "loser": "Tara",

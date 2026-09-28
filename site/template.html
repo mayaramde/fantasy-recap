@@ -138,10 +138,11 @@
   .dek a { color: var(--accent); font-weight: 700; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
   .pill { padding: 6px 12px; border-radius: 999px; font-size: 13px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
-  .pill:nth-child(1) { background: var(--lime); transform: rotate(-1.5deg); }
-  .pill:nth-child(2) { background: var(--pink); transform: rotate(1deg); }
-  .pill:nth-child(3) { background: var(--orange); transform: rotate(-1deg); }
+  .pill-top { background: var(--lime); transform: rotate(-1.5deg); }
+  .pill-bot { background: var(--pink); transform: rotate(1deg); }
+  .pill-mid { background: var(--orange); transform: rotate(-1deg); }
   .pill b { font-weight: 700; }
+  .pill .amp { font-weight: 400; opacity: .65; }
 
   .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
   .week-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
@@ -494,6 +495,26 @@
       </div>`;
   }
 
+  /* Top team, bottom team, middle of the pack: same three stickers on the recap page
+     and the live page, each one naming the team it belongs to. */
+  function scorePills(w) {
+    const done = w.complete;
+    const mid = (w.mid_pack && w.mid_pack.teams.length) ? w.mid_pack
+      : { teams: [], points: w.median };
+    const midBody = mid.teams.length
+      ? mid.teams.map((t) => `${esc(t.manager)} <span class="num">${f2(t.points)}</span>`).join(' <span class="amp">&amp;</span> ')
+      : `<span class="num">${f2(mid.points)}</span>`;
+    const midTip = mid.teams.length > 1
+      ? `The middle two scores of the week. Half the league finished above ${f2(mid.teams[0].points)}, half below ${f2(mid.teams[mid.teams.length - 1].points)}.`
+      : 'The middle score of the week: half the league finished above it, half below.';
+    return `
+      <div class="pills">
+        <span class="pill pill-top" title="The week's highest team score.">${done ? 'Top team' : 'Leading team'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
+        <span class="pill pill-bot" title="The week's lowest team score.">${done ? 'Bottom team' : 'Trailing team'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
+        <span class="pill pill-mid" title="${esc(midTip)}">Middle of the pack <b>${midBody}</b></span>
+      </div>`;
+  }
+
   /* ---------- pages ---------- */
   function weekPage(w) {
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
@@ -506,11 +527,7 @@
         <div class="kicker">Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
         <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
         ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
-        <div class="pills">
-          <span class="pill">High score <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
-          <span class="pill">Low score <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
-          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
-        </div>
+        ${scorePills(w)}
       </div>
 
       <section>
@@ -555,11 +572,7 @@
         <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
         <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
         <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
-        <div class="pills">
-          <span class="pill">${w.complete ? 'High score' : 'Leading'} <b>${esc(w.high_score.manager)} <span class="num">${f2(w.high_score.points)}</span></b></span>
-          <span class="pill">${w.complete ? 'Low score' : 'Trailing'} <b>${esc(w.low_score.manager)} <span class="num">${f2(w.low_score.points)}</span></b></span>
-          <span class="pill">Middle of the pack <b class="num">${f2(w.median)}</b></span>
-        </div>
+        ${scorePills(w)}
       </div>
 
       <section>

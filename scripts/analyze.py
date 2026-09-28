@@ -240,14 +240,18 @@ def analyze(week, history):
     dropped_regrets.sort(key=lambda x: x["points"], reverse=True)
 
     starters = [dict(s, manager=t["manager"]) for t in teams for s in t["starters"]]
-    median = sorted(t["points"] for t in teams)[len(teams) // 2 - 1: len(teams) // 2 + 1]
-    median = round(sum(median) / 2, 2)
+    # The middle of the pack: the one team on the middle rank, or (even league) the two
+    # straddling it. Their midpoint is the median every "beat the league" stat below uses.
+    mid_teams = ranked[(len(ranked) - 1) // 2: len(ranked) // 2 + 1]
+    median = round(sum(t["points"] for t in mid_teams) / len(mid_teams), 2)
     games = [(a, b) for a, b in combinations(teams, 2) if a["opponent_id"] == b["team_id"]]
 
     league = {
         "high_score": {k: ranked[0][k] for k in ("manager", "points")},
         "low_score": {k: ranked[-1][k] for k in ("manager", "points")},
         "median_score": median,
+        "mid_pack": {"teams": [{k: t[k] for k in ("manager", "points", "score_rank")} for t in mid_teams],
+                     "points": median},
         "closest_game": min(({"winner": w["manager"], "loser": l["manager"], "margin": abs(w["margin"])}
                              for a, b in games for w, l in [(a, b) if a["margin"] > 0 else (b, a)]),
                             key=lambda g: g["margin"]),
