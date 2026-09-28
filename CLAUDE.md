@@ -35,7 +35,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
 5. **Build.** `python3 site/build.py` → `site/dist/preview.html` (drafts included) and `site/dist/index.html` (published only).
 6. **Review.** Republish the preview artifact: https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87. Maya reviews.
-7. **Ship.** Only after Maya approves: set `"status": "published"`, rebuild, republish the league artifact, commit and push.
+7. **Ship.** Only after Maya approves: set `"status": "published"`, rebuild, republish the league artifact.
+8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
+   workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
 
 ## Published pages
 - Preview (private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`)
