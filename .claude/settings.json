@@ -38,7 +38,12 @@
       "Bash(rm -rf /*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
-      "Bash(:(){ :|:& };:)"
+      "Bash(:(){ :|:& };:)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.espn.local)",
+      "Read(./.dashboard-secret)",
+      "Read(./.vercel/**)"
     ]
   },
   "hooks": {
@@ -48,7 +53,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-dangerous-bash.sh"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/guard_bash.py"
           }
         ]
       }
