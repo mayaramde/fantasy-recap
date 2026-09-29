@@ -229,9 +229,9 @@
   .lineup tr.bench td { color: var(--muted); }
   .lineup tr.bench.hot td { color: var(--ink); font-weight: 700; background: var(--pink-soft); }
   .lineup tr.bench.hot td.slot::after { content: " ⚑"; color: var(--ink); }
-  /* On a live box score the slot column can say FLEX or BN, so the position rides with
-     the name, and a player whose NFL game is on right now wears a pulsing sticker. */
-  .lineup td .ppos { color: var(--muted); font: 600 11px/1 var(--body); letter-spacing: 0.04em; }
+  /* On a live box score each player carries his NFL team logo (the slot column already
+     names the position), and a player whose game is on right now wears a pulsing sticker. */
+  .lineup td .tlogo { width: 19px; height: 19px; margin-left: 6px; vertical-align: -4px; object-fit: contain; }
   .lineup td .playing { display: inline-flex; align-items: center; white-space: nowrap; margin-left: 5px;
     font: 500 10.5px/1 var(--script); color: var(--on-pop); background: var(--lime);
     border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px 3px 5px; vertical-align: 1px; }
@@ -572,10 +572,11 @@
     };
     const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
     const bench = [...side.bench].sort((a, b) => b.points - a.points);
-    // "Ja'Marr Chase WR  ● Q3 7:22": on a live week the slot column may only say FLEX or BN,
-    // and the sticker means his NFL game is being played right now.
+    // "Ja'Marr Chase 🐯 ● Q3 7:22": on a live week the name carries his NFL team logo, and
+    // the sticker means that team's game is being played right now. ESPN can 404 a logo
+    // (a team we can't name, a free agent), so a broken one removes itself.
     const nameCell = (p) => esc(p.name)
-      + (live && posOf(p.pos) ? ` <span class="ppos">${posOf(p.pos)}</span>` : '')
+      + (live && p.logo ? ` <img class="tlogo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="19" height="19" loading="lazy" onerror="this.remove()">` : '')
       + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
       + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
     const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${nameCell(p)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
@@ -779,7 +780,7 @@
 
       <section>
         ${secHead('board', 'Box score')}
-        <p class="sec-sub">Points scored and the experts' projection for every player.${w.live ? ' Each player\'s position sits next to his name, and a pulsing sticker with the game clock means his NFL game is on right now.' : ''} A ⚑ on the bench marks a player who outscored a starter he could have replaced.</p>
+        <p class="sec-sub">Points scored and the experts' projection for every player.${w.live ? ' The badge next to a name is his NFL team, a colored pill is ESPN\'s injury designation, and a pulsing sticker with the game clock means that game is on right now.' : ''} A ⚑ on the bench marks a player who outscored a starter he could have replaced.</p>
         <div class="box-grid">${lineupCard(W, true, !!w.live)}${lineupCard(L, false, !!w.live)}</div>
       </section>
 
@@ -966,7 +967,7 @@
       ${mine ? `
       <section>
         ${secHead('board', 'Your lineup right now')}
-        <p class="sec-sub">Points so far and ESPN's projection for every player, with his position next to his name. A colored pill is ESPN's injury designation; a pulsing lime one means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
+        <p class="sec-sub">Points so far and ESPN's projection for every player. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
         <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`)}</div>
       </section>` : ''}
 
