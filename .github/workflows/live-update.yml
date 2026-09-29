@@ -12,11 +12,15 @@ name: live-update
 on:
   schedule:
     # Times are UTC; NFL kickoffs are Eastern (UTC-4 until early November, then UTC-5).
-    - cron: "0 13-23 * * 0"     # Sunday games (incl. 9:30 AM ET international games)
-    - cron: "0 0-5 * * 1,2,5"   # Sunday, Monday and Thursday night games
-    - cron: "0 17-23 * 12 6"    # December Saturday games
-    - cron: "0 0-5 * 12 0"      # ...and Saturday nights
-    - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT)
+    # Minute 7, not 0: GitHub runs scheduled workflows best-effort, and the top of the hour
+    # is when every cron on the platform queues at once, so a run there is the most likely
+    # to arrive late or be dropped. These fired at :00 for a night of NFL games and not one
+    # of them ran. Seven minutes late beats an hour of nothing.
+    - cron: "7 13-23 * * 0"     # Sunday games (incl. 9:30 AM ET international games)
+    - cron: "7 0-5 * * 1,2,5"   # Sunday, Monday and Thursday night games
+    - cron: "7 17-23 * 12 6"    # December Saturday games
+    - cron: "7 0-5 * 12 0"      # ...and Saturday nights
+    - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT), already off the hour
   workflow_dispatch:
 
 concurrency:
