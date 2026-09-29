@@ -511,7 +511,9 @@
   // Injury designations that mean "he isn't playing", so they get the loud color
   const OUTISH = ['Out', 'On IR', 'Suspended', 'Doubtful'];
   const ADVICE_KIND = { out: 'Injury', bye: 'Bye week', watch: 'Game-time call', swap: 'Lineup swap',
-    empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear' };
+    empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear',
+    consensus: 'Expert consensus', fp_news: 'FantasyPros news', fp_back: 'FantasyPros update',
+    waiver: 'Waiver idea', trade: 'Trade idea' };
   /* Each urgency reads a little differently on the week being played and on the week
      ahead, where nothing has kicked off and nothing is locked yet. */
   const ADVICE_LEVEL = {
@@ -1133,6 +1135,13 @@
           <p class="sec-sub">${(next && ADVICE_LEVEL[lvl].nextSub) || ADVICE_LEVEL[lvl].sub}</p>
           <div class="cards">${items.map(adviceCard).join('')}</div>
         </section>`).join('')}
+
+      ${a.roster_ideas && a.roster_ideas.length ? `
+        <section>
+          ${secHead('board', 'Worth a look')}
+          <p class="sec-sub">Roster ideas from FantasyPros' rankings, ownership and your league's own rosters — not urgent, not automatic, just worth a look this week.</p>
+          <div class="cards">${a.roster_ideas.map(adviceCard).join('')}</div>
+        </section>` : ''}
 
       ${next ? `
       <section>
