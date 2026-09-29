@@ -135,6 +135,7 @@
   .crumbs a { color: var(--accent); text-decoration: none; font-weight: 700; }
   .crumbs a:hover { text-decoration: underline; }
   .page-head { padding-block: 22px 6px; display: grid; gap: 10px; }
+  .kicker-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .kicker { justify-self: start; font: 600 14px/1 var(--script); color: var(--on-accent); background: var(--accent); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .page-head h1 { font: 800 clamp(36px, 6.2vw, 62px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; }
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
@@ -165,7 +166,14 @@
   .week-switch a:hover, .team-switch a:hover { background: var(--accent-soft); }
   .week-switch a[aria-current="page"], .team-switch a[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
   .team-switch .wk-n { font: 500 11px/1 var(--mono); opacity: 0.65; margin-left: 2px; }
-  .week-switch .dot, .team-switch .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; vertical-align: 1px; }
+  .team-switch .dot { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; font: 800 10px/1 var(--display); color: var(--on-pop); }
+
+  /* the week toggle: a flip switch, not another row of tabs, so it reads as one control */
+  .week-toggle { position: relative; display: inline-flex; flex-shrink: 0; border: 2px solid var(--edge); background: var(--card); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); }
+  .week-toggle .knob { position: absolute; top: 2px; bottom: 2px; left: 2px; width: calc(50% - 2px); background: var(--lime); border-radius: 999px; }
+  .week-toggle[data-state="next"] .knob { left: auto; right: 2px; }
+  .week-toggle a { position: relative; z-index: 1; text-decoration: none; font: 700 13px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); padding: 8px 14px; white-space: nowrap; }
+  .week-toggle .wk-n { font: 500 10.5px/1 var(--mono); opacity: 0.65; margin-left: 3px; }
 
   /* ---------- sections ---------- */
   section { margin-top: 44px; }
@@ -1013,16 +1021,17 @@
   const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"} — worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
 
   /* Both tabs run through the same pages: `next` false is the week being played, true is
-     the week after it. Same cards, same components, different source. */
-  function weekTabs(next, id) {
+     the week after it. Same cards, same components, different source. A flip switch, not
+     a second row of tabs, since it's one choice with only two states. */
+  function weekToggle(next, id) {
     if (!ahead()) return '';
     const tab = (isNext, label, week) => `<a href="${coachUrl(isNext, id)}" ${isNext === next ? 'aria-current="page"' : ''}>${label} <span class="wk-n">W${week}</span></a>`;
-    return `<nav class="team-switch" aria-label="Choose a week">${tab(false, 'This week', LIVE.week)}${tab(true, 'Next week', ahead().week)}</nav>`;
+    return `<div class="week-toggle" data-state="${next ? 'next' : 'this'}" role="group" aria-label="Choose a week"><span class="knob" aria-hidden="true"></span>${tab(false, 'This week', LIVE.week)}${tab(true, 'Next week', ahead().week)}</div>`;
   }
 
   function teamSwitch(active, next) {
     return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix"></span>` : ''}</a>`).join('')}</nav>`;
+      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
   function coachCard(a, next) {
@@ -1041,9 +1050,11 @@
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
     return `
-      ${weekTabs(next, null)}
       <div class="page-head">
-        <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
+        <div class="kicker-row">
+          <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
+          ${weekToggle(next, null)}
+        </div>
         <h1>Coach</h1>
         <p class="dek">${next
           ? `Planning ahead for Week ${week}: who's on a bye, who's hurt, and who ESPN likes better than the player you have starting. Tap your name.`
@@ -1095,10 +1106,12 @@
       .filter(([, items]) => items.length);
     return `
       <div class="crumbs"><a href="${coachUrl(next, null)}">Coach</a><span>›</span><span>${esc(a.manager)}</span></div>
-      ${weekTabs(next, id)}
       ${teamSwitch(id, next)}
       <div class="page-head">
-        <div class="kicker">Week ${week} · ${esc(a.team_name)}</div>
+        <div class="kicker-row">
+          <div class="kicker">Week ${week} · ${esc(a.team_name)}</div>
+          ${weekToggle(next, id)}
+        </div>
         <h1>${esc(a.manager)}, ${next ? `about Week ${week}` : "here's your week"}</h1>
         <p class="dek">${!next && a.can_change === false
           ? `Your Week ${week} lineup is locked — every game you had is over.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
