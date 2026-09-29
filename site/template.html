@@ -140,6 +140,11 @@
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
   .dek a { color: var(--accent); font-weight: 700; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  /* Live page: the headline and the three score stickers share one line, and the stickers
+     drop under it once there isn't room for both. */
+  .head-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+  .head-row h1 { font-size: clamp(34px, 4.6vw, 50px); max-width: 16ch; }
+  .head-row .pills { margin-top: 0; }
   .pill { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 4px 14px 4px 4px; border-radius: 999px; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); color: var(--on-pop); }
   .pill-plain { padding-left: 14px; }
   .pill-top { background: var(--lime); transform: rotate(-1.5deg); }
@@ -681,9 +686,11 @@
     return `
       <div class="page-head">
         <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
-        <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
+        <div class="head-row">
+          <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
+          ${scorePills(w)}
+        </div>
         <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
-        ${scorePills(w)}
       </div>
 
       ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
