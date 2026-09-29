@@ -65,7 +65,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - The Live page shows the newest captured week without a recap in that build: "live" while games are on,
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
   player's position next to his name (the slot column can only say FLEX or BN) and give a player whose NFL game is
-  on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime").
+  on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime"). Each matchup card counts the
+  same two things per side: "2 playing now" (a starter whose game is on) and "1 starter yet to play" (kickoff still
+  ahead), or "all starters done" when neither is left.
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
