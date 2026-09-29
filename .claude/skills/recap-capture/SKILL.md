@@ -30,6 +30,21 @@ reading a cookie value — a *script* consumes them, never you:
 Chrome is always the first attempt. The fallback is for when Chrome *can't*
 authenticate, not a routine alternative.
 
+## Step 0: get on the right branch
+
+Only do this for a *new* recap (fantasy-orchestrator's context check found no
+`recaps/2026/week-NN.json` yet) — a re-capture for an existing draft stays on that draft's
+existing branch.
+
+1. `git checkout main && git pull`. If checkout fails because of uncommitted changes, **stop
+   and tell the user** — don't stash, reset, or discard anything that might be someone else's
+   in-progress work.
+2. Work out the target week: one more than the highest week number in `recaps/2026/`. If that
+   week is past 17, the regular season is over — stop and tell the user rather than capturing
+   a week that can't exist.
+3. Create branch `recap-week-NN` (zero-padded, e.g. `recap-week-04`) and switch to it. Every
+   later step in this pipeline (write, fact-check, ship) happens on this same branch.
+
 ## Steps
 
 1. Start the local receiver in the background: `python3 scripts/receive.py --count 1`.
@@ -50,14 +65,21 @@ authenticate, not a routine alternative.
    (`.gitignore`); it's recaptured on every live update and goes stale the moment the week
    starts, so there's no reason to keep an old copy around.
 5. **If ESPN returns 401** (Maya's Chrome session logged out): check whether `.env.espn.local`
-   exists. If it does, fall back to `node scripts/capture_node.mjs N` — same output file, same
-   `complete` field to check. If it doesn't exist, or the fallback also fails, **stop and tell
-   Maya** what's missing (see CLAUDE.md's Data sources section for the exact setup) — don't
-   guess at data or proceed with a partial capture.
-6. Run `python3 scripts/analyze.py` → writes `facts.json` for the week, next to `espn.json`.
+   exists. If it does, stop the Chrome attempt (kill `receive.py`, close the tab) and fall back
+   to `node scripts/capture_node.mjs N` — same output file, same `complete` field to check. If
+   it doesn't exist, or the fallback also fails, **stop and tell the user** what's missing (see
+   CLAUDE.md's Data sources section for the exact setup) — don't guess at data or proceed with
+   a partial capture.
+6. **If the capture reports `complete: false`** (a game is still in progress or stats haven't
+   settled): stop without drafting anything, switch back to `main`, delete the empty
+   `recap-week-NN` branch you created in Step 0, and tell the user to try again later. Keep the
+   captured data file on disk either way — the Live page uses it even when it's incomplete.
+7. Run `python3 scripts/analyze.py` → writes `facts.json` for the week, next to `espn.json`.
+8. Close any Chrome tabs you opened for this and confirm `receive.py` has exited.
 
 ## Output
 
-`data/2026/week-NN/{espn.json,facts.json}`, both with `complete: true`/valid structure. This is
-what `recap-write` reads next. Neither file is ever hand-edited — if something in them looks
-wrong, the fix is a better capture or a fix to `analyze.py`, not editing the JSON directly.
+`data/2026/week-NN/{espn.json,facts.json}`, both with `complete: true`/valid structure, on
+branch `recap-week-NN`. This is what `recap-write` reads next. Neither file is ever
+hand-edited — if something in them looks wrong, the fix is a better capture or a fix to
+`analyze.py`, not editing the JSON directly.

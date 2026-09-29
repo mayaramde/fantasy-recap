@@ -46,7 +46,9 @@ whole site, not just this step. Two mechanical constraints worth calling out bec
 - **First names only, everywhere** — no manager's last name, in any field, ever (CLAUDE.md
   Privacy).
 - Matchup keys must be real pairings for that week, written low-team-id first.
-- `glossary` needs 3 to 5 entries.
+- `glossary` needs 3 to 5 entries, and terms shouldn't repeat ones already defined in an earlier
+  week's recap — check `recaps/2026/week-*.json` for terms already used before picking this
+  week's.
 
 Run `python3 scripts/check.py` yourself before moving to Step 3 — it catches all four of the
 above mechanically, cheaper than waiting for the fact-checker to find the same thing. Fix
