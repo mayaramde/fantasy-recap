@@ -89,8 +89,13 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 5. **Build.** `python3 site/build.py` → `site/dist/web-preview/` (drafts included, what step 6 deploys) and
    `site/dist/web/` (published only, what `scripts/deploy.sh` ships).
 6. **Review.** `scripts/deploy.sh --preview` — builds the draft copy and deploys it to a fresh, throwaway Vercel
-   URL. Run it while the recap's branch is still checked out: the draft recap file only exists on that branch,
-   not on `main`, so switching back first would build a preview missing the week you just wrote. Share the
+   URL. **Fatal if skipped: before running this, confirm the draft is actually on disk** — `ls recaps/2026/` should
+   show `week-NN.json` and `git branch --show-current` should be that week's own branch (not `main`, unless the PR
+   already merged). The draft recap file exists only on its own branch until its PR merges; checking out `main`
+   removes it from the working tree with no error, and a preview built right after will deploy successfully while
+   silently missing the week — it looks like a normal, complete preview. If `ls`/`git branch` don't show the draft
+   where expected, **stop. Do not run `scripts/deploy.sh --preview` anyway.** Tell Maya what's missing instead of
+   handing her a preview that quietly isn't showing what she thinks it's showing. Once confirmed, share the
    printed URL with Maya; she reviews there.
 7. **Ship.** Only after Maya approves: set `"status": "published"`, then run `scripts/deploy.sh` to update the website.
 8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
