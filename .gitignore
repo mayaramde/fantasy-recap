@@ -1,6 +1,10 @@
 # Raw ESPN captures contain members' personal info; keep local only
 data/**/raw/
 *.raw.json
+# The week-ahead preview for the Coach page: trimmed like any other capture, but a
+# throwaway. It is recaptured on every live update and is stale the moment the week
+# starts, so it never belongs in a commit.
+data/*/next-week/
 .DS_Store
 __pycache__/
 site/dist/

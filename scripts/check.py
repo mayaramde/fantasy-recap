@@ -36,8 +36,11 @@ def check_capture_shape(errors):
     instead of quietly changing a number on the site.
 
     This walks the filesystem rather than tracked files on purpose: the in-progress week is
-    uncommitted, and it's the freshest capture.js output there is."""
-    for path in sorted((ROOT / "data").glob("*/week-*/espn.json")):
+    uncommitted, and it's the freshest capture.js output there is. The week-ahead preview
+    under next-week/ is the same shape and never committed either, so it's checked too."""
+    captures = sorted((ROOT / "data").glob("*/week-*/espn.json")) + \
+        sorted((ROOT / "data").glob("*/next-week/espn.json"))
+    for path in captures:
         rel = path.relative_to(ROOT)
         try:
             capture = json.loads(path.read_text())

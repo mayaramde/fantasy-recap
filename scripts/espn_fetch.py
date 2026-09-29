@@ -5,6 +5,10 @@ path. This module is its Python twin, for the /api/live function (api/live.py), 
 has to build the same espn.json shape server-side so scripts/analyze.py can consume it
 unchanged — that is what keeps the Live page's numbers identical to the recap's.
 
+Only the week being played needs a twin: the Coach page's week-ahead preview
+(fantasyCapture('next')) is baked into the site at build time and never served from here,
+so capture.js is its only author.
+
 Two implementations of one trim is a divergence risk, so the shape they must agree on is
 declared once here in SHAPE, and scripts/check.py asserts every committed espn.json
 matches it. That catches a field added, renamed or retyped on one side. It cannot catch
