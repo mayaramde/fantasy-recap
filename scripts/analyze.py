@@ -197,6 +197,14 @@ def season_drops(weeks_upto):
 
 # ---------- main per-week analysis ----------
 
+def yet_to_play(p):
+    """Is this player's NFL game still ahead of him? With game states captured that is
+    exactly 'pre'; without them, an unplayed starter is the best guess available."""
+    if p.get("game_state"):
+        return p["game_state"] == "pre"
+    return not p["played"]
+
+
 def analyze(week, history):
     """history: all captured weeks up to and including this one, in order."""
     rosters, teams = {}, []
@@ -240,8 +248,12 @@ def analyze(week, history):
         t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
         t["bench"] = [dict(p, logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
                       for p in r if p["slot"] in ("BENCH", "IR")]
-        # Starters with no stats yet this week (game not played yet, or player inactive)
-        t["yet_to_play"] = sum(1 for p in t["starters"] if not p["played"])
+        # Where her starters stand right now. "Playing" is on the field this minute,
+        # "yet to play" is kickoff still ahead, and the two never count the same player,
+        # so a live strip can show both. A capture with no NFL game states (the public
+        # scoreboard is best effort) falls back to "has he put up a stat yet".
+        t["playing_now"] = sum(1 for p in t["starters"] if p.get("game_state") == "in")
+        t["yet_to_play"] = sum(1 for p in t["starters"] if yet_to_play(p))
         t["zero_point_starters"] = [p["name"] for p in r if p["slot"] in STARTING and (not p["played"] or p["points"] == 0)]
         t["pickups_started"] = [dict(name=p["name"], points=p["points"], slot=p["slot"], **adds[(t["team_id"], p["player_id"])])
                                 for p in r if p["slot"] in STARTING and (t["team_id"], p["player_id"]) in adds]

@@ -590,6 +590,7 @@
      "team": "JAX"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -826,6 +827,7 @@
      "team": "BUF"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -1062,6 +1064,7 @@
      "team": "CHI"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [
     "Kyle Pitts Sr."
@@ -1312,6 +1315,7 @@
      "team": "DEN"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -1560,6 +1564,7 @@
      "team": "IND"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [
     "Colston Loveland"
@@ -1798,6 +1803,7 @@
      "team": "JAX"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -2046,6 +2052,7 @@
      "team": "DET"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [
@@ -2315,6 +2322,7 @@
      "team": "LAC"
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [

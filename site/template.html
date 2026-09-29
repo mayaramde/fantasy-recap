@@ -347,6 +347,10 @@
   .prob .a { background: var(--accent); }
   .prob .b { background: var(--orange); }
   .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; border: 1px solid var(--edge); margin-right: 5px; vertical-align: 0; }
+  /* "● 2 playing now" sits inside a sentence, so it stays on one line and leans on weight
+     rather than another fill on top of the strip's tint. */
+  .live-strip .on-now { display: inline-flex; align-items: center; white-space: nowrap; font-weight: 700; }
+  .live-strip .on-now .live-dot { width: 7px; height: 7px; margin-right: 4px; }
   .moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .moves li { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
   .moves .when { grid-row: span 2; font: 500 11.5px/1.3 var(--mono); color: var(--muted); padding-top: 2px; }
@@ -461,10 +465,21 @@
       </a>`;
   }
 
+  // Where a side stands this minute: who is on the field right now, then who hasn't
+  // kicked off yet. "0 starters left to play" alone couldn't tell a finished afternoon
+  // from three players mid-game, so the ones on the field get named first, with the
+  // same pulsing dot the Live tab wears.
+  function liveStatus(s) {
+    const bits = [];
+    if (s.playing_now) bits.push(`<span class="on-now"><span class="live-dot" aria-hidden="true"></span>${s.playing_now} playing now</span>`);
+    if (s.yet_to_play) bits.push(`${s.yet_to_play} starter${s.yet_to_play === 1 ? '' : 's'} yet to play`);
+    return bits.length ? bits.join(' · ') : 'all starters done';
+  }
+
   function liveStrip(g) {
     return `<div class="live-strip">${[g.winner, g.loser].map((s) => `
       <div class="row">
-        <span><span class="swatch" style="background:var(--${s === g.winner ? 'accent' : 'orange'})" aria-hidden="true"></span><b>${esc(s.manager)}</b> · projected ${f1(s.live_projection)} · ${s.yet_to_play} starter${s.yet_to_play === 1 ? '' : 's'} left to play</span>
+        <span><span class="swatch" style="background:var(--${s === g.winner ? 'accent' : 'orange'})" aria-hidden="true"></span><b>${esc(s.manager)}</b> · projected ${f1(s.live_projection)} · ${liveStatus(s)}</span>
         <span class="num">${s.win_probability == null ? '' : `${Math.round(s.win_probability * 100)}% to win`}</span>
       </div>`).join('')}
       ${g.winner.win_probability == null ? '' : `<div class="prob" role="img" aria-label="Chance to win: ${esc(g.winner.manager)} ${Math.round(g.winner.win_probability * 100)}%, ${esc(g.loser.manager)} ${Math.round((1 - g.winner.win_probability) * 100)}%"><span class="a" style="flex:${g.winner.win_probability.toFixed(3)}"></span><span class="b" style="flex:${(1 - g.winner.win_probability).toFixed(3)}"></span></div>`}
@@ -628,7 +643,7 @@
 
       <section>
         ${secHead('board', 'Scoreboard')}
-        <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. "Left to play" counts starters with no stats yet this week. Tap a game for the live box score.'}</p>
+        <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. A pulsing dot counts the starters whose NFL game is on right now; "yet to play" is the ones who haven\'t kicked off. Tap a game for the live box score.'}</p>
         <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
       </section>
 
