@@ -1,0 +1,16 @@
+{
+  "season": 2099,
+  "week": 1,
+  "status": "published",
+  "headline": "Alice's Team One dominates Bob's Team Two, 133.45 to 110.2",
+  "dek": "Cara edged Dez 95.0 to 88.75. Bob will be back next week.",
+  "matchups": {
+    "1-2": "Alice throttled Bob 133.45 to 110.2, no surprises here.",
+    "3-4": "Cara edged Dez 95.0 to 88.75 in a tight one."
+  },
+  "game_balls": [
+    { "manager": "Cara", "title": "Close Call", "text": "Cara 95.0 was just enough to hold off Dez.", "stat": "95.0 pts" }
+  ],
+  "flags": [],
+  "tough_breaks": []
+}

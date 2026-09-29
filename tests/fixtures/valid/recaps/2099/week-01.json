@@ -1,0 +1,16 @@
+{
+  "season": 2099,
+  "week": 1,
+  "status": "published",
+  "headline": "Alice wins big, 133.45 to 110.2",
+  "dek": "Cara edged Dez 95.0 to 88.75 in the other game.",
+  "matchups": {
+    "1-2": "Alice throttled Bob 133.45 to 110.2, no surprises here.",
+    "3-4": "Cara edged Dez 95.0 to 88.75 in a tight one."
+  },
+  "game_balls": [
+    { "manager": "Alice", "title": "Big Winner", "text": "Put up the week's best score.", "stat": "133.45 pts" }
+  ],
+  "flags": [],
+  "tough_breaks": []
+}
