@@ -1170,6 +1170,9 @@
     else if ((m = /^week-(\d+)\.awards$/.exec(h)) && weekOf(+m[1])) { html = awardsPage(weekOf(+m[1])); }
     else if ((m = /^week-(\d+)\.game-(\d+-\d+)$/.exec(h)) && weekOf(+m[1])) { html = matchupPage(weekOf(+m[1]), m[2]); }
     else if ((m = /^week-(\d+)$/.exec(h)) && weekOf(+m[1])) { html = weekPage(weekOf(+m[1])); }
+    // Home page: while this week's games are still going, that's more useful than last
+    // week's recap. Once the week is final (all matchups decided), the recap is the draw.
+    else if (h === '' && LIVE && !LIVE.complete) { html = livePage(LIVE); nav = 'live'; }
     else if (h === '') { html = weekPage(latest()); }
     else { html = notFound(); }
     $('#main').innerHTML = html;
@@ -1215,7 +1218,9 @@
       if (fresh.week !== LIVE.week) return;
       Object.assign(LIVE, fresh);
       const h = location.hash.replace(/^#/, '');
-      if (h.startsWith('live') || h.startsWith('coach') || (!WEEKS.length && h === '')) route();
+      // Home page ('') also renders live while games are on (see route()), including the
+      // moment a refresh lands the final score that flips it over to the recap.
+      if (h.startsWith('live') || h.startsWith('coach') || h === '') route();
     } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
   }
 
