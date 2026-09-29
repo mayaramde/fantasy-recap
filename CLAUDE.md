@@ -12,6 +12,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - **ESPN CDN headshots** (public, no auth): `https://a.espncdn.com/i/headshots/nfl/players/full/<espnId>.png`,
   and `https://a.espncdn.com/i/teamlogos/nfl/500/<abbr>.png` for a D/ST. `scripts/analyze.py` writes the URL into
   each week's top scorers; the site falls back to a silhouette when ESPN has no photo (rookies, call-ups).
+- **ESPN public NFL scoreboard** (public, no auth): `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=<season>&seasontype=2&week=N`
+  says which NFL games are in progress, so a live box score can mark the players who are on the field right now.
+  Both captures call it without cookies, and both treat it as best effort: if it fails, the capture still succeeds
+  and the site just shows no "playing" stickers.
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown.
 
@@ -59,7 +63,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   and opens a draft PR. Maya approves before the recap reaches the league site.
 - Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
 - The Live page shows the newest captured week without a recap in that build: "live" while games are on,
-  "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap.
+  "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
+  player's position next to his name (the slot column can only say FLEX or BN) and give a player whose NFL game is
+  on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime").
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.

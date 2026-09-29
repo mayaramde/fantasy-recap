@@ -21,6 +21,9 @@ if (!ESPN_S2 || !ESPN_SWID) {
 }
 const COOKIE = `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID}`;
 const ESPN = 'https://lm-api-reads.fantasy.espn.com/';
+// ESPN's public NFL scoreboard (game states for the live box score). It takes no session,
+// so it is fetched as-is and the cookies below never go anywhere near it.
+const PUBLIC = 'https://site.api.espn.com/';
 const RECEIVER = 'http://127.0.0.1:8765/save';
 const realFetch = globalThis.fetch;
 
@@ -41,6 +44,7 @@ globalThis.window = globalThis;
 globalThis.fetch = async (url, init = {}) => {
   url = String(url);
   if (url.startsWith(RECEIVER)) return save(url, init);
+  if (url.startsWith(PUBLIC)) return realFetch(url, init);
   if (!url.startsWith(ESPN)) throw new Error(`unexpected fetch: ${url}`);
   const res = await realFetch(url, { ...init, headers: { ...init.headers, Cookie: COOKIE } });
   if (!res.ok) throw new Error(`ESPN ${res.status}: cookies may have expired`);
