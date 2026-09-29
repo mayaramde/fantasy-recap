@@ -917,15 +917,38 @@
     } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
   }
 
+  /* How soon to ask again. While somebody's game is on, points land every few seconds and
+     the page should keep up; the rest of the week nothing moves, so it idles at the old
+     once-a-minute. A capture with no NFL game states (the public scoreboard is best
+     effort) reports nobody playing and simply idles, never slower than it used to be. */
+  const LIVE_PLAYING = 20000, LIVE_IDLE = 60000;
+  function livePace() {
+    if (!LIVE || LIVE.complete || !window.FANTASY_LIVE_API) return 0; // nothing left to follow
+    const onField = (LIVE.games || []).some((g) => (g.winner.playing_now || 0) + (g.loser.playing_now || 0) > 0);
+    return onField ? LIVE_PLAYING : LIVE_IDLE;
+  }
+
+  /* One timer that re-reads the pace after every refresh, so the page speeds up by itself
+     at kickoff and slows down when the last game ends, without a reload. A hidden tab
+     still skips the request (battery, and nobody is reading it). */
+  let liveTimer;
+  function followLive() {
+    clearTimeout(liveTimer);
+    const wait = livePace();
+    if (!wait) return;
+    liveTimer = setTimeout(async () => {
+      if (document.visibilityState === 'visible') await refreshLive();
+      followLive();
+    }, wait);
+  }
+
   route();
   // Always upgrade once, even in a background tab: a page opened and read later should
-  // still show fresh numbers, and a finished week has no interval to catch it later.
-  refreshLive();
-  // Repeating is only worth it while games are on, and only for a tab someone is looking
-  // at. The CDN caches each answer for a minute, so eight people watching the same game
-  // still costs ESPN about one request a minute.
-  if (LIVE && !LIVE.complete) {
-    setInterval(() => { if (document.visibilityState === 'visible') refreshLive(); }, 60000);
-  }
+  // still show fresh numbers, and a finished week has no timer to catch it later.
+  refreshLive().then(followLive);
+  // Coming back to the tab shouldn't mean staring at numbers frozen since you left.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') refreshLive().then(followLive);
+  });
 })();
 </script>

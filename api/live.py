@@ -14,8 +14,8 @@ The bundle mirrors the repo layout (see scripts/deploy.sh), so analyze.py and bu
 resolve league.json and data/ exactly as they do on Maya's Mac. History comes from the
 committed weeks in the bundle; only the current week is fetched live.
 
-Responses are cached at Vercel's CDN for a minute, so eight people refreshing costs ESPN
-one request. There is deliberately no Access-Control-Allow-Origin: the Claude artifact
+Responses are cached at Vercel's CDN for 20 seconds, so eight people watching the same
+game still cost ESPN about three requests a minute between them. There is deliberately no Access-Control-Allow-Origin: the Claude artifact
 build must keep rendering from its baked data rather than quietly depending on this.
 """
 
@@ -32,7 +32,10 @@ ROOT = HERE if (HERE / "league.json").exists() else HERE.parent
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "site"))
 
-CACHE = "public, s-maxage=60, stale-while-revalidate=240"
+# The page asks every 20 seconds while games are on, so the CDN holds each answer for
+# just under that: everyone watching a game still shares one request to ESPN, but nobody
+# is served a score that's most of a minute old.
+CACHE = "public, s-maxage=20, stale-while-revalidate=120"
 
 
 def live_payload():
