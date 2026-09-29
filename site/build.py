@@ -71,7 +71,7 @@ def side(t):
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
         "points_left": t["points_left_on_bench"], "result": t["result"],
         "live_projection": t.get("live_projection"), "win_probability": t.get("win_probability"),
-        "yet_to_play": t.get("yet_to_play", 0),
+        "yet_to_play": t.get("yet_to_play", 0), "playing_now": t.get("playing_now", 0),
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
@@ -351,6 +351,10 @@ def team_advice(team, before, before_week, states_known):
         "projected": team.get("live_projection") if team.get("live_projection") is not None else team["projected"],
         "win_probability": team.get("win_probability"),
         "yet_to_play": team.get("yet_to_play", 0),
+        "playing_now": team.get("playing_now", 0),
+        # Starters whose game hasn't kicked off: the ones a lineup change can still reach.
+        # Wider than yet_to_play, which counts only players with a game ahead of them —
+        # a starter on a bye is movable but has nothing to play in.
         "movable": sum(1 for s in starters if not locked(s)),
         "items": items,
         "counts": {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS},
