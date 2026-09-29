@@ -35,6 +35,7 @@ SLOT_OK = {"QB": {"QB"}, "RB": {"RB"}, "WR": {"WR"}, "TE": {"TE"},
 LINEUP = {k.split(" (")[0]: n for k, n in LEAGUE["roster_slots"].items()
           if k.split(" (")[0] not in ("BENCH", "IR")}
 SLOT_ORDER = list(LINEUP)
+STARTING = set(LINEUP)
 
 # ESPN's injury designations, in the words the site shows. Anything else (ACTIVE,
 # NORMAL, or nothing at all) means ESPN isn't listing him.
@@ -143,13 +144,16 @@ def injury_map(espn):
     return {p["player_id"]: p.get("injury_status") for p in rows}
 
 
-def team_advice(team, before, before_week, states_known):
-    """One team's to-do list for the live week.
+def team_advice(team, before, before_week, states_known, projected=True):
+    """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
     week (week `before_week`), so a designation that is new can be called new. It's empty
     when there's no earlier capture to compare with. `states_known` is False when the NFL
     scoreboard call failed, in which case nobody is called locked or on a bye on a guess.
+    `projected` is False when ESPN hasn't published projections for the week yet (it can
+    be days out on next week's), and then nothing here compares two numbers that are both
+    zero: no swaps, and nobody is called projected zero.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -194,6 +198,15 @@ def team_advice(team, before, before_week, states_known):
         st = p.get("injury_status")
         return f"listed {INJURY_PHRASE[st]} himself" if st in IFFY else "off the injury report"
 
+    def how(p):
+        """"(17.1 projected, off the injury report)", or just the status when ESPN has
+        published no projections for the week — quoting 0.0 would read as a forecast."""
+        return f"({_f1(_proj(p))} projected, {shape(p)})" if projected else f"({shape(p)})"
+
+    def worth(p):
+        """" 12.4 projected" as a card's stat pill, where there is a projection to quote."""
+        return f"{_f1(_proj(p))} projected" if projected else ""
+
     def no_backup(slot):
         """Why there's no swap: an empty bench at that position reads differently from a
         bench whose players are themselves hurt, on a bye or already playing."""
@@ -227,8 +240,9 @@ def team_advice(team, before, before_week, states_known):
         if r:
             claimed.add(r["player_id"])
             title = f"Start {r['name']} over {s['name']}"
-            text = (f"{why}{news(s)} {r['name']} is on your bench, {shape(r)}, and projected "
-                    f"{_f1(_proj(r))} points. Move him into the {s['slot']} spot.")
+            text = (f"{why}{news(s)} {r['name']} is on your bench, {shape(r)}"
+                    + (f", and projected {_f1(_proj(r))} points" if projected else "")
+                    + f". Move him into the {s['slot']} spot.")
         else:
             title = f"{s['name']} is {phrase}" if hurt else f"{s['name']} is on a bye"
             text = (f"{why}{news(s)} {no_backup(s['slot'])}, so the only fix is the waiver wire — "
@@ -246,7 +260,7 @@ def team_advice(team, before, before_week, states_known):
 
     # 3. Straight upgrades: a bench player ESPN projects well above a starter he can replace.
     pairs = []
-    for s in starters:
+    for s in (starters if projected else []):
         if locked(s) or s["player_id"] in covered:
             continue
         for b in bench:
@@ -283,7 +297,7 @@ def team_advice(team, before, before_week, states_known):
             items.append({"kind": "empty", "level": "now", "title": f"Your {slot} spot is empty",
                           "stat": "nobody starting",
                           "text": (f"There's nobody in your {slot} spot, and an empty spot scores zero. "
-                                   + (f"{r['name']} ({_f1(_proj(r))} projected, {shape(r)}) can fill it."
+                                   + (f"{r['name']} {how(r)} can fill it."
                                       if r else f"{no_backup(slot)}, so try the waiver wire."))})
 
     # 5. The game-time decisions themselves. Last of the lineup passes, so the backup it
@@ -291,16 +305,16 @@ def team_advice(team, before, before_week, states_known):
     for s in iffy_starters:
         label = INJURY_LABEL[s["injury_status"]]
         r = backup(s["slot"])
-        plan = (f"If he's ruled out, {r['name']} ({_f1(_proj(r))} projected, {shape(r)}) is your best swap."
+        plan = (f"If he's ruled out, {r['name']} {how(r)} is your best swap."
                 if r else f"{no_backup(s['slot'])}, so check early.")
         items.append({"kind": "watch", "level": "watch",
                       "title": f"{s['name']} is {label.lower()}",
-                      "stat": f"{_f1(_proj(s))} projected",
+                      "stat": worth(s) or label,
                       "text": (f"{label} means his team hasn't decided whether he plays; the call usually "
                                f"lands about 90 minutes before kickoff.{news(s)} {plan}")})
 
     # 6. A starter ESPN expects nothing from, with no better option behind him.
-    for s in starters:
+    for s in (starters if projected else []):
         if locked(s) or s["player_id"] in covered or s["player_id"] in swapped or _proj(s) > 0.05:
             continue
         items.append({"kind": "hole", "level": "now", "title": f"{s['name']} is projected zero",
@@ -332,7 +346,7 @@ def team_advice(team, before, before_week, states_known):
             fresh.append((2, {
                 "kind": "back", "level": "info",
                 "title": f"{p['name']} is off the injury report",
-                "stat": f"{_f1(_proj(p))} projected",
+                "stat": worth(p) or "Back",
                 "text": (f"He was listed {INJURY_PHRASE[was]} in Week {before_week} and isn't any more. "
                          f"He's {where}.")}))
     items += [it for _, it in sorted(fresh, key=lambda x: x[0])[:3]]
@@ -343,8 +357,11 @@ def team_advice(team, before, before_week, states_known):
                       "text": ("Every one of your starters has already kicked off, so this lineup is what it "
                                "is. Enjoy the games."
                                if done else
-                               "Every starter is healthy, playing this week, and the best projection you have "
-                               "at his spot. Nothing on your bench beats what you've got. Go enjoy the games.")})
+                               ("Every starter is healthy, playing this week, and the best projection you "
+                                "have at his spot. Nothing on your bench beats what you've got. Go enjoy "
+                                "the games." if projected else
+                                "Every starter is healthy and has a game that week. ESPN hasn't published "
+                                "its projections yet, so the start-or-sit calls come later."))})
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])
@@ -364,21 +381,74 @@ def team_advice(team, before, before_week, states_known):
     }
 
 
-def advice_payload(facts, espn, previous):
-    """The coach page's data: one entry per team, in league order.
+def advice_payload(teams, espn, previous):
+    """The Coach page's data: one entry per team, in league order.
 
-    `previous` is the capture before this one (or None), which is what lets an injury
-    designation be called new rather than just current.
+    `teams` are facts.json-shaped (starters, bench, opponent_id), either from a played
+    week's facts or from next_week_teams(). `previous` is the capture before this one (or
+    None), which is what lets an injury designation be called new rather than just current.
     """
-    # The NFL scoreboard call is best effort in both captures. When it gave us nothing,
-    # no player is called locked or on a bye on a guess.
-    states_known = any(p.get("game_state")
-                       for m in espn["matchups"] for s in (m["home"], m["away"]) if s
-                       for p in s["lineup"])
+    rows = [p for m in espn["matchups"] for s in (m["home"], m["away"]) if s for p in s["lineup"]]
+    # Both calls behind these are best effort. With no NFL game states, no player is
+    # called locked or on a bye on a guess; with no projections published for the week,
+    # no card pretends to compare them.
+    states_known = any(p.get("game_state") for p in rows)
+    projected = any(p.get("projected") for p in rows)
     before = injury_map(previous) if previous else {}
-    by_id = {t["team_id"]: t for t in facts["teams"]}
-    return [team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None, states_known)
+    by_id = {t["team_id"]: t for t in teams}
+    return [team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
+                        states_known, projected)
             for t in LEAGUE["teams"] if t["team_id"] in by_id]
+
+
+def next_week_teams(capture):
+    """Teams shaped like facts.json's, from a capture of a week nobody has played.
+
+    scripts/analyze.py is all about results — who won, what was left on the bench — and a
+    week with no results has none of that. The Coach page only ever reads the roster half
+    of a team, so build that half here rather than running the whole analysis over zeros.
+    """
+    manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
+    name = {t["team_id"]: t["team_name"] for t in LEAGUE["teams"]}
+    teams = []
+    for m in capture["matchups"]:
+        for a, b in ((m["home"], m["away"]), (m["away"], m["home"])):
+            if not a or not b:
+                continue
+            starters = [p for p in a["lineup"] if p["slot"] in STARTING]
+            teams.append({
+                "team_id": a["team_id"], "manager": manager.get(a["team_id"], "?"),
+                "team_name": name.get(a["team_id"], ""), "opponent_id": b["team_id"],
+                "starters": starters,
+                "bench": [p for p in a["lineup"] if p["slot"] in ("BENCH", "IR")],
+                "projected": round(sum(p["projected"] or 0 for p in starters), 2),
+                # Nothing has kicked off, so every starter is still to play and none is
+                # on the field. No score, so ESPN publishes no win probability either.
+                "yet_to_play": len(starters), "playing_now": 0, "win_probability": None,
+            })
+    return teams
+
+
+def next_payload(capture, previous):
+    """The Coach page's "next week" tab: the same advice, a week early.
+
+    Baked at build time and never refreshed by /api/live, because next week's numbers
+    move about once a day, not once a minute — and because asking ESPN for a second week
+    on every request would double what the live page costs it.
+    """
+    teams = next_week_teams(capture)
+    rows = advice_payload(teams, capture, previous)
+    lineups = {t["team_id"]: {"starters": [player(p, True) for p in t["starters"]],
+                              "bench": [player(p, True) for p in t["bench"]]} for t in teams}
+    by_id = {t["team_id"]: t for t in teams}
+    for r in rows:
+        r["lineup"] = lineups[r["team_id"]]
+        r["projected"] = by_id[r["team_id"]]["projected"]
+    return {"week": capture["week"], "captured_at": capture["captured_at"],
+            # ESPN can be days from publishing next week's projections; the page says so
+            # instead of showing a column of zeros.
+            "projected": any(p.get("projected") for t in teams for p in t["starters"]),
+            "teams": rows}
 
 
 def live_payload(facts, espn, previous=None):
@@ -399,7 +469,7 @@ def live_payload(facts, espn, previous=None):
             moves.append({"date": t["date"], "manager": manager.get(t["team_id"], "?"), "added": added, "dropped": dropped})
     moves.sort(key=lambda m: m["date"], reverse=True)
     w.update(live=True, captured_at=espn["captured_at"], moves=moves,
-             advice=advice_payload(facts, espn, previous))
+             advice=advice_payload(facts["teams"], espn, previous))
     return w
 
 
@@ -458,7 +528,7 @@ def season_payload(facts_list, weeks):
     return {"standings": table, "weeks_played": [f["week"] for f in facts_list]}
 
 
-def render(recap_weeks, captured, preview):
+def render(recap_weeks, captured, preview, ahead=None):
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
     weeks = [w for _, w in included]
     # Live page: the newest captured week that isn't in this output's recaps yet
@@ -469,6 +539,10 @@ def render(recap_weeks, captured, preview):
         facts, espn = pending[-1]
         previous = next((e for f, e in reversed(captured) if f["week"] < facts["week"]), None)
         live = live_payload(facts, espn, previous)
+        # The week-ahead capture is only good for the week after the live one. A stale
+        # one (captured before this week started) is dropped rather than shown as next.
+        if ahead and ahead["week"] == facts["week"] + 1:
+            live["next"] = next_payload(ahead, previous)
     data = {
         "league": {"name": LEAGUE["name"].strip(), "season": LEAGUE["season"], "scoring": LEAGUE["scoring"]},
         "preview": preview,
@@ -530,17 +604,24 @@ def main():
             captured.append((json.loads((d / "facts.json").read_text()), json.loads((d / "espn.json").read_text())))
     captured.sort(key=lambda c: c[0]["week"])
 
+    # The week-ahead preview, if one has been captured (scripts/capture.js 'next').
+    # Optional by design: no file, no "next week" tab, everything else unchanged.
+    ahead_path = ROOT / "data" / str(args.season) / "next-week" / "espn.json"
+    ahead = json.loads(ahead_path.read_text()) if ahead_path.exists() else None
+
     dist = SITE / "dist"
     dist.mkdir(exist_ok=True)
-    html, weeks = render(recap_weeks, captured, preview=False)
+    html, weeks = render(recap_weeks, captured, preview=False, ahead=ahead)
     (dist / "index.html").write_text(html)
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
     web.mkdir(exist_ok=True)
     (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
-    print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}")
-    html, weeks = render(recap_weeks, captured, preview=True)
+    nxt = next((w.get("next") for w in weeks if w.get("next")), None)
+    print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
+          + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
+    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead)
     (dist / "preview.html").write_text(html)
     # The same preview as a standalone page, for `scripts/deploy.sh --preview` (a real
     # URL to review a draft on a phone). preview.html itself is the artifact build, which

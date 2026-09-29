@@ -156,6 +156,7 @@
   .week-switch a, .team-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
   .week-switch a:hover, .team-switch a:hover { background: var(--accent-soft); }
   .week-switch a[aria-current="page"], .team-switch a[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .team-switch .wk-n { font: 500 11px/1 var(--mono); opacity: 0.65; margin-left: 2px; }
   .week-switch .dot, .team-switch .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; vertical-align: 1px; }
 
   /* ---------- sections ---------- */
@@ -411,14 +412,23 @@
   // Read through to LIVE every time: refreshLive() swaps the whole object's contents,
   // so a captured reference to LIVE.advice would go stale after the first refresh.
   const advice = () => (LIVE && LIVE.advice) || null;
-  const adviceFor = (id) => (advice() || []).find((a) => a.team_id === id);
+  // The week-ahead preview is baked at build time (next week's numbers move about once a
+  // day, not once a minute), so a live refresh leaves it exactly as it was.
+  const ahead = () => (LIVE && LIVE.next) || null;
+  const coachRows = (next) => (next ? (ahead() || {}).teams : advice()) || null;
+  const coachFor = (id, next) => (coachRows(next) || []).find((a) => a.team_id === id);
+  const adviceFor = (id) => coachFor(id, false);
+  const coachUrl = (next, id) => `#coach${next ? '-next' : ''}${id ? `-${id}` : ''}`;
+  // Once this week is final there is nothing left to fix in it, so the tab leads with
+  // next week instead.
+  const leadWithNext = () => !!(ahead() && LIVE.complete);
   // Eight people, one page: remembering the last team someone opened lets the Coach tab
   // go straight back to hers. Private windows throw on localStorage, which costs nothing.
   const myTeam = {
     get() { try { return Number(localStorage.getItem('ffg-coach-team')) || null; } catch { return null; } },
     set(id) { try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
   };
-  const coachHref = () => (adviceFor(myTeam.get()) ? `#coach-${myTeam.get()}` : '#coach');
+  const coachHref = () => coachUrl(leadWithNext(), coachFor(myTeam.get(), leadWithNext()) ? myTeam.get() : null);
   if (advice()) {
     const tab = document.getElementById('nav-coach');
     tab.hidden = false;
@@ -443,9 +453,15 @@
   const OUTISH = ['Out', 'On IR', 'Suspended', 'Doubtful'];
   const ADVICE_KIND = { out: 'Injury', bye: 'Bye week', watch: 'Game-time call', swap: 'Lineup swap',
     empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear' };
+  /* Each urgency reads a little differently on the week being played and on the week
+     ahead, where nothing has kicked off and nothing is locked yet. */
   const ADVICE_LEVEL = {
-    now: { title: 'Do this now', marker: 'flag', sub: 'Changes worth making before his game kicks off. Once it does, that player is locked in for the week.' },
-    watch: { title: 'Keep an eye on it', marker: 'break', sub: 'Nothing is settled yet. Check back before kickoff.' },
+    now: { title: 'Do this now', marker: 'flag',
+      sub: 'Changes worth making before his game kicks off. Once it does, that player is locked in for the week.',
+      nextTitle: 'Sort this out', nextSub: 'Nothing has kicked off yet, so all of this is still yours to change. Sunday is the deadline.' },
+    watch: { title: 'Keep an eye on it', marker: 'break',
+      sub: 'Nothing is settled yet. Check back before kickoff.',
+      nextSub: 'A long way from settled. Worth another look nearer the weekend.' },
     info: { title: 'Good to know', marker: 'book', sub: 'No action needed, just news from your roster.' },
   };
   const KIND = {
@@ -563,6 +579,15 @@
       </table></div>`;
   }
 
+  /* "Ja'Marr Chase 🐯 Q ● Q3 7:22": on a live week the name carries his NFL team logo,
+     ESPN's injury designation if it has one, and, while that team's game is being played,
+     the game clock. ESPN can 404 a logo (a team we can't name, a free agent), so a broken
+     one removes itself. Shared by the box scores and the Coach page's next-week lineup. */
+  const playerName = (p, live) => esc(p.name)
+    + (live && p.logo ? ` <img class="tlogo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="19" height="19" loading="lazy" onerror="this.remove()">` : '')
+    + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
+    + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
+
   function lineupCard(side, won, live, badge) {
     // A bench player is "hot" if he outscored a starter he could have replaced
     const floor = (p) => {
@@ -572,13 +597,7 @@
     };
     const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
     const bench = [...side.bench].sort((a, b) => b.points - a.points);
-    // "Ja'Marr Chase 🐯 ● Q3 7:22": on a live week the name carries his NFL team logo, and
-    // the sticker means that team's game is being played right now. ESPN can 404 a logo
-    // (a team we can't name, a free agent), so a broken one removes itself.
-    const nameCell = (p) => esc(p.name)
-      + (live && p.logo ? ` <img class="tlogo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="19" height="19" loading="lazy" onerror="this.remove()">` : '')
-      + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
-      + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
+    const nameCell = (p) => playerName(p, live);
     const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${nameCell(p)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
     return `
       <div class="lineup">
@@ -686,7 +705,7 @@
         ${scorePills(w)}
       </div>
 
-      ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
+      ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
 
       <section>
         ${secHead('board', 'Scoreboard')}
@@ -898,18 +917,27 @@
     </article>`;
 
   const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score — useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
+  const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"} — worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
 
-  function teamSwitch(active) {
-    return `<nav class="team-switch" aria-label="Choose a team">${advice().map((a) => `
-      <a href="#coach-${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix"></span>` : ''}</a>`).join('')}</nav>`;
+  /* Both tabs run through the same pages: `next` false is the week being played, true is
+     the week after it. Same cards, same components, different source. */
+  function weekTabs(next, id) {
+    if (!ahead()) return '';
+    const tab = (isNext, label, week) => `<a href="${coachUrl(isNext, id)}" ${isNext === next ? 'aria-current="page"' : ''}>${label} <span class="wk-n">W${week}</span></a>`;
+    return `<nav class="team-switch" aria-label="Choose a week">${tab(false, 'This week', LIVE.week)}${tab(true, 'Next week', ahead().week)}</nav>`;
   }
 
-  function coachCard(a) {
-    const badge = a.counts.now ? `<span class="todo now">${a.counts.now} to fix</span>`
+  function teamSwitch(active, next) {
+    return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
+      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix"></span>` : ''}</a>`).join('')}</nav>`;
+  }
+
+  function coachCard(a, next) {
+    const badge = a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
       : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
       : '<span class="todo clear">all clear</span>';
     return `
-      <a class="coach-card" href="#coach-${a.team_id}">
+      <a class="coach-card" href="${coachUrl(next, a.team_id)}">
         <div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>
         ${badge}
         <p class="lead">${esc(a.items[0].title)}</p>
@@ -917,61 +945,94 @@
       </a>`;
   }
 
-  function coachPage() {
-    const w = LIVE;
+  function coachPage(next) {
+    const week = next ? ahead().week : LIVE.week;
     return `
+      ${weekTabs(next, null)}
       <div class="page-head">
-        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
+        <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
         <h1>Coach</h1>
-        <p class="dek">Every team's to-do list for Week ${w.week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.</p>
+        <p class="dek">${next
+          ? `Planning ahead for Week ${week}: who's on a bye, who's hurt, and who ESPN likes better than the player you have starting. Tap your name.`
+          : `Every team's to-do list for Week ${week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.${LIVE.complete && ahead() ? ` Week ${week} is final, so the work is on the <a href="${coachUrl(true, null)}">next week</a> tab.` : ''}`}</p>
       </div>
       <section style="margin-top:18px">
-        <div class="coach-grid">${advice().map(coachCard).join('')}</div>
+        <div class="coach-grid">${coachRows(next).map((a) => coachCard(a, next)).join('')}</div>
       </section>
-      <p class="sec-sub" style="margin-top:28px">${coachSource(w)}</p>`;
+      <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
 
-  function coachTeamPage(id) {
-    const a = adviceFor(id);
+  /* The week-ahead lineup: no scores exist yet, so the table is the roster and what ESPN
+     projects for it, with the same team and injury badges as a live box score. */
+  function nextLineupCard(a) {
+    const starters = [...a.lineup.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
+    const bench = [...a.lineup.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
+    const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${playerName(p, true)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
+    return `
+      <div class="lineup">
+        <h3><span>${mgrLink(a.manager)}</span><span class="num">proj ${f1(a.projected)}</span></h3>
+        <table>
+          <thead><tr><th>Slot</th><th>Player</th><th class="r">Proj</th></tr></thead>
+          <tbody>
+            ${starters.map((p) => row(p, 'starter', p.slot)).join('')}
+            <tr class="bench-head"><td colspan="3">Bench</td></tr>
+            ${bench.map((p) => row(p, 'bench', p.slot === 'IR' ? 'IR' : 'BN')).join('')}
+          </tbody>
+        </table>
+        <div class="opt">This is the lineup you have set for Week ${ahead().week} right now.</div>
+      </div>`;
+  }
+
+  function coachTeamPage(id, next) {
+    const a = coachFor(id, next);
     if (!a) return notFound();
     myTeam.set(id);
-    const w = LIVE;
-    const g = w.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
+    const week = next ? ahead().week : LIVE.week;
+    const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
-    const opp = g && (g.winner.team_id === id ? g.loser : g.winner);
+    const opp = g ? (g.winner.team_id === id ? g.loser : g.winner) : TEAMS[a.opponent_id];
+    const byes = a.items.filter((it) => it.kind === 'bye').length;
     const groups = Object.keys(ADVICE_LEVEL)
       .map((lvl) => [lvl, a.items.filter((it) => it.level === lvl)])
       .filter(([, items]) => items.length);
     return `
-      <div class="crumbs"><a href="#coach">Coach</a><span>›</span><span>${esc(a.manager)}</span></div>
-      ${teamSwitch(id)}
+      <div class="crumbs"><a href="${coachUrl(next, null)}">Coach</a><span>›</span><span>${esc(a.manager)}</span></div>
+      ${weekTabs(next, id)}
+      ${teamSwitch(id, next)}
       <div class="page-head">
-        <div class="kicker">Week ${w.week} · ${esc(a.team_name)}</div>
-        <h1>${esc(a.manager)}, here's your week</h1>
-        <p class="dek">${a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to fix before kickoff.` : 'Nothing urgent.'}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a> this week — <a href="#live.game-${g.key}">live box score →</a>` : ''}</p>
+        <div class="kicker">Week ${week} · ${esc(a.team_name)}</div>
+        <h1>${esc(a.manager)}, ${next ? `about Week ${week}` : "here's your week"}</h1>
+        <p class="dek">${a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.'}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : ` this week — <a href="#live.game-${g.key}">live box score →</a>`}` : ''}</p>
       </div>
       <div class="stat-tiles">
-        <div class="tile"><div class="label">To fix now</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
-        <div class="tile"><div class="label">Projected total</div><div class="value">${f1(a.projected)}</div><div class="sub">${mine ? `${f2(mine.points)} on the board` : 'ESPN\'s estimate'}</div></div>
-        <div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>
+        <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
+        <div class="tile"><div class="label">Projected total</div><div class="value">${next && !ahead().projected ? '–' : f1(a.projected)}</div><div class="sub">${next ? (ahead().projected ? "ESPN's estimate for Week " + week : 'not published yet') : (mine ? `${f2(mine.points)} on the board` : "ESPN's estimate")}</div></div>
+        ${next
+          ? `<div class="tile"><div class="label">Starters on a bye</div><div class="value">${byes}</div><div class="sub">${byes ? 'a bye week means his NFL team doesn\'t play' : 'everyone has a game'}</div></div>`
+          : `<div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>`}
         ${a.win_probability == null ? '' : `<div class="tile"><div class="label">Chance to win</div><div class="value">${Math.round(a.win_probability * 100)}%</div><div class="sub">ESPN's number${opp ? `, vs ${esc(opp.manager)}` : ''}</div></div>`}
       </div>
 
       ${groups.map(([lvl, items]) => `
         <section>
-          ${secHead(ADVICE_LEVEL[lvl].marker, ADVICE_LEVEL[lvl].title)}
-          <p class="sec-sub">${ADVICE_LEVEL[lvl].sub}</p>
+          ${secHead(ADVICE_LEVEL[lvl].marker, (next && ADVICE_LEVEL[lvl].nextTitle) || ADVICE_LEVEL[lvl].title)}
+          <p class="sec-sub">${(next && ADVICE_LEVEL[lvl].nextSub) || ADVICE_LEVEL[lvl].sub}</p>
           <div class="cards">${items.map(adviceCard).join('')}</div>
         </section>`).join('')}
 
-      ${mine ? `
+      ${next ? `
+      <section>
+        ${secHead('board', `Your lineup for Week ${week}`)}
+        <p class="sec-sub">What you have set right now, and what ESPN projects for it. The badge next to a name is his NFL team and a colored pill is ESPN's injury designation. Nobody has played, so there are no points yet.</p>
+        <div class="box-grid">${nextLineupCard(a)}</div>
+      </section>` : (mine ? `
       <section>
         ${secHead('board', 'Your lineup right now')}
         <p class="sec-sub">Points so far and ESPN's projection for every player. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
         <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`)}</div>
-      </section>` : ''}
+      </section>` : '')}
 
-      <p class="sec-sub" style="margin-top:28px">${coachSource(w)}</p>`;
+      <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
 
   function glossaryPage() {
@@ -1001,8 +1062,10 @@
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
     else if (h === 'live' && LIVE) { html = livePage(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
-    else if (h === 'coach' && advice()) { html = coachPage(); nav = 'coach'; }
-    else if ((m = /^coach-(\d+)$/.exec(h)) && advice()) { html = coachTeamPage(Number(m[1])); nav = 'coach'; }
+    else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
+    else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
+    else if ((m = /^coach-next-(\d+)$/.exec(h)) && ahead()) { html = coachTeamPage(Number(m[1]), true); nav = 'coach'; }
+    else if ((m = /^coach-(\d+)$/.exec(h)) && advice()) { html = coachTeamPage(Number(m[1]), false); nav = 'coach'; }
     else if (!WEEKS.length && LIVE && h === '') { html = livePage(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
