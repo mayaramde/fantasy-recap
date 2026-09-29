@@ -446,7 +446,7 @@
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
       <a href="#coach" data-nav="coach" id="nav-coach" hidden>Coach</a>
-      <a href="#" data-nav="week">Recaps</a>
+      <a href="#" data-nav="week" id="nav-week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
       <a href="#glossary" data-nav="glossary">Glossary</a>
     </nav>
@@ -465,6 +465,9 @@
   const SEASON = DATA.season;
   const LIVE = DATA.live;
   if (LIVE) document.getElementById('nav-live').hidden = false;
+  // Home shows Live while a week is in progress (see route() below), so the Recaps tab
+  // can't just point at "#" anymore — that would land back on Live, not a recap.
+  if (WEEKS.length) document.getElementById('nav-week').href = `#week-${WEEKS[WEEKS.length - 1].week}`;
   // Read through to LIVE every time: refreshLive() swaps the whole object's contents,
   // so a captured reference to LIVE.advice would go stale after the first refresh.
   const advice = () => (LIVE && LIVE.advice) || null;
@@ -1176,7 +1179,7 @@
       </section>`;
   }
 
-  const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="#" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
+  const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="${WEEKS.length ? `#week-${latest().week}` : '#'}" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
   /* ---------- router: every page is a #hash inside this one file ---------- */
   function route() {
