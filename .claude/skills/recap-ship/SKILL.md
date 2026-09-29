@@ -41,9 +41,16 @@ explicit approval** — nothing in the next step runs until she says go.
 
 ## Step 4: commit and PR
 
-On the recap's own branch (never `main` directly): commit, push, open a PR, enable auto-merge
-(squash). It merges once the `checks` workflow passes (`python scripts/check.py` runs the same
-checks locally — run it yourself first).
+Run `python3 scripts/check.py` first and fix anything it flags. On the recap's own branch
+(`recap-week-NN`, never `main` directly):
+
+1. Commit **only** these paths: `recaps/2026/week-NN.json`, `data/2026/week-NN/`,
+   `data/player_names.json`, and any `facts.json` under `data/2026` that changed for
+   already-committed weeks. Never `git add -A`, and never sweep in another week's uncommitted
+   data — a concurrent live-update run can leave the *next* week's files sitting uncommitted in
+   the same working tree.
+2. Push, and open a PR titled `"Week NN recap draft"`. Enable auto-merge (squash) — it merges
+   once the `checks` workflow passes. Don't merge it yourself.
 
 **If the diff includes anything beyond `recaps/`/`data/`** — a change to `scripts/`, `site/`, or
 `.github/` bundled into the same PR — call the `code-reviewer` agent on that part of the diff
