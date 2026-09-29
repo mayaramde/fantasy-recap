@@ -7,7 +7,7 @@
 // sends to scripts/receive.py is handled here and written to
 // data/<season>/week-NN/espn.json with the same checks receive.py applies.
 //
-// Usage: ESPN_S2=... ESPN_SWID=... node scripts/capture_node.mjs current   (or: 3 4)
+// Usage: ESPN_S2=... ESPN_SWID=... node scripts/capture_node.mjs current   (or: next, or: 3 4)
 
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -28,12 +28,16 @@ const RECEIVER = 'http://127.0.0.1:8765/save';
 const realFetch = globalThis.fetch;
 
 function save(url, init) {
-  const week = Number(new URL(url).searchParams.get('week'));
+  const params = new URL(url).searchParams;
+  const week = Number(params.get('week'));
   const data = JSON.parse(init.body);
   if (data.week !== week || week < 1 || week > 18 || !data.matchups?.length) {
     throw new Error(`invalid capture for week ${week}`);
   }
-  const rel = join('data', String(data.season), `week-${String(week).padStart(2, '0')}`, 'espn.json');
+  // The week-ahead preview lands beside the numbered weeks, not among them: see the
+  // header comment in scripts/receive.py.
+  const folder = params.get('next') === '1' ? 'next-week' : `week-${String(week).padStart(2, '0')}`;
+  const rel = join('data', String(data.season), folder, 'espn.json');
   mkdirSync(dirname(join(ROOT, rel)), { recursive: true });
   const text = JSON.stringify(data, null, 1) + '\n';
   writeFileSync(join(ROOT, rel), text);
@@ -53,6 +57,6 @@ globalThis.fetch = async (url, init = {}) => {
 
 (0, eval)(readFileSync(join(ROOT, 'scripts', 'capture.js'), 'utf8'));
 const args = process.argv.slice(2);
-const weeks = args[0] === 'current' ? 'current' : args.map(Number);
+const weeks = args[0] === 'current' || args[0] === 'next' ? args[0] : args.map(Number);
 const out = await window.fantasyCapture(weeks);
 console.log(JSON.stringify(out, null, 1));

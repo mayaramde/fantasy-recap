@@ -2,7 +2,10 @@
 
 Chrome (running scripts/capture.js on the ESPN tab) POSTs the trimmed JSON to
 http://127.0.0.1:8765/save?week=N and this writes data/<season>/week-NN/espn.json,
-so the data lands on disk byte-for-byte without being retyped.
+so the data lands on disk byte-for-byte without being retyped. With &next=1 (the Coach
+page's preview of the week ahead) it writes data/<season>/next-week/espn.json instead:
+a week nobody has played doesn't belong in the numbered weeks, where the site would
+read it as the week in progress.
 
 Usage: python3 scripts/receive.py [--count N] [--timeout 120]
 Also serves scripts/capture.js at GET /capture.js.
@@ -55,7 +58,9 @@ class Handler(BaseHTTPRequestHandler):
         if url.path != "/save" or self.headers.get("Origin") != ALLOWED_ORIGIN:
             return self._reply(403, {"error": "forbidden"})
         try:
-            week = int(parse_qs(url.query)["week"][0])
+            query = parse_qs(url.query)
+            week = int(query["week"][0])
+            nxt = query.get("next", ["0"])[0] == "1"
             body = self.rfile.read(int(self.headers["Content-Length"]))
             data = json.loads(body)
             assert data["week"] == week and 1 <= week <= 18
@@ -63,7 +68,8 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:  # noqa: BLE001
             return self._reply(400, {"error": f"invalid capture: {e}"})
 
-        out = ROOT / "data" / str(data["season"]) / f"week-{week:02d}" / "espn.json"
+        folder = "next-week" if nxt else f"week-{week:02d}"
+        out = ROOT / "data" / str(data["season"]) / folder / "espn.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
         Handler.saved.append(out)

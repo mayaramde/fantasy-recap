@@ -1,6 +1,7 @@
 name: live-update
 
-# Refreshes the website's Live page from ESPN, hourly while NFL games are on.
+# Refreshes the website's Live page from ESPN, hourly while NFL games are on, and the
+# Coach page's week-ahead tab with it.
 # Data only: capture, analyze, build, deploy. Nothing is committed.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
@@ -40,6 +41,16 @@ jobs:
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
         run: node scripts/capture_node.mjs current | tee "$RUNNER_TEMP/capture.json"
+
+      # The Coach page's "next week" tab. Best effort on purpose: a week ESPN hasn't
+      # published rosters or projections for yet must never cost the league its live
+      # scores, so a failure here is logged and the run carries on without the tab.
+      - name: Capture next week from ESPN (best effort)
+        continue-on-error: true
+        env:
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+        run: node scripts/capture_node.mjs next
 
       - name: Skip if that week's recap is already published
         id: gate

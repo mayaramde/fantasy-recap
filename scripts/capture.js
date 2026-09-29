@@ -5,26 +5,36 @@
 // Usage (scripts/receive.py must be running; it serves this file and saves results):
 //   eval(await fetch('http://127.0.0.1:8765/capture.js').then(r => r.text()));
 //   await fantasyCapture([3]);          // one or more weeks, or 'current'
+//   await fantasyCapture('next');       // the week after this one, for the Coach page
 // Each week is trimmed (no member names, ESPN IDs or settings) and POSTed to the
-// receiver, which writes data/<season>/week-NN/espn.json verbatim.
+// receiver, which writes data/<season>/week-NN/espn.json verbatim. 'next' writes
+// data/<season>/next-week/espn.json instead: same shape, but a week nobody has played
+// yet, so every point is 0 and the numbers that matter are ESPN's projections.
 // One request goes to ESPN's public NFL scoreboard (no session, no cookies) for the
 // state of each NFL game, so the live box score can say who is on the field right now.
 // Note: `teams` records are season-to-date as of capture time; per-week
 // standings are rebuilt from matchup results in site/build.py.
 
-// weeks: an array of week numbers, or 'current' for ESPN's current matchup week
+// weeks: an array of week numbers, 'current' for ESPN's current matchup week, or
+// 'next' for the week after it (a preview: rosters and projections, no scores).
 window.fantasyCapture = async (weeks) => {
-if (weeks === 'current') {
-  const st = await fetch('https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=mStatus',
-    { credentials: 'include' }).then((r) => r.json());
-  weeks = [st.status.currentMatchupPeriod];
+if (weeks === 'current' || weeks === 'next') {
+  const { get } = espnHelpers();
+  const week = (await get('view=mStatus')).status.currentMatchupPeriod;
+  if (weeks === 'next') {
+    if (week >= 18) throw new Error(`no week after ${week}`);
+    return [await captureNextWeek(week + 1)];
+  }
+  weeks = [week];
 }
 const out = [];
 for (const WEEK of weeks) out.push(await captureWeek(WEEK));
 return out;
 };
 
-async function captureWeek(WEEK) {
+// Everything both captures share. A function declaration, not top-level consts, so the
+// script can be eval'd twice in the same tab without "already declared".
+function espnHelpers() {
 const SEASON = 2026;
 const LEAGUE_ID = 698468554;
 const BASE = `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/${SEASON}/segments/0/leagues/${LEAGUE_ID}`;
@@ -38,6 +48,34 @@ const get = (qs) =>
     if (!r.ok) throw new Error(`ESPN ${r.status} for ${qs}`);
     return r.json();
   });
+
+// ESPN files a player's weekly numbers as stat rows: source 0 is what he actually
+// scored, source 1 is the projection, and for a week nobody has played only source 1
+// exists. Split type 1 is the weekly total.
+const pickStat = (stats, source, week) =>
+  (stats || []).find((s) => s.statSourceId === source && s.scoringPeriodId === week && s.statSplitTypeId === 1);
+
+// One roster row, trimmed the same way for a finished week and a preview.
+const trimPlayer = (e, week, games) => {
+  const p = e.playerPoolEntry.player;
+  const g = games[p.proTeamId] || null;
+  return {
+    player_id: p.id,
+    name: p.fullName,
+    pos: POS[p.defaultPositionId] || String(p.defaultPositionId),
+    pro_team_id: p.proTeamId,
+    slot: SLOT[e.lineupSlotId] || String(e.lineupSlotId),
+    // ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT, INJURY_RESERVE,
+    // SUSPENSION, ACTIVE... Absent for a D/ST and for anyone ESPN isn't listing.
+    injury_status: p.injuryStatus ?? null,
+    points: round2(pickStat(p.stats, 0, week)?.appliedTotal ?? 0),
+    projected: round2(pickStat(p.stats, 1, week)?.appliedTotal ?? null),
+    played: !!pickStat(p.stats, 0, week),
+    // His NFL game: 'pre', 'in' or 'post', and the game clock while it's 'in'
+    game_state: g ? g.state : null,
+    game_clock: g ? g.clock : null,
+  };
+};
 
 // Which of this week's NFL games are on right now, by ESPN pro team id (the same ids the
 // fantasy API uses for proTeamId), so a live box score can mark the players still on the
@@ -71,6 +109,13 @@ const proGames = async (week) => {
   }
 };
 
+return { SEASON, SLOT, POS, round2, get, pickStat, trimPlayer, proGames };
+}
+
+// One played (or in-progress) week: scores, rosters and the week's transactions.
+async function captureWeek(WEEK) {
+const { SEASON, SLOT, round2, get, pickStat, trimPlayer, proGames } = espnHelpers();
+
 const [box, teamsRes, statusRes, txRes, games] = await Promise.all([
   get(`view=mBoxscore&view=mMatchupScore&scoringPeriodId=${WEEK}`),
   get('view=mTeam'),
@@ -80,31 +125,12 @@ const [box, teamsRes, statusRes, txRes, games] = await Promise.all([
 ]);
 
 const names = {};
-const pickStat = (stats, source) =>
-  (stats || []).find((s) => s.statSourceId === source && s.scoringPeriodId === WEEK && s.statSplitTypeId === 1);
 
 const side = (s) => {
   if (!s) return null;
   const lineup = (s.rosterForCurrentScoringPeriod?.entries || []).map((e) => {
-    const p = e.playerPoolEntry.player;
-    names[p.id] = p.fullName;
-    const g = games[p.proTeamId] || null;
-    return {
-      player_id: p.id,
-      name: p.fullName,
-      pos: POS[p.defaultPositionId] || String(p.defaultPositionId),
-      pro_team_id: p.proTeamId,
-      slot: SLOT[e.lineupSlotId] || String(e.lineupSlotId),
-      // ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT, INJURY_RESERVE,
-      // SUSPENSION, ACTIVE... Absent for a D/ST and for anyone ESPN isn't listing.
-      injury_status: p.injuryStatus ?? null,
-      points: round2(pickStat(p.stats, 0)?.appliedTotal ?? 0),
-      projected: round2(pickStat(p.stats, 1)?.appliedTotal ?? null),
-      played: !!pickStat(p.stats, 0),
-      // His NFL game: 'pre', 'in' or 'post', and the game clock while it's 'in'
-      game_state: g ? g.state : null,
-      game_clock: g ? g.clock : null,
-    };
+    names[e.playerPoolEntry.player.id] = e.playerPoolEntry.player.fullName;
+    return trimPlayer(e, WEEK, games);
   });
   return {
     team_id: s.teamId,
@@ -189,5 +215,92 @@ return {
   transactions: transactions.length,
   playing: Object.values(games).filter((g) => g.state === 'in').length,
   unnamed: transactions.flatMap((t) => t.items).filter((i) => /^(Player|DST) -?\d+$/.test(i.name)).length,
+};
+}
+
+// The week after this one: the same trimmed shape, for the Coach page's "next week" tab.
+//
+// Nobody has played it, so there are no scores and no transactions to read — what matters
+// is who each team would start, what ESPN projects them for, who is hurt, and whose NFL
+// team is on a bye. Rosters come from view=mRoster at that scoring period rather than
+// mBoxscore, which only carries a lineup for a week that has started; the pairings come
+// from the season schedule, which is already there for every week.
+//
+// Saved to data/<season>/next-week/espn.json, deliberately not as a week of its own:
+// a file under week-NN/ would look to the site like a week in progress and take the Live
+// page over from the real one.
+async function captureNextWeek(WEEK) {
+const { SEASON, SLOT, round2, get, trimPlayer, proGames } = espnHelpers();
+
+const [sched, rosterRes, teamsRes, statusRes, games] = await Promise.all([
+  get(`view=mMatchupScore&scoringPeriodId=${WEEK}`),
+  get(`view=mRoster&scoringPeriodId=${WEEK}`),
+  get('view=mTeam'),
+  get('view=mStatus'),
+  proGames(WEEK),
+]);
+
+const rosters = {};
+for (const t of rosterRes.teams || []) {
+  rosters[t.id] = (t.roster?.entries || []).map((e) => trimPlayer(e, WEEK, games));
+}
+
+// A side of a matchup nobody has played: no score, no win probability, and a projected
+// total built from the starters ESPN has in the lineup right now.
+const side = (teamId) => {
+  const lineup = rosters[teamId] || [];
+  const starting = lineup.filter((p) => p.slot !== 'BENCH' && p.slot !== 'IR');
+  return {
+    team_id: teamId,
+    points: 0,
+    projected: round2(starting.reduce((n, p) => n + (p.projected || 0), 0)),
+    win_probability: null,
+    lineup,
+  };
+};
+
+const matchups = (sched.schedule || [])
+  .filter((m) => m.matchupPeriodId === WEEK)
+  .map((m) => ({ id: m.id, winner: 'UNDECIDED', home: side(m.home?.teamId), away: side(m.away?.teamId) }));
+
+const teams = (teamsRes.teams || []).map((t) => ({
+  team_id: t.id,
+  wins: t.record?.overall?.wins ?? 0,
+  losses: t.record?.overall?.losses ?? 0,
+  ties: t.record?.overall?.ties ?? 0,
+  points_for: round2(t.record?.overall?.pointsFor ?? 0),
+  points_against: round2(t.record?.overall?.pointsAgainst ?? 0),
+}));
+
+const capture = {
+  season: SEASON,
+  week: WEEK,
+  captured_at: new Date().toISOString(),
+  espn_status: {
+    current_matchup_period: statusRes.status?.currentMatchupPeriod,
+    latest_scoring_period: statusRes.status?.latestScoringPeriod,
+  },
+  complete: false,
+  matchups,
+  teams,
+  transactions: [],
+};
+
+const res = await fetch(`http://127.0.0.1:8765/save?week=${WEEK}&next=1`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(capture),
+});
+const rostered = matchups.flatMap((m) => [m.home, m.away]).flatMap((s) => s.lineup);
+return {
+  week: WEEK,
+  next_week: true,
+  receiver: await res.json(),
+  matchups: matchups.length,
+  players: rostered.length,
+  // If ESPN has no projections this far out the Coach page says so rather than
+  // pretending everyone is projected zero, so it's worth seeing in the capture result.
+  projected: rostered.filter((p) => p.projected != null).length,
+  on_bye: rostered.filter((p) => !games[p.pro_team_id]).length,
 };
 }
