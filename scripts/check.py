@@ -12,6 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import espn_fetch  # noqa: E402
+import check_recaps  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -107,6 +108,12 @@ def main():
 
     check_capture_shape(errors)
     check_scoring_rows(errors)
+
+    recap_errors, recap_warnings = check_recaps.check_all_recaps(ROOT)
+    errors.extend(recap_errors)
+    if recap_warnings:
+        print("warning (not blocking, draft-recap grace period):", file=sys.stderr)
+        print("\n".join(f"  {w}" for w in recap_warnings), file=sys.stderr)
 
     build = next((p for p in [ROOT / "site/build.py", ROOT / "site/build.js"] if p.exists()), None)
     if build:

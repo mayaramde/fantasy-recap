@@ -1,0 +1,9 @@
+{
+  "name": "Test League",
+  "teams": [
+    { "team_id": 1, "team_name": "Team One", "manager": "Alice" },
+    { "team_id": 2, "team_name": "Team Two", "manager": "Bob" },
+    { "team_id": 3, "team_name": "Team Three", "manager": "Cara (CC)" },
+    { "team_id": 4, "team_name": "Team Four", "manager": "Dez" }
+  ]
+}

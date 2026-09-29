@@ -1,0 +1,10 @@
+{
+  "season": 2099,
+  "week": 1,
+  "teams": [
+    { "team_id": 1, "opponent_id": 2, "manager": "Alice", "points": 133.45, "projected": 120.1 },
+    { "team_id": 2, "opponent_id": 1, "manager": "Bob", "points": 110.2, "projected": 115.0 },
+    { "team_id": 3, "opponent_id": 4, "manager": "Cara", "points": 95.0, "projected": 90.3 },
+    { "team_id": 4, "opponent_id": 3, "manager": "Dez", "points": 88.75, "projected": 99.9 }
+  ]
+}
