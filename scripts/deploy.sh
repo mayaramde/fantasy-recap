@@ -35,6 +35,11 @@ fi
 # live-week capture still reaches the site.
 # On this Mac the CLI uses `vercel login`; the cloud live update passes VERCEL_TOKEN
 # (plus VERCEL_ORG_ID / VERCEL_PROJECT_ID in place of `vercel link`).
+#
+# Expanded below as ${token[@]+"${token[@]}"}, not "${token[@]}". macOS ships bash 3.2,
+# and before bash 4.4 an empty array expanded under `set -u` is an unbound variable, not
+# an empty list. Without a token — which is every run on this Mac — the plain form aborts
+# the script before it builds anything. Don't "tidy" it back.
 token=(${VERCEL_TOKEN:+--token "$VERCEL_TOKEN"})
 
 # `vercel build` needs the project linked, i.e. a .vercel/project.json on disk. This Mac
@@ -53,9 +58,9 @@ fi
 # scripts/vercel_build.sh reads this to choose which tree to publish. Passed explicitly
 # because `vercel build --prod` leaves VERCEL_ENV unset in the build command.
 if $preview; then
-  FANTASY_TARGET=preview vercel build --yes "${token[@]}"
-  vercel deploy --prebuilt --yes "${token[@]}"
+  FANTASY_TARGET=preview vercel build --yes ${token[@]+"${token[@]}"}
+  vercel deploy --prebuilt --yes ${token[@]+"${token[@]}"}
 else
-  FANTASY_TARGET=production vercel build --prod --yes "${token[@]}"
-  vercel deploy --prebuilt --prod --yes "${token[@]}"
+  FANTASY_TARGET=production vercel build --prod --yes ${token[@]+"${token[@]}"}
+  vercel deploy --prebuilt --prod --yes ${token[@]+"${token[@]}"}
 fi
