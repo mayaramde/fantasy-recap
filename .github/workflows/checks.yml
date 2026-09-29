@@ -17,4 +17,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - run: python -m unittest tests.test_guard_bash -v
       - run: python scripts/check.py
