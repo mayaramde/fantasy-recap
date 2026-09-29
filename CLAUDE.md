@@ -41,8 +41,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
   `fantasy-coach-daily` writes once a day — start/sit suggestions (`consensus`), waiver and trade leads
   (`roster_ideas`), and day-over-day injury/news changes (`fp_news`/`fp_back`) for every team, keyed by
-  week under `weeks`. Unlike `next-week/espn.json`, this **is** committed straight to `main` (small, factual,
-  derived data, the same category as `data/player_names.json`, not the human-reviewed recap content). `site/build.py`
+  week under `weeks`. Unlike `next-week/espn.json`, this **is** committed, through a PR that
+  auto-merges (squash) once `checks` passes, with no review (small, factual, derived data, the same category as `data/player_names.json`, not the human-reviewed recap content). `site/build.py`
   treats it exactly like `next-week/espn.json` otherwise: best effort, and a missing, malformed, or stale
   (>36h old) file just means ESPN-only Coach cards, same as before this existed.
 
@@ -100,8 +100,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - `fantasy-coach-daily` runs once a day: pulls FantasyPros projections, rankings, ownership and injury/news for
   all 8 rosters, and writes finished, voiced Coach cards — start/sit suggestions, waiver and trade leads, and what's
   changed in FantasyPros' injury report since yesterday — to `data/2026/fantasypros/latest.json`. Unlike the recap,
-  this commits straight to `main` with no PR (small, factual, derived data). Data only otherwise: it doesn't deploy,
-  touch any recap, or touch any `data/2026/week-NN/` file; the next live-update run picks up its commit.
+  this opens its own PR with auto-merge (squash) on and merges once `checks` passes, with no review (small, factual,
+  derived data). It works in its own git worktree, so it never switches branches under another session. Data only
+  otherwise: it doesn't deploy, touch any recap, or touch any `data/2026/week-NN/` file; the next live-update run
+  picks up the merged snapshot.
 - All three tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
 - The Live page shows the newest captured week without a recap in that build: "live" while games are on,
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
