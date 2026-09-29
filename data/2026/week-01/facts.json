@@ -558,6 +558,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -762,6 +763,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -966,6 +968,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [
     "Kyle Pitts Sr."
@@ -1184,6 +1187,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -1400,6 +1404,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [
     "Colston Loveland"
@@ -1606,6 +1611,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": []
@@ -1822,6 +1828,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [
@@ -2059,6 +2066,7 @@
      "played": true
     }
    ],
+   "playing_now": 0,
    "yet_to_play": 0,
    "zero_point_starters": [],
    "pickups_started": [
