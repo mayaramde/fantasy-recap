@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy this to .claude/settings.local.json and edit freely. That file is per-developer and should be gitignored — use it for permission tweaks or model overrides you don't want to impose on the whole team.",
+  "permissions": {
+    "allow": []
+  }
+}
