@@ -95,6 +95,9 @@ const side = (s) => {
       pos: POS[p.defaultPositionId] || String(p.defaultPositionId),
       pro_team_id: p.proTeamId,
       slot: SLOT[e.lineupSlotId] || String(e.lineupSlotId),
+      // ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT, INJURY_RESERVE,
+      // SUSPENSION, ACTIVE... Absent for a D/ST and for anyone ESPN isn't listing.
+      injury_status: p.injuryStatus ?? null,
       points: round2(pickStat(p.stats, 0)?.appliedTotal ?? 0),
       projected: round2(pickStat(p.stats, 1)?.appliedTotal ?? null),
       played: !!pickStat(p.stats, 0),

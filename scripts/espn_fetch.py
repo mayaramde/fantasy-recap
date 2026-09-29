@@ -135,6 +135,10 @@ def _side(s, week, names, games):
             "pos": POS.get(p.get("defaultPositionId")) or str(p.get("defaultPositionId")),
             "pro_team_id": p.get("proTeamId"),
             "slot": SLOT.get(e.get("lineupSlotId")) or str(e.get("lineupSlotId")),
+            # ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT,
+            # INJURY_RESERVE, SUSPENSION, ACTIVE... Absent for a D/ST and for anyone
+            # ESPN isn't listing.
+            "injury_status": p.get("injuryStatus"),
             "points": round2(_nn(actual.get("appliedTotal") if actual else None, 0)),
             "projected": round2(proj.get("appliedTotal") if proj else None),
             "played": bool(actual),
@@ -225,7 +229,9 @@ def fetch_week(week, ck=None):
 _PLAYER = {"player_id": "int", "name": "str", "pos": "str", "pro_team_id": "int?",
            "slot": "str", "points": "num", "projected": "num?", "played": "bool",
            # Added for the live box score, so weeks captured before it are missing both keys
-           "game_state?": "str?", "game_clock?": "str?"}
+           "game_state?": "str?", "game_clock?": "str?",
+           # Added for the Coach page; same story for weeks captured before it
+           "injury_status?": "str?"}
 # A "?" on a key means the key may be absent (week-01 and week-02 were captured before
 # capture.js started recording win_probability); a "?" on a type means the value may be null.
 _SIDE = {"team_id": "int", "points": "num", "projected": "num?", "win_probability?": "num?",

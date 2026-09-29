@@ -106,14 +106,14 @@
   main:focus { outline: none; }
 
   /* the sticker: every raised surface shares one outline + hard offset shadow */
-  a.game, .card, .lineup, .std-card, .tile, .archive a, .decided li, .other-games a, .versus {
+  a.game, .card, .lineup, .std-card, .tile, .coach-card, .decided li, .other-games a, .versus {
     border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
   @media (prefers-reduced-motion: no-preference) {
-    a.game, .archive a, .other-games a, .chips a, .profile-btn { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+    a.game, .coach-card, .other-games a, .chips a, .profile-btn { transition: transform 0.12s ease, box-shadow 0.12s ease; }
   }
-  a.game:hover, .archive a:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
-  a.game:active, .archive a:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  a.game:hover, .coach-card:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
+  a.game:active, .coach-card:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
   .badge-tilt { display: inline-block; transform: rotate(-3deg); }
 
   /* ---------- site header ---------- */
@@ -152,11 +152,11 @@
   .pill .txt { display: grid; gap: 1px; font: 600 11px/1.1 var(--body); text-transform: uppercase; letter-spacing: 0.07em; }
   .pill .txt b { font: 700 14px/1.15 var(--body); text-transform: none; letter-spacing: 0; }
 
-  .week-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
-  .week-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
-  .week-switch a:hover { background: var(--accent-soft); }
-  .week-switch a[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
-  .week-switch .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; vertical-align: 1px; }
+  .week-switch, .team-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
+  .week-switch a, .team-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+  .week-switch a:hover, .team-switch a:hover { background: var(--accent-soft); }
+  .week-switch a[aria-current="page"], .team-switch a[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .week-switch .dot, .team-switch .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); margin-left: 6px; vertical-align: 1px; }
 
   /* ---------- sections ---------- */
   section { margin-top: 44px; }
@@ -326,11 +326,30 @@
   .chips a:nth-child(3n) { background: var(--orange); color: var(--on-pop); }
   .chips a:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--drop); }
 
-  .archive { display: grid; gap: 16px; }
-  .archive a { text-decoration: none; background: var(--card); padding: 16px 18px; display: grid; gap: 6px; }
-  .archive .wk { justify-self: start; font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; transform: rotate(-2deg); }
-  .archive h3 { font: 800 26px/1.05 var(--display); }
-  .archive p { margin: 0; color: var(--muted); font-size: 14px; }
+  /* ---------- coach ---------- */
+  /* One card per team on the overview: the manager, what needs doing, a way in. */
+  .coach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
+  .coach-card { text-decoration: none; background: var(--card); padding: 14px 16px 16px; display: grid; gap: 8px; align-content: start; }
+  .coach-card .mgr { font: 800 26px/1.05 var(--display); }
+  .coach-card .tname { font-size: 12.5px; color: var(--muted); }
+  .coach-card .lead { margin: 0; font-size: 14px; }
+  .coach-card .go { font-size: 13.5px; font-weight: 700; color: var(--accent); }
+  .coach-card:hover .go { text-decoration: underline; }
+  /* the count sticker: how many things need doing before kickoff */
+  .todo { justify-self: start; font: 600 12.5px/1 var(--script); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
+  .todo.now { background: var(--pink); }
+  .todo.watch { background: var(--orange); }
+  .todo.clear { background: var(--lime); }
+  /* an advice card borrows the award card's sticker, colored by how urgent it is */
+  .card.now { box-shadow: 5px 5px 0 var(--pink); }
+  .card.watch { box-shadow: 5px 5px 0 var(--orange); }
+  .card.info { box-shadow: 5px 5px 0 var(--drop); }
+  .card.now .stat { background: var(--pink); }
+  .card.watch .stat { background: var(--orange); }
+  .card.info .stat { background: var(--lime); }
+  /* ESPN's injury designation, next to the player's name in any box score */
+  .inj { display: inline-block; margin-left: 5px; font: 500 10.5px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px; vertical-align: 1px; white-space: nowrap; }
+  .inj.out { background: var(--pink); }
 
   .empty { padding: 70px 0; text-align: center; color: var(--muted); }
   .empty h1 { font: 800 42px/1 var(--display); color: var(--ink); margin-bottom: 10px; }
@@ -369,9 +388,9 @@
     </a>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
+      <a href="#coach" data-nav="coach" id="nav-coach" hidden>Coach</a>
       <a href="#" data-nav="week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
-      <a href="#archive" data-nav="archive">Archive</a>
       <a href="#glossary" data-nav="glossary">Glossary</a>
     </nav>
   </div>
@@ -389,6 +408,22 @@
   const SEASON = DATA.season;
   const LIVE = DATA.live;
   if (LIVE) document.getElementById('nav-live').hidden = false;
+  // Read through to LIVE every time: refreshLive() swaps the whole object's contents,
+  // so a captured reference to LIVE.advice would go stale after the first refresh.
+  const advice = () => (LIVE && LIVE.advice) || null;
+  const adviceFor = (id) => (advice() || []).find((a) => a.team_id === id);
+  // Eight people, one page: remembering the last team someone opened lets the Coach tab
+  // go straight back to hers. Private windows throw on localStorage, which costs nothing.
+  const myTeam = {
+    get() { try { return Number(localStorage.getItem('ffg-coach-team')) || null; } catch { return null; } },
+    set(id) { try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
+  };
+  const coachHref = () => (adviceFor(myTeam.get()) ? `#coach-${myTeam.get()}` : '#coach');
+  if (advice()) {
+    const tab = document.getElementById('nav-coach');
+    tab.hidden = false;
+    tab.href = coachHref();
+  }
   const base = (w) => (w.live ? '#live' : `#week-${w.week}`);
   const updated = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' });
   const liveLabel = (w) => (w.complete ? `Week ${w.week} is final. The official recap drops Tuesday.` : `Week ${w.week} is happening now.`);
@@ -404,6 +439,15 @@
   const scored = (pos, pts) => (posOf(pos) ? `${posOf(pos)}, ` : '') + f2(pts);
   const signed = (n) => (n > 0 ? '+' : n < 0 ? '−' : '') + f1(Math.abs(n));
   const SLOT_ORDER = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
+  // Injury designations that mean "he isn't playing", so they get the loud color
+  const OUTISH = ['Out', 'On IR', 'Suspended', 'Doubtful'];
+  const ADVICE_KIND = { out: 'Injury', bye: 'Bye week', watch: 'Game-time call', swap: 'Lineup swap',
+    empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear' };
+  const ADVICE_LEVEL = {
+    now: { title: 'Do this now', marker: 'flag', sub: 'Changes worth making before his game kicks off. Once it does, that player is locked in for the week.' },
+    watch: { title: 'Keep an eye on it', marker: 'break', sub: 'Nothing is settled yet. Check back before kickoff.' },
+    info: { title: 'Good to know', marker: 'book', sub: 'No action needed, just news from your roster.' },
+  };
   const KIND = {
     game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good',
       sub: 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.' },
@@ -519,7 +563,7 @@
       </table></div>`;
   }
 
-  function lineupCard(side, won, live) {
+  function lineupCard(side, won, live, badge) {
     // A bench player is "hot" if he outscored a starter he could have replaced
     const floor = (p) => {
       const ok = { QB: ['QB'], RB: ['RB', 'FLEX'], WR: ['WR', 'FLEX'], TE: ['TE', 'FLEX'], DST: ['DST'], K: ['K'] }[p.pos] || [];
@@ -533,11 +577,12 @@
     // (a team we can't name, a free agent), so a broken one removes itself.
     const nameCell = (p) => esc(p.name)
       + (live && p.logo ? ` <img class="tlogo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="19" height="19" loading="lazy" onerror="this.remove()">` : '')
+      + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
       + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
     const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${nameCell(p)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
     return `
       <div class="lineup">
-        <h3><span>${mgrLink(side.manager)}</span><span class="num">${f2(side.points)} <span class="res ${won ? 'W' : 'L'}">${won ? 'W' : 'L'}</span></span></h3>
+        <h3><span>${mgrLink(side.manager)}</span><span class="num">${f2(side.points)} ${badge || `<span class="res ${won ? 'W' : 'L'}">${won ? 'W' : 'L'}</span>`}</span></h3>
         <table>
           <thead><tr><th>Slot</th><th>Player</th><th class="r">Pts</th><th class="r">Proj</th></tr></thead>
           <tbody>
@@ -641,6 +686,8 @@
         ${scorePills(w)}
       </div>
 
+      ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
+
       <section>
         ${secHead('board', 'Scoreboard')}
         <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. A pulsing dot counts the starters whose NFL game is on right now; "yet to play" is the ones who haven\'t kicked off. Tap a game for the live box score.'}</p>
@@ -733,7 +780,7 @@
 
       <section>
         ${secHead('board', 'Box score')}
-        <p class="sec-sub">Points scored and the experts' projection for every player.${w.live ? ' The badge next to a name is his NFL team, and a pulsing sticker with the game clock means that game is on right now.' : ''} A ⚑ on the bench marks a player who outscored a starter he could have replaced.</p>
+        <p class="sec-sub">Points scored and the experts' projection for every player.${w.live ? ' The badge next to a name is his NFL team, a colored pill is ESPN\'s injury designation, and a pulsing sticker with the game clock means that game is on right now.' : ''} A ⚑ on the bench marks a player who outscored a starter he could have replaced.</p>
         <div class="box-grid">${lineupCard(W, true, !!w.live)}${lineupCard(L, false, !!w.live)}</div>
       </section>
 
@@ -803,6 +850,7 @@
       <div class="page-head">
         <div class="kicker">${esc(t.team_name)}</div>
         <h1>${esc(t.manager)}</h1>
+        ${adviceFor(id) ? `<p class="dek">This is her season so far. For what to do about the week in progress, see <a href="#coach-${id}">her Week ${LIVE.week} to-do list</a>.</p>` : ''}
       </div>
       <div class="stat-tiles">
         <div class="tile"><div class="label">Record</div><div class="value">${record(t)}</div><div class="sub">${ordinal(rank)} place</div></div>
@@ -838,15 +886,92 @@
       </section>`;
   }
 
-  function archivePage() {
+  /* ---------- coach: this week's to-do list, per team ----------
+     Everything on these pages is computed in site/build.py from the same capture the
+     Live page uses: ESPN's projections, its injury report, and which NFL games have
+     started. It refreshes with the rest of the live data. */
+  const adviceCard = (it) => `
+    <article class="card ${it.level}">
+      <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
+      <h3>${esc(it.title)}</h3>
+      <p>${esc(it.text)}</p>
+    </article>`;
+
+  const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score — useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
+
+  function teamSwitch(active) {
+    return `<nav class="team-switch" aria-label="Choose a team">${advice().map((a) => `
+      <a href="#coach-${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix"></span>` : ''}</a>`).join('')}</nav>`;
+  }
+
+  function coachCard(a) {
+    const badge = a.counts.now ? `<span class="todo now">${a.counts.now} to fix</span>`
+      : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
+      : '<span class="todo clear">all clear</span>';
     return `
-      <div class="page-head"><div class="kicker">Every recap</div><h1>Archive</h1></div>
-      <section style="margin-top:18px"><div class="archive">${[...WEEKS].reverse().map((w) => `
-        <a href="#week-${w.week}">
-          <span class="wk">Week ${w.week}${DATA.preview && w.status !== 'published' ? ' · draft' : ''}</span>
-          <h3>${esc(w.headline)}</h3>
-          ${w.dek ? `<p>${esc(w.dek)}</p>` : ''}
-        </a>`).join('')}</div></section>`;
+      <a class="coach-card" href="#coach-${a.team_id}">
+        <div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>
+        ${badge}
+        <p class="lead">${esc(a.items[0].title)}</p>
+        <span class="go">Open her list →</span>
+      </a>`;
+  }
+
+  function coachPage() {
+    const w = LIVE;
+    return `
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
+        <h1>Coach</h1>
+        <p class="dek">Every team's to-do list for Week ${w.week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.</p>
+      </div>
+      <section style="margin-top:18px">
+        <div class="coach-grid">${advice().map(coachCard).join('')}</div>
+      </section>
+      <p class="sec-sub" style="margin-top:28px">${coachSource(w)}</p>`;
+  }
+
+  function coachTeamPage(id) {
+    const a = adviceFor(id);
+    if (!a) return notFound();
+    myTeam.set(id);
+    const w = LIVE;
+    const g = w.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
+    const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
+    const opp = g && (g.winner.team_id === id ? g.loser : g.winner);
+    const groups = Object.keys(ADVICE_LEVEL)
+      .map((lvl) => [lvl, a.items.filter((it) => it.level === lvl)])
+      .filter(([, items]) => items.length);
+    return `
+      <div class="crumbs"><a href="#coach">Coach</a><span>›</span><span>${esc(a.manager)}</span></div>
+      ${teamSwitch(id)}
+      <div class="page-head">
+        <div class="kicker">Week ${w.week} · ${esc(a.team_name)}</div>
+        <h1>${esc(a.manager)}, here's your week</h1>
+        <p class="dek">${a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to fix before kickoff.` : 'Nothing urgent.'}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a> this week — <a href="#live.game-${g.key}">live box score →</a>` : ''}</p>
+      </div>
+      <div class="stat-tiles">
+        <div class="tile"><div class="label">To fix now</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
+        <div class="tile"><div class="label">Projected total</div><div class="value">${f1(a.projected)}</div><div class="sub">${mine ? `${f2(mine.points)} on the board` : 'ESPN\'s estimate'}</div></div>
+        <div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>
+        ${a.win_probability == null ? '' : `<div class="tile"><div class="label">Chance to win</div><div class="value">${Math.round(a.win_probability * 100)}%</div><div class="sub">ESPN's number${opp ? `, vs ${esc(opp.manager)}` : ''}</div></div>`}
+      </div>
+
+      ${groups.map(([lvl, items]) => `
+        <section>
+          ${secHead(ADVICE_LEVEL[lvl].marker, ADVICE_LEVEL[lvl].title)}
+          <p class="sec-sub">${ADVICE_LEVEL[lvl].sub}</p>
+          <div class="cards">${items.map(adviceCard).join('')}</div>
+        </section>`).join('')}
+
+      ${mine ? `
+      <section>
+        ${secHead('board', 'Your lineup right now')}
+        <p class="sec-sub">Points so far and ESPN's projection for every player. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
+        <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`)}</div>
+      </section>` : ''}
+
+      <p class="sec-sub" style="margin-top:28px">${coachSource(w)}</p>`;
   }
 
   function glossaryPage() {
@@ -876,10 +1001,11 @@
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
     else if (h === 'live' && LIVE) { html = livePage(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
+    else if (h === 'coach' && advice()) { html = coachPage(); nav = 'coach'; }
+    else if ((m = /^coach-(\d+)$/.exec(h)) && advice()) { html = coachTeamPage(Number(m[1])); nav = 'coach'; }
     else if (!WEEKS.length && LIVE && h === '') { html = livePage(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
-    else if (h === 'archive') { html = archivePage(); nav = 'archive'; }
     else if ((m = /^team-(\d+)$/.exec(h))) { html = teamPage(Number(m[1])); nav = 'standings'; }
     else if ((m = /^week-(\d+)\.awards$/.exec(h)) && weekOf(+m[1])) { html = awardsPage(weekOf(+m[1])); }
     else if ((m = /^week-(\d+)\.game-(\d+-\d+)$/.exec(h)) && weekOf(+m[1])) { html = matchupPage(weekOf(+m[1]), m[2]); }
@@ -889,6 +1015,7 @@
     $('#main').innerHTML = html;
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    if (advice()) document.getElementById('nav-coach').href = coachHref();
   }
 
   window.addEventListener('hashchange', () => {
@@ -913,7 +1040,7 @@
       if (fresh.week !== LIVE.week) return;
       Object.assign(LIVE, fresh);
       const h = location.hash.replace(/^#/, '');
-      if (h.startsWith('live') || (!WEEKS.length && h === '')) route();
+      if (h.startsWith('live') || h.startsWith('coach') || (!WEEKS.length && h === '')) route();
     } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
   }
 
