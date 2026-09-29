@@ -139,6 +139,9 @@
   .page-head h1 { font: 800 clamp(36px, 6.2vw, 62px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; }
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
   .dek a { color: var(--accent); font-weight: 700; }
+  .team-summary { margin: 8px 0 0; padding: 10px 14px; background: var(--lime); color: var(--on-pop);
+    border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop);
+    font-size: 14.5px; font-weight: 700; max-width: 62ch; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
   /* Live page: the headline and the three score stickers share one line, and the stickers
      drop under it once there isn't room for both. */
@@ -1100,6 +1103,7 @@
         <p class="dek">${!next && a.can_change === false
           ? `Your Week ${week} lineup is locked — every game you had is over.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
           : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : ` this week — <a href="#live.game-${g.key}">live box score →</a>`}` : ''}</p>
+        <p class="team-summary">${esc(a.summary)}</p>
       </div>
       <div class="stat-tiles">
         <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>

@@ -162,6 +162,59 @@ def injury_map(espn):
     return {p["player_id"]: p.get("injury_status") for p in rows}
 
 
+# ---------- coach: one line about the team, for under the page header ----------
+# Flavor on top of the to-do list below it, never a fact of its own: everything here is
+# read off the same items and counts the list is built from, so it can't say anything the
+# list doesn't already back up.
+TEAM_SUMMARY_BY_KIND = {
+    "out": ["ESPN's injury report has more to say about your lineup than your fantasy app does.",
+            "The medical tent is more crowded than your flex spot this week."],
+    "bye": ["Half your lineup, or so it feels, is on a beach this week.",
+            "Bye weeks: the NFL's way of telling you to go check your bench."],
+    "swap": ["Somewhere on your bench, ESPN thinks a better lineup is just sitting there.",
+             "Your bench is quietly outprojecting your actual lineup. Rude, but probably right."],
+    "empty": ["There's an empty seat in your starting lineup, and empty seats score zero.",
+              "A blank spot in your lineup is doing exactly what you'd expect: nothing."],
+    "hole": ["ESPN expects a big fat zero from someone in your lineup, and isn't shy about it.",
+             "Somebody in your starting lineup is projected for nothing at all."],
+}
+TEAM_SUMMARY_WATCH = [
+    "Nothing urgent, but ESPN's still holding its breath on somebody in your lineup.",
+    "Nothing to fix yet, though there's a name or two worth a second look before kickoff.",
+]
+TEAM_SUMMARY_CLEAR = [
+    "Everything's set. Go watch the games.",
+    "Nothing to fix here — your lineup is exactly what ESPN would draw up.",
+]
+TEAM_SUMMARY_DEFAULT = ["There's work to do before kickoff — see below."]
+
+
+def team_summary(team_id, items, counts, can_change, win_probability):
+    """One cheeky sentence for the top of a team's Coach page.
+
+    Picks the loudest thing on the to-do list (the most common kind among its "now"
+    items) and says something about that, so it never drifts from what the cards below
+    actually list. `team_id` only chooses which of a few phrasings to use, the same way
+    player cards pick a voice — so a manager doesn't get a different joke every time the
+    Live page refreshes with no real change underneath it.
+    """
+    if not can_change:
+        return "Every game on your schedule this week is in the books, so this lineup is exactly what it is."
+    now_items = [it for it in items if it["level"] == "now"]
+    if not now_items:
+        if counts["watch"]:
+            return TEAM_SUMMARY_WATCH[team_id % len(TEAM_SUMMARY_WATCH)]
+        if win_probability is not None:
+            pct = round(win_probability * 100)
+            return (f"Nothing to fix here — and ESPN gives you a {pct}% shot this week besides."
+                    if pct >= 50 else
+                    f"Nothing to fix here, even if ESPN only gives you a {pct}% shot this week.")
+        return TEAM_SUMMARY_CLEAR[team_id % len(TEAM_SUMMARY_CLEAR)]
+    dominant = Counter(it["kind"] for it in now_items).most_common(1)[0][0]
+    options = TEAM_SUMMARY_BY_KIND.get(dominant, TEAM_SUMMARY_DEFAULT)
+    return options[team_id % len(options)]
+
+
 # ---------- coach: one expandable card per player on the lineup ----------
 # Same rule as the to-do cards: every sentence is read off the capture. The numbers are
 # ESPN's own (its points, its projection, its injury report, its game clock) and the jokes
@@ -647,7 +700,9 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         # can make any more and points at next week instead.
         "can_change": can_change,
         "items": items,
-        "counts": {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS},
+        "counts": (counts := {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS}),
+        # One cheeky line for the top of her Coach page, under the header.
+        "summary": team_summary(team["team_id"], items, counts, can_change, team.get("win_probability")),
         # One card per player on the roster, for the lineup rows on her Coach page
         "players": player_cards(starters, team["bench"], ctx),
     }
