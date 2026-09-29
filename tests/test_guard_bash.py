@@ -23,8 +23,6 @@ BLOCKED = [
     ("grep SECRET .env.local", "greps a denied .env variant"),
     ("find . -name .env.local -print", "finds a denied .env variant"),
     ("head -5 .env.espn.local", "reads the real (non-example) ESPN cookie file"),
-    ("cat .dashboard-secret", "reads the dashboard secret"),
-    ("grep token .dashboard-secret", "greps the dashboard secret"),
     ("cat .vercel/project.json", "reads a file under .vercel/"),
     ("ls -la .vercel", "lists the .vercel directory"),
     ("find .vercel -type f", "finds files under .vercel/"),

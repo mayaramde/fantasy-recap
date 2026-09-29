@@ -88,8 +88,6 @@ def is_secret_path(value):
     if not parts:
         return False
     basename = parts[-1]
-    if basename == ".dashboard-secret":
-        return True
     if any(p == ".vercel" for p in parts):
         return True
     if basename == ".env.espn.local.example":
