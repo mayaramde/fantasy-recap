@@ -806,6 +806,66 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
     return rows_out
 
 
+# ---------- midweek landing page: two computed cards for a week nobody's watching live ----------
+# Both read only numbers already on the capture — no invented reasons, same rule as everything
+# else in Coach. They ride into a team's regular card list (team_advice's `items`) so the client
+# renders them with the exact same components as every other Coach card.
+
+
+def lookback_card(team, teams, week):
+    """One cheeky, computed line about how a team just did, for a week that's finished but
+    hasn't been recapped yet. The moment a real recap ships for this week, `live_payload`
+    stops covering it and this card stops appearing on its own — the authored recap is the
+    story from then on, not a guess at one."""
+    ranked = sorted(teams, key=lambda t: t["points"], reverse=True)
+    rank = next(i for i, t in enumerate(ranked, 1) if t["team_id"] == team["team_id"])
+    pts, opp_pts = team["points"], team["opponent_points"]
+    margin = abs(round(pts - opp_pts, 2))
+    won = team["result"] == "W"
+    verb = "Won" if won else "Lost"
+    if rank == 1:
+        text = f"Top score in the league this week: {_pts(pts)} points."
+    elif rank == len(teams):
+        text = f"Bottom of the league this week with {_pts(pts)} points. Nowhere to go but up."
+    elif team["points_left_on_bench"] >= 15:
+        text = (f"{verb} {_pts(pts)}-{_pts(opp_pts)}, but left {_f1(team['points_left_on_bench'])} points "
+                f"sitting on the bench doing it.")
+    elif margin <= 3:
+        text = f"{verb} by just {_f1(margin)} — about as close as it gets."
+    elif margin >= 30:
+        text = f"{'A blowout win' if won else 'A blowout loss'}, {_f1(margin)} points apart."
+    else:
+        text = f"{verb} {_pts(pts)}-{_pts(opp_pts)}."
+    return {"kind": "recap", "level": "info", "title": f"Week {week} recap", "stat": f"{_pts(pts)} pts", "text": text}
+
+
+def opponent_preview_card(row, by_id, record_by_id):
+    """A heads-up about whoever's on the other side of a week that hasn't kicked off yet:
+    her record this season and the one player on her roster most likely to hurt you. Read
+    straight off the same capture as every other Coach card, never a guess."""
+    opp = by_id.get(row["opponent_id"])
+    if not opp:
+        return None
+    rec = record_by_id.get(opp["team_id"])
+    record_txt = (f"{rec['wins']}-{rec['losses']}" + (f"-{rec['ties']}" if rec.get("ties") else "")) if rec else ""
+    who = opp["manager"] + (f" ({record_txt})" if record_txt else "")
+    starters = [p for p in opp.get("starters", []) if p.get("projected")]
+    threat = max(starters, key=_proj, default=None)
+    if not threat:
+        text = f"You're playing {who} next. No projections on her roster yet to say who to watch."
+        stat = record_txt
+    else:
+        st = threat.get("injury_status")
+        if st in SIDELINED or st in IFFY:
+            text = (f"You're playing {who} next. Her scariest name is {threat['name']} ({threat['pos']}), "
+                    f"but ESPN lists him {INJURY_PHRASE[st]} — one less problem for you.")
+        else:
+            text = (f"You're playing {who} next. Keep an eye on {threat['name']} ({threat['pos']}), "
+                    f"projected for {_f1(_proj(threat))}.")
+        stat = record_txt or f"{_f1(_proj(threat))} projected"
+    return {"kind": "matchup", "level": "info", "title": f"Next up: {opp['manager']}", "stat": stat, "text": text}
+
+
 def next_week_teams(capture):
     """Teams shaped like facts.json's, from a capture of a week nobody has played.
 
@@ -848,9 +908,15 @@ def next_payload(capture, previous, fp=None):
     lineups = {t["team_id"]: {"starters": [player(p, True) for p in t["starters"]],
                               "bench": [player(p, True) for p in t["bench"]]} for t in teams}
     by_id = {t["team_id"]: t for t in teams}
+    record_by_id = {t["team_id"]: t for t in capture["teams"]}
     for r in rows:
         r["lineup"] = lineups[r["team_id"]]
         r["projected"] = by_id[r["team_id"]]["projected"]
+        # A week that hasn't started yet is exactly when "who's next" is worth saying.
+        opp = opponent_preview_card(r, by_id, record_by_id)
+        if opp:
+            r["items"] = [opp] + r["items"]
+            r["counts"]["info"] += 1
     return {"week": capture["week"], "captured_at": capture["captured_at"],
             # ESPN can be days from publishing next week's projections; the page says so
             # instead of showing a column of zeros.
@@ -876,8 +942,27 @@ def live_payload(facts, espn, previous=None, fp=None):
         if added or dropped:
             moves.append({"date": t["date"], "manager": manager.get(t["team_id"], "?"), "added": added, "dropped": dropped})
     moves.sort(key=lambda m: m["date"], reverse=True)
-    w.update(live=True, captured_at=espn["captured_at"], moves=moves,
-             advice=advice_payload(facts["teams"], espn, previous, fp=fp, week=facts["week"]))
+    # Has anybody's game actually started this week? Not a day-of-week guess — read
+    # straight off the same per-starter game states everything else on this page uses.
+    # This is what tells a genuinely live week apart from the dead stretch between Monday
+    # night and Thursday's kickoff, on either side of that week's own recap shipping.
+    kicked_off = any(t["yet_to_play"] < len(t["starters"]) for t in facts["teams"])
+    advice = advice_payload(facts["teams"], espn, previous, fp=fp, week=facts["week"])
+    by_id = {t["team_id"]: t for t in facts["teams"]}
+    record_by_id = {t["team_id"]: t for t in espn["teams"]}
+    for row in advice:
+        extra = None
+        if facts["complete"]:
+            # The week is over but not yet recapped: a computed stand-in for "how'd you
+            # do", which stops appearing on its own the moment the real recap ships.
+            extra = lookback_card(by_id[row["team_id"]], facts["teams"], facts["week"])
+        elif not kicked_off:
+            # Nothing has kicked off yet: worth a heads-up about who's coming.
+            extra = opponent_preview_card(row, by_id, record_by_id)
+        if extra:
+            row["items"] = [extra] + row["items"]
+            row["counts"]["info"] += 1
+    w.update(live=True, captured_at=espn["captured_at"], moves=moves, kicked_off=kicked_off, advice=advice)
     return w
 
 
