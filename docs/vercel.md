@@ -153,10 +153,8 @@ Symptoms, so you can tell which is which:
 - The Live page stuck on old numbers, `/api/live` returning **503** → the *Vercel*
   copy expired or was never set.
 
-GitHub Actions also needs `VERCEL_TOKEN` (so it can deploy) and
-`DASHBOARD_SECRET` (so the private dashboard links it builds match the ones you
-handed out). Both are listed in the header comment of
-`.github/workflows/live-update.yml`.
+GitHub Actions also needs `VERCEL_TOKEN` so it can deploy. It's listed in the
+header comment of `.github/workflows/live-update.yml`.
 
 ## 7. Things that will bite you
 
@@ -164,9 +162,6 @@ handed out). Both are listed in the header comment of
   the *next* deployment. Always redeploy after.
 - **Anything under `/_vercel/` 404s on this site.** Those paths are wired up by
   Vercel's own build step, which we skip (§5a). Never a bug in our code.
-- **`scripts/deploy.sh --preview` leaves out the private dashboards** on purpose —
-  those tokens should exist at one URL, not two. Don't use a preview URL to check
-  whether dashboards work.
 - **Deployment URLs are private; the aliases are public.** A long
   `fantasy-recap-xxxxx-maya-fd13.vercel.app` URL redirects to a Vercel login, so it's
   useless to send to the league — share `fantasyforthegirls.vercel.app` instead. Handy
