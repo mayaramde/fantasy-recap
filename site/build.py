@@ -26,16 +26,19 @@ AWARD_KEYS = ("game_balls", "flags", "tough_breaks")
 PLAYER_KEYS = ("name", "pos", "slot", "points", "projected")
 
 
-def player(p):
+def player(p, live):
     """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
-    NFL game is on, and absent otherwise, so a finished week carries no live leftovers."""
+    NFL game is on, and absent otherwise, so a finished week carries no live leftovers.
+    The NFL team logo rides along on the live week, which is the only page that shows it."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
+    if live:
+        row.update(logo=p.get("logo"), team=p.get("team"))
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     return row
 
 
-def side(t):
+def side(t, live=False):
     return {
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
@@ -45,12 +48,12 @@ def side(t):
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
-        "starters": [player(p) for p in t["starters"]],
-        "bench": [player(p) for p in t["bench"]],
+        "starters": [player(p, live) for p in t["starters"]],
+        "bench": [player(p, live) for p in t["bench"]],
     }
 
 
-def week_payload(facts, recap):
+def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
     games, seen = [], set()
     for t in facts["teams"]:
@@ -60,7 +63,7 @@ def week_payload(facts, recap):
         seen.add(key)
         a, b = teams[key[0]], teams[key[1]]
         winner, loser = (a, b) if a["points"] >= b["points"] else (b, a)
-        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner), "loser": side(loser),
+        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner, live), "loser": side(loser, live),
                       "blurb": recap.get("matchups", {}).get(f"{key[0]}-{key[1]}", "")})
     games.sort(key=lambda g: g["winner"]["points"] + g["loser"]["points"], reverse=True)
 
@@ -85,7 +88,7 @@ def week_payload(facts, recap):
 
 def live_payload(facts, espn):
     """The in-progress (or final but not yet recapped) week: data only, no commentary."""
-    w = week_payload(facts, {"status": "live"})
+    w = week_payload(facts, {"status": "live"}, live=True)
     manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
     moves = []
     for t in espn["transactions"]:

@@ -511,7 +511,9 @@
      "points": 26.5,
      "projected": 19.01,
      "played": true,
-     "beat_projection": 7.49
+     "beat_projection": 7.49,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
     },
     {
      "player_id": 4429160,
@@ -522,7 +524,9 @@
      "points": 12.3,
      "projected": 17.14,
      "played": true,
-     "beat_projection": -4.84
+     "beat_projection": -4.84,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+     "team": "MIA"
     },
     {
      "player_id": 3918298,
@@ -533,7 +537,9 @@
      "points": 40.82,
      "projected": 22.65,
      "played": true,
-     "beat_projection": 18.17
+     "beat_projection": 18.17,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
     },
     {
      "player_id": 4428331,
@@ -544,7 +550,9 @@
      "points": 12.3,
      "projected": 15.04,
      "played": true,
-     "beat_projection": -2.74
+     "beat_projection": -2.74,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
     },
     {
      "player_id": 4427366,
@@ -555,7 +563,9 @@
      "points": 14.2,
      "projected": 15.79,
      "played": true,
-     "beat_projection": -1.59
+     "beat_projection": -1.59,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
     },
     {
      "player_id": 4431299,
@@ -566,7 +576,9 @@
      "points": 7.3,
      "projected": 11.69,
      "played": true,
-     "beat_projection": -4.39
+     "beat_projection": -4.39,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     },
     {
      "player_id": 4430027,
@@ -577,7 +589,9 @@
      "points": 17.2,
      "projected": 11.25,
      "played": true,
-     "beat_projection": 5.95
+     "beat_projection": 5.95,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
     },
     {
      "player_id": -16026,
@@ -588,7 +602,9 @@
      "points": 10,
      "projected": 7.61,
      "played": true,
-     "beat_projection": 2.39
+     "beat_projection": 2.39,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
     },
     {
      "player_id": 4697745,
@@ -599,7 +615,9 @@
      "points": 5,
      "projected": 9.06,
      "played": true,
-     "beat_projection": -4.06
+     "beat_projection": -4.06,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     }
    ],
    "bench": [
@@ -611,7 +629,9 @@
      "slot": "BENCH",
      "points": 14.2,
      "projected": 10.05,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     },
     {
      "player_id": 4432710,
@@ -621,7 +641,9 @@
      "slot": "BENCH",
      "points": 13.6,
      "projected": 9.31,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
     },
     {
      "player_id": 3128429,
@@ -631,7 +653,9 @@
      "slot": "BENCH",
      "points": 5.5,
      "projected": 11.99,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
     },
     {
      "player_id": 4678008,
@@ -641,7 +665,9 @@
      "slot": "BENCH",
      "points": 2.1,
      "projected": 8.65,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
     },
     {
      "player_id": 2976212,
@@ -651,7 +677,9 @@
      "slot": "BENCH",
      "points": 21.7,
      "projected": 10.33,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
     },
     {
      "player_id": 4361741,
@@ -661,7 +689,9 @@
      "slot": "BENCH",
      "points": 28.48,
      "projected": 20.59,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     },
     {
      "player_id": 4385690,
@@ -671,7 +701,9 @@
      "slot": "BENCH",
      "points": 22.5,
      "projected": 10.43,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
     }
    ],
    "yet_to_play": 0,
@@ -727,7 +759,9 @@
      "points": 8.5,
      "projected": 18.36,
      "played": true,
-     "beat_projection": -9.86
+     "beat_projection": -9.86,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
     },
     {
      "player_id": 3043078,
@@ -738,7 +772,9 @@
      "points": 17.7,
      "projected": 17.61,
      "played": true,
-     "beat_projection": 0.09
+     "beat_projection": 0.09,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     },
     {
      "player_id": 4870808,
@@ -749,7 +785,9 @@
      "points": 7.5,
      "projected": 12.88,
      "played": true,
-     "beat_projection": -5.38
+     "beat_projection": -5.38,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
     },
     {
      "player_id": 4239996,
@@ -760,7 +798,9 @@
      "points": 7.1,
      "projected": 12.77,
      "played": true,
-     "beat_projection": -5.67
+     "beat_projection": -5.67,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
     },
     {
      "player_id": 4239993,
@@ -771,7 +811,9 @@
      "points": 14.5,
      "projected": 12.32,
      "played": true,
-     "beat_projection": 2.18
+     "beat_projection": 2.18,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
     },
     {
      "player_id": 4426348,
@@ -782,7 +824,9 @@
      "points": 14.74,
      "projected": 19.79,
      "played": true,
-     "beat_projection": -5.05
+     "beat_projection": -5.05,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
     },
     {
      "player_id": 3953687,
@@ -793,7 +837,9 @@
      "points": 17,
      "projected": 10.6,
      "played": true,
-     "beat_projection": 6.4
+     "beat_projection": 6.4,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
     },
     {
      "player_id": 3121023,
@@ -804,7 +850,9 @@
      "points": 1.4,
      "projected": 10.79,
      "played": true,
-     "beat_projection": -9.39
+     "beat_projection": -9.39,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     },
     {
      "player_id": -16033,
@@ -815,7 +863,9 @@
      "points": 5,
      "projected": 6.85,
      "played": true,
-     "beat_projection": -1.85
+     "beat_projection": -1.85,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     }
    ],
    "bench": [
@@ -827,7 +877,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 4426388,
@@ -837,7 +889,9 @@
      "slot": "BENCH",
      "points": 5.3,
      "projected": 12.33,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
     },
     {
      "player_id": 4871023,
@@ -847,7 +901,9 @@
      "slot": "BENCH",
      "points": 5.7,
      "projected": 11.42,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+     "team": "TEN"
     },
     {
      "player_id": 4429023,
@@ -857,7 +913,9 @@
      "slot": "BENCH",
      "points": 8.6,
      "projected": 11.16,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
     },
     {
      "player_id": 4426338,
@@ -867,7 +925,9 @@
      "slot": "BENCH",
      "points": 14.12,
      "projected": 18.55,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
     },
     {
      "player_id": 15847,
@@ -877,7 +937,9 @@
      "slot": "BENCH",
      "points": 25.1,
      "projected": 10.55,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
     },
     {
      "player_id": 4241985,
@@ -887,7 +949,9 @@
      "slot": "BENCH",
      "points": 3.6,
      "projected": 12.63,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
     }
    ],
    "yet_to_play": 0,
@@ -945,7 +1009,9 @@
      "points": 23.3,
      "projected": 24.16,
      "played": true,
-     "beat_projection": -0.86
+     "beat_projection": -0.86,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
     },
     {
      "player_id": 4426502,
@@ -956,7 +1022,9 @@
      "points": 8.9,
      "projected": 12.85,
      "played": true,
-     "beat_projection": -3.95
+     "beat_projection": -3.95,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+     "team": "ATL"
     },
     {
      "player_id": 4430737,
@@ -967,7 +1035,9 @@
      "points": 15.7,
      "projected": 14.47,
      "played": true,
-     "beat_projection": 1.23
+     "beat_projection": 1.23,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 4569618,
@@ -978,7 +1048,9 @@
      "points": 16.7,
      "projected": 15.86,
      "played": true,
-     "beat_projection": 0.84
+     "beat_projection": 0.84,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
     },
     {
      "player_id": 4431459,
@@ -989,7 +1061,9 @@
      "points": 14.4,
      "projected": 11.38,
      "played": true,
-     "beat_projection": 3.02
+     "beat_projection": 3.02,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
     },
     {
      "player_id": 12483,
@@ -1000,7 +1074,9 @@
      "points": 26.98,
      "projected": 18.21,
      "played": true,
-     "beat_projection": 8.77
+     "beat_projection": 8.77,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 4870795,
@@ -1011,7 +1087,9 @@
      "points": 1.9,
      "projected": 9,
      "played": true,
-     "beat_projection": -7.1
+     "beat_projection": -7.1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     },
     {
      "player_id": -16014,
@@ -1022,7 +1100,9 @@
      "points": 11,
      "projected": 5.74,
      "played": true,
-     "beat_projection": 5.26
+     "beat_projection": 5.26,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 4686361,
@@ -1033,7 +1113,9 @@
      "points": 7,
      "projected": 8.16,
      "played": true,
-     "beat_projection": -1.16
+     "beat_projection": -1.16,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     }
    ],
    "bench": [
@@ -1045,7 +1127,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
     },
     {
      "player_id": 3915511,
@@ -1055,7 +1139,9 @@
      "slot": "BENCH",
      "points": 16.18,
      "projected": 16.5,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
     },
     {
      "player_id": 4035687,
@@ -1065,7 +1151,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
     },
     {
      "player_id": 4569987,
@@ -1075,7 +1163,9 @@
      "slot": "BENCH",
      "points": 9.7,
      "projected": 11.38,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
     },
     {
      "player_id": 5083076,
@@ -1085,7 +1175,9 @@
      "slot": "BENCH",
      "points": 10.4,
      "projected": 10.03,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
     },
     {
      "player_id": 4429096,
@@ -1095,7 +1187,9 @@
      "slot": "BENCH",
      "points": 10.2,
      "projected": 9.73,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 4685415,
@@ -1105,7 +1199,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 2.75,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     }
    ],
    "yet_to_play": 0,
@@ -1161,7 +1257,9 @@
      "points": 22.6,
      "projected": 21.48,
      "played": true,
-     "beat_projection": 1.12
+     "beat_projection": 1.12,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     },
     {
      "player_id": 3929630,
@@ -1172,7 +1270,9 @@
      "points": 3,
      "projected": 17.62,
      "played": true,
-     "beat_projection": -14.62
+     "beat_projection": -14.62,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     },
     {
      "player_id": 4361307,
@@ -1183,7 +1283,9 @@
      "points": 18.1,
      "projected": 14.47,
      "played": true,
-     "beat_projection": 3.63
+     "beat_projection": 3.63,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
     },
     {
      "player_id": 4361370,
@@ -1194,7 +1296,9 @@
      "points": 22.6,
      "projected": 15.92,
      "played": true,
-     "beat_projection": 6.68
+     "beat_projection": 6.68,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
     },
     {
      "player_id": 4685702,
@@ -1205,7 +1309,9 @@
      "points": 9.8,
      "projected": 11.97,
      "played": true,
-     "beat_projection": -2.17
+     "beat_projection": -2.17,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
     },
     {
      "player_id": 4040715,
@@ -1216,7 +1322,9 @@
      "points": 16.16,
      "projected": 19.95,
      "played": true,
-     "beat_projection": -3.79
+     "beat_projection": -3.79,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     },
     {
      "player_id": 4432620,
@@ -1227,7 +1335,9 @@
      "points": 16.8,
      "projected": 12.19,
      "played": true,
-     "beat_projection": 4.61
+     "beat_projection": 4.61,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     },
     {
      "player_id": 2473037,
@@ -1238,7 +1348,9 @@
      "points": 7,
      "projected": 9.41,
      "played": true,
-     "beat_projection": -2.41
+     "beat_projection": -2.41,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
     },
     {
      "player_id": -16021,
@@ -1249,7 +1361,9 @@
      "points": 4,
      "projected": 7.09,
      "played": true,
-     "beat_projection": -3.09
+     "beat_projection": -3.09,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     }
    ],
    "bench": [
@@ -1261,7 +1375,9 @@
      "slot": "IR",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     },
     {
      "player_id": 3121422,
@@ -1271,7 +1387,9 @@
      "slot": "BENCH",
      "points": 7,
      "projected": 12.44,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
     },
     {
      "player_id": 4569173,
@@ -1281,7 +1399,9 @@
      "slot": "BENCH",
      "points": 3.6,
      "projected": 12.91,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
     },
     {
      "player_id": 4248528,
@@ -1291,7 +1411,9 @@
      "slot": "BENCH",
      "points": 14.1,
      "projected": 12.49,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
     },
     {
      "player_id": 4038941,
@@ -1301,7 +1423,9 @@
      "slot": "BENCH",
      "points": 7.88,
      "projected": 19.48,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+     "team": "LAC"
     },
     {
      "player_id": 4361050,
@@ -1311,7 +1435,9 @@
      "slot": "BENCH",
      "points": 8.3,
      "projected": 10.96,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
     },
     {
      "player_id": 4432773,
@@ -1321,7 +1447,9 @@
      "slot": "BENCH",
      "points": 7,
      "projected": 9.74,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     }
    ],
    "yet_to_play": 0,
@@ -1399,7 +1527,9 @@
      "points": 11.1,
      "projected": 22.93,
      "played": true,
-     "beat_projection": -11.83
+     "beat_projection": -11.83,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+     "team": "ATL"
     },
     {
      "player_id": 4685382,
@@ -1410,7 +1540,9 @@
      "points": 17.5,
      "projected": 15.84,
      "played": true,
-     "beat_projection": 1.66
+     "beat_projection": 1.66,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+     "team": "LAC"
     },
     {
      "player_id": 4241478,
@@ -1421,7 +1553,9 @@
      "points": 27.7,
      "projected": 13.96,
      "played": true,
-     "beat_projection": 13.74
+     "beat_projection": 13.74,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
     },
     {
      "player_id": 4596448,
@@ -1432,7 +1566,9 @@
      "points": 13,
      "projected": 14.58,
      "played": true,
-     "beat_projection": -1.58
+     "beat_projection": -1.58,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
     },
     {
      "player_id": 16800,
@@ -1443,7 +1579,9 @@
      "points": 39.5,
      "projected": 15.5,
      "played": true,
-     "beat_projection": 24.0
+     "beat_projection": 24.0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 2577417,
@@ -1454,7 +1592,9 @@
      "points": 29.76,
      "projected": 20.01,
      "played": true,
-     "beat_projection": 9.75
+     "beat_projection": 9.75,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
     },
     {
      "player_id": 4034949,
@@ -1465,7 +1605,9 @@
      "points": 5,
      "projected": 9.92,
      "played": true,
-     "beat_projection": -4.92
+     "beat_projection": -4.92,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     },
     {
      "player_id": 4036133,
@@ -1476,7 +1618,9 @@
      "points": 5.9,
      "projected": 9.56,
      "played": true,
-     "beat_projection": -3.66
+     "beat_projection": -3.66,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
     },
     {
      "player_id": -16025,
@@ -1487,7 +1631,9 @@
      "points": 9,
      "projected": 6.61,
      "played": true,
-     "beat_projection": 2.39
+     "beat_projection": 2.39,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     }
    ],
    "bench": [
@@ -1499,7 +1645,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+     "team": "LV"
     },
     {
      "player_id": 4685472,
@@ -1509,7 +1657,9 @@
      "slot": "BENCH",
      "points": 15.1,
      "projected": 13.62,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
     },
     {
      "player_id": 4685278,
@@ -1519,7 +1669,9 @@
      "slot": "BENCH",
      "points": 6.2,
      "projected": 12.46,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     },
     {
      "player_id": 16737,
@@ -1529,7 +1681,9 @@
      "slot": "BENCH",
      "points": 8.4,
      "projected": 12.99,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     },
     {
      "player_id": 4360310,
@@ -1539,7 +1693,9 @@
      "slot": "BENCH",
      "points": 6.16,
      "projected": 15.91,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
     },
     {
      "player_id": -16034,
@@ -1549,7 +1705,9 @@
      "slot": "BENCH",
      "points": 7,
      "projected": 6.25,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
     },
     {
      "player_id": 4695883,
@@ -1559,7 +1717,9 @@
      "slot": "BENCH",
      "points": 14.6,
      "projected": 11.93,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
     }
    ],
    "yet_to_play": 0,
@@ -1625,7 +1785,9 @@
      "points": 42.5,
      "projected": 18.49,
      "played": true,
-     "beat_projection": 24.01
+     "beat_projection": 24.01,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
     },
     {
      "player_id": 4241389,
@@ -1636,7 +1798,9 @@
      "points": 35.3,
      "projected": 18,
      "played": true,
-     "beat_projection": 17.3
+     "beat_projection": 17.3,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
     },
     {
      "player_id": 4890973,
@@ -1647,7 +1811,9 @@
      "points": 10.3,
      "projected": 18.33,
      "played": true,
-     "beat_projection": -8.03
+     "beat_projection": -8.03,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+     "team": "LV"
     },
     {
      "player_id": 4567048,
@@ -1658,7 +1824,9 @@
      "points": 23.8,
      "projected": 17.84,
      "played": true,
-     "beat_projection": 5.96
+     "beat_projection": 5.96,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
     },
     {
      "player_id": 4259545,
@@ -1669,7 +1837,9 @@
      "points": 12.9,
      "projected": 13.49,
      "played": true,
-     "beat_projection": -0.59
+     "beat_projection": -0.59,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     },
     {
      "player_id": 4360248,
@@ -1680,7 +1850,9 @@
      "points": 2.5,
      "projected": 10.38,
      "played": true,
-     "beat_projection": -7.88
+     "beat_projection": -7.88,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+     "team": "ATL"
     },
     {
      "player_id": 4431611,
@@ -1691,7 +1863,9 @@
      "points": 7.72,
      "projected": 19.42,
      "played": true,
-     "beat_projection": -11.7
+     "beat_projection": -11.7,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     },
     {
      "player_id": 4362081,
@@ -1702,7 +1876,9 @@
      "points": 1,
      "projected": 9.84,
      "played": true,
-     "beat_projection": -8.84
+     "beat_projection": -8.84,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+     "team": "LAC"
     },
     {
      "player_id": -16023,
@@ -1713,7 +1889,9 @@
      "points": 8,
      "projected": 6,
      "played": true,
-     "beat_projection": 2
+     "beat_projection": 2,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
     }
    ],
    "bench": [
@@ -1725,7 +1903,9 @@
      "slot": "BENCH",
      "points": 10.3,
      "projected": 13.8,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
     },
     {
      "player_id": 4696981,
@@ -1735,7 +1915,9 @@
      "slot": "BENCH",
      "points": 9.5,
      "projected": 12.83,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
     },
     {
      "player_id": 4685512,
@@ -1745,7 +1927,9 @@
      "slot": "BENCH",
      "points": 5,
      "projected": 13.21,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
     },
     {
      "player_id": 4432708,
@@ -1755,7 +1939,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 9.3,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
     },
     {
      "player_id": 4701936,
@@ -1765,7 +1951,9 @@
      "slot": "BENCH",
      "points": 9.8,
      "projected": 10.85,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
     },
     {
      "player_id": 4575131,
@@ -1775,7 +1963,9 @@
      "slot": "BENCH",
      "points": 5.8,
      "projected": 10.18,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
     },
     {
      "player_id": 4608686,
@@ -1785,7 +1975,9 @@
      "slot": "BENCH",
      "points": 7.8,
      "projected": 9.81,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     }
    ],
    "yet_to_play": 0,
@@ -1841,7 +2033,9 @@
      "points": 35.2,
      "projected": 20.39,
      "played": true,
-     "beat_projection": 14.81
+     "beat_projection": 14.81,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
     },
     {
      "player_id": 4379399,
@@ -1852,7 +2046,9 @@
      "points": 20.9,
      "projected": 18.62,
      "played": true,
-     "beat_projection": 2.28
+     "beat_projection": 2.28,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
     },
     {
      "player_id": 4426354,
@@ -1863,7 +2059,9 @@
      "points": 10,
      "projected": 14.79,
      "played": true,
-     "beat_projection": -4.79
+     "beat_projection": -4.79,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
     },
     {
      "player_id": 4361579,
@@ -1874,7 +2072,9 @@
      "points": 8,
      "projected": 16.7,
      "played": true,
-     "beat_projection": -8.7
+     "beat_projection": -8.7,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
     },
     {
      "player_id": 3916387,
@@ -1885,7 +2085,9 @@
      "points": 14.8,
      "projected": 21.66,
      "played": true,
-     "beat_projection": -6.86
+     "beat_projection": -6.86,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     },
     {
      "player_id": 4035538,
@@ -1896,7 +2098,9 @@
      "points": 4.4,
      "projected": 14.2,
      "played": true,
-     "beat_projection": -9.8
+     "beat_projection": -9.8,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
     },
     {
      "player_id": 4574716,
@@ -1907,7 +2111,9 @@
      "points": 3,
      "projected": 9.41,
      "played": true,
-     "beat_projection": -6.41
+     "beat_projection": -6.41,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
     },
     {
      "player_id": 3116365,
@@ -1918,7 +2124,9 @@
      "points": 10.9,
      "projected": 10.37,
      "played": true,
-     "beat_projection": 0.53
+     "beat_projection": 0.53,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
     },
     {
      "player_id": -16027,
@@ -1929,7 +2137,9 @@
      "points": 4,
      "projected": 8.21,
      "played": true,
-     "beat_projection": -4.21
+     "beat_projection": -4.21,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
     }
    ],
    "bench": [
@@ -1941,7 +2151,9 @@
      "slot": "BENCH",
      "points": 6.5,
      "projected": 14.47,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+     "team": "LAC"
     },
     {
      "player_id": 3915416,
@@ -1951,7 +2163,9 @@
      "slot": "BENCH",
      "points": -0.1,
      "projected": 12.58,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
     },
     {
      "player_id": 4047365,
@@ -1961,7 +2175,9 @@
      "slot": "BENCH",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
     },
     {
      "player_id": 3040151,
@@ -1971,7 +2187,9 @@
      "slot": "BENCH",
      "points": 18,
      "projected": 10.5,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
     },
     {
      "player_id": 4371733,
@@ -1981,7 +2199,9 @@
      "slot": "BENCH",
      "points": 4.5,
      "projected": 9.58,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
     },
     {
      "player_id": 4360761,
@@ -1991,7 +2211,9 @@
      "slot": "BENCH",
      "points": 3.8,
      "projected": 9.95,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
     },
     {
      "player_id": 3046779,
@@ -2001,7 +2223,9 @@
      "slot": "BENCH",
      "points": 29.78,
      "projected": 17.01,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
     }
    ],
    "yet_to_play": 0,
@@ -2109,7 +2333,9 @@
      "points": 29.2,
      "projected": 18.44,
      "played": true,
-     "beat_projection": 10.76
+     "beat_projection": 10.76,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
     },
     {
      "player_id": 4362238,
@@ -2120,7 +2346,9 @@
      "points": 11.2,
      "projected": 15.45,
      "played": true,
-     "beat_projection": -4.25
+     "beat_projection": -4.25,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
     },
     {
      "player_id": 4595348,
@@ -2131,7 +2359,9 @@
      "points": 1.1,
      "projected": 14.93,
      "played": true,
-     "beat_projection": -13.83
+     "beat_projection": -13.83,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
     },
     {
      "player_id": 4372016,
@@ -2142,7 +2372,9 @@
      "points": 21.8,
      "projected": 12.18,
      "played": true,
-     "beat_projection": 9.62
+     "beat_projection": 9.62,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
     },
     {
      "player_id": 4572680,
@@ -2153,7 +2385,9 @@
      "points": 3.5,
      "projected": 10.58,
      "played": true,
-     "beat_projection": -7.08
+     "beat_projection": -7.08,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
     },
     {
      "player_id": 4241416,
@@ -2164,7 +2398,9 @@
      "points": 14.4,
      "projected": 14.46,
      "played": true,
-     "beat_projection": -0.06
+     "beat_projection": -0.06,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
     },
     {
      "player_id": 4689114,
@@ -2175,7 +2411,9 @@
      "points": 0.8,
      "projected": 18.18,
      "played": true,
-     "beat_projection": -17.38
+     "beat_projection": -17.38,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
     },
     {
      "player_id": 2971573,
@@ -2186,7 +2424,9 @@
      "points": 6,
      "projected": 9.84,
      "played": true,
-     "beat_projection": -3.84
+     "beat_projection": -3.84,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
     },
     {
      "player_id": -16007,
@@ -2197,7 +2437,9 @@
      "points": 9,
      "projected": 6.29,
      "played": true,
-     "beat_projection": 2.71
+     "beat_projection": 2.71,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
     }
    ],
    "bench": [
@@ -2209,7 +2451,9 @@
      "slot": "IR",
      "points": 0,
      "projected": 0,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
     },
     {
      "player_id": 4723086,
@@ -2219,7 +2463,9 @@
      "slot": "BENCH",
      "points": 1.3,
      "projected": 11.43,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
     },
     {
      "player_id": 4431452,
@@ -2229,7 +2475,9 @@
      "slot": "BENCH",
      "points": 8.02,
      "projected": 18.23,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
     },
     {
      "player_id": 3916148,
@@ -2239,7 +2487,9 @@
      "slot": "BENCH",
      "points": 7.5,
      "projected": 11.13,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+     "team": "TEN"
     },
     {
      "player_id": 4047650,
@@ -2249,7 +2499,9 @@
      "slot": "BENCH",
      "points": 6.7,
      "projected": 12.2,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
     },
     {
      "player_id": 3042519,
@@ -2259,7 +2511,9 @@
      "slot": "BENCH",
      "points": 10.5,
      "projected": 14.15,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
     },
     {
      "player_id": 4360078,
@@ -2269,7 +2523,9 @@
      "slot": "BENCH",
      "points": 2.1,
      "projected": 11.03,
-     "played": true
+     "played": true,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
     }
    ],
    "yet_to_play": 0,

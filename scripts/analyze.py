@@ -231,11 +231,15 @@ def analyze(week, history):
         t["would_have_won_with_optimal"] = t["result"] == "L" and opt_total > t["opponent_points"]
         t["worst_bench_call"] = worst_bench_call(r)
         t["lineup_swaps"] = lineup_swaps(week, t["team_id"], r)
-        t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2))
+        # The box score shows each player's NFL team as its logo, so carry it here with the
+        # other ESPN CDN URLs rather than rebuilding the path in the site.
+        t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2),
+                              logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
                          for p in r if p["slot"] in STARTING]
         # ESPN drops the team projection once games are final; rebuild it from starters
         t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
-        t["bench"] = [p for p in r if p["slot"] in ("BENCH", "IR")]
+        t["bench"] = [dict(p, logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
+                      for p in r if p["slot"] in ("BENCH", "IR")]
         # Starters with no stats yet this week (game not played yet, or player inactive)
         t["yet_to_play"] = sum(1 for p in t["starters"] if not p["played"])
         t["zero_point_starters"] = [p["name"] for p in r if p["slot"] in STARTING and (not p["played"] or p["points"] == 0)]
