@@ -17,7 +17,22 @@
       "Bash(python3 scripts/check.py)",
       "Bash(gh pr view:*)",
       "Bash(gh pr checks:*)",
-      "Bash(gh pr list:*)"
+      "Bash(gh pr list:*)",
+      "mcp__ccd_pr__get_status",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__injury_status",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__get_ecr",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__get_player_ownership",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__get_projections",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__get_roster",
+      "mcp__32874d44-971c-4498-955e-5969b0d4801c__get_leaders",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__Claude_Browser__get_page_text",
+      "mcp__Claude_Browser__read_page",
+      "mcp__Claude_Browser__find",
+      "mcp__Claude_Browser__read_console_messages",
+      "mcp__ccd_session_mgmt__list_events",
+      "mcp__terminal__read_terminal",
+      "Bash(git fetch *)"
     ],
     "ask": [
       "Bash(git add:*)",
