@@ -73,5 +73,9 @@ jobs:
           VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
         run: |
           npm install --global vercel@60
+          # `vercel build` builds api/live.py with Vercel's Python runtime, which shells
+          # out to uv. Vercel's own builders and the Mac have it; a runner doesn't, and
+          # without it the build stops at "uv is required but was not found in PATH".
+          python3 -m pip install --quiet uv
           scripts/deploy.sh
           test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasy-recap-eight.vercel.app)" = 200
