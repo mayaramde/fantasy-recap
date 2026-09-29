@@ -7,6 +7,8 @@
 //   await fantasyCapture([3]);          // one or more weeks, or 'current'
 // Each week is trimmed (no member names, ESPN IDs or settings) and POSTed to the
 // receiver, which writes data/<season>/week-NN/espn.json verbatim.
+// One request goes to ESPN's public NFL scoreboard (no session, no cookies) for the
+// state of each NFL game, so the live box score can say who is on the field right now.
 // Note: `teams` records are season-to-date as of capture time; per-week
 // standings are rebuilt from matchup results in site/build.py.
 
@@ -37,11 +39,44 @@ const get = (qs) =>
     return r.json();
   });
 
-const [box, teamsRes, statusRes, txRes] = await Promise.all([
+// Which of this week's NFL games are on right now, by ESPN pro team id (the same ids the
+// fantasy API uses for proTeamId), so a live box score can mark the players still on the
+// field. Public scoreboard: no cookies, no credentials. Best effort — on any failure the
+// players simply carry no game state and the site shows no marker.
+const proGames = async (week) => {
+  try {
+    const r = await fetch(`https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard` +
+      `?dates=${SEASON}&seasontype=2&week=${week}`);
+    if (!r.ok) throw new Error(`scoreboard ${r.status}`);
+    const games = {};
+    for (const ev of (await r.json()).events || []) {
+      const st = ev.status || {};
+      const state = st.type?.state || null; // 'pre' before kickoff, 'in' while playing, 'post' once final
+      if (!state) continue;
+      let clock = null;
+      if (state === 'in') {
+        clock = st.type?.name === 'STATUS_HALFTIME'
+          ? 'Halftime'
+          : [st.period ? (st.period > 4 ? 'OT' : `Q${st.period}`) : null, st.displayClock]
+            .filter(Boolean).join(' ') || st.type?.shortDetail || null;
+      }
+      for (const c of ev.competitions?.[0]?.competitors || []) {
+        games[Number(c.id)] = { state, clock };
+      }
+    }
+    return games;
+  } catch (e) {
+    console.warn('no NFL game states this capture:', e.message);
+    return {};
+  }
+};
+
+const [box, teamsRes, statusRes, txRes, games] = await Promise.all([
   get(`view=mBoxscore&view=mMatchupScore&scoringPeriodId=${WEEK}`),
   get('view=mTeam'),
   get('view=mStatus'),
   get(`view=mTransactions2&scoringPeriodId=${WEEK}`),
+  proGames(WEEK),
 ]);
 
 const names = {};
@@ -53,6 +88,7 @@ const side = (s) => {
   const lineup = (s.rosterForCurrentScoringPeriod?.entries || []).map((e) => {
     const p = e.playerPoolEntry.player;
     names[p.id] = p.fullName;
+    const g = games[p.proTeamId] || null;
     return {
       player_id: p.id,
       name: p.fullName,
@@ -62,6 +98,9 @@ const side = (s) => {
       points: round2(pickStat(p.stats, 0)?.appliedTotal ?? 0),
       projected: round2(pickStat(p.stats, 1)?.appliedTotal ?? null),
       played: !!pickStat(p.stats, 0),
+      // His NFL game: 'pre', 'in' or 'post', and the game clock while it's 'in'
+      game_state: g ? g.state : null,
+      game_clock: g ? g.clock : null,
     };
   });
   return {
@@ -145,6 +184,7 @@ return {
   complete: capture.complete,
   scores: matchups.map((m) => `${m.away.team_id} ${m.away.points} @ ${m.home.team_id} ${m.home.points} (${m.winner})`),
   transactions: transactions.length,
+  playing: Object.values(games).filter((g) => g.state === 'in').length,
   unnamed: transactions.flatMap((t) => t.items).filter((i) => /^(Player|DST) -?\d+$/.test(i.name)).length,
 };
 }

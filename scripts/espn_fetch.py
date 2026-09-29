@@ -11,7 +11,8 @@ matches it. That catches a field added, renamed or retyped on one side. It canno
 the two sides computing the same field differently, so when you change capture.js's
 trimming, change this too.
 
-Cookies come from ESPN_S2 / ESPN_SWID. They are never logged, returned or written.
+Cookies come from ESPN_S2 / ESPN_SWID. They are never logged, returned or written, and
+the one call to ESPN's public NFL scoreboard (game states) carries none of them.
 """
 
 import json
@@ -26,6 +27,7 @@ LEAGUE_ID = 698468554
 BASE = f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{SEASON}/segments/0/leagues/{LEAGUE_ID}"
 PLAYERS = (f"https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/{SEASON}"
            "/players?scoringPeriodId=0&view=players_wl")
+SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
 
 SLOT = {0: "QB", 2: "RB", 4: "WR", 6: "TE", 16: "DST", 17: "K", 20: "BENCH", 21: "IR", 23: "FLEX"}
 POS = {1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 16: "DST"}
@@ -76,6 +78,39 @@ def _get(url, ck, headers=None):
         raise RuntimeError(f"ESPN {e.code}: cookies may have expired") from None
 
 
+def _pro_games(week):
+    """Which of this week's NFL games are on right now, keyed by ESPN pro team id (the same
+    ids the fantasy API uses for proTeamId). The twin of proGames() in capture.js: public
+    scoreboard, no cookies, and best effort — on any failure the players carry no game
+    state and the site simply shows no marker."""
+    url = f"{SCOREBOARD}?dates={SEASON}&seasontype=2&week={week}"
+    games = {}
+    try:
+        req = urllib.request.Request(url, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            events = json.load(r).get("events") or []
+        for ev in events:
+            st = ev.get("status") or {}
+            # 'pre' before kickoff, 'in' while the game is being played, 'post' once final
+            state = (st.get("type") or {}).get("state")
+            if not state:
+                continue
+            clock = None
+            if state == "in":
+                if (st.get("type") or {}).get("name") == "STATUS_HALFTIME":
+                    clock = "Halftime"
+                else:
+                    period = st.get("period")
+                    quarter = ("OT" if period > 4 else f"Q{period}") if period else None
+                    clock = " ".join(x for x in (quarter, st.get("displayClock")) if x) or None
+                clock = clock or (st.get("type") or {}).get("shortDetail") or None
+            for c in ((ev.get("competitions") or [{}])[0].get("competitors") or []):
+                games[int(c["id"])] = {"state": state, "clock": clock}
+    except Exception:  # noqa: BLE001 - no game states is a missing marker, not a failed capture
+        return {}
+    return games
+
+
 def _pick_stat(stats, source, week):
     for s in stats or []:
         if (s.get("statSourceId") == source and s.get("scoringPeriodId") == week
@@ -84,7 +119,7 @@ def _pick_stat(stats, source, week):
     return None
 
 
-def _side(s, week, names):
+def _side(s, week, names, games):
     if not s:
         return None
     lineup = []
@@ -93,6 +128,7 @@ def _side(s, week, names):
         names[p["id"]] = p["fullName"]
         actual = _pick_stat(p.get("stats"), 0, week)
         proj = _pick_stat(p.get("stats"), 1, week)
+        game = games.get(p.get("proTeamId"))
         lineup.append({
             "player_id": p["id"],
             "name": p["fullName"],
@@ -102,6 +138,9 @@ def _side(s, week, names):
             "points": round2(_nn(actual.get("appliedTotal") if actual else None, 0)),
             "projected": round2(proj.get("appliedTotal") if proj else None),
             "played": bool(actual),
+            # His NFL game: 'pre', 'in' or 'post', and the game clock while it is 'in'
+            "game_state": game["state"] if game else None,
+            "game_clock": game["clock"] if game else None,
         })
     return {
         "team_id": s.get("teamId"),
@@ -124,10 +163,12 @@ def fetch_week(week, ck=None):
     teams_res = _get(f"{BASE}?view=mTeam", ck)
     status_res = _get(f"{BASE}?view=mStatus", ck)
     tx_res = _get(f"{BASE}?view=mTransactions2&scoringPeriodId={week}", ck)
+    games = _pro_games(week)
 
     names = {}
     matchups = [{"id": m.get("id"), "winner": m.get("winner"),
-                 "home": _side(m.get("home"), week, names), "away": _side(m.get("away"), week, names)}
+                 "home": _side(m.get("home"), week, names, games),
+                 "away": _side(m.get("away"), week, names, games)}
                 for m in box.get("schedule") or [] if m.get("matchupPeriodId") == week]
 
     # Names for transacted players who aren't on anyone's current lineup (e.g. dropped)
@@ -182,7 +223,9 @@ def fetch_week(week, ck=None):
 # ---------- the shape capture.js and fetch_week must agree on ----------
 
 _PLAYER = {"player_id": "int", "name": "str", "pos": "str", "pro_team_id": "int?",
-           "slot": "str", "points": "num", "projected": "num?", "played": "bool"}
+           "slot": "str", "points": "num", "projected": "num?", "played": "bool",
+           # Added for the live box score, so weeks captured before it are missing both keys
+           "game_state?": "str?", "game_clock?": "str?"}
 # A "?" on a key means the key may be absent (week-01 and week-02 were captured before
 # capture.js started recording win_probability); a "?" on a type means the value may be null.
 _SIDE = {"team_id": "int", "points": "num", "projected": "num?", "win_probability?": "num?",

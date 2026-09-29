@@ -26,6 +26,15 @@ AWARD_KEYS = ("game_balls", "flags", "tough_breaks")
 PLAYER_KEYS = ("name", "pos", "slot", "points", "projected")
 
 
+def player(p):
+    """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
+    NFL game is on, and absent otherwise, so a finished week carries no live leftovers."""
+    row = {k: p.get(k) for k in PLAYER_KEYS}
+    if p.get("game_state") == "in":
+        row["playing"] = p.get("game_clock") or "on now"
+    return row
+
+
 def side(t):
     return {
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
@@ -36,8 +45,8 @@ def side(t):
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
-        "starters": [{k: p[k] for k in PLAYER_KEYS} for p in t["starters"]],
-        "bench": [{k: p[k] for k in PLAYER_KEYS} for p in t["bench"]],
+        "starters": [player(p) for p in t["starters"]],
+        "bench": [player(p) for p in t["bench"]],
     }
 
 
