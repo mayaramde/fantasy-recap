@@ -16,6 +16,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   says which NFL games are in progress, so a live box score can mark the players who are on the field right now.
   Both captures call it without cookies, and both treat it as best effort: if it fails, the capture still succeeds
   and the site just shows no "playing" stickers.
+- **ESPN injury designations** (part of the same private capture): each rostered player's `injuryStatus`
+  (`QUESTIONABLE`, `DOUBTFUL`, `OUT`, `INJURY_RESERVE`, `SUSPENSION`, ...) rides along in `espn.json` as
+  `injury_status`. It's what the Coach page and the box-score injury pills are built on. Weeks captured before
+  this existed simply don't carry the field, and the site treats that as "we don't know", never as "healthy".
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown.
 
@@ -66,6 +70,15 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
   player's position next to his name (the slot column can only say FLEX or BN) and give a player whose NFL game is
   on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime").
+- The **Coach** page hangs off that same live week: `#coach` lists all eight teams, `#coach-<teamId>` is one
+  manager's to-do list. Every card is computed in `site/build.py` (`team_advice`) from the capture alone — ESPN's
+  projections, its injury designations, and which NFL games have kicked off — so it refreshes through `/api/live`
+  with the rest of the live data and never states an injury ESPN didn't report. What it can say: swap a bench
+  player in (only for a projection gap of 2+ points), a starter is out/doubtful/on IR/suspended, a starter's team
+  is on a bye, a starting slot is empty, a starter is projected zero with nothing better behind him, and who has
+  newly landed on (or come off) the injury report since last week's capture. A player whose NFL game has already
+  kicked off is locked, so nothing suggests moving him. There is no recap page for the live week, and the Coach
+  page disappears once that week's recap is published.
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.

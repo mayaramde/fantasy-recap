@@ -49,7 +49,10 @@ def live_payload():
     history = sorted([w for w in history if w["week"] < week] + [current], key=lambda w: w["week"])
 
     analyze.resolve_names(history)
-    return build.live_payload(analyze.analyze(current, history), current)
+    # The capture before this one, so the Coach page can tell a new injury designation
+    # from one that was already there last week.
+    previous = max((w for w in history if w["week"] < week), key=lambda w: w["week"], default=None)
+    return build.live_payload(analyze.analyze(current, history), current, previous)
 
 
 class handler(BaseHTTPRequestHandler):
