@@ -419,9 +419,12 @@
   const coachFor = (id, next) => (coachRows(next) || []).find((a) => a.team_id === id);
   const adviceFor = (id) => coachFor(id, false);
   const coachUrl = (next, id) => `#coach${next ? '-next' : ''}${id ? `-${id}` : ''}`;
-  // Once this week is final there is nothing left to fix in it, so the tab leads with
-  // next week instead.
-  const leadWithNext = () => !!(ahead() && LIVE.complete);
+  // Every game of the week played, so no lineup change can score another point. It
+  // happens hours before ESPN calls the week final, and it's the moment this week's
+  // advice stops being advice.
+  const liveShut = () => { const rows = advice(); return !!rows && rows.every((a) => a.can_change === false); };
+  // Nothing left to fix in this week, so the tab leads with next week instead.
+  const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
   // Eight people, one page: remembering the last team someone opened lets the Coach tab
   // go straight back to hers. Private windows throw on localStorage, which costs nothing.
   const myTeam = {
@@ -954,7 +957,7 @@
         <h1>Coach</h1>
         <p class="dek">${next
           ? `Planning ahead for Week ${week}: who's on a bye, who's hurt, and who ESPN likes better than the player you have starting. Tap your name.`
-          : `Every team's to-do list for Week ${week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.${LIVE.complete && ahead() ? ` Week ${week} is final, so the work is on the <a href="${coachUrl(true, null)}">next week</a> tab.` : ''}`}</p>
+          : `Every team's to-do list for Week ${week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <section style="margin-top:18px">
         <div class="coach-grid">${coachRows(next).map((a) => coachCard(a, next)).join('')}</div>
@@ -1002,7 +1005,9 @@
       <div class="page-head">
         <div class="kicker">Week ${week} · ${esc(a.team_name)}</div>
         <h1>${esc(a.manager)}, ${next ? `about Week ${week}` : "here's your week"}</h1>
-        <p class="dek">${a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.'}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : ` this week — <a href="#live.game-${g.key}">live box score →</a>`}` : ''}</p>
+        <p class="dek">${!next && a.can_change === false
+          ? `Your Week ${week} lineup is locked — every game you had is over.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
+          : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : ` this week — <a href="#live.game-${g.key}">live box score →</a>`}` : ''}</p>
       </div>
       <div class="stat-tiles">
         <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>

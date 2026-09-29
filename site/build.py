@@ -144,7 +144,7 @@ def injury_map(espn):
     return {p["player_id"]: p.get("injury_status") for p in rows}
 
 
-def team_advice(team, before, before_week, states_known, projected=True):
+def team_advice(team, before, before_week, states_known, projected=True, week_open=True):
     """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
@@ -153,7 +153,9 @@ def team_advice(team, before, before_week, states_known, projected=True):
     scoreboard call failed, in which case nobody is called locked or on a bye on a guess.
     `projected` is False when ESPN hasn't published projections for the week yet (it can
     be days out on next week's), and then nothing here compares two numbers that are both
-    zero: no swaps, and nobody is called projected zero.
+    zero: no swaps, and nobody is called projected zero. `week_open` is False once every
+    NFL game of the week has kicked off, when no lineup change and no waiver pickup can
+    score another point, so nothing is asked of anybody.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -170,9 +172,15 @@ def team_advice(team, before, before_week, states_known, projected=True):
         """His NFL team has no game this week, so he cannot score."""
         return states_known and p.get("game_state") is None
 
+    def playable(p):
+        """He has a game this week that hasn't kicked off — the only kind of player a
+        lineup change can still involve. A player on a bye is never "locked", because no
+        game of his ever starts, but there is equally nothing he can still do."""
+        return not locked(p) and not on_bye(p)
+
     def free(p):
         """Healthy, playing this week, and still swappable."""
-        return not locked(p) and not on_bye(p) and p.get("injury_status") not in SIDELINED
+        return playable(p) and p.get("injury_status") not in SIDELINED
 
     def news(p):
         """" That's new since Week 2." — when the previous capture can tell us."""
@@ -183,6 +191,12 @@ def team_advice(team, before, before_week, states_known, projected=True):
         if was in SIDELINED or was in IFFY:
             return f" He was listed {INJURY_PHRASE[was]} in Week {before_week} too."
         return f" That's new since Week {before_week}, when ESPN wasn't listing him at all."
+
+    # Whether anything this team does can still change its score: at least one player
+    # with a game ahead of him, in a week that still has games in it. Without this, a
+    # starter on a bye or on IR — neither of whom is ever "locked" — keeps a waiver-wire
+    # card at "do this now" long after the last whistle of the week.
+    can_change = week_open and any(playable(p) for p in starters + bench)
 
     claimed = set()   # bench players already promised to a slot, so nobody is spent twice
     said_ir = []      # the IR explainer earns its space once per team, not once per card
@@ -231,12 +245,16 @@ def team_advice(team, before, before_week, states_known, projected=True):
         bye = on_bye(s)
         if locked(s) or not (hurt or bye):
             continue
+        r = backup(s["slot"])
+        if not r and not can_change:
+            # Nothing on the bench and no time left: the only advice would be a waiver
+            # pickup that can't score this week. Next week's tab carries it instead.
+            continue
         covered.add(s["player_id"])
         phrase = INJURY_PHRASE.get(s.get("injury_status"), "out")
         # "ESPN lists him as on injured reserve (IR). A player on IR is hurt long enough..."
         why = (f"ESPN lists {s['name']} as {phrase}.{ir_note(s)}" if hurt else
                f"{s['name']}'s NFL team is on a bye this week, so he doesn't play at all.")
-        r = backup(s["slot"])
         if r:
             claimed.add(r["player_id"])
             title = f"Start {r['name']} over {s['name']}"
@@ -288,7 +306,7 @@ def team_advice(team, before, before_week, states_known, projected=True):
                                "usually worth taking.")})
 
     # 4. A starting slot with nobody in it scores exactly zero.
-    filled = Counter(s["slot"] for s in starters)
+    filled = Counter(s["slot"] for s in starters) if can_change else Counter(LINEUP)
     for slot, need in LINEUP.items():
         for _ in range(need - filled.get(slot, 0)):
             r = backup(slot)
@@ -314,7 +332,7 @@ def team_advice(team, before, before_week, states_known, projected=True):
                                f"lands about 90 minutes before kickoff.{news(s)} {plan}")})
 
     # 6. A starter ESPN expects nothing from, with no better option behind him.
-    for s in (starters if projected else []):
+    for s in (starters if projected and can_change else []):
         if locked(s) or s["player_id"] in covered or s["player_id"] in swapped or _proj(s) > 0.05:
             continue
         items.append({"kind": "hole", "level": "now", "title": f"{s['name']} is projected zero",
@@ -352,10 +370,10 @@ def team_advice(team, before, before_week, states_known, projected=True):
     items += [it for _, it in sorted(fresh, key=lambda x: x[0])[:3]]
 
     if not items:
-        done = all(locked(s) for s in starters)
+        done = not can_change
         items.append({"kind": "clear", "level": "info", "title": "Nothing to fix", "stat": "",
-                      "text": ("Every one of your starters has already kicked off, so this lineup is what it "
-                               "is. Enjoy the games."
+                      "text": ("Every game you had this week is done, so this lineup is what it is. "
+                               "Anything worth changing is on next week's list."
                                if done else
                                ("Every starter is healthy, playing this week, and the best projection you "
                                 "have at his spot. Nothing on your bench beats what you've got. Go enjoy "
@@ -375,7 +393,10 @@ def team_advice(team, before, before_week, states_known, projected=True):
         # Starters whose game hasn't kicked off: the ones a lineup change can still reach.
         # Wider than yet_to_play, which counts only players with a game ahead of them —
         # a starter on a bye is movable but has nothing to play in.
-        "movable": sum(1 for s in starters if not locked(s)),
+        "movable": sum(1 for s in starters if playable(s)),
+        # False once the week is out of reach: the page stops asking for changes nobody
+        # can make any more and points at next week instead.
+        "can_change": can_change,
         "items": items,
         "counts": {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS},
     }
@@ -394,10 +415,15 @@ def advice_payload(teams, espn, previous):
     # no card pretends to compare them.
     states_known = any(p.get("game_state") for p in rows)
     projected = any(p.get("projected") for p in rows)
+    # Is there any football left this week? Read across the whole league, not one roster,
+    # so a manager with nobody in the late game still gets told the truth. With no game
+    # states at all (the scoreboard is best effort) assume the week is still live rather
+    # than silencing every card.
+    week_open = not states_known or any(p.get("game_state") == "pre" for p in rows)
     before = injury_map(previous) if previous else {}
     by_id = {t["team_id"]: t for t in teams}
     return [team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
-                        states_known, projected)
+                        states_known, projected, week_open)
             for t in LEAGUE["teams"] if t["team_id"] in by_id]
 
 
