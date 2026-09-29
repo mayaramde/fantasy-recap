@@ -230,6 +230,10 @@
   .lineup td { padding: 5px 0; border-top: 1px solid var(--rule); vertical-align: baseline; }
   .lineup td.slot { width: 44px; color: var(--muted); font: 500 11px/1 var(--mono); }
   .lineup td.r { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 10px; }
+  /* A little room at both ends of every row, so an open row's outline has somewhere to go
+     without landing on a name or a number. */
+  .lineup th:first-child, .lineup td:first-child { padding-left: 5px; }
+  .lineup th:last-child, .lineup td:last-child { padding-right: 5px; }
   .lineup td.proj { color: var(--muted); font-size: 12px; }
   .lineup tr.bench-head td { padding-top: 12px; border-top: none; font: 700 11px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
   .lineup tr.bench td { color: var(--muted); }
@@ -245,6 +249,42 @@
   .lineup td .playing .live-dot { width: 7px; height: 7px; margin-right: 4px; vertical-align: 0; background: #c0392b; }
   .lineup .opt { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
   .lineup .opt b { color: var(--ink); }
+
+  /* the player card: tap a row on the Coach page for how his points happened */
+  .lineup button.peek { display: flex; width: 100%; gap: 6px; align-items: baseline; padding: 0;
+    margin: -2px 0; background: none; border: 0; border-radius: 6px; color: inherit; font: inherit;
+    text-align: left; cursor: pointer; }
+  .lineup button.peek .chev { margin-left: auto; padding-left: 8px; color: var(--muted); font-size: 11px;
+    transform: rotate(0deg); transition: transform 0.15s ease; }
+  .lineup button.peek[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .lineup button.peek .chev::before { content: "▶"; }
+  .lineup button.peek:hover .peek-name { text-decoration: underline; }
+  /* An open row becomes the top of its own card: same fill, and the outline runs from the
+     player's name down around the card, so the two are one sticker rather than a box that
+     happens to sit underneath. The side edges are inset shadows, not borders, so opening a
+     row can't nudge the text in it sideways. */
+  .lineup tr.peek-open > td { background: var(--accent-soft); border-top-color: transparent;
+    box-shadow: inset 0 2px 0 var(--edge); }
+  .lineup tr.peek-open > td:first-child { box-shadow: inset 2px 2px 0 var(--edge);
+    border-top-left-radius: 11px; }
+  .lineup tr.peek-open > td:last-child { box-shadow: inset -2px 2px 0 var(--edge);
+    border-top-right-radius: 11px; }
+  .lineup tr.peek-row > td { padding: 0 0 12px; border-top: none; }
+  .peek-body { border: 2px solid var(--edge); border-top: none; border-radius: 0 0 12px 12px;
+    background: var(--accent-soft); padding: 4px 12px 10px; display: grid; gap: 8px; }
+  .peek-blurb { margin: 0; font-size: 13.5px; }
+  .peek-lines { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .peek-lines caption { text-align: left; font: 600 10.5px/1 var(--body); color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 4px; }
+  .peek-lines th { width: 100%; font: 500 12.5px/1.4 var(--body); color: var(--ink); text-align: left;
+    text-transform: none; letter-spacing: 0; padding: 3px 0; border-top: 1px solid var(--rule); }
+  .peek-lines td { width: 1%; padding: 3px 0 3px 14px; border-top: 1px solid var(--rule); text-align: right;
+    font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .peek-lines td.val { color: var(--muted); padding-left: 10px; }
+  .peek-lines tfoot th, .peek-lines tfoot td { font-weight: 700; border-top: 2px solid var(--edge); }
+  .peek-notes { margin: 0; padding-left: 16px; font-size: 12.5px; color: var(--muted); display: grid; gap: 3px; }
+  .peek-notes li::marker { color: var(--accent); }
+  .peek-none { margin: 0; font-size: 12.5px; color: var(--muted); }
 
   .other-games { display: flex; flex-wrap: wrap; gap: 10px; }
   .other-games a { text-decoration: none; background: var(--card); border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 600; box-shadow: 3px 3px 0 var(--drop); }
@@ -596,7 +636,42 @@
     + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
     + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
 
-  function lineupCard(side, won, live, badge) {
+  /* Player cards (the Coach page's two lineups): `cards` maps an ESPN player id to the
+     blurb, scoring breakdown and notes site/build.py computed for him. Which rows are
+     open is kept in PEEK rather than in the DOM, because the live refresh re-renders the
+     whole page every 20 seconds and nobody wants a card snapping shut mid-read. */
+  const PEEK = new Set();
+  const peekId = (key, p) => `peek-${key}-${p.player_id}`;
+
+  // The name cell: a disclosure button where there's a card for him, plain text otherwise.
+  const peekName = (p, card, id, live) => (card
+    ? `<button class="peek" type="button" data-peek="${p.player_id}" aria-expanded="${PEEK.has(p.player_id) ? 'true' : 'false'}" aria-controls="${id}"><span class="peek-name">${playerName(p, live)}</span><span class="chev" aria-hidden="true"></span></button>`
+    : playerName(p, live));
+
+  // The row underneath it, which holds the card itself. `cols` is the table's width: the
+  // box-score lineup has four columns, the next-week lineup three.
+  const peekRow = (p, card, id, cols) => (card
+    ? `<tr class="peek-row" id="${id}"${PEEK.has(p.player_id) ? '' : ' hidden'}><td colspan="${cols}">${peekPanel(p, card)}</td></tr>`
+    : '');
+
+  function peekPanel(p, card) {
+    const lines = card.lines || [];
+    return `
+      <div class="peek-body">
+        <p class="peek-blurb">${esc(card.blurb)}</p>
+        ${lines.length ? `
+        <table class="peek-lines">
+          <caption>Where the points came from</caption>
+          <tbody>${lines.map((l) => `
+            <tr><th scope="row">${esc(l.label)}</th><td class="val">${esc(l.value) || ''}</td><td>${l.points ? f2(l.points) : '—'}</td></tr>`).join('')}
+          </tbody>
+          <tfoot><tr><th scope="row">Total</th><td class="val"></td><td>${f2(p.points)}</td></tr></tfoot>
+        </table>` : p.points > 0.005 ? `<p class="peek-none">ESPN hasn't broken these ${f2(p.points)} points down yet.</p>` : ''}
+        ${(card.notes || []).length ? `<ul class="peek-notes">${card.notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}
+      </div>`;
+  }
+
+  function lineupCard(side, won, live, badge, cards) {
     // A bench player is "hot" if he outscored a starter he could have replaced
     const floor = (p) => {
       const ok = { QB: ['QB'], RB: ['RB', 'FLEX'], WR: ['WR', 'FLEX'], TE: ['TE', 'FLEX'], DST: ['DST'], K: ['K'] }[p.pos] || [];
@@ -606,7 +681,12 @@
     const starters = [...side.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
     const bench = [...side.bench].sort((a, b) => b.points - a.points);
     const nameCell = (p) => playerName(p, live);
-    const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${nameCell(p)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
+    const row = (p, cls, slot) => {
+      const card = cards && p.player_id != null ? cards[p.player_id] : null;
+      const id = peekId(side.team_id, p);
+      return `<tr class="${cls}${card && PEEK.has(p.player_id) ? ' peek-open' : ''}"><td class="slot">${esc(slot)}</td><td>${peekName(p, card, id, live)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`
+        + peekRow(p, card, id, 4);
+    };
     return `
       <div class="lineup">
         <h3><span>${mgrLink(side.manager)}</span><span class="num">${f2(side.points)} ${badge || `<span class="res ${won ? 'W' : 'L'}">${won ? 'W' : 'L'}</span>`}</span></h3>
@@ -977,7 +1057,12 @@
   function nextLineupCard(a) {
     const starters = [...a.lineup.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
     const bench = [...a.lineup.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
-    const row = (p, cls, slot) => `<tr class="${cls}"><td class="slot">${esc(slot)}</td><td>${playerName(p, true)}</td><td class="r proj">${f1(p.projected)}</td></tr>`;
+    const row = (p, cls, slot) => {
+      const card = a.players && p.player_id != null ? a.players[p.player_id] : null;
+      const id = peekId(`next-${a.team_id}`, p);
+      return `<tr class="${cls}${card && PEEK.has(p.player_id) ? ' peek-open' : ''}"><td class="slot">${esc(slot)}</td><td>${peekName(p, card, id, true)}</td><td class="r proj">${f1(p.projected)}</td></tr>`
+        + peekRow(p, card, id, 3);
+    };
     return `
       <div class="lineup">
         <h3><span>${mgrLink(a.manager)}</span><span class="num">proj ${f1(a.projected)}</span></h3>
@@ -1035,13 +1120,13 @@
       ${next ? `
       <section>
         ${secHead('board', `Your lineup for Week ${week}`)}
-        <p class="sec-sub">What you have set right now, and what ESPN projects for it. The badge next to a name is his NFL team and a colored pill is ESPN's injury designation. Nobody has played, so there are no points yet.</p>
+        <p class="sec-sub">What you have set right now, and what ESPN projects for it. Tap any player for what ESPN is saying about him. The badge next to a name is his NFL team and a colored pill is ESPN's injury designation. Nobody has played, so there are no points yet.</p>
         <div class="box-grid">${nextLineupCard(a)}</div>
       </section>` : (mine ? `
       <section>
         ${secHead('board', 'Your lineup right now')}
-        <p class="sec-sub">Points so far and ESPN's projection for every player. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
-        <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`)}</div>
+        <p class="sec-sub">Tap any player for how his points happened, plus whatever ESPN is saying about him. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
+        <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`, a.players)}</div>
       </section>` : '')}
 
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
@@ -1092,6 +1177,21 @@
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
   }
+
+  /* Opening a player card. #main survives every re-render (only its contents change), so
+     one listener here outlives the router and the live refresh. */
+  $('#main').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-peek]');
+    if (!btn) return;
+    const id = Number(btn.dataset.peek);
+    const panel = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!panel) return;
+    const open = panel.hidden;
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.closest('tr').classList.toggle('peek-open', open);
+    if (open) PEEK.add(id); else PEEK.delete(id);
+  });
 
   window.addEventListener('hashchange', () => {
     route();
