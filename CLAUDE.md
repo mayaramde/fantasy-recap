@@ -33,7 +33,18 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   live update and stale the moment the week starts. ESPN can be days from publishing next week's projections, so
   the page checks before quoting one.
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
-  Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown.
+  Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown; Trade Finder and Trade
+  Analyzer are premium too, and their disclosure hasn't been shown yet — relay it once, the first time either one
+  gates a call. `fantasy-coach-daily` (see Schedule) uses `get_projections`, `injury_status`, `get_ecr`,
+  `get_player_ownership`, `get_leaders` and `get_roster(all_teams=true)` — all free-tier — to build start/sit,
+  waiver and trade ideas itself rather than relying on the gated finder tools.
+- **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
+  `fantasy-coach-daily` writes once a day — start/sit suggestions (`consensus`), waiver and trade leads
+  (`roster_ideas`), and day-over-day injury/news changes (`fp_news`/`fp_back`) for every team, keyed by
+  week under `weeks`. Unlike `next-week/espn.json`, this **is** committed straight to `main` (small, factual,
+  derived data, the same category as `data/player_names.json`, not the human-reviewed recap content). `site/build.py`
+  treats it exactly like `next-week/espn.json` otherwise: best effort, and a missing, malformed, or stale
+  (>36h old) file just means ESPN-only Coach cards, same as before this existed.
 
 ## Privacy
 - The raw ESPN payload includes members' last names, ESPN IDs and notification settings. **Do not commit it.**
@@ -43,6 +54,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `data/<season>/next-week/`: the week-ahead capture behind the Coach page's "next week" tab (uncommitted)
+- `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
+  cards and roster ideas (committed)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html` (league page), `preview.html`, and `web/` (standalone site for Vercel)
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
@@ -59,6 +72,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    doing by hand when the site needs the tab before the next scheduled run.
 2. **Analyze.** `python3 scripts/analyze.py` → `facts.json` per week.
 3. **Context.** FantasyPros MCP for injury/news on notable players (only claim an injury if a source says so).
+   Before writing a bust, bad-luck-loss, or bench-blunder callout, check whether FantasyPros' injury/news desk
+   gives a real cause and cite it if so — never invent one when there isn't one.
 4. **Write.** `recaps/2026/week-NN.json` with `"status": "draft"`. Schema: `headline`, `dek`,
    `matchups` (keys `"<lowTeamId>-<highTeamId>"`), `game_balls` / `flags` / `tough_breaks`
    (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
@@ -82,7 +97,12 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   (e.g. while waiting on fresh ESPN cookies).
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
   and opens a draft PR. Maya approves before the recap reaches the league site.
-- Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
+- `fantasy-coach-daily` runs once a day: pulls FantasyPros projections, rankings, ownership and injury/news for
+  all 8 rosters, and writes finished, voiced Coach cards — start/sit suggestions, waiver and trade leads, and what's
+  changed in FantasyPros' injury report since yesterday — to `data/2026/fantasypros/latest.json`. Unlike the recap,
+  this commits straight to `main` with no PR (small, factual, derived data). Data only otherwise: it doesn't deploy,
+  touch any recap, or touch any `data/2026/week-NN/` file; the next live-update run picks up its commit.
+- All three tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
 - The Live page shows the newest captured week without a recap in that build: "live" while games are on,
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
   player's NFL team logo next to his name (the slot column already names the position) and give a player whose game
@@ -95,7 +115,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   never refreshed by `/api/live` — those numbers move about once a day, and asking ESPN for a second week on
   every request would double what the Live page costs it. Once the live week is final the Coach tab leads with
   next week, since nothing in a finished week can be fixed. The browser remembers the last team opened.
-  Every card is computed in `site/build.py` (`team_advice`) from the capture alone — ESPN's projections, its
+  Most cards are computed in `site/build.py` (`team_advice`) from the capture alone — ESPN's projections, its
   injury designations, and which NFL games have kicked off — so this week's refreshes through `/api/live` with
   the rest of the live data, and neither week ever states an injury ESPN didn't report. What it can say: swap a bench
   player in (only for a projection gap of 2+ points), a starter is out/doubtful/on IR/suspended, a starter's team
@@ -104,6 +124,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   kicked off is locked, so nothing suggests moving him. There is no recap page for the live week, and the Coach
   page disappears once that week's recap is published. With no projections published for a week, that week's
   tab drops the start-or-sit cards rather than comparing zeros, and says so.
+  On top of that, `consensus`/`waiver`/`trade`/`fp_news`/`fp_back` cards (and the "Worth a look" section) are
+  authored daily by `fantasy-coach-daily` from FantasyPros MCP data (see Data sources), not computed here —
+  `site/build.py` only decides whether that day's snapshot is fresh enough to merge in, and refreshes with the
+  same request that serves the rest of the live week.
 - Every row of either Coach lineup opens into that player's own card (`player_cards` in `site/build.py`): one
   cheeky line about his week, ESPN's scoring broken down stat by stat, and a few notes — his share of your
   total, what the injury report says and whether that's new, where his game is up to, what else you have at
@@ -126,7 +150,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Matchup results, high/low scores, standings
 - Good decisions: waiver pickups that paid off, smart benchings/starts
 - Bench blunders: points left on the bench (optimal lineup vs actual)
-- Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost)
+- Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost).
+  Cite a real cause from FantasyPros' injury/news desk when one exists (weekly routine step 3); never invent one.
 - Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
 
 ## Voice

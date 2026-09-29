@@ -19,6 +19,7 @@ Usage: python3 site/build.py [--season 2026]
 import argparse
 import json
 from collections import Counter
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -160,6 +161,58 @@ def injury_map(espn):
     if not any("injury_status" in p for p in rows):
         return {}
     return {p["player_id"]: p.get("injury_status") for p in rows}
+
+
+# ---------- coach: FantasyPros-sourced cards, authored daily by a separate task ----------
+# fantasy-coach-daily (a scheduled Claude session, not this script) writes finished, voiced
+# cards straight into data/<season>/fantasypros/latest.json — the same way the weekly recap
+# writes game_balls/flags/tough_breaks. This file only reads, validates and merges: it never
+# invents a word of FantasyPros-sourced copy itself.
+FP_MAX_AGE = timedelta(hours=36)
+
+
+def load_fantasypros(season):
+    """Best-effort read of the daily FantasyPros snapshot. None if missing or malformed,
+    so every caller can fall back to ESPN-only advice without a special case."""
+    path = ROOT / "data" / str(season) / "fantasypros" / "latest.json"
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text())
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(data.get("weeks"), dict) or "generated_at" not in data:
+        return None
+    return data
+
+
+def _fp_fresh(fp):
+    """A snapshot left over from a missed run is worse than none: it would tell a
+    manager about "news since yesterday" that's actually a week stale."""
+    if not fp:
+        return False
+    try:
+        generated = datetime.fromisoformat(fp["generated_at"].replace("Z", "+00:00"))
+    except (ValueError, KeyError):
+        return False
+    return datetime.now(timezone.utc) - generated <= FP_MAX_AGE
+
+
+def _valid_fp_card(it):
+    return (isinstance(it, dict) and it.get("kind") and it.get("level") in LEVELS
+            and it.get("title") and it.get("text"))
+
+
+def fantasypros_cards(team_id, fp, week):
+    """(advice_items, roster_ideas) for one team in one week, from today's FantasyPros
+    snapshot — or ([], []) if the file is missing, stale, or has nothing for that team and
+    week. Every card here is already fully authored; this only selects and validates shape."""
+    if not _fp_fresh(fp):
+        return [], []
+    wk = (fp.get("weeks") or {}).get(str(week)) or {}
+    row = (wk.get("teams") or {}).get(str(team_id)) or {}
+    return ([it for it in row.get("advice_cards", []) if _valid_fp_card(it)],
+            [it for it in row.get("roster_ideas", []) if _valid_fp_card(it)])
 
 
 # ---------- coach: one line about the team, for under the page header ----------
@@ -418,7 +471,8 @@ def player_cards(starters, bench, ctx):
     return cards
 
 
-def team_advice(team, before, before_week, states_known, projected=True, week_open=True):
+def team_advice(team, before, before_week, states_known, projected=True, week_open=True,
+                fp_items=(), fp_ideas=()):
     """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
@@ -430,6 +484,9 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     zero: no swaps, and nobody is called projected zero. `week_open` is False once every
     NFL game of the week has kicked off, when no lineup change and no waiver pickup can
     score another point, so nothing is asked of anybody.
+
+    `fp_items` and `fp_ideas` are already-authored FantasyPros-sourced cards for this team
+    and week (see fantasypros_cards) — never generated here, only merged in.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -683,6 +740,11 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "pickups": {a["name"]: a for a in team.get("pickups_started", [])},
     }
 
+    # FantasyPros-sourced cards join the to-do list as if they'd always been part of it —
+    # they carry their own {kind, level, title, stat, text} shape already, so counts and
+    # the team summary read across them the same way they read ESPN's own cards.
+    items = items + [it for it in fp_items if it not in items]
+
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])
     return {
@@ -705,15 +767,21 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "summary": team_summary(team["team_id"], items, counts, can_change, team.get("win_probability")),
         # One card per player on the roster, for the lineup rows on her Coach page
         "players": player_cards(starters, team["bench"], ctx),
+        # Waiver/trade leads from FantasyPros — not a per-week to-do, so kept separate from
+        # the now/watch/info list. Empty when today's snapshot has nothing for this team.
+        "roster_ideas": list(fp_ideas),
     }
 
 
-def advice_payload(teams, espn, previous):
+def advice_payload(teams, espn, previous, fp=None, week=None):
     """The Coach page's data: one entry per team, in league order.
 
     `teams` are facts.json-shaped (starters, bench, opponent_id), either from a played
     week's facts or from next_week_teams(). `previous` is the capture before this one (or
     None), which is what lets an injury designation be called new rather than just current.
+    `fp` is today's FantasyPros snapshot (see load_fantasypros), best effort like everything
+    else here: with no snapshot, or nothing for this `week`, every team just gets its
+    ESPN-only cards, same as before this existed.
     """
     rows = [p for m in espn["matchups"] for s in (m["home"], m["away"]) if s for p in s["lineup"]]
     # Both calls behind these are best effort. With no NFL game states, no player is
@@ -728,9 +796,14 @@ def advice_payload(teams, espn, previous):
     week_open = not states_known or any(p.get("game_state") == "pre" for p in rows)
     before = injury_map(previous) if previous else {}
     by_id = {t["team_id"]: t for t in teams}
-    return [team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
-                        states_known, projected, week_open)
-            for t in LEAGUE["teams"] if t["team_id"] in by_id]
+    rows_out = []
+    for t in LEAGUE["teams"]:
+        if t["team_id"] not in by_id:
+            continue
+        fp_items, fp_ideas = fantasypros_cards(t["team_id"], fp, week)
+        rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
+                                    states_known, projected, week_open, fp_items, fp_ideas))
+    return rows_out
 
 
 def next_week_teams(capture):
@@ -761,15 +834,17 @@ def next_week_teams(capture):
     return teams
 
 
-def next_payload(capture, previous):
+def next_payload(capture, previous, fp=None):
     """The Coach page's "next week" tab: the same advice, a week early.
 
     Baked at build time and never refreshed by /api/live, because next week's numbers
     move about once a day, not once a minute — and because asking ESPN for a second week
-    on every request would double what the live page costs it.
+    on every request would double what the live page costs it. `fp` (today's FantasyPros
+    snapshot) is looked up under this week's own number, so it's only used if
+    fantasy-coach-daily actually wrote cards for the week ahead, not just the live one.
     """
     teams = next_week_teams(capture)
-    rows = advice_payload(teams, capture, previous)
+    rows = advice_payload(teams, capture, previous, fp=fp, week=capture["week"])
     lineups = {t["team_id"]: {"starters": [player(p, True) for p in t["starters"]],
                               "bench": [player(p, True) for p in t["bench"]]} for t in teams}
     by_id = {t["team_id"]: t for t in teams}
@@ -783,11 +858,12 @@ def next_payload(capture, previous):
             "teams": rows}
 
 
-def live_payload(facts, espn, previous=None):
+def live_payload(facts, espn, previous=None, fp=None):
     """The in-progress (or final but not yet recapped) week: data only, no commentary.
 
     `previous` is the capture before this one, used only to tell a new injury
-    designation from one that was already there last week.
+    designation from one that was already there last week. `fp` is today's FantasyPros
+    snapshot (see load_fantasypros); passed straight through to advice_payload.
     """
     w = week_payload(facts, {"status": "live"}, live=True)
     manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
@@ -801,7 +877,7 @@ def live_payload(facts, espn, previous=None):
             moves.append({"date": t["date"], "manager": manager.get(t["team_id"], "?"), "added": added, "dropped": dropped})
     moves.sort(key=lambda m: m["date"], reverse=True)
     w.update(live=True, captured_at=espn["captured_at"], moves=moves,
-             advice=advice_payload(facts["teams"], espn, previous))
+             advice=advice_payload(facts["teams"], espn, previous, fp=fp, week=facts["week"]))
     return w
 
 
@@ -860,7 +936,7 @@ def season_payload(facts_list, weeks):
     return {"standings": table, "weeks_played": [f["week"] for f in facts_list]}
 
 
-def render(recap_weeks, captured, preview, ahead=None):
+def render(recap_weeks, captured, preview, ahead=None, fp=None):
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
     weeks = [w for _, w in included]
     # Live page: the newest captured week that isn't in this output's recaps yet
@@ -870,11 +946,11 @@ def render(recap_weeks, captured, preview, ahead=None):
     if pending:
         facts, espn = pending[-1]
         previous = next((e for f, e in reversed(captured) if f["week"] < facts["week"]), None)
-        live = live_payload(facts, espn, previous)
+        live = live_payload(facts, espn, previous, fp=fp)
         # The week-ahead capture is only good for the week after the live one. A stale
         # one (captured before this week started) is dropped rather than shown as next.
         if ahead and ahead["week"] == facts["week"] + 1:
-            live["next"] = next_payload(ahead, previous)
+            live["next"] = next_payload(ahead, previous, fp=fp)
     data = {
         "league": {"name": LEAGUE["name"].strip(), "season": LEAGUE["season"], "scoring": LEAGUE["scoring"]},
         "preview": preview,
@@ -941,9 +1017,13 @@ def main():
     ahead_path = ROOT / "data" / str(args.season) / "next-week" / "espn.json"
     ahead = json.loads(ahead_path.read_text()) if ahead_path.exists() else None
 
+    # Today's FantasyPros snapshot, if fantasy-coach-daily has written one. Optional by
+    # design, same as `ahead`: missing, malformed or stale just means ESPN-only advice.
+    fp = load_fantasypros(args.season)
+
     dist = SITE / "dist"
     dist.mkdir(exist_ok=True)
-    html, weeks = render(recap_weeks, captured, preview=False, ahead=ahead)
+    html, weeks = render(recap_weeks, captured, preview=False, ahead=ahead, fp=fp)
     (dist / "index.html").write_text(html)
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
@@ -953,7 +1033,7 @@ def main():
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
           + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
-    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead)
+    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead, fp=fp)
     (dist / "preview.html").write_text(html)
     # The same preview as a standalone page, for `scripts/deploy.sh --preview` (a real
     # URL to review a draft on a phone). preview.html itself is the artifact build, which

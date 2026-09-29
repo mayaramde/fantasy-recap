@@ -55,7 +55,10 @@ def live_payload():
     # The capture before this one, so the Coach page can tell a new injury designation
     # from one that was already there last week.
     previous = max((w for w in history if w["week"] < week), key=lambda w: w["week"], default=None)
-    return build.live_payload(analyze.analyze(current, history), current, previous)
+    # Today's FantasyPros snapshot, if fantasy-coach-daily has written one — committed to
+    # git (unlike next-week/espn.json), so it ships in this bundle like league.json does.
+    fp = build.load_fantasypros(current["season"])
+    return build.live_payload(analyze.analyze(current, history), current, previous, fp=fp)
 
 
 class handler(BaseHTTPRequestHandler):
