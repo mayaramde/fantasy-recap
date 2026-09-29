@@ -239,11 +239,15 @@ def analyze(week, history):
         t["would_have_won_with_optimal"] = t["result"] == "L" and opt_total > t["opponent_points"]
         t["worst_bench_call"] = worst_bench_call(r)
         t["lineup_swaps"] = lineup_swaps(week, t["team_id"], r)
-        t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2))
+        # The box score shows each player's NFL team as its logo, so carry it here with the
+        # other ESPN CDN URLs rather than rebuilding the path in the site.
+        t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2),
+                              logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
                          for p in r if p["slot"] in STARTING]
         # ESPN drops the team projection once games are final; rebuild it from starters
         t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
-        t["bench"] = [p for p in r if p["slot"] in ("BENCH", "IR")]
+        t["bench"] = [dict(p, logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
+                      for p in r if p["slot"] in ("BENCH", "IR")]
         # Where her starters stand right now. "Playing" is on the field this minute,
         # "yet to play" is kickoff still ahead, and the two never count the same player,
         # so a live strip can show both. A capture with no NFL game states (the public
