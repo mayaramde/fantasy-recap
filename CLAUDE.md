@@ -62,7 +62,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
   cards and roster ideas (committed)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
-- `site/`: template + build script → `site/dist/index.html` (league page), `preview.html`, and `web/` (standalone site for Vercel)
+- `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
+  and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
@@ -85,8 +86,17 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 4. **Write.** `recaps/2026/week-NN.json` with `"status": "draft"`. Schema: `headline`, `dek`,
    `matchups` (keys `"<lowTeamId>-<highTeamId>"`), `game_balls` / `flags` / `tough_breaks`
    (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
-5. **Build.** `python3 site/build.py` → `site/dist/preview.html` (drafts included) and `site/dist/index.html` (published only).
-6. **Review.** Republish the preview artifact: https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87. Maya reviews.
+5. **Build.** `python3 site/build.py` → `site/dist/web-preview/` (drafts included, what step 6 deploys) and
+   `site/dist/web/` (published only, what `scripts/deploy.sh` ships).
+6. **Review.** `scripts/deploy.sh --preview` — builds the draft copy and deploys it to a fresh, throwaway Vercel
+   URL. **Fatal if skipped: before running this, confirm the draft is actually on disk** — `ls recaps/2026/` should
+   show `week-NN.json` and `git branch --show-current` should be that week's own branch (not `main`, unless the PR
+   already merged). The draft recap file exists only on its own branch until its PR merges; checking out `main`
+   removes it from the working tree with no error, and a preview built right after will deploy successfully while
+   silently missing the week — it looks like a normal, complete preview. If `ls`/`git branch` don't show the draft
+   where expected, **stop. Do not run `scripts/deploy.sh --preview` anyway.** Tell Maya what's missing instead of
+   handing her a preview that quietly isn't showing what she thinks it's showing. Once confirmed, share the
+   printed URL with Maya; she reviews there.
 7. **Ship.** Only after Maya approves: set `"status": "published"`, then run `scripts/deploy.sh` to update the website.
 8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
    workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
@@ -152,8 +162,10 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
   Needs `vercel login` on this Mac. Never read or print `.env.local` or Vercel tokens.
-- Preview (Claude artifact, private, Maya only): https://claude.ai/artifact/6yiwuixW1kTVztAp2s5d87 (from `site/dist/preview.html`).
-  Drafts are reviewed here before they go to the website.
+- Preview (Vercel, private, Maya only): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` to a new
+  throwaway `fantasy-recap-*.vercel.app` URL every time it runs — there's no fixed link to bookmark. Deployment
+  URLs aren't guessable or indexed (`docs/vercel.md` §7), so that's the only access control it has. Drafts are
+  reviewed here before they go to the website. Retired 2026-09-29: the Claude artifact preview this replaced.
 - Old league artifact (retired 2026-09-28, no longer updated): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ
 
 ## Recap content
