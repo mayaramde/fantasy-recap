@@ -223,18 +223,31 @@
   .ml-row.ml-win { background: var(--accent-soft); }
   .ml-w { flex: none; font: 700 10.5px/1 var(--mono); padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--edge); background: var(--lime); color: var(--on-pop); transform: rotate(-4deg); }
   .ml-note { margin: 0; padding: 9px 16px 11px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); font-style: italic; }
-  .ml-roster { padding: 10px 16px 12px; border-top: 2px solid var(--edge); }
-  .ml-roster summary { cursor: pointer; font: 700 12.5px/1 var(--body); color: var(--accent); list-style: none; }
-  .ml-roster summary::-webkit-details-marker { display: none; }
-  .ml-roster summary::before { content: "▶"; display: inline-block; font-size: 9px; margin-right: 6px; }
-  .ml-roster[open] summary::before { content: "▼"; }
-  .ml-roster[open] summary { margin-bottom: 8px; }
-  .ml-roster-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px 16px; }
-  .ml-roster-cols h4 { font: 700 12px/1 var(--body); color: var(--muted); margin-bottom: 4px; }
-  .ml-roster-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .ml-roster-table td { padding: 3px 0; border-top: 1px solid var(--rule); }
-  .ml-roster-table td.slot { width: 34px; color: var(--muted); font: 500 10.5px/1 var(--mono); }
+  /* Pre-kickoff card: each side is its own <details>, the score row is the toggle, and that
+     side's lineup opens directly underneath it. Cobalt for the first side, bubblegum for the second. */
+  .ml-team + .ml-team { border-top: 2px solid var(--edge); }
+  .ml-team > summary { cursor: pointer; list-style: none; }
+  .ml-team > summary::-webkit-details-marker { display: none; }
+  .ml-team > summary .ml-name::before { content: "▶"; flex: none; font-size: 9px; color: var(--accent-ink); }
+  .ml-team[open] > summary .ml-name::before { content: "▼"; }
+  .ml-team.tone-a > summary { background: var(--accent-soft); }
+  .ml-team.tone-b > summary { background: var(--pink-soft); }
+  .ml-team.tone-b > summary .ml-name::before { color: var(--ink); }
+  .ml-team > summary:hover .ml-name a { text-decoration: underline; }
+  .ml-num .ml-pill { display: inline-block; padding: 4px 9px; border-radius: 9px; border: 2px solid var(--edge); background: var(--orange); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); font: 700 18px/1 var(--mono); }
+  .ml-team .ml-num small { margin-top: 5px; }
+  .ml-roster-table { width: calc(100% - 32px); margin: 8px 16px 12px; border-collapse: collapse; font-size: 13px; }
+  .ml-roster-table td { padding: 5px 0; border-top: 1px solid var(--rule); }
+  .ml-roster-table tr:first-child td { border-top: none; }
+  .ml-roster-table td.slot { width: 48px; }
   .ml-roster-table td.r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .slot-chip { display: inline-block; min-width: 34px; padding: 3px 0; border-radius: 6px; border: 1.5px solid var(--edge); text-align: center; font: 600 10.5px/1 var(--mono); background: var(--card); color: var(--ink); }
+  .slot-chip.s-QB { background: var(--pink); color: var(--on-pop); }
+  .slot-chip.s-RB { background: var(--lime); color: var(--on-pop); }
+  .slot-chip.s-WR { background: var(--orange); color: var(--on-pop); }
+  .slot-chip.s-TE { background: var(--accent-soft); }
+  .slot-chip.s-FLEX { background: var(--orange-soft); }
+  .slot-chip.s-DST, .slot-chip.s-K { background: var(--pink-soft); }
 
   /* ---------- landing page: one-line team cards ---------- */
   .teams-lite { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 14px; }
@@ -655,29 +668,24 @@
       const note = RECAP_PENDING[g.winner.team_id % RECAP_PENDING.length];
       return `
         <div class="matchup-lite">
-          <div class="ml-row ml-win"><span class="ml-name">${mgrLink(g.winner.manager)}<span class="ml-w">W</span></span><span class="ml-num">${f2(g.winner.points)}</span></div>
+          <div class="ml-row ml-win"><span class="ml-name">${mgrLink(g.winner.manager)}<span class="ml-w">W</span></span><span class="ml-num"><span class="ml-pill">${f2(g.winner.points)}</span></span></div>
           <div class="ml-row ml-lose"><span class="ml-name">${mgrLink(g.loser.manager)}</span><span class="ml-num">${f2(g.loser.points)}</span></div>
           <p class="ml-note">${esc(note)}</p>
         </div>`;
     }
-    const rosterCol = (s) => {
+    const team = (s, tone) => {
       const starters = [...s.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
       return `
-        <div>
-          <h4>${esc(s.manager)}</h4>
+        <details class="ml-team ${tone}">
+          <summary class="ml-row"><span class="ml-name">${mgrLink(s.manager)}</span><span class="ml-num"><span class="ml-pill">${f1(s.projected)}</span><small>proj</small></span></summary>
           <table class="ml-roster-table"><tbody>${starters.map((p) => `
-            <tr><td class="slot">${esc(p.slot)}</td><td>${esc(p.name)}</td><td class="r">${f1(p.projected)}</td></tr>`).join('')}
+            <tr><td class="slot"><span class="slot-chip s-${esc(p.slot)}">${esc(p.slot)}</span></td><td>${esc(p.name)}</td><td class="r">${f1(p.projected)}</td></tr>`).join('')}
           </tbody></table>
-        </div>`;
+        </details>`;
     };
     return `
       <div class="matchup-lite">
-        <div class="ml-row"><span class="ml-name">${mgrLink(g.winner.manager)}</span><span class="ml-num">${f1(g.winner.projected)}<small>proj</small></span></div>
-        <div class="ml-row"><span class="ml-name">${mgrLink(g.loser.manager)}</span><span class="ml-num">${f1(g.loser.projected)}<small>proj</small></span></div>
-        <details class="ml-roster">
-          <summary>See projected lineups</summary>
-          <div class="ml-roster-cols">${rosterCol(g.winner)}${rosterCol(g.loser)}</div>
-        </details>
+        ${team(g.winner, 'tone-a')}${team(g.loser, 'tone-b')}
       </div>`;
   }
 
@@ -967,7 +975,7 @@
 
       <section>
         ${secHead('board', w.complete ? 'Final scoreboard' : "This week's matchups")}
-        <p class="sec-sub">${w.complete ? "The recap's not written yet, so this is the whole story for now." : "Projected scores are ESPN's. Expand a game to see both sides' projected lineups."}</p>
+        <p class="sec-sub">${w.complete ? "The recap's not written yet, so this is the whole story for now." : "Projected scores are ESPN's. Tap a team to see her projected lineup."}</p>
         <div class="games-lite">${w.games.map((g) => landingScoreCard(g, w)).join('')}</div>
       </section>
 
