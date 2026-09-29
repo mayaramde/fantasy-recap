@@ -64,8 +64,8 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Both tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
 - The Live page shows the newest captured week without a recap in that build: "live" while games are on,
   "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
-  player's position next to his name (the slot column can only say FLEX or BN) and give a player whose NFL game is
-  on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime"). Each matchup card counts the
+  player's NFL team logo next to his name (the slot column already names the position) and give a player whose game
+  is on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime"). Each matchup card counts the
   same two things per side: "2 playing now" (a starter whose game is on) and "1 starter yet to play" (kickoff still
   ahead), or "all starters done" when neither is left.
 
