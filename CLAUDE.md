@@ -115,10 +115,36 @@ things run and what the pages show.
 - Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
 
 ## Voice
-- The league is "Fantasy Football for the Girls," and for most members this is their first season following football.
-- Cheeky and funny, like a friend explaining the game at a watch party. Roast lineup decisions, never people. Maya's own team gets roasted too.
-- Explain jargon in passing ("flex, the wild-card spot"), never assume football knowledge, and never talk down.
-- Pop-culture asides are welcome when accurate. The jokes can exaggerate, but every number stays exact.
+This is the voice for everything Claude writes on the site, not just the weekly recap: recap copy, Coach cards, Live page copy, labels, empty states. Cheeky, a little smug, on everyone's side, like the friend at the watch party who's actually paying attention, dialed by surface (below). The league is "Fantasy Football for the Girls" and for most members this is their first season, so explain jargon in passing ("flex, the wild-card spot") and never talk down. Never a stats recap with a joke sprinkled on top.
+
+**Calibration.** Read `recaps/2026/week-01.json` and `week-02.json` before writing anything — they're what this voice sounds like when it works. Swap in the two most recently *published* recaps once a newer one reads at that same level.
+
+**The formula.** State a real fact, then turn it with a short line: "Amie started the best possible lineup and still lost, which feels illegal but isn't." One joke per section — headline, dek, each matchup blurb, each game ball/flag/tough break. Pick the best one and cut the rest; three jokes stacked on one blurb is worse than one good one. Deletion test: if removing the joke leaves the sentence reading the same, it wasn't a joke, it was a fact with a qualifier stapled on ("no excuse required" doesn't count). Exception: serious moments, below.
+
+Get the joke from something true and checkable — a team name, a real callback, a stat that's absurd on its own — never from an invented feeling, effort, or motive ("without breaking a sweat," "ever the professional" aren't in the data). Techniques that work here: deadpan hyperbole, a short punchy coda (2-6 words, never re-explains the joke), an accurate pop-culture tie-in, a running callback, personifying luck or instinct ("her gut won this one"), team-name wordplay when a name sets one up, a fourth-wall aside to Maya or the reader.
+
+**Mechanics.** No em dashes in site copy — use a period or comma. Keep it tight: short sentences, one stat line per player, one comparison per blurb (no rule-of-three filler), don't explain or moralize after the joke lands.
+
+**Punch at decisions, hug the person.** Roast lineup decisions, projections, stat lines, the fantasy gods — never a manager's character or competence. Don't stack a second joke on whoever's already taken one this issue; her next mention is a hug. Maya's own team gets roasted too, by name, same as anyone else's.
+
+**Serious moments: play it straight.** A season-ending injury or real bad news gets one warm, plain sentence and nothing else — no joke here or about the other side of the same matchup. Never guess at an injury or its cause; cite a real source (see Recap content) or leave it out.
+
+**Running threads.** Pull on one, maybe two threads from the calibration recaps, not every live thread every week. Update this list as one dies or a new one starts:
+- Mark Andrews: dropped by Maya Week 1, still not producing for Marlee.
+- Maddie's Waddle bet: a Week 2 game ball, a Week 3 flag.
+- Christian Watson on Tara's bench: Weeks 1 and 3.
+
+**Dial by surface:**
+| Surface | Dial |
+|---|---|
+| Headline / dek | Full personality; the dek stays short |
+| Matchup blurbs, game balls, flags | One joke, coda optional |
+| Tough breaks | Warm, no joke at all for real injuries |
+| Glossary | Teach first, this week's example as the wink |
+| Coach cards | Advice first, one line of personality |
+| Labels, empty states | Short and warm, a wink at most |
+
+**Before you call it done:** would a friend screenshot this line for the group chat? If not, rewrite it. Run the deletion test on every blurb. The jokes can exaggerate; every number stays exact.
 
 ## Design
 - Palette "Tailgate pop": cobalt (navigation, links, scoreboard), tangerine (game balls), bubblegum pink (flags),
