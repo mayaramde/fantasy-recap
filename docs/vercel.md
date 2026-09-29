@@ -147,6 +147,9 @@ symptom and the other keeps failing.
 Symptoms, so you can tell which is which:
 
 - A GitHub Actions failure email saying **"ESPN 401"** → the *GitHub* copy expired.
+- One saying **"Could not retrieve Project Settings"** → the Vercel token. It has to be scoped to the
+  whole account, not to the `fantasy-recap` project: `vercel build` looks the account up first, and a
+  project-scoped token gets "User not found" for that, which the CLI reports as the message above.
 - The Live page stuck on old numbers, `/api/live` returning **503** → the *Vercel*
   copy expired or was never set.
 
