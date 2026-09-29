@@ -47,6 +47,31 @@ def check_capture_shape(errors):
             errors.append(f"{rel}: {problem}")
 
 
+def check_scoring_rows(errors):
+    """Every player card on the Coach page has to add up.
+
+    scripts/analyze.py turns ESPN's numbered stats into the rows the card shows, and folds
+    anything it can't name (plus any gap) into one "Other scoring" row. So the rows must
+    always sum to the points the site prints next to his name; if they don't, the breakdown
+    is telling a story the box score doesn't.
+    """
+    for path in sorted((ROOT / "data").glob("*/week-*/facts.json")):
+        rel = path.relative_to(ROOT)
+        try:
+            facts = json.loads(path.read_text())
+        except json.JSONDecodeError:
+            continue  # already reported as invalid JSON
+        for team in facts.get("teams", []):
+            for player in team.get("starters", []) + team.get("bench", []):
+                rows = player.get("scoring_lines")
+                if rows is None:
+                    continue  # captured before capture.js recorded any of this
+                total = round(sum(r["points"] for r in rows), 2)
+                if abs(total - player["points"]) > 0.011:
+                    errors.append(f"{rel}: {player['name']}'s scoring rows add up to {total}, "
+                                  f"but he scored {player['points']}")
+
+
 def tracked_files():
     out = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, check=True,
                          capture_output=True, text=True).stdout
@@ -77,6 +102,7 @@ def main():
                 errors.append(f"{rel}: invalid JSON ({e})")
 
     check_capture_shape(errors)
+    check_scoring_rows(errors)
 
     build = next((p for p in [ROOT / "site/build.py", ROOT / "site/build.js"] if p.exists()), None)
     if build:

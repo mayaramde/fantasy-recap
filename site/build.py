@@ -60,7 +60,9 @@ def player(p, live):
     and `injury` is ESPN's designation in plain words, absent when he isn't listed."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
     if live:
-        row.update(logo=p.get("logo"), team=p.get("team"))
+        # player_id is what pairs a row with its Coach card (see player_cards); it is an
+        # ESPN *player* id, the same one the headshot URLs already carry, never a member's.
+        row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"))
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
@@ -130,6 +132,22 @@ def _f1(x):
     return f"{x:.1f}"
 
 
+def _f2(x):
+    return f"{x:.2f}"
+
+
+def _an(x):
+    """A projection with the article you'd say in front of it: "an 8.2", "a 20.4"."""
+    s = _f1(x)
+    return f"{'an' if s[:1] == '8' or s[:2] in ('11', '18') else 'a'} {s}"
+
+
+def _pts(x):
+    """A score the way you'd say it out loud: 8, 12.3, 20.55. Exact to the cent, but a
+    trailing zero in the middle of a sentence reads like a spreadsheet."""
+    return f"{round(x, 2):g}"
+
+
 def injury_map(espn):
     """Every rostered player's injury designation in one captured week.
 
@@ -141,6 +159,194 @@ def injury_map(espn):
     if not any("injury_status" in p for p in rows):
         return {}
     return {p["player_id"]: p.get("injury_status") for p in rows}
+
+
+# ---------- coach: one expandable card per player on the lineup ----------
+# Same rule as the to-do cards: every sentence is read off the capture. The numbers are
+# ESPN's own (its points, its projection, its injury report, its game clock) and the jokes
+# are ours. Nothing here reports news no source gave us, and nothing calls a player
+# healthy just because ESPN isn't listing him.
+
+COUNT_WORD = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}
+
+
+def _voice(p, options):
+    """Pick one phrasing for this player, always the same one.
+
+    A hundred and twenty cards on one page shouldn't read like a form letter, and a player
+    shouldn't change his mind every time the Live data refreshes, so his ESPN id chooses.
+    """
+    return options[p["player_id"] % len(options)]
+
+
+def _pct(part, whole):
+    return round(100 * part / whole) if whole else 0
+
+
+def _td_line(p):
+    """" Two touchdowns." — only ever what the stat line carries."""
+    td = p.get("touchdowns") or 0
+    if td < 1:
+        return ""
+    if td == 1:
+        return " There's a touchdown in there."
+    return f" {COUNT_WORD.get(td, td)} touchdowns. Screenshot it."
+
+
+def player_blurb(p, starting, ctx):
+    """One cheeky line about a player's week, built only from his own numbers."""
+    his = "its" if p["pos"] == "DST" else "his"
+    pts, proj = p["points"], _proj(p)
+    gap = round(pts - proj, 2)
+    st = p.get("injury_status")
+    spot = p["slot"] if starting else "bench"
+
+    if ctx["on_bye"](p):
+        return ("This defense is on a bye this week, so it plays nobody and scores exactly 0.0."
+                if p["pos"] == "DST" else
+                f"He doesn't have a game this week — his NFL team is on a bye — so that's a "
+                f"guaranteed 0.0 from wherever you put him.")
+    if p["slot"] == "IR" and pts <= 0.005:
+        return ("He's in your injured-reserve spot, which is where ESPN parks a player hurt long "
+                "enough that he can't be put in a lineup at all.")
+    if p.get("game_state") == "in":
+        return (f"On the field right now: {_pts(pts)} on the board against {_an(proj)} projection."
+                + _td_line(p))
+    # Before kickoff the injury report is the whole story; after it, the score is (ESPN can
+    # still be carrying a designation for a player who has already played).
+    if not ctx["locked"](p):
+        if st in SIDELINED:
+            if starting:
+                return _voice(p, [
+                    f"ESPN lists him {INJURY_PHRASE[st]}, which makes that {_f1(proj)}-point "
+                    f"projection a lovely piece of fiction.",
+                    f"He's {INJURY_PHRASE[st]} on ESPN's report. Starting him is a hope, not a plan.",
+                ])
+            return (f"ESPN lists him {INJURY_PHRASE[st]}, so he's staying put. The bench is the right "
+                    f"place for that.")
+        return _voice(p, [
+            f"Hasn't kicked off yet. ESPN pencils him in for {_f1(proj)}, which is a guess in a nice suit.",
+            f"Still in the tunnel. The {_f1(proj)} next to {his} name is a projection, not a promise.",
+            f"No snaps yet. ESPN says {_f1(proj)}; the football gets the final word.",
+        ])
+    # His game has started, so the number on the row is the story.
+    if pts < -0.005:
+        return (f"{_pts(pts)} points. Negative. He lost you points from the {spot} spot, which takes "
+                f"a particular kind of week." if starting else
+                f"{_pts(pts)} points — negative, but on the bench, where it costs you nothing.")
+    if pts <= 0.005:
+        if st in SIDELINED:
+            return (f"0.0 points — which is what ESPN's \u201c{INJURY_LABEL[st].lower()}\u201d "
+                    f"designation was trying to tell you.")
+        return (f"A donut: 0.0 points out of the {spot} spot. An empty chair scores the same."
+                if starting else
+                "0.0 points, and from the bench, which is exactly where you want your zeroes.")
+    if not starting:
+        if gap >= 5:
+            return _voice(p, [
+                f"{_pts(pts)} points on {_an(proj)} projection — from your bench, where they count "
+                f"for precisely nothing. Sorry.",
+                f"He went and scored {_pts(pts)} against {_an(proj)} projection while sitting on "
+                f"your bench. File it under \u201cwe don't talk about that\u201d.",
+            ]) + _td_line(p)
+        return _voice(p, [
+            f"{_pts(pts)} points off the bench, against {_an(proj)} projection.",
+            f"{_pts(pts)} from the bench, where ESPN expected {_f1(proj)}. No harm either way.",
+            f"ESPN said {_f1(proj)}, the afternoon said {_pts(pts)}, and it all happened on your bench.",
+        ]) + _td_line(p)
+    if gap >= 8:
+        return _voice(p, [
+            f"Cooked: {_pts(pts)} points on {_an(proj)} projection, {_f1(gap)} more than anyone "
+            f"asked for.",
+            f"{_pts(pts)} against {_an(proj)} projection. That's the ceiling, and he found it.",
+        ]) + _td_line(p)
+    if gap >= 3:
+        return (f"A good day at the office: {_pts(pts)} on {_an(proj)} projection, "
+                f"{_f1(gap)} to the good." + _td_line(p))
+    if gap <= -8:
+        return _voice(p, [
+            f"{_pts(pts)} points where {_f1(proj)} were forecast. {_f1(-gap)} of them went missing and "
+            f"nobody has seen them since.",
+            f"Rough: {_pts(pts)} against {_an(proj)} projection, {_f1(-gap)} short of the ask.",
+        ]) + _td_line(p)
+    if gap <= -3:
+        return f"A quiet one: {_pts(pts)} on {_an(proj)} projection, {_f1(-gap)} short." + _td_line(p)
+    return f"Exactly what it said on the tin: {_pts(pts)} on {_an(proj)} projection." + _td_line(p)
+
+
+def player_notes(p, starting, ctx):
+    """The short factual list under the blurb: how he did against his projection, how much
+    of the team he is, what ESPN's injury report says, where his game is up to, and what
+    else you had at that spot. At most five lines, longest-standing facts last."""
+    notes = []
+    pts, proj = p["points"], _proj(p)
+    st = p.get("injury_status")
+    state = p.get("game_state")
+    started = ctx["locked"](p)
+
+    # The blurb already puts his points next to his projection once his game is under way,
+    # so this line is only worth its space while there's nothing but a projection to report.
+    if not started and pts <= 0.005 and proj and not ctx["on_bye"](p):
+        notes.append(f"ESPN projects {_f1(proj)} points for him this week.")
+
+    if starting and pts > 0.005 and ctx["team_points"] > 0.005:
+        notes.append(f"That's {_pct(pts, ctx['team_points'])}% of your {_pts(ctx['team_points'])} so far.")
+    if pts > 0.005 and p["player_id"] == (ctx["top_starter"] if starting else ctx["top_bench"]):
+        notes.append("Your highest-scoring starter this week." if starting
+                     else "The best score on your bench this week.")
+
+    if st in SIDELINED or st in IFFY:
+        notes.append(f"ESPN's injury report lists him {INJURY_PHRASE[st]}.{ctx['news'](p)}")
+    else:
+        was = ctx["before"].get(p["player_id"])
+        if was in SIDELINED or was in IFFY:
+            notes.append(f"He was listed {INJURY_PHRASE[was]} in Week {ctx['before_week']} and "
+                         f"isn't on the report any more.")
+
+    if ctx["on_bye"](p):
+        notes.append("That NFL team is on a bye this week, so there's no game to score in.")
+    elif state == "in":
+        notes.append(f"That game is on right now ({p.get('game_clock') or 'in progress'}).")
+    elif state == "post":
+        notes.append("That game is final, so the number is the number.")
+    elif state == "pre":
+        notes.append("Kickoff is still ahead, so you can still make a change here.")
+
+    if starting and not started:
+        alt = ctx["bench_best"](p["slot"])
+        if alt:
+            notes.append(f"Best option behind him on your bench: {alt['name']} "
+                         f"({_f1(_proj(alt))} projected).")
+    elif not starting and p["slot"] != "IR" and st not in SIDELINED and not ctx["on_bye"](p):
+        rival = ctx["starter_for"](p)
+        if rival and pts > rival["points"] + 0.005:
+            notes.append(f"Outscoring your starting {rival['slot']}, {rival['name']} "
+                         f"({_pts(rival['points'])}), from the bench.")
+        elif rival:
+            notes.append(f"Would have gone in for {rival['name']} at {rival['slot']}, who is on "
+                         f"{_pts(rival['points'])}.")
+
+    add = ctx["pickups"].get(p["name"])
+    if add:
+        how = "off waivers" if add["type"] == "WAIVER" else "off the free-agent pile"
+        bid = f" for ${add['bid']}" if add.get("bid") else ""
+        notes.append(f"You picked him up {how} in Week {add['week_added']}{bid}.")
+
+    return notes[:5]
+
+
+def player_cards(starters, bench, ctx):
+    """Every player on this roster, keyed by ESPN player id: the line the site shows when
+    someone taps his row. `lines` is ESPN's own scoring for the week (see
+    scripts/analyze.py), empty for a player it has no stat line for yet."""
+    cards = {}
+    for p, starting in [(x, True) for x in starters] + [(x, False) for x in bench]:
+        cards[str(p["player_id"])] = {
+            "blurb": player_blurb(p, starting, ctx),
+            "lines": p.get("scoring_lines") or [],
+            "notes": player_notes(p, starting, ctx),
+        }
+    return cards
 
 
 def team_advice(team, before, before_week, states_known):
@@ -346,6 +552,32 @@ def team_advice(team, before, before_week, states_known):
                                "Every starter is healthy, playing this week, and the best projection you have "
                                "at his spot. Nothing on your bench beats what you've got. Go enjoy the games.")})
 
+    # Everything the per-player cards need. `bench_best` and `starter_for` deliberately
+    # ignore `claimed`: a card describes one player's own week, and two cards naming the
+    # same bench player is fine, where two to-do items spending him twice would not be.
+    def bench_best(slot):
+        return max((b for b in bench if b["pos"] in SLOT_OK.get(slot, ()) and free(b)),
+                   key=_proj, default=None)
+
+    def starter_for(b):
+        """The starter this bench player would have gone in for: the lowest-scoring one
+        whose slot his position can fill."""
+        return min((s for s in starters if b["pos"] in SLOT_OK.get(s["slot"], ())),
+                   key=lambda s: s["points"], default=None)
+
+    def best_id(pool):
+        top = max(pool, key=lambda p: p["points"], default=None)
+        return top["player_id"] if top else None
+
+    ctx = {
+        "locked": locked, "on_bye": on_bye, "news": news,
+        "before": before, "before_week": before_week,
+        "team_points": team["points"],
+        "top_starter": best_id(starters), "top_bench": best_id(team["bench"]),
+        "bench_best": bench_best, "starter_for": starter_for,
+        "pickups": {a["name"]: a for a in team.get("pickups_started", [])},
+    }
+
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])
     return {
@@ -361,6 +593,8 @@ def team_advice(team, before, before_week, states_known):
         "movable": sum(1 for s in starters if not locked(s)),
         "items": items,
         "counts": {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS},
+        # One card per player on the roster, for the lineup rows on her Coach page
+        "players": player_cards(starters, team["bench"], ctx),
     }
 
 

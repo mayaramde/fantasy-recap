@@ -16,6 +16,12 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   says which NFL games are in progress, so a live box score can mark the players who are on the field right now.
   Both captures call it without cookies, and both treat it as best effort: if it fails, the capture still succeeds
   and the site just shows no "playing" stickers.
+- **ESPN scoring lines** (part of the same private capture): ESPN's own points for each stat a player
+  earned them with (`appliedStats`), paired with the stat behind it, ride along in `espn.json` as
+  `scoring`: `[{stat, value, points}]`. The stat ids are ESPN's; `scripts/analyze.py` names the ones this
+  league can score and folds anything else into one "Other scoring" row, so a player card's rows always
+  add up to his total (`scripts/check.py` asserts that). Weeks captured before this don't carry the field,
+  and the site simply shows no breakdown for them.
 - **ESPN injury designations** (part of the same private capture): each rostered player's `injuryStatus`
   (`QUESTIONABLE`, `DOUBTFUL`, `OUT`, `INJURY_RESERVE`, `SUSPENSION`, ...) rides along in `espn.json` as
   `injury_status`. It's what the Coach page and the box-score injury pills are built on. Weeks captured before
@@ -79,8 +85,12 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
   player in (only for a projection gap of 2+ points), a starter is out/doubtful/on IR/suspended, a starter's team
   is on a bye, a starting slot is empty, a starter is projected zero with nothing better behind him, and who has
   newly landed on (or come off) the injury report since last week's capture. A player whose NFL game has already
-  kicked off is locked, so nothing suggests moving him. There is no recap page for the live week, and the Coach
-  page disappears once that week's recap is published.
+  kicked off is locked, so nothing suggests moving him. Every row of "Your lineup right now" opens into that
+  player's own card (`player_cards` in `site/build.py`): one cheeky line about his week, ESPN's scoring broken
+  down stat by stat, and a few notes — his share of your total, what the injury report says and whether that's
+  new, where his game is up to, what else you have at that spot. Same rule as the to-do cards: the numbers are
+  ESPN's, the jokes are ours, and no card reports news no source gave us. There is no recap page for the live
+  week, and the Coach page disappears once that week's recap is published.
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.

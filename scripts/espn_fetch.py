@@ -111,6 +111,29 @@ def _pro_games(week):
     return games
 
 
+# The twin of CONTEXT_STATS in capture.js: stats that earn nothing but explain what did.
+CONTEXT_STATS = {0, 1, 23, 58, 64, 84, 87, 120, 127}
+
+
+def _scoring(stat):
+    """The twin of scoringLines() in capture.js: ESPN's points per stat for the week, with
+    the raw stat behind each one. Stat ids are ESPN's; naming them is the site's job."""
+    if not stat:
+        return []
+    applied = stat.get("appliedStats") or {}
+    raw = stat.get("stats") or {}
+    ids = set(applied) | {k for k in raw if str(k).lstrip("-").isdigit() and int(k) in CONTEXT_STATS}
+    lines = []
+    for k in ids:
+        points = round2(applied.get(k) or 0)
+        value = round2(raw.get(k)) if raw.get(k) is not None else None
+        if not points and not value:
+            continue
+        lines.append({"stat": int(k), "value": value, "points": points})
+    lines.sort(key=lambda ln: (-abs(ln["points"]), ln["stat"]))
+    return lines
+
+
 def _pick_stat(stats, source, week):
     for s in stats or []:
         if (s.get("statSourceId") == source and s.get("scoringPeriodId") == week
@@ -142,6 +165,8 @@ def _side(s, week, names, games):
             "points": round2(_nn(actual.get("appliedTotal") if actual else None, 0)),
             "projected": round2(proj.get("appliedTotal") if proj else None),
             "played": bool(actual),
+            # What those points were made of: yards, catches, touchdowns, a missed kick...
+            "scoring": _scoring(actual),
             # His NFL game: 'pre', 'in' or 'post', and the game clock while it is 'in'
             "game_state": game["state"] if game else None,
             "game_clock": game["clock"] if game else None,
@@ -231,7 +256,11 @@ _PLAYER = {"player_id": "int", "name": "str", "pos": "str", "pro_team_id": "int?
            # Added for the live box score, so weeks captured before it are missing both keys
            "game_state?": "str?", "game_clock?": "str?",
            # Added for the Coach page; same story for weeks captured before it
-           "injury_status?": "str?"}
+           "injury_status?": "str?",
+           # Added for the player cards on the Coach page: ESPN's scoring for the week,
+           # one row per stat. Absent for weeks captured before it, empty for a player
+           # ESPN has no stat line for yet.
+           "scoring?": [{"stat": "int", "value": "num?", "points": "num"}]}
 # A "?" on a key means the key may be absent (week-01 and week-02 were captured before
 # capture.js started recording win_probability); a "?" on a type means the value may be null.
 _SIDE = {"team_id": "int", "points": "num", "projected": "num?", "win_probability?": "num?",

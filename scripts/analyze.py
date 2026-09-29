@@ -28,6 +28,148 @@ SLOT_OK = {"QB": {"QB"}, "RB": {"RB"}, "WR": {"WR"}, "TE": {"TE"},
 
 NAME_CACHE = ROOT / "data" / "player_names.json"
 
+# ---------- how a player earned his points ----------
+# ESPN's fantasy API reports a week as numbered stat ids (the ids the espn-api project
+# documents), and the capture keeps its own points for each one, so these are ESPN's
+# numbers under this league's scoring, not a recalculation. Only the stats this league can
+# actually score are named; anything else that carried points is reported as "other
+# scoring" rather than guessed at, so the rows always add up to the player's total.
+# (label, singular unit, plural unit). A unit of None is a one-off the label already
+# describes ("Shutout"), so no count is shown.
+STAT_NAMES = {
+    0: ("Pass attempts", "attempt", "attempts"),
+    1: ("Completions", "completion", "completions"),
+    3: ("Passing yards", "yard", "yards"),
+    4: ("Passing touchdowns", "TD", "TDs"),
+    19: ("Two-point pass", None, None),
+    20: ("Interceptions thrown", "pick", "picks"),
+    23: ("Carries", "carry", "carries"),
+    24: ("Rushing yards", "yard", "yards"),
+    25: ("Rushing touchdowns", "TD", "TDs"),
+    26: ("Two-point run", None, None),
+    41: ("Catches", "catch", "catches"),
+    42: ("Receiving yards", "yard", "yards"),
+    43: ("Receiving touchdowns", "TD", "TDs"),
+    44: ("Two-point catch", None, None),
+    53: ("Catches", "catch", "catches"),
+    58: ("Targets", "target", "targets"),
+    61: ("Receiving yards", "yard", "yards"),
+    62: ("Two-point conversions", "conversion", "conversions"),
+    63: ("Fumble recovered for a touchdown", None, None),
+    64: ("Sacked", "time", "times"),
+    68: ("Fumbles", "fumble", "fumbles"),
+    72: ("Fumbles lost", "fumble", "fumbles"),
+    73: ("Turnovers", "turnover", "turnovers"),
+    74: ("Field goals from 50+", "kick", "kicks"),
+    76: ("Misses from 50+", "kick", "kicks"),
+    77: ("Field goals from 40–49", "kick", "kicks"),
+    79: ("Misses from 40–49", "kick", "kicks"),
+    80: ("Field goals inside 40", "kick", "kicks"),
+    82: ("Misses inside 40", "kick", "kicks"),
+    83: ("Field goals", "kick", "kicks"),
+    84: ("Field goal attempts", "attempt", "attempts"),
+    85: ("Missed field goals", "kick", "kicks"),
+    86: ("Extra points", "kick", "kicks"),
+    87: ("Extra point attempts", "attempt", "attempts"),
+    88: ("Missed extra points", "kick", "kicks"),
+    89: ("Shutout", None, None),
+    90: ("Held them to 1–6 points", None, None),
+    91: ("Held them to 7–13 points", None, None),
+    92: ("Held them to 14–17 points", None, None),
+    93: ("Blocked kick returned for a touchdown", None, None),
+    94: ("Defensive touchdowns", "TD", "TDs"),
+    95: ("Interceptions", "pick", "picks"),
+    96: ("Fumbles recovered", "fumble", "fumbles"),
+    97: ("Blocked kicks", "block", "blocks"),
+    98: ("Safeties", "safety", "safeties"),
+    99: ("Sacks", "sack", "sacks"),
+    101: ("Kickoff return touchdowns", "TD", "TDs"),
+    102: ("Punt return touchdowns", "TD", "TDs"),
+    103: ("Interception returned for a touchdown", "TD", "TDs"),
+    104: ("Fumble returned for a touchdown", "TD", "TDs"),
+    105: ("Defensive and return touchdowns", "TD", "TDs"),
+    106: ("Forced fumbles", "fumble", "fumbles"),
+    120: ("Points allowed", "point", "points"),
+    121: ("Gave up 18–21 points", None, None),
+    122: ("Gave up 22–27 points", None, None),
+    123: ("Gave up 28–34 points", None, None),
+    124: ("Gave up 35–45 points", None, None),
+    125: ("Gave up 46+ points", None, None),
+    127: ("Yards allowed", "yard", "yards"),
+    128: ("Held them under 100 yards", None, None),
+    129: ("Held them to 100–199 yards", None, None),
+    130: ("Held them to 200–299 yards", None, None),
+    131: ("Held them to 300–349 yards", None, None),
+    132: ("Held them to 350–399 yards", None, None),
+    133: ("Gave up 400–449 yards", None, None),
+    134: ("Gave up 450–499 yards", None, None),
+    135: ("Gave up 500–549 yards", None, None),
+    136: ("Gave up 550+ yards", None, None),
+    201: ("Field goals from 60+", "kick", "kicks"),
+    203: ("Misses from 60+", "kick", "kicks"),
+    205: ("Two-point return", None, None),
+    206: ("Two-point return", None, None),
+}
+
+# One touchdown each, picked so none is counted twice: a defense's 94 already covers the
+# interception and fumble returns ESPN also reports as 103 and 104, and 105 covers every
+# defensive and return touchdown at once, so neither is added here.
+TD_STATS = {4, 25, 43, 63, 93, 94, 101, 102}
+
+
+def _count(x):
+    """A stat value as it reads in a sentence: 112, not 112.0."""
+    return f"{x:g}" if isinstance(x, (int, float)) else ""
+
+
+def scoring_lines(player):
+    """ESPN's scoring for one player's week, in words.
+
+    One row per stat that earned (or cost) points, plus the attempts and targets that
+    explain them. Returns None for a week captured before capture.js recorded any of this,
+    which the site shows as "no breakdown" rather than as a blank week. Any scoring stat
+    this file can't name is folded into a single "Other scoring" row, along with any gap
+    between the rows and ESPN's total for him, so the rows always add up.
+    """
+    lines = player.get("scoring")
+    if lines is None:
+        return None
+    rows, other = [], 0.0
+    for ln in lines:
+        name = STAT_NAMES.get(ln["stat"])
+        if name is None:
+            other += ln["points"]
+            continue
+        label, singular, plural = name
+        value = ln["value"]
+        rows.append({"label": label,
+                     "value": _count(value) if singular and value is not None else "",
+                     "points": ln["points"]})
+    other = round(other + player["points"] - sum(ln["points"] for ln in lines), 2)
+    if abs(other) >= 0.01:
+        rows.append({"label": "Other scoring", "value": "", "points": other})
+    return rows
+
+
+def touchdowns(player):
+    """How many touchdowns his stat line carries, or None if the week has no stat line."""
+    lines = player.get("scoring")
+    if lines is None:
+        return None
+    return int(sum(ln["value"] or 0 for ln in lines if ln["stat"] in TD_STATS))
+
+
+def player_row(player, **extra):
+    """One roster row for facts.json: the captured fields with ESPN's raw stat ids traded
+    for the same week in words, plus whatever the caller adds."""
+    row = {k: v for k, v in player.items() if k != "scoring"}
+    lines = scoring_lines(player)
+    if lines is not None:
+        row["scoring_lines"] = lines
+        row["touchdowns"] = touchdowns(player)
+    return dict(row, **extra)
+
+
 # ESPN serves every athlete's photo from one public CDN path, keyed by the same player id
 # the fantasy API uses. A D/ST has no photo, so it gets its team's logo instead: its
 # fantasy player id is -16000 minus the pro team id, so go by pro_team_id.
@@ -241,12 +383,12 @@ def analyze(week, history):
         t["lineup_swaps"] = lineup_swaps(week, t["team_id"], r)
         # The box score shows each player's NFL team as its logo, so carry it here with the
         # other ESPN CDN URLs rather than rebuilding the path in the site.
-        t["starters"] = [dict(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2),
-                              logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
+        t["starters"] = [player_row(p, beat_projection=round(p["points"] - (p["projected"] or 0), 2),
+                                    logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
                          for p in r if p["slot"] in STARTING]
         # ESPN drops the team projection once games are final; rebuild it from starters
         t["projected"] = round(sum(p["projected"] or 0 for p in t["starters"]), 2)
-        t["bench"] = [dict(p, logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
+        t["bench"] = [player_row(p, logo=team_logo(p), team=(team_abbr(p) or "").upper() or None)
                       for p in r if p["slot"] in ("BENCH", "IR")]
         # Where her starters stand right now. "Playing" is on the field this minute,
         # "yet to play" is kickoff still ahead, and the two never count the same player,

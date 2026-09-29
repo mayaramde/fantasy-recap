@@ -83,12 +83,40 @@ const names = {};
 const pickStat = (stats, source) =>
   (stats || []).find((s) => s.statSourceId === source && s.scoringPeriodId === WEEK && s.statSplitTypeId === 1);
 
+// Stats that earn no points in this league but explain the ones that did (attempts,
+// targets, a kicker's chances, what a defense gave up). Kept even at zero points so a
+// line like "8 catches on 11 targets" can be shown; everything else rides along only
+// when it moved the score.
+const CONTEXT_STATS = new Set([0, 1, 23, 58, 64, 84, 87, 120, 127]);
+
+// How one player's week broke down: ESPN's own appliedStats (its points for each stat,
+// under this league's scoring) paired with the raw stat behind them. Stat ids are ESPN's;
+// the site names the ones it knows and reports the rest as "other scoring", so the rows
+// always add up to his total. Empty when ESPN has no stat line for him yet.
+const scoringLines = (stat) => {
+  if (!stat) return [];
+  const applied = stat.appliedStats || {};
+  const raw = stat.stats || {};
+  const ids = new Set([...Object.keys(applied), ...Object.keys(raw).filter((k) => CONTEXT_STATS.has(Number(k)))]);
+  const lines = [];
+  for (const k of ids) {
+    const points = round2(applied[k] ?? 0);
+    const value = round2(raw[k] ?? null);
+    if (!points && !value) continue;
+    lines.push({ stat: Number(k), value, points });
+  }
+  // Biggest mover first, ties by stat id, so both captures order a week the same way.
+  lines.sort((a, b) => Math.abs(b.points) - Math.abs(a.points) || a.stat - b.stat);
+  return lines;
+};
+
 const side = (s) => {
   if (!s) return null;
   const lineup = (s.rosterForCurrentScoringPeriod?.entries || []).map((e) => {
     const p = e.playerPoolEntry.player;
     names[p.id] = p.fullName;
     const g = games[p.proTeamId] || null;
+    const actual = pickStat(p.stats, 0);
     return {
       player_id: p.id,
       name: p.fullName,
@@ -98,9 +126,11 @@ const side = (s) => {
       // ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT, INJURY_RESERVE,
       // SUSPENSION, ACTIVE... Absent for a D/ST and for anyone ESPN isn't listing.
       injury_status: p.injuryStatus ?? null,
-      points: round2(pickStat(p.stats, 0)?.appliedTotal ?? 0),
+      points: round2(actual?.appliedTotal ?? 0),
       projected: round2(pickStat(p.stats, 1)?.appliedTotal ?? null),
-      played: !!pickStat(p.stats, 0),
+      played: !!actual,
+      // What those points were made of: yards, catches, touchdowns, a missed kick...
+      scoring: scoringLines(actual),
       // His NFL game: 'pre', 'in' or 'post', and the game clock while it's 'in'
       game_state: g ? g.state : null,
       game_clock: g ? g.clock : null,
