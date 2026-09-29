@@ -7,8 +7,13 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - **ESPN** (primary): the league is private. Read it through **Claude in Chrome**, which uses Maya's logged-in session:
   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=...&scoringPeriodId=N`
   Never ask for, copy, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
-  The one exception: the cloud live update reads them from GitHub Actions secrets (`ESPN_S2`, `ESPN_SWID`)
-  that Maya set herself. Claude never sees, prints, sets or rotates those values; when they expire, Maya updates them.
+  Two exceptions, both cookie-based captures run by `scripts/capture_node.mjs` (never Claude reading the values,
+  only a script consuming them): the cloud live update reads them from GitHub Actions secrets (`ESPN_S2`,
+  `ESPN_SWID`) that Maya set herself; and, on this Mac, if the Chrome capture 401s (Maya's ESPN session logged
+  out) and `.env.espn.local` exists (copy `.env.espn.local.example`, gitignored, Maya fills in the values
+  herself from Chrome DevTools), fall back to `node scripts/capture_node.mjs N`. Claude never sees, prints, sets
+  or rotates any of these values; when they expire, Maya updates them. Chrome stays the default for every
+  capture — this is a fallback for when it can't authenticate, not a replacement.
 - **ESPN CDN headshots** (public, no auth): `https://a.espncdn.com/i/headshots/nfl/players/full/<espnId>.png`,
   and `https://a.espncdn.com/i/teamlogos/nfl/500/<abbr>.png` for a D/ST. `scripts/analyze.py` writes the URL into
   each week's top scorers; the site falls back to a silhouette when ESPN has no photo (rookies, call-ups).
@@ -70,6 +75,9 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
    `await fantasyCapture('next')` in the same tab writes `data/2026/next-week/espn.json` for the Coach page's
    next-week tab (raise `--count` to accept both). The cloud live update does this on its own; it's only worth
    doing by hand when the site needs the tab before the next scheduled run.
+   If ESPN returns 401 (Maya's Chrome session logged out) and `.env.espn.local` exists, fall back to
+   `node scripts/capture_node.mjs N` instead of stopping — same output file, same `complete` field to check.
+   Only stop and tell Maya if that also fails or `.env.espn.local` isn't set up (see Data sources).
 2. **Analyze.** `python3 scripts/analyze.py` → `facts.json` per week.
 3. **Context.** FantasyPros MCP for injury/news on notable players (only claim an injury if a source says so).
    Before writing a bust, bad-luck-loss, or bench-blunder callout, check whether FantasyPros' injury/news desk

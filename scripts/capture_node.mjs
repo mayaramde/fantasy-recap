@@ -1,22 +1,40 @@
-// Headless ESPN capture for the cloud live update (.github/workflows/live-update.yml).
+// Headless ESPN capture. Primary caller is the cloud live update
+// (.github/workflows/live-update.yml); it also serves as the local fallback for the
+// Tuesday recap when Maya's Chrome session has logged out of ESPN (Claude in Chrome
+// returns a 401).
 //
 // Runs the same scripts/capture.js that Chrome runs, so the trimming logic lives in one
 // place. Instead of a logged-in browser, ESPN requests carry the cookies from the
-// ESPN_S2 and ESPN_SWID environment variables (GitHub Actions secrets that Maya set).
-// The cookies are never printed or written to disk. The POST that capture.js normally
-// sends to scripts/receive.py is handled here and written to
+// ESPN_S2 and ESPN_SWID environment variables (GitHub Actions secrets that Maya set in
+// CI; on this Mac, read from a local .env.espn.local Maya fills in herself — see
+// .env.espn.local.example). The cookies are never printed or written to disk. The POST
+// that capture.js normally sends to scripts/receive.py is handled here and written to
 // data/<season>/week-NN/espn.json with the same checks receive.py applies.
 //
 // Usage: ESPN_S2=... ESPN_SWID=... node scripts/capture_node.mjs current   (or: next, or: 3 4)
+//    or, with .env.espn.local present: node scripts/capture_node.mjs 3
 
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+
+// Local-only fallback: parse KEY=VALUE lines from .env.espn.local into process.env,
+// without ever logging the file's contents. Real env vars (as CI sets them) win.
+if (!process.env.ESPN_S2 || !process.env.ESPN_SWID) {
+  const localEnv = join(ROOT, '.env.espn.local');
+  if (existsSync(localEnv)) {
+    for (const line of readFileSync(localEnv, 'utf8').split('\n')) {
+      const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$/);
+      if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
+    }
+  }
+}
+
 const { ESPN_S2, ESPN_SWID } = process.env;
 if (!ESPN_S2 || !ESPN_SWID) {
-  console.error('ESPN_S2 and ESPN_SWID must be set');
+  console.error('ESPN_S2 and ESPN_SWID must be set (or add them to .env.espn.local)');
   process.exit(1);
 }
 const COOKIE = `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID}`;

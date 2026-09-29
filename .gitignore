@@ -13,6 +13,8 @@ pyproject.toml
 uv.lock
 .vercel
 .env*
+# Template only, no real values: see CLAUDE.md's ESPN data source fallback.
+!.env.espn.local.example
 node_modules/
 
 # Per-manager dashboard link secret. Untracked is not enough: one `git add -A` would
