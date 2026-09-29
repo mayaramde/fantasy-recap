@@ -3,6 +3,32 @@
 Weekly recap page for the ESPN league "Fantasy Football for the Girls" (8 teams, PPR).
 League facts (IDs, teams, managers, roster slots) live in `league.json`, and that file is the source of truth.
 
+## Harness: Fantasy Recap
+
+**Goal:** produce the weekly recap (capture, write, fact-check, ship) and the daily Coach
+cards, without ever publishing anything unreviewed or touching an ESPN cookie/Vercel token.
+
+**Entry point — applies to every prompt in this repo:** You MUST invoke the
+`fantasy-orchestrator` skill *before* responding to any request about drafting, redoing,
+tweaking, or publishing a recap; running or updating Coach cards; or diagnosing a stale
+Live page/capture/deploy. It is the single entry point for this domain; do not craft a
+response outside it. The orchestrator answers trivial or out-of-domain requests directly and
+routes everything else to the right skill — see `.claude/skills/fantasy-orchestrator/SKILL.md`
+for the full routing table. A change to `scripts/`, `site/`, or CI that isn't about recap
+*content* is normal engineering work, not this harness — it still gets `code-reviewer`, per
+the project's usual review practice.
+
+Architecture detail that used to live in this file (the schedule of automated tasks, what the
+Live and Coach pages compute) is now in `docs/architecture.md` — the skills above are the
+current source of truth for *how* the work gets done; that doc is reference material for *when*
+things run and what the pages show.
+
+**Change history:**
+| Date | Change | Target | Reason |
+|------|--------|--------|--------|
+| 2026-09-29 | Added `recap-fact-checker`; dropped `Bash` from `code-reviewer` (orchestrator passes the diff in-prompt); removed `researcher` (built-in Explore covers it) | `agents/recap-fact-checker.md`, `agents/code-reviewer.md`, `agents/researcher.md` | Harness plan PR 5 |
+| 2026-09-29 | Built `fantasy-orchestrator` + `recap-capture`/`recap-write`/`recap-ship`/`coach-daily` skills, tools registry, `docs/architecture.md` | `skills/fantasy-orchestrator/`, `skills/recap-capture/`, `skills/recap-write/`, `skills/recap-ship/`, `skills/coach-daily/`, `docs/architecture.md` | Harness plan PR 6 |
+
 ## Data sources
 - **ESPN** (primary): the league is private. Read it through **Claude in Chrome**, which uses Maya's logged-in session:
   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=...&scoringPeriodId=N`
@@ -40,7 +66,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown; Trade Finder and Trade
   Analyzer are premium too, and their disclosure hasn't been shown yet — relay it once, the first time either one
-  gates a call. `fantasy-coach-daily` (see Schedule) uses `get_projections`, `injury_status`, `get_ecr`,
+  gates a call. The `coach-daily` skill (see `docs/architecture.md`) uses `get_projections`, `injury_status`, `get_ecr`,
   `get_player_ownership`, `get_leaders` and `get_roster(all_teams=true)` — all free-tier — to build start/sit,
   waiver and trade ideas itself rather than relying on the gated finder tools.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
@@ -67,94 +93,6 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
-## Weekly routine (Tuesday, after MNF is final)
-1. **Capture.** Start `python3 scripts/receive.py --count 1` (background). In Chrome, open a tab at
-   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=mStatus`
-   and run in it (javascript_tool):
-   `eval(await fetch('http://127.0.0.1:8765/capture.js').then(r => r.text())); await fantasyCapture([N])`
-   → writes `data/2026/week-NN/espn.json`. Never retype the captured JSON by hand. Check `complete: true`.
-   `await fantasyCapture('next')` in the same tab writes `data/2026/next-week/espn.json` for the Coach page's
-   next-week tab (raise `--count` to accept both). The cloud live update does this on its own; it's only worth
-   doing by hand when the site needs the tab before the next scheduled run.
-   If ESPN returns 401 (Maya's Chrome session logged out) and `.env.espn.local` exists, fall back to
-   `node scripts/capture_node.mjs N` instead of stopping — same output file, same `complete` field to check.
-   Only stop and tell Maya if that also fails or `.env.espn.local` isn't set up (see Data sources).
-2. **Analyze.** `python3 scripts/analyze.py` → `facts.json` per week.
-3. **Context.** FantasyPros MCP for injury/news on notable players (only claim an injury if a source says so).
-   Before writing a bust, bad-luck-loss, or bench-blunder callout, check whether FantasyPros' injury/news desk
-   gives a real cause and cite it if so — never invent one when there isn't one.
-4. **Write.** `recaps/2026/week-NN.json` with `"status": "draft"`. Schema: `headline`, `dek`,
-   `matchups` (keys `"<lowTeamId>-<highTeamId>"`), `game_balls` / `flags` / `tough_breaks`
-   (each `{manager, title, text, stat}`). Every number must match `facts.json` or `espn.json`.
-5. **Build.** `python3 site/build.py` → `site/dist/web-preview/` (drafts included, what step 6 deploys) and
-   `site/dist/web/` (published only, what `scripts/deploy.sh` ships).
-6. **Review.** `scripts/deploy.sh --preview` — builds the draft copy and deploys it to a fresh, throwaway Vercel
-   URL. **Fatal if skipped: before running this, confirm the draft is actually on disk** — `ls recaps/2026/` should
-   show `week-NN.json` and `git branch --show-current` should be that week's own branch (not `main`, unless the PR
-   already merged). The draft recap file exists only on its own branch until its PR merges; checking out `main`
-   removes it from the working tree with no error, and a preview built right after will deploy successfully while
-   silently missing the week — it looks like a normal, complete preview. If `ls`/`git branch` don't show the draft
-   where expected, **stop. Do not run `scripts/deploy.sh --preview` anyway.** Tell Maya what's missing instead of
-   handing her a preview that quietly isn't showing what she thinks it's showing. Once confirmed, share the
-   printed URL with Maya; she reviews there.
-7. **Ship.** Only after Maya approves: set `"status": "published"`, then run `scripts/deploy.sh` to update the website.
-8. **Commit.** On a branch: commit, push, open a PR, and enable auto-merge (squash). It merges once the `checks`
-   workflow passes (`python scripts/check.py` runs the same checks locally). Don't push to `main` directly.
-
-## Schedule
-- **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions): hourly during NFL game windows plus a
-  daily 7:30 AM EDT run. Captures the current week headlessly (`scripts/capture_node.mjs`, same `capture.js` trimming),
-  then captures the week after it (`capture_node.mjs next`) for the Coach page, a step allowed to fail without
-  taking the live scores down with it. Then analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published recap that
-  `main` doesn't (a recap shipped from the Mac whose PR hasn't merged). Then `scripts/deploy.sh`. Nothing is committed.
-  A failure email saying "ESPN 401" means the ESPN cookie secrets expired.
-- `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
-  `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
-  week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
-  **Paused 2026-09-28** now that the cloud live update works. Re-enable it only if the cloud run can't be fixed
-  (e.g. while waiting on fresh ESPN cookies).
-- `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: captures last week (final), drafts the recap, updates the preview,
-  and opens a draft PR. Maya approves before the recap reaches the league site.
-- `fantasy-coach-daily` runs once a day: pulls FantasyPros projections, rankings, ownership and injury/news for
-  all 8 rosters, and writes finished, voiced Coach cards — start/sit suggestions, waiver and trade leads, and what's
-  changed in FantasyPros' injury report since yesterday — to `data/2026/fantasypros/latest.json`. Unlike the recap,
-  this opens its own PR with auto-merge (squash) on and merges once `checks` passes, with no review (small, factual,
-  derived data). It works in its own git worktree, so it never switches branches under another session. Data only
-  otherwise: it doesn't deploy, touch any recap, or touch any `data/2026/week-NN/` file; the next live-update run
-  picks up the merged snapshot.
-- All three tasks start with `git checkout main && git pull`, so anything they need must be merged to `main`.
-- The Live page shows the newest captured week without a recap in that build: "live" while games are on,
-  "final, recap drops Tuesday" after Monday night. Standings only count weeks with a recap. Its box scores put each
-  player's NFL team logo next to his name (the slot column already names the position) and give a player whose game
-  is on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime"). Each matchup card counts the
-  same two things per side: "2 playing now" (a starter whose game is on) and "1 starter yet to play" (kickoff still
-  ahead), or "all starters done" when neither is left.
-- The **Coach** page hangs off that same live week, with a tab for each of two weeks: `#coach` / `#coach-<teamId>`
-  is the week being played, `#coach-next` / `#coach-next-<teamId>` is the week after it, from the `next-week`
-  capture (no tab at all when that capture is missing or stale). Next week's tab is baked at build time and
-  never refreshed by `/api/live` — those numbers move about once a day, and asking ESPN for a second week on
-  every request would double what the Live page costs it. Once the live week is final the Coach tab leads with
-  next week, since nothing in a finished week can be fixed. The browser remembers the last team opened.
-  Most cards are computed in `site/build.py` (`team_advice`) from the capture alone — ESPN's projections, its
-  injury designations, and which NFL games have kicked off — so this week's refreshes through `/api/live` with
-  the rest of the live data, and neither week ever states an injury ESPN didn't report. What it can say: swap a bench
-  player in (only for a projection gap of 2+ points), a starter is out/doubtful/on IR/suspended, a starter's team
-  is on a bye, a starting slot is empty, a starter is projected zero with nothing better behind him, and who has
-  newly landed on (or come off) the injury report since last week's capture. A player whose NFL game has already
-  kicked off is locked, so nothing suggests moving him. There is no recap page for the live week, and the Coach
-  page disappears once that week's recap is published. With no projections published for a week, that week's
-  tab drops the start-or-sit cards rather than comparing zeros, and says so.
-  On top of that, `consensus`/`waiver`/`trade`/`fp_news`/`fp_back` cards (and the "Worth a look" section) are
-  authored daily by `fantasy-coach-daily` from FantasyPros MCP data (see Data sources), not computed here —
-  `site/build.py` only decides whether that day's snapshot is fresh enough to merge in, and refreshes with the
-  same request that serves the rest of the live week.
-- Every row of either Coach lineup opens into that player's own card (`player_cards` in `site/build.py`): one
-  cheeky line about his week, ESPN's scoring broken down stat by stat, and a few notes — his share of your
-  total, what the injury report says and whether that's new, where his game is up to, what else you have at
-  that spot. Same rule as the to-do cards: the numbers are ESPN's, the jokes are ours, and no card reports news
-  no source gave us. A week nobody has played has no stat line to break down, so its cards are the blurb and
-  the notes; with no projections published yet, nothing quotes one.
-
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
 - **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
@@ -173,7 +111,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 - Good decisions: waiver pickups that paid off, smart benchings/starts
 - Bench blunders: points left on the bench (optimal lineup vs actual)
 - Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost).
-  Cite a real cause from FantasyPros' injury/news desk when one exists (weekly routine step 3); never invent one.
+  Cite a real cause from FantasyPros' injury/news desk when one exists (`recap-write`'s context-gathering step); never invent one.
 - Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
 
 ## Voice

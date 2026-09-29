@@ -27,7 +27,7 @@ FORBIDDEN = [
 # variables, never a value).
 SKIP = {"CLAUDE.md", "docs/vercel.md", "scripts/check.py", "scripts/capture_node.mjs",
         "scripts/espn_fetch.py", "scripts/deploy.sh", "api/live.py",
-        ".env.espn.local.example"}
+        ".env.espn.local.example", ".claude/skills/recap-capture/SKILL.md"}
 
 
 def check_capture_shape(errors):
