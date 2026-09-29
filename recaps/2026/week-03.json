@@ -2,63 +2,63 @@
   "season": 2026,
   "week": 3,
   "status": "published",
-  "headline": "Jahmyr Gibbs scores three touchdowns and Kyra stays perfect at 3-0",
-  "dek": "Marlee's right there with her, also 3-0. Cambri lost the closest game of the week with a banged-up Justin Jefferson, Samantha got the worst kind of news on De'Von Achane, and Maddie is still looking for win number one.",
+  "headline": "Jahmyr Gibbs scores three touchdowns, and Kyra's job was just showing up.",
+  "dek": "Marlee's also perfect at 3-0. Cambri lost by 3.46, the closest game of the week, and has nothing to show for it. Samantha got real bad news on De'Von Achane, and Maddie is 0-3.",
   "matchups": {
-    "6-7": "Kyra put up 170.48, the highest score in the league so far this season, riding a monster day from Jahmyr Gibbs: 99 rushing yards, 65 receiving yards, three total touchdowns, 41.4 points. Samantha's 95.46 was the least of her problems — De'Von Achane managed 3 carries for 17 yards before leaving the game, and it turned out to be a torn ACL. He's done for the season. Kyra is 3-0.",
-    "5-8": "The closest game of the week: Maya beat Cambri by 3.46. Bijan Robinson ran for 194 yards and two touchdowns (35.3 points) to cover for a quiet Omarion Hampton (56 yards, 5.6 points). Cambri's Justin Jefferson played through an ankle injury and managed just 5.2 points on two catches — reports afterward said it isn't serious and he should be back in Week 4, which does Cambri no good this week.",
-    "1-4": "Marlee stayed perfect at 3-0, winning by 23.22. George Kittle scored two touchdowns and put up 26.2 points at tight end while Mark Andrews sat on her bench with 5.4. Tara lost despite being projected for 138.53: Christian Watson scored 22.6 from her bench while Quinshon Judkins started in the flex and got 9.9.",
-    "2-3": "Amie improved to 2-1, winning by 50.76 behind a Patrick Mahomes waiver pickup that threw for 246 yards and two touchdowns (15.94 points) in his first week on her roster. Maddie fell to 0-3. Jonathan Taylor was projected for 20.62 and managed 9.2 — a season-low day for him, no excuse required."
+    "6-7": "Kyra scored a league-best 170.48 this week, behind three touchdowns from Jahmyr Gibbs. Samantha's night was worse than the score: De'Von Achane left with a torn ACL and is done for the season. Get well soon, De'Von.",
+    "5-8": "Maya edged Cambri by 3.46, the tightest game of the week. Bijan Robinson did it almost alone: 194 yards, two touchdowns. Justin Jefferson managed just 5.2 points for Cambri.",
+    "1-4": "Marlee stayed perfect at 3-0, beating Tara by 23.22. Tara was projected for 138.53 and scored 110.32, a 28-point gap projections don't usually miss by. Quinshon Judkins started in the flex, the lineup's wildcard spot, and managed 9.9.",
+    "2-3": "Amie improved to 2-1 with a blowout, winning by 50.76. Her Patrick Mahomes waiver pickup scored 15.94 points in his very first week, a debut most managers wait months for. Maddie is 0-3. Jonathan Taylor was projected for 20.62 and scored 9.2."
   },
   "game_balls": [
     {
       "manager": "Kyra",
-      "title": "Gibbs has himself a game",
-      "text": "Two rushing touchdowns, a receiving touchdown, 164 total yards, 41.4 fantasy points — the best individual performance in the league this season. Kyra didn't need to make a single tough call this week; she just watched.",
+      "title": "The best game anyone had this week",
+      "text": "Gibbs scored 41.4 points, the best single game in the league this week. Kyra's entire job was starting him. She nailed it.",
       "stat": "41.4 pts, 3 TDs"
     },
     {
       "manager": "Marlee",
-      "title": "Kittle over Andrews, easy",
-      "text": "Started George Kittle (26.2 points, two touchdowns) over Mark Andrews (5.4) at tight end. That's a 20.8-point swing in a game Marlee won by 23.22 — comfortable, but it's exactly the kind of call that keeps a 3-0 team 3-0.",
+      "title": "Andrews is settling in just fine",
+      "text": "Marlee started George Kittle over Mark Andrews. Kittle scored 26.2 and two touchdowns. Andrews managed 5.4, proof he's settling in just fine on the bench.",
       "stat": "+20.8 vs Andrews"
     },
     {
       "manager": "Amie",
-      "title": "Mahomes off the waiver wire, working immediately",
-      "text": "Claimed Patrick Mahomes off waivers this week and started him right away. He threw for 246 yards and two touchdowns for 15.94 points, and Amie moved to 2-1.",
-      "stat": "15.94 pts, Week 1 on roster"
+      "title": "Freshly claimed, immediately trusted",
+      "text": "Amie claimed Patrick Mahomes off waivers and started him the same week. He threw for 246 yards and two touchdowns. Most waiver claims take longer than one game to pay off this well.",
+      "stat": "15.94 pts, first week on roster"
     },
     {
       "manager": "Cambri",
-      "title": "A bright spot in a loss",
-      "text": "Picked up Jordan Love as a free agent and got 18.48 points out of him (312 yards, two touchdowns) in his very first game on her roster. The rest of the lineup didn't cooperate, but the pickup itself was a good one.",
+      "title": "One good pickup in a rough week",
+      "text": "Cambri picked up Jordan Love as a free agent. He threw for 312 yards and two touchdowns for 18.48 points in his first game on her roster. Her week went the other way.",
       "stat": "18.48 pts, $0 pickup"
     }
   ],
   "flags": [
     {
       "manager": "Maya",
-      "title": "Started the wrong tight end",
-      "text": "Played Dalton Schultz (6 points) over Brock Bowers, who scored 27.6 on her bench. The worst bench call in the league this week — and Maya still won, so no consequences, just embarrassment.",
+      "title": "The worst bench call in the league",
+      "text": "Maya started Dalton Schultz over Brock Bowers. Bowers scored 27.6 from the bench. Schultz scored 6. The worst bench call in the league this week, and she still won.",
       "stat": "−21.6 at TE"
     },
     {
       "manager": "Tara",
-      "title": "Watson sat, and it cost her",
-      "text": "Benched Christian Watson, who scored 22.6, in favor of Quinshon Judkins in the flex, who scored 9.9. Tara lost by 23.22 — that gap alone would have flipped this game.",
+      "title": "Christian Watson, still undefeated on the bench",
+      "text": "Tara benched Christian Watson for Quinshon Judkins in the flex spot. Judkins managed 9.9. Christian Watson scored 22.6 from her bench. Again.",
       "stat": "−12.7 in flex"
     },
     {
       "manager": "Marlee",
-      "title": "Even 3-0 teams make mistakes",
-      "text": "Started Ladd McConkey (10.6) over Michael Wilson, who put up 25.9 on the bench. Marlee won anyway, comfortably, so this one's purely for the record.",
+      "title": "23.22 to spare",
+      "text": "Marlee started Ladd McConkey over Michael Wilson. McConkey scored 10.6 while Wilson racked up 25.9 on the bench, a gap that would sink most 3-0 teams. Marlee's isn't most teams.",
       "stat": "−15.3 at WR"
     },
     {
       "manager": "Maddie",
-      "title": "The Waddle bet stopped paying off",
-      "text": "Two weeks ago, starting Jaylen Waddle over DK Metcalf was a Week 2 game ball. This week it went the other way: Waddle scored 6.4 while Metcalf sat on the bench with 12.1. Maddie fell to 0-3.",
+      "title": "The Waddle bet stops paying off",
+      "text": "Two weeks ago, starting Jaylen Waddle over DK Metcalf was Maddie's Week 2 game ball. This week, Waddle managed 6.4 while Metcalf put up 12.1 from the bench. Loyalty stopped paying.",
       "stat": "−5.7 at WR"
     }
   ],
@@ -66,20 +66,20 @@
     {
       "manager": "Samantha",
       "title": "Achane's season is over",
-      "text": "De'Von Achane went down early against the Chiefs, and it turned out to be a torn ACL — done for the year. He'd managed just 3 carries for 17 yards before leaving, which is the least important part of this news.",
+      "text": "De'Von Achane tore his ACL against the Chiefs and is out for the year. He had 3 carries for 17 yards before he left the game. Get well soon, De'Von.",
       "stat": "Season-ending ACL tear"
     },
     {
       "manager": "Cambri",
-      "title": "Playing hurt, in the league's closest game",
-      "text": "Justin Jefferson was dealing with an ankle injury and finished with just two catches for 32 yards. Reports afterward said it isn't serious and he's expected to play in Week 4 — cold comfort for Cambri, who lost this one by 3.46.",
+      "title": "Playing hurt, and it cost her",
+      "text": "Justin Jefferson played through a bad ankle and managed two catches for 5.2 points. Cambri lost by 3.46, close enough to wonder what a healthy Jefferson would have done.",
       "stat": "Lost by 3.46"
     }
   ],
   "glossary": [
-    { "term": "Running back (RB)", "definition": "The player who takes handoffs and runs the ball, and often catches passes too. Jahmyr Gibbs, Bijan Robinson, and De'Von Achane are all running backs — this league lives and dies by them." },
-    { "term": "Waiver wire", "definition": "The pool of players nobody has rostered. When someone gets dropped or breaks out, managers submit claims and whoever wins gets them off waivers — usually a few days after games, not instantly." },
-    { "term": "Bust", "definition": "A player who scores way under what was expected of him. Jonathan Taylor's 9.2 points on a 20.62 projection is a textbook bust — sometimes there's no reason, a good player just has a bad day." },
-    { "term": "D/ST (Defense/Special Teams)", "definition": "Your one defensive roster spot, scored as a team: points for sacks and turnovers, points off for how much the other team scores and gains. Yes, it can go negative — Tara found that out this week." }
+    { "term": "Running back (RB)", "definition": "The player who takes handoffs and runs the ball (and often catches passes too), like this week's headliners Jahmyr Gibbs and Bijan Robinson." },
+    { "term": "Waiver wire", "definition": "The pool of unrostered players; when someone breaks out or gets dropped, managers submit claims and the winner gets him a few days later, like Amie did with Patrick Mahomes this week." },
+    { "term": "Bust", "definition": "A player who scores way under what was expected, like Jonathan Taylor's 9.2 points on a 20.62 projection this week." },
+    { "term": "D/ST (Defense/Special Teams)", "definition": "Your one defensive roster spot, scored as a team for sacks and turnovers and docked for whatever the other team scores, which is how Tara's went negative this week." }
   ]
 }
