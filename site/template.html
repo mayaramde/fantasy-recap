@@ -110,7 +110,7 @@
     border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
   @media (prefers-reduced-motion: no-preference) {
-    a.game, .archive a, .other-games a, .chips a { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+    a.game, .archive a, .other-games a, .chips a, .profile-btn { transition: transform 0.12s ease, box-shadow 0.12s ease; }
   }
   a.game:hover, .archive a:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
   a.game:active, .archive a:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
@@ -266,6 +266,14 @@
   table.std .mgr a { font-weight: 700; text-decoration: none; }
   table.std .mgr a:hover { color: var(--accent); text-decoration: underline; }
   table.std .tname { display: block; font-size: 12px; color: var(--muted); }
+  /* the profile button: team pages are easy to miss behind a plain name link, so every
+     standings row gets an obvious way in, lined up down the right of the team column */
+  table.std .mgr-cell { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  table.std .mgr-who { display: block; white-space: nowrap; }
+  .profile-btn { flex: none; display: inline-flex; align-items: center; gap: 4px; padding: 5px 11px; border-radius: 999px; background: var(--accent); color: var(--on-accent); border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); font: 600 12px/1.25 var(--script); letter-spacing: 0.01em; white-space: nowrap; }
+  table.std .mgr a.profile-btn:hover { color: var(--on-accent); text-decoration: none; }
+  .profile-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--drop); }
+  .profile-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--drop); }
   .res { font: 700 11px/1 var(--mono); padding: 3px 5px; border-radius: 4px; }
   .res.W { color: var(--win); background: color-mix(in srgb, var(--win) 14%, transparent); }
   .res.L { color: var(--loss); background: color-mix(in srgb, var(--loss) 12%, transparent); }
@@ -478,7 +486,7 @@
         <tbody>${rows.map((t, i) => `
           <tr>
             <td class="rank">${i + 1}</td>
-            <td class="mgr"><a href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tname">${esc(t.team_name)}</span></td>
+            <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
             <td class="r">${record(t)}</td>
             ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
             <td class="r">${f2(t.points_for)}</td>
@@ -719,7 +727,7 @@
       <div class="page-head">
         <div class="kicker">${DATA.league.season} season</div>
         <h1>Standings</h1>
-        <p class="dek">Ranked by wins, then total points scored${weeks.length ? `, through Week ${weeks[weeks.length - 1]}` : ''}. Only finished, recapped weeks count${LIVE ? `; Week ${LIVE.week} is on the <a href="#live">Live</a> page until its recap drops` : ''}. Tap a name to see her season.</p>
+        <p class="dek">Ranked by wins, then total points scored${weeks.length ? `, through Week ${weeks[weeks.length - 1]}` : ''}. Only finished, recapped weeks count${LIVE ? `; Week ${LIVE.week} is on the <a href="#live">Live</a> page until its recap drops` : ''}. Hit <b>Profile</b> on any row for that team's whole season: every game, every award, every point left on the bench.</p>
       </div>
 
       <section style="margin-top:18px">
