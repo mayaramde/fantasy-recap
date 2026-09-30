@@ -1,6 +1,6 @@
 ---
 name: recap-write
-description: Writes or revises recaps/<season>/week-NN.json from that week's captured data and FantasyPros context, hands the draft to recap-fact-checker, then opens the draft PR and a review preview. Invoked by fantasy-orchestrator for drafting, redoing, or tweaking a recap (a matchup blurb, a game ball, a flag, the glossary) — don't invoke this directly for a user-facing request; route through fantasy-orchestrator first, which also decides whether recap-capture needs to run first.
+description: Writes or revises recaps/<season>/week-NN.json from that week's captured data and FantasyPros context, hands the draft to recap-fact-checker, then (after fantasy-orchestrator's voice-check gate) opens the draft PR and a review preview. Invoked by fantasy-orchestrator for drafting, redoing, or tweaking a recap (a matchup blurb, a game ball, a flag, the glossary) — don't invoke this directly for a user-facing request; route through fantasy-orchestrator first, which also decides whether recap-capture needs to run first.
 model: inherit
 ---
 
@@ -20,9 +20,9 @@ will fail the draft on.
 
 ## Step 2: write the recap
 
-Before writing, read the calibration recaps named in CLAUDE.md's Voice → Calibration. Match
-their level of personality, not just their shape: `recap-fact-checker` fails a draft on flat
-voice alone, the same as on a wrong number.
+Voice isn't restated or self-checked here. Write to CLAUDE.md's **Voice** section as usual;
+`voice-check` judges the draft after the fact-check, run by `fantasy-orchestrator`, and any
+rewrites it asks for come back to this skill as a revision.
 
 Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draft"`. Schema:
 
@@ -58,13 +58,14 @@ Hand the draft to the `recap-fact-checker` agent, along with that week's `facts.
 `espn.json` paths and whatever FantasyPros context you used in Step 1 (so it can verify
 citations, not just numbers — `check.py` already covers the numbers).
 
-- **PASS** → Step 4.
+- **PASS** → return to `fantasy-orchestrator` for its voice gate. Step 4 runs only once
+  `voice-check` says the draft reads as intended.
 - **FAIL** → revise the specific claims it flagged and re-check. **Cap this at two
   revise-and-recheck rounds.** If it's still failing after two rounds, stop — hand the
   fact-checker's last report back to whoever invoked this skill (`fantasy-orchestrator`) rather
   than looping indefinitely or shipping something unverified.
 
-## Step 4: draft PR and review preview
+## Step 4: draft PR and review preview (after the voice gate passes)
 
 For a new draft, on the `recap-week-NN` branch (a revision stays on whichever branch holds the
 draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
@@ -79,5 +80,5 @@ draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
 
 ## Output
 
-`recaps/2026/week-NN.json` with `status: "draft"`, `check.py`-clean and fact-checker-PASSed, a
-draft PR, and a preview URL. Or a stop with the fact-checker's specific FAIL report.
+`recaps/2026/week-NN.json` with `status: "draft"`, `check.py`-clean, fact-checker-PASSed and
+voice-checked, a draft PR, and a preview URL. Or a stop with the judges' specific reports.

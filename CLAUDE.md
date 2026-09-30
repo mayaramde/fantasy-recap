@@ -5,7 +5,7 @@ League facts (IDs, teams, managers, roster slots) live in `league.json`, and tha
 
 ## Harness: Fantasy Recap
 
-**Goal:** produce the weekly recap (capture, write, fact-check, ship) and the daily Coach
+**Goal:** produce the weekly recap (capture, write, fact-check, voice-check, ship) and the daily Coach
 cards, without ever publishing anything unreviewed or touching an ESPN cookie/Vercel token.
 
 **Entry point — applies to every prompt in this repo:** You MUST invoke the

@@ -23,7 +23,7 @@ isn't there, stop. Do not run `scripts/deploy.sh --preview` anyway.** Tell Maya 
 
 Share the printed preview URL with Maya. **Wait for her explicit approval**; nothing below
 runs until she says go. If she asks for a change instead, that's `recap-write` again,
-fact-check included, then a fresh preview.
+fact-check and voice gate included, then a fresh preview.
 
 ## Step 2: publish (only after approval)
 

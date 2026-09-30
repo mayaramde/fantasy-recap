@@ -18,7 +18,9 @@ run in this session, one after another, because each step needs the
 previous one's output. The two read-only judges, `recap-fact-checker` and
 `code-reviewer`, are spawned as real subagents (via the `Agent` tool) from
 inside `recap-write` and `recap-ship`, because their value is being
-independent of whatever produced the thing they review.
+independent of whatever produced the thing they review. `voice-check` is a
+third read-only judge, spawned the same way but by this orchestrator itself,
+between `recap-write`'s fact-check and its draft PR (Phase 2).
 
 ## Team
 
@@ -27,6 +29,7 @@ independent of whatever produced the thing they review.
 | (this session) | — | capture | `recap-capture` | `data/<season>/week-NN/{espn.json,facts.json}` |
 | (this session) | — | write | `recap-write` | `recaps/<season>/week-NN.json` (`status: draft`), draft PR, preview URL |
 | recap-fact-checker | custom agent | fact-check | (invoked by recap-write) | PASS/FAIL + claim table |
+| voice-check | custom agent | voice review | (invoked by this orchestrator, Phase 2) | per-field verdict + rewrites |
 | (this session) | — | ship | `recap-ship` | published site + publish PR |
 | code-reviewer | custom agent | code review | (invoked by recap-ship, conditionally) | findings list |
 | (this session) | — | daily snapshot | `coach-daily` | `data/<season>/fantasypros/latest.json` |
@@ -65,14 +68,28 @@ and is complete before moving on. If capture fails and the documented fallback a
 ### Phase 2: write — runs `recap-write`
 
 Input: `data/<season>/week-NN/{espn.json,facts.json}`, FantasyPros context, (if a revision)
-the existing draft. Output: a fact-checked `recaps/<season>/week-NN.json` with
-`status: "draft"`, the `Week NN recap draft` PR, and a review preview URL for the user. If the
-fact-checker still FAILs after `recap-write`'s two revise rounds, stop and show the user its
-last report.
+the existing draft. Output: a fact-checked, voice-checked `recaps/<season>/week-NN.json` with
+`status: "draft"`, the `Week NN recap draft` PR, and a review preview URL for the user.
+
+Order: `recap-write` Steps 1-3 (write, `check.py`, fact-check), then the voice gate below, then
+`recap-write` Step 4 (draft PR and preview). If the fact-checker still FAILs after two revise
+rounds, stop and show the user its last report.
+
+**Voice gate.** Once the draft passes the fact-check, spawn the `voice-check` agent on it (the
+`Agent` tool, `subagent_type: voice-check`), passing the draft's path and, for a partial
+revision like one blurb or the glossary, which fields changed so it judges those rather than
+re-litigating the whole recap. It reads CLAUDE.md's Voice section and the calibration recaps
+itself. The fact-checker doesn't judge tone, so this is the only voice check.
+
+- **reads as intended** → on to `recap-write` Step 4.
+- **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise exactly
+  those fields, then re-run the fact-check (a rewrite can break a number or a citation) and the
+  voice gate. **This shares the fact-check's two-round cap**, counted across both judges. If
+  it still isn't clean, stop and show the user both reports.
 
 ### Phase 3: ship — runs `recap-ship`
 
-Input: `recaps/<season>/week-NN.json` (status `draft`, already fact-checked). **Nothing
+Input: `recaps/<season>/week-NN.json` (status `draft`, already fact- and voice-checked). **Nothing
 publishes without the user's explicit approval of the preview.** Then `recap-ship` flips
 `status` to `"published"`, ships via `scripts/deploy.sh`, and opens the `Publish week NN
 recap` PR.
@@ -89,12 +106,16 @@ PR with auto-merge. Doesn't touch any recap or any `data/<season>/week-NN/` file
 |-----------|----------|
 | ESPN capture 401s and the documented fallback (`.env.espn.local` + `capture_node.mjs`) also fails | Stop. Tell the user what's missing — don't guess at data. |
 | FantasyPros MCP is unavailable or gated (premium tool) | `recap-write` proceeds on ESPN data alone, notes the gap; never invents an injury/bad-luck cause it can't source. |
-| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and re-deploy the preview — don't skip re-verification because "it was already approved." |
+| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and the voice gate and re-deploy the preview — don't skip re-verification because "it was already approved." |
 
 ## Test scenarios
 
 - **Normal:** "draft the week 4 recap" → no `recaps/2026/week-04.json` yet → capture → write →
-  fact-check PASS → draft PR open, preview URL shared, waiting on approval.
+  fact-check PASS → voice-check "reads as intended" → draft PR open, preview URL shared,
+  waiting on approval.
+- **Flat voice:** correct numbers and sourced injuries, but every blurb is a fact with a
+  qualifier stapled on → fact-check PASS → `voice-check` "reads flat" with per-field rewrites →
+  one round back through `recap-write` and both judges → clean → draft PR and preview.
 - **Revision:** "tweak the Cambri blurb in this week's recap" → draft already exists → straight
   to `recap-write` with the existing draft, skipping capture → fact-check → updated draft.
 - **Triage:** "what does PPR mean" → answered directly, no skill invoked. "make the standings
