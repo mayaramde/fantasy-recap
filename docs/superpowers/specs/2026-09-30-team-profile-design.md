@@ -17,7 +17,6 @@ page explains as it goes (CLAUDE.md Voice, "Coach cards" dial).
 | Source of the season audit | **Computed + written**: `build.py` computes each audit card with a situation `key`; `coach-daily` writes voiced copy per key; computed wording is the fallback. |
 | Audit signals | Lineup IQ, Position strength, Projection vs reality. (Luck check considered and cut.) |
 | Code location | New pure module `site/team_profile.py`, shared by `site/build.py` and `scripts/coach_brief.py`. |
-| Spec system | This file; OpenSpec is not used for this change. |
 
 ## Page layout (`#team-<id>`, top to bottom)
 
