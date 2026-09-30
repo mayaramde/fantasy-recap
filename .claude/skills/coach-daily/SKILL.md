@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Builds the day's FantasyPros-sourced Coach cards (start/sit, waiver, trade ideas, injury/news deltas) for all 8 rosters and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit, waiver, trade ideas and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
 model: inherit
 ---
 
@@ -28,9 +28,9 @@ git worktree add -B coach-daily-<YYYY-MM-DD> /tmp/fantasy-coach-daily-<YYYY-MM-D
 `git worktree remove --force` / `git branch -D`.) Every edit, build, check, and commit below
 happens in the worktree — don't `git checkout` anything in the project folder itself.
 
-The live week's `data/2026/week-NN/` and `data/2026/next-week/` are deliberately uncommitted, so
-they only exist in the project folder's working tree. Read them from there, and copy them into
-the same paths inside the worktree before Step 6's build.
+The live week's `data/2026/week-NN/` and `data/2026/next-week/` may be uncommitted, so they can
+exist only in the project folder's working tree. Copy them into the same paths inside the
+worktree right away: Step 5b's brief and Step 7's build both read them from there.
 
 ## Step 2: read yesterday's snapshot
 
@@ -101,6 +101,56 @@ never invent an injury/news/ranking claim no tool actually returned. `level` is 
 something worth acting on before this week's games lock; otherwise `"watch"` or `"info"`. A team
 with nothing real to say gets an empty list for that section, not a filler card.
 
+## Step 5b: write this week's advice for the computed cards
+
+The Coach page's own cards (bench swaps, a hurt or bye-week starter, an empty slot, a starter
+projected zero, a game-time decision, injury-report changes, the opponent preview, "nothing to
+fix") are worked out from ESPN's capture on every page load. Each one names its exact situation
+with a `key`. Your job is the words: real advice for this week, in the site's voice, written
+against those keys, so managers never read a fill-in-the-blank template.
+
+1. In the worktree, run `python3 scripts/coach_brief.py`. For the live week (and next week,
+   when its capture is current) it prints every team's `summary_key` plus each card's `key`,
+   `kind`, `level`, `stat` and computed `title`/`text`. The computed text states the facts
+   behind the card; it's your source, not your copy. If it exits with "No live week", skip
+   this step.
+2. For **every** card in the brief, write a `title` and `text` under its exact `key`, and one
+   `summary` line per team under its exact `summary_key`. That key lists the very cards the
+   summary sums up, so it's safe to name those players; it stops showing once the list
+   changes. Lead with the advice (what to do, and why, in plain words a first-season manager
+   follows), then one line of personality. Use
+   what the brief and Step 4's FantasyPros context actually say about that player this week,
+   and credit FantasyPros for anything it sourced.
+3. **No projections, point totals or percentages in the text.** No decimals and no `%`: those
+   numbers move all day, so the site keeps them in the card's stat pill, which it recomputes
+   live, and `site/build.py` rejects written copy that carries a decimal, a `%`, "percent" or a
+   point count ("17 points", "a 12-point edge"). Say "a couple of points better", "the bigger
+   projection", "a big fat zero" instead. Week numbers are fine.
+4. Injury cards follow CLAUDE.md's serious-moments rule: plain and warm, no joke, and never a
+   cause or timeline no source gave you.
+5. Don't invent a card or a key. The site shows written copy only while its key is still
+   computed, so copy for a situation that has since changed (a kickoff, a new injury) simply
+   stops showing and the computed wording comes back. That's the intended backup, not an error.
+
+## Step 5c: voice gate
+
+No card ships without `voice-check`'s sign-off, and that includes Step 5b's copy. Once Steps 5
+and 5b are written, spawn the
+`voice-check` agent (the `Agent` tool, `subagent_type: voice-check`) on them: write the cards to
+a scratch file (or pass them in the prompt), keyed `<week>/<team_id>/<section>/<index>` so its
+per-field table maps straight back to a card, and tell it the surface is **Coach cards**
+(advice first, one line of personality). It judges `title` and `text` only; the numbers and
+FantasyPros attributions are yours to keep exact, as in Step 5.
+
+- **reads as intended** → on to Step 6.
+- **reads flat** or **breaks a rule** → revise exactly the cards it flagged, using its rewrites
+  as the starting point but keeping every number and every "per FantasyPros" attribution intact,
+  then run it again on the revised cards only. **Two rounds at most.**
+- Still flagged after the second round → drop those cards rather than ship them (an empty list
+  is already the right answer for a team with nothing that reads well; a dropped Step 5b entry
+  just leaves that card on its computed wording), and list what was
+  dropped and why in the Output summary. Nobody reviews this PR, so this gate is the only one.
+
 ## Step 6: write the snapshot file
 
 Overwrite the whole file (it's a rolling daily snapshot, not a per-week archive — git history
@@ -114,7 +164,11 @@ is the archive):
   "weeks": {
     "<week number>": {
       "teams": {
-        "<team_id>": { "advice_cards": [...], "roster_ideas": [...] }
+        "<team_id>": {
+          "advice_cards": [...], "roster_ideas": [...],
+          "coach_cards": { "<key from the brief>": {"title": "...", "text": "..."} },
+          "summary": {"key": "<summary_key from the brief>", "text": "..."}
+        }
       }
     }
   }
@@ -123,6 +177,7 @@ is the archive):
 
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
+`coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover.
 
 ## Step 7: build, check, commit, ship the PR
 
@@ -132,7 +187,7 @@ team entry for every `team_id` in `league.json` (all 8), even when both lists ar
    branch. Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
    (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
-   No review is needed — small, factual, derived data, not the creative recap content. Never
+   No human review is needed — small, derived data whose copy already passed Step 5c. Never
    push to `main` directly and never merge with `--admin`.
 4. Any older coach-daily PR still open is superseded (the file is a rolling snapshot; both PRs
    would overwrite it) — close it (`gh pr close <n> --delete-branch`) so it can't conflict with
@@ -145,5 +200,6 @@ team entry for every `team_id` in `league.json` (all 8), even when both lists ar
 ## Output
 
 A short summary: the PR link and whether auto-merge is on, which teams got a new waiver/trade
-idea today, any FantasyPros injury/news changes worth knowing about, and — only the first time
+idea today, any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
+for failing the voice gate twice, and — only the first time
 it comes up — Trade Finder's premium disclosure.

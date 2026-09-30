@@ -56,8 +56,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   Analyzer are premium too; relay their disclosure once, the first time either gates a call
   (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `coach-daily` builds its
   start/sit, waiver and trade ideas from free-tier tools instead of the gated finders.
-- **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
-  `coach-daily` writes once a day for every team, keyed by week. Committed through its own auto-merging PR (small,
+- **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
+  `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
+  computed card (keyed by situation, see `docs/architecture.md`). Committed through its own auto-merging PR (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards.
 
@@ -77,16 +78,17 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
-  `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow), `deploy.sh` + `vercel_build.sh` (deploy),
+  `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
+  `coach_brief.py` (the computed Coach cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
-- `tests/`: unittest suites for `check_recaps.py` and the Bash guard hook (also run by `checks`)
+- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook and the Coach page's written copy (also run by `checks`)
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
 - **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
-  bundle. Vercel's own git integration is off in `vercel.json` — a merge alone can't build-and-wipe the Live page —
+  bundle. Vercel's own git integration is off for `main` in `vercel.json` — a merge alone can't build-and-wipe the Live page —
   but a push to `main` touching `recaps/`, `data/`, `site/`, `scripts/`, `api/`, `league.json`, or `vercel.json` does
   trigger `live-update.yml` to run that same `scripts/deploy.sh` within minutes (`docs/vercel.md` §3). `scripts/deploy.sh`
   run by hand stays as a manual backstop. The site sends
@@ -94,6 +96,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `/api/live` keeps the Live page fresh between deploys; without the `ESPN_S2`/`ESPN_SWID` Vercel env vars it
   answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
   or Vercel tokens.
+- Branch previews (Vercel, automatic): every push to a branch other than `main` gets its own preview URL, built on
+  Vercel's servers from that branch's committed data only (the draft copy, no uncommitted live week). For design and
+  code review; the link shows on the PR. Same Deployment Protection as below.
 - Preview (Vercel, for Maya): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` (drafts included) to a
   new throwaway `fantasy-recap-*.vercel.app` URL every time it runs. Drafts are reviewed here before they go to the
   website. Deployment Protection (Standard) puts every deployment URL, previews included, behind a Vercel

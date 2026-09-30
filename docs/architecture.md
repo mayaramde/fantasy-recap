@@ -59,6 +59,12 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   A player whose game has kicked off is locked, so nothing suggests moving him. With no projections published for a
   week, that tab drops the start-or-sit cards rather than comparing zeros, and says so. Neither week ever states an
   injury ESPN didn't report.
+- **Written copy for the computed cards.** Each computed card (and the one-line team summary) carries a `key`
+  naming its exact situation, e.g. `swap:<starter id>:<bench id>:<his injury status>`. `coach-daily` reads them
+  with `scripts/coach_brief.py` and writes voice-checked advice for each key into its snapshot (`coach_cards`,
+  `summary`). The page shows the written title and text only while that key is still computed, so advice for a
+  situation that has since changed falls back to the computed wording on its own. Written copy never carries a
+  decimal or a percentage (the build rejects it); the live number stays in the computed stat pill.
 - **Authored cards** (`consensus`, `waiver`, `trade`, `fp_news`, `fp_back`, and the "Worth a look" section) come
   from `coach-daily`'s snapshot. `site/build.py` only decides whether that day's snapshot is fresh enough to merge in.
 - **Player cards** (`player_cards` in `site/build.py`): every lineup row opens into one cheeky line about his week,

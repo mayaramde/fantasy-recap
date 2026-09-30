@@ -38,24 +38,32 @@ destructive. The previous one still exists, and rolling back just moves the poin
 Log in at [vercel.com](https://vercel.com) and the project is on the dashboard. Or
 from this repo, `vercel ls` prints the recent deployments without opening a browser.
 
-## 3. How code gets live here (and why Vercel's own git integration is off)
+## 3. How code gets live here (and why Vercel's own git integration is off for `main`)
 
 Normally Vercel watches your GitHub repo and builds-and-deploys every push, on Vercel's
-own servers. **We turned that off.** In `vercel.json`:
+own servers. **We turned that off for `main`.** In `vercel.json`:
 
 ```json
-{ "git": { "deploymentEnabled": false } }
+{ "git": { "deploymentEnabled": { "main": false } } }
 ```
 
 The reason: the Live page is built from ESPN data captured on Maya's Mac (or in CI) that
 isn't committed for the in-progress week. A build on Vercel's own servers would build from
 the repo alone and publish a site with that data missing. Turning off Vercel's *own* git
-integration means a merge can never silently wipe the Live page that way.
+integration for `main` means a merge can never silently wipe the Live page that way.
 
-So the only thing that changes the site is **`scripts/deploy.sh`**. It runs `vercel build`
+**Every other branch still gets an automatic preview.** Push a branch (or open a PR) and
+Vercel builds it on its own servers and posts the preview link on the PR. That build only
+sees what's committed on the branch, so it shows the draft copy with the committed weeks
+and no uncommitted live week. It's for looking at design and code changes, never the
+league's site: it can't touch production, and Deployment Protection (§7) keeps it behind
+Maya's Vercel login. When a preview needs the live week too, `scripts/deploy.sh --preview`
+is still the way (§8).
+
+So the only thing that changes the league's site is **`scripts/deploy.sh`**. It runs `vercel build`
 on the machine it's on (which calls `scripts/vercel_build.sh` → `site/build.py`), then
 uploads the finished bundle with `vercel deploy --prebuilt`. Vercel's servers never build
-anything for this project — every build happens on a machine we control, one that can
+the league's site; every production build happens on a machine we control, one that can
 capture fresh ESPN data first.
 
 Three things run that script:
@@ -86,8 +94,10 @@ unmerged branch). Neither is broken — it's just two separate tracks.
 Open the project and you'll see a row of tabs. These are the ones that matter:
 
 - **Deployments** — every deploy, newest first, with who made it and whether it
-  worked. Click one to see its build log, or to promote or roll back to it. This is
-  the first place to look when something seems stale or broken.
+  worked. Click one to see its build log, or to roll back to it. This is the first
+  place to look when something seems stale or broken. Most rows are now automatic
+  branch previews (§3); roll back only to a row marked **Production**, never promote a
+  branch preview (the build refuses, see §7).
 - **Logs** (and **Observability**) — what the `/api/live` function actually did on
   real requests: status codes, errors, how long it took. The only way to see why
   the Live page isn't refreshing.
@@ -174,8 +184,11 @@ header comment of `.github/workflows/live-update.yml`.
   Maya's account. Only the production aliases are public, so send the league
   `fantasyforthegirls.vercel.app`. Handy the other way round too: a stray deployment or
   draft-preview link can't leak anything. Settings → Deployment Protection is where to change it.
-- **Rolling back is safe.** Deployments → pick a good one → promote. The pointer
-  moves; nothing is rebuilt or lost.
+- **Rolling back is safe, to a Production deployment.** Deployments → filter to
+  Production → pick a good one → Instant Rollback. The pointer moves; nothing is rebuilt
+  or lost. Don't promote a branch preview: it was built from committed data only, so
+  Vercel would rebuild it for production without the live week. `scripts/vercel_build.sh`
+  refuses that build rather than publish the draft copy to the league.
 
 ## 8. Cheat sheet
 
@@ -183,7 +196,8 @@ header comment of `.github/workflows/live-update.yml`.
 vercel whoami                    # which account the CLI is using
 vercel ls                        # recent deployments, newest first
 scripts/deploy.sh                # build locally + publish to the live site
-scripts/deploy.sh --preview      # throwaway URL for reviewing a draft
+scripts/deploy.sh --preview      # throwaway URL for reviewing a draft, with this Mac's live week
+git push -u origin my-branch     # automatic preview URL from committed data (any branch but main)
 vercel env ls                    # variable names on the project (never values)
 vercel env add NAME production   # add one, prompts for the value
 vercel logs <deployment-url>     # runtime output from a deployment
