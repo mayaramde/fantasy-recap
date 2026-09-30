@@ -115,9 +115,9 @@ script loads with `defer`, so it doesn't block page rendering.
 marked sensitive — which makes them write-only. Even you can't read them back from the
 dashboard, only overwrite them. That's the right setting for these.
 
-Nothing reads them yet. They exist for the `/api/live` function, which recomputes the
-current week from ESPN per request; the PR that added it was closed, so it isn't in the
-repo right now. If that work comes back, these are already in place.
+They're read by the `/api/live` function (`api/live.py`), which recomputes the current
+week from ESPN per request via `scripts/espn_fetch.py` — that's exactly what these two
+variables are for.
 
 To add or replace one:
 
@@ -138,7 +138,7 @@ This is the most confusing part of the setup, and it isn't a mistake:
 | Where | Who reads it | What for |
 |---|---|---|
 | **GitHub Actions secrets** (repo → Settings → Secrets and variables → Actions) | `scripts/capture_node.mjs` in the `live-update` workflow | Capturing the week in CI, before deploying |
-| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site, once it exists | Answering `/api/live` when someone opens the page |
+| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site | Answering `/api/live` when someone opens the page |
 
 Same two values, two completely separate systems. Neither can see the other's
 copy. **When the ESPN cookies expire, both need updating** — otherwise you fix one

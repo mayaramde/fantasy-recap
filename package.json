@@ -1,7 +1,7 @@
 {
   "name": "primary",
   "version": "1.0.0",
-  "description": "Weekly recap page for the \"Fantasy Football for the Girls\" ESPN league. See `CLAUDE.md` for the data layout and the weekly routine. See `docs/vercel.md` for how the site gets deployed and how to work in the Vercel dashboard.",
+  "description": "Weekly recap page for the \"Fantasy Football for the Girls\" ESPN league. See `CLAUDE.md` for the data layout and the harness that runs it. See `docs/vercel.md` for how the site gets deployed and how to work in the Vercel dashboard.",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -19,8 +19,5 @@
   "bugs": {
     "url": "https://github.com/mayaramde/fantasy-recap/issues"
   },
-  "homepage": "https://github.com/mayaramde/fantasy-recap#readme",
-  "dependencies": {
-    "@vercel/analytics": "^2.0.1"
-  }
+  "homepage": "https://github.com/mayaramde/fantasy-recap#readme"
 }
