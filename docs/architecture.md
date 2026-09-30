@@ -14,11 +14,6 @@ things run and what the pages show, for a human reading the codebase.
   taking the live scores down with it. Then analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published recap that
   `main` doesn't (a recap shipped from the Mac whose PR hasn't merged). Then `scripts/deploy.sh`. Nothing is committed.
   A failure email saying "ESPN 401" means the ESPN cookie secrets expired.
-- `fantasy-live-update` (local, this Mac) runs daily at 7:30 AM: captures ESPN's current week (`fantasyCapture('current')`), then runs
-  `scripts/deploy.sh` so the website's **Live** page is current. Data only, no commentary, no commits. The in-progress
-  week's `data/2026/week-NN/` files stay uncommitted until that week's recap PR.
-  **Paused 2026-09-28** now that the cloud live update works. Re-enable it only if the cloud run can't be fixed
-  (e.g. while waiting on fresh ESPN cookies).
 - `fantasy-weekly-recap` runs Tuesdays around 8:15 AM: invokes `fantasy-orchestrator` to capture last week (final),
   draft the recap, and update the preview, stopping at a draft PR. Maya approves before the recap reaches the
   league site (`recap-ship`'s approval gate).
