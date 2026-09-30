@@ -64,7 +64,7 @@ class CoachWrittenTest(unittest.TestCase):
             self.assertEqual(len(keys), len(set(keys)), f"duplicate keys for team {row['team_id']}")
 
     def swap_team(self):
-        row = next(r for r in self.live() if r["summary_key"] == "now:swap")
+        row = next(r for r in self.live() if any(it["kind"] == "swap" for it in r["items"]))
         return row, next(it for it in row["items"] if it["kind"] == "swap")
 
     def test_pre_kickoff_week_has_real_advice(self):
@@ -116,9 +116,27 @@ class CoachWrittenTest(unittest.TestCase):
         fp = self.snapshot({str(row["team_id"]): {"summary": {"key": "now:nothing-like-this", "text": "Nope."}}})
         self.assertEqual(self.live(fp)[0]["summary"], row["summary"])
 
+    def test_summary_key_names_the_cards_it_sums_up(self):
+        row, target = self.swap_team()
+        self.assertTrue(row["summary_key"].startswith("now|"))
+        self.assertIn(target["key"], row["summary_key"].split("|"))
+
+    def test_fantasypros_cards_dont_move_the_summary_key(self):
+        """coach_brief runs without a snapshot, so the key it prints has to be the one the
+        site computes even when the same snapshot adds FantasyPros cards to the list."""
+        row = next(r for r in self.live() if r["summary_key"] == "clear")
+        fp = self.snapshot({str(row["team_id"]): {
+            "advice_cards": [{"kind": "consensus", "level": "now", "title": "FP", "stat": "", "text": "FP says."}],
+            "summary": {"key": "clear", "text": "Written summary."},
+        }})
+        after = next(r for r in self.live(fp) if r["team_id"] == row["team_id"])
+        self.assertEqual(after["summary_key"], "clear")
+        self.assertEqual(after["summary"], "Written summary.")
+
     def test_moving_numbers_are_rejected(self):
         row, target = self.swap_team()
-        for text in ("ESPN projects him for 12.4 points.", "ESPN gives you a 61% chance."):
+        for text in ("ESPN projects him for 12.4 points.", "ESPN gives you a 61% chance.",
+                     "He's at 17 points.", "A 12-point edge.", "61 percent of the time."):
             fp = self.snapshot({str(row["team_id"]): {"coach_cards": {target["key"]: {"title": "T", "text": text}}}})
             after = next(r for r in self.live(fp) if r["team_id"] == row["team_id"])
             got = next(it for it in after["items"] if it["key"] == target["key"])

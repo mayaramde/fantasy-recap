@@ -224,7 +224,7 @@ def fantasypros_cards(team_id, fp, week):
 # falls back to its computed wording instead of giving yesterday's advice. The written copy
 # never carries a projection or a percentage: those move all day, so they stay in the
 # computed stat pill, which /api/live refreshes on every request.
-_MOVING_NUMBER = re.compile(r"\d\.\d|%")
+_MOVING_NUMBER = re.compile(r"\d?\.\d|%|\bpercent\b|\d+[- ]?(?:points?|pts)\b", re.IGNORECASE)
 
 
 def _valid_written(it):
@@ -291,8 +291,8 @@ TEAM_SUMMARY_DEFAULT = ["There's work to do before kickoff. Good news: it's all 
 
 
 def team_summary(team_id, items, counts, can_change, win_probability):
-    """(key, sentence): one cheeky line for the top of a team's Coach page, and the key a
-    written summary has to match to replace it ("done", "watch", "clear", "now:<kind>").
+    """One cheeky sentence for the top of a team's Coach page, when coach-daily hasn't
+    written one for this exact situation (see summary_key).
 
     Picks the loudest thing on the to-do list (the most common kind among its "now"
     items) and says something about that, so it never drifts from what the cards below
@@ -301,22 +301,22 @@ def team_summary(team_id, items, counts, can_change, win_probability):
     Live page refreshes with no real change underneath it.
     """
     if not can_change:
-        return "done", ("Every game on your schedule this week is in the books. "
-                        "This lineup is now a matter of historical record.")
+        return ("Every game on your schedule this week is in the books. "
+                "This lineup is now a matter of historical record.")
     now_items = [it for it in items if it["level"] == "now"]
     if not now_items:
         if counts["watch"]:
-            return "watch", TEAM_SUMMARY_WATCH[team_id % len(TEAM_SUMMARY_WATCH)]
+            return TEAM_SUMMARY_WATCH[team_id % len(TEAM_SUMMARY_WATCH)]
         if win_probability is not None:
             pct = round(win_probability * 100)
-            return "clear", (f"Nothing to fix here, and ESPN gives you a {pct}% chance to win this week. Act natural."
-                             if pct >= 50 else
-                             f"Nothing to fix here. ESPN only gives you a {pct}% chance to win, "
-                             "and ESPN has been wrong before.")
-        return "clear", TEAM_SUMMARY_CLEAR[team_id % len(TEAM_SUMMARY_CLEAR)]
+            return (f"Nothing to fix here, and ESPN gives you a {pct}% chance to win this week. Act natural."
+                    if pct >= 50 else
+                    f"Nothing to fix here. ESPN only gives you a {pct}% chance to win, "
+                    "and ESPN has been wrong before.")
+        return TEAM_SUMMARY_CLEAR[team_id % len(TEAM_SUMMARY_CLEAR)]
     dominant = Counter(it["kind"] for it in now_items).most_common(1)[0][0]
     options = TEAM_SUMMARY_BY_KIND.get(dominant, TEAM_SUMMARY_DEFAULT)
-    return f"now:{dominant}", options[team_id % len(options)]
+    return options[team_id % len(options)]
 
 
 # ---------- coach: one expandable card per player on the lineup ----------
@@ -657,8 +657,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
                     f"the pool of players nobody in the league owns.")
         kind = "bye" if bye and not hurt else "out"
         items.append({"kind": kind, "level": "now", "title": title,
-                      "key": _key(kind, s["player_id"], s.get("injury_status") if hurt else "bye",
-                                  r["player_id"] if r else None),
+                      "key": _key(kind, s["player_id"], s["slot"], s.get("injury_status") if hurt else "bye",
+                                  r["player_id"] if r else None, r.get("injury_status") if r else None),
                       "stat": "Bye" if bye and not hurt else INJURY_LABEL.get(s.get("injury_status"), "Out"),
                       "text": text})
 
@@ -688,7 +688,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         swapped.add(s["player_id"])
         claimed.add(b["player_id"])
         items.append({"kind": "swap", "level": "now",
-                      "key": _key("swap", s["player_id"], b["player_id"], b.get("injury_status")),
+                      "key": _key("swap", s["player_id"], s["slot"], b["player_id"], b.get("injury_status")),
                       "title": f"Start {b['name']} over {s['name']}",
                       "stat": f"+{_f1(gain)} projected",
                       "text": (f"ESPN projects {b['name']} for {_f1(_proj(b))} points and {s['name']} for "
@@ -707,7 +707,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
             if r:
                 claimed.add(r["player_id"])
             items.append({"kind": "empty", "level": "now", "title": f"Your {slot} spot is empty",
-                          "key": _key("empty", slot, n, r["player_id"] if r else None),
+                          "key": _key("empty", slot, n, r["player_id"] if r else None, r.get("injury_status") if r else None),
                           "stat": "nobody starting",
                           "text": (f"There's nobody in your {slot} spot, and an empty spot scores zero. "
                                    + (f"{r['name']} {how(r)} can fill it."
@@ -721,7 +721,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         plan = (f"If he's ruled out, {r['name']} {how(r)} is your best swap."
                 if r else f"{no_backup(s['slot'])}, so check early.")
         items.append({"kind": "watch", "level": "watch",
-                      "key": _key("watch", s["player_id"], s["injury_status"], r["player_id"] if r else None),
+                      "key": _key("watch", s["player_id"], s["injury_status"], r["player_id"] if r else None,
+                                  r.get("injury_status") if r else None),
                       "title": f"{s['name']} is {label.lower()}",
                       "stat": worth(s) or label,
                       "text": (f"{label} means his team hasn't decided whether he plays; the call usually "
@@ -814,6 +815,9 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # they carry their own {kind, level, title, stat, text} shape already, so counts and
     # the team summary read across them the same way they read ESPN's own cards.
     apply_written(items, written or {})
+    # Keyed off the computed cards alone, before FantasyPros' join the list, so it matches
+    # what coach_brief printed for coach-daily (which runs without a snapshot).
+    skey = summary_key(items, can_change)
     items = items + [it for it in fp_items if it not in items]
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
@@ -835,10 +839,10 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "items": items,
         "counts": (counts := {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS}),
         # One cheeky line for the top of her Coach page, under the header.
-        "summary": _summary(team["team_id"], items, counts, can_change,
-                            team.get("win_probability"), written_summary),
-        # What a written summary has to be keyed to (see team_summary), for coach-daily's brief
-        "summary_key": team_summary(team["team_id"], items, counts, can_change, team.get("win_probability"))[0],
+        "summary": (written_summary["text"].strip() if written_summary and written_summary["key"] == skey else
+                    team_summary(team["team_id"], items, counts, can_change, team.get("win_probability"))),
+        # What a written summary has to be keyed to, for coach-daily's brief
+        "summary_key": skey,
         # One card per player on the roster, for the lineup rows on her Coach page
         "players": player_cards(starters, team["bench"], ctx),
         # Waiver/trade leads from FantasyPros — not a per-week to-do, so kept separate from
@@ -847,11 +851,17 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     }
 
 
-def _summary(team_id, items, counts, can_change, win_probability, written_summary):
-    key, text = team_summary(team_id, items, counts, can_change, win_probability)
-    if written_summary and written_summary["key"] == key:
-        return written_summary["text"].strip()
-    return text
+def summary_key(items, can_change):
+    """What a written summary line has to match to replace the computed one: the exact
+    cards it would be summing up (every "now" card, else every "watch" card), so a summary
+    naming this morning's swap stops showing the moment the swap list changes."""
+    if not can_change:
+        return "done"
+    for level in ("now", "watch"):
+        keys = sorted(it["key"] for it in items if it["level"] == level and it.get("key"))
+        if keys:
+            return "|".join([level] + keys)
+    return "clear"
 
 
 def advice_payload(teams, espn, previous, fp=None, week=None):
@@ -919,7 +929,7 @@ def lookback_card(team, teams, week):
         text = f"{'A blowout win' if won else 'A blowout loss'}, {_f1(margin)} points apart."
     else:
         text = f"{verb} {_pts(pts)}-{_pts(opp_pts)}."
-    return {"kind": "recap", "level": "info", "key": _key("recap", week), "title": f"Week {week} recap",
+    return {"kind": "recap", "level": "info", "key": _key("recap", week, team["result"], rank, _f1(margin)), "title": f"Week {week} recap",
             "stat": f"{_pts(pts)} pts", "text": text}
 
 
