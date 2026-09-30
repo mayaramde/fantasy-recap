@@ -29,6 +29,7 @@
     --logo-chip: #ffffff;
     --pink-soft: #ffe0ef;
     --orange-soft: #ffe6d3;
+    --lime-soft: #eefbc9;
     --win: #1c7a50;
     --loss: #c0392b;
     --heat-hi: #2e4bf2;
@@ -62,6 +63,7 @@
     --logo-chip: #ffffff;
       --pink-soft: #4a1e3d;
       --orange-soft: #4a2c15;
+    --lime-soft: #2f3a14;
       --win: #55d094;
       --loss: #ff7d70;
       --heat-hi: #8196ff;
@@ -91,6 +93,7 @@
     --logo-chip: #ffffff;
     --pink-soft: #4a1e3d;
     --orange-soft: #4a2c15;
+    --lime-soft: #2f3a14;
     --win: #55d094;
     --loss: #ff7d70;
     --heat-hi: #8196ff;
@@ -107,7 +110,7 @@
 
   /* the sticker: every raised surface shares one outline + hard offset shadow */
   a.game, .card, .lineup, .std-card, .tile, .coach-card, .decided li, .other-games a, .versus,
-  .matchup-lite, .team-lite {
+  .matchup-lite, .story, .final-lines {
     border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -219,10 +222,7 @@
   .ml-name a:hover { text-decoration: underline; }
   .ml-num { font: 700 20px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
   .ml-num small { display: block; margin-top: 3px; font: 500 10px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .ml-row.ml-lose .ml-name, .ml-row.ml-lose .ml-num { color: var(--muted); font-weight: 600; }
-  .ml-row.ml-win { background: var(--accent-soft); }
   .ml-w { flex: none; font: 700 10.5px/1 var(--mono); padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--edge); background: var(--lime); color: var(--on-pop); transform: rotate(-4deg); }
-  .ml-note { margin: 0; padding: 9px 16px 11px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); font-style: italic; }
   /* Pre-kickoff card: each side is its own <details>, the score row is the toggle, and that
      side's lineup opens directly underneath it. Cobalt for the first side, bubblegum for the second. */
   .ml-team + .ml-team { border-top: 2px solid var(--edge); }
@@ -249,12 +249,28 @@
   .slot-chip.s-FLEX { background: var(--orange-soft); }
   .slot-chip.s-DST, .slot-chip.s-K { background: var(--pink-soft); }
 
-  /* ---------- landing page: one-line team cards ---------- */
-  .teams-lite { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 14px; }
-  .team-lite { background: var(--card); padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
-  .team-lite .mgr { font: 800 21px/1.1 var(--display); }
-  .team-lite p { margin: 0; font-size: 13.5px; flex: 1; }
-  .team-lite .profile-btn { align-self: flex-start; margin-top: 6px; text-decoration: none; }
+  /* ---------- landing page: the week in stickers ----------
+     Two across on a phone, four across on a laptop. Each sticker's shadow and tag take
+     one pop color, with ink text on the tag, never pop-colored text on white. */
+  .stickers { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 18px; }
+  .story { background: var(--card); padding: 12px 14px 14px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+  .story .tag { justify-self: start; font: 600 12px/1 var(--script); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 9px; transform: rotate(-3deg); }
+  .story .fig { font: 900 34px/0.9 var(--display); font-variant-numeric: tabular-nums; }
+  .story p { margin: 0; font-size: 13.5px; line-height: 1.35; }
+  .story.orange { box-shadow: 4px 4px 0 var(--orange); } .story.orange .tag { background: var(--orange); }
+  .story.lime { box-shadow: 4px 4px 0 var(--lime); } .story.lime .tag { background: var(--lime); }
+  .story.pink { box-shadow: 4px 4px 0 var(--pink); } .story.pink .tag { background: var(--pink); }
+  .story.accent { box-shadow: 4px 4px 0 var(--accent); } .story.accent .tag { background: var(--accent-soft); color: var(--ink); }
+  .recap-when { margin-top: 22px; display: flex; gap: 12px; align-items: center; padding: 12px 16px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; font-weight: 600; }
+  .recap-when .d { flex: none; font: 900 26px/0.9 var(--display); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 9px 4px; }
+  .final-lines { background: var(--card); overflow: hidden; display: grid; }
+  .final-lines a { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; padding: 11px 16px; text-decoration: none; }
+  .final-lines a + a { border-top: 2px dashed var(--rule); }
+  .final-lines a:hover b { text-decoration: underline; }
+  .final-lines .w { display: flex; align-items: center; gap: 8px; font: 800 19px/1.1 var(--display); }
+  .final-lines .w .num { font: 700 17px/1 var(--mono); }
+  .final-lines .l { color: var(--muted); font: 500 14px/1.2 var(--body); }
+  .final-lines .l .num { font-family: var(--mono); }
 
   /* ---------- matchup page ---------- */
   .versus { margin-top: 18px; background: var(--board); color: var(--on-board); padding: 22px 20px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
@@ -438,6 +454,17 @@
   .coach-card .mgr { font: 800 26px/1.05 var(--display); }
   .coach-card .tname { font-size: 12.5px; color: var(--muted); }
   .coach-card .lead { margin: 0; font-size: 14px; }
+  .coach-card.clear { background: var(--lime-soft); }
+  .cc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .cc-head .todo { flex: none; }
+  /* her top two items as a mini checklist; the box color is how urgent each one is */
+  .cc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .cc-list li { display: grid; grid-template-columns: 18px 1fr; gap: 9px; align-items: start; font-size: 14px; line-height: 1.3; }
+  .cc-list small { display: block; margin-top: 2px; color: var(--muted); font: 500 11.5px/1.3 var(--mono); }
+  .cc-box { width: 18px; height: 18px; margin-top: 1px; border: 2px solid var(--edge); border-radius: 5px; background: var(--card); }
+  .cc-box.now { background: var(--pink); }
+  .cc-box.watch { background: var(--orange); }
+  .cc-box.info { background: var(--accent-soft); }
   .coach-card .go { font-size: 13.5px; font-weight: 700; color: var(--accent); }
   .coach-card:hover .go { text-decoration: underline; }
   /* the count sticker: how many things need doing before kickoff */
@@ -649,30 +676,10 @@
       </a>`;
   }
 
-  // A real recap hasn't been written yet for this matchup, so this stands in for one —
-  // varied per game (picked off a team id) so eight of these in a row don't repeat.
-  const RECAP_PENDING = [
-    "The recap's still marinating. Full breakdown — and the roasting — drops Tuesday.",
-    "Somebody's writing jokes about this one right now. Hang tight.",
-    "Nothing to read here yet. The real commentary lands Tuesday.",
-    "The numbers are in. The jokes are still in committee. Back Tuesday.",
-  ];
-
-  // The landing page's own matchup card: one line of score, no detour into a box score
-  // that either isn't written up yet (week's over, recap pending) or doesn't exist yet
-  // (nobody's played). A finished week gets a placeholder for the recap to come; a week
-  // that hasn't kicked off gets an expandable look at each side's projected lineup instead
-  // of a live box score link, since there's no live box score to open.
-  function landingScoreCard(g, w) {
-    if (w.complete) {
-      const note = RECAP_PENDING[g.winner.team_id % RECAP_PENDING.length];
-      return `
-        <div class="matchup-lite">
-          <div class="ml-row ml-win"><span class="ml-name">${mgrLink(g.winner.manager)}<span class="ml-w">W</span></span><span class="ml-num"><span class="ml-pill">${f2(g.winner.points)}</span></span></div>
-          <div class="ml-row ml-lose"><span class="ml-name">${mgrLink(g.loser.manager)}</span><span class="ml-num">${f2(g.loser.points)}</span></div>
-          <p class="ml-note">${esc(note)}</p>
-        </div>`;
-    }
+  // The landing page's matchup card for a week that hasn't kicked off: an expandable look
+  // at each side's projected lineup, since there's no live box score to open yet. (A
+  // finished week gets the compact .final-lines rows in landingPage instead.)
+  function landingScoreCard(g) {
     const team = (s, tone) => {
       const starters = [...s.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
       return `
@@ -687,20 +694,6 @@
       <div class="matchup-lite">
         ${team(g.winner, 'tone-a')}${team(g.loser, 'tone-b')}
       </div>`;
-  }
-
-  // The landing page's own Coach card: no badge, no "to fix" count — just whichever line
-  // that team's advice list leads with (the recap snippet or the opponent preview added in
-  // site/build.py, or the top regular Coach card if neither applies) and a way to her team
-  // page, since the full to-do list is a tap away on the Coach tab itself.
-  function landingTeamCard(a) {
-    const lead = a.items[0];
-    return `
-      <article class="team-lite">
-        <div class="mgr">${esc(a.manager)}</div>
-        <p>${esc(lead ? lead.text : a.summary)}</p>
-        <a class="profile-btn" href="#team-${a.team_id}">Team profile →</a>
-      </article>`;
   }
 
   // Where a side stands this minute: who is on the field right now, then who hasn't
@@ -954,43 +947,142 @@
   }
 
   /* The midweek landing page: what "Live" turns into once nothing's actually on the field
-     (see deadZone() above). A snapshot of the current week — final scores waiting on
-     Tuesday's recap, or the slate for a week that hasn't kicked off — plus every team's
-     Coach rundown right on the page, computed cards and all, instead of a click away. */
+     (see deadZone() above). It leads with the week in a few stickers, storylines read
+     straight off the numbers so the page has something to say before Tuesday's recap does,
+     then the scores, then one way into Coach (which has every team's full list). */
+  const STICKER_COUNT = ['no', 'one', 'two', 'three', 'four'];
+  const sticker = (x) => `
+    <article class="story ${x.tone}">
+      <span class="tag">${esc(x.label)}</span>
+      <div class="fig num">${esc(x.fig)}</div>
+      <p>${esc(x.text)}</p>
+    </article>`;
+
+  // Plain words for a position, so a first-season reader isn't handed "RB".
+  const POS_WORD = { QB: 'quarterback', RB: 'running back', WR: 'receiver', TE: 'tight end', K: 'kicker', DST: 'defense' };
+  // A game this close earns "photo finish" / "anything goes"; past it, the sticker says
+  // plainly that it's just the closest one, so the label is never untrue.
+  const TIGHT = 10;
+  const isTie = (g) => g.winner.result === 'T';
+
+  // A finished week: every sticker is a number from the final scores, and each one is
+  // skipped when the week can't back it (one game, all ties, no top scorer).
+  // Sticker text is plain: sticker() escapes it, exactly once.
+  function finalStickers(w) {
+    const out = [];
+    const margin = (g) => g.winner.points - g.loser.points;
+    const byMargin = [...w.games].sort((a, b) => margin(b) - margin(a));
+    const big = byMargin[0];
+    const close = byMargin[byMargin.length - 1];
+    if (big && margin(big) > 0) out.push({ tone: 'orange', label: 'Blowout', fig: `+${f2(margin(big))}`,
+      text: `${big.winner.manager} ${f2(big.winner.points)}, ${big.loser.manager} ${f2(big.loser.points)}. That's the whole sticker.` });
+    if (close && close !== big) {
+      if (isTie(close)) out.push({ tone: 'lime', label: 'Dead heat', fig: f2(close.winner.points),
+        text: `${close.winner.manager} and ${close.loser.manager} tied. Down to the decimal, still nothing.` });
+      else if (margin(close) < TIGHT) out.push({ tone: 'lime', label: 'Photo finish', fig: f2(margin(close)),
+        text: `${close.winner.manager} edged ${close.loser.manager}, ${f2(close.winner.points)} to ${f2(close.loser.points)}. A coin flip with decimals.` });
+      else out.push({ tone: 'lime', label: 'Closest game', fig: f2(margin(close)),
+        text: `${close.winner.manager} beat ${close.loser.manager}, ${f2(close.winner.points)} to ${f2(close.loser.points)}.` });
+    }
+    const top = (w.top_performers || [])[0];
+    if (top) out.push({ tone: 'accent', label: 'Top scorer', fig: f1(top.points),
+      text: `${top.name}, ${top.manager}'s ${POS_WORD[top.pos] || 'starter'}. Frame this one.` });
+    // Ties aren't losses, so only a real loser can be the unlucky one.
+    const unlucky = w.games.filter((g) => !isTie(g)).sort((a, b) => b.loser.points - a.loser.points)[0];
+    if (unlucky) {
+      const beat = w.games.filter((g) => !isTie(g) && g.winner.points < unlucky.loser.points).length;
+      out.push({ tone: 'pink', label: beat ? 'Wrong opponent' : 'Best loss', fig: f2(unlucky.loser.points),
+        text: beat
+          ? `${unlucky.loser.manager} lost with a score that beats ${beat} of this week's winners. The schedule did this.`
+          : `${unlucky.loser.manager} posted the week's highest losing score, which now comes with a sticker.` });
+    }
+    return out;
+  }
+
+  // Before kickoff: no scores yet, so every sticker comes from ESPN's projections,
+  // its win odds, or this week's Coach rows. Each one is skipped when that data isn't there.
+  function preKickoffStickers(w, rows) {
+    const out = [];
+    const proj = (s) => s.live_projection ?? s.projected ?? 0;
+    // ESPN can publish rosters days before projections; all zeros means "not yet".
+    const hasProj = w.games.some((g) => proj(g.winner) > 0 || proj(g.loser) > 0);
+
+    if (hasProj) {
+      // Closest on paper: the smallest gap between two projected totals
+      const gap = (g) => Math.abs(proj(g.winner) - proj(g.loser));
+      const close = [...w.games].sort((a, b) => gap(a) - gap(b))[0];
+      if (close) out.push({ tone: 'lime', label: 'Closest on paper', fig: f1(gap(close)),
+        text: `${close.winner.manager} vs ${close.loser.manager}, projected that far apart.${gap(close) < TIGHT ? ' ESPN is shrugging.' : ''}` });
+    }
+
+    // Heavy favorite: only when ESPN has published win odds, and only when they're lopsided
+    const pairs = w.games.flatMap((g) => [[g.winner, g.loser], [g.loser, g.winner]])
+      .filter(([s]) => s.win_probability != null && s.win_probability >= 0.65);
+    if (pairs.length) {
+      const [fav, opp] = pairs.sort((a, b) => b[0].win_probability - a[0].win_probability)[0];
+      out.push({ tone: 'orange', label: 'Heavy favorite', fig: `${Math.min(99, Math.round(fav.win_probability * 100))}%`,
+        text: `ESPN's odds that ${fav.manager} beats ${opp.manager}. ${opp.manager}, ESPN has been wrong before.` });
+    }
+
+    if (hasProj) {
+      // Top projection: the lineup ESPN likes most this week
+      const top = w.games.flatMap((g) => [g.winner, g.loser]).sort((a, b) => proj(b) - proj(a))[0];
+      out.push({ tone: 'accent', label: 'Top projection', fig: f1(proj(top)),
+        text: `${top.manager} has ESPN's highest projected lineup. No pressure.` });
+    }
+
+    // Busiest to-do list: straight from the Coach rows, framed as help, not homework
+    const busiest = [...rows].sort((a, b) => b.counts.now - a.counts.now)[0];
+    if (busiest && busiest.counts.now) {
+      const n = busiest.counts.now;
+      out.push({ tone: 'pink', label: 'Busiest to-do list', fig: String(n),
+        text: `${busiest.manager} has ${n} ${n === 1 ? 'thing' : 'things'} on her Coach list before kickoff. Coach has her back.` });
+    } else if (rows.length) {
+      out.push({ tone: 'pink', label: 'All clear', fig: '0',
+        text: 'Nobody has anything urgent on Coach. Enjoy it while it lasts.' });
+    }
+
+    return out.slice(0, 4);
+  }
+
   function landingPage(w) {
     const next = leadWithNext();
     const rows = coachRows(next) || [];
     const weekNum = next ? ahead().week : w.week;
+    // Always this week's Coach rows: `rows` can be next week's when this week's list is empty.
+    const stickers = w.complete ? finalStickers(w) : preKickoffStickers(w, advice() || []);
+    const title = w.complete
+      ? (stickers.length ? `Week ${w.week} in ${STICKER_COUNT[stickers.length]} sticker${stickers.length === 1 ? '' : 's'}` : 'This week, wrapped')
+      : `Getting ready for Week ${w.week}`;
     return `
       <div class="page-head">
         <div class="kicker">Week ${w.week} · ${w.complete ? 'in the books' : 'not started yet'}</div>
         <div class="head-row">
-          <h1>${w.complete ? 'This week, wrapped' : `Getting ready for Week ${w.week}`}</h1>
-          ${w.complete ? scorePills(w) : ''}
+          <h1>${title}</h1>
+          ${w.complete && !stickers.length ? scorePills(w) : ''}
         </div>
         <p class="dek">${w.complete
-          ? `Week ${w.week} is final. The official recap drops Tuesday — until then, here's where things stand.`
+          ? `Every game is final. The recap's still being written, so the numbers get the first word.`
           : `Nobody's kicked off yet. Here's the matchup slate and what's worth sorting out before Thursday.`}</p>
       </div>
 
+      ${stickers.length ? `<div class="stickers">${stickers.map(sticker).join('')}</div>` : ''}
+
+      ${w.complete ? `<div class="recap-when"><span class="d">TUE</span><span>The full recap, game balls and flags included, lands Tuesday. Nobody's safe.</span></div>` : ''}
+
       <section>
-        ${secHead('board', w.complete ? 'Final scoreboard' : "This week's matchups")}
-        <p class="sec-sub">${w.complete ? "The recap's not written yet, so this is the whole story for now." : "Projected scores are ESPN's. Tap a team to see her projected lineup."}</p>
-        <div class="games-lite">${w.games.map((g) => landingScoreCard(g, w)).join('')}</div>
+        ${secHead('board', w.complete ? 'Final scores' : "This week's matchups")}
+        ${w.complete
+          ? `<div class="final-lines">${w.games.map((g) => `
+              <a href="#live.game-${g.key}">
+                <span class="w"><span class="ml-w">${isTie(g) ? 'T' : 'W'}</span><b>${esc(g.winner.manager)}</b><span class="num">${f2(g.winner.points)}</span></span>
+                <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
+              </a>`).join('')}</div>`
+          : `<p class="sec-sub">Projected scores are ESPN's. Tap a team to see her projected lineup.</p>
+             <div class="games-lite">${w.games.map((g) => landingScoreCard(g)).join('')}</div>`}
       </section>
 
-      ${w.complete ? `
-      <section>
-        ${secHead('ball', 'Top scorers')}
-        ${leaderList(w.top_performers)}
-      </section>` : ''}
-
-      ${rows.length ? `
-      <section>
-        ${secHead('flag', `Coach: Week ${weekNum}`)}
-        <p class="sec-sub">One line per team. Tap through for her full to-do list and team profile.</p>
-        <div class="teams-lite">${rows.map((a) => landingTeamCard(a)).join('')}</div>
-      </section>` : ''}
+      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}
 
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(w)}</p>`;
   }
@@ -1195,18 +1287,28 @@
       <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
+  /* Her top two items as a mini checklist, most urgent first. build.py already sorts
+     items by level, then puts a lookback or opponent-preview card in front of them, so
+     re-sort here (stable) to let a real to-do outrank that "info" card. */
+  const LEVEL_RANK = { now: 0, watch: 1, info: 2 };
   function coachCard(a, next) {
     const badge = a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
       : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
       : '<span class="todo clear">all clear</span>';
+    const items = [...a.items].sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3));
+    const shown = items.slice(0, 2);
+    const rest = items.length - shown.length;
     return `
-      <a class="coach-card" href="${coachUrl(next, a.team_id)}">
-        <div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>
-        ${badge}
-        <p class="lead">${esc(a.items[0].title)}</p>
-        <span class="go">Open her list →</span>
+      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}">
+        <div class="cc-head"><div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>${badge}</div>
+        ${shown.length ? `<ul class="cc-list">${shown.map((it) => `
+          <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>`
+          : '<p class="lead">Nothing on her list. Suspiciously calm.</p>'}
+        <span class="go">${rest ? `+${rest} more on her list →` : 'Open her list →'}</span>
       </a>`;
   }
+  // Most to fix first, then most to watch; ties keep ESPN's team order.
+  const byUrgency = (rows) => [...rows].sort((x, y) => (y.counts.now - x.counts.now) || (y.counts.watch - x.counts.watch));
 
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
@@ -1222,7 +1324,7 @@
           : `Every team's to-do list for Week ${week}: who to swap in, who's hurt, and which spot is about to score nothing. Tap your name.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <section style="margin-top:18px">
-        <div class="coach-grid">${coachRows(next).map((a) => coachCard(a, next)).join('')}</div>
+        <div class="coach-grid">${byUrgency(coachRows(next)).map((a) => coachCard(a, next)).join('')}</div>
       </section>
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
