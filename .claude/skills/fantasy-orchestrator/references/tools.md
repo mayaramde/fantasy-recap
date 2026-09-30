@@ -14,7 +14,7 @@ unreachable tool degrades the pipeline, it doesn't stop it outright. Reviewed on
 | browser-network-debug | Chrome DevTools MCP (structured network/console/perf access) | Claude in Chrome's existing console/network tools | **not configured** — public preview, not yet installed | 2026-09-29 |
 | secret-scan | Gitleaks MCP wrapper (blocks ESPN cookies from landing in a diff) | manual `git diff` review before commit, plus `guard_bash.py`'s existing secret-path denials | **not configured** — not yet installed | 2026-09-29 |
 | site-visual-check | Playwright MCP (deterministic browser control for visual-checking the built site) | the user's own review of the deployed preview URL | **not configured** — not yet installed | 2026-09-29 |
-| voice-lint | Vale MCP wrapper (prose-pattern linting for jargon/glossary-count issues) | `recap-fact-checker`'s manual voice-and-jargon pass | **not configured** — not yet installed | 2026-09-29 |
+| voice-lint | Vale MCP wrapper (prose-pattern linting for jargon/glossary-count issues) | `recap-fact-checker`'s manual jargon pass | **not configured** — not yet installed | 2026-09-29 |
 
 The five roles marked "not configured" were accepted during tool discovery on 2026-09-29 but
 registering a role here is not the same as installing the tool — nothing runs against them

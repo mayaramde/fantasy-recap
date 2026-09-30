@@ -86,8 +86,8 @@ publishing something unverified or looping forever.
 `voice-check` agent on it (the `Agent` tool, `subagent_type: voice-check`), passing the draft's
 path and, for a partial revision like one blurb or the glossary, which fields changed so it
 judges those rather than re-litigating the whole recap. It reads `CLAUDE.md`'s Voice section
-and the calibration recaps itself. The fact-checker already gives a voice verdict; this is a
-second, independent pass that returns concrete rewrites.
+and the calibration recaps itself. The fact-checker doesn't judge tone, so this is the only
+voice check; it returns concrete rewrites.
 
 - **reads as intended** → the draft is ready for `recap-ship`.
 - **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise exactly
