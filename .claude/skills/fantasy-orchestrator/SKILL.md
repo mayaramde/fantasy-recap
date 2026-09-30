@@ -45,7 +45,9 @@ Before anything else, sort the request:
 **Context check** — figure out which stage of the pipeline the request is actually asking for:
 
 1. Identify the target season/week. Default to the most recent week that's final but has no recap yet (check the Live page / most recent `data/<season>/week-NN/` capture against `recaps/<season>/`); use an explicit week if the user names one.
-2. Look for `recaps/<season>/week-NN.json` and read its `status` if it exists:
+2. Look for `recaps/<season>/week-NN.json` on an up-to-date `main` (`git fetch origin`, then
+   check `origin/main`) and on any open `recap-week-NN` PR (drafts auto-merge, so a stale local
+   checkout can miss one). Read its `status` if it exists:
    - **Absent** → this is a new recap. Go to Phase 1 (recap-capture), then Phase 2 (recap-write).
    - **Present, `status: "draft"`** → a revision. If the request implies the underlying data might have changed (re-capture explicitly asked for, or the data looks stale), go to Phase 1 first; otherwise skip straight to Phase 2 (recap-write) with the existing draft as input.
    - **Present, `status: "published"`** → nothing left to draft or revise. A request to "redo" a published week is unusual — confirm with the user what they actually want (a correction PR is different from a normal draft cycle) rather than assuming.

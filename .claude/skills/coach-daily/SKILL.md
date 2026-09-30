@@ -110,7 +110,7 @@ is the archive):
 {
   "generated_at": "<ISO-8601 UTC timestamp for right now>",
   "league_key": "<league.json's fantasypros_league_key>",
-  "trade_finder_disclosure_shown": true,
+  "trade_finder_disclosure_shown": <yesterday's value, or true if you relayed it this run>,
   "weeks": {
     "<week number>": {
       "teams": {

@@ -13,7 +13,7 @@ pyproject.toml
 uv.lock
 .vercel
 .env*
-# Template only, no real values: see CLAUDE.md's ESPN data source fallback.
+# Template only, no real values: see the recap-capture skill's 401 fallback.
 !.env.espn.local.example
 node_modules/
 

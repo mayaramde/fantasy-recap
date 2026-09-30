@@ -17,8 +17,9 @@ from `.env.espn.local`, a file Maya fills in herself; you never read or write it
 ## Step 0: get on the right branch
 
 Only do this for a *new* recap (fantasy-orchestrator's context check found no
-`recaps/2026/week-NN.json` yet) — a re-capture for an existing draft stays on that draft's
-existing branch.
+`recaps/2026/week-NN.json` yet). A re-capture for an existing draft happens wherever
+`recap-write` will revise it: the open draft PR's branch, or `recap-week-NN-rev` from `main`
+if that PR already merged.
 
 1. `git checkout main && git pull`. If checkout fails because of uncommitted changes, **stop
    and tell the user** — don't stash, reset, or discard anything that might be someone else's
@@ -26,8 +27,8 @@ existing branch.
 2. Use the week `fantasy-orchestrator` picked (the user's explicit week, else the most recent
    final week with no recap). If that week is past 17, the regular season is over: stop and
    tell the user rather than capturing a week that can't exist.
-3. Create branch `recap-week-NN` (zero-padded, e.g. `recap-week-04`) and switch to it. Every
-   later step in this pipeline (write, fact-check, ship) happens on this same branch.
+3. Create branch `recap-week-NN` (zero-padded, e.g. `recap-week-04`) and switch to it. Write,
+   fact-check, and the draft PR happen on this branch; `recap-ship` publishes from its own.
 
 ## Steps
 

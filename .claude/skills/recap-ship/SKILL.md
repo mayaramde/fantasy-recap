@@ -27,21 +27,24 @@ fact-check included, then a fresh preview.
 
 ## Step 2: publish (only after approval)
 
-1. Get onto a branch that has the draft: `recap-week-NN` if its PR is still open, otherwise a
-   new `publish-week-NN` branch from an up-to-date `main`.
-2. Set `"status": "published"` in `recaps/2026/week-NN.json`.
-3. Run `scripts/deploy.sh` to ship the league site.
+1. The `Week NN recap draft` PR must have merged. If it hasn't, wait for it (or fix whatever
+   is blocking `checks`); don't publish from the draft branch.
+2. `git checkout main && git pull`, then create `publish-week-NN`. Branching from an
+   up-to-date `main` also guarantees every earlier published week is in the tree, so the
+   deploy can't pull one off the live site. If checkout fails on uncommitted changes, stop and
+   tell Maya; don't stash or discard them.
+3. Set `"status": "published"` in `recaps/2026/week-NN.json`.
+4. Run `python3 scripts/check.py` and fix anything it flags. A published recap's problems
+   always block, where a draft's may only have warned, so this must pass **before** deploying.
+5. Run `scripts/deploy.sh` to ship the league site.
 
 ## Step 3: publish PR
-
-Run `python3 scripts/check.py` first and fix anything it flags. Then:
 
 1. Commit **only** `recaps/2026/week-NN.json`, plus `data/2026/week-NN/`,
    `data/player_names.json`, or already-committed weeks' `facts.json` if they changed. Never
    `git add -A`, and never sweep in another week's uncommitted data.
-2. Push and open a PR titled `Publish week NN recap` (or push to the open draft PR if you stayed
-   on `recap-week-NN`). Enable auto-merge (squash); it merges once `checks` passes. Don't merge
-   it yourself. Until it merges, `site_guard.py` keeps the cloud live update from deploying over
+2. Push and open a PR titled `Publish week NN recap`. Enable auto-merge (squash); it merges
+   once `checks` passes. Don't merge it yourself. Until it merges, `site_guard.py` keeps the cloud live update from deploying over
    the published recap.
 
 **If the diff includes anything beyond `recaps/`/`data/`** (a change to `scripts/`, `site/`, or

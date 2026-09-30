@@ -20,7 +20,8 @@ a flat stats recap. Voice is as hard a gate as the rest: a numerically
 perfect recap with no personality fails.
 
 When invoked:
-1. Read the draft recap JSON, that week's `facts.json` and `espn.json`, and
+1. Read the draft recap JSON, that week's `facts.json` and `espn.json`, earlier weeks'
+   `recaps/<season>/week-*.json` (for glossary repeats), and
    whatever FantasyPros context the caller hands you (injury/news snippets
    recap-write used while writing). If any of these paths don't exist, say
    so and stop — don't guess at what a missing file would have said.

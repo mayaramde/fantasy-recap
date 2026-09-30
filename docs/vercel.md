@@ -102,10 +102,8 @@ Vercel's servers without needing any build-time integration. The script tag is a
 in `site/build.py` in the `standalone()` function, so it's included in every generated
 HTML page.
 
-The standard `@vercel/analytics` npm package approach wouldn't work here because:
-- Vercel's package-based analytics requires paths added during Vercel's build step
-- This project uses `--prebuilt` which skips Vercel's build (§3)
-- The CDN script bypasses this limitation by reporting to Vercel's own servers
+The `@vercel/analytics` npm package needs a JavaScript framework build to inject it; this
+site is static HTML written by `site/build.py`, so a plain script tag is the simpler fit.
 
 Analytics data appears in the Vercel dashboard after the site receives traffic. The
 script loads with `defer`, so it doesn't block page rendering.
@@ -161,8 +159,6 @@ header comment of `.github/workflows/live-update.yml`.
 
 - **Changing an environment variable doesn't change the live site.** It applies to
   the *next* deployment. Always redeploy after.
-- **Anything under `/_vercel/` 404s on this site.** Those paths are wired up by
-  Vercel's own server-side build, which we skip (§3). Never a bug in our code.
 - **Share the alias, never a deployment URL.** Send the league
   `fantasyforthegirls.vercel.app`. Whether a long `fantasy-recap-xxxxx-maya-fd13.vercel.app`
   URL (including every `--preview` deploy) opens for anyone with the link or redirects to a

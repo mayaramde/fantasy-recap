@@ -77,9 +77,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
-  `check.py` + `check_recaps.py` (the CI `checks` gate), `deploy.sh` + `vercel_build.sh` (deploy),
+  `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
-- `tests/`: pytest for `check_recaps.py` and the Bash guard hook
+- `tests/`: unittest suites for `check_recaps.py` and the Bash guard hook (also run by `checks`)
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages
