@@ -6,19 +6,28 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
 
 ## Schedule
 
-- **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions): hourly during NFL game windows plus a
-  daily 7:30 AM EDT run. Captures the current week headlessly (`scripts/capture_node.mjs`, same `capture.js`
-  trimming), then the week after it (`capture_node.mjs next`) for the Coach page, a step allowed to fail without
-  taking the live scores down with it. Then analyze + check, then `scripts/site_guard.py` refuses to deploy if the
-  live site has a published recap that `main` doesn't (a recap shipped from the Mac whose PR hasn't merged). Then
-  `scripts/deploy.sh`. Nothing is committed. A failure email saying "ESPN 401" means the ESPN cookie secrets expired.
+- **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions) runs on two kinds of trigger:
+  - **Scheduled**: hourly during NFL game windows plus a daily 7:30 AM EDT run (see the workflow's own cron
+    comments for the exact holiday-window coverage). Captures the current week headlessly
+    (`scripts/capture_node.mjs`, same `capture.js` trimming), then the week after it (`capture_node.mjs next`) for
+    the Coach page, a step allowed to fail without taking the live scores down with it. Skips the rest of the run
+    once that week's recap is already published — nothing left to show live.
+  - **Push to `main`**, scoped to the paths that affect the site (`recaps/`, `data/`, `site/`, `scripts/`, `api/`,
+    `league.json`, `vercel.json`): deploys within minutes of a merge, and — unlike the scheduled trigger — never
+    skips, since it fires because something (often a just-published recap or a coach-daily snapshot) needs to go
+    live now.
+  - Either way: analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published
+    recap that `main` doesn't (a recap shipped from the Mac whose PR hasn't merged), then `scripts/deploy.sh`.
+    Nothing is committed. On failure, a step opens (or comments on) a GitHub issue — a message mentioning "ESPN
+    401" means the ESPN cookie secrets expired, in both GitHub Actions secrets and the matching Vercel env vars.
 - **`fantasy-weekly-recap`** runs Tuesdays around 8:15 AM: invokes `fantasy-orchestrator` to capture last week
   (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
-  there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR.
+  there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging
+  that PR is what triggers the push-deploy above.
 - **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
   (start/sit, waiver and trade leads, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
   and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
-  session, and it never deploys; the next live-update run picks up the merged snapshot.
+  session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
 ## Live page

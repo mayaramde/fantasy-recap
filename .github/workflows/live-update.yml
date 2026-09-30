@@ -1,7 +1,9 @@
 name: live-update
 
 # Refreshes the website's Live page from ESPN, hourly while NFL games are on, and the
-# Coach page's week-ahead tab with it.
+# Coach page's week-ahead tab with it. Also deploys promptly whenever something that
+# affects the live site merges to main (a published recap, a coach-daily snapshot, a
+# scripts/site/api change) — see the `push` trigger below.
 # Data only: capture, analyze, build, deploy. Nothing is committed.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
@@ -11,6 +13,16 @@ name: live-update
 # opens (or comments on) a GitHub issue when that happens, see "Alert on failure" below.
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "recaps/**"
+      - "data/**"
+      - "site/**"
+      - "scripts/**"
+      - "api/**"
+      - "league.json"
+      - "vercel.json"
   schedule:
     # Times are UTC; NFL kickoffs are Eastern (UTC-4 until early November, then UTC-5).
     # Minute 7, not 0: GitHub runs scheduled workflows best-effort, and the top of the hour
@@ -34,6 +46,10 @@ on:
     inputs:
       simulate_failure:
         description: "Force this run to fail right after checkout, to test the alert step below without touching ESPN, Vercel, or a real capture"
+        type: boolean
+        default: false
+      deploy_preview:
+        description: "Deploy to a throwaway preview URL instead of the live site — for testing this workflow's deploy path by hand before trusting it on a real push"
         type: boolean
         default: false
 
@@ -85,18 +101,31 @@ jobs:
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
         run: node scripts/capture_node.mjs next
 
+      # Scheduled runs skip when nothing's changed (the week they'd show is already
+      # published — the recap did the work already). Two triggers must NEVER skip: a push
+      # to main, which fires *because* something (often exactly that publish) just landed;
+      # and a manual deploy_preview dispatch, which exists specifically to test this
+      # workflow's deploy path and would otherwise silently no-op most weeks.
       - name: Skip if that week's recap is already published
         id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DEPLOY_PREVIEW: ${{ github.event.inputs.deploy_preview }}
         run: |
           python3 - <<'PY'
           import json, os
           from pathlib import Path
-          week = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "capture.json")))[0]["week"]
-          recap = Path(f"recaps/2026/week-{week:02d}.json")
-          done = recap.exists() and json.loads(recap.read_text()).get("status") == "published"
-          print(f"week {week}: " + ("recap published, nothing live to show" if done else "live"))
-          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"skip={'true' if done else 'false'}\n")
+          if os.environ["EVENT_NAME"] == "push" or os.environ.get("DEPLOY_PREVIEW") == "true":
+              print("push to main, or a manual preview-deploy test: always deploy, never skip")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("skip=false\n")
+          else:
+              week = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "capture.json")))[0]["week"]
+              recap = Path(f"recaps/2026/week-{week:02d}.json")
+              done = recap.exists() and json.loads(recap.read_text()).get("status") == "published"
+              print(f"week {week}: " + ("recap published, nothing live to show" if done else "live"))
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write(f"skip={'true' if done else 'false'}\n")
           PY
 
       - name: Analyze and check
@@ -115,14 +144,21 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+          DEPLOY_PREVIEW: ${{ github.event.inputs.deploy_preview }}
         run: |
           npm install --global vercel@60
           # `vercel build` builds api/live.py with Vercel's Python runtime, which shells
           # out to uv. Vercel's own builders and the Mac have it; a runner doesn't, and
           # without it the build stops at "uv is required but was not found in PATH".
           python3 -m pip install --quiet uv
-          scripts/deploy.sh
-          test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasy-recap-eight.vercel.app)" = 200
+          if [ "$DEPLOY_PREVIEW" = "true" ]; then
+            # Manual dry run of this workflow's deploy path (used before trusting the
+            # push trigger on a real merge) — a throwaway URL, never the live site.
+            scripts/deploy.sh --preview
+          else
+            scripts/deploy.sh
+            test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasy-recap-eight.vercel.app)" = 200
+          fi
 
       # Fires on any failed step above, including the simulate_failure test step. Comments
       # on the existing alert issue instead of opening a new one, so a bad Sunday (several

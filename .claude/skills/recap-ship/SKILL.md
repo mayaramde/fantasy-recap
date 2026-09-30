@@ -35,8 +35,8 @@ fact-check and voice gate included, then a fresh preview.
    tell Maya; don't stash or discard them.
 3. Set `"status": "published"` in `recaps/2026/week-NN.json`.
 4. Run `python3 scripts/check.py` and fix anything it flags. A published recap's problems
-   always block, where a draft's may only have warned, so this must pass **before** deploying.
-5. Run `scripts/deploy.sh` to ship the league site.
+   always block, where a draft's may only have warned, so this must pass **before** the PR
+   can merge.
 
 ## Step 3: publish PR
 
@@ -51,7 +51,16 @@ fact-check and voice gate included, then a fresh preview.
 `.github/`), call the `code-reviewer` agent on that part of the diff before opening the PR and
 surface its findings to Maya. Don't proceed silently if it flags something.
 
+## Step 4: nothing to do — CI deploys
+
+Once the publish PR merges, `live-update.yml`'s `push` trigger deploys the live site within
+minutes on its own; the Mac is no longer in this path. Don't run `scripts/deploy.sh` yourself
+as part of this skill — that's now a manual backstop (see `docs/vercel.md` §3), not a routine
+step, and running it here would just race the same deploy CI is about to do. If the site
+hasn't updated a few minutes after the PR merges, check the `live-update` workflow's run log
+before reaching for `scripts/deploy.sh` by hand.
+
 ## Output
 
-The live site updated, `status: "published"` committed, a PR open with auto-merge on, plus
-`code-reviewer`'s findings if it ran.
+`status: "published"` committed, the publish PR open with auto-merge on (CI deploys once it
+merges), plus `code-reviewer`'s findings if it ran.

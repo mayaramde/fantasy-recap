@@ -38,31 +38,40 @@ destructive. The previous one still exists, and rolling back just moves the poin
 Log in at [vercel.com](https://vercel.com) and the project is on the dashboard. Or
 from this repo, `vercel ls` prints the recent deployments without opening a browser.
 
-## 3. How code gets live here (and why `git push` does nothing)
+## 3. How code gets live here (and why Vercel's own git integration is off)
 
-Normally Vercel watches your GitHub repo and deploys every push. **We turned that
-off.** In `vercel.json`:
+Normally Vercel watches your GitHub repo and builds-and-deploys every push, on Vercel's
+own servers. **We turned that off.** In `vercel.json`:
 
 ```json
 { "git": { "deploymentEnabled": false } }
 ```
 
-The reason: the Live page is built from ESPN data captured on Maya's Mac that
-isn't committed. A git-triggered deploy would build from the repo alone and
-publish a site with that data missing. Turning it off means a merge can never
-silently wipe the Live page.
+The reason: the Live page is built from ESPN data captured on Maya's Mac (or in CI) that
+isn't committed for the in-progress week. A build on Vercel's own servers would build from
+the repo alone and publish a site with that data missing. Turning off Vercel's *own* git
+integration means a merge can never silently wipe the Live page that way.
 
-So the only thing that changes the site is **`scripts/deploy.sh`**. It runs
-`vercel build` on the machine it's on (which calls `scripts/vercel_build.sh` →
-`site/build.py`), then uploads the finished bundle with `vercel deploy --prebuilt`.
-Vercel's servers never build anything for this project.
+So the only thing that changes the site is **`scripts/deploy.sh`**. It runs `vercel build`
+on the machine it's on (which calls `scripts/vercel_build.sh` → `site/build.py`), then
+uploads the finished bundle with `vercel deploy --prebuilt`. Vercel's servers never build
+anything for this project — every build happens on a machine we control, one that can
+capture fresh ESPN data first.
 
-Two things run that script:
+Three things run that script:
 
-1. **GitHub Actions** — the `live-update` workflow, hourly during games plus a
-   daily morning run. It checks out `main`, so it can only deploy what has been merged.
-2. **This Mac** — any time `scripts/deploy.sh` is run by hand, including when a
-   recap is previewed or published.
+1. **GitHub Actions, scheduled** — the `live-update` workflow's cron schedule, hourly
+   during games plus a daily morning run. It captures the current week fresh from ESPN
+   before deploying, so the in-progress week is never missing.
+2. **GitHub Actions, on push** — the same workflow also has a `push` trigger, scoped to
+   the paths that actually affect the site (`recaps/`, `data/`, `site/`, `scripts/`, `api/`,
+   `league.json`, `vercel.json`). This is what gets a merged recap live within minutes
+   instead of waiting for the next scheduled run — it's a GitHub Actions job calling our
+   own build script, not Vercel's git integration, so the "isn't committed yet" problem
+   above doesn't apply: a published recap's data is committed by the time this fires.
+3. **This Mac** — any time `scripts/deploy.sh` is run by hand. With the push trigger in
+   place this is a backstop, not the routine path — useful if CI is down or for a quick
+   manual check, but `recap-ship` no longer runs it as a normal step.
 
 Worth saying plainly, because it surprises everyone:
 

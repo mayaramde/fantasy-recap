@@ -86,7 +86,10 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
 - **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
-  bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
+  bundle. Vercel's own git integration is off in `vercel.json` — a merge alone can't build-and-wipe the Live page —
+  but a push to `main` touching `recaps/`, `data/`, `site/`, `scripts/`, `api/`, `league.json`, or `vercel.json` does
+  trigger `live-update.yml` to run that same `scripts/deploy.sh` within minutes (`docs/vercel.md` §3). `scripts/deploy.sh`
+  run by hand stays as a manual backstop. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
   `/api/live` keeps the Live page fresh between deploys; without the `ESPN_S2`/`ESPN_SWID` Vercel env vars it
   answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
