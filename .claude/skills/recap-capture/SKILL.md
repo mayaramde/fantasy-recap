@@ -1,49 +1,34 @@
 ---
 name: recap-capture
 description: Captures a week's ESPN fantasy data (rosters, scores, projections) and runs analyze.py to produce facts.json. Invoked by fantasy-orchestrator as the first step of drafting or redoing a recap — don't invoke this directly for a user-facing request; route through fantasy-orchestrator first. Also fires on an explicit standalone request like "capture week N" or "re-run the ESPN capture for this week".
-tools: Bash, Read
 model: inherit
 ---
 
 # Recap capture
 
-Gets one week's ESPN data onto disk and turns it into `facts.json`. This is
-weekly routine steps 1-2 (CLAUDE.md), extracted here since it's the same
-procedure whether it's run as part of drafting a recap or on its own.
+Gets one week's ESPN data onto disk and turns it into `facts.json`, whether as the first
+step of a recap or on its own.
 
-## Why Chrome, and why never touch the cookies
-
-The league is private, so ESPN's API needs an authenticated session.
-**Claude in Chrome**, using Maya's own logged-in session, is the default and
-the only way *you* (the agent) ever touch ESPN's private data — never ask
-for, copy, print, or store `espn_s2`/`SWID` or any other credential.
-
-There are exactly two cookie-based fallbacks, and neither involves you
-reading a cookie value — a *script* consumes them, never you:
-1. The cloud live update (`live-update.yml`) reads `ESPN_S2`/`ESPN_SWID`
-   from GitHub Actions secrets Maya set herself.
-2. On Maya's Mac, if the Chrome capture 401s (her ESPN session logged out)
-   and `.env.espn.local` exists (she copies `.env.espn.local.example` and
-   fills in real values from Chrome DevTools herself — you never do this
-   for her), fall back to `node scripts/capture_node.mjs N`.
-
-Chrome is always the first attempt. The fallback is for when Chrome *can't*
-authenticate, not a routine alternative.
+**Claude in Chrome**, on Maya's logged-in session, is always the first attempt and the only
+way you touch ESPN's private data. Never ask for, copy, print, or store `espn_s2`/`SWID`
+(CLAUDE.md, Data sources). The one local fallback, Step 5, has a script read the cookies
+from `.env.espn.local`, a file Maya fills in herself; you never read or write it.
 
 ## Step 0: get on the right branch
 
 Only do this for a *new* recap (fantasy-orchestrator's context check found no
-`recaps/2026/week-NN.json` yet) — a re-capture for an existing draft stays on that draft's
-existing branch.
+`recaps/2026/week-NN.json` yet). A re-capture for an existing draft happens wherever
+`recap-write` will revise it: the open draft PR's branch, or `recap-week-NN-rev` from `main`
+if that PR already merged.
 
 1. `git checkout main && git pull`. If checkout fails because of uncommitted changes, **stop
    and tell the user** — don't stash, reset, or discard anything that might be someone else's
    in-progress work.
-2. Work out the target week: one more than the highest week number in `recaps/2026/`. If that
-   week is past 17, the regular season is over — stop and tell the user rather than capturing
-   a week that can't exist.
-3. Create branch `recap-week-NN` (zero-padded, e.g. `recap-week-04`) and switch to it. Every
-   later step in this pipeline (write, fact-check, ship) happens on this same branch.
+2. Use the week `fantasy-orchestrator` picked (the user's explicit week, else the most recent
+   final week with no recap). If that week is past 17, the regular season is over: stop and
+   tell the user rather than capturing a week that can't exist.
+3. Create branch `recap-week-NN` (zero-padded, e.g. `recap-week-04`) and switch to it. Write,
+   fact-check, and the draft PR happen on this branch; `recap-ship` publishes from its own.
 
 ## Steps
 
@@ -66,10 +51,10 @@ existing branch.
    starts, so there's no reason to keep an old copy around.
 5. **If ESPN returns 401** (Maya's Chrome session logged out): check whether `.env.espn.local`
    exists. If it does, stop the Chrome attempt (kill `receive.py`, close the tab) and fall back
-   to `node scripts/capture_node.mjs N` — same output file, same `complete` field to check. If
-   it doesn't exist, or the fallback also fails, **stop and tell the user** what's missing (see
-   CLAUDE.md's Data sources section for the exact setup) — don't guess at data or proceed with
-   a partial capture.
+   to `node scripts/capture_node.mjs N`, same output file, same `complete` field to check. If
+   it doesn't exist, or the fallback also fails, **stop and tell the user** what's missing
+   (she copies `.env.espn.local.example` and fills it in from Chrome DevTools herself). Don't
+   guess at data or proceed with a partial capture.
 6. **If the capture reports `complete: false`** (a game is still in progress or stats haven't
    settled): stop without drafting anything, switch back to `main`, delete the empty
    `recap-week-NN` branch you created in Step 0, and tell the user to try again later. Keep the

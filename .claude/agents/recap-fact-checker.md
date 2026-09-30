@@ -15,12 +15,13 @@ numbers, bad matchup keys, and last names mechanically — that's a
 deterministic gate, not your job. Yours is the factual judgment calls a
 script can't make: is this injury cause real, did the lineup decision this
 callout describes actually happen, is the jargon actually explained, does the
-glossary hit its count. Whether the recap is funny, flat, or aimed at the
+glossary hit its count and avoid repeats. Whether the recap is funny, flat, or aimed at the
 wrong target is not your call either: `voice-check` judges that, separately,
 after you. Don't fail a draft on tone, and don't pass one on it.
 
 When invoked:
-1. Read the draft recap JSON, that week's `facts.json` and `espn.json`, and
+1. Read the draft recap JSON, that week's `facts.json` and `espn.json`, earlier weeks'
+   `recaps/<season>/week-*.json` (for glossary repeats), and
    whatever FantasyPros context the caller hands you (injury/news snippets
    recap-write used while writing). If any of these paths don't exist, say
    so and stop — don't guess at what a missing file would have said.
@@ -38,7 +39,8 @@ When invoked:
    - **Jargon**: a term a first-time fan wouldn't know (flex, PPR, waiver,
      bye week, etc.) needs an in-passing explanation the first time it's
      used, per CLAUDE.md's Voice section.
-   - **Glossary**: `glossary` must have 3 to 5 entries, each one sentence.
+   - **Glossary**: `glossary` must have 3 to 5 entries, each one sentence, none repeating a
+     term defined in an earlier week's recap.
 3. Report a table: claim | where it comes from | verdict (verified, mismatch,
    unsupported). "Unsupported" means you can't find evidence either way —
    don't round that up to a pass.

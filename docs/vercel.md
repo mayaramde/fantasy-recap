@@ -19,7 +19,7 @@ Almost everything in the dashboard is one of these:
   currently "the site". Ours is **fantasyforthegirls.vercel.app**. Deploying to
   production means: make a new deployment, then move this pointer to it.
 - **Environment variable** — a named secret or setting handed to code at runtime,
-  so it isn't written in the repo. Ours will hold the ESPN login cookies.
+  so it isn't written in the repo. Ours hold the ESPN login cookies.
 
 The useful consequence of "deployments are frozen": a bad deploy is never
 destructive. The previous one still exists, and rolling back just moves the pointer.
@@ -52,16 +52,17 @@ isn't committed. A git-triggered deploy would build from the repo alone and
 publish a site with that data missing. Turning it off means a merge can never
 silently wipe the Live page.
 
-So the only thing that changes the site is **`scripts/deploy.sh`**, which builds
-locally and uploads the finished folder (`vercel deploy --prebuilt`). Vercel does
-no building of its own for this project.
+So the only thing that changes the site is **`scripts/deploy.sh`**. It runs
+`vercel build` on the machine it's on (which calls `scripts/vercel_build.sh` →
+`site/build.py`), then uploads the finished bundle with `vercel deploy --prebuilt`.
+Vercel's servers never build anything for this project.
 
 Two things run that script:
 
-1. **This Mac** — the `fantasy-live-update` task each morning, plus any time you
-   run `scripts/deploy.sh` by hand.
-2. **GitHub Actions** — the `live-update` workflow, hourly during games. It checks
-   out `main`, so it can only deploy what has been merged.
+1. **GitHub Actions** — the `live-update` workflow, hourly during games plus a
+   daily morning run. It checks out `main`, so it can only deploy what has been merged.
+2. **This Mac** — any time `scripts/deploy.sh` is run by hand, including when a
+   recap is previewed or published.
 
 Worth saying plainly, because it surprises everyone:
 
@@ -82,7 +83,7 @@ Open the project and you'll see a row of tabs. These are the ones that matter:
   real requests: status codes, errors, how long it took. The only way to see why
   the Live page isn't refreshing.
 - **Settings → Environment Variables** — where the ESPN cookies go. See §5.
-- **Analytics** — enabled, but collects nothing on this project. See §5a for why.
+- **Analytics** — page views, via the CDN script described in §5a.
 - **Settings → General** — the project name, and the delete button. Rarely needed.
 
 Everything else in that navigation (Storage, Firewall, Flags, AI, Integrations,
@@ -101,10 +102,8 @@ Vercel's servers without needing any build-time integration. The script tag is a
 in `site/build.py` in the `standalone()` function, so it's included in every generated
 HTML page.
 
-The standard `@vercel/analytics` npm package approach wouldn't work here because:
-- Vercel's package-based analytics requires paths added during Vercel's build step
-- This project uses `--prebuilt` which skips Vercel's build (§3)
-- The CDN script bypasses this limitation by reporting to Vercel's own servers
+The `@vercel/analytics` npm package needs a JavaScript framework build to inject it; this
+site is static HTML written by `site/build.py`, so a plain script tag is the simpler fit.
 
 Analytics data appears in the Vercel dashboard after the site receives traffic. The
 script loads with `defer`, so it doesn't block page rendering.
@@ -115,9 +114,9 @@ script loads with `defer`, so it doesn't block page rendering.
 marked sensitive — which makes them write-only. Even you can't read them back from the
 dashboard, only overwrite them. That's the right setting for these.
 
-Nothing reads them yet. They exist for the `/api/live` function, which recomputes the
-current week from ESPN per request; the PR that added it was closed, so it isn't in the
-repo right now. If that work comes back, these are already in place.
+The `/api/live` function (`api/live.py`) reads them to recompute the current week from
+ESPN per request, which is how the Live page refreshes between deploys. Without them it
+answers 503 and the page keeps showing the numbers baked in at deploy time.
 
 To add or replace one:
 
@@ -138,7 +137,7 @@ This is the most confusing part of the setup, and it isn't a mistake:
 | Where | Who reads it | What for |
 |---|---|---|
 | **GitHub Actions secrets** (repo → Settings → Secrets and variables → Actions) | `scripts/capture_node.mjs` in the `live-update` workflow | Capturing the week in CI, before deploying |
-| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site, once it exists | Answering `/api/live` when someone opens the page |
+| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site | Answering `/api/live` when someone opens the page |
 
 Same two values, two completely separate systems. Neither can see the other's
 copy. **When the ESPN cookies expire, both need updating** — otherwise you fix one
@@ -160,12 +159,11 @@ header comment of `.github/workflows/live-update.yml`.
 
 - **Changing an environment variable doesn't change the live site.** It applies to
   the *next* deployment. Always redeploy after.
-- **Anything under `/_vercel/` 404s on this site.** Those paths are wired up by
-  Vercel's own build step, which we skip (§5a). Never a bug in our code.
-- **Deployment URLs are private; the aliases are public.** A long
-  `fantasy-recap-xxxxx-maya-fd13.vercel.app` URL redirects to a Vercel login, so it's
-  useless to send to the league — share `fantasyforthegirls.vercel.app` instead. Handy
-  the other way round too: a stray deployment link can't leak the site.
+- **Share the alias, never a deployment URL.** Send the league
+  `fantasyforthegirls.vercel.app`. Whether a long `fantasy-recap-xxxxx-maya-fd13.vercel.app`
+  URL (including every `--preview` deploy) opens for anyone with the link or redirects to a
+  Vercel login depends on **Settings → Deployment Protection**. Check it there before
+  relying on either; this doc doesn't record which it is right now.
 - **Rolling back is safe.** Deployments → pick a good one → promote. The pointer
   moves; nothing is rebuilt or lost.
 
