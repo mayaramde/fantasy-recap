@@ -222,10 +222,7 @@
   .ml-name a:hover { text-decoration: underline; }
   .ml-num { font: 700 20px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
   .ml-num small { display: block; margin-top: 3px; font: 500 10px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .ml-row.ml-lose .ml-name, .ml-row.ml-lose .ml-num { color: var(--muted); font-weight: 600; }
-  .ml-row.ml-win { background: var(--accent-soft); }
   .ml-w { flex: none; font: 700 10.5px/1 var(--mono); padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--edge); background: var(--lime); color: var(--on-pop); transform: rotate(-4deg); }
-  .ml-note { margin: 0; padding: 9px 16px 11px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); font-style: italic; }
   /* Pre-kickoff card: each side is its own <details>, the score row is the toggle, and that
      side's lineup opens directly underneath it. Cobalt for the first side, bubblegum for the second. */
   .ml-team + .ml-team { border-top: 2px solid var(--edge); }
@@ -679,30 +676,10 @@
       </a>`;
   }
 
-  // A real recap hasn't been written yet for this matchup, so this stands in for one —
-  // varied per game (picked off a team id) so eight of these in a row don't repeat.
-  const RECAP_PENDING = [
-    "The recap's still marinating. Full breakdown — and the roasting — drops Tuesday.",
-    "Somebody's writing jokes about this one right now. Hang tight.",
-    "Nothing to read here yet. The real commentary lands Tuesday.",
-    "The numbers are in. The jokes are still in committee. Back Tuesday.",
-  ];
-
-  // The landing page's own matchup card: one line of score, no detour into a box score
-  // that either isn't written up yet (week's over, recap pending) or doesn't exist yet
-  // (nobody's played). A finished week gets a placeholder for the recap to come; a week
-  // that hasn't kicked off gets an expandable look at each side's projected lineup instead
-  // of a live box score link, since there's no live box score to open.
-  function landingScoreCard(g, w) {
-    if (w.complete) {
-      const note = RECAP_PENDING[g.winner.team_id % RECAP_PENDING.length];
-      return `
-        <div class="matchup-lite">
-          <div class="ml-row ml-win"><span class="ml-name">${mgrLink(g.winner.manager)}<span class="ml-w">W</span></span><span class="ml-num"><span class="ml-pill">${f2(g.winner.points)}</span></span></div>
-          <div class="ml-row ml-lose"><span class="ml-name">${mgrLink(g.loser.manager)}</span><span class="ml-num">${f2(g.loser.points)}</span></div>
-          <p class="ml-note">${esc(note)}</p>
-        </div>`;
-    }
+  // The landing page's matchup card for a week that hasn't kicked off: an expandable look
+  // at each side's projected lineup, since there's no live box score to open yet. (A
+  // finished week gets the compact .final-lines rows in landingPage instead.)
+  function landingScoreCard(g) {
     const team = (s, tone) => {
       const starters = [...s.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
       return `
@@ -981,34 +958,49 @@
       <p>${esc(x.text)}</p>
     </article>`;
 
+  // Plain words for a position, so a first-season reader isn't handed "RB".
+  const POS_WORD = { QB: 'quarterback', RB: 'running back', WR: 'receiver', TE: 'tight end', K: 'kicker', DST: 'defense' };
+  // A game this close earns "photo finish" / "anything goes"; past it, the sticker says
+  // plainly that it's just the closest one, so the label is never untrue.
+  const TIGHT = 10;
+  const isTie = (g) => g.winner.result === 'T';
+
   // A finished week: every sticker is a number from the final scores, and each one is
-  // skipped when the week can't back it (one game, or no top scorer in the capture).
+  // skipped when the week can't back it (one game, all ties, no top scorer).
+  // Sticker text is plain: sticker() escapes it, exactly once.
   function finalStickers(w) {
     const out = [];
     const margin = (g) => g.winner.points - g.loser.points;
     const byMargin = [...w.games].sort((a, b) => margin(b) - margin(a));
     const big = byMargin[0];
     const close = byMargin[byMargin.length - 1];
-    if (big) out.push({ tone: 'orange', label: 'Blowout', fig: `+${f2(margin(big))}`,
-      text: `${big.winner.manager} ${f2(big.winner.points)}, ${big.loser.manager} ${f2(big.loser.points)}. Biggest margin of the week.` });
-    if (close && close !== big) out.push({ tone: 'lime', label: 'Photo finish', fig: f2(margin(close)),
-      text: `${close.winner.manager} edged ${close.loser.manager}, ${f2(close.winner.points)} to ${f2(close.loser.points)}.` });
+    if (big && margin(big) > 0) out.push({ tone: 'orange', label: 'Blowout', fig: `+${f2(margin(big))}`,
+      text: `${big.winner.manager} ${f2(big.winner.points)}, ${big.loser.manager} ${f2(big.loser.points)}. That's the whole sticker.` });
+    if (close && close !== big) {
+      if (isTie(close)) out.push({ tone: 'lime', label: 'Dead heat', fig: f2(close.winner.points),
+        text: `${close.winner.manager} and ${close.loser.manager} tied. Down to the decimal, still nothing.` });
+      else if (margin(close) < TIGHT) out.push({ tone: 'lime', label: 'Photo finish', fig: f2(margin(close)),
+        text: `${close.winner.manager} edged ${close.loser.manager}, ${f2(close.winner.points)} to ${f2(close.loser.points)}. A coin flip with decimals.` });
+      else out.push({ tone: 'lime', label: 'Closest game', fig: f2(margin(close)),
+        text: `${close.winner.manager} beat ${close.loser.manager}, ${f2(close.winner.points)} to ${f2(close.loser.points)}.` });
+    }
     const top = (w.top_performers || [])[0];
     if (top) out.push({ tone: 'accent', label: 'Top scorer', fig: f1(top.points),
-      text: `${top.name}${posOf(top.pos) ? `, ${top.manager}'s ${posOf(top.pos)}` : ` for ${top.manager}`}.` });
-    const unlucky = [...w.games].sort((a, b) => b.loser.points - a.loser.points)[0];
+      text: `${top.name}, ${top.manager}'s ${POS_WORD[top.pos] || 'starter'}. Frame this one.` });
+    // Ties aren't losses, so only a real loser can be the unlucky one.
+    const unlucky = w.games.filter((g) => !isTie(g)).sort((a, b) => b.loser.points - a.loser.points)[0];
     if (unlucky) {
-      const beat = w.games.filter((g) => g.winner.points < unlucky.loser.points).length;
+      const beat = w.games.filter((g) => !isTie(g) && g.winner.points < unlucky.loser.points).length;
       out.push({ tone: 'pink', label: beat ? 'Wrong opponent' : 'Best loss', fig: f2(unlucky.loser.points),
         text: beat
           ? `${unlucky.loser.manager} lost with a score that beats ${beat} of this week's winners. The schedule did this.`
-          : `${unlucky.loser.manager} had the week's highest losing score.` });
+          : `${unlucky.loser.manager} posted the week's highest losing score, which now comes with a sticker.` });
     }
     return out;
   }
 
   // Before kickoff: no scores yet, so every sticker comes from ESPN's projections,
-  // its win odds, or the Coach rows. Each one is skipped when that data isn't there.
+  // its win odds, or this week's Coach rows. Each one is skipped when that data isn't there.
   function preKickoffStickers(w, rows) {
     const out = [];
     const proj = (s) => s.live_projection ?? s.projected ?? 0;
@@ -1020,31 +1012,31 @@
       const gap = (g) => Math.abs(proj(g.winner) - proj(g.loser));
       const close = [...w.games].sort((a, b) => gap(a) - gap(b))[0];
       if (close) out.push({ tone: 'lime', label: 'Closest on paper', fig: f1(gap(close)),
-        text: `${close.winner.manager} vs ${close.loser.manager}, projected that far apart. Anything goes.` });
+        text: `${close.winner.manager} vs ${close.loser.manager}, projected that far apart.${gap(close) < TIGHT ? ' ESPN is shrugging.' : ''}` });
     }
 
-    // Heavy favorite: only when ESPN has published win odds
+    // Heavy favorite: only when ESPN has published win odds, and only when they're lopsided
     const pairs = w.games.flatMap((g) => [[g.winner, g.loser], [g.loser, g.winner]])
-      .filter(([s]) => s.win_probability != null);
+      .filter(([s]) => s.win_probability != null && s.win_probability >= 0.65);
     if (pairs.length) {
       const [fav, opp] = pairs.sort((a, b) => b[0].win_probability - a[0].win_probability)[0];
-      out.push({ tone: 'orange', label: 'Heavy favorite', fig: `${Math.round(fav.win_probability * 100)}%`,
-        text: `ESPN's odds that ${fav.manager} beats ${opp.manager}.` });
+      out.push({ tone: 'orange', label: 'Heavy favorite', fig: `${Math.min(99, Math.round(fav.win_probability * 100))}%`,
+        text: `ESPN's odds that ${fav.manager} beats ${opp.manager}. ${opp.manager}, ESPN has been wrong before.` });
     }
 
     if (hasProj) {
       // Top projection: the lineup ESPN likes most this week
       const top = w.games.flatMap((g) => [g.winner, g.loser]).sort((a, b) => proj(b) - proj(a))[0];
       out.push({ tone: 'accent', label: 'Top projection', fig: f1(proj(top)),
-        text: `${top.manager} has ESPN's highest projected lineup.` });
+        text: `${top.manager} has ESPN's highest projected lineup. No pressure.` });
     }
 
-    // Most to fix: straight from the Coach rows
+    // Busiest to-do list: straight from the Coach rows, framed as help, not homework
     const busiest = [...rows].sort((a, b) => b.counts.now - a.counts.now)[0];
     if (busiest && busiest.counts.now) {
       const n = busiest.counts.now;
-      out.push({ tone: 'pink', label: 'Most to fix', fig: String(n),
-        text: `${busiest.manager} has ${n} lineup thing${n === 1 ? '' : 's'} to fix before kickoff.` });
+      out.push({ tone: 'pink', label: 'Busiest to-do list', fig: String(n),
+        text: `${busiest.manager} has ${n} ${n === 1 ? 'thing' : 'things'} on her Coach list before kickoff. Coach has her back.` });
     } else if (rows.length) {
       out.push({ tone: 'pink', label: 'All clear', fig: '0',
         text: 'Nobody has anything urgent on Coach. Enjoy it while it lasts.' });
@@ -1057,7 +1049,8 @@
     const next = leadWithNext();
     const rows = coachRows(next) || [];
     const weekNum = next ? ahead().week : w.week;
-    const stickers = w.complete ? finalStickers(w) : preKickoffStickers(w, rows);
+    // Always this week's Coach rows: `rows` can be next week's when this week's list is empty.
+    const stickers = w.complete ? finalStickers(w) : preKickoffStickers(w, advice() || []);
     const title = w.complete
       ? (stickers.length ? `Week ${w.week} in ${STICKER_COUNT[stickers.length]} sticker${stickers.length === 1 ? '' : 's'}` : 'This week, wrapped')
       : `Getting ready for Week ${w.week}`;
@@ -1069,24 +1062,24 @@
           ${w.complete && !stickers.length ? scorePills(w) : ''}
         </div>
         <p class="dek">${w.complete
-          ? `Week ${w.week} is final. Here's what the numbers say while the recap gets written.`
+          ? `Every game is final. The recap's still being written, so the numbers get the first word.`
           : `Nobody's kicked off yet. Here's the matchup slate and what's worth sorting out before Thursday.`}</p>
       </div>
 
       ${stickers.length ? `<div class="stickers">${stickers.map(sticker).join('')}</div>` : ''}
 
-      ${w.complete ? `<div class="recap-when"><span class="d">TUE</span><span>The full recap, with game balls and flags, lands Tuesday.</span></div>` : ''}
+      ${w.complete ? `<div class="recap-when"><span class="d">TUE</span><span>The full recap, game balls and flags included, lands Tuesday. Nobody's safe.</span></div>` : ''}
 
       <section>
         ${secHead('board', w.complete ? 'Final scores' : "This week's matchups")}
         ${w.complete
           ? `<div class="final-lines">${w.games.map((g) => `
               <a href="#live.game-${g.key}">
-                <span class="w"><span class="ml-w">W</span><b>${esc(g.winner.manager)}</b><span class="num">${f2(g.winner.points)}</span></span>
+                <span class="w"><span class="ml-w">${isTie(g) ? 'T' : 'W'}</span><b>${esc(g.winner.manager)}</b><span class="num">${f2(g.winner.points)}</span></span>
                 <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
               </a>`).join('')}</div>`
           : `<p class="sec-sub">Projected scores are ESPN's. Tap a team to see her projected lineup.</p>
-             <div class="games-lite">${w.games.map((g) => landingScoreCard(g, w)).join('')}</div>`}
+             <div class="games-lite">${w.games.map((g) => landingScoreCard(g)).join('')}</div>`}
       </section>
 
       ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}
