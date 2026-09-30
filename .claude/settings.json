@@ -30,22 +30,31 @@
       "mcp__Claude_Browser__read_console_messages",
       "mcp__ccd_session_mgmt__list_events",
       "mcp__terminal__read_terminal",
-      "Bash(git fetch *)"
+      "Bash(git fetch *)",
+"Bash(git checkout main)",
+"Bash(git checkout -b:*)",
+"Bash(git pull:*)",
+"Bash(git add:*)",
+"Bash(git commit:*)",
+"Bash(git push origin:*)",
+"Bash(gh pr create:*)",
+"Bash(gh pr merge:*)",
+"Bash(gh pr close:*)",
+"Bash(git worktree add:*)",
+"Bash(git worktree remove:*)",
+"Bash(python3 scripts/receive.py:*)",
+"Bash(scripts/deploy.sh --preview:*)"
     ],
     "ask": [
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git merge:*)",
       "Bash(git rebase:*)",
       "Bash(npm install:*)",
       "Bash(npm publish:*)",
-      "Bash(gh pr create:*)",
       "Bash(gh secret:*)",
       "Bash(gh variable:*)",
       "Bash(vercel:*)",
-      "Bash(scripts/deploy.sh:*)",
-      "Bash(python3 scripts/receive.py:*)"
+      "Bash(scripts/deploy.sh:*)"
     ],
     "deny": [
       "Bash(rm -rf /*)",
