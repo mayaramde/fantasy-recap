@@ -29,7 +29,7 @@ between `recap-write`'s fact-check and its draft PR (Phase 2).
 | (this session) | — | capture | `recap-capture` | `data/<season>/week-NN/{espn.json,facts.json}` |
 | (this session) | — | write | `recap-write` | `recaps/<season>/week-NN.json` (`status: draft`), draft PR, preview URL |
 | recap-fact-checker | custom agent | fact-check | (invoked by recap-write) | PASS/FAIL + claim table |
-| voice-check | custom agent | voice review | (invoked by this orchestrator, Phase 2) | per-field verdict + rewrites |
+| voice-check | custom agent | voice review | (invoked by this orchestrator, Phase 2, and by coach-daily) | per-field verdict + rewrites |
 | (this session) | — | ship | `recap-ship` | published site + publish PR |
 | code-reviewer | custom agent | code review | (invoked by recap-ship, conditionally) | findings list |
 | (this session) | — | daily snapshot | `coach-daily` | `data/<season>/fantasypros/latest.json` |
@@ -97,7 +97,8 @@ recap` PR.
 ### Phase 4: coach-daily (independent of the recap pipeline)
 
 Input: none beyond the target date. Output: `data/<season>/fantasypros/latest.json`, its own
-PR with auto-merge. Doesn't touch any recap or any `data/<season>/week-NN/` file — see
+PR with auto-merge. `coach-daily` runs its own `voice-check` gate on the cards before writing the
+file (its Step 5b), since that PR merges without a human reading it. Doesn't touch any recap or any `data/<season>/week-NN/` file — see
 `coach-daily`'s own SKILL.md.
 
 ## Error handling

@@ -101,6 +101,23 @@ never invent an injury/news/ranking claim no tool actually returned. `level` is 
 something worth acting on before this week's games lock; otherwise `"watch"` or `"info"`. A team
 with nothing real to say gets an empty list for that section, not a filler card.
 
+## Step 5b: voice gate
+
+No card ships without `voice-check`'s sign-off. Once Step 5's cards are written, spawn the
+`voice-check` agent (the `Agent` tool, `subagent_type: voice-check`) on them: write the cards to
+a scratch file (or pass them in the prompt), keyed `<week>/<team_id>/<section>/<index>` so its
+per-field table maps straight back to a card, and tell it the surface is **Coach cards**
+(advice first, one line of personality). It judges `title` and `text` only; the numbers and
+FantasyPros attributions are yours to keep exact, as in Step 5.
+
+- **reads as intended** → on to Step 6.
+- **reads flat** or **breaks a rule** → revise exactly the cards it flagged, using its rewrites
+  as the starting point but keeping every number and every "per FantasyPros" attribution intact,
+  then run it again on the revised cards only. **Two rounds at most.**
+- Still flagged after the second round → drop those cards rather than ship them (an empty list
+  is already the right answer for a team with nothing that reads well), and list what was
+  dropped and why in the Output summary. Nobody reviews this PR, so this gate is the only one.
+
 ## Step 6: write the snapshot file
 
 Overwrite the whole file (it's a rolling daily snapshot, not a per-week archive — git history
@@ -132,7 +149,7 @@ team entry for every `team_id` in `league.json` (all 8), even when both lists ar
    branch. Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
    (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
-   No review is needed — small, factual, derived data, not the creative recap content. Never
+   No human review is needed — small, derived data whose copy already passed Step 5b. Never
    push to `main` directly and never merge with `--admin`.
 4. Any older coach-daily PR still open is superseded (the file is a rolling snapshot; both PRs
    would overwrite it) — close it (`gh pr close <n> --delete-branch`) so it can't conflict with
@@ -145,5 +162,6 @@ team entry for every `team_id` in `league.json` (all 8), even when both lists ar
 ## Output
 
 A short summary: the PR link and whether auto-merge is on, which teams got a new waiver/trade
-idea today, any FantasyPros injury/news changes worth knowing about, and — only the first time
+idea today, any FantasyPros injury/news changes worth knowing about, any card Step 5b dropped
+for failing the voice gate twice, and — only the first time
 it comes up — Trade Finder's premium disclosure.
