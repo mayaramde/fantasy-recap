@@ -56,8 +56,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   Analyzer are premium too; relay their disclosure once, the first time either gates a call
   (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `coach-daily` builds its
   start/sit, waiver and trade ideas from free-tier tools instead of the gated finders.
-- **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
-  `coach-daily` writes once a day for every team, keyed by week. Committed through its own auto-merging PR (small,
+- **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
+  `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
+  computed card (keyed by situation, see `docs/architecture.md`). Committed through its own auto-merging PR (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards.
 
@@ -77,9 +78,10 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
-  `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow), `deploy.sh` + `vercel_build.sh` (deploy),
+  `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
+  `coach_brief.py` (the computed Coach cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
-- `tests/`: unittest suites for `check_recaps.py` and the Bash guard hook (also run by `checks`)
+- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook and the Coach page's written copy (also run by `checks`)
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages
