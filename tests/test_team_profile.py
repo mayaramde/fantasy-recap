@@ -113,5 +113,40 @@ class LineupIQTest(unittest.TestCase):
         self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:B:1")
 
 
+def week(wk, teams):
+    return {"week": wk, "teams": teams}
+
+
+def lineup(team_id, **slot_points):
+    starters = [player(i, f"{team_id}-{slot}", slot, pts, 10) for i, (slot, pts) in enumerate(slot_points.items())]
+    return row(team_id, sum(slot_points.values()), 0, starters=starters)
+
+
+class PositionTest(unittest.TestCase):
+    def test_totals_and_ranks(self):
+        facts = [week(1, [lineup(1, QB=20, TE=2), lineup(2, QB=10, TE=12)]),
+                 week(2, [lineup(1, QB=20, TE=2), lineup(2, QB=10, TE=12)])]
+        totals = tp.position_totals(facts)
+        self.assertEqual((totals[1]["QB"], totals[2]["TE"]), (40, 24))
+        ranks = tp.position_ranks(totals)
+        self.assertEqual((ranks[1]["QB"], ranks[1]["TE"], ranks[2]["QB"]), (1, 2, 2))
+
+    def test_card_key_and_weak_spot(self):
+        ranks = {"QB": 1, "RB": 4, "WR": 3, "TE": 8, "FLEX": 2, "DST": 5, "K": 6}
+        card, weak = tp.position_card(ranks)
+        self.assertEqual((card["key"], weak), ("pos:QB:TE", "TE"))
+        self.assertEqual(card["stat"], "Best: QB (#1) · Worst: TE (#8)")
+        self.assertIn("tight end", card["text"])
+
+    def test_ties_break_by_slot_order_and_are_stable(self):
+        ranks = {"QB": 3, "RB": 1, "WR": 1, "TE": 7, "FLEX": 7, "DST": 4, "K": 5}
+        for _ in range(3):
+            self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:RB:TE")
+
+    def test_same_rank_everywhere(self):
+        card, weak = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
+        self.assertEqual((card["key"], weak), ("pos:QB:QB", "QB"))
+
+
 if __name__ == "__main__":
     unittest.main()

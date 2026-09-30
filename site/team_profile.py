@@ -107,3 +107,43 @@ def lineup_iq(rows):
     text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) at "
             f"{GROUP_LABEL.get(c['slot'], c['slot'])} while {c['benched']} put up {_f1(c['benched_points'])} on your bench.")
     return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}", "lineup_iq", stat, LINEUP_TITLE[b], text)
+
+
+# ---------- audit: Position strength ----------
+
+def position_totals(facts_list):
+    """team_id → slot group → her starters' points in that group, over the given weeks."""
+    totals = {}
+    for facts in facts_list:
+        for t in facts["teams"]:
+            g = totals.setdefault(t["team_id"], dict.fromkeys(GROUPS, 0.0))
+            for p in t["starters"]:
+                if p["slot"] in g:
+                    g[p["slot"]] += p["points"]
+    return totals
+
+
+def position_ranks(totals):
+    """1 = the league's best at that group. Equal totals rank by team id, so a rank never
+    wobbles between two builds of the same data."""
+    ranks = {tid: {} for tid in totals}
+    for grp in GROUPS:
+        for i, tid in enumerate(sorted(totals, key=lambda tid: (-round(totals[tid][grp], 2), tid)), 1):
+            ranks[tid][grp] = i
+    return ranks
+
+
+def position_card(ranks):
+    """(card, weak_spot) for one team, from its {group: league rank} (1 = best)."""
+    # TODO(human): pick `best` (her strongest group) and `worst` (her weakest, which becomes
+    # her weak_spot), each one of GROUPS, from `ranks`.
+    best = worst = None
+    stat = f"Best: {best} (#{ranks[best]}) · Worst: {worst} (#{ranks[worst]})"
+    if ranks[best] == ranks[worst]:
+        title = "Even across the board"
+        text = f"Every spot in your lineup ranks {_ordinal(ranks[best])} in the league. No weak link to fix, which is its own kind of flex."
+    else:
+        title = f"Your {GROUP_LABEL[best].split(' (')[0]} is carrying you"
+        text = (f"Your {GROUP_LABEL[best]} points rank {_ordinal(ranks[best])} in the league. Your "
+                f"{GROUP_LABEL[worst]} points rank {_ordinal(ranks[worst])}, so that's where a pickup helps most.")
+    return _card(f"pos:{best}:{worst}", "position", stat, title, text), worst
