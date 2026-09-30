@@ -159,11 +159,12 @@ header comment of `.github/workflows/live-update.yml`.
 
 - **Changing an environment variable doesn't change the live site.** It applies to
   the *next* deployment. Always redeploy after.
-- **Share the alias, never a deployment URL.** Send the league
-  `fantasyforthegirls.vercel.app`. Whether a long `fantasy-recap-xxxxx-maya-fd13.vercel.app`
-  URL (including every `--preview` deploy) opens for anyone with the link or redirects to a
-  Vercel login depends on **Settings → Deployment Protection**. Check it there before
-  relying on either; this doc doesn't record which it is right now.
+- **Share the alias, never a deployment URL.** Deployment Protection is on (Vercel
+  Authentication, Standard Protection): every long `fantasy-recap-xxxxx-maya-fd13.vercel.app`
+  URL, including every `--preview` deploy, redirects to a Vercel login and only opens for
+  Maya's account. Only the production aliases are public, so send the league
+  `fantasyforthegirls.vercel.app`. Handy the other way round too: a stray deployment or
+  draft-preview link can't leak anything. Settings → Deployment Protection is where to change it.
 - **Rolling back is safe.** Deployments → pick a good one → promote. The pointer
   moves; nothing is rebuilt or lost.
 

@@ -93,7 +93,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   or Vercel tokens.
 - Preview (Vercel, for Maya): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` (drafts included) to a
   new throwaway `fantasy-recap-*.vercel.app` URL every time it runs. Drafts are reviewed here before they go to the
-  website. Who can open that URL is covered in `docs/vercel.md` §7.
+  website. Deployment Protection (Standard) puts every deployment URL, previews included, behind a Vercel
+  login, so only Maya can open it; only the production aliases are public (`docs/vercel.md` §7).
 
 ## Recap content
 - Matchup results, high/low scores, standings
