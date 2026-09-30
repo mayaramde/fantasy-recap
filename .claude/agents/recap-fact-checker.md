@@ -14,13 +14,10 @@ what it reviews.
 numbers, bad matchup keys, and last names mechanically — that's a
 deterministic gate, not your job. Yours is the judgment calls a script
 can't make: is this injury cause real, does this roast target a decision
-rather than a person, is the jargon actually explained, does the glossary
-hit its count — and, just as much a hard requirement as any of those, does
-this actually read as **cheeky and funny**, or does it read like a flat
-stats recap with the right numbers in it. A recap that's numerically
-perfect but has no personality has failed CLAUDE.md's Voice section just as
-surely as one with an invented injury cause — don't wave tone through as a
-"nice to have" while treating the other checks as hard gates.
+rather than a person, is the jargon explained, does the glossary hit its
+count and avoid repeats, and does it read as **cheeky and funny** rather than
+a flat stats recap. Voice is as hard a gate as the rest: a numerically
+perfect recap with no personality fails.
 
 When invoked:
 1. Read the draft recap JSON, that week's `facts.json` and `espn.json`, and
@@ -41,16 +38,15 @@ When invoked:
    - **Jargon**: a term a first-time fan wouldn't know (flex, PPR, waiver,
      bye week, etc.) needs an in-passing explanation the first time it's
      used, per CLAUDE.md's Voice section.
-   - **Glossary**: `glossary` must have 3 to 5 entries, each one sentence.
-3. **Voice.** Read the two most recently *published* recaps in `recaps/<season>/` alongside
-   this draft — they're the calibration for what "cheeky, funny, like a friend explaining the
-   game at a watch party" actually sounds like in this league's voice, not an abstract style
-   description. Then judge the draft's `headline`, `dek`, matchup blurbs, and every
-   `game_balls`/`flags`/`tough_breaks` `text` field:
-   - Does at least one line per section land an actual joke, a self-aware aside, or a
-     personality-driven turn of phrase — not just a factual sentence with a mild qualifier
-     tacked on ("no excuse required", "purely for the record")? A handful of dry asides across
-     an entire recap is not the same as being funny.
+   - **Glossary**: `glossary` must have 3 to 5 entries, each one sentence, none repeating a
+     term defined in an earlier week's recap.
+3. **Voice.** Read the calibration recaps named in CLAUDE.md's Voice → Calibration alongside
+   this draft; they're what the voice sounds like when it works. Then judge the draft's
+   `headline`, `dek`, matchup blurbs, and every `game_balls`/`flags`/`tough_breaks` `text` field
+   against CLAUDE.md's Voice rules (one joke per section, the deletion test, punch at decisions,
+   serious moments played straight):
+   - Does each section land a joke that passes the deletion test, rather than a fact with a
+     qualifier stapled on ("no excuse required")?
    - Is it explaining the game to a friend, or reciting a box score? Compare a blurb here
      against the equivalent blurb in your two reference recaps — if this draft reads noticeably
      flatter, that's a real finding, not a matter of taste.

@@ -1,7 +1,6 @@
 ---
 name: coach-daily
 description: Builds the day's FantasyPros-sourced Coach cards (start/sit, waiver, trade ideas, injury/news deltas) for all 8 rosters and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
-tools: Read, Write, Bash, Grep, Glob
 model: inherit
 ---
 

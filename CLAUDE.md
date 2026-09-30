@@ -18,28 +18,16 @@ for the full routing table. A change to `scripts/`, `site/`, or CI that isn't ab
 *content* is normal engineering work, not this harness — it still gets `code-reviewer`, per
 the project's usual review practice.
 
-Architecture detail that used to live in this file (the schedule of automated tasks, what the
-Live and Coach pages compute) is now in `docs/architecture.md` — the skills above are the
-current source of truth for *how* the work gets done; that doc is reference material for *when*
-things run and what the pages show.
-
-**Change history:**
-| Date | Change | Target | Reason |
-|------|--------|--------|--------|
-| 2026-09-29 | Added `recap-fact-checker`; dropped `Bash` from `code-reviewer` (orchestrator passes the diff in-prompt); removed `researcher` (built-in Explore covers it) | `agents/recap-fact-checker.md`, `agents/code-reviewer.md`, `agents/researcher.md` | Harness plan PR 5 |
-| 2026-09-29 | Built `fantasy-orchestrator` + `recap-capture`/`recap-write`/`recap-ship`/`coach-daily` skills, tools registry, `docs/architecture.md` | `skills/fantasy-orchestrator/`, `skills/recap-capture/`, `skills/recap-write/`, `skills/recap-ship/`, `skills/coach-daily/`, `docs/architecture.md` | Harness plan PR 6 |
+The skills say *how* the work gets done. `docs/architecture.md` says *when* the automated tasks
+run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys and the Vercel dashboard.
 
 ## Data sources
 - **ESPN** (primary): the league is private. Read it through **Claude in Chrome**, which uses Maya's logged-in session:
   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=...&scoringPeriodId=N`
-  Never ask for, copy, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
-  Two exceptions, both cookie-based captures run by `scripts/capture_node.mjs` (never Claude reading the values,
-  only a script consuming them): the cloud live update reads them from GitHub Actions secrets (`ESPN_S2`,
-  `ESPN_SWID`) that Maya set herself; and, on this Mac, if the Chrome capture 401s (Maya's ESPN session logged
-  out) and `.env.espn.local` exists (copy `.env.espn.local.example`, gitignored, Maya fills in the values
-  herself from Chrome DevTools), fall back to `node scripts/capture_node.mjs N`. Claude never sees, prints, sets
-  or rotates any of these values; when they expire, Maya updates them. Chrome stays the default for every
-  capture — this is a fallback for when it can't authenticate, not a replacement.
+  Never ask for, copy, print, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
+  Only scripts ever consume the cookies, from values Maya sets herself: `scripts/capture_node.mjs` in the cloud
+  live update (GitHub Actions secrets) and as the local 401 fallback (`.env.espn.local`, see `recap-capture`),
+  and `api/live.py` on Vercel (env vars, see `docs/vercel.md` §6). Claude never sees, sets, or rotates them.
 - **ESPN CDN headshots** (public, no auth): `https://a.espncdn.com/i/headshots/nfl/players/full/<espnId>.png`,
   and `https://a.espncdn.com/i/teamlogos/nfl/500/<abbr>.png` for a D/ST. `scripts/analyze.py` writes the URL into
   each week's top scorers; the site falls back to a silhouette when ESPN has no photo (rookies, call-ups).
@@ -64,18 +52,14 @@ things run and what the pages show.
   live update and stale the moment the week starts. ESPN can be days from publishing next week's projections, so
   the page checks before quoting one.
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
-  Maya is on the free tier. Waiver Finder is premium, and the upsell has already been shown; Trade Finder and Trade
-  Analyzer are premium too, and their disclosure hasn't been shown yet — relay it once, the first time either one
-  gates a call. The `coach-daily` skill (see `docs/architecture.md`) uses `get_projections`, `injury_status`, `get_ecr`,
-  `get_player_ownership`, `get_leaders` and `get_roster(all_teams=true)` — all free-tier — to build start/sit,
-  waiver and trade ideas itself rather than relying on the gated finder tools.
+  Maya is on the free tier. Waiver Finder is premium and its upsell has already been shown. Trade Finder and Trade
+  Analyzer are premium too; relay their disclosure once, the first time either gates a call
+  (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `coach-daily` builds its
+  start/sit, waiver and trade ideas from free-tier tools instead of the gated finders.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voiced Coach cards
-  `fantasy-coach-daily` writes once a day — start/sit suggestions (`consensus`), waiver and trade leads
-  (`roster_ideas`), and day-over-day injury/news changes (`fp_news`/`fp_back`) for every team, keyed by
-  week under `weeks`. Unlike `next-week/espn.json`, this **is** committed, through a PR that
-  auto-merges (squash) once `checks` passes, with no review (small, factual, derived data, the same category as `data/player_names.json`, not the human-reviewed recap content). `site/build.py`
-  treats it exactly like `next-week/espn.json` otherwise: best effort, and a missing, malformed, or stale
-  (>36h old) file just means ESPN-only Coach cards, same as before this existed.
+  `coach-daily` writes once a day for every team, keyed by week. Committed through its own auto-merging PR (small,
+  factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
+  missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards.
 
 ## Privacy
 - The raw ESPN payload includes members' last names, ESPN IDs and notification settings. **Do not commit it.**
@@ -90,7 +74,12 @@ things run and what the pages show.
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
   and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
-- `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js), `analyze.py`
+- `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
+- `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
+  `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
+  `check.py` + `check_recaps.py` (the CI `checks` gate), `deploy.sh` + `vercel_build.sh` (deploy),
+  `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
+- `tests/`: pytest for `check_recaps.py` and the Bash guard hook
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages
@@ -99,11 +88,12 @@ things run and what the pages show.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
   bundle. Git-triggered Vercel deploys are off in `vercel.json` so a merge can't wipe the Live page. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
-  Needs `vercel login` on this Mac. Never read or print `.env.local` or Vercel tokens.
-- Preview (Vercel, private, Maya only): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` to a new
-  throwaway `fantasy-recap-*.vercel.app` URL every time it runs — there's no fixed link to bookmark. Deployment
-  URLs aren't guessable or indexed (`docs/vercel.md` §7), so that's the only access control it has. Drafts are
-  reviewed here before they go to the website. 
+  `/api/live` keeps the Live page fresh between deploys; without the `ESPN_S2`/`ESPN_SWID` Vercel env vars it
+  answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
+  or Vercel tokens.
+- Preview (Vercel, for Maya): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` (drafts included) to a
+  new throwaway `fantasy-recap-*.vercel.app` URL every time it runs. Drafts are reviewed here before they go to the
+  website. Who can open that URL is covered in `docs/vercel.md` §7.
 
 ## Recap content
 - Matchup results, high/low scores, standings

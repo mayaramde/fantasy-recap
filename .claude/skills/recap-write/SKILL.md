@@ -1,15 +1,13 @@
 ---
 name: recap-write
-description: Writes or revises recaps/<season>/week-NN.json from that week's captured data and FantasyPros context, then hands the draft to recap-fact-checker before calling it done. Invoked by fantasy-orchestrator for drafting, redoing, or tweaking a recap (a matchup blurb, a game ball, a flag, the glossary) — don't invoke this directly for a user-facing request; route through fantasy-orchestrator first, which also decides whether recap-capture needs to run first.
-tools: Read, Write, Edit, Grep, Glob
+description: Writes or revises recaps/<season>/week-NN.json from that week's captured data and FantasyPros context, hands the draft to recap-fact-checker, then opens the draft PR and a review preview. Invoked by fantasy-orchestrator for drafting, redoing, or tweaking a recap (a matchup blurb, a game ball, a flag, the glossary) — don't invoke this directly for a user-facing request; route through fantasy-orchestrator first, which also decides whether recap-capture needs to run first.
 model: inherit
 ---
 
 # Recap write
 
 Turns a week's `facts.json`/`espn.json` plus FantasyPros context into the
-written recap, then gets it checked before calling itself done. This is
-weekly routine steps 3-4 (CLAUDE.md), plus the fact-check hand-off.
+written recap, gets it fact-checked, then opens the draft PR and a review preview.
 
 ## Step 1: gather context
 
@@ -22,12 +20,9 @@ will fail the draft on.
 
 ## Step 2: write the recap
 
-Before writing, read the two most recently *published* recaps in `recaps/2026/` for tone —
-CLAUDE.md's Voice section describes the style, but these are what it actually sounds like
-applied. Match that level of personality, not just the mechanical shape. A recap that's
-numerically flawless but reads like a stats recap has failed the same as one with a wrong
-number — `recap-fact-checker` in Step 3 will fail a draft on flat voice alone, so aim for
-genuinely cheeky and funny the first time, not the minimum that passes the mechanical checks.
+Before writing, read the calibration recaps named in CLAUDE.md's Voice → Calibration. Match
+their level of personality, not just their shape: `recap-fact-checker` fails a draft on flat
+voice alone, the same as on a wrong number.
 
 Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draft"`. Schema:
 
@@ -43,10 +38,8 @@ Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draf
 }
 ```
 
-Follow CLAUDE.md's **Recap content**, **Voice**, and **Design** sections for what goes in each
-field and how it should read — this skill doesn't restate those rules, since they apply to the
-whole site, not just this step. Two mechanical constraints worth calling out because
-`scripts/check_recaps.py` enforces them in CI:
+Follow CLAUDE.md's **Recap content** and **Voice** sections for what goes in each field and how
+it should read. `scripts/check_recaps.py` enforces the first three of these in CI:
 - **Every number** in `headline`, `dek`, a matchup blurb, or a `stat` field must trace back to
   that week's `facts.json`/`espn.json` — not approximated, not rounded past what the source
   actually supports.
@@ -54,12 +47,10 @@ whole site, not just this step. Two mechanical constraints worth calling out bec
   Privacy).
 - Matchup keys must be real pairings for that week, written low-team-id first.
 - `glossary` needs 3 to 5 entries, and terms shouldn't repeat ones already defined in an earlier
-  week's recap — check `recaps/2026/week-*.json` for terms already used before picking this
-  week's.
+  week's recap (check `recaps/2026/week-*.json`). CI doesn't check this; the fact-checker does.
 
-Run `python3 scripts/check.py` yourself before moving to Step 3 — it catches all four of the
-above mechanically, cheaper than waiting for the fact-checker to find the same thing. Fix
-anything it flags first.
+Run `python3 scripts/check.py` before Step 3 and fix anything it flags. It's cheaper than
+waiting for the fact-checker to find the same thing.
 
 ## Step 3: fact-check, and revise if needed
 
@@ -67,13 +58,26 @@ Hand the draft to the `recap-fact-checker` agent, along with that week's `facts.
 `espn.json` paths and whatever FantasyPros context you used in Step 1 (so it can verify
 citations, not just numbers — `check.py` already covers the numbers).
 
-- **PASS** → done. The draft is ready for `recap-ship`.
+- **PASS** → Step 4.
 - **FAIL** → revise the specific claims it flagged and re-check. **Cap this at two
   revise-and-recheck rounds.** If it's still failing after two rounds, stop — hand the
   fact-checker's last report back to whoever invoked this skill (`fantasy-orchestrator`) rather
   than looping indefinitely or shipping something unverified.
 
+## Step 4: draft PR and review preview
+
+For a new draft, on the `recap-week-NN` branch (a revision stays on whichever branch holds the
+draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
+
+1. Commit **only** `recaps/2026/week-NN.json`, `data/2026/week-NN/`, and
+   `data/player_names.json` if it changed. Never `git add -A`: a concurrent live-update run can
+   leave the next week's files uncommitted in the same tree.
+2. Push, open a PR titled `Week NN recap draft`, and enable auto-merge (squash). A draft recap
+   is safe on `main`, since the league site only shows published weeks.
+3. Run `scripts/deploy.sh --preview` from the tree that holds the draft (see `recap-ship` Step 1
+   for the on-disk check) and share the preview URL with Maya.
+
 ## Output
 
-`recaps/2026/week-NN.json`, `status: "draft"`, `check.py`-clean, and either fact-checker-PASSed
-or stopped with a specific, actionable FAIL report.
+`recaps/2026/week-NN.json` with `status: "draft"`, `check.py`-clean and fact-checker-PASSed, a
+draft PR, and a preview URL. Or a stop with the fact-checker's specific FAIL report.
