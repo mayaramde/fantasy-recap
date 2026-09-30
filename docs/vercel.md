@@ -133,6 +133,11 @@ script loads with `defer`, so it doesn't block page rendering.
 marked sensitive — which makes them write-only. Even you can't read them back from the
 dashboard, only overwrite them. That's the right setting for these.
 
+Keep them **Production only**, never Preview. Every branch except `main` gets an automatic
+preview (§3), and a preview runs whatever code is on its branch, so a Preview-scoped
+cookie would reach any branch anyone pushes. Without them a preview's `/api/live` answers
+503 and the page shows its baked data, which is fine for reviewing a design.
+
 The `/api/live` function (`api/live.py`) reads them to recompute the current week from
 ESPN per request, which is how the Live page refreshes between deploys. Without them it
 answers 503 and the page keeps showing the numbers baked in at deploy time.
