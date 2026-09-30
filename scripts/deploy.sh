@@ -3,8 +3,9 @@
 #
 # Builds locally (so it includes this Mac's uncommitted live-week data) with `vercel
 # build`, then uploads the result with --prebuilt.
-# Git-triggered deploys are off in vercel.json, so this script is the only way the
-# production site changes. Needs a one-time `vercel login` and `vercel link`
+# Git-triggered deploys are off for main in vercel.json (other branches get automatic,
+# committed-data-only previews), so this script is the only way the production site
+# changes. Needs a one-time `vercel login` and `vercel link`
 # (or, in GitHub Actions, the VERCEL_* settings described in live-update.yml).
 #
 # The bundle also carries the /api/live function (api/live.py), which recomputes the

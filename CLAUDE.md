@@ -88,7 +88,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
 - **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
-  bundle. Vercel's own git integration is off in `vercel.json` — a merge alone can't build-and-wipe the Live page —
+  bundle. Vercel's own git integration is off for `main` in `vercel.json` — a merge alone can't build-and-wipe the Live page —
   but a push to `main` touching `recaps/`, `data/`, `site/`, `scripts/`, `api/`, `league.json`, or `vercel.json` does
   trigger `live-update.yml` to run that same `scripts/deploy.sh` within minutes (`docs/vercel.md` §3). `scripts/deploy.sh`
   run by hand stays as a manual backstop. The site sends
@@ -96,6 +96,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `/api/live` keeps the Live page fresh between deploys; without the `ESPN_S2`/`ESPN_SWID` Vercel env vars it
   answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
   or Vercel tokens.
+- Branch previews (Vercel, automatic): every push to a branch other than `main` gets its own preview URL, built on
+  Vercel's servers from that branch's committed data only (the draft copy, no uncommitted live week). For design and
+  code review; the link shows on the PR. Same Deployment Protection as below.
 - Preview (Vercel, for Maya): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` (drafts included) to a
   new throwaway `fantasy-recap-*.vercel.app` URL every time it runs. Drafts are reviewed here before they go to the
   website. Deployment Protection (Standard) puts every deployment URL, previews included, behind a Vercel
