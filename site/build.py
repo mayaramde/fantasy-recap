@@ -18,6 +18,7 @@ Usage: python3 site/build.py [--season 2026]
 
 import argparse
 import json
+import re
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -215,13 +216,60 @@ def fantasypros_cards(team_id, fp, week):
             [it for it in row.get("roster_ideas", []) if _valid_fp_card(it)])
 
 
+# ---------- coach: this week's advice, written daily for the cards computed below ----------
+# Every computed card carries a `key` naming the exact situation behind it ("swap:<starter>:
+# <bench player>:<his status>"). coach-daily writes voiced, voice-checked copy for each key
+# into the same snapshot; the site shows it only while that key is still on the list, so a
+# card whose situation has moved on since the morning (a kickoff, a new injury) quietly
+# falls back to its computed wording instead of giving yesterday's advice. The written copy
+# never carries a projection or a percentage: those move all day, so they stay in the
+# computed stat pill, which /api/live refreshes on every request.
+_MOVING_NUMBER = re.compile(r"\d\.\d|%")
+
+
+def _valid_written(it):
+    return (isinstance(it, dict) and isinstance(it.get("title"), str) and isinstance(it.get("text"), str)
+            and it["title"].strip() and it["text"].strip()
+            and not _MOVING_NUMBER.search(it["title"] + it["text"]))
+
+
+def written_cards(team_id, fp, week):
+    """({key: {title, text}}, summary or None) for one team in one week, from today's
+    snapshot — or ({}, None) if it's missing, stale, or has nothing written for them."""
+    if not _fp_fresh(fp):
+        return {}, None
+    wk = (fp.get("weeks") or {}).get(str(week)) or {}
+    row = (wk.get("teams") or {}).get(str(team_id)) or {}
+    cards = row.get("coach_cards")
+    cards = {k: v for k, v in cards.items() if _valid_written(v)} if isinstance(cards, dict) else {}
+    summary = row.get("summary")
+    ok = (isinstance(summary, dict) and isinstance(summary.get("key"), str)
+          and _valid_written({"title": "-", "text": summary.get("text")}))
+    return cards, (summary if ok else None)
+
+
+def apply_written(items, cards):
+    """Swap in the written title and text for every computed card whose situation still
+    holds. Kind, level and stat stay computed: they're what the page sorts and counts by,
+    and the stat pill is where the live number lives."""
+    for it in items:
+        w = cards.get(it.get("key"))
+        if w:
+            it.update(title=w["title"].strip(), text=w["text"].strip(), written=True)
+    return items
+
+
+def _key(*parts):
+    return ":".join("none" if p is None else str(p) for p in parts)
+
+
 # ---------- coach: one line about the team, for under the page header ----------
 # Flavor on top of the to-do list below it, never a fact of its own: everything here is
 # read off the same items and counts the list is built from, so it can't say anything the
 # list doesn't already back up.
 TEAM_SUMMARY_BY_KIND = {
-    "out": ["ESPN's injury report has more to say about your lineup than your fantasy app does.",
-            "The medical tent is more crowded than your flex spot this week."],
+    "out": ["Somebody in your starting lineup is on ESPN's injury report. The fix is right below.",
+            "Somebody in your starting lineup won't be playing this week, and the sideline scores zero."],
     "bye": ["Half your lineup, or so it feels, is on a beach this week.",
             "Bye weeks: the NFL's way of telling you to go check your bench."],
     "swap": ["Somewhere on your bench, ESPN thinks a better lineup is just sitting there.",
@@ -237,13 +285,14 @@ TEAM_SUMMARY_WATCH = [
 ]
 TEAM_SUMMARY_CLEAR = [
     "Everything's set. Go watch the games.",
-    "Nothing to fix here — your lineup is exactly what ESPN would draw up.",
+    "Nothing to fix here. Your lineup is exactly what ESPN would draw up. Look at you.",
 ]
-TEAM_SUMMARY_DEFAULT = ["There's work to do before kickoff — see below."]
+TEAM_SUMMARY_DEFAULT = ["There's work to do before kickoff. Good news: it's all listed below."]
 
 
 def team_summary(team_id, items, counts, can_change, win_probability):
-    """One cheeky sentence for the top of a team's Coach page.
+    """(key, sentence): one cheeky line for the top of a team's Coach page, and the key a
+    written summary has to match to replace it ("done", "watch", "clear", "now:<kind>").
 
     Picks the loudest thing on the to-do list (the most common kind among its "now"
     items) and says something about that, so it never drifts from what the cards below
@@ -252,20 +301,22 @@ def team_summary(team_id, items, counts, can_change, win_probability):
     Live page refreshes with no real change underneath it.
     """
     if not can_change:
-        return "Every game on your schedule this week is in the books, so this lineup is exactly what it is."
+        return "done", ("Every game on your schedule this week is in the books. "
+                        "This lineup is now a matter of historical record.")
     now_items = [it for it in items if it["level"] == "now"]
     if not now_items:
         if counts["watch"]:
-            return TEAM_SUMMARY_WATCH[team_id % len(TEAM_SUMMARY_WATCH)]
+            return "watch", TEAM_SUMMARY_WATCH[team_id % len(TEAM_SUMMARY_WATCH)]
         if win_probability is not None:
             pct = round(win_probability * 100)
-            return (f"Nothing to fix here — and ESPN gives you a {pct}% shot this week besides."
-                    if pct >= 50 else
-                    f"Nothing to fix here, even if ESPN only gives you a {pct}% shot this week.")
-        return TEAM_SUMMARY_CLEAR[team_id % len(TEAM_SUMMARY_CLEAR)]
+            return "clear", (f"Nothing to fix here, and ESPN gives you a {pct}% chance to win this week. Act natural."
+                             if pct >= 50 else
+                             f"Nothing to fix here. ESPN only gives you a {pct}% chance to win, "
+                             "and ESPN has been wrong before.")
+        return "clear", TEAM_SUMMARY_CLEAR[team_id % len(TEAM_SUMMARY_CLEAR)]
     dominant = Counter(it["kind"] for it in now_items).most_common(1)[0][0]
     options = TEAM_SUMMARY_BY_KIND.get(dominant, TEAM_SUMMARY_DEFAULT)
-    return options[team_id % len(options)]
+    return f"now:{dominant}", options[team_id % len(options)]
 
 
 # ---------- coach: one expandable card per player on the lineup ----------
@@ -317,8 +368,8 @@ def player_blurb(p, starting, ctx):
     if ctx["on_bye"](p):
         return ("This defense is on a bye this week, so it plays nobody and scores exactly 0.0."
                 if p["pos"] == "DST" else
-                f"He doesn't have a game this week — his NFL team is on a bye — so that's a "
-                f"guaranteed 0.0 from wherever you put him.")
+                "He doesn't have a game this week. His NFL team is on a bye, so that's a "
+                "guaranteed 0.0 from wherever you put him.")
     if p["slot"] == "IR" and pts <= 0.005:
         return ("He's in your injured-reserve spot, which is where ESPN parks a player hurt long "
                 "enough that he can't be put in a lineup at all.")
@@ -330,6 +381,10 @@ def player_blurb(p, starting, ctx):
     # still be carrying a designation for a player who has already played).
     if not ctx["locked"](p):
         if st in SIDELINED:
+            if starting and st == "INJURY_RESERVE":
+                # Often season-ending, so no joke here: just the fix.
+                return ("ESPN has him on injured reserve (IR), which is rough news. Move someone into "
+                        "his spot before kickoff.")
             if starting:
                 return _voice(p, [
                     f"ESPN lists him {INJURY_PHRASE[st]}, which makes that {_f1(proj)}-point "
@@ -344,7 +399,7 @@ def player_blurb(p, starting, ctx):
             return _voice(p, [
                 "ESPN hasn't put a projection on him for that week yet. They usually land a few days "
                 "out, so this is one to look at again later.",
-                "No projection from ESPN for that week yet — it's early. Worth another look closer to "
+                "No projection from ESPN for that week yet. It's early, so check back closer to "
                 "kickoff.",
             ])
         return _voice(p, [
@@ -356,18 +411,20 @@ def player_blurb(p, starting, ctx):
     if pts < -0.005:
         return (f"{_pts(pts)} points. Negative. He lost you points from the {spot} spot, which takes "
                 f"a particular kind of week." if starting else
-                f"{_pts(pts)} points — negative, but on the bench, where it costs you nothing.")
+                f"{_pts(pts)} points. Negative! Luckily it's from the bench, where it costs you nothing.")
     if pts <= 0.005:
+        if st == "INJURY_RESERVE":
+            return "0.0 points. He's on injured reserve (IR), so there was no game for him this week."
         if st in SIDELINED:
-            return (f"0.0 points — which is what ESPN's \u201c{INJURY_LABEL[st].lower()}\u201d "
-                    f"designation was trying to tell you.")
+            return (f"0.0 points, which is what ESPN's \u201c{INJURY_LABEL[st]}\u201d "
+                    f"tag was trying to tell you.")
         return (f"A donut: 0.0 points out of the {spot} spot. An empty chair scores the same."
                 if starting else
                 "0.0 points, and from the bench, which is exactly where you want your zeroes.")
     if not starting:
         if gap >= 5:
             return _voice(p, [
-                f"{_pts(pts)} points on {_an(proj)} projection — from your bench, where they count "
+                f"{_pts(pts)} points on {_an(proj)} projection, from your bench, where they count "
                 f"for precisely nothing. Sorry.",
                 f"He went and scored {_pts(pts)} against {_an(proj)} projection while sitting on "
                 f"your bench. File it under \u201cwe don't talk about that\u201d.",
@@ -472,7 +529,7 @@ def player_cards(starters, bench, ctx):
 
 
 def team_advice(team, before, before_week, states_known, projected=True, week_open=True,
-                fp_items=(), fp_ideas=()):
+                fp_items=(), fp_ideas=(), written=None, written_summary=None):
     """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
@@ -486,7 +543,9 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     score another point, so nothing is asked of anybody.
 
     `fp_items` and `fp_ideas` are already-authored FantasyPros-sourced cards for this team
-    and week (see fantasypros_cards) — never generated here, only merged in.
+    and week (see fantasypros_cards) — never generated here, only merged in. `written` and
+    `written_summary` are coach-daily's copy for the computed cards themselves, keyed by
+    situation (see written_cards); a card with no written copy keeps its computed wording.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -594,9 +653,12 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
                     + f". Move him into the {s['slot']} spot.")
         else:
             title = f"{s['name']} is {phrase}" if hurt else f"{s['name']} is on a bye"
-            text = (f"{why}{news(s)} {no_backup(s['slot'])}, so the only fix is the waiver wire — "
+            text = (f"{why}{news(s)} {no_backup(s['slot'])}, so the only fix is the waiver wire, "
                     f"the pool of players nobody in the league owns.")
-        items.append({"kind": "bye" if bye and not hurt else "out", "level": "now", "title": title,
+        kind = "bye" if bye and not hurt else "out"
+        items.append({"kind": kind, "level": "now", "title": title,
+                      "key": _key(kind, s["player_id"], s.get("injury_status") if hurt else "bye",
+                                  r["player_id"] if r else None),
                       "stat": "Bye" if bye and not hurt else INJURY_LABEL.get(s.get("injury_status"), "Out"),
                       "text": text})
 
@@ -626,12 +688,13 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         swapped.add(s["player_id"])
         claimed.add(b["player_id"])
         items.append({"kind": "swap", "level": "now",
+                      "key": _key("swap", s["player_id"], b["player_id"], b.get("injury_status")),
                       "title": f"Start {b['name']} over {s['name']}",
                       "stat": f"+{_f1(gain)} projected",
                       "text": (f"ESPN projects {b['name']} for {_f1(_proj(b))} points and {s['name']} for "
                                f"{_f1(_proj(s))}. Both can play {s['slot']}, so that's {_f1(gain)} points of "
                                f"difference for one tap"
-                               + (f" — though {b['name']} is {INJURY_PHRASE[b['injury_status']]}, so check he's "
+                               + (f", though {b['name']} is {INJURY_PHRASE[b['injury_status']]}, so check he's "
                                   f"playing first" if b.get("injury_status") in IFFY else "")
                                + ". A projection is an estimate, not a promise, but a gap this size is "
                                "usually worth taking.")})
@@ -639,11 +702,12 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # 4. A starting slot with nobody in it scores exactly zero.
     filled = Counter(s["slot"] for s in starters) if can_change else Counter(LINEUP)
     for slot, need in LINEUP.items():
-        for _ in range(need - filled.get(slot, 0)):
+        for n in range(need - filled.get(slot, 0)):
             r = backup(slot)
             if r:
                 claimed.add(r["player_id"])
             items.append({"kind": "empty", "level": "now", "title": f"Your {slot} spot is empty",
+                          "key": _key("empty", slot, n, r["player_id"] if r else None),
                           "stat": "nobody starting",
                           "text": (f"There's nobody in your {slot} spot, and an empty spot scores zero. "
                                    + (f"{r['name']} {how(r)} can fill it."
@@ -657,6 +721,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         plan = (f"If he's ruled out, {r['name']} {how(r)} is your best swap."
                 if r else f"{no_backup(s['slot'])}, so check early.")
         items.append({"kind": "watch", "level": "watch",
+                      "key": _key("watch", s["player_id"], s["injury_status"], r["player_id"] if r else None),
                       "title": f"{s['name']} is {label.lower()}",
                       "stat": worth(s) or label,
                       "text": (f"{label} means his team hasn't decided whether he plays; the call usually "
@@ -667,6 +732,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         if locked(s) or s["player_id"] in covered or s["player_id"] in swapped or _proj(s) > 0.05:
             continue
         items.append({"kind": "hole", "level": "now", "title": f"{s['name']} is projected zero",
+                      "key": _key("hole", s["player_id"]),
                       "stat": "0.0 projected",
                       "text": (f"ESPN expects nothing from {s['name']} at {s['slot']} this week, and your "
                                f"bench has nothing better. Worth a look at the waiver wire.")})
@@ -687,6 +753,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         if now in SIDELINED or now in IFFY:
             fresh.append((0 if starting else 1, {
                 "kind": "news", "level": "watch" if starting and not locked(p) else "info",
+                "key": _key("news", pid, now, "starting" if starting else "bench",
+                            "locked" if locked(p) else "open"),
                 "title": f"{p['name']} is now listed {INJURY_LABEL[now].lower()}",
                 "stat": INJURY_LABEL[now],
                 "text": (f"New since Week {before_week}: ESPN has {p['name']} ({p['pos']}, {where}) as "
@@ -694,6 +762,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         elif was in SIDELINED or was in IFFY:
             fresh.append((2, {
                 "kind": "back", "level": "info",
+                "key": _key("back", pid, "starting" if starting else "bench"),
                 "title": f"{p['name']} is off the injury report",
                 "stat": worth(p) or "Back",
                 "text": (f"He was listed {INJURY_PHRASE[was]} in Week {before_week} and isn't any more. "
@@ -703,14 +772,15 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     if not items:
         done = not can_change
         items.append({"kind": "clear", "level": "info", "title": "Nothing to fix", "stat": "",
+                      "key": _key("clear", "done" if done else "open" if projected else "unprojected"),
                       "text": ("Every game you had this week is done, so this lineup is what it is. "
                                "Anything worth changing is on next week's list."
                                if done else
-                               ("Every starter is healthy, playing this week, and the best projection you "
-                                "have at his spot. Nothing on your bench beats what you've got. Go enjoy "
-                                "the games." if projected else
-                                "Every starter is healthy and has a game that week. ESPN hasn't published "
-                                "its projections yet, so the start-or-sit calls come later."))})
+                               ("Every starter still to play is off the injury report and has a game this "
+                                "week, and nobody on your bench is projected to beat him by 2 or more. Go "
+                                "enjoy the games." if projected else
+                                "Every starter is off the injury report and has a game that week. ESPN hasn't "
+                                "published its projections yet, so the start-or-sit calls come later."))})
 
     # Everything the per-player cards need. `bench_best` and `starter_for` deliberately
     # ignore `claimed`: a card describes one player's own week, and two cards naming the
@@ -743,6 +813,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # FantasyPros-sourced cards join the to-do list as if they'd always been part of it —
     # they carry their own {kind, level, title, stat, text} shape already, so counts and
     # the team summary read across them the same way they read ESPN's own cards.
+    apply_written(items, written or {})
     items = items + [it for it in fp_items if it not in items]
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
@@ -764,13 +835,23 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "items": items,
         "counts": (counts := {lvl: sum(1 for it in items if it["level"] == lvl) for lvl in LEVELS}),
         # One cheeky line for the top of her Coach page, under the header.
-        "summary": team_summary(team["team_id"], items, counts, can_change, team.get("win_probability")),
+        "summary": _summary(team["team_id"], items, counts, can_change,
+                            team.get("win_probability"), written_summary),
+        # What a written summary has to be keyed to (see team_summary), for coach-daily's brief
+        "summary_key": team_summary(team["team_id"], items, counts, can_change, team.get("win_probability"))[0],
         # One card per player on the roster, for the lineup rows on her Coach page
         "players": player_cards(starters, team["bench"], ctx),
         # Waiver/trade leads from FantasyPros — not a per-week to-do, so kept separate from
         # the now/watch/info list. Empty when today's snapshot has nothing for this team.
         "roster_ideas": list(fp_ideas),
     }
+
+
+def _summary(team_id, items, counts, can_change, win_probability, written_summary):
+    key, text = team_summary(team_id, items, counts, can_change, win_probability)
+    if written_summary and written_summary["key"] == key:
+        return written_summary["text"].strip()
+    return text
 
 
 def advice_payload(teams, espn, previous, fp=None, week=None):
@@ -801,8 +882,10 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
         if t["team_id"] not in by_id:
             continue
         fp_items, fp_ideas = fantasypros_cards(t["team_id"], fp, week)
+        written, written_summary = written_cards(t["team_id"], fp, week)
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
-                                    states_known, projected, week_open, fp_items, fp_ideas))
+                                    states_known, projected, week_open, fp_items, fp_ideas,
+                                    written, written_summary))
     return rows_out
 
 
@@ -831,12 +914,13 @@ def lookback_card(team, teams, week):
         text = (f"{verb} {_pts(pts)}-{_pts(opp_pts)}, but left {_f1(team['points_left_on_bench'])} points "
                 f"sitting on the bench doing it.")
     elif margin <= 3:
-        text = f"{verb} by just {_f1(margin)} — about as close as it gets."
+        text = f"{verb} by just {_f1(margin)}. About as close as it gets."
     elif margin >= 30:
         text = f"{'A blowout win' if won else 'A blowout loss'}, {_f1(margin)} points apart."
     else:
         text = f"{verb} {_pts(pts)}-{_pts(opp_pts)}."
-    return {"kind": "recap", "level": "info", "title": f"Week {week} recap", "stat": f"{_pts(pts)} pts", "text": text}
+    return {"kind": "recap", "level": "info", "key": _key("recap", week), "title": f"Week {week} recap",
+            "stat": f"{_pts(pts)} pts", "text": text}
 
 
 def opponent_preview_card(row, by_id, record_by_id):
@@ -857,13 +941,16 @@ def opponent_preview_card(row, by_id, record_by_id):
     else:
         st = threat.get("injury_status")
         if st in SIDELINED or st in IFFY:
-            text = (f"You're playing {who} next. Her scariest name is {threat['name']} ({threat['pos']}), "
-                    f"but ESPN lists him {INJURY_PHRASE[st]} — one less problem for you.")
+            text = (f"You're playing {who} next. Her highest-projected starter is {threat['name']} "
+                    f"({threat['pos']}), and ESPN lists him {INJURY_PHRASE[st]}. Check back before kickoff "
+                    f"to see who she plays instead.")
         else:
             text = (f"You're playing {who} next. Keep an eye on {threat['name']} ({threat['pos']}), "
                     f"projected for {_f1(_proj(threat))}.")
         stat = record_txt or f"{_f1(_proj(threat))} projected"
-    return {"kind": "matchup", "level": "info", "title": f"Next up: {opp['manager']}", "stat": stat, "text": text}
+    return {"kind": "matchup", "level": "info", "title": f"Next up: {opp['manager']}", "stat": stat, "text": text,
+            "key": _key("matchup", opp["team_id"], threat["player_id"] if threat else None,
+                        threat.get("injury_status") if threat else None)}
 
 
 def next_week_teams(capture):
@@ -915,6 +1002,7 @@ def next_payload(capture, previous, fp=None):
         # A week that hasn't started yet is exactly when "who's next" is worth saying.
         opp = opponent_preview_card(r, by_id, record_by_id)
         if opp:
+            apply_written([opp], written_cards(r["team_id"], fp, capture["week"])[0])
             r["items"] = [opp] + r["items"]
             r["counts"]["info"] += 1
     return {"week": capture["week"], "captured_at": capture["captured_at"],
@@ -960,6 +1048,7 @@ def live_payload(facts, espn, previous=None, fp=None):
             # Nothing has kicked off yet: worth a heads-up about who's coming.
             extra = opponent_preview_card(row, by_id, record_by_id)
         if extra:
+            apply_written([extra], written_cards(row["team_id"], fp, facts["week"])[0])
             row["items"] = [extra] + row["items"]
             row["counts"]["info"] += 1
     w.update(live=True, captured_at=espn["captured_at"], moves=moves, kicked_off=kicked_off, advice=advice)
@@ -1075,15 +1164,12 @@ def standalone(html, description="Weekly recaps, live scores and standings for o
     return head + html + "\n</html>\n"
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--season", type=int, default=LEAGUE["season"])
-    args = ap.parse_args()
-
+def load_inputs(season):
+    """(recap_weeks, captured, ahead, fp): everything render() reads from disk."""
     recap_weeks = []
-    for recap_path in sorted((ROOT / "recaps" / str(args.season)).glob("week-*.json")):
+    for recap_path in sorted((ROOT / "recaps" / str(season)).glob("week-*.json")):
         recap = json.loads(recap_path.read_text())
-        facts_path = ROOT / "data" / str(args.season) / f"week-{recap['week']:02d}" / "facts.json"
+        facts_path = ROOT / "data" / str(season) / f"week-{recap['week']:02d}" / "facts.json"
         if not facts_path.exists():
             raise SystemExit(f"{recap_path.name}: missing {facts_path.relative_to(ROOT)}; run scripts/analyze.py")
         facts = json.loads(facts_path.read_text())
@@ -1092,19 +1178,26 @@ def main():
 
     # Every captured week (facts + raw capture), for the live page
     captured = []
-    for d in sorted((ROOT / "data" / str(args.season)).glob("week-*")):
+    for d in sorted((ROOT / "data" / str(season)).glob("week-*")):
         if (d / "facts.json").exists() and (d / "espn.json").exists():
             captured.append((json.loads((d / "facts.json").read_text()), json.loads((d / "espn.json").read_text())))
     captured.sort(key=lambda c: c[0]["week"])
 
     # The week-ahead preview, if one has been captured (scripts/capture.js 'next').
     # Optional by design: no file, no "next week" tab, everything else unchanged.
-    ahead_path = ROOT / "data" / str(args.season) / "next-week" / "espn.json"
+    ahead_path = ROOT / "data" / str(season) / "next-week" / "espn.json"
     ahead = json.loads(ahead_path.read_text()) if ahead_path.exists() else None
 
     # Today's FantasyPros snapshot, if fantasy-coach-daily has written one. Optional by
     # design, same as `ahead`: missing, malformed or stale just means ESPN-only advice.
-    fp = load_fantasypros(args.season)
+    return recap_weeks, captured, ahead, load_fantasypros(season)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--season", type=int, default=LEAGUE["season"])
+    args = ap.parse_args()
+    recap_weeks, captured, ahead, fp = load_inputs(args.season)
 
     dist = SITE / "dist"
     dist.mkdir(exist_ok=True)
