@@ -115,14 +115,17 @@ against those keys, so managers never read a fill-in-the-blank template.
    behind the card; it's your source, not your copy. If it exits with "No live week", skip
    this step.
 2. For **every** card in the brief, write a `title` and `text` under its exact `key`, and one
-   `summary` line per team under its exact `summary_key`. Lead with the advice (what to do,
-   and why, in plain words a first-season manager follows), then one line of personality. Use
+   `summary` line per team under its exact `summary_key`. That key lists the very cards the
+   summary sums up, so it's safe to name those players; it stops showing once the list
+   changes. Lead with the advice (what to do, and why, in plain words a first-season manager
+   follows), then one line of personality. Use
    what the brief and Step 4's FantasyPros context actually say about that player this week,
    and credit FantasyPros for anything it sourced.
 3. **No projections, point totals or percentages in the text.** No decimals and no `%`: those
    numbers move all day, so the site keeps them in the card's stat pill, which it recomputes
-   live, and `site/build.py` rejects written copy that carries one. Say "a couple of points
-   better", "the bigger projection", "a big fat zero" instead. Week numbers are fine.
+   live, and `site/build.py` rejects written copy that carries a decimal, a `%`, "percent" or a
+   point count ("17 points", "a 12-point edge"). Say "a couple of points better", "the bigger
+   projection", "a big fat zero" instead. Week numbers are fine.
 4. Injury cards follow CLAUDE.md's serious-moments rule: plain and warm, no joke, and never a
    cause or timeline no source gave you.
 5. Don't invent a card or a key. The site shows written copy only while its key is still
