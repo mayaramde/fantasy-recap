@@ -55,3 +55,55 @@ def moves(team_id, captured):
             out.append({"week": facts["week"], "date": t["date"], "type": kind, "added": added, "dropped": dropped})
     out.sort(key=lambda m: m["date"], reverse=True)
     return out
+
+
+# ---------- audit: shared ----------
+
+def _card(key, kind, stat, title, text):
+    return {"key": key, "kind": kind, "level": "info", "stat": stat, "title": title, "text": text}
+
+
+# ---------- audit: Lineup IQ ----------
+
+def band(pct):
+    """A–D, for the key only. Never shown: grading her lineups on the page would read as
+    grading her, and CLAUDE.md says roast the decision, hug the person."""
+    for floor, letter in BANDS:
+        if pct >= floor:
+            return letter
+    return "D"
+
+
+def _benched_id(team_row, name):
+    """facts.json's worst_bench_call names the player but doesn't carry his id, so find him
+    on that week's bench. A name that isn't there still needs a stable key: slug it."""
+    for p in team_row.get("bench", []):
+        if p.get("name") == name:
+            return str(p["player_id"])
+    return _slug(name)
+
+
+LINEUP_TITLE = {"A": "Your lineup calls have been sharp", "B": "Mostly the right calls",
+                "C": "The bench keeps getting the good weeks", "D": "Your bench is outscoring your lineup"}
+
+
+def lineup_iq(rows):
+    """rows: (week, facts.json team row) for one team, oldest first, non-empty."""
+    points = sum(r["points"] for _, r in rows)
+    optimal = sum(r["optimal_points"] for _, r in rows)
+    pct = points / optimal if optimal > 0 else 1.0
+    left = sum(r["points_left_on_bench"] for _, r in rows)
+    worst = None                                    # (week, row, call); ties keep the oldest week
+    for wk, r in rows:
+        c = r.get("worst_bench_call")
+        if c and (worst is None or c["gap"] > worst[2]["gap"]):
+            worst = (wk, r, c)
+    b = band(pct)
+    stat = f"{round(pct * 100)}% of optimal · {_f1(left)} benched"
+    if not worst:
+        return _card(f"lineup:{b}:none", "lineup_iq", stat, "Perfect lineups, every week",
+                     "You've started your best possible lineup every single week. The bench has scored nothing you needed.")
+    wk, r, c = worst
+    text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) at "
+            f"{GROUP_LABEL.get(c['slot'], c['slot'])} while {c['benched']} put up {_f1(c['benched_points'])} on your bench.")
+    return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}", "lineup_iq", stat, LINEUP_TITLE[b], text)

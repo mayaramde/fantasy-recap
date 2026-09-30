@@ -60,5 +60,58 @@ class MovesTest(unittest.TestCase):
         self.assertEqual(rows[0]["dropped"], ["Texans D/ST"])
 
 
+def player(pid, name, slot, points, projected):
+    return {"player_id": pid, "name": name, "pos": slot, "slot": slot, "points": points, "projected": projected}
+
+
+def row(team_id, points, optimal, left=0.0, worst=None, starters=(), bench=()):
+    return {"team_id": team_id, "points": points, "optimal_points": optimal, "points_left_on_bench": left,
+            "worst_bench_call": worst, "starters": list(starters), "bench": list(bench)}
+
+
+def call(benched, started, bp, sp, slot="TE"):
+    return {"benched": benched, "benched_points": bp, "benched_projected": 10, "started": started,
+            "started_points": sp, "started_projected": 10, "slot": slot, "gap": round(bp - sp, 2)}
+
+
+class LineupIQTest(unittest.TestCase):
+    def test_band_edges(self):
+        self.assertEqual([tp.band(x) for x in (1.0, 0.95, 0.9499, 0.88, 0.80, 0.7999)],
+                         ["A", "A", "B", "B", "C", "D"])
+
+    def test_percent_of_optimal_worst_call_and_key(self):
+        rows = [
+            (1, row(6, 90, 100, left=10, worst=call("Kincaid", "Odunze", 12, 5, "FLEX"),   # gap 7 < week 2 gap 9.4
+                    bench=[player(111, "Kincaid", "BENCH", 15, 10)])),
+            (2, row(6, 90, 100, left=24.1, worst=call("Fannin", "Warren", 24.1, 14.7),
+                    bench=[player(222, "Fannin", "BENCH", 24.1, 9.8)])),
+        ]
+        card = tp.lineup_iq(rows)
+        self.assertEqual(card["key"], "lineup:B:222")          # 180/200 = 0.90 → B; biggest gap is week 2
+        self.assertEqual(card["stat"], "90% of optimal · 34.1 benched")
+        self.assertEqual((card["kind"], card["level"]), ("lineup_iq", "info"))
+        self.assertIn("Week 2", card["text"])
+        self.assertNotIn(" B ", f" {card['title']} {card['text']} ")   # band never shown
+
+    def test_perfect_lineups(self):
+        card = tp.lineup_iq([(1, row(6, 120, 120)), (2, row(6, 100, 100))])
+        self.assertEqual(card["key"], "lineup:A:none")
+        self.assertEqual(card["stat"], "100% of optimal · 0.0 benched")
+
+    def test_benched_name_missing_from_bench_falls_back_to_slug(self):
+        rows = [(1, row(6, 70, 100, left=30, worst=call("Texans D/ST", "49ers D/ST", 30, 0, "DST")))]
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:texans-d-st")
+
+    def test_negative_dst_id(self):
+        rows = [(1, row(6, 70, 100, left=30, worst=call("Texans D/ST", "49ers D/ST", 30, 0, "DST"),
+                        bench=[player(-16034, "Texans D/ST", "BENCH", 30, 5)]))]
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:-16034")
+
+    def test_ties_keep_the_oldest_week(self):
+        rows = [(1, row(6, 90, 100, worst=call("A", "B", 20, 10), bench=[player(1, "A", "BENCH", 20, 9)])),
+                (2, row(6, 90, 100, worst=call("C", "D", 20, 10), bench=[player(2, "C", "BENCH", 20, 9)]))]
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:B:1")
+
+
 if __name__ == "__main__":
     unittest.main()
