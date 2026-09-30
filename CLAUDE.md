@@ -103,15 +103,14 @@ things run and what the pages show.
 - Preview (Vercel, private, Maya only): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` to a new
   throwaway `fantasy-recap-*.vercel.app` URL every time it runs — there's no fixed link to bookmark. Deployment
   URLs aren't guessable or indexed (`docs/vercel.md` §7), so that's the only access control it has. Drafts are
-  reviewed here before they go to the website. Retired 2026-09-29: the Claude artifact preview this replaced.
-- Old league artifact (retired 2026-09-28, no longer updated): https://claude.ai/artifact/XU5jqS5WzR47mK3kCDhNKZ
+  reviewed here before they go to the website. 
 
 ## Recap content
 - Matchup results, high/low scores, standings
 - Good decisions: waiver pickups that paid off, smart benchings/starts
 - Bench blunders: points left on the bench (optimal lineup vs actual)
 - Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost).
-  Cite a real cause from FantasyPros' injury/news desk when one exists (`recap-write`'s context-gathering step); never invent one.
+  Events must be verified from FantasyPros' injury/news desk when one exists (`recap-write`'s context-gathering step); never invent one.
 - Rookie glossary: 3-5 football/fantasy terms used in that week's recap, defined in one friendly sentence each.
 
 ## Voice
