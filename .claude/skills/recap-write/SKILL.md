@@ -22,12 +22,9 @@ will fail the draft on.
 
 ## Step 2: write the recap
 
-Before writing, read the two most recently *published* recaps in `recaps/2026/` for tone —
-CLAUDE.md's Voice section describes the style, but these are what it actually sounds like
-applied. Match that level of personality, not just the mechanical shape. A recap that's
-numerically flawless but reads like a stats recap has failed the same as one with a wrong
-number — `recap-fact-checker` in Step 3 will fail a draft on flat voice alone, so aim for
-genuinely cheeky and funny the first time, not the minimum that passes the mechanical checks.
+Voice isn't restated or self-checked here. Write to CLAUDE.md's **Voice** section as usual;
+`voice-check` judges the draft after the fact-check, run by `fantasy-orchestrator`, and any
+rewrites it asks for come back to this skill as a revision.
 
 Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draft"`. Schema:
 

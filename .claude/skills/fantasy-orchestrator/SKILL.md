@@ -21,7 +21,9 @@ recap before you've captured the week's data). The two read-only judges —
 `recap-fact-checker` and `code-reviewer` — **are** spawned as actual
 subagents (via the `Agent` tool), from inside `recap-write` and `recap-ship`
 respectively, because their whole value is being independent of whatever
-produced the thing they're reviewing.
+produced the thing they're reviewing. `voice-check` is a third read-only
+judge, spawned the same way but by this orchestrator itself, right after
+`recap-write` finishes (Phase 2).
 
 ## Team
 
@@ -30,6 +32,7 @@ produced the thing they're reviewing.
 | (this session) | — | capture | `recap-capture` | `data/<season>/week-NN/{espn.json,facts.json}` |
 | (this session) | — | write | `recap-write` | `recaps/<season>/week-NN.json` (`status: draft`) |
 | recap-fact-checker | custom agent | fact-check | (invoked by recap-write) | PASS/FAIL + claim table |
+| voice-check | custom agent | voice review | (invoked by this orchestrator after recap-write) | per-field verdict + rewrites |
 | (this session) | — | ship | `recap-ship` | published site + merged PR |
 | code-reviewer | custom agent | code review | (invoked by recap-ship, conditionally) | findings list |
 | (this session) | — | daily snapshot | `coach-daily` | `data/<season>/fantasypros/latest.json` |
@@ -79,6 +82,20 @@ done, and revises on a FAIL — **capped at two revise-and-recheck rounds**. If 
 failing after two rounds, stop and show the user the fact-checker's last report rather than
 publishing something unverified or looping forever.
 
+**Voice gate.** Once `recap-write` returns a draft that passed the fact-check, spawn the
+`voice-check` agent on it (the `Agent` tool, `subagent_type: voice-check`), passing the draft's
+path and, for a partial revision like one blurb or the glossary, which fields changed so it
+judges those rather than re-litigating the whole recap. It reads `CLAUDE.md`'s Voice section
+and the calibration recaps itself. The fact-checker doesn't judge tone, so this is the only
+voice check; it returns concrete rewrites.
+
+- **reads as intended** → the draft is ready for `recap-ship`.
+- **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise exactly
+  those fields, then re-run the fact-check (a rewrite can break a number or a citation) and the
+  voice gate again. **This shares the same two-round cap as the fact-check**, counted across
+  both judges. If it still isn't clean, stop and show the user both reports rather than
+  shipping copy the harness itself says is flat.
+
 ### Phase 3: ship — runs `recap-ship`
 
 Input: `recaps/<season>/week-NN.json` (status `draft`, already fact-checked). Runs the build,
@@ -101,8 +118,9 @@ PR with auto-merge. Doesn't touch any recap or any `data/<season>/week-NN/` file
 | ESPN capture 401s and the documented fallback (`.env.espn.local` + `capture_node.mjs`) also fails | Stop. Tell the user what's missing — don't guess at data. |
 | FantasyPros MCP is unavailable or gated (premium tool) | `recap-write` proceeds on ESPN data alone, notes the gap; never invents an injury/bad-luck cause it can't source. |
 | `recap-fact-checker` FAILs twice in a row | Stop. Show the user the last FAIL report — don't force a third round or publish anyway. |
+| `voice-check` says "reads flat" or "breaks a rule" twice in a row (rounds shared with the fact-check) | Stop. Show the user both last reports (voice and fact-check). Don't force a third round or ship it. |
 | `code-reviewer` flags something in `recap-ship`'s engineering diff | Surface it to the user before opening the PR; don't silently proceed. |
-| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and re-deploy the preview — don't skip re-verification because "it was already approved." |
+| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and the voice gate and re-deploy the preview — don't skip re-verification because "it was already approved." |
 
 ## Test scenarios
 
@@ -113,6 +131,10 @@ PR with auto-merge. Doesn't touch any recap or any `data/<season>/week-NN/` file
 - **Error:** a copy of a draft with an invented injury cause and a wrong score → `recap-write`
   → `recap-fact-checker` FAILs both → one revise-and-recheck round → still failing → stop and
   report exactly what's wrong, don't publish.
+- **Flat voice:** a draft with correct numbers and sourced injuries whose blurbs are all
+  facts with qualifiers stapled on → fact-check PASS → `voice-check` says "reads flat" with
+  per-field rewrites → one round back through `recap-write` and both judges → clean → ready for
+  `recap-ship`.
 - **Triage:** "what does PPR mean" → answered directly, no skill invoked. "fix a typo in
   README.md" → routed to the normal engineering flow, not this skill.
 - **Ship:** "publish the recap" with an existing fact-checked draft → straight to `recap-ship`,
