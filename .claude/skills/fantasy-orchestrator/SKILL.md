@@ -91,8 +91,8 @@ itself. The fact-checker doesn't judge tone, so this is the only voice check.
 
 Input: `recaps/<season>/week-NN.json` (status `draft`, already fact- and voice-checked). **Nothing
 publishes without the user's explicit approval of the preview.** Then `recap-ship` flips
-`status` to `"published"`, ships via `scripts/deploy.sh`, and opens the `Publish week NN
-recap` PR.
+`status` to `"published"` and opens the `Publish week NN recap` PR — CI deploys the live
+site automatically once that PR merges (`live-update.yml`'s `push` trigger), not this skill.
 
 ### Phase 4: coach-daily (independent of the recap pipeline)
 
