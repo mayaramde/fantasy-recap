@@ -22,12 +22,32 @@ will fail the draft on.
 
 ## Step 2: write the recap
 
-Before writing, read the two most recently *published* recaps in `recaps/2026/` for tone —
-CLAUDE.md's Voice section describes the style, but these are what it actually sounds like
-applied. Match that level of personality, not just the mechanical shape. A recap that's
-numerically flawless but reads like a stats recap has failed the same as one with a wrong
-number — `recap-fact-checker` in Step 3 will fail a draft on flat voice alone, so aim for
-genuinely cheeky and funny the first time, not the minimum that passes the mechanical checks.
+Before writing, read CLAUDE.md's `## Voice` section in full, plus the calibration recaps it
+names (`recaps/2026/week-01.json` and `week-02.json`, or the two most recently *published*
+recaps once CLAUDE.md swaps them in). The section describes the style, the recaps are what it
+sounds like applied. Match that level of personality, not just the mechanical shape. A recap
+that's numerically flawless but reads like a stats recap has failed the same as one with a
+wrong number, and `recap-fact-checker` in Step 3 judges the draft against these same rules,
+so aim for genuinely cheeky and funny the first time. While drafting, hold each field to:
+- **The formula:** a real fact, then a short turn. Run the deletion test on every blurb: if
+  removing the joke leaves the sentence reading the same, it was a qualifier, not a joke.
+- **One joke per section** (headline, dek, each matchup blurb, each game ball/flag/tough
+  break). Pick the best one and cut the rest.
+- **Jokes from true, checkable things:** a team name, a real callback, an absurd stat. Never
+  an invented feeling, effort, or motive. Exaggerate the joke, never the number.
+- **Mechanics:** no em dashes (period or comma), short sentences, one stat line per player,
+  one comparison per blurb, no explaining after the joke lands. Explain jargon in passing.
+- **Punch at decisions, hug the person.** Never a manager's character or competence, and no
+  second joke on whoever already took one this issue. Maya's team gets roasted too, by name.
+- **Serious moments play it straight:** a season-ending injury or real bad news gets one
+  warm, plain sentence, no joke there or about the other side of the matchup. Never guess at
+  an injury or its cause (Step 1).
+- **Running threads:** pull on one, maybe two of CLAUDE.md's list, not every live one.
+- **Dial by surface:** full personality in headline/dek (dek short), one joke in blurbs, game
+  balls and flags, warm tough breaks, glossary teaches first with this week's example as the
+  wink.
+- **Screenshot test:** would a friend screenshot this line for the group chat? If not,
+  rewrite it.
 
 Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draft"`. Schema:
 
