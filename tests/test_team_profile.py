@@ -167,7 +167,13 @@ class PositionTest(unittest.TestCase):
 
     def test_same_rank_everywhere(self):
         card, weak = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
-        self.assertEqual((card["key"], weak), ("pos:QB1:QB1", "QB"))
+        self.assertEqual((card["key"], weak), ("pos:RB1:RB1", "RB"))
+
+    def test_tied_weak_spot_prefers_rb_and_wr_over_qb(self):
+        # Waiver pickups that move the needle are mostly RBs and WRs; a tied QB is the last
+        # place a manager can actually upgrade, so it loses the tie for weak spot.
+        ranks = {"QB": 8, "RB": 3, "WR": 8, "TE": 2, "FLEX": 4, "DST": 5, "K": 6}
+        self.assertEqual(tp.position_card(ranks)[1], "WR")
 
 
 class VoiceCopyTest(unittest.TestCase):
