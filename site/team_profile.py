@@ -7,7 +7,7 @@ changes only when a newly included week changes that situation.
 """
 import re
 
-GROUPS = ("QB", "RB", "WR", "TE", "FLEX", "DST", "K")   # also the tie-break order
+GROUPS = ("RB", "WR", "QB","TE", "FLEX", "DST", "K")   # also the tie-break order
 GROUP_LABEL = {"QB": "quarterback", "RB": "running back", "WR": "wide receiver", "TE": "tight end",
                "FLEX": "flex (the wild-card spot)", "DST": "defense", "K": "kicker"}
 BANDS = ((0.95, "A"), (0.88, "B"), (0.80, "C"))
