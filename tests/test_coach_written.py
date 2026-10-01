@@ -214,6 +214,15 @@ class CoachWrittenTest(unittest.TestCase):
         tags = {i["title"]: i["fills_weak_spot"] for i in row["roster_ideas"]}
         self.assertEqual(tags, {"fits": True, "other": False, "nopos": False})
 
+    def test_brief_has_audit_for_every_team(self):
+        import coach_brief
+        out = coach_brief.brief(SEASON)
+        self.assertEqual(len(out["audit"]), 8)
+        for row in out["audit"].values():
+            self.assertEqual(set(row), {"manager", "weak_spot", "cards"})
+            for c in row["cards"]:
+                self.assertEqual(set(c), {"key", "kind", "stat", "title", "text"})
+
 
 if __name__ == "__main__":
     unittest.main()

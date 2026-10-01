@@ -106,7 +106,7 @@ transaction can appear in two consecutive captures.
 
 ### `scripts/coach_brief.py`
 - Adds a top-level `audit` block: `{"<team_id>": {manager, weak_spot, cards: [{key, kind, stat, title, text}]}}`,
-  computed from the league site's view (published recaps only) via `team_profile` directly.
+  computed from the league site's view (published recaps only) via `build.site_data`, so the brief's keys are byte-for-byte the page's.
 - No longer exits with an error when there's no live week; the audit block exists all season.
   Per-week blocks are unchanged.
 
