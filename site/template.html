@@ -1296,7 +1296,7 @@
 
   function teamSwitch(active, next) {
     return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
+      <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
   /* Her top two items as a mini checklist, most urgent first. build.py already sorts
@@ -1311,7 +1311,7 @@
     const shown = items.slice(0, 2);
     const rest = items.length - shown.length;
     return `
-      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}">
+      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">
         <div class="cc-head"><div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>${badge}</div>
         ${shown.length ? `<ul class="cc-list">${shown.map((it) => `
           <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>`
@@ -1375,7 +1375,6 @@
       const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
       return `<section>${secHead('board', 'This week')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
     }
-    myTeam.set(id);
     const week = next ? ahead().week : LIVE.week;
     const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
@@ -1437,7 +1436,10 @@
 
   function suggestionsSection(id, next) {
     const a = coachFor(id, next);
-    const ideas = (a && a.roster_ideas) || [];
+    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
+    // never went through site_data(), so a baked tag would vanish on the first refresh.
+    const weak = (TEAMS[id].profile || {}).weak_spot;
+    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
     return `
       <section>
         ${secHead('board', 'Worth a look')}
@@ -1487,7 +1489,7 @@
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
-    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { location.replace(`#team-${m[2]}${m[1] ? '.next' : ''}`); return; }
+    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(`#team-${m[2]}${m[1] ? '.next' : ''}`); return; }
     else if ((m = /^team-(\d+)(\.next)?$/.exec(h))) { html = teamPage(Number(m[1]), !!m[2]); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
@@ -1520,6 +1522,13 @@
     btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     btn.closest('tr').classList.toggle('peek-open', open);
     if (open) PEEK.add(id); else PEEK.delete(id);
+  });
+
+  /* Picking a team from Coach (a grid card or the team switcher) is what makes it "my team"
+     for the Coach tab. Opening someone's profile from Standings or a matchup link isn't. */
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-myteam]');
+    if (a) myTeam.set(Number(a.dataset.myteam));
   });
 
   window.addEventListener('hashchange', () => {

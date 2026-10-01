@@ -80,8 +80,8 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
 `#team-<id>`: header and season tiles, this week's to-dos and lineup (the Coach page section above), the
 **coach's audit**, roster ideas ("Worth a look"), her **recent moves**, week by week, and awards.
 
-- **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>`),
-  Position strength (`pos:<best>:<worst>`; the worst group is her `weak_spot`) and Projection vs reality
+- **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
+  Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
   (`proj:<over|under>:<top id>:<bottom id>`). The A–D band exists only in the key, never on the page.
   `coach-daily` writes copy per key into `latest.json`'s top-level `audit`; it applies on key match alone, with no
   36-hour gate, since the key already describes finished weeks.

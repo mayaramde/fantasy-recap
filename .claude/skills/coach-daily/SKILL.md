@@ -46,8 +46,9 @@ The current live week (the highest week in `data/2026/week-NN/facts.json` whose
 `recaps/2026/week-NN.json` has no *published* status yet), and, if `data/2026/next-week/espn.json`
 exists and its `week` is exactly one more than the live week, that week too — a full week of
 lead time is exactly when start/sit and waiver/trade ideas matter most, so don't skip it just
-because the live week already got cards. If every week through 17 already has a published
-recap, the season's over: stop and say so.
+because the live week already got cards. If there's no live week, there are no week cards to write,
+but the season audit (Step 5b) still gets written every run. If every week through 17 already has a
+published recap, the season's over: stop and say so.
 
 ## Step 4: pull FantasyPros data (free tier only)
 
@@ -117,9 +118,10 @@ against those keys, so managers never read a fill-in-the-blank template.
 1. In the worktree, run `python3 scripts/coach_brief.py`. For the live week (and next week,
    when its capture is current) it prints every team's `summary_key` plus each card's `key`,
    `kind`, `level`, `stat` and computed `title`/`text`. The computed text states the facts
-   behind the card; it's your source, not your copy. If it exits with "No live week", skip
-   this step.
-2. For **every** card in the brief, write a `title` and `text` under its exact `key`, and one
+   behind the card; it's your source, not your copy. It always prints a top-level `audit`
+   block too (see **Season audit** below); that key is not a week. With no live week, `audit`
+   is the only key, so skip items 2-3 and write the audit.
+2. For **every** card under a week key in the brief, write a `title` and `text` under its exact `key`, and one
    `summary` line per team under its exact `summary_key`. That key lists the very cards the
    summary sums up, so it's safe to name those players; it stops showing once the list
    changes. Lead with the advice (what to do, and why, in plain words a first-season manager
@@ -142,7 +144,10 @@ against those keys, so managers never read a fill-in-the-blank template.
 Write one `{title, text}` per key, dial "Coach cards": advice first, one line of personality. Roast the
 lineup call, never the manager (the A–D band inside a Lineup IQ key is for invalidation only; never
 mention a grade). Same number rule as above: no decimals or percentages, the stat pill carries the
-numbers. The brief prints the audit even with no live week, so write it every run.
+numbers. The brief prints the audit even with no live week, so write it every run. Each key
+already names everything the computed text does (the Lineup IQ key carries the worst call's week,
+`:w3`; the Position key carries both ranks, `pos:RB1:WR8`), so your copy may name that week, those
+players and those ranks, and it disappears on its own when any of them changes.
 
 ## Step 5c: voice gate
 

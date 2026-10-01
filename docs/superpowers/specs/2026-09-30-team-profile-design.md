@@ -77,11 +77,11 @@ All read existing `facts.json` fields; no capture changes.
   weeks. Worst call = the `worst_bench_call` with the largest `benched_points − started_points`
   across those weeks. Band: A ≥ 95%, B ≥ 88%, C ≥ 80%, else D (starting thresholds; tune once
   the season has more weeks, since changing them changes keys and resets written copy once).
-  Key `lineup:<band>:<benched player id | none>`. Stat pill: `"<pct>% of optimal · <Σ points_left_on_bench> benched"`.
+  Key `lineup:<band>:<benched player id>:w<week>`; `lineup:<band>:none` for a perfect season (nothing benched), `lineup:<band>:scattered` when points were left but no single call stands out (amended in review). Stat pill: `"<pct>% of optimal · <Σ points_left_on_bench> benched"`.
 - **Position strength** (`kind: "position"`). Sum her starters' `points` by starting slot group
   (the `LINEUP` slots from `league.json`: QB, RB, WR, TE, FLEX, DST, K), rank each against the other 7 teams over the
   same weeks. Best = highest rank; worst = lowest rank; ties broken by `SLOT_ORDER` so the result is
-  stable. `weak_spot` = worst group. Key `pos:<best>:<worst>`. Stat pill: `"Best: <best> (#r) · Worst: <worst> (#r)"`.
+  stable. `weak_spot` = worst group. Key `pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8` (ranks added in review, so copy naming a rank expires when it changes). Stat pill: `"Best: <best> (#r) · Worst: <worst> (#r)"`.
 - **Projection vs reality** (`kind: "projection"`). `delta = Σ (points − projected)` over her
   starters. Over- and under-performer: the starter with the largest and smallest average
   `points − projected`, among players with at least 2 starts. Key
