@@ -95,7 +95,7 @@ class LineupIQTest(unittest.TestCase):
                     bench=[player(222, "Fannin", "BENCH", 24.1, 9.8)])),
         ]
         card = tp.lineup_iq(rows)
-        self.assertEqual(card["key"], "lineup:B:222")          # 180/200 = 0.90 → B; biggest gap is week 2
+        self.assertEqual(card["key"], "lineup:B:222:w2")          # 180/200 = 0.90 → B; biggest gap is week 2
         self.assertEqual(card["stat"], "90% of optimal · 34.1 benched")
         self.assertEqual((card["kind"], card["level"]), ("lineup_iq", "info"))
         self.assertIn("Week 2", card["text"])
@@ -106,19 +106,33 @@ class LineupIQTest(unittest.TestCase):
         self.assertEqual(card["key"], "lineup:A:none")
         self.assertEqual(card["stat"], "100% of optimal · 0.0 benched")
 
+    def test_points_left_without_a_single_bad_call_is_not_perfect(self):
+        # analyze.py leaves worst_bench_call null when the points came from, say, an empty slot.
+        card = tp.lineup_iq([(2, row(6, 120, 128.5, left=8.5))])   # 93% → B
+        self.assertEqual(card["key"], "lineup:B:scattered")
+        # 96%: same band as a perfect team, but must not share its key (or its written copy).
+        self.assertEqual(tp.lineup_iq([(2, row(6, 120, 125, left=5))])["key"], "lineup:A:scattered")
+        self.assertNotIn("Perfect", card["title"])
+        self.assertNotIn("best possible lineup every", card["text"])
+
+    def test_week_in_key_changes_when_same_player_misses_a_later_week(self):
+        w1 = (1, row(6, 90, 100, worst=call("Watson", "Judkins", 32.7, 7, "FLEX"), bench=[player(9, "Watson", "BENCH", 32.7, 10)]))
+        w5 = (5, row(6, 90, 100, worst=call("Watson", "Cook", 40, 2, "FLEX"), bench=[player(9, "Watson", "BENCH", 40, 10)]))
+        self.assertNotEqual(tp.lineup_iq([w1])["key"], tp.lineup_iq([w1, w5])["key"])
+
     def test_benched_name_missing_from_bench_falls_back_to_slug(self):
         rows = [(1, row(6, 70, 100, left=30, worst=call("Texans D/ST", "49ers D/ST", 30, 0, "DST")))]
-        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:texans-d-st")
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:texans-d-st:w1")
 
     def test_negative_dst_id(self):
         rows = [(1, row(6, 70, 100, left=30, worst=call("Texans D/ST", "49ers D/ST", 30, 0, "DST"),
                         bench=[player(-16034, "Texans D/ST", "BENCH", 30, 5)]))]
-        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:-16034")
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:D:-16034:w1")
 
     def test_ties_keep_the_oldest_week(self):
         rows = [(1, row(6, 90, 100, worst=call("A", "B", 20, 10), bench=[player(1, "A", "BENCH", 20, 9)])),
                 (2, row(6, 90, 100, worst=call("C", "D", 20, 10), bench=[player(2, "C", "BENCH", 20, 9)]))]
-        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:B:1")
+        self.assertEqual(tp.lineup_iq(rows)["key"], "lineup:B:1:w1")
 
 
 def week(wk, teams):
@@ -142,18 +156,18 @@ class PositionTest(unittest.TestCase):
     def test_card_key_and_weak_spot(self):
         ranks = {"QB": 1, "RB": 4, "WR": 3, "TE": 8, "FLEX": 2, "DST": 5, "K": 6}
         card, weak = tp.position_card(ranks)
-        self.assertEqual((card["key"], weak), ("pos:QB:TE", "TE"))
+        self.assertEqual((card["key"], weak), ("pos:QB1:TE8", "TE"))
         self.assertEqual(card["stat"], "Best: QB (#1) · Worst: TE (#8)")
         self.assertIn("tight end", card["text"])
 
     def test_ties_break_by_slot_order_and_are_stable(self):
         ranks = {"QB": 3, "RB": 1, "WR": 1, "TE": 7, "FLEX": 7, "DST": 4, "K": 5}
         for _ in range(3):
-            self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:RB:TE")
+            self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:RB1:TE7")
 
     def test_same_rank_everywhere(self):
         card, weak = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
-        self.assertEqual((card["key"], weak), ("pos:QB:QB", "QB"))
+        self.assertEqual((card["key"], weak), ("pos:QB1:QB1", "QB"))
 
 
 class VoiceCopyTest(unittest.TestCase):

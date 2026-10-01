@@ -266,9 +266,10 @@ def written_audit(team_id, fp):
     `audit`. No freshness gate, unlike the coach cards: an audit key fully describes weeks
     that are already over, so copy written for a key that still matches is still true
     however old the file is. A missing or malformed snapshot just means computed wording."""
-    if not fp:
+    audit = fp.get("audit") if fp else None
+    if not isinstance(audit, dict):
         return {}
-    row = (fp.get("audit") or {}).get(str(team_id))
+    row = audit.get(str(team_id))
     return {k: v for k, v in row.items() if _valid_written(v)} if isinstance(row, dict) else {}
 
 

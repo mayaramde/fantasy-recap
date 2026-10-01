@@ -108,13 +108,18 @@ def lineup_iq(rows):
     b = band(pct)
     stat = f"{round(pct * 100)}% of optimal · {_f1(left)} benched"
     if not worst:
-        return _card(f"lineup:{b}:none", "lineup_iq", stat, "Perfect lineups, every week",
-                     "You've started your best possible lineup every single week. Your bench has yet to be right about anything.")
+        # Null worst_bench_call doesn't mean nothing was left behind (analyze.py also nulls it
+        # when the points came from, say, an empty slot), so "perfect" needs a zero to say so.
+        if left < 0.005:
+            return _card(f"lineup:{b}:none", "lineup_iq", stat, "Perfect lineups, every week",
+                         "You've started your best possible lineup every single week. Your bench has yet to be right about anything.")
+        return _card(f"lineup:{b}:scattered", "lineup_iq", stat, LINEUP_TITLE[b],
+                     "No single benching stands out. What's left on the bench came in small pieces, not one big miss.")
     wk, r, c = worst
     at = _at(c["slot"]) if c["slot"] in GROUP_LABEL else f"at {c['slot']}"
     text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) "
             f"{at} while {c['benched']} put up {_f1(c['benched_points'])} on your bench, where points don't count.")
-    return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}", "lineup_iq", stat, LINEUP_TITLE[b], text)
+    return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}:w{wk}", "lineup_iq", stat, LINEUP_TITLE[b], text)
 
 
 # ---------- audit: Position strength ----------
@@ -164,7 +169,7 @@ def position_card(ranks, n_teams=8):
         title = f"{GROUP_LABEL[best].split(' (')[0].capitalize()} is carrying this team"
         text = (f"Your points {_at(best)} rank {_ordinal(ranks[best])} in the league. Your points {_at(worst)} "
                 f"rank {_rank(ranks[worst], n_teams)}, so that's where a pickup, a free agent you add, helps most.")
-    return _card(f"pos:{best}:{worst}", "position", stat, title, text), worst
+    return _card(f"pos:{best}{ranks[best]}:{worst}{ranks[worst]}", "position", stat, title, text), worst
 
 
 # ---------- audit: Projection vs reality ----------

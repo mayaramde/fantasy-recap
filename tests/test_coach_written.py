@@ -198,6 +198,13 @@ class CoachWrittenTest(unittest.TestCase):
         row = next(r for r in data["live"]["advice"] if r["team_id"] == tid)
         self.assertNotIn("Written coach", [it["title"] for it in row["items"]])
 
+    def test_malformed_audit_block_falls_back_instead_of_crashing(self):
+        for bad in (["not", "a", "dict"], "oops", {"6": ["list"]}):
+            fp = self.snapshot({})
+            fp["audit"] = bad
+            card = self.team(self.data(fp), 6)["profile"]["audit"][0]
+            self.assertNotIn("written", card)
+
     def test_written_audit_rejects_moving_numbers(self):
         tid = 6
         key = self.team(self.data(), tid)["profile"]["audit"][0]["key"]
