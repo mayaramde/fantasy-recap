@@ -146,3 +146,56 @@ def position_card(ranks):
         text = (f"Your {GROUP_LABEL[best]} points rank {_ordinal(ranks[best])} in the league. Your "
                 f"{GROUP_LABEL[worst]} points rank {_ordinal(ranks[worst])}, so that's where a pickup helps most.")
     return _card(f"pos:{best}:{worst}", "position", stat, title, text), worst
+
+
+# ---------- audit: Projection vs reality ----------
+
+def _vs(name, avg):
+    return f"{name} is running {_f1(abs(avg))} a game {'ahead of' if avg >= 0 else 'behind'} his projection"
+
+
+def projection_card(rows):
+    """A starter with no projection (a week captured before ESPN published them) is left
+    out rather than counted as projected zero, which would hand him a fake beat."""
+    delta, per = 0.0, {}
+    for _, r in rows:
+        for p in r["starters"]:
+            if p.get("projected") is None:
+                continue
+            d = p["points"] - p["projected"]
+            delta += d
+            e = per.setdefault(str(p["player_id"]), {"name": p["name"], "n": 0, "sum": 0.0})
+            e["n"] += 1
+            e["sum"] += d
+    eligible = sorted(((e["sum"] / e["n"], pid, e["name"]) for pid, e in per.items() if e["n"] >= MIN_STARTS),
+                      key=lambda x: (-x[0], x[1]))
+    top = eligible[0] if eligible else None
+    bottom = eligible[-1] if len(eligible) >= 2 else None
+    direction = "over" if delta >= 0 else "under"
+    stat = f"{'+' if delta >= 0 else '-'}{_f1(abs(delta))} vs projections"
+    title = "Your starters are beating ESPN's guesses" if direction == "over" else "Your starters keep landing under projection"
+    if not top:
+        text = "Nobody has two starts yet, so it's too early to name names."
+    elif not bottom:
+        text = f"{_vs(top[2], top[0])}."
+    else:
+        text = f"{_vs(top[2], top[0])}. {_vs(bottom[2], bottom[0])}."
+    key = f"proj:{direction}:{top[1] if top else 'none'}:{bottom[1] if bottom else 'none'}"
+    return _card(key, "projection", stat, title, text)
+
+
+# ---------- audit: all three, every team ----------
+
+def audits(facts_list, team_ids):
+    """{team_id: {"cards": [lineup_iq, position, projection], "weak_spot": group}}, from the
+    weeks given (the build passes only recapped ones). No weeks → no cards, no weak spot."""
+    ranks = position_ranks(position_totals(facts_list)) if facts_list else {}
+    out = {}
+    for tid in team_ids:
+        rows = [(f["week"], t) for f in facts_list for t in f["teams"] if t["team_id"] == tid]
+        if not rows:
+            out[tid] = {"cards": [], "weak_spot": None}
+            continue
+        pos, weak = position_card(ranks[tid])
+        out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak}
+    return out

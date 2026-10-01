@@ -148,5 +148,51 @@ class PositionTest(unittest.TestCase):
         self.assertEqual((card["key"], weak), ("pos:QB:QB", "QB"))
 
 
+class ProjectionTest(unittest.TestCase):
+    def rows(self):
+        return [(1, row(1, 0, 0, starters=[player(10, "Hot", "WR", 20, 10), player(20, "Cold", "RB", 2, 12),
+                                           player(30, "Once", "TE", 30, 5)])),
+                (2, row(1, 0, 0, starters=[player(10, "Hot", "WR", 16, 10), player(20, "Cold", "RB", 4, 12)]))]
+
+    def test_delta_over_and_players(self):
+        card = tp.projection_card(self.rows())
+        # (10+6) + (-10-8) + 25 = +23
+        self.assertEqual(card["key"], "proj:over:10:20")
+        self.assertEqual(card["stat"], "+23.0 vs projections")
+        self.assertNotIn("Once", card["text"])         # one start: not eligible
+
+    def test_under(self):
+        rows = [(1, row(1, 0, 0, starters=[player(20, "Cold", "RB", 2, 12)]))]
+        card = tp.projection_card(rows)
+        self.assertEqual((card["key"], card["stat"]), ("proj:under:none:none", "-10.0 vs projections"))
+
+    def test_null_projection_is_skipped(self):
+        rows = self.rows() + [(3, row(1, 0, 0, starters=[player(20, "Cold", "RB", 40, None)]))]
+        self.assertEqual(tp.projection_card(rows)["stat"], "+23.0 vs projections")
+
+    def test_single_eligible_player_has_no_bottom(self):
+        rows = [(w, row(1, 0, 0, starters=[player(10, "Hot", "WR", 20, 10)])) for w in (1, 2)]
+        self.assertEqual(tp.projection_card(rows)["key"], "proj:over:10:none")
+
+
+class AuditsTest(unittest.TestCase):
+    def test_no_weeks(self):
+        self.assertEqual(tp.audits([], [1, 2]), {1: {"cards": [], "weak_spot": None},
+                                                 2: {"cards": [], "weak_spot": None}})
+
+    def test_three_cards_in_order_and_stable_keys(self):
+        def facts():
+            t1 = lineup(1, QB=20, TE=2)
+            t1.update(points=22, optimal_points=22)
+            t2 = lineup(2, QB=10, TE=12)
+            t2.update(points=22, optimal_points=30, points_left_on_bench=8)
+            return [week(1, [t1, t2])]
+        a, b = tp.audits(facts(), [1, 2]), tp.audits(facts(), [1, 2])
+        self.assertEqual([c["kind"] for c in a[1]["cards"]], ["lineup_iq", "position", "projection"])
+        self.assertEqual([c["key"] for c in a[1]["cards"]], [c["key"] for c in b[1]["cards"]])
+        # Team 1 is 1st at QB and, on the team-id tie-break, at every empty group; 2nd only at TE.
+        self.assertEqual(a[1]["weak_spot"], "TE")
+
+
 if __name__ == "__main__":
     unittest.main()
