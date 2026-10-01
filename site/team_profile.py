@@ -135,9 +135,8 @@ def position_ranks(totals):
 
 def position_card(ranks):
     """(card, weak_spot) for one team, from its {group: league rank} (1 = best)."""
-    # TODO(human): pick `best` (her strongest group) and `worst` (her weakest, which becomes
-    # her weak_spot), each one of GROUPS, from `ranks`.
-    best = worst = None
+    best = [g for g in GROUPS if ranks[g] == min(ranks.values())][0]
+    worst = [g for g in GROUPS if ranks[g] == max(ranks.values())][0]
     stat = f"Best: {best} (#{ranks[best]}) · Worst: {worst} (#{ranks[worst]})"
     if ranks[best] == ranks[worst]:
         title = "Even across the board"
