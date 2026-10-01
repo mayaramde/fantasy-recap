@@ -1133,6 +1133,16 @@ def season_payload(facts_list, weeks):
     return {"standings": table, "weeks_played": [f["week"] for f in facts_list]}
 
 
+def load_player_names():
+    """analyze.py's cache of names for ESPN's "Player 12345" placeholders. Read-only here
+    (no network): a missing or malformed file just leaves the placeholders as they are."""
+    try:
+        names = json.loads((ROOT / "data" / "player_names.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return names if isinstance(names, dict) else {}
+
+
 def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     """(data, weeks): everything the page's RECAP_DATA blob carries, and the week payloads
     (live included) render() hands back to its callers."""
@@ -1155,10 +1165,11 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     # Team profiles: the audit reads only this output's included weeks (a draft week never
     # reaches the league site); moves read every captured week, same as the Live page does.
     profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
+    names = load_player_names()
     for s in season["standings"]:
         p = profiles[s["team_id"]]
         s["profile"] = {"audit": apply_written(p["cards"], written_audit(s["team_id"], fp)),
-                        "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured)}
+                        "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured, names)}
     if live:
         weak = {s["team_id"]: s["profile"]["weak_spot"] for s in season["standings"]}
         for rows in (live["advice"], (live.get("next") or {}).get("teams") or []):

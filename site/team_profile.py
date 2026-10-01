@@ -30,13 +30,20 @@ def _ordinal(n):
 
 # ---------- roster moves ----------
 
-def moves(team_id, captured):
+def moves(team_id, captured, names=None):
     """Her adds, drops and trades across every captured week, newest first.
 
     A trade is recorded under one party's transaction, so "is she in it" is read off the
     items, not the transaction's team. A transaction can show up in two consecutive
-    captures; the first (oldest) week it appeared in wins.
+    captures; the first (oldest) week it appeared in wins. ESPN sometimes sends a
+    placeholder ("Player 4242355"); `names` (data/player_names.json, {id: name}) fills in
+    the ones analyze.py has already looked up.
     """
+    names = names or {}
+
+    def name(i):
+        return names.get(str(i["player_id"]), i["name"]) if i["name"].startswith("Player ") else i["name"]
+
     seen, out = set(), []
     for facts, espn in captured:
         for t in espn.get("transactions", []):
@@ -44,8 +51,8 @@ def moves(team_id, captured):
             if not kind:
                 continue
             items = t.get("items", [])
-            added = [i["name"] for i in items if i["type"] in ("ADD", "TRADE") and i["to_team_id"] == team_id]
-            dropped = [i["name"] for i in items if i["type"] in ("DROP", "TRADE") and i["from_team_id"] == team_id]
+            added = [name(i) for i in items if i["type"] in ("ADD", "TRADE") and i["to_team_id"] == team_id]
+            dropped = [name(i) for i in items if i["type"] in ("DROP", "TRADE") and i["from_team_id"] == team_id]
             if not added and not dropped:
                 continue
             key = (t["date"], t["type"], tuple(sorted(str(i["player_id"]) for i in items)))

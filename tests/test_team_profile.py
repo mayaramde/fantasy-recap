@@ -59,6 +59,14 @@ class MovesTest(unittest.TestCase):
                          [(2, "2026-09-12T00:00:00Z"), (1, "2026-09-03T00:00:00Z")])
         self.assertEqual(rows[0]["dropped"], ["Texans D/ST"])
 
+    def test_placeholder_names_resolve_from_the_name_cache(self):
+        captured = [cap(1, [txn("FREEAGENT", 1, "2026-09-03T00:00:00Z", [
+            item("ADD", 3, "Mark Andrews", 0, 1), item("DROP", 4242355, "Player 4242355", 1, 0),
+            item("DROP", 99, "Player 99", 1, 0)])])]
+        row = tp.moves(1, captured, names={"4242355": "Jake Ferguson"})[0]
+        self.assertEqual(row["dropped"], ["Jake Ferguson", "Player 99"])   # uncached stays as ESPN sent it
+        self.assertEqual(row["added"], ["Mark Andrews"])
+
 
 def player(pid, name, slot, points, projected):
     return {"player_id": pid, "name": name, "pos": slot, "slot": slot, "points": points, "projected": projected}
