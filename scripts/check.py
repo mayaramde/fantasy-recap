@@ -83,6 +83,24 @@ def tracked_files():
     return [p for p in out.split("\0") if p]
 
 
+def check_team_profiles(errors):
+    """Every team on both builds has a profile, and every audit card is fully formed."""
+    sys.path.insert(0, str(ROOT / "site"))
+    import build  # noqa: E402  (site/build.py; imported late so a broken build fails here, not at import)
+    recap_weeks, captured, ahead, fp = build.load_inputs(build.LEAGUE["season"])
+    for preview in (False, True):
+        data, _ = build.site_data(recap_weeks, captured, preview=preview, ahead=ahead, fp=fp)
+        for s in data["season"]["standings"]:
+            prof = s.get("profile")
+            if not isinstance(prof, dict):
+                errors.append(f"team {s['team_id']}: no profile (preview={preview})")
+                continue
+            for c in prof.get("audit", []):
+                for k in ("key", "stat", "title", "text"):
+                    if not (isinstance(c.get(k), str) and c[k].strip()):
+                        errors.append(f"team {s['team_id']}: audit card {c.get('kind')} missing {k}")
+
+
 def main():
     errors = []
     files = tracked_files()
@@ -108,6 +126,7 @@ def main():
 
     check_capture_shape(errors)
     check_scoring_rows(errors)
+    check_team_profiles(errors)
 
     recap_errors, recap_warnings = check_recaps.check_all_recaps(ROOT)
     errors.extend(recap_errors)

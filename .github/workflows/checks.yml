@@ -20,4 +20,5 @@ jobs:
       - run: python -m unittest tests.test_guard_bash -v
       - run: python -m unittest tests.test_check_recaps -v
       - run: python -m unittest tests.test_coach_written -v
+      - run: python -m unittest tests.test_team_profile -v
       - run: python scripts/check.py

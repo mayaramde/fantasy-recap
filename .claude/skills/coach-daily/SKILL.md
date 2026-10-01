@@ -77,6 +77,11 @@ a formula: decide what's actually worth a manager's attention, the way you would
 directly. An empty list for a team with no real gap is the right answer, not a stretch to fill
 one in.
 
+The brief (Step 5b) names each team's `weak_spot`: her lowest-ranked lineup group this season. When a
+real waiver or trade option exists at that group, prefer it, and set `pos` (`QB`, `RB`, `WR`, `TE`,
+`FLEX`, `DST` or `K`) on every waiver and trade card; the team profile puts a "fills your weak spot"
+sticker on the ones that match. Never invent an option to fill a weak spot.
+
 Write the cards in the site's voice (CLAUDE.md's Voice section: roast decisions, never people;
 explain jargon in passing). Every card is `{kind, level, title, stat, text}`:
 
@@ -132,9 +137,16 @@ against those keys, so managers never read a fill-in-the-blank template.
    computed, so copy for a situation that has since changed (a kickoff, a new injury) simply
    stops showing and the computed wording comes back. That's the intended backup, not an error.
 
+**Season audit.** The brief's top-level `audit` block lists every team's three season-audit cards
+(Lineup IQ, Position strength, Projection vs reality) with their `key`, `stat` and computed wording.
+Write one `{title, text}` per key, dial "Coach cards": advice first, one line of personality. Roast the
+lineup call, never the manager (the A–D band inside a Lineup IQ key is for invalidation only; never
+mention a grade). Same number rule as above: no decimals or percentages, the stat pill carries the
+numbers. The brief prints the audit even with no live week, so write it every run.
+
 ## Step 5c: voice gate
 
-No card ships without `voice-check`'s sign-off, and that includes Step 5b's copy. Once Steps 5
+No card ships without `voice-check`'s sign-off, and that includes Step 5b's copy and the season-audit copy. Once Steps 5
 and 5b are written, spawn the
 `voice-check` agent (the `Agent` tool, `subagent_type: voice-check`) on them: write the cards to
 a scratch file (or pass them in the prompt), keyed `<week>/<team_id>/<section>/<index>` so its
@@ -171,6 +183,9 @@ is the archive):
         }
       }
     }
+  },
+  "audit": {
+    "<team_id>": { "<audit key from the brief>": {"title": "...", "text": "..."} }
   }
 }
 ```
@@ -178,6 +193,8 @@ is the archive):
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
 `coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover.
+`audit` (top level, one entry per team) also comes from Step 5b; waiver and trade cards in
+`roster_ideas` carry `pos` (Step 5).
 
 ## Step 7: build, check, commit, ship the PR
 
