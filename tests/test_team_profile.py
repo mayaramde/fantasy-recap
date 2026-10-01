@@ -156,6 +156,36 @@ class PositionTest(unittest.TestCase):
         self.assertEqual((card["key"], weak), ("pos:QB:QB", "QB"))
 
 
+class VoiceCopyTest(unittest.TestCase):
+    """Copy that has to stay true for every team, not just the example ones (voice-check)."""
+
+    def test_tie_joke_only_when_first_everywhere(self):
+        top, _ = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
+        bottom, _ = tp.position_card(dict.fromkeys(tp.GROUPS, 8))
+        self.assertIn("its own kind of flex", top["text"])
+        self.assertNotIn("flex", bottom["text"])
+        self.assertIn("8th", bottom["text"])
+
+    def test_last_place_group_says_so(self):
+        card, _ = tp.position_card({"QB": 1, "RB": 4, "WR": 3, "TE": 8, "FLEX": 2, "DST": 5, "K": 6})
+        self.assertIn("8th, also known as last", card["text"])
+        card, _ = tp.position_card({"QB": 1, "RB": 4, "WR": 3, "TE": 7, "FLEX": 2, "DST": 5, "K": 6})
+        self.assertNotIn("also known as last", card["text"])
+        self.assertIn("rank 7th, so", card["text"])
+
+    def test_flex_reads_mid_sentence_in_lineup_iq(self):
+        rows = [(1, row(6, 70, 100, left=30, worst=call("Swift", "Egbuka", 32.4, 11.3, "FLEX"),
+                        bench=[player(5, "Swift", "BENCH", 32.4, 9)]))]
+        self.assertIn("at flex, the wild-card spot, while Swift", tp.lineup_iq(rows)["text"])
+
+    def test_dst_gets_its_not_his(self):
+        rows = [(w, row(1, 0, 0, starters=[player(-16034, "Texans D/ST", "DST", 2, 8)])) for w in (1, 2)]
+        self.assertIn("Texans D/ST is coming up 6.0 a game short of its projection", tp.projection_card(rows)["text"])
+
+    def test_band_d_title_makes_no_literal_claim(self):
+        self.assertNotIn("outscoring", tp.LINEUP_TITLE["D"])
+
+
 class ProjectionTest(unittest.TestCase):
     def rows(self):
         return [(1, row(1, 0, 0, starters=[player(10, "Hot", "WR", 20, 10), player(20, "Cold", "RB", 2, 12),

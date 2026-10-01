@@ -1387,11 +1387,11 @@
     return `
       <section>
         <div class="kicker-row">
-          ${secHead('board', next ? `Week ${week}, coming up` : `Week ${week}, this week`)}
+          ${secHead('board', next ? `Week ${week}, coming up` : `Week ${week}, right now`)}
           ${weekToggle(next, id)}
         </div>
         <p class="dek">${!next && a.can_change === false
-          ? `Your Week ${week} lineup is locked, every game you had is over.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
+          ? `Your Week ${week} lineup is locked. All your players' games are done.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
           : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : `. <a href="#live.game-${g.key}">Live box score →</a>`}` : ''}</p>
         <p class="team-summary">${esc(a.summary)}</p>
         <div class="stat-tiles">
@@ -1430,7 +1430,7 @@
       <section>
         ${secHead('board', "Coach's audit")}
         ${p.audit.length
-          ? `<p class="sec-sub">How her season is going, from the weeks with a recap so far.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">Your season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
           : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
       </section>`;
   }
@@ -1442,7 +1442,7 @@
       <section>
         ${secHead('board', 'Worth a look')}
         ${ideas.length
-          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings, ownership and your league's own rosters. Not urgent, not automatic, just worth a look.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and your league's rosters. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
           : '<p class="sec-sub">No new ideas today.</p>'}
       </section>`;
   }
@@ -1454,7 +1454,7 @@
         ${secHead('board', 'Recent moves')}
         ${p.moves.length
           ? `<ul class="decided">${p.moves.map((m) => `<li><span class="tag ${m.type === 'trade' ? 'good' : 'info'}">Week ${m.week}</span><span>${m.type === 'trade' ? '<b>Trade.</b> ' : ''}${m.added.length ? `Added ${names(m.added)}` : ''}${m.added.length && m.dropped.length ? ' · ' : ''}${m.dropped.length ? `${m.type === 'trade' ? 'Sent' : 'Dropped'} ${names(m.dropped)}` : ''}</span></li>`).join('')}</ul>`
-          : '<p class="sec-sub">No adds, drops or trades yet. Loyal to a fault.</p>'}
+          : '<p class="sec-sub">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
       </section>`;
   }
 

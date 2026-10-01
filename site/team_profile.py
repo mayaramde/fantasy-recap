@@ -90,8 +90,8 @@ def _benched_id(team_row, name):
     return _slug(name)
 
 
-LINEUP_TITLE = {"A": "Your lineup calls have been sharp", "B": "Mostly the right calls",
-                "C": "The bench keeps getting the good weeks", "D": "Your bench is outscoring your lineup"}
+LINEUP_TITLE = {"A": "Your lineup calls have been sharp", "B": "Mostly the right calls, a few bench regrets",
+                "C": "The bench keeps getting the good weeks", "D": "Your bench deserves a promotion"}
 
 
 def lineup_iq(rows):
@@ -109,10 +109,11 @@ def lineup_iq(rows):
     stat = f"{round(pct * 100)}% of optimal · {_f1(left)} benched"
     if not worst:
         return _card(f"lineup:{b}:none", "lineup_iq", stat, "Perfect lineups, every week",
-                     "You've started your best possible lineup every single week. The bench has scored nothing you needed.")
+                     "You've started your best possible lineup every single week. Your bench has yet to be right about anything.")
     wk, r, c = worst
-    text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) at "
-            f"{GROUP_LABEL.get(c['slot'], c['slot'])} while {c['benched']} put up {_f1(c['benched_points'])} on your bench.")
+    at = _at(c["slot"]) if c["slot"] in GROUP_LABEL else f"at {c['slot']}"
+    text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) "
+            f"{at} while {c['benched']} put up {_f1(c['benched_points'])} on your bench, where points don't count.")
     return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}", "lineup_iq", stat, LINEUP_TITLE[b], text)
 
 
@@ -140,25 +141,39 @@ def position_ranks(totals):
     return ranks
 
 
-def position_card(ranks):
+def _at(group):
+    """"at running back", "at flex, the wild-card spot," — reads mid-sentence for every group."""
+    return "at flex, the wild-card spot," if group == "FLEX" else f"at {GROUP_LABEL[group]}"
+
+
+def _rank(n, n_teams):
+    return f"{_ordinal(n)}, also known as last" if n == n_teams else _ordinal(n)
+
+
+def position_card(ranks, n_teams=8):
     """(card, weak_spot) for one team, from its {group: league rank} (1 = best)."""
     best = [g for g in GROUPS if ranks[g] == min(ranks.values())][0]
     worst = [g for g in GROUPS if ranks[g] == max(ranks.values())][0]
     stat = f"Best: {best} (#{ranks[best]}) · Worst: {worst} (#{ranks[worst]})"
     if ranks[best] == ranks[worst]:
         title = "Even across the board"
-        text = f"Every spot in your lineup ranks {_ordinal(ranks[best])} in the league. No weak link to fix, which is its own kind of flex."
+        text = (f"Every spot in your lineup ranks {_ordinal(ranks[best])} in the league. "
+                + ("No weak link to fix, which is its own kind of flex." if ranks[best] == 1
+                   else "Nothing stands out yet, so any strong pickup helps."))
     else:
-        title = f"Your {GROUP_LABEL[best].split(' (')[0]} is carrying you"
-        text = (f"Your {GROUP_LABEL[best]} points rank {_ordinal(ranks[best])} in the league. Your "
-                f"{GROUP_LABEL[worst]} points rank {_ordinal(ranks[worst])}, so that's where a pickup helps most.")
+        title = f"{GROUP_LABEL[best].split(' (')[0].capitalize()} is carrying this team"
+        text = (f"Your points {_at(best)} rank {_ordinal(ranks[best])} in the league. Your points {_at(worst)} "
+                f"rank {_rank(ranks[worst], n_teams)}, so that's where a pickup, a free agent you add, helps most.")
     return _card(f"pos:{best}:{worst}", "position", stat, title, text), worst
 
 
 # ---------- audit: Projection vs reality ----------
 
-def _vs(name, avg):
-    return f"{name} is running {_f1(abs(avg))} a game {'ahead of' if avg >= 0 else 'behind'} his projection"
+def _vs(name, avg, its):
+    pron = "its" if its else "his"
+    if avg >= 0:
+        return f"{name} is beating {pron} projection by {_f1(avg)} a game"
+    return f"{name} is coming up {_f1(-avg)} a game short of {pron} projection"
 
 
 def projection_card(rows):
@@ -171,22 +186,23 @@ def projection_card(rows):
                 continue
             d = p["points"] - p["projected"]
             delta += d
-            e = per.setdefault(str(p["player_id"]), {"name": p["name"], "n": 0, "sum": 0.0})
+            e = per.setdefault(str(p["player_id"]), {"name": p["name"], "n": 0, "sum": 0.0,
+                                                     "its": p.get("slot") == "DST" or p["name"].endswith("D/ST")})
             e["n"] += 1
             e["sum"] += d
-    eligible = sorted(((e["sum"] / e["n"], pid, e["name"]) for pid, e in per.items() if e["n"] >= MIN_STARTS),
+    eligible = sorted(((e["sum"] / e["n"], pid, e["name"], e["its"]) for pid, e in per.items() if e["n"] >= MIN_STARTS),
                       key=lambda x: (-x[0], x[1]))
     top = eligible[0] if eligible else None
     bottom = eligible[-1] if len(eligible) >= 2 else None
     direction = "over" if delta >= 0 else "under"
     stat = f"{'+' if delta >= 0 else '-'}{_f1(abs(delta))} vs projections"
-    title = "Your starters are beating ESPN's guesses" if direction == "over" else "Your starters keep landing under projection"
+    title = "Your starters are beating ESPN's guesses" if direction == "over" else "ESPN keeps overrating your starters"
     if not top:
         text = "Nobody has two starts yet, so it's too early to name names."
-    elif not bottom:
-        text = f"{_vs(top[2], top[0])}."
     else:
-        text = f"{_vs(top[2], top[0])}. {_vs(bottom[2], bottom[0])}."
+        text = f"{_vs(top[2], top[0], top[3])}." + (" ESPN hasn't caught on yet." if top[0] >= 0 else "")
+        if bottom:
+            text += f" {_vs(bottom[2], bottom[0], bottom[3])}."
     key = f"proj:{direction}:{top[1] if top else 'none'}:{bottom[1] if bottom else 'none'}"
     return _card(key, "projection", stat, title, text)
 
@@ -203,6 +219,6 @@ def audits(facts_list, team_ids):
         if not rows:
             out[tid] = {"cards": [], "weak_spot": None}
             continue
-        pos, weak = position_card(ranks[tid])
+        pos, weak = position_card(ranks[tid], len(team_ids))
         out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak}
     return out
