@@ -5,6 +5,7 @@
   "season": 2026,
   "fantasypros_league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "scoring": "PPR",
+  "playoffs": { "teams": 6, "byes": 2, "regular_season_weeks": 14, "first_round_week": 15, "tiebreaker": "points_for", "reseed": false },
   "roster_slots": { "QB": 1, "RB": 2, "WR": 2, "TE": 1, "FLEX (RB/WR/TE)": 1, "DST": 1, "K": 1, "BENCH": 7 },
   "teams": [
     { "team_id": 1, "team_name": "Amon Raw, Next Question", "manager": "Marlee" },
