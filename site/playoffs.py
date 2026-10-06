@@ -197,12 +197,17 @@ def _label(t, games_left, in_now):
     return "Long shot"
 
 
+def win_prob(mu_a, mu_b, sigma):
+    """P(a outscores b) when both weekly scores are normal with spread sigma (the difference has sd sigma*sqrt(2))."""
+    return 0.5 * (1 + math.erf((mu_a - mu_b) / (sigma * 2)))
+
+
 def _projected_bracket(ranked, mu, sigma):
     """The chalk bracket from projected seeds: each game names its favorite and her win probability,
     and the favorite advances."""
     def game(sa, sb):
         a, b = ranked[sa - 1], ranked[sb - 1]
-        p = 0.5 * (1 + math.erf((mu[a] - mu[b]) / (sigma * 2)))   # P(a > b), score difference sd = sigma*sqrt(2)
+        p = win_prob(mu[a], mu[b], sigma)
         fav, p = (sa, p) if p >= 0.5 else (sb, 1 - p)
         return {"teams": [{"seed": s, "team_id": ranked[s - 1]} for s in (sa, sb)],
                 "favorite": ranked[fav - 1], "win_prob": round(p, 3), "_seed": fav}
