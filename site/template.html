@@ -785,9 +785,14 @@
     const full = !compact;
     // The playoff line and bye stickers read league.json's format through the playoff odds;
     // no odds, no line.
-    const cfg = full && SEASON.playoffs ? SEASON.playoffs.config : null;
-    const cut = cfg && rows.length > cfg.teams ? cfg.teams : 0;
-    const byes = cfg ? cfg.byes : 0;
+    // Both come from the seeding (now_cut, regular-season games only), not the row order: once a
+    // playoff week is recapped these rows count it too, and a Round 1 win can lift a team past a
+    // bye seed. The line is drawn only where it really splits the field from everyone else.
+    const P = full ? SEASON.playoffs : null;
+    const field = P && P.now_cut ? P.now_cut : [];
+    const byeIds = new Set(field.slice(0, P ? P.config.byes : 0));
+    const inField = new Set(field);
+    const cut = field.length && rows.length > field.length && rows.slice(0, field.length).every((t) => inField.has(t.team_id)) ? field.length : 0;
     const cols = full ? 8 : 4;
     return `
       <div class="table-scroll"><table class="std">
@@ -800,7 +805,7 @@
         <tbody>${rows.map((t, i) => `
           <tr${i + 1 === cut ? ' class="po-cut"' : ''}>
             <td class="rank">${i + 1}</td>
-            <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a>${i < byes ? '<span class="bye-tag" title="A top seed sits out Round 1">Bye</span>' : ''}<span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
+            <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a>${byeIds.has(t.team_id) ? '<span class="bye-tag" title="A top seed sits out Round 1">Bye</span>' : ''}<span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
             <td class="r">${record(t)}</td>
             ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
             <td class="r">${f2(t.points_for)}</td>
@@ -820,6 +825,10 @@
     if (p >= 0.995) return '>99%';
     return `${Math.round(p * 100)}%`;
   };
+  const PO_TIP = { 'Near lock': 'Made the playoffs in nearly every simulated season', 'Bye race': `In the hunt for a top seed and the week off`,
+    Comfortable: 'Makes it in most simulated seasons', Bubble: 'Right at the playoff line, could go either way',
+    'Long shot': 'Needs some help, but it happens', 'Near out': 'Almost never makes it in the simulations',
+    In: 'Made the playoffs', Out: 'Missed the playoffs' };
   const PO_LABEL = { 'Near lock': 'lock', 'Bye race': 'bye', Comfortable: 'comfy', Bubble: 'bubble',
     'Long shot': 'long', 'Near out': 'near-out', In: 'in', Out: 'out' };
   const nameOf = (id) => (TEAMS[id] ? TEAMS[id].manager : `Team ${id}`);
@@ -862,7 +871,7 @@
       ${B ? `
       <section>
         ${secHead('ball', 'Playoff picture')}
-        <p class="sec-sub">The chalk bracket, meaning every favorite wins, built from each team's projected seed. The percent is how often the favorite wins that one game.</p>
+        <p class="sec-sub">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
         <div class="bracket" role="group" aria-label="Projected playoff bracket">
           <div class="br-col"><h3>Round 1 · Week ${cfg.first_round_week}</h3>${[B.round1[1], B.round1[0]].map(bracketGame).join('')}</div>
           <div class="br-col"><h3>Semifinals</h3>${B.semis.map(bracketGame).join('')}</div>
@@ -874,17 +883,17 @@
 
       <section>
         ${secHead('board', 'Playoff odds')}
-        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. Title odds still have games to go.' : `How often each team makes it, earns a bye (a week off while seeds 3 to ${cut} play Round 1), and wins the title, across ${sims} simulated seasons.`}</p>
+        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. The title still has to be won.' : `How often each team makes it, ${cfg.byes ? `earns a bye (a week off while seeds ${cfg.byes + 1} to ${cut} play Round 1), ` : ''}and wins the title, across ${sims} simulated seasons.`}</p>
         <div class="std-card table-scroll">
           <table class="std po-odds" aria-label="Playoff odds by team">
-            <thead><tr><th title="Projected seed">Seed</th><th>Team</th><th>Makes it</th><th class="r">Bye</th><th class="r">Title</th><th class="r" title="Expected final regular-season record">Proj. record</th><th class="r" title="Change in playoff odds since last week, in percentage points">Vs. last week</th></tr></thead>
+            <thead><tr><th title="Projected final spot in the standings, which sets the bracket">Seed</th><th>Team</th><th>Makes it</th><th class="r">Bye</th><th class="r">Title</th><th class="r" title="Expected final regular-season record">Proj. record</th><th class="r" title="Change in playoff odds since last week, in percentage points">Vs. last week</th></tr></thead>
             <tbody>${P.teams.map((t) => `
               <tr${t.proj_seed === cut && cut < n ? ' class="po-cut"' : ''}>
                 <td class="rank">${t.proj_seed}</td>
                 <td class="mgr"><a href="#team-${t.team_id}">${esc(nameOf(t.team_id))}</a><span class="tname">${esc((TEAMS[t.team_id] || {}).team_name || '')}</span></td>
-                <td><div class="po-make">${poBar(t.playoff, `${nameOf(t.team_id)} makes the playoffs ${pct(t.playoff, done)} of the time`)}<span class="num">${pct(t.playoff, done)}</span><span class="po-label ${PO_LABEL[t.label] || ''}">${esc(t.label)}</span></div></td>
+                <td><div class="po-make">${poBar(t.playoff, `${nameOf(t.team_id)} makes the playoffs ${pct(t.playoff, done)} of the time`)}<span class="num">${pct(t.playoff, done)}</span><span class="po-label ${PO_LABEL[t.label] || ''}" title="${esc(PO_TIP[t.label] || '')}">${esc(t.label)}</span></div></td>
                 <td class="r">${pct(t.bye, done)}</td>
-                <td class="r">${pct(t.title)}</td>
+                <td class="r">${pct(t.title, done && t.playoff === 0)}</td>
                 <td class="r">${f1(t.proj_wins)}–${f1(t.proj_losses)}</td>
                 <td class="r">${trendCell(t.trend)}</td>
               </tr>`).join('')}
@@ -913,7 +922,7 @@
       <section>
         <div class="po-note">
           <p><b>How this works.</b> We played out the rest of the season ${sims} times. Each team's weekly score is drawn from her scoring so far, nudged toward the league average because a few weeks is a tiny sample. ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random each week, since the real schedule isn\'t loaded yet.'} Ties in the standings go to ${tiebreak}.</p>
-          <p>Assumed format: the top ${cfg.teams} make the playoffs, the top ${cfg.byes} get a bye, Round 1 is Week ${cfg.first_round_week}, and the bracket ${cfg.reseed ? 'reseeds after each round' : 'stays put, no reseeding'}. Treat it like a weather forecast: great for planning, terrible for trash talk.</p>
+          <p>Assumed format: the top ${cfg.teams} make the playoffs, the top ${cfg.byes} get a bye, Round 1 is Week ${cfg.first_round_week}, and the bracket ${cfg.reseed ? 'reseeds after each round, so the best seed left always plays the worst one left' : "stays put, so nobody's matchup gets reshuffled after Round 1"}. Treat it like a weather forecast: great for planning, terrible for trash talk.</p>
         </div>
       </section>`;
   }
