@@ -58,9 +58,11 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   start/sit, waiver and trade ideas from free-tier tools instead of the gated finders.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
   `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
-  computed card (keyed by situation, see `docs/architecture.md`). Committed through its own auto-merging PR (small,
+  computed card (keyed by situation, see `docs/architecture.md`) and, top level, each team's written season-audit
+  copy (`audit`, keyed by audit key). Committed through its own auto-merging PR (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
-  missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards.
+  missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards (written season-audit copy still
+  applies while its key matches, since it describes finished weeks).
 
 ## Privacy
 - The raw ESPN payload includes members' last names, ESPN IDs and notification settings. **Do not commit it.**
@@ -75,13 +77,16 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
   and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
+- `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
+  `site/build.py` and `scripts/coach_brief.py`
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
-  `coach_brief.py` (the computed Coach cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
+  `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
-- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook and the Coach page's written copy (also run by `checks`)
+- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy and the team
+  profile (also run by `checks`)
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages

@@ -23,6 +23,8 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import team_profile
+
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
 LEAGUE = json.loads((ROOT / "league.json").read_text())
@@ -257,6 +259,18 @@ def apply_written(items, cards):
         if w:
             it.update(title=w["title"].strip(), text=w["text"].strip(), written=True)
     return items
+
+
+def written_audit(team_id, fp):
+    """{key: {title, text}} for one team's season-audit cards, from the snapshot's top-level
+    `audit`. No freshness gate, unlike the coach cards: an audit key fully describes weeks
+    that are already over, so copy written for a key that still matches is still true
+    however old the file is. A missing or malformed snapshot just means computed wording."""
+    audit = fp.get("audit") if fp else None
+    if not isinstance(audit, dict):
+        return {}
+    row = audit.get(str(team_id))
+    return {k: v for k, v in row.items() if _valid_written(v)} if isinstance(row, dict) else {}
 
 
 def _key(*parts):
@@ -1120,7 +1134,19 @@ def season_payload(facts_list, weeks):
     return {"standings": table, "weeks_played": [f["week"] for f in facts_list]}
 
 
-def render(recap_weeks, captured, preview, ahead=None, fp=None):
+def load_player_names():
+    """analyze.py's cache of names for ESPN's "Player 12345" placeholders. Read-only here
+    (no network): a missing or malformed file just leaves the placeholders as they are."""
+    try:
+        names = json.loads((ROOT / "data" / "player_names.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return names if isinstance(names, dict) else {}
+
+
+def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
+    """(data, weeks): everything the page's RECAP_DATA blob carries, and the week payloads
+    (live included) render() hands back to its callers."""
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
     weeks = [w for _, w in included]
     # Live page: the newest captured week that isn't in this output's recaps yet
@@ -1135,17 +1161,39 @@ def render(recap_weeks, captured, preview, ahead=None, fp=None):
         # one (captured before this week started) is dropped rather than shown as next.
         if ahead and ahead["week"] == facts["week"] + 1:
             live["next"] = next_payload(ahead, previous, fp=fp)
+
+    season = season_payload([f for f, _ in included], weeks)
+    # Team profiles: the audit reads only this output's included weeks (a draft week never
+    # reaches the league site); moves read every captured week, same as the Live page does.
+    profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
+    names = load_player_names()
+    for s in season["standings"]:
+        p = profiles[s["team_id"]]
+        s["profile"] = {"audit": apply_written(p["cards"], written_audit(s["team_id"], fp)),
+                        "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured, names)}
+    if live:
+        weak = {s["team_id"]: s["profile"]["weak_spot"] for s in season["standings"]}
+        for rows in (live["advice"], (live.get("next") or {}).get("teams") or []):
+            for row in rows:
+                for it in row.get("roster_ideas") or []:
+                    it["fills_weak_spot"] = bool(it.get("pos")) and it.get("pos") == weak.get(row["team_id"])
+
     data = {
         "league": {"name": LEAGUE["name"].strip(), "season": LEAGUE["season"], "scoring": LEAGUE["scoring"]},
         "preview": preview,
         "weeks": weeks,
-        "season": season_payload([f for f, _ in included], weeks),
+        "season": season,
         "live": live,
     }
+    return data, weeks + ([live] if live else [])
+
+
+def render(recap_weeks, captured, preview, ahead=None, fp=None):
+    data, weeks = site_data(recap_weeks, captured, preview, ahead=ahead, fp=fp)
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     title = "Fantasy Football for the Girls (Preview)" if preview else "Fantasy Football for the Girls"
     template = (SITE / "template.html").read_text()
-    return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks + ([live] if live else [])
+    return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks
 
 
 # The Claude artifact host wraps pages in its own document shell. The standalone web build

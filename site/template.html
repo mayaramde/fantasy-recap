@@ -294,6 +294,7 @@
   .decided .tag.good { background: var(--lime); }
   .decided .tag.bad { background: var(--pink); }
   .decided .tag.info { background: var(--card); color: var(--ink); }
+  .card .fit { font: 600 11px/1 var(--mono); background: var(--lime); color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 8px; transform: rotate(-2deg); white-space: nowrap; }
 
   .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
   .lineup { background: var(--card); padding: 14px 16px; }
@@ -564,7 +565,8 @@
   const coachRows = (next) => (next ? (ahead() || {}).teams : advice()) || null;
   const coachFor = (id, next) => (coachRows(next) || []).find((a) => a.team_id === id);
   const adviceFor = (id) => coachFor(id, false);
-  const coachUrl = (next, id) => `#coach${next ? '-next' : ''}${id ? `-${id}` : ''}`;
+  // A team's coach page is now a section of her profile; the league-wide grid keeps #coach.
+  const coachUrl = (next, id) => (id ? `#team-${id}${next ? '.next' : ''}` : `#coach${next ? '-next' : ''}`);
   // Every game of the week played, so no lineup change can score another point. It
   // happens hours before ESPN calls the week final, and it's the moment this week's
   // advice stops being advice.
@@ -603,7 +605,8 @@
   const ADVICE_KIND = { out: 'Injury', bye: 'Bye week', watch: 'Game-time call', swap: 'Lineup swap',
     empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear',
     consensus: 'Expert consensus', fp_news: 'FantasyPros news', fp_back: 'FantasyPros update',
-    waiver: 'Waiver idea', trade: 'Trade idea', recap: 'Last week', matchup: "Who's next" };
+    waiver: 'Waiver idea', trade: 'Trade idea', recap: 'Last week', matchup: "Who's next",
+    lineup_iq: 'Lineup calls', position: 'Position strength', projection: 'Vs projections' };
   /* Each urgency reads a little differently on the week being played and on the week
      ahead, where nothing has kicked off and nothing is locked yet. */
   const ADVICE_LEVEL = {
@@ -1214,16 +1217,19 @@
       </section>` : ''}` : ''}`;
   }
 
-  function teamPage(id) {
+  function teamPage(id, next) {
     const t = TEAMS[id];
     if (!t) return notFound();
+    next = !!(next && ahead());                     // no current next-week capture → This week
     const rank = SEASON.standings.indexOf(t) + 1;
+    const p = t.profile || { audit: [], moves: [], weak_spot: null };
+    const onCoach = !!coachFor(id, next);
     return `
-      <div class="crumbs"><a href="#standings">Standings</a><span>›</span><span>${esc(t.manager)}</span></div>
+      <div class="crumbs"><a href="${onCoach ? coachUrl(next, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span>›</span><span>${esc(t.manager)}</span></div>
+      ${onCoach ? teamSwitch(id, next) : ''}
       <div class="page-head">
         <div class="kicker">${esc(t.team_name)}</div>
         <h1>${esc(t.manager)}</h1>
-        ${adviceFor(id) ? `<p class="dek">This is her season so far. For what to do about the week in progress, see <a href="#coach-${id}">her Week ${LIVE.week} to-do list</a>.</p>` : ''}
       </div>
       <div class="stat-tiles">
         <div class="tile"><div class="label">Record</div><div class="value">${record(t)}</div><div class="sub">${ordinal(rank)} place</div></div>
@@ -1233,6 +1239,12 @@
         <div class="tile"><div class="label">Points benched</div><div class="value">${f1(t.bench_left)}</div><div class="sub">season total</div></div>
       </div>
 
+      ${thisWeekSection(id, next)}
+      ${auditSection(p)}
+      ${suggestionsSection(id, next)}
+      ${movesSection(p)}
+
+      ${t.weekly.length ? `
       <section>
         ${secHead('board', 'Week by week')}
         <div class="std-card table-scroll">
@@ -1250,7 +1262,7 @@
             </tbody>
           </table>
         </div>
-      </section>
+      </section>` : ''}
 
       <section>
         ${secHead('ball', 'Her awards')}
@@ -1265,7 +1277,7 @@
      started. It refreshes with the rest of the live data. */
   const adviceCard = (it) => `
     <article class="card ${it.level}">
-      <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
+      <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.fills_weak_spot ? '<span class="fit">fills your weak spot</span>' : ''}${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
       <h3>${esc(it.title)}</h3>
       <p>${esc(it.text)}</p>
     </article>`;
@@ -1284,7 +1296,7 @@
 
   function teamSwitch(active, next) {
     return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
+      <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
   /* Her top two items as a mini checklist, most urgent first. build.py already sorts
@@ -1299,7 +1311,7 @@
     const shown = items.slice(0, 2);
     const rest = items.length - shown.length;
     return `
-      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}">
+      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">
         <div class="cc-head"><div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>${badge}</div>
         ${shown.length ? `<ul class="cc-list">${shown.map((it) => `
           <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>`
@@ -1355,10 +1367,14 @@
       </div>`;
   }
 
-  function coachTeamPage(id, next) {
+  /* The week-in-progress part of a team's profile: what used to be her own Coach page.
+     Same cards and lineup, still refreshed by /api/live through LIVE. */
+  function thisWeekSection(id, next) {
     const a = coachFor(id, next);
-    if (!a) return notFound();
-    myTeam.set(id);
+    if (!a) {
+      const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
+      return `<section>${secHead('board', 'This week')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
+    }
     const week = next ? ahead().week : LIVE.week;
     const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
@@ -1368,27 +1384,24 @@
       .map((lvl) => [lvl, a.items.filter((it) => it.level === lvl)])
       .filter(([, items]) => items.length);
     return `
-      <div class="crumbs"><a href="${coachUrl(next, null)}">Coach</a><span>›</span><span>${esc(a.manager)}</span></div>
-      ${teamSwitch(id, next)}
-      <div class="page-head">
+      <section>
         <div class="kicker-row">
-          <div class="kicker">Week ${week} · ${esc(a.team_name)}</div>
+          ${secHead('board', next ? `Week ${week}, coming up` : `Week ${week}, right now`)}
           ${weekToggle(next, id)}
         </div>
-        <h1>${esc(a.manager)}, ${next ? `about Week ${week}` : "here's your week"}</h1>
         <p class="dek">${!next && a.can_change === false
-          ? `Your Week ${week} lineup is locked — every game you had is over.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
-          : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : ` this week — <a href="#live.game-${g.key}">live box score →</a>`}` : ''}</p>
+          ? `Your Week ${week} lineup is locked. All your players' games are done.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
+          : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : `. <a href="#live.game-${g.key}">Live box score →</a>`}` : ''}</p>
         <p class="team-summary">${esc(a.summary)}</p>
-      </div>
-      <div class="stat-tiles">
-        <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
-        <div class="tile"><div class="label">Projected total</div><div class="value">${next && !ahead().projected ? '–' : f1(a.projected)}</div><div class="sub">${next ? (ahead().projected ? "ESPN's estimate for Week " + week : 'not published yet') : (mine ? `${f2(mine.points)} on the board` : "ESPN's estimate")}</div></div>
-        ${next
-          ? `<div class="tile"><div class="label">Starters on a bye</div><div class="value">${byes}</div><div class="sub">${byes ? 'a bye week means his NFL team doesn\'t play' : 'everyone has a game'}</div></div>`
-          : `<div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>`}
-        ${a.win_probability == null ? '' : `<div class="tile"><div class="label">Chance to win</div><div class="value">${Math.round(a.win_probability * 100)}%</div><div class="sub">ESPN's number${opp ? `, vs ${esc(opp.manager)}` : ''}</div></div>`}
-      </div>
+        <div class="stat-tiles">
+          <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
+          <div class="tile"><div class="label">Projected total</div><div class="value">${next && !ahead().projected ? '–' : f1(a.projected)}</div><div class="sub">${next ? (ahead().projected ? "ESPN's estimate for Week " + week : 'not published yet') : (mine ? `${f2(mine.points)} on the board` : "ESPN's estimate")}</div></div>
+          ${next
+            ? `<div class="tile"><div class="label">Starters on a bye</div><div class="value">${byes}</div><div class="sub">${byes ? 'a bye week means his NFL team doesn\'t play' : 'everyone has a game'}</div></div>`
+            : `<div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>`}
+          ${a.win_probability == null ? '' : `<div class="tile"><div class="label">Chance to win</div><div class="value">${Math.round(a.win_probability * 100)}%</div><div class="sub">ESPN's number${opp ? `, vs ${esc(opp.manager)}` : ''}</div></div>`}
+        </div>
+      </section>
 
       ${groups.map(([lvl, items]) => `
         <section>
@@ -1396,13 +1409,6 @@
           <p class="sec-sub">${(next && ADVICE_LEVEL[lvl].nextSub) || ADVICE_LEVEL[lvl].sub}</p>
           <div class="cards">${items.map(adviceCard).join('')}</div>
         </section>`).join('')}
-
-      ${a.roster_ideas && a.roster_ideas.length ? `
-        <section>
-          ${secHead('board', 'Worth a look')}
-          <p class="sec-sub">Roster ideas from FantasyPros' rankings, ownership and your league's own rosters — not urgent, not automatic, just worth a look this week.</p>
-          <div class="cards">${a.roster_ideas.map(adviceCard).join('')}</div>
-        </section>` : ''}
 
       ${next ? `
       <section>
@@ -1415,8 +1421,43 @@
         <p class="sec-sub">Tap any player for how his points happened, plus whatever ESPN is saying about him. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
         <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`, a.players)}</div>
       </section>` : '')}
+      <p class="sec-sub">${next ? nextSource() : coachSource(LIVE)}</p>`;
+  }
 
-      <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
+  function auditSection(p) {
+    return `
+      <section>
+        ${secHead('board', "Coach's audit")}
+        ${p.audit.length
+          ? `<p class="sec-sub">Your season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
+      </section>`;
+  }
+
+  function suggestionsSection(id, next) {
+    const a = coachFor(id, next);
+    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
+    // never went through site_data(), so a baked tag would vanish on the first refresh.
+    const weak = (TEAMS[id].profile || {}).weak_spot;
+    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
+    return `
+      <section>
+        ${secHead('board', 'Worth a look')}
+        ${ideas.length
+          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and your league's rosters. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
+          : '<p class="sec-sub">No new ideas today.</p>'}
+      </section>`;
+  }
+
+  function movesSection(p) {
+    const names = (xs) => xs.map(esc).join(', ');
+    return `
+      <section>
+        ${secHead('board', 'Recent moves')}
+        ${p.moves.length
+          ? `<ul class="decided">${p.moves.map((m) => `<li><span class="tag ${m.type === 'trade' ? 'good' : 'info'}">Week ${m.week}</span><span>${m.type === 'trade' ? '<b>Trade.</b> ' : ''}${m.added.length ? `Added ${names(m.added)}` : ''}${m.added.length && m.dropped.length ? ' · ' : ''}${m.dropped.length ? `${m.type === 'trade' ? 'Sent' : 'Dropped'} ${names(m.dropped)}` : ''}</span></li>`).join('')}</ul>`
+          : '<p class="sec-sub">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
+      </section>`;
   }
 
   function glossaryPage() {
@@ -1448,12 +1489,11 @@
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
-    else if ((m = /^coach-next-(\d+)$/.exec(h)) && ahead()) { html = coachTeamPage(Number(m[1]), true); nav = 'coach'; }
-    else if ((m = /^coach-(\d+)$/.exec(h)) && advice()) { html = coachTeamPage(Number(m[1]), false); nav = 'coach'; }
+    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(`#team-${m[2]}${m[1] ? '.next' : ''}`); return; }
+    else if ((m = /^team-(\d+)(\.next)?$/.exec(h))) { html = teamPage(Number(m[1]), !!m[2]); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
-    else if ((m = /^team-(\d+)$/.exec(h))) { html = teamPage(Number(m[1])); nav = 'standings'; }
     else if ((m = /^week-(\d+)\.awards$/.exec(h)) && weekOf(+m[1])) { html = awardsPage(weekOf(+m[1])); }
     else if ((m = /^week-(\d+)\.game-(\d+-\d+)$/.exec(h)) && weekOf(+m[1])) { html = matchupPage(weekOf(+m[1]), m[2]); }
     else if ((m = /^week-(\d+)$/.exec(h)) && weekOf(+m[1])) { html = weekPage(weekOf(+m[1])); }
@@ -1484,6 +1524,13 @@
     if (open) PEEK.add(id); else PEEK.delete(id);
   });
 
+  /* Picking a team from Coach (a grid card or the team switcher) is what makes it "my team"
+     for the Coach tab. Opening someone's profile from Standings or a matchup link isn't. */
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-myteam]');
+    if (a) myTeam.set(Number(a.dataset.myteam));
+  });
+
   window.addEventListener('hashchange', () => {
     route();
     window.scrollTo({ top: 0 });
@@ -1508,7 +1555,7 @@
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
-      if (h.startsWith('live') || h.startsWith('coach') || h === '') route();
+      if (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '') route();
     } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
   }
 

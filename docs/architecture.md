@@ -42,10 +42,12 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
 
 ## Coach page
 
-- Hangs off the live week, with two tabs: `#coach` / `#coach-<teamId>` is the week being played, and
-  `#coach-next` / `#coach-next-<teamId>` is the week after it, from the `next-week` capture (no tab when that
-  capture is missing or stale). Once the live week is final the page leads with next week. The browser remembers
-  the last team opened. The page disappears once the live week's recap is published.
+- A league-wide grid at `#coach` (the week being played) and `#coach-next` (the week after it, from the
+  `next-week` capture; no tab when that capture is missing or stale), one card per team. Each team's own week lives
+  on her **team profile** (`#team-<id>`, and `#team-<id>.next` for next week); the old `#coach-<id>` and
+  `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
+  remembers the last team opened. The grid and the profile's week sections disappear once the live week's recap is
+  published; the rest of the profile stays all season.
 - Next week's tab is baked at build time and never refreshed by `/api/live`: those numbers move about once a day,
   and asking ESPN for a second week on every request would double what the Live page costs it.
 - **Computed cards** (`team_advice` in `site/build.py`), from the capture alone (ESPN projections, injury
@@ -72,3 +74,17 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   and whether that's new, where his game is up to, what else you have at that spot). The numbers are ESPN's, the
   jokes are ours, and no card reports news no source gave us. A week nobody has played has no stat line, so its
   cards are the blurb and the notes; with no projections published yet, nothing quotes one.
+
+## Team profile
+
+`#team-<id>`: header and season tiles, this week's to-dos and lineup (the Coach page section above), the
+**coach's audit**, roster ideas ("Worth a look"), her **recent moves**, week by week, and awards.
+
+- **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
+  Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
+  (`proj:<over|under>:<top id>:<bottom id>`). The A–D band exists only in the key, never on the page.
+  `coach-daily` writes copy per key into `latest.json`'s top-level `audit`; it applies on key match alone, with no
+  36-hour gate, since the key already describes finished weeks.
+- **Roster ideas** whose optional `pos` equals her `weak_spot` get a "fills your weak spot" sticker.
+- **Moves**: adds, drops and trades from every captured week (the live week included), newest first. ESPN's
+  "Player 12345" placeholders are filled from `data/player_names.json` when `analyze.py` has looked them up.

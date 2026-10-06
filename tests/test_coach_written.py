@@ -150,6 +150,86 @@ class CoachWrittenTest(unittest.TestCase):
         got = next(it for it in after["items"] if it["key"] == target["key"])
         self.assertEqual(got["text"], target["text"])
 
+    # ---------- team profile: season audit and roster ideas ----------
+
+    def data(self, fp=None):
+        data, _ = build.site_data(copy.deepcopy(self.recap_weeks), copy.deepcopy(self.captured),
+                                  preview=False, fp=fp)
+        return data
+
+    def team(self, data, team_id):
+        return next(s for s in data["season"]["standings"] if s["team_id"] == team_id)
+
+    def test_every_team_has_a_profile(self):
+        for s in self.data()["season"]["standings"]:
+            self.assertEqual([c["kind"] for c in s["profile"]["audit"]], ["lineup_iq", "position", "projection"])
+            self.assertIn(s["profile"]["weak_spot"], ("QB", "RB", "WR", "TE", "FLEX", "DST", "K"))
+            self.assertIsInstance(s["profile"]["moves"], list)
+
+    def test_audit_uses_recapped_weeks_only(self):
+        # Week 3 is the live week here, so no audit text may mention it.
+        for s in self.data()["season"]["standings"]:
+            for c in s["profile"]["audit"]:
+                self.assertNotIn("Week 3", c["text"])
+
+    def audit_fp(self, team_id, key, text="Kincaid sat while the lineup starved.", hours_ago=0, **extra):
+        fp = self.snapshot(extra.pop("teams", {}), hours_ago=hours_ago)
+        fp["audit"] = {str(team_id): {key: {"title": "Written title", "text": text}}}
+        return fp
+
+    def test_written_audit_applies_on_key_match(self):
+        tid = 6
+        key = self.team(self.data(), tid)["profile"]["audit"][0]["key"]
+        card = self.team(self.data(self.audit_fp(tid, key)), tid)["profile"]["audit"][0]
+        self.assertEqual((card["title"], card.get("written")), ("Written title", True))
+
+    def test_written_audit_ignored_on_key_mismatch(self):
+        card = self.team(self.data(self.audit_fp(6, "lineup:Z:none")), 6)["profile"]["audit"][0]
+        self.assertNotEqual(card["title"], "Written title")
+
+    def test_written_audit_survives_a_stale_snapshot_but_coach_cards_do_not(self):
+        tid = 6
+        key = self.team(self.data(), tid)["profile"]["audit"][0]["key"]
+        live_row = next(r for r in self.live() if r["team_id"] == tid)
+        coach_key = next(it["key"] for it in live_row["items"] if it.get("key"))
+        teams = {str(tid): {"coach_cards": {coach_key: {"title": "Written coach", "text": "Swap him."}}}}
+        data = self.data(self.audit_fp(tid, key, hours_ago=48, teams=teams))
+        self.assertEqual(self.team(data, tid)["profile"]["audit"][0]["title"], "Written title")
+        row = next(r for r in data["live"]["advice"] if r["team_id"] == tid)
+        self.assertNotIn("Written coach", [it["title"] for it in row["items"]])
+
+    def test_malformed_audit_block_falls_back_instead_of_crashing(self):
+        for bad in (["not", "a", "dict"], "oops", {"6": ["list"]}):
+            fp = self.snapshot({})
+            fp["audit"] = bad
+            card = self.team(self.data(fp), 6)["profile"]["audit"][0]
+            self.assertNotIn("written", card)
+
+    def test_written_audit_rejects_moving_numbers(self):
+        tid = 6
+        key = self.team(self.data(), tid)["profile"]["audit"][0]["key"]
+        card = self.team(self.data(self.audit_fp(tid, key, text="You hit 91% of optimal.")), tid)["profile"]["audit"][0]
+        self.assertNotEqual(card["title"], "Written title")
+
+    def test_roster_ideas_tagged_only_on_weak_spot_match(self):
+        tid = 6
+        weak = self.team(self.data(), tid)["profile"]["weak_spot"]
+        other = "K" if weak != "K" else "QB"
+        idea = lambda title, **kw: {"kind": "waiver", "level": "info", "title": title, "text": "Worth a claim.", **kw}  # noqa: E731
+        fp = self.snapshot({str(tid): {"roster_ideas": [idea("fits", pos=weak), idea("other", pos=other), idea("nopos")]}})
+        row = next(r for r in self.data(fp)["live"]["advice"] if r["team_id"] == tid)
+        tags = {i["title"]: i["fills_weak_spot"] for i in row["roster_ideas"]}
+        self.assertEqual(tags, {"fits": True, "other": False, "nopos": False})
+
+    def test_brief_has_audit_for_every_team(self):
+        import coach_brief
+        out = coach_brief.brief(SEASON)
+        self.assertEqual(len(out["audit"]), 8)
+        for row in out["audit"].values():
+            self.assertEqual(set(row), {"manager", "weak_spot", "cards"})
+            for c in row["cards"]:
+                self.assertEqual(set(c), {"key", "kind", "stat", "title", "text"})
+
 
 if __name__ == "__main__":
     unittest.main()
