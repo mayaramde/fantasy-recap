@@ -37,11 +37,11 @@ worktree right away: Step 5b's brief and Step 7's build both read them from ther
 `live-update.yml` runs this skill once a day (its "Coach cards (daily)" step), unattended. There,
 a few steps change; everything else above and below applies as written:
 
-- **Your job ends at a written, checked `data/2026/fantasypros/latest.json`.** The workflow
-  commits it, pushes, opens the PR, turns on auto-merge, closes older coach-daily PRs, and
-  deploys. You have no git write or PR-changing commands, and the workflow throws your work
-  away if you change any other file in the checkout (build output and caches aside). Put
-  scratch files, like the cards for Step 5c, under `/tmp`, never in the repo.
+- **Your job ends at a written, checked `data/2026/fantasypros/latest.json`.** It's the only
+  file you can write in the repo and the only one the workflow takes from your job: its `live`
+  job checks it, commits it, opens the PR, turns on auto-merge, closes older coach-daily PRs,
+  and deploys. Your job has a read-only token. Put scratch files, like the cards for Step 5c,
+  under `/tmp`.
 - **Step 1:** no worktree and no branch. The run's checkout is a fresh `main` nobody else is
   using, and the workflow has already captured the live week and next week and run `analyze.py`.
 - **Step 4:** if no FantasyPros tools are available (the repo has no `FANTASYPROS_MCP_URL` set),
@@ -57,8 +57,10 @@ a few steps change; everything else above and below applies as written:
 
 Read `data/2026/fantasypros/latest.json` from the worktree (`origin/main`) before touching
 anything else — it's your only source for "what changed since yesterday." If yesterday's
-coach-daily PR is still open (`gh pr list --state open --head coach-daily-`), its branch has a
-newer snapshot than `main`; read that one instead. A missing snapshot is fine — say so in your
+coach-daily PR is still open, its branch has a newer snapshot than `main`; read that one instead.
+`--head` only matches a whole branch name, so find it by prefix:
+`gh pr list --state open --json headRefName --jq '.[] | select(.headRefName | startswith("coach-daily-")) | .headRefName'`,
+then `git fetch origin <branch>` and `git show FETCH_HEAD:data/2026/fantasypros/latest.json`. A missing snapshot is fine — say so in your
 notes rather than inventing a comparison.
 
 ## Step 3: work out which week(s) to write cards for

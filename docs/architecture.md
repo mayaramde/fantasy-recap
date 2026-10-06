@@ -24,16 +24,16 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
   there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging
   that PR is what triggers the push-deploy above.
-- **Daily Coach cards** run inside the cloud live update: its `COACH_CRON` schedule (6:13 AM EDT, best effort like
-  every GitHub cron), or a manual run with `coach_daily` ticked, adds a step after the captures and `analyze.py` where
-  Claude (`anthropics/claude-code-action`) runs `coach-daily` on that run's fresh data and writes the Coach cards
-  (start/sit, waiver and trade leads, injury/news changes since yesterday, plus the written copy for the computed
-  cards and the season audit) to `data/2026/fantasypros/latest.json`. Claude has no git write access there: the
-  workflow checks that nothing but that file changed and that it's a fresh, readable snapshot, then commits it and
-  opens the auto-merging PR itself. The same run deploys with it, so the cards are live before the PR merges; until it
-  does, the next deploy from `main` goes back to the previous snapshot. The step never sees the ESPN cookies or the
-  Vercel token. Any failure rolls the checkout back to how the step found it, files a `coach-daily failing` issue and
-  still deploys the live scores. It runs ESPN-only when the repo has no `FANTASYPROS_MCP_URL`. The workflow's header
+- **Daily Coach cards** run inside the cloud live update: its 6:13 AM EDT schedule (best effort like every GitHub
+  cron), or a manual run with `coach_daily` ticked, starts a separate `coach` job before the usual `live` one. It
+  captures ESPN, runs `analyze.py`, and has Claude (`anthropics/claude-code-action`) run `coach-daily`, which writes
+  the Coach cards (start/sit, waiver and trade leads, injury/news changes since yesterday, plus the written copy for
+  the computed cards and the season audit) to `data/2026/fantasypros/latest.json`. That job has a read-only token and
+  no Vercel token, and hands only that file on, as an artifact. The `live` job checks it (fresh, readable,
+  `site/build.py` still builds), commits it and opens the auto-merging PR, then deploys with it, so the cards are
+  live before the PR merges; until it does, the next deploy from `main` goes back to the previous snapshot. Claude
+  never sees the ESPN cookies or the Vercel token. A failure anywhere in it files a `coach-daily failing` issue and
+  the live scores still deploy. It runs ESPN-only when the repo has no `FANTASYPROS_MCP_URL`. The workflow's header
   lists the secrets and repo settings it needs. It replaces the old Mac scheduled task, which only ran while the Mac
   was awake.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
