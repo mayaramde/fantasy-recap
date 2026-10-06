@@ -44,9 +44,16 @@ def _teams(standings, last_week):
     return out
 
 
-def _schedule(schedule):
-    """{week: [(a, b), ...]} with int weeks (JSON gives string keys) and sorted pairs."""
-    return {int(w): sorted(tuple(sorted(pair)) for pair in pairs) for w, pairs in (schedule or {}).items()}
+def _schedule(schedule, ids):
+    """{week: [(a, b), ...]} with int weeks (JSON gives string keys) and sorted pairs. A week whose pairs
+    don't name every team exactly once (a typo, a stale id, a missing game) is dropped, so that week
+    falls back to random opponents instead of crashing the build or quietly benching someone."""
+    out = {}
+    for w, pairs in (schedule or {}).items():
+        pairs = sorted(tuple(sorted(pair)) for pair in pairs)
+        if sorted(t for pair in pairs for t in pair) == sorted(ids):
+            out[int(w)] = pairs
+    return out
 
 
 def _rank_key(t):
@@ -227,7 +234,7 @@ def build(standings, weeks_played, league, schedule=None, n_sims=8000):
     if not weeks_played or not standings:
         return None
     teams = _teams(standings, cfg["regular_season_weeks"])
-    sched = _schedule(schedule)
+    sched = _schedule(schedule, [t["id"] for t in teams])
     key = _digest(teams, weeks_played, cfg, sched, n_sims)
     if key not in _CACHE:
         _CACHE[key] = _build(teams, weeks_played, cfg, sched, n_sims, key)

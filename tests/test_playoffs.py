@@ -181,6 +181,13 @@ class EdgeCaseTest(unittest.TestCase):
         partial = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, schedule={4: PAIRINGS[1]}, n_sims=500)
         self.assertFalse(partial["real_schedule"])
 
+    def test_bad_schedule_weeks_fall_back_to_random(self):
+        good = {w: PAIRINGS[(w - 1) % 3 + 1] for w in range(4, 15)}
+        for bad in ([(1, 99), (3, 4), (5, 6), (7, 8)], [(1, 2), (3, 4)], [(1, 1), (3, 4), (5, 6), (7, 8)]):
+            r = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, schedule={**good, 9: bad}, n_sims=200)
+            self.assertFalse(r["real_schedule"])
+            self.assertAlmostEqual(sum(t["playoff"] for t in r["teams"]), 6, places=3)
+
     def test_string_week_keys_are_accepted(self):
         sched = {str(w): PAIRINGS[(w - 1) % 3 + 1] for w in range(4, 15)}
         self.assertTrue(po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, schedule=sched, n_sims=200)["real_schedule"])
