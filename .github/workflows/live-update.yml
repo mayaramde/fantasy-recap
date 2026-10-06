@@ -154,6 +154,32 @@ jobs:
             --mcp-config ${{ runner.temp }}/coach-mcp.json
             --allowedTools "Read,Glob,Grep,Agent,Skill,mcp__fantasypros__*,Edit(./data/2026/fantasypros/latest.json),Write(./data/2026/fantasypros/latest.json),Edit(//tmp/**),Write(//tmp/**),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(python3 scripts/coach_brief.py:*),Bash(python3 site/build.py:*),Bash(python3 scripts/check.py:*),Bash(date:*)"
 
+      # What happened in Claude's run, without its transcript: whether the FantasyPros server
+      # connected, which tools it used, and anything its permissions refused.
+      - name: Coach run summary
+        if: always()
+        run: |
+          python3 - <<'PY' || true
+          import collections, json, os
+          path = os.path.join(os.environ["RUNNER_TEMP"], "claude-execution-output.json")
+          if not os.path.exists(path):
+              raise SystemExit("no execution log")
+          events = json.load(open(path))
+          tools = collections.Counter()
+          for e in events:
+              if e.get("type") == "system" and e.get("subtype") == "init":
+                  print("MCP servers:", [(m.get("name"), m.get("status")) for m in e.get("mcp_servers", [])])
+              if e.get("type") == "assistant":
+                  for c in (e.get("message") or {}).get("content", []):
+                      if c.get("type") == "tool_use":
+                          tools[c["name"]] += 1
+              if e.get("type") == "result":
+                  print("turns:", e.get("num_turns"), " result:", e.get("subtype"))
+                  for d in e.get("permission_denials", []):
+                      print("denied:", d.get("tool_name"), json.dumps(d.get("tool_input", {}))[:200])
+          print("tools used:", dict(tools))
+          PY
+
       - uses: actions/upload-artifact@v4
         with:
           name: coach-snapshot
@@ -306,13 +332,21 @@ jobs:
           set -eo pipefail
           today=$(date -u +%F)
           branch="coach-daily-$today-$GITHUB_RUN_ID"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          # The branch starts from main as it is now, not from this run's checkout: a manual
+          # run from a feature branch must not carry that branch's commits into an
+          # auto-merging PR, and main may have moved since this run started. A separate
+          # worktree, so the checkout the deploy builds from stays as it is.
+          git fetch --quiet "$remote" main
+          git worktree add --quiet -b "$branch" "$RUNNER_TEMP/coach-pr" FETCH_HEAD
+          cp data/2026/fantasypros/latest.json "$RUNNER_TEMP/coach-pr/data/2026/fantasypros/latest.json"
+          cd "$RUNNER_TEMP/coach-pr"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch --quiet -c "$branch"
           git add data/2026/fantasypros/latest.json
           git commit --quiet -m "Coach: daily FantasyPros cards ($today)"
           # Pushed with GH_TOKEN, so a COACH_PR_TOKEN merge can trigger the push-deploy.
-          git push --quiet "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
+          git push --quiet "$remote" "HEAD:refs/heads/$branch"
           url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
             --title "Coach: daily FantasyPros cards ($today)" \
             --body "Written by coach-daily in [this live-update run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID), voice-checked there. Data only: \`data/2026/fantasypros/latest.json\`.")
