@@ -1366,7 +1366,7 @@
       ${weeks.length ? `
       <section>
         ${secHead('board', 'Points by week')}
-        <p class="sec-sub">Every team's score each week. Darker pink means a higher score. Tap a score to open that game.</p>
+        <p class="sec-sub">Every team's score each week. Darker blue means a higher score. Tap a score to open that game.</p>
         <div class="std-card table-scroll">
           <table class="std heat">
             <thead><tr><th>Team</th>${weeks.map((n) => `<th style="text-align:center">Week ${n}</th>`).join('')}<th class="r">Average</th></tr></thead>
@@ -1458,8 +1458,8 @@
       <p>${esc(it.text)}</p>
     </article>`;
 
-  const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score — useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
-  const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"} — worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
+  const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
+  const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"}. Worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
 
   /* Both tabs run through the same pages: `next` false is the week being played, true is
      the week after it. Same cards, same components, different source. A flip switch, not
