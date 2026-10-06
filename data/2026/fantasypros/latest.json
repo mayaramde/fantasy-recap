@@ -1,13 +1,35 @@
 {
-  "generated_at": "2026-09-29T17:58:20Z",
+  "generated_at": "2026-10-06T19:50:30Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "weeks": {
-    "3": {
+    "4": {
       "teams": {
         "1": {
-          "advice_cards": [],
-          "roster_ideas": []
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "info",
+              "title": "Kittle over Andrews stays the right call",
+              "stat": "TE4 vs TE17",
+              "text": "Mark Andrews caught his first touchdown of the season against the Titans this week, per FantasyPros' news desk. FantasyPros' expert consensus still ranks George Kittle 4th among tight ends for the rest of the season against Andrews' 17th, so the lineup call doesn't change. Andrews found the end zone again, still polishing the view from 17th."
+            }
+          ],
+          "roster_ideas": [],
+          "coach_cards": {
+            "recap:4:L:4:5.7": {
+              "title": "A loss your own bench disagrees with",
+              "text": "Your best possible lineup would have won this one. Somewhere on your bench, a better version of this week was just sitting there. Early gift for next week: start that guy."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
+            }
+          },
+          "summary": {
+            "key": "done",
+            "text": "Close loss, and the tape shows you had the horses. More below."
+          }
         },
         "2": {
           "advice_cards": [],
@@ -15,112 +37,165 @@
             {
               "kind": "trade",
               "level": "watch",
-              "title": "Trade lead: a running back for a tight end, with Sam",
-              "stat": "RB for TE",
-              "text": "You have seven running backs and one tight end (the big guy who blocks and catches). That tight end, Kyle Pitts Sr., scored 1.5 this week. Sam just lost De'Von Achane for the season, per FantasyPros' injury desk, and she has two tight ends that FantasyPros' expert consensus ranks 5th (Sam LaPorta) and 7th (Dalton Kincaid). One of your spare backs, like D'Andre Swift (ranked 12th and on your bench), for Kincaid is worth floating. Treat it as an opener, not a sure thing."
-            },
-            {
-              "kind": "trade",
-              "level": "info",
-              "title": "Trade lead: a spare back for a receiver, with Maya",
-              "stat": "RB for WR",
-              "text": "Seven running backs, four wide receivers: your bench is basically a running-back parking lot. Maya has it the other way around, with seven receivers and three backs, and her bench includes Tetairoa McMillan, whom FantasyPros' expert consensus ranks 19th at wide receiver. Swapping a back like Cam Skattebo (ranked 18th at running back) for a receiver like that would give you more options at WR and flex (the wild-card spot). It's an idea to explore, not a guarantee."
+              "title": "Trade lead: a running back for a tight end, with Samantha",
+              "stat": "RB glut, TE of one",
+              "text": "You have seven running backs, and four of them (D'Andre Swift, Jadarian Price, Jacory Croskey-Merritt, Kyle Monangai) spent this week on your bench. Juwan Johnson is a perfectly fine tight end, but he's your only one. Samantha has two FantasyPros ranks highly: Sam LaPorta 5th and Dalton Kincaid 6th among tight ends, plus a running back room that's gotten crowded since De'Von Achane's injury. Swift, ranked 11th at running back per FantasyPros, for Kincaid would fix both rosters at once. Worth floating, not a lock."
             }
-          ]
+          ],
+          "coach_cards": {
+            "recap:4:W:2:70.0": {
+              "title": "A blowout, with room to spare",
+              "text": "You won by a wide margin and still left a useful chunk of production on the bench. When the final score isn't close, nobody notices the bench math, but it's there."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
+            }
+          },
+          "summary": {
+            "key": "done",
+            "text": "Blowout win banked. Bench math below for the curious."
+          }
         },
         "3": {
           "advice_cards": [],
-          "roster_ideas": [
-            {
-              "kind": "waiver",
-              "level": "watch",
-              "title": "Claim Tyler Shough for the QB spot",
-              "stat": "FP QB12",
-              "text": "Your quarterbacks scored 3.76 (Drake Maye) and 13.64 (Bryce Young) this week. Tyler Shough is a free agent: nobody in the league owns him, per FantasyPros' ownership numbers. FantasyPros' expert consensus ranks him 12th among quarterbacks for the rest of the season, right behind Maye (11th) and well ahead of Young (17th), so he's at least a better Plan B than Young, and its news desk says he threw four touchdowns this week. Alec Pierce is the obvious cut: FantasyPros' injury desk lists him on IR with a foot injury."
+          "roster_ideas": [],
+          "coach_cards": {
+            "recap:4:W:1:47.3": {
+              "title": "Top score in the league",
+              "text": "Nobody in the league outscored your lineup this week, and you barely left anything behind on the bench doing it. About as clean a week as this game gets."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
             }
-          ]
+          }
         },
         "4": {
           "advice_cards": [
             {
               "kind": "consensus",
-              "level": "watch",
-              "title": "Zay Flowers is healthy and stuck on IR",
-              "stat": "15.4 pts didn't count",
-              "text": "Zay Flowers scored 15.4 this week from your IR spot (the injured-reserve parking space), and points there don't count. FantasyPros' news desk says he looked healthy after missing Week 2 with a hamstring issue, and its expert consensus ranks him 9th among wide receivers for the rest of the season. Get him back into your lineup before Week 4."
+              "level": "info",
+              "title": "Christian Watson is not bench material anymore",
+              "stat": "WR17 ROS",
+              "text": "Christian Watson caught all three of his targets for the Packers this week. FantasyPros' news desk now calls him a fantasy WR1 heading into Week 5, and its expert consensus has him 17th among receivers for the rest of the season. You already had him in your flex spot. Keep doing that."
             }
           ],
-          "roster_ideas": []
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "title": "A backup quarterback is sitting right there",
+              "stat": "FP QB19, free agent",
+              "text": "Jalen Hurts is your only rostered quarterback, and he had a rough one Sunday: two touchdowns, but under 100 passing yards. Justin Herbert is a free agent nobody in the league owns, per FantasyPros' ownership numbers, and FantasyPros' expert consensus ranks him 19th among quarterbacks for the rest of the season, miles better than an empty roster spot. One bad week or bye from Hurts and you'd have nowhere to turn. Grab the insurance."
+            }
+          ],
+          "coach_cards": {
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
+            }
+          },
+          "summary": {
+            "key": "done",
+            "text": "Toughest week in the league. Nowhere to go but up, details below."
+          }
         },
         "5": {
           "advice_cards": [
             {
               "kind": "consensus",
-              "level": "watch",
-              "title": "Brock Bowers is back. Start him.",
-              "stat": "TE1 vs TE16",
-              "text": "Brock Bowers scored 27.6 on your bench this week while Dalton Schultz scored 6 at tight end. FantasyPros' news desk says this was Bowers' season debut and calls him a high-end TE1 (a top-tier tight end) going forward. FantasyPros' expert consensus ranks him 1st among tight ends for the rest of the season, and Schultz 16th."
+              "level": "info",
+              "title": "Bowers is a top-five tight end again, no debate needed",
+              "stat": "TE1 ROS",
+              "text": "Brock Bowers caught a touchdown against the Chiefs this week, his second straight big game back. FantasyPros' expert consensus still ranks him 1st among tight ends for the rest of the season. Meanwhile you're carrying eight wide receivers like roster spots are a loyalty program."
             }
           ],
-          "roster_ideas": [
-            {
-              "kind": "waiver",
-              "level": "info",
-              "title": "Backup plan for Bijan: Brian Robinson Jr.",
-              "stat": "Handcuff",
-              "text": "You only have three running backs, and none of them is on the bench. Brian Robinson Jr. plays behind Bijan Robinson in Atlanta, which makes him Bijan's handcuff (the backup who takes over if the starter gets hurt). Nobody in the league owns him, per FantasyPros' ownership numbers. FantasyPros' expert consensus ranks him 54th among running backs, so he's insurance, not a starter. One of your seven wide receivers could make room."
+          "roster_ideas": [],
+          "coach_cards": {
+            "recap:4:W:5:41.6": {
+              "title": "A win, with extra left in the tank",
+              "text": "You won comfortably and still had a solid chunk of points sitting on your bench. No harm done this week since the win was never in doubt, but that bench stash won't forgive you forever."
             },
-            {
-              "kind": "trade",
-              "level": "info",
-              "title": "Trade lead: spare receivers for a running back, with Amie",
-              "stat": "WR for RB",
-              "text": "You carry seven wide receivers and only three running backs, so if one back gets hurt, nobody's waiting behind him. On your bench, FantasyPros' expert consensus ranks Tetairoa McMillan 19th at wide receiver, Mike Evans 25th and Jalen Coker 26th. Amie has seven running backs and only four receivers, including Cam Skattebo (ranked 18th at running back). A receiver for a back would even out both rosters. It's a conversation starter, not a verdict."
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
             }
-          ]
+          },
+          "summary": {
+            "key": "done",
+            "text": "Win in the books, some bench regret included. Details below."
+          }
         },
         "6": {
-          "advice_cards": [
-            {
-              "kind": "consensus",
-              "level": "info",
-              "title": "A.J. Brown is taking up a bench spot",
-              "stat": "IR per FP",
-              "text": "FantasyPros' injury desk lists A.J. Brown on injured reserve through Week 4, and he's sitting on your bench. If ESPN also shows him as IR, moving him to your IR slot frees a bench spot for a pickup, and you don't lose him."
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "recap:4:W:3:5.7": {
+              "title": "A win by the thinnest of margins",
+              "text": "This one came down to the wire, and your lineup barely left anything on the bench while winning it. That's about as sharp as a lineup card gets."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
             }
-          ],
-          "roster_ideas": []
+          },
+          "summary": {
+            "key": "done",
+            "text": "Survived a nailbiter. Tight lineup, tighter final score."
+          }
         },
         "7": {
           "advice_cards": [],
           "roster_ideas": [
             {
-              "kind": "waiver",
-              "level": "watch",
-              "title": "Achane is out for the year. Claim Ollie Gordon II.",
-              "stat": "Free agent",
-              "text": "Sorry. FantasyPros' injury desk reports that De'Von Achane tore his ACL against the Chiefs and will miss the rest of the season. Ollie Gordon II is the Miami running back most likely to take over. FantasyPros calls him a borderline RB2 for now (a decent second running back) and nobody in the league owns him, per FantasyPros' ownership numbers. Jaylen Wright is also a free agent and should get some carries once he's healthy."
-            },
-            {
               "kind": "trade",
               "level": "watch",
               "title": "Trade lead: a tight end for a running back, with Amie",
-              "stat": "TE for RB",
-              "text": "With Achane out for the season, your running backs are Breece Hall, Bhayshul Tuten and TreVeyon Henderson, and FantasyPros' expert consensus has none of them in its top 15 for the rest of the year. You do have two good tight ends (the big guys who block and catch), though: FantasyPros ranks Sam LaPorta 5th and Dalton Kincaid 7th. Amie is the mirror image, with seven running backs (D'Andre Swift, ranked 12th, sits on her bench) and just one tight end, Kyle Pitts Sr., who scored 1.5 this week. Kincaid for one of her backs is worth asking about. It's a starting point, not a verdict."
+              "stat": "TE surplus, RB respray",
+              "text": "You rostered two legitimate running backs this week in Ollie Gordon II and Braelon Allen, on top of Breece Hall and Bhayshul Tuten, after De'Von Achane's season ended. FantasyPros' expert consensus still ranks Dalton Kincaid 6th among tight ends, right behind your own Sam LaPorta at 5th. You don't need both. Amie has seven running backs and just one tight end. Her D'Andre Swift, ranked 11th at running back per FantasyPros, for Kincaid would turn a duplicate into a real need filled. It's an opener, not a verdict."
             }
-          ]
+          ],
+          "coach_cards": {
+            "recap:4:L:7:41.6": {
+              "title": "A loss, and the bench didn't help the case",
+              "text": "You lost this week, and left more unused production on your bench than almost anyone else in the league. Your best possible lineup still comes up short against what you faced, so it's not one swap undoing the week, just a tough matchup made tougher."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
+            }
+          },
+          "summary": {
+            "key": "done",
+            "text": "Rough week, and your bench did nothing to make the case otherwise. Full breakdown below."
+          }
         },
         "8": {
           "advice_cards": [
             {
-              "kind": "consensus",
-              "level": "info",
-              "title": "Puka and Jefferson: hold, don't fold",
-              "stat": "Week 4?",
-              "text": "Your two star receivers both sat out, but FantasyPros' news desk sounds hopeful about both. The Rams' head coach is \"hopeful\" Puka Nacua plays in Week 4, and Justin Jefferson's ankle injury isn't expected to be long-term, so he could play against the Dolphins. Keep both. Check back as practice reports come in this week."
+              "kind": "fp_back",
+              "level": "watch",
+              "title": "Puka Nacua is back, and he looked like it",
+              "stat": "125 yds, 1 TD",
+              "text": "Puka Nacua made his return this week and went for a big day on the ground and through the air. FantasyPros' news desk calls him a must-start wide receiver going forward. Good thing you never actually benched him."
             }
           ],
-          "roster_ideas": []
+          "roster_ideas": [],
+          "coach_cards": {
+            "recap:4:L:6:47.3": {
+              "title": "Ran into the week's best lineup",
+              "text": "You lost to the top score in the league this week. Nothing drastic left on your bench, so there wasn't much more available to you. Some weeks are just about who you're across from."
+            },
+            "clear:done": {
+              "title": "Nothing left to change",
+              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
+            }
+          },
+          "summary": {
+            "key": "done",
+            "text": "Ran into the week's best lineup. Some matchups you just tip your cap. Breakdown below."
+          }
         }
       }
     }
