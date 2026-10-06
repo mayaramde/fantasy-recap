@@ -2,19 +2,19 @@
   "season": 2026,
   "week": 4,
   "status": "draft",
-  "headline": "Maddie scores 173.66, her best number yet, and a 0-3 start finally meets its match",
-  "dek": "Kyra is the league's last unbeaten team after squeaking past Marlee by 5.74. Amie posted the week's biggest blowout over Tara, by 69.98, which is less a win than a mercy rule. Samantha lost both her starting receivers to injury in the same week.",
+  "headline": "Maddie scores a monster 173.66, and the projections finally remember she's in this league",
+  "dek": "Kyra remains the league's only unbeaten team, surviving Marlee by just 5.74 points. Amie's 69.98-point win over Tara was less a win than a mercy rule. Samantha lost both her starting receivers to injury in the same week.",
   "matchups": {
-    "1-6": "Marlee's night came down to one flex spot: Michael Wilson scored 16.5 on her bench while David Montgomery managed 4.3 in her lineup, a 12.2-point gap bigger than Kyra's 5.74-point margin. Rough way to lose the undefeated tag. Kyra stays unbeaten at 4-0, the last one standing.",
+    "1-6": "Marlee's night came down to one flex spot: Michael Wilson scored 16.5 on her bench while David Montgomery managed 4.3 in her lineup, a 12.2-point gap bigger than Kyra's 5.74-point margin. That's friendly fire, not bad luck. Kyra stays unbeaten at 4-0, the last one standing.",
     "2-4": "Amie won by 69.98, the week's biggest margin, despite starting Cam Skattebo's 7.6 over Kyle Monangai's 28 on her bench. Tara's week was rougher: Saquon Barkley managed just 2 points while playing through a hamstring injury, and a league-high 50.6 points sat unused behind him.",
-    "3-8": "Maddie put up the week's best score, 173.66, for her first win of the season. Nico Collins beat his projection by 15.5, Zay Flowers by 10.3, and Chuba Hubbard chipped in 25.9 of his own. Cambri had Drake Maye's 26.16 sitting on her bench behind Bo Nix's 13.56, which wouldn't have flipped this one, but it would have made it respectable.",
+    "3-8": "Maddie put up the week's best score, 173.66, for her first win of the season, better late than never. Nico Collins beat his projection by 15.5, Zay Flowers by 10.3, and Chuba Hubbard chipped in 25.9 of his own. Cambri took the loss and stays 0-4.",
     "5-7": "Maya won by 41.56, powered by Tetairoa McMillan's 45.2 points out of the flex spot on a 15.85 projection, the best number anyone put up all week. Samantha's afternoon went sideways early: Ja'Marr Chase left in the concussion protocol and Rashee Rice left with a hamstring injury, and neither finished the game."
   },
   "game_balls": [
     {
       "manager": "Maddie",
       "title": "First win's a big one",
-      "text": "Maddie's 173.66 was the best score anyone put up this week, by a wide margin. Nico Collins beat his projection by 15.5 points, Zay Flowers by 10.3, and Chuba Hubbard added 25.9 of his own. Took four weeks, but the math finally broke her way.",
+      "text": "Maddie's 173.66 was the best score anyone put up this week, by a wide margin. Nico Collins beat his projection by 15.5 points, Zay Flowers by 10.3, and Chuba Hubbard added 25.9 of his own. The math owed her one, and it paid out all at once.",
       "stat": "173.66 pts, best of her season"
     },
     {
@@ -40,19 +40,19 @@
     {
       "manager": "Tara",
       "title": "The deepest bench in the league",
-      "text": "Tara left more unplayed points on her bench than anyone this week, 50.6 by the optimal-lineup math, with Rhamondre Stevenson (18.4) and Deebo Samuel (18) both outscoring what she actually started at their positions. That's a flex-worthy roster sitting in street clothes.",
+      "text": "Tara left more unplayed points on her bench than anyone this week, 50.6 by the optimal-lineup math. Rhamondre Stevenson (18.4) outscored both of her starting running backs, and Deebo Samuel (18) outscored one of her two starting receivers. That's a flex-worthy roster sitting in street clothes.",
       "stat": "50.6 pts benched"
     },
     {
       "manager": "Cambri",
       "title": "Two quarterbacks, wrong one",
-      "text": "Cambri started Bo Nix for 13.56 while Drake Maye was good for 26.16 on her bench, a 12.6-point gap at the one position where you only get to pick one. Still 0-4, and this one's on the depth chart, not the matchups.",
+      "text": "Cambri started Bo Nix for 13.56 while Drake Maye was good for 26.16 on her bench, a 12.6-point gap at the one position where you only get to pick one. Still 0-4, and for once that's not on the matchups. It's a quarterback controversy of her own making.",
       "stat": "12.6 pts benched at QB"
     },
     {
       "manager": "Maya",
       "title": "The recap writer's own blind spot",
-      "text": "Maya started Josh Downs (4.6) over Mike Evans (12.6), an 8-point gap in a game she won by 41.56. Being right about everything else bailed her out, not this call.",
+      "text": "Maya started Josh Downs (4.6) over Mike Evans (12.6), an 8-point gap in a game she won by 41.56 anyway.",
       "stat": "-8.0 pts at WR"
     }
   ],
