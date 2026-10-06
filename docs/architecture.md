@@ -18,7 +18,7 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
     live now.
   - Either way: analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published
     recap that `main` doesn't (a recap shipped from the Mac whose PR hasn't merged), then `scripts/deploy.sh`.
-    Nothing is committed. On failure, a step opens (or comments on) a GitHub issue — a message mentioning "ESPN
+    Nothing is committed, except the daily Coach snapshot below, through its own PR. On failure, a step opens (or comments on) a GitHub issue — a message mentioning "ESPN
     401" means the ESPN cookie secrets expired, in both GitHub Actions secrets and the matching Vercel env vars.
 - **`fantasy-weekly-recap`** runs Tuesdays around 8:15 AM: invokes `fantasy-orchestrator` to capture last week
   (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
@@ -26,14 +26,16 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   that PR is what triggers the push-deploy above.
 - **Daily Coach cards** run inside the cloud live update: its `COACH_CRON` schedule (6:13 AM EDT, best effort like
   every GitHub cron), or a manual run with `coach_daily` ticked, adds a step after the captures and `analyze.py` where
-  Claude (`anthropics/claude-code-action`) runs `coach-daily` on that run's fresh data. It writes the Coach cards
+  Claude (`anthropics/claude-code-action`) runs `coach-daily` on that run's fresh data and writes the Coach cards
   (start/sit, waiver and trade leads, injury/news changes since yesterday, plus the written copy for the computed
-  cards and the season audit) to `data/2026/fantasypros/latest.json` and opens its own auto-merging PR; the same run
-  then deploys with that file, so the site doesn't wait on the merge. The step never sees the ESPN cookies or the
-  Vercel token, is allowed to fail without costing the live scores (it files a `coach-daily failing` issue instead),
-  and runs ESPN-only when the repo has no `FANTASYPROS_MCP_URL`. Needs the `CLAUDE_CODE_OAUTH_TOKEN` (or
-  `ANTHROPIC_API_KEY`) secret; the workflow's header lists the optional ones. It replaces the old Mac scheduled
-  task, which only ran when the Mac was awake.
+  cards and the season audit) to `data/2026/fantasypros/latest.json`. Claude has no git write access there: the
+  workflow checks that nothing but that file changed and that it's a fresh, readable snapshot, then commits it and
+  opens the auto-merging PR itself. The same run deploys with it, so the cards are live before the PR merges; until it
+  does, the next deploy from `main` goes back to the previous snapshot. The step never sees the ESPN cookies or the
+  Vercel token. Any failure rolls the checkout back to how the step found it, files a `coach-daily failing` issue and
+  still deploys the live scores. It runs ESPN-only when the repo has no `FANTASYPROS_MCP_URL`. The workflow's header
+  lists the secrets and repo settings it needs. It replaces the old Mac scheduled task, which only ran while the Mac
+  was awake.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
 ## Live page

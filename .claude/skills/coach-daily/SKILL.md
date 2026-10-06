@@ -37,18 +37,19 @@ worktree right away: Step 5b's brief and Step 7's build both read them from ther
 `live-update.yml` runs this skill once a day (its "Coach cards (daily)" step), unattended. There,
 a few steps change; everything else above and below applies as written:
 
-- **Step 1:** no worktree. The run's checkout is a fresh `main` that nobody else is using, and
-  the workflow has already captured the live week and next week and run `analyze.py`, so the
-  data is in place. Just `git checkout -b coach-daily-<YYYY-MM-DD>` and work there.
+- **Your job ends at a written, checked `data/2026/fantasypros/latest.json`.** The workflow
+  commits it, pushes, opens the PR, turns on auto-merge, closes older coach-daily PRs, and
+  deploys. You have no git write or PR-changing commands, and the workflow throws your work
+  away if you change any other file in the checkout (build output and caches aside). Put
+  scratch files, like the cards for Step 5c, under `/tmp`, never in the repo.
+- **Step 1:** no worktree and no branch. The run's checkout is a fresh `main` nobody else is
+  using, and the workflow has already captured the live week and next week and run `analyze.py`.
 - **Step 4:** if no FantasyPros tools are available (the repo has no `FANTASYPROS_MCP_URL` set),
   take the `fantasy-data` fallback in `.claude/skills/fantasy-orchestrator/references/tools.md`:
   empty `advice_cards` and `roster_ideas` for every team, but still write Step 5b's copy and the
-  season audit, and carry `trade_finder_disclosure_shown` over unchanged.
-- **Trade Finder's disclosure:** nobody reads this run's summary, so if it comes up, put it in
-  the PR body instead and set the flag as Step 4 says.
-- **Step 7:** `git push -u origin coach-daily-<date>`, then the PR steps as written (`gh` is
-  already authenticated). Skip the worktree cleanup, and don't deploy: the same workflow run
-  deploys right after this step with your snapshot in its checkout.
+  season audit. Don't call `waiver_finder`, `trade_finder` or `trade_analyzer` at all: nobody
+  would see a disclosure, so carry `trade_finder_disclosure_shown` over unchanged.
+- **Step 7:** run item 1 (`site/build.py`, `scripts/check.py`) and stop there.
 - Never read or print environment variables or anything under `$RUNNER_TEMP`: the ESPN cookies
   and Vercel token aren't given to this step, and the tokens that are stay out of the log.
 

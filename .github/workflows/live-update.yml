@@ -6,9 +6,9 @@ name: live-update
 # scripts/site/api change) — see the `push` trigger below.
 # Data only: capture, analyze, build, deploy. Nothing is committed, with one exception:
 # once a day (the COACH_CRON schedule below, or a manual run with coach_daily) Claude runs
-# the coach-daily skill on this run's fresh capture, which opens its own auto-merging PR
-# for data/2026/fantasypros/latest.json. This same run then deploys with those cards, so
-# the site doesn't wait on that PR. See "Coach cards (daily)" below.
+# the coach-daily skill on this run's fresh capture, and the workflow opens an auto-merging
+# PR for the data/2026/fantasypros/latest.json it writes. This same run deploys with those
+# cards, so they're live before that PR merges. See "Coach cards (daily)" below.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
 #   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN
@@ -16,7 +16,9 @@ name: live-update
 #                for the daily coach step
 #              FANTASYPROS_MCP_TOKEN (optional) bearer token for the FantasyPros MCP server
 #              COACH_PR_TOKEN (optional) fine-grained PAT (contents + pull requests: write)
-#                for coach-daily's PR; see the coach step for when it's needed
+#                for coach-daily's PR; see "Open coach-daily's PR" for when it's needed
+#   settings:  Actions → General → "Allow GitHub Actions to create and approve pull
+#                requests", and General → "Allow auto-merge", both for coach-daily's PR
 #   variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (from .vercel/project.json)
 #              FANTASYPROS_MCP_URL (optional) the FantasyPros MCP server's URL. Without it
 #                the coach step still runs, ESPN-only (no start/sit, waiver or trade ideas).
@@ -54,8 +56,8 @@ on:
     - cron: "7 0-5 26 12 *"     # ...and the Christmas night game's UTC spillover
     - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT), already off the hour
     - cron: "13 10 * * *"       # COACH_CRON: daily Coach cards (6:13 AM EDT). Must match the
-                                 # `env.COACH_CRON` string below exactly, which is how a run
-                                 # tells it's the coach run.
+                                 # `env.COACH_CRON` string and the job's timeout-minutes
+                                 # below exactly: that's how a run tells it's the coach run.
   workflow_dispatch:
     inputs:
       simulate_failure:
@@ -75,7 +77,8 @@ concurrency:
   group: live-update
   cancel-in-progress: false
 
-# contents/pull-requests: write are for the daily coach step's branch and PR only.
+# contents/pull-requests: write are for the daily coach run's branch and PR only. Claude's
+# step can't use them to write: its tool list has no git write or PR-changing command.
 permissions:
   contents: write
   pull-requests: write
@@ -87,8 +90,9 @@ env:
 jobs:
   live:
     runs-on: ubuntu-latest
-    # 15 minutes for a normal run; the daily coach step adds up to 40 of its own.
-    timeout-minutes: 60
+    # 15 minutes, or 60 for the daily coach run (its Claude step takes up to 40), so a hung
+    # capture on a game Sunday doesn't hold the concurrency group for an hour.
+    timeout-minutes: ${{ (github.event.schedule == '13 10 * * *' || github.event.inputs.coach_daily == 'true') && 60 || 15 }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -125,11 +129,6 @@ jobs:
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
         run: node scripts/capture_node.mjs next
 
-      # Scheduled runs skip when nothing's changed (the week they'd show is already
-      # published — the recap did the work already). Two triggers must NEVER skip: a push
-      # to main, which fires *because* something (often exactly that publish) just landed;
-      # and a manual deploy_preview dispatch, which exists specifically to test this
-      # workflow's deploy path and would otherwise silently no-op most weeks.
       - name: Is this the daily coach run?
         id: coach_gate
         env:
@@ -142,6 +141,12 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
 
+      # Scheduled runs skip when nothing's changed (the week they'd show is already
+      # published — the recap did the work already). Two triggers must NEVER skip: a push
+      # to main, which fires *because* something (often exactly that publish) just landed;
+      # and a manual deploy_preview dispatch, which exists specifically to test this
+      # workflow's deploy path and would otherwise silently no-op most weeks. The
+      # daily coach run doesn't skip either: its new cards need deploying.
       - name: Skip if that week's recap is already published
         id: gate
         env:
@@ -175,64 +180,144 @@ jobs:
           python3 scripts/analyze.py
           python3 scripts/check.py
 
-      # coach-daily (.claude/skills/coach-daily) on this run's capture: Claude writes today's
-      # Coach cards, gets them past voice-check, and opens their auto-merging PR. Claude never
-      # sees the ESPN cookies or the Vercel token: they're only in the capture and deploy
-      # steps' env. Best effort, like the next-week capture: a failure here is reported on its
-      # own issue below and the run still deploys the live scores (with yesterday's cards).
-      #
-      # A PR opened with the default github.token doesn't trigger other workflows, so
-      # `checks` won't run on it. If main's branch protection requires that check, auto-merge
-      # waits forever: set COACH_PR_TOKEN then. The cards still deploy from this run either way.
-      - name: Set up coach-daily (MCP config, git identity)
+      # coach-daily (.claude/skills/coach-daily) on this run's capture. Claude only writes
+      # data/2026/fantasypros/latest.json; the steps after it check that nothing else changed,
+      # then commit, push and open the auto-merging PR themselves, so Claude has no git write
+      # or PR-merge access. Claude never sees the ESPN cookies or the Vercel token: they're only
+      # in the capture and deploy steps' env (and `vercel pull` runs after this). Best effort,
+      # like the next-week capture: any failure here puts the checkout back the way the coach
+      # step found it, files its own issue, and the run still deploys the live scores.
+      - name: Set up coach-daily (snapshot, MCP config)
+        id: coach_setup
         if: steps.coach_gate.outputs.run == 'true'
+        continue-on-error: true
         env:
           FANTASYPROS_MCP_URL: ${{ vars.FANTASYPROS_MCP_URL }}
+          HAS_FP_TOKEN: ${{ secrets.FANTASYPROS_MCP_TOKEN != '' }}
         run: |
+          # The whole working tree as the coach step found it (live-week captures included):
+          # what the checks below compare against, and what a failure is rolled back to.
+          rsync -a --delete --exclude .git ./ "$RUNNER_TEMP/pre-coach/"
           python3 - <<'PY'
           import json, os
           url = os.environ.get("FANTASYPROS_MCP_URL", "")
           servers = {}
           if url:
-              # ${FANTASYPROS_MCP_TOKEN} is expanded by Claude Code at load time, so the
-              # token itself never lands in this file.
-              servers["fantasypros"] = {"type": "http", "url": url,
-                                        "headers": {"Authorization": "Bearer ${FANTASYPROS_MCP_TOKEN}"}}
+              server = {"type": "http", "url": url}
+              if os.environ.get("HAS_FP_TOKEN") == "true":
+                  # Expanded by Claude Code at load time, so the token never lands in this file.
+                  server["headers"] = {"Authorization": "Bearer ${FANTASYPROS_MCP_TOKEN}"}
+              servers["fantasypros"] = server
           else:
               print("FANTASYPROS_MCP_URL is not set: coach-daily runs ESPN-only")
           path = os.path.join(os.environ["RUNNER_TEMP"], "coach-mcp.json")
           json.dump({"mcpServers": servers}, open(path, "w"))
           PY
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Coach cards (daily)
         id: coach
-        if: steps.coach_gate.outputs.run == 'true'
+        if: steps.coach_setup.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 40
         uses: anthropics/claude-code-action@v1
         env:
           FANTASYPROS_MCP_TOKEN: ${{ secrets.FANTASYPROS_MCP_TOKEN }}
-          GH_TOKEN: ${{ secrets.COACH_PR_TOKEN || github.token }}
+          GH_TOKEN: ${{ github.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.COACH_PR_TOKEN || github.token }}
+          github_token: ${{ github.token }}
           prompt: |
             Run the coach-daily skill (.claude/skills/coach-daily/SKILL.md) for today, unattended.
             You are in the live-update GitHub Actions run, so follow the skill's
             "Running in GitHub Actions" section. Finish with the skill's Output summary.
           claude_args: >-
             --mcp-config ${{ runner.temp }}/coach-mcp.json
-            --allowedTools "Read,Write,Edit,Glob,Grep,Agent,Skill,mcp__fantasypros__*,Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(git switch:*),Bash(git checkout -b:*),Bash(git add data/2026/fantasypros/latest.json),Bash(git commit:*),Bash(git push -u origin coach-daily-*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh pr create:*),Bash(gh pr merge:*),Bash(gh pr close:*),Bash(python3 scripts/coach_brief.py:*),Bash(python3 site/build.py:*),Bash(python3 scripts/check.py:*),Bash(python3 -m unittest:*),Bash(date:*)"
+            --allowedTools "Read,Write,Edit,Glob,Grep,Agent,Skill,mcp__fantasypros__*,Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(python3 scripts/coach_brief.py:*),Bash(python3 site/build.py:*),Bash(python3 scripts/check.py:*),Bash(date:*)"
+
+      # Accept the coach step's work only if it succeeded, changed nothing but the snapshot
+      # (build output and caches aside), and left a snapshot the site can read. Anything
+      # else: put the whole tree back as it was before the coach step and use yesterday's.
+      - name: Check the coach step's output
+        id: coach_check
+        if: steps.coach_setup.outcome == 'success'
+        continue-on-error: true
+        env:
+          COACH_OUTCOME: ${{ steps.coach.outcome }}
+        run: |
+          snapshot=data/2026/fantasypros/latest.json
+          ok=true
+          if [ "$COACH_OUTCOME" != "success" ]; then
+            echo "coach step: $COACH_OUTCOME"; ok=false
+          fi
+          changed=$(diff -rq --exclude=.git --exclude=__pycache__ --exclude=dist . "$RUNNER_TEMP/pre-coach" || true)
+          unexpected=$(printf '%s\n' "$changed" | grep -v "^Files ./$snapshot and " | grep -v '^$' || true)
+          if [ -n "$unexpected" ]; then
+            echo "coach step changed more than $snapshot:"; printf '%s\n' "$unexpected"; ok=false
+          fi
+          if [ -z "$changed" ]; then
+            echo "coach step didn't write $snapshot"; ok=false
+          fi
+          if [ "$ok" = true ] && ! python3 - "$snapshot" <<'PY'
+          import json, sys
+          from datetime import datetime, timedelta, timezone
+          d = json.load(open(sys.argv[1]))
+          assert isinstance(d.get("weeks"), dict) and isinstance(d.get("audit", {}), dict)
+          t = datetime.fromisoformat(d["generated_at"].replace("Z", "+00:00"))
+          assert abs(datetime.now(timezone.utc) - t) < timedelta(hours=2), "generated_at isn't today"
+          PY
+          then
+            echo "$snapshot isn't a readable, fresh snapshot"; ok=false
+          fi
+          git switch --quiet --detach "$GITHUB_SHA"
+          if [ "$ok" != true ]; then
+            rsync -a --delete --exclude .git "$RUNNER_TEMP/pre-coach/" ./
+            exit 1
+          fi
+
+      # The default github.token can open the PR (with "Allow GitHub Actions to create and
+      # approve pull requests" on, under Settings → Actions → General) but a PR it opens
+      # doesn't trigger other workflows, so `checks` never runs on it. If main's branch
+      # protection requires that check, auto-merge waits forever: set COACH_PR_TOKEN then.
+      # Until the PR merges, the next deploy from main goes back to yesterday's cards.
+      - name: Open coach-daily's PR
+        id: coach_pr
+        if: steps.coach_check.outcome == 'success'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.COACH_PR_TOKEN || github.token }}
+        run: |
+          set -e
+          today=$(date -u +%F)
+          branch="coach-daily-$today-$GITHUB_RUN_ID"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --quiet -c "$branch"
+          git add data/2026/fantasypros/latest.json
+          git commit --quiet -m "Coach: daily FantasyPros cards ($today)"
+          # Push with GH_TOKEN, not the checkout's persisted token, so a COACH_PR_TOKEN
+          # merge can trigger the push-deploy.
+          git -c http.https://github.com/.extraheader= push --quiet \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
+          url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
+            --title "Coach: daily FantasyPros cards ($today)" \
+            --body "Written by coach-daily in [this live-update run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID), voice-checked there. Data only: \`data/2026/fantasypros/latest.json\`.")
+          gh pr merge "$url" --auto --squash --delete-branch
+          # Older coach-daily PRs are superseded: the file is a rolling snapshot.
+          gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName \
+            --jq ".[] | select(.headRefName | startswith(\"coach-daily-\")) | select(.headRefName != \"$branch\") | .number" |
+            while read -r n; do gh pr close "$n" --repo "$GITHUB_REPOSITORY" --delete-branch; done
+          echo "Opened $url with auto-merge on."
 
       - name: Alert if the coach step failed
-        if: steps.coach_gate.outputs.run == 'true' && steps.coach.outcome == 'failure'
+        if: >-
+          steps.coach_gate.outputs.run == 'true' && (steps.coach_setup.outcome == 'failure'
+          || steps.coach_check.outcome == 'failure' || steps.coach_pr.outcome == 'failure')
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          body="The daily coach-daily step failed, so today's Coach cards weren't written (the site keeps yesterday's until they're 36 hours old, then shows ESPN-only cards). Check the run log for what broke.
+          body="The daily coach-daily step failed, so today's Coach cards weren't written or their PR wasn't opened. The site keeps yesterday's until they're 36 hours old, then shows ESPN-only cards. Check the run log for what broke.
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           existing=$(gh issue list --repo "${{ github.repository }}" --state open --search 'in:title "coach-daily failing"' --json number --jq '.[0].number // empty')
