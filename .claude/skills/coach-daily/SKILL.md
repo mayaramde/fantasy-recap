@@ -34,7 +34,7 @@ worktree right away: Step 5b's brief and Step 7's build both read them from ther
 
 ## Running in GitHub Actions
 
-`live-update.yml` runs this skill once a day (its "Coach cards (daily)" step), unattended. There,
+`live-update.yml` runs this skill once a day (its `coach` job), unattended. There,
 a few steps change; everything else above and below applies as written:
 
 - **Your job ends at a written, checked `data/2026/fantasypros/latest.json`.** It's the only

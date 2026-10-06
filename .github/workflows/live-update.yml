@@ -5,7 +5,7 @@ name: live-update
 # affects the live site merges to main (a published recap, a coach-daily snapshot, a
 # scripts/site/api change) — see the `push` trigger below.
 # Data only: capture, analyze, build, deploy. Nothing is committed, with one exception:
-# once a day (the COACH_CRON schedule below, or a manual run with coach_daily) the `coach`
+# once a day (the coach schedule below, or a manual run with coach_daily) the `coach`
 # job has Claude run the coach-daily skill on a fresh capture, and the `live` job opens an
 # auto-merging PR for the data/2026/fantasypros/latest.json it writes. This same run deploys
 # with those cards, so they're live before that PR merges. See the `coach` job below.
@@ -55,7 +55,7 @@ on:
     - cron: "7 17-23 25 12 *"   # Christmas Day (Dec 25) day games
     - cron: "7 0-5 26 12 *"     # ...and the Christmas night game's UTC spillover
     - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT), already off the hour
-    - cron: "13 10 * * *"       # COACH_CRON: daily Coach cards (6:13 AM EDT). Must match the
+    - cron: "13 10 * * *"       # daily Coach cards (6:13 AM EDT). Must match the
                                  # coach job's `if:` below exactly: that's how a run tells
                                  # it's the coach run.
   workflow_dispatch:
@@ -93,14 +93,13 @@ jobs:
     # Keep this cron string in step with the `schedule` list above.
     if: github.event.schedule == '13 10 * * *' || github.event.inputs.coach_daily == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55   # the Claude step's 40, plus captures, setup and the action's install
     permissions:
       contents: read
       pull-requests: read
     steps:
+      # Keeps the (read-only) token, so the skill can fetch yesterday's coach-daily branch.
       - uses: actions/checkout@v5
-        with:
-          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -320,15 +319,15 @@ jobs:
           gh pr merge "$url" --auto --squash --delete-branch
           echo "Opened $url with auto-merge on."
           # Older coach-daily PRs are superseded: the file is a rolling snapshot.
-          gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName \
-            --jq ".[] | select(.headRefName | startswith(\"coach-daily-\")) | select(.headRefName != \"$branch\") | .number" |
+          { gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number,headRefName \
+              --jq ".[] | select(.headRefName | startswith(\"coach-daily-\")) | select(.headRefName != \"$branch\") | .number" |
             while read -r n; do
               gh pr close "$n" --repo "$GITHUB_REPOSITORY" --delete-branch || echo "couldn't close #$n"
-            done
+            done; } || echo "couldn't list older coach-daily PRs to close"
 
       - name: Alert if the coach step failed
         if: >-
-          needs.coach.result == 'failure' || steps.coach_check.outcome == 'failure'
+          contains(fromJSON('["failure","cancelled"]'), needs.coach.result) || steps.coach_check.outcome == 'failure'
           || steps.coach_pr.outcome == 'failure'
         continue-on-error: true
         env:
