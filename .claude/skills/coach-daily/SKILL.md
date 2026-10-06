@@ -32,6 +32,26 @@ The live week's `data/2026/week-NN/` and `data/2026/next-week/` may be uncommitt
 exist only in the project folder's working tree. Copy them into the same paths inside the
 worktree right away: Step 5b's brief and Step 7's build both read them from there.
 
+## Running in GitHub Actions
+
+`live-update.yml` runs this skill once a day (its "Coach cards (daily)" step), unattended. There,
+a few steps change; everything else above and below applies as written:
+
+- **Step 1:** no worktree. The run's checkout is a fresh `main` that nobody else is using, and
+  the workflow has already captured the live week and next week and run `analyze.py`, so the
+  data is in place. Just `git checkout -b coach-daily-<YYYY-MM-DD>` and work there.
+- **Step 4:** if no FantasyPros tools are available (the repo has no `FANTASYPROS_MCP_URL` set),
+  take the `fantasy-data` fallback in `.claude/skills/fantasy-orchestrator/references/tools.md`:
+  empty `advice_cards` and `roster_ideas` for every team, but still write Step 5b's copy and the
+  season audit, and carry `trade_finder_disclosure_shown` over unchanged.
+- **Trade Finder's disclosure:** nobody reads this run's summary, so if it comes up, put it in
+  the PR body instead and set the flag as Step 4 says.
+- **Step 7:** `git push -u origin coach-daily-<date>`, then the PR steps as written (`gh` is
+  already authenticated). Skip the worktree cleanup, and don't deploy: the same workflow run
+  deploys right after this step with your snapshot in its checkout.
+- Never read or print environment variables or anything under `$RUNNER_TEMP`: the ESPN cookies
+  and Vercel token aren't given to this step, and the tokens that are stay out of the log.
+
 ## Step 2: read yesterday's snapshot
 
 Read `data/2026/fantasypros/latest.json` from the worktree (`origin/main`) before touching

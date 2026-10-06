@@ -4,11 +4,22 @@ name: live-update
 # Coach page's week-ahead tab with it. Also deploys promptly whenever something that
 # affects the live site merges to main (a published recap, a coach-daily snapshot, a
 # scripts/site/api change) — see the `push` trigger below.
-# Data only: capture, analyze, build, deploy. Nothing is committed.
+# Data only: capture, analyze, build, deploy. Nothing is committed, with one exception:
+# once a day (the COACH_CRON schedule below, or a manual run with coach_daily) Claude runs
+# the coach-daily skill on this run's fresh capture, which opens its own auto-merging PR
+# for data/2026/fantasypros/latest.json. This same run then deploys with those cards, so
+# the site doesn't wait on that PR. See "Coach cards (daily)" below.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
 #   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN
+#              CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`) or ANTHROPIC_API_KEY,
+#                for the daily coach step
+#              FANTASYPROS_MCP_TOKEN (optional) bearer token for the FantasyPros MCP server
+#              COACH_PR_TOKEN (optional) fine-grained PAT (contents + pull requests: write)
+#                for coach-daily's PR; see the coach step for when it's needed
 #   variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (from .vercel/project.json)
+#              FANTASYPROS_MCP_URL (optional) the FantasyPros MCP server's URL. Without it
+#                the coach step still runs, ESPN-only (no start/sit, waiver or trade ideas).
 # When the ESPN cookies expire the capture step fails with "ESPN 401" — this workflow
 # opens (or comments on) a GitHub issue when that happens, see "Alert on failure" below.
 
@@ -42,6 +53,9 @@ on:
     - cron: "7 17-23 25 12 *"   # Christmas Day (Dec 25) day games
     - cron: "7 0-5 26 12 *"     # ...and the Christmas night game's UTC spillover
     - cron: "30 11 * * *"       # daily morning catch-all (7:30 AM EDT), already off the hour
+    - cron: "13 10 * * *"       # COACH_CRON: daily Coach cards (6:13 AM EDT). Must match the
+                                 # `env.COACH_CRON` string below exactly, which is how a run
+                                 # tells it's the coach run.
   workflow_dispatch:
     inputs:
       simulate_failure:
@@ -52,19 +66,29 @@ on:
         description: "Deploy to a throwaway preview URL instead of the live site — for testing this workflow's deploy path by hand before trusting it on a real push"
         type: boolean
         default: false
+      coach_daily:
+        description: "Also run coach-daily (Claude writes today's Coach cards and opens their auto-merging PR), as the daily schedule does"
+        type: boolean
+        default: false
 
 concurrency:
   group: live-update
   cancel-in-progress: false
 
+# contents/pull-requests: write are for the daily coach step's branch and PR only.
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
   issues: write
+
+env:
+  COACH_CRON: "13 10 * * *"
 
 jobs:
   live:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 minutes for a normal run; the daily coach step adds up to 40 of its own.
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -106,17 +130,34 @@ jobs:
       # to main, which fires *because* something (often exactly that publish) just landed;
       # and a manual deploy_preview dispatch, which exists specifically to test this
       # workflow's deploy path and would otherwise silently no-op most weeks.
+      - name: Is this the daily coach run?
+        id: coach_gate
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          COACH_DAILY: ${{ github.event.inputs.coach_daily }}
+        run: |
+          if [ "$SCHEDULE" = "$COACH_CRON" ] || [ "$COACH_DAILY" = "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Skip if that week's recap is already published
         id: gate
         env:
           EVENT_NAME: ${{ github.event_name }}
           DEPLOY_PREVIEW: ${{ github.event.inputs.deploy_preview }}
+          COACH_RUN: ${{ steps.coach_gate.outputs.run }}
         run: |
           python3 - <<'PY'
           import json, os
           from pathlib import Path
           if os.environ["EVENT_NAME"] == "push" or os.environ.get("DEPLOY_PREVIEW") == "true":
               print("push to main, or a manual preview-deploy test: always deploy, never skip")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("skip=false\n")
+          elif os.environ.get("COACH_RUN") == "true":
+              print("daily coach run: always deploy, so today's cards go out with it")
               with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                   f.write("skip=false\n")
           else:
@@ -133,6 +174,73 @@ jobs:
         run: |
           python3 scripts/analyze.py
           python3 scripts/check.py
+
+      # coach-daily (.claude/skills/coach-daily) on this run's capture: Claude writes today's
+      # Coach cards, gets them past voice-check, and opens their auto-merging PR. Claude never
+      # sees the ESPN cookies or the Vercel token: they're only in the capture and deploy
+      # steps' env. Best effort, like the next-week capture: a failure here is reported on its
+      # own issue below and the run still deploys the live scores (with yesterday's cards).
+      #
+      # A PR opened with the default github.token doesn't trigger other workflows, so
+      # `checks` won't run on it. If main's branch protection requires that check, auto-merge
+      # waits forever: set COACH_PR_TOKEN then. The cards still deploy from this run either way.
+      - name: Set up coach-daily (MCP config, git identity)
+        if: steps.coach_gate.outputs.run == 'true'
+        env:
+          FANTASYPROS_MCP_URL: ${{ vars.FANTASYPROS_MCP_URL }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          url = os.environ.get("FANTASYPROS_MCP_URL", "")
+          servers = {}
+          if url:
+              # ${FANTASYPROS_MCP_TOKEN} is expanded by Claude Code at load time, so the
+              # token itself never lands in this file.
+              servers["fantasypros"] = {"type": "http", "url": url,
+                                        "headers": {"Authorization": "Bearer ${FANTASYPROS_MCP_TOKEN}"}}
+          else:
+              print("FANTASYPROS_MCP_URL is not set: coach-daily runs ESPN-only")
+          path = os.path.join(os.environ["RUNNER_TEMP"], "coach-mcp.json")
+          json.dump({"mcpServers": servers}, open(path, "w"))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Coach cards (daily)
+        id: coach
+        if: steps.coach_gate.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 40
+        uses: anthropics/claude-code-action@v1
+        env:
+          FANTASYPROS_MCP_TOKEN: ${{ secrets.FANTASYPROS_MCP_TOKEN }}
+          GH_TOKEN: ${{ secrets.COACH_PR_TOKEN || github.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.COACH_PR_TOKEN || github.token }}
+          prompt: |
+            Run the coach-daily skill (.claude/skills/coach-daily/SKILL.md) for today, unattended.
+            You are in the live-update GitHub Actions run, so follow the skill's
+            "Running in GitHub Actions" section. Finish with the skill's Output summary.
+          claude_args: >-
+            --mcp-config ${{ runner.temp }}/coach-mcp.json
+            --allowedTools "Read,Write,Edit,Glob,Grep,Agent,Skill,mcp__fantasypros__*,Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git fetch:*),Bash(git switch:*),Bash(git checkout -b:*),Bash(git add data/2026/fantasypros/latest.json),Bash(git commit:*),Bash(git push -u origin coach-daily-*),Bash(gh pr list:*),Bash(gh pr view:*),Bash(gh pr create:*),Bash(gh pr merge:*),Bash(gh pr close:*),Bash(python3 scripts/coach_brief.py:*),Bash(python3 site/build.py:*),Bash(python3 scripts/check.py:*),Bash(python3 -m unittest:*),Bash(date:*)"
+
+      - name: Alert if the coach step failed
+        if: steps.coach_gate.outputs.run == 'true' && steps.coach.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="The daily coach-daily step failed, so today's Coach cards weren't written (the site keeps yesterday's until they're 36 hours old, then shows ESPN-only cards). Check the run log for what broke.
+
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --repo "${{ github.repository }}" --state open --search 'in:title "coach-daily failing"' --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
+          else
+            gh issue create --repo "${{ github.repository }}" --title "coach-daily failing" --assignee "${{ github.repository_owner }}" --body "$body"
+          fi
 
       - name: Don't remove a published recap from the site
         if: steps.gate.outputs.skip != 'true'

@@ -7,7 +7,7 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
 ## Schedule
 
 - **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions) runs on two kinds of trigger:
-  - **Scheduled**: hourly during NFL game windows plus a daily 7:30 AM EDT run (see the workflow's own cron
+  - **Scheduled**: hourly during NFL game windows plus a daily 7:30 AM EDT run and the daily Coach run below (see the workflow's own cron
     comments for the exact holiday-window coverage). Captures the current week headlessly
     (`scripts/capture_node.mjs`, same `capture.js` trimming), then the week after it (`capture_node.mjs next`) for
     the Coach page, a step allowed to fail without taking the live scores down with it. Skips the rest of the run
@@ -24,10 +24,16 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
   there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging
   that PR is what triggers the push-deploy above.
-- **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
-  (start/sit, waiver and trade leads, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
-  and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
-  session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
+- **Daily Coach cards** run inside the cloud live update: its `COACH_CRON` schedule (6:13 AM EDT, best effort like
+  every GitHub cron), or a manual run with `coach_daily` ticked, adds a step after the captures and `analyze.py` where
+  Claude (`anthropics/claude-code-action`) runs `coach-daily` on that run's fresh data. It writes the Coach cards
+  (start/sit, waiver and trade leads, injury/news changes since yesterday, plus the written copy for the computed
+  cards and the season audit) to `data/2026/fantasypros/latest.json` and opens its own auto-merging PR; the same run
+  then deploys with that file, so the site doesn't wait on the merge. The step never sees the ESPN cookies or the
+  Vercel token, is allowed to fail without costing the live scores (it files a `coach-daily failing` issue instead),
+  and runs ESPN-only when the repo has no `FANTASYPROS_MCP_URL`. Needs the `CLAUDE_CODE_OAUTH_TOKEN` (or
+  `ANTHROPIC_API_KEY`) secret; the workflow's header lists the optional ones. It replaces the old Mac scheduled
+  task, which only ran when the Mac was awake.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
 ## Live page

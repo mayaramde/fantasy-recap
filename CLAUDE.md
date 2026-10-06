@@ -72,7 +72,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `data/<season>/next-week/`: the week-ahead capture behind the Coach page's "next week" tab (uncommitted)
-- `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
+- `data/<season>/fantasypros/latest.json`: the daily coach run's (`live-update.yml`) rolling snapshot of FantasyPros-sourced Coach
   cards and roster ideas (committed)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
