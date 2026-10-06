@@ -1,0 +1,79 @@
+{
+  "season": 2026,
+  "week": 4,
+  "status": "published",
+  "headline": "Maddie scores a monster 173.66, and the projections finally remember she's in this league",
+  "dek": "Kyra remains the league's only unbeaten team, surviving Marlee by just 5.74 points. Amie's 69.98-point win over Tara was less a win than a mercy rule. Samantha lost both her starting receivers to injury in the same week.",
+  "matchups": {
+    "1-6": "Marlee's night came down to one flex spot: Michael Wilson scored 16.5 on her bench while David Montgomery managed 4.3 in her lineup, a 12.2-point gap bigger than Kyra's 5.74-point margin. That's friendly fire, not bad luck. Kyra stays unbeaten at 4-0, the last one standing.",
+    "2-4": "Amie won by 69.98, the week's biggest margin, despite starting Cam Skattebo's 7.6 over Kyle Monangai's 28 on her bench. Tara's week was rougher: Saquon Barkley managed just 2 points while playing through a hamstring injury, and a league-high 50.6 points sat unused behind him.",
+    "3-8": "Maddie put up the week's best score, 173.66, for her first win of the season, better late than never. Nico Collins beat his projection by 15.5, Zay Flowers by 10.3, and Chuba Hubbard chipped in 25.9 of his own. Cambri took the loss and stays 0-4.",
+    "5-7": "Maya won by 41.56, powered by Tetairoa McMillan's 45.2 points out of the flex spot on a 15.85 projection, the best number anyone put up all week. Samantha's afternoon went sideways early: Ja'Marr Chase left in the concussion protocol and Rashee Rice left with a hamstring injury, and neither finished the game."
+  },
+  "game_balls": [
+    {
+      "manager": "Maddie",
+      "title": "First win's a big one",
+      "text": "Maddie's 173.66 was the best score anyone put up this week, by a wide margin. Nico Collins beat his projection by 15.5 points, Zay Flowers by 10.3, and Chuba Hubbard added 25.9 of his own. The math owed her one, and it paid out all at once.",
+      "stat": "173.66 pts, best of her season"
+    },
+    {
+      "manager": "Maya",
+      "title": "The flex spot heist",
+      "text": "Tetairoa McMillan was projected for 15.85 points out of Maya's flex spot and delivered 45.2, the single best number in the league this week. Nobody saw this one coming, least of all the projections.",
+      "stat": "45.2 pts, flex"
+    },
+    {
+      "manager": "Kyra",
+      "title": "Immaculate, as usual",
+      "text": "Kyra moved to 4-0, the league's last unbeaten team, while leaving only 2.6 points on her bench, the tightest roster of anyone this week. Winning ugly is still winning.",
+      "stat": "4-0, 2.6 pts benched"
+    },
+    {
+      "manager": "Amie",
+      "title": "Lamb to the slaughter",
+      "text": "CeeDee Lamb caught his way to 41.3 points on a 16.9 projection, the second-best number anyone put up this week, as Amie rolled to the week's biggest win.",
+      "stat": "41.3 pts, WR"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Tara",
+      "title": "The deepest bench in the league",
+      "text": "Tara left more unplayed points on her bench than anyone this week, 50.6 by the optimal-lineup math. Rhamondre Stevenson (18.4) outscored both of her starting running backs, and Deebo Samuel (18) outscored one of her two starting receivers. That's a flex-worthy roster sitting in street clothes.",
+      "stat": "50.6 pts benched"
+    },
+    {
+      "manager": "Cambri",
+      "title": "Two quarterbacks, wrong one",
+      "text": "Cambri started Bo Nix for 13.56 while Drake Maye was good for 26.16 on her bench, a 12.6-point gap at the one position where you only get to pick one. Still 0-4, and for once that's not on the matchups. It's a quarterback controversy of her own making.",
+      "stat": "12.6 pts benched at QB"
+    },
+    {
+      "manager": "Maya",
+      "title": "The recap writer's own blind spot",
+      "text": "Maya started Josh Downs (4.6) over Mike Evans (12.6), an 8-point gap in a game she won by 41.56 anyway.",
+      "stat": "-8.0 pts at WR"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Samantha",
+      "title": "Both starting receivers, same week",
+      "text": "Ja'Marr Chase left the game early and entered the NFL's concussion protocol. Rashee Rice left separately with a hamstring injury. Neither finished, and Samantha's lineup never recovered.",
+      "stat": "5.7 combined, two starters"
+    },
+    {
+      "manager": "Tara",
+      "title": "Playing through it",
+      "text": "Saquon Barkley is dealing with a hamstring injury and is considered week-to-week. He carried for 2 points against a 14.32 projection, and Tara's night never got going from there.",
+      "stat": "2 pts on 14.32 proj"
+    }
+  ],
+  "glossary": [
+    { "term": "Wide receiver (WR)", "definition": "The pass-catchers running routes downfield for yards and touchdowns, like CeeDee Lamb's 41.3 points this week. Production can swing hard week to week, so one huge game never guarantees the next." },
+    { "term": "Concussion protocol", "definition": "The NFL's mandatory, no-shortcuts process for clearing a player to return after a head injury. Ja'Marr Chase went into it mid-game this week and didn't come back." },
+    { "term": "Free agent", "definition": "An unrostered player anyone can add right away, no waiting period or bidding required, unlike the waiver wire. Maddie grabbed Bryce Young this way back in Week 3, and he's quietly been one of her best decisions since." },
+    { "term": "Target", "definition": "A pass thrown a receiver's way, caught or not. More targets usually means more points, which is the whole case for CeeDee Lamb's 41.3 this week." }
+  ]
+}
