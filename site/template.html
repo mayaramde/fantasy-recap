@@ -416,6 +416,57 @@
   .heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 8px; font-size: 12px; color: var(--muted); }
   .heat-legend .ramp { width: 120px; height: 10px; border-radius: 5px; border: 1px solid var(--rule); background: linear-gradient(90deg, color-mix(in srgb, var(--heat-hi) 6%, var(--card)), color-mix(in srgb, var(--heat-hi) 48%, var(--card))); }
 
+  /* ---------- playoff picture ---------- */
+  .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  /* the playoff line: a dashed cobalt rule under the last seed in, labeled once */
+  table.std tr.po-cut td { border-bottom: 2px dashed var(--accent); }
+  table.std tr.po-line td { padding: 6px 0 10px; border-bottom: 1px solid var(--rule); }
+  .po-line-tag { display: inline-block; font: 600 12px/1 var(--script); color: var(--accent-ink); background: var(--accent-soft); border: 1.5px dashed var(--accent); border-radius: 999px; padding: 4px 10px; }
+  .bye-tag { display: inline-block; margin-left: 7px; vertical-align: 1px; font: 600 11px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px; transform: rotate(-4deg); }
+
+  .bracket { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+  .br-col { display: flex; flex-direction: column; justify-content: space-around; gap: 14px; min-width: 0; }
+  .br-col h3 { font: 600 12.5px/1 var(--script); letter-spacing: 0.02em; color: var(--muted); text-transform: uppercase; }
+  .br-game { background: var(--card); border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; }
+  .br-team { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+  .br-team a { text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .br-team a:hover { color: var(--accent); text-decoration: underline; }
+  .br-team.fav { font-weight: 800; }
+  .br-seed { min-width: 24px; height: 24px; padding: 0 5px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--board); color: var(--on-board); font: 800 13px/1 var(--display); }
+  .br-check { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--lime); color: var(--on-pop); border: 1.5px solid var(--edge); font: 700 12px/1 var(--body); }
+  .br-odds { display: grid; gap: 4px; padding-top: 6px; border-top: 1px dashed var(--rule); font: 500 12px/1.2 var(--mono); color: var(--muted); }
+  .br-champ { background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px; padding: 12px 14px; display: grid; gap: 6px; justify-items: start; }
+  .br-champ .badge-tilt { font: 600 12px/1 var(--script); background: var(--card); color: var(--ink); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 9px; }
+  .br-champ-name { font: 800 30px/1 var(--display); color: var(--on-pop); }
+  .br-champ-name a { color: var(--on-pop); text-decoration: none; }
+  .br-champ-name a:hover { text-decoration: underline; }
+  .br-champ .sub { font-size: 13px; font-weight: 600; }
+  @media (max-width: 760px) { .bracket { grid-template-columns: 1fr; } }
+  /* phones: the team name already links to her profile, so the team-name line goes to buy room for the numbers */
+  @media (max-width: 520px) { table.std.po-odds .tname { display: none; } .po-make { min-width: 110px; } }
+
+  /* a share bar: cobalt fill on a soft track, the number always printed beside it */
+  .po-bar { display: block; height: 10px; border-radius: 999px; background: var(--accent-soft); border: 1.5px solid var(--edge); overflow: hidden; }
+  .po-bar > span { display: block; height: 100%; background: var(--accent); }
+  .br-odds .po-bar { height: 8px; }
+  .po-make { display: grid; grid-template-columns: minmax(60px, 1fr) auto; align-items: center; gap: 4px 8px; min-width: 150px; }
+  .po-make .num { font-size: 13px; text-align: right; }
+  .po-label { grid-column: 1 / -1; justify-self: start; font: 600 11px/1 var(--script); color: var(--ink); background: var(--card); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px; }
+  .po-label.lock, .po-label.bye, .po-label.in { background: var(--lime); color: var(--on-pop); }
+  .po-label.comfy { background: var(--accent-soft); }
+  .po-label.bubble { background: var(--orange-soft); }
+  .po-label.long { background: var(--pink-soft); }
+  .po-label.near-out, .po-label.out { color: var(--muted); }
+  .po-trend { white-space: nowrap; }
+  .po-trend.down { color: var(--muted); }
+  /* the heat map's playoff line runs down between two seed columns */
+  .po-heat td.cell { min-width: 52px; }
+  .po-heat .po-sep { width: 6px; padding: 0; border-bottom-color: transparent;
+    background: repeating-linear-gradient(to bottom, var(--accent) 0 6px, transparent 6px 11px) center / 2px 100% no-repeat; }
+  .po-note { background: var(--card); border: 2px dashed var(--edge); border-radius: 14px; padding: 12px 16px; font-size: 14px; max-width: 70ch; }
+  .po-note p { margin: 0; }
+  .po-note p + p { margin-top: 6px; }
+
   .leaders { list-style: none; margin: 0; padding: 0; display: grid; }
   .leaders li { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 2px dashed var(--rule); }
   .leaders .mug { grid-row: 1 / span 2; grid-column: 1; align-self: center; position: relative; width: 46px; height: 46px; }
@@ -732,6 +783,12 @@
 
   function standingsTable(rows, { compact } = {}) {
     const full = !compact;
+    // The playoff line and bye stickers read league.json's format through the playoff odds;
+    // no odds, no line.
+    const cfg = full && SEASON.playoffs ? SEASON.playoffs.config : null;
+    const cut = cfg && rows.length > cfg.teams ? cfg.teams : 0;
+    const byes = cfg ? cfg.byes : 0;
+    const cols = full ? 8 : 4;
     return `
       <div class="table-scroll"><table class="std">
         <thead><tr>
@@ -741,16 +798,124 @@
           ${full ? '<th class="r" title="Total points opponents scored">Allowed</th><th class="r" title="Record if this team played every other team every week">Vs. everyone</th><th class="r" title="Season total of points left on the bench">Benched</th>' : ''}
         </tr></thead>
         <tbody>${rows.map((t, i) => `
-          <tr>
+          <tr${i + 1 === cut ? ' class="po-cut"' : ''}>
             <td class="rank">${i + 1}</td>
-            <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
+            <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a>${i < byes ? '<span class="bye-tag" title="A top seed sits out Round 1">Bye</span>' : ''}<span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
             <td class="r">${record(t)}</td>
             ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
             <td class="r">${f2(t.points_for)}</td>
             ${full ? `<td class="r">${f2(t.points_against)}</td><td class="r">${t.all_play_w}–${t.all_play_l}</td><td class="r">${f2(t.bench_left)}</td>` : ''}
-          </tr>`).join('')}
+          </tr>${i + 1 === cut ? `
+          <tr class="po-line"><td colspan="${cols}"><span class="po-line-tag">Playoff line · the top ${cut} advance</span></td></tr>` : ''}`).join('')}
         </tbody>
       </table></div>`;
+  }
+
+  /* ---------- playoff picture ---------- */
+  // Shares print as whole percents. The ends say <1% and >99%, because a simulation that never
+  // saw something happen hasn't proved it can't; only a finished regular season gets 0% and 100%.
+  const pct = (p, exact = false) => {
+    if (exact && (p === 0 || p === 1)) return `${p * 100}%`;
+    if (p < 0.005) return '<1%';
+    if (p >= 0.995) return '>99%';
+    return `${Math.round(p * 100)}%`;
+  };
+  const PO_LABEL = { 'Near lock': 'lock', 'Bye race': 'bye', Comfortable: 'comfy', Bubble: 'bubble',
+    'Long shot': 'long', 'Near out': 'near-out', In: 'in', Out: 'out' };
+  const nameOf = (id) => (TEAMS[id] ? TEAMS[id].manager : `Team ${id}`);
+  const poBar = (p, label) => `<span class="po-bar" role="img" aria-label="${esc(label)}"><span style="width:${(p * 100).toFixed(1)}%"></span></span>`;
+  const trendCell = (d) => {
+    if (d == null) return '<span title="No earlier week to compare with">–</span>';
+    const pts = Math.round(d * 1000) / 10;
+    if (Math.abs(pts) < 0.5) return '<span title="Within half a point of last week">even</span>';
+    const up = pts > 0;
+    return `<span class="po-trend ${up ? 'up' : 'down'}"><span aria-hidden="true">${up ? '▲' : '▼'}</span> ${f1(Math.abs(pts))}<span class="sr"> points ${up ? 'up' : 'down'} since last week</span></span>`;
+  };
+
+  function bracketGame(g) {
+    const fav = g.teams.find((x) => x.team_id === g.favorite);
+    const team = (x) => `
+          <div class="br-team${x.team_id === g.favorite ? ' fav' : ''}"><span class="br-seed" aria-label="Seed ${x.seed}">${x.seed}</span><a href="#team-${x.team_id}">${esc(nameOf(x.team_id))}</a>${
+            x.team_id === g.favorite ? '<span class="br-check" aria-hidden="true">✓</span><span class="sr">projected winner</span>' : '<span></span>'}</div>`;
+    return `
+        <div class="br-game">${g.teams.map(team).join('')}
+          <div class="br-odds">${poBar(g.win_prob, `${nameOf(fav.team_id)} wins this game ${pct(g.win_prob)} of the time`)}<span>${pct(g.win_prob)} ${esc(nameOf(fav.team_id))}</span></div>
+        </div>`;
+  }
+
+  function playoffPicture() {
+    const P = SEASON.playoffs;
+    if (!P || !P.teams || !P.teams.length) return '';
+    const cfg = P.config;
+    const n = P.teams.length;
+    const cut = Math.min(cfg.teams, n);
+    const done = P.games_left === 0;
+    const B = P.bracket;
+    const byId = Object.fromEntries(P.teams.map((t) => [t.team_id, t]));
+    const champ = B ? byId[B.champion] : null;
+    const shade = (p) => (p > 0 ? `background: color-mix(in srgb, var(--heat-hi) ${(6 + p * 50).toFixed(0)}%, var(--card))` : '');
+    const seeds = Array.from({ length: n }, (_, k) => k + 1);
+    const sims = Number(P.sims).toLocaleString('en-US');
+    const tiebreak = cfg.tiebreaker === 'points_for' ? 'whoever has scored more points' : esc(cfg.tiebreaker.replace(/_/g, ' '));
+
+    return `
+      ${B ? `
+      <section>
+        ${secHead('ball', 'Playoff picture')}
+        <p class="sec-sub">The chalk bracket, meaning every favorite wins, built from each team's projected seed. The percent is how often the favorite wins that one game.</p>
+        <div class="bracket" role="group" aria-label="Projected playoff bracket">
+          <div class="br-col"><h3>Round 1 · Week ${cfg.first_round_week}</h3>${[B.round1[1], B.round1[0]].map(bracketGame).join('')}</div>
+          <div class="br-col"><h3>Semifinals</h3>${B.semis.map(bracketGame).join('')}</div>
+          <div class="br-col"><h3>Final</h3>${bracketGame(B.final)}
+            <div class="br-champ"><span class="badge-tilt">Projected champ</span><span class="br-champ-name"><a href="#team-${B.champion}">${esc(nameOf(B.champion))}</a></span><span class="sub">Wins it all in ${pct(champ.title)} of simulated seasons</span></div>
+          </div>
+        </div>
+      </section>` : ''}
+
+      <section>
+        ${secHead('board', 'Playoff odds')}
+        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. Title odds still have games to go.' : `How often each team makes it, earns a bye (a week off while seeds 3 to ${cut} play Round 1), and wins the title, across ${sims} simulated seasons.`}</p>
+        <div class="std-card table-scroll">
+          <table class="std po-odds" aria-label="Playoff odds by team">
+            <thead><tr><th title="Projected seed">Seed</th><th>Team</th><th>Makes it</th><th class="r">Bye</th><th class="r">Title</th><th class="r" title="Expected final regular-season record">Proj. record</th><th class="r" title="Change in playoff odds since last week, in percentage points">Vs. last week</th></tr></thead>
+            <tbody>${P.teams.map((t) => `
+              <tr${t.proj_seed === cut && cut < n ? ' class="po-cut"' : ''}>
+                <td class="rank">${t.proj_seed}</td>
+                <td class="mgr"><a href="#team-${t.team_id}">${esc(nameOf(t.team_id))}</a><span class="tname">${esc((TEAMS[t.team_id] || {}).team_name || '')}</span></td>
+                <td><div class="po-make">${poBar(t.playoff, `${nameOf(t.team_id)} makes the playoffs ${pct(t.playoff, done)} of the time`)}<span class="num">${pct(t.playoff, done)}</span><span class="po-label ${PO_LABEL[t.label] || ''}">${esc(t.label)}</span></div></td>
+                <td class="r">${pct(t.bye, done)}</td>
+                <td class="r">${pct(t.title)}</td>
+                <td class="r">${f1(t.proj_wins)}–${f1(t.proj_losses)}</td>
+                <td class="r">${trendCell(t.trend)}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        ${secHead('book', 'Where everyone lands')}
+        <p class="sec-sub">Each row is a team, each column a final seed. Darker blue means she finishes there more often. Seeds left of the dashed line make the playoffs.</p>
+        <div class="std-card table-scroll">
+          <table class="std heat po-heat" aria-label="Share of simulated seasons each team finishes at each seed">
+            <thead><tr><th>Team</th>${seeds.map((k) => `<th style="text-align:center">${k}</th>${k === cut && cut < n ? '<th class="po-sep" aria-hidden="true"></th>' : ''}`).join('')}</tr></thead>
+            <tbody>${P.teams.map((t) => `
+              <tr>
+                <td class="mgr"><a href="#team-${t.team_id}">${esc(nameOf(t.team_id))}</a></td>
+                ${t.seed_dist.map((p, k) => `<td class="cell" style="${shade(p)}" title="${esc(nameOf(t.team_id))}: seed ${k + 1} in ${pct(p, done)} of simulations">${p > 0 ? pct(p, done) : ''}</td>${k + 1 === cut && cut < n ? '<td class="po-sep" aria-hidden="true"></td>' : ''}`).join('')}
+              </tr>`).join('')}
+            </tbody>
+          </table>
+          <div class="heat-legend"><span>Never</span><span class="ramp" aria-hidden="true"></span><span>Often</span></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="po-note">
+          <p><b>How this works.</b> We played out the rest of the season ${sims} times. Each team's weekly score is drawn from her scoring so far, nudged toward the league average because a few weeks is a tiny sample. ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random each week, since the real schedule isn\'t loaded yet.'} Ties in the standings go to ${tiebreak}.</p>
+          <p>Assumed format: the top ${cfg.teams} make the playoffs, the top ${cfg.byes} get a bye, Round 1 is Week ${cfg.first_round_week}, and the bracket ${cfg.reseed ? 'reseeds after each round' : 'stays put, no reseeding'}. Treat it like a weather forecast: great for planning, terrible for trash talk.</p>
+        </div>
+      </section>`;
   }
 
   /* "Ja'Marr Chase 🐯 Q ● Q3 7:22": on a live week the name carries his NFL team logo,
@@ -1186,6 +1351,8 @@
         <div class="std-card">${standingsTable(rows)}</div>
         <p class="sec-sub" style="margin-top:12px"><b>Vs. everyone</b> is the record a team would have if it played all seven other teams every week, so it shows who has been scoring well no matter who they drew. <b>Benched</b> is the season total of points left on the bench.</p>
       </section>
+
+      ${playoffPicture()}
 
       ${weeks.length ? `
       <section>
