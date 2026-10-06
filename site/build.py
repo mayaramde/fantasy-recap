@@ -1179,8 +1179,10 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
             live["next"] = next_payload(ahead, previous, fp=fp)
 
     season = season_payload([f for f, _ in included], weeks)
-    season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE,
-                                        load_schedule(LEAGUE["season"]))
+    # The schedule file belongs to the season being built (`--season`), which the facts carry;
+    # league.json's season is only the default.
+    year = next((f["season"] for f, _ in included if f.get("season")), LEAGUE["season"])
+    season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, load_schedule(year))
     # Team profiles: the audit reads only this output's included weeks (a draft week never
     # reaches the league site); moves read every captured week, same as the Live page does.
     profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
