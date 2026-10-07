@@ -4,6 +4,22 @@ When the site's automated pieces run, and what the Live and Coach pages compute 
 daily skill authors for them. Reference for a human reading the codebase; the skills in
 `.claude/skills/` own *how* each job is done.
 
+## League rules
+
+ESPN's league settings, mirrored in `league.json` (the source of truth; edit it, not the code, if a rule changes):
+
+- **Regular season**: Weeks 1-14, one week per matchup, no matchup tiebreaker (a tie stands and counts as half
+  a win in the standings), no home-field advantage, no bonus wins.
+- **Playoffs** (`playoffs`): top 4, **no byes**. Seeds 1v4 and 2v3 play Week 15; the championship is the two
+  teams' combined points over Weeks 16 and 17 (`championship_weeks: 2`). Seeding ties go to total points for;
+  no reseeding; no playoff home-field advantage; everyone else plays a consolation ladder. `site/playoffs.py`
+  simulates and draws exactly this bracket. It derives byes from the field size (a power-of-two field has
+  none), so the Standings page's Bye column and stickers can't disagree with the bracket.
+- **Transactions** (`transactions`): lineups lock per player at his game's kickoff (the Coach page's "locked"),
+  waivers with no season limit, a 1-day waiver period, waiver order reset each week to inverse standings, and
+  eliminated teams are not locked out of moves during the playoffs. Nothing computes waiver priority yet;
+  these are recorded so copy and Coach cards don't contradict them.
+
 ## Schedule
 
 - **Cloud live update** (`.github/workflows/live-update.yml`, GitHub Actions) runs on two kinds of trigger:

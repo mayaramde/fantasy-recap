@@ -22,11 +22,20 @@ _CACHE = {}
 
 
 def _config(league):
+    """league.json's "playoffs" block. Byes aren't read from it: the bracket gives them to the top seeds
+    whenever the field isn't a power of two, so the count follows from the field size and the page can't
+    disagree with the bracket it draws."""
     p = league.get("playoffs") or {}
-    return {"teams": int(p.get("teams", 6)), "byes": int(p.get("byes", 2)),
+    teams = max(2, int(p.get("teams", 4)))
+    size = 1
+    while size < teams:
+        size *= 2
+    return {"teams": teams, "byes": size - teams,
             "regular_season_weeks": int(p.get("regular_season_weeks", 14)),
             "first_round_week": int(p.get("first_round_week", p.get("regular_season_weeks", 14) + 1)),
-            "tiebreaker": p.get("tiebreaker", "points_for"), "reseed": bool(p.get("reseed", False))}
+            "championship_weeks": max(1, int(p.get("championship_weeks", 1))),
+            "tiebreaker": p.get("tiebreaker", "points_for"), "reseed": bool(p.get("reseed", False)),
+            "consolation_ladder": bool(p.get("consolation_ladder", False))}
 
 
 def _teams(standings, last_week):
@@ -99,21 +108,34 @@ def _bracket_order(size):
     return order
 
 
-def _play_bracket(n, reseed, game):
-    """Single elimination over seeds 1..n, byes to the top seeds; game(seed, seed) returns the winner.
+def _play_bracket(n, reseed, game, championship_weeks=1):
+    """Single elimination over seeds 1..n, byes to the top seeds when n isn't a power of two;
+    game(seed, seed, weeks) returns the winner. Every round is one week except the final, which is
+    the total over `championship_weeks`. Returns (champion seed, [[(a, b, weeks, winner), ...] per round]).
 
-    For six teams that is exactly the league's bracket: 3v6 and 4v5, then 1 v the 4/5 winner and
-    2 v the 3/6 winner, then the final."""
+    Four teams, the league's format: 1v4 and 2v3, then the final. Six would be 3v6 and 4v5, then
+    1 v the 4/5 winner and 2 v the 3/6 winner, then the final."""
     size = 1
     while size < n:
         size *= 2
     slots = [s if s <= n else None for s in _bracket_order(size)]
+    rounds = []
     while len(slots) > 1:
-        slots = [a if b is None else b if a is None else game(a, b) for a, b in zip(slots[::2], slots[1::2])]
+        weeks = championship_weeks if len(slots) == 2 else 1
+        games, nxt = [], []
+        for a, b in zip(slots[::2], slots[1::2]):
+            if a is None or b is None:
+                nxt.append(b if a is None else a)
+                continue
+            w = game(a, b, weeks)
+            games.append((a, b, weeks, w))
+            nxt.append(w)
+        rounds.append(games)
+        slots = nxt
         if reseed and len(slots) > 1:
             ranked = sorted(slots)
             slots = [ranked[s - 1] for s in _bracket_order(len(ranked))]
-    return slots[0]
+    return slots[0], rounds
 
 
 def _random_pairs(ids, rng):
@@ -169,11 +191,14 @@ def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed):
             if rank < cfg["byes"]:
                 bye[i] += 1
 
-        def game(sa, sb):
+        def game(sa, sb, weeks):
             a, b = order[sa - 1], order[sb - 1]
-            return sa if gauss(mu[a], sigma) >= gauss(mu[b], sigma) else sb
+            pa = sum(gauss(mu[a], sigma) for _ in range(weeks))
+            pb = sum(gauss(mu[b], sigma) for _ in range(weeks))
+            return sa if pa >= pb else sb
 
-        title[order[_play_bracket(n_po, cfg["reseed"], game) - 1]] += 1
+        champ, _ = _play_bracket(n_po, cfg["reseed"], game, cfg["championship_weeks"])
+        title[order[champ - 1]] += 1
 
     return {"mu": mu, "sigma": sigma, "remaining": remaining,
             "teams": {i: {"playoff": playoff[i] / n_sims, "bye": bye[i] / n_sims, "title": title[i] / n_sims,
@@ -209,22 +234,28 @@ def win_prob(mu_a, mu_b, sigma):
     return 0.5 * (1 + math.erf((mu_a - mu_b) / (sigma * 2)))
 
 
-def _projected_bracket(ranked, mu, sigma):
+def _projected_bracket(ranked, cfg, mu, sigma):
     """The chalk bracket from projected seeds: each game names its favorite and her win probability,
-    and the favorite advances."""
-    def game(sa, sb):
-        a, b = ranked[sa - 1], ranked[sb - 1]
-        p = win_prob(mu[a], mu[b], sigma)
-        fav, p = (sa, p) if p >= 0.5 else (sb, 1 - p)
-        return {"teams": [{"seed": s, "team_id": ranked[s - 1]} for s in (sa, sb)],
-                "favorite": ranked[fav - 1], "win_prob": round(p, 3), "_seed": fav}
+    and the favorite advances. `rounds` runs first round to final, each with its first NFL week and
+    how many weeks it spans (the final can be a multi-week total)."""
+    probs = {}
 
-    round1 = [game(3, 6), game(4, 5)]
-    semis = [game(1, round1[1]["_seed"]), game(2, round1[0]["_seed"])]
-    final = game(semis[0]["_seed"], semis[1]["_seed"])
-    for g in round1 + semis + [final]:
-        del g["_seed"]
-    return {"round1": round1, "semis": semis, "final": final, "champion": final["favorite"]}
+    def game(sa, sb, weeks):
+        a, b = ranked[sa - 1], ranked[sb - 1]
+        p = win_prob(weeks * mu[a], weeks * mu[b], sigma * math.sqrt(weeks))
+        fav, p = (sa, p) if p >= 0.5 else (sb, 1 - p)
+        probs[(sa, sb)] = p
+        return fav
+
+    champ, played = _play_bracket(min(cfg["teams"], len(ranked)), cfg["reseed"], game, cfg["championship_weeks"])
+    rounds, week = [], cfg["first_round_week"]
+    for games in played:
+        weeks = games[0][2]
+        rounds.append({"week": week, "weeks": weeks, "games": [
+            {"teams": [{"seed": s, "team_id": ranked[s - 1]} for s in (a, b)],
+             "favorite": ranked[w - 1], "win_prob": round(probs[(a, b)], 3)} for a, b, _, w in games]})
+        week += weeks
+    return {"rounds": rounds, "final": rounds[-1]["games"][0], "champion": ranked[champ - 1]}
 
 
 def build(standings, weeks_played, league, schedule=None, n_sims=8000):
@@ -269,8 +300,8 @@ def _build(teams, weeks_played, cfg, sched, n_sims, key):
         rows.append(row)
 
     bracket = None
-    if cfg["teams"] == 6 and cfg["byes"] == 2 and len(ranked) >= 6:
-        bracket = _projected_bracket(ranked, now["mu"], now["sigma"])
+    if min(cfg["teams"], len(ranked)) >= 2:
+        bracket = _projected_bracket(ranked, cfg, now["mu"], now["sigma"])
 
     return {"config": cfg, "sims": n_sims, "sigma": round(now["sigma"], 2), "games_left": games_left,
             "real_schedule": all(w in sched for w in now["remaining"]),
