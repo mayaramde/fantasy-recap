@@ -23,6 +23,7 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import playoffs
 import team_profile
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -1144,6 +1145,21 @@ def load_player_names():
     return names if isinstance(names, dict) else {}
 
 
+def load_schedule(season):
+    """data/<season>/schedule.json, {"<week>": [[team_id, team_id], ...]}, as {week: [(a, b), ...]} for the
+    playoff odds. Optional: a missing or malformed file returns {}, and the odds draw random opponents."""
+    try:
+        raw = json.loads((ROOT / "data" / str(season) / "schedule.json").read_text())
+        out = {}
+        for week, pairs in raw.items():
+            if not all(isinstance(p, list) and len(p) == 2 and all(type(t) is int for t in p) for p in pairs):
+                return {}
+            out[int(week)] = [tuple(p) for p in pairs]
+        return out
+    except (OSError, ValueError, TypeError, AttributeError, RecursionError):
+        return {}
+
+
 def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     """(data, weeks): everything the page's RECAP_DATA blob carries, and the week payloads
     (live included) render() hands back to its callers."""
@@ -1163,6 +1179,10 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
             live["next"] = next_payload(ahead, previous, fp=fp)
 
     season = season_payload([f for f, _ in included], weeks)
+    # The schedule file belongs to the season being built (`--season`), which the facts carry;
+    # league.json's season is only the default.
+    year = next((f["season"] for f, _ in included if f.get("season")), LEAGUE["season"])
+    season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, load_schedule(year))
     # Team profiles: the audit reads only this output's included weeks (a draft week never
     # reaches the league site); moves read every captured week, same as the Live page does.
     profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
