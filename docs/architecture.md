@@ -75,6 +75,23 @@ daily skill authors for them. Reference for a human reading the codebase; the sk
   jokes are ours, and no card reports news no source gave us. A week nobody has played has no stat line, so its
   cards are the blurb and the notes; with no projections published yet, nothing quotes one.
 
+## Standings page
+
+`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, Points by week and
+the luck report.
+
+- **Playoff odds** (`site/playoffs.py`, baked at build time into `season.playoffs`; `/api/live` never touches them):
+  the rest of the regular season and the bracket, simulated 8,000 times from each team's recapped scores. The format
+  comes from `league.json`'s `playoffs` block. Opponents follow `data/<season>/schedule.json` when it pairs every team
+  for a week, and are random otherwise; the page's "How this works" note says which.
+- Only regular-season weeks count toward seeding, so a recapped playoff game never moves a seed, a Bye sticker or the
+  playoff line.
+- The RNG is seeded from a sha256 of the inputs, so the same weeks always give the same numbers, and the result is
+  memoized because `render()` runs twice per build.
+- Labels come from the odds alone (Near lock, Bye race, Comfortable, Bubble, Long shot, Near out), and In/Out only once
+  no regular-season games are left. A simulation proves nothing mathematically, so no label ever claims a clinch.
+- The section is skipped without odds; the projected bracket only renders for 6 teams with 2 byes.
+
 ## Team profile
 
 `#team-<id>`: header and season tiles, this week's to-dos and lineup (the Coach page section above), the
