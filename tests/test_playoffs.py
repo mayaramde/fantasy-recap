@@ -7,7 +7,8 @@ and three weeks of this rotation give a table checkable by eye:
     3-0: team 1 (456 pts), team 5 (336)   2-1: team 2 (426), team 6 (306)
     1-2: team 3 (396), team 7 (276)       0-3: team 4 (366), team 8 (246)
 
-so seeds 1-6 are teams 1, 5, 2, 6, 3, 7, and teams 4 and 8 are out.
+so seeds 1-8 are teams 1, 5, 2, 6, 3, 7, 4, 8. The league's format (top four, no byes, a two-week
+final) puts teams 1, 5, 2 and 6 in; the six-team, two-bye variant still covers byes.
 """
 import copy
 import sys
@@ -25,8 +26,8 @@ PAIRINGS = {
     3: [(1, 4), (2, 3), (5, 8), (6, 7)],
 }
 TABLE = [1, 5, 2, 6, 3, 7, 4, 8]
-LEAGUE = {"playoffs": {"teams": 6, "byes": 2, "regular_season_weeks": 14, "first_round_week": 15,
-                       "tiebreaker": "points_for", "reseed": False}}
+LEAGUE = {"playoffs": {"teams": 4, "byes": 0, "regular_season_weeks": 14, "first_round_week": 15,
+                       "championship_weeks": 2, "tiebreaker": "points_for", "reseed": False}}
 SIMS = 2000
 
 
@@ -68,10 +69,15 @@ class OddsTest(unittest.TestCase):
         cls.r = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, n_sims=SIMS)
 
     def test_playoff_odds_sum_to_slots(self):
-        self.assertAlmostEqual(sum(t["playoff"] for t in self.r["teams"]), 6, places=3)
+        self.assertAlmostEqual(sum(t["playoff"] for t in self.r["teams"]), 4, places=3)
 
-    def test_bye_odds_sum_to_two(self):
-        self.assertAlmostEqual(sum(t["bye"] for t in self.r["teams"]), 2, places=3)
+    def test_no_byes(self):
+        self.assertEqual(sum(t["bye"] for t in self.r["teams"]), 0)
+        self.assertNotIn("Bye race", [t["label"] for t in self.r["teams"]])
+
+    def test_config_reads_the_league_format(self):
+        cfg = self.r["config"]
+        self.assertEqual((cfg["teams"], cfg["byes"], cfg["championship_weeks"]), (4, 0, 2))
 
     def test_title_odds_sum_to_one(self):
         self.assertAlmostEqual(sum(t["title"] for t in self.r["teams"]), 1, places=3)
@@ -89,8 +95,8 @@ class OddsTest(unittest.TestCase):
         self.assertEqual(self.r["teams"][0]["team_id"], 1)
         self.assertEqual([t["proj_seed"] for t in self.r["teams"]], list(range(1, 9)))
 
-    def test_now_cut_is_current_top_six(self):
-        self.assertEqual(self.r["now_cut"], TABLE[:6])
+    def test_now_cut_is_current_top_four(self):
+        self.assertEqual(self.r["now_cut"], TABLE[:4])
         self.assertEqual(self.r["games_left"], 11)
         self.assertFalse(self.r["real_schedule"])
 
@@ -109,6 +115,7 @@ class OddsTest(unittest.TestCase):
 
 
 class BracketTest(unittest.TestCase):
+    """The league's bracket: 1v4 and 2v3 in Week 15, then a final totaled over Weeks 16 and 17."""
     @classmethod
     def setUpClass(cls):
         cls.r = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, n_sims=SIMS)
@@ -120,26 +127,61 @@ class BracketTest(unittest.TestCase):
     def winner_seed(self, game):
         return next(t["seed"] for t in game["teams"] if t["team_id"] == game["favorite"])
 
-    def test_round_one_is_three_v_six_and_four_v_five(self):
-        self.assertEqual([self.seeds(g) for g in self.b["round1"]], [[3, 6], [4, 5]])
+    def test_semis_are_one_v_four_and_two_v_three_in_week_fifteen(self):
+        semis = self.b["rounds"][0]
+        self.assertEqual(len(self.b["rounds"]), 2)
+        self.assertEqual((semis["week"], semis["weeks"]), (15, 1))
+        self.assertEqual([self.seeds(g) for g in semis["games"]], [[1, 4], [2, 3]])
 
-    def test_top_two_seeds_skip_round_one_and_meet_the_right_winners(self):
-        r1_36, r1_45 = self.b["round1"]
-        self.assertEqual(self.seeds(self.b["semis"][0]), [1, self.winner_seed(r1_45)])
-        self.assertEqual(self.seeds(self.b["semis"][1]), [2, self.winner_seed(r1_36)])
-
-    def test_favorites_advance_to_the_final_and_title(self):
-        self.assertEqual([t["team_id"] for t in self.b["final"]["teams"]],
-                         [g["favorite"] for g in self.b["semis"]])
+    def test_final_spans_weeks_sixteen_and_seventeen(self):
+        final = self.b["rounds"][-1]
+        self.assertEqual((final["week"], final["weeks"]), (16, 2))
+        self.assertEqual(final["games"], [self.b["final"]])
+        self.assertEqual(self.seeds(self.b["final"]), [self.winner_seed(g) for g in self.b["rounds"][0]["games"]])
         self.assertEqual(self.b["champion"], self.b["final"]["favorite"])
+
+    def test_two_week_final_is_more_decisive_than_one(self):
+        one = po.build(standings([1, 2, 3]), [1, 2, 3], league(championship_weeks=1), n_sims=SIMS)["bracket"]
+        self.assertEqual(one["rounds"][-1]["weeks"], 1)
+        self.assertGreater(self.b["final"]["win_prob"], one["final"]["win_prob"])
 
     def test_teams_follow_projected_seeds(self):
         seed_of = {t["team_id"]: t["proj_seed"] for t in self.r["teams"]}
-        for g in self.b["round1"] + self.b["semis"] + [self.b["final"]]:
-            for t in g["teams"]:
-                self.assertEqual(seed_of[t["team_id"]], t["seed"])
-            self.assertGreaterEqual(g["win_prob"], 0.5)
-            self.assertLessEqual(g["win_prob"], 1)
+        for rnd in self.b["rounds"]:
+            for g in rnd["games"]:
+                for t in g["teams"]:
+                    self.assertEqual(seed_of[t["team_id"]], t["seed"])
+                self.assertGreaterEqual(g["win_prob"], 0.5)
+                self.assertLessEqual(g["win_prob"], 1)
+
+
+class SixTeamBracketTest(unittest.TestCase):
+    """A six-team, two-bye field still works, so a format change is a league.json edit."""
+    @classmethod
+    def setUpClass(cls):
+        cls.r = po.build(standings([1, 2, 3]), [1, 2, 3], league(teams=6, byes=2, championship_weeks=1), n_sims=SIMS)
+        cls.b = cls.r["bracket"]
+
+    def seeds(self, game):
+        return [t["seed"] for t in game["teams"]]
+
+    def winner_seed(self, game):
+        return next(t["seed"] for t in game["teams"] if t["team_id"] == game["favorite"])
+
+    def test_round_one_is_four_v_five_and_three_v_six(self):
+        self.assertEqual([self.seeds(g) for g in self.b["rounds"][0]["games"]], [[4, 5], [3, 6]])
+        self.assertEqual([r["week"] for r in self.b["rounds"]], [15, 16, 17])
+
+    def test_top_two_seeds_skip_round_one_and_meet_the_right_winners(self):
+        r1_45, r1_36 = self.b["rounds"][0]["games"]
+        semis = self.b["rounds"][1]["games"]
+        self.assertEqual(self.seeds(semis[0]), [1, self.winner_seed(r1_45)])
+        self.assertEqual(self.seeds(semis[1]), [2, self.winner_seed(r1_36)])
+
+    def test_odds_sum_to_slots(self):
+        self.assertAlmostEqual(sum(t["playoff"] for t in self.r["teams"]), 6, places=3)
+        self.assertAlmostEqual(sum(t["bye"] for t in self.r["teams"]), 2, places=3)
+        self.assertAlmostEqual(sum(t["title"] for t in self.r["teams"]), 1, places=3)
 
 
 class WinProbTest(unittest.TestCase):
@@ -160,12 +202,12 @@ class EdgeCaseTest(unittest.TestCase):
         self.assertEqual(r["games_left"], 0)
         for rank, tid in enumerate(TABLE):
             t = teams[tid]
-            self.assertEqual(t["playoff"], 1.0 if rank < 6 else 0.0)
-            self.assertEqual(t["bye"], 1.0 if rank < 2 else 0.0)
+            self.assertEqual(t["playoff"], 1.0 if rank < 4 else 0.0)
+            self.assertEqual(t["bye"], 0.0)
             self.assertEqual(t["seed_dist"], [1.0 if k == rank else 0.0 for k in range(8)])
             self.assertEqual(t["proj_seed"], rank + 1)
-            self.assertEqual(t["label"], "In" if rank < 6 else "Out")
-        self.assertEqual(sum(t["title"] for t in r["teams"] if t["team_id"] in (4, 8)), 0)
+            self.assertEqual(t["label"], "In" if rank < 4 else "Out")
+        self.assertEqual(sum(t["title"] for t in r["teams"] if t["team_id"] in TABLE[4:]), 0)
 
     def test_playoff_weeks_do_not_count_toward_seeding(self):
         # Week 3 played as if it were a playoff week: the table must be the 2-week one.
@@ -186,7 +228,7 @@ class EdgeCaseTest(unittest.TestCase):
         for bad in ([(1, 99), (3, 4), (5, 6), (7, 8)], [(1, 2), (3, 4)], [(1, 1), (3, 4), (5, 6), (7, 8)]):
             r = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, schedule={**good, 9: bad}, n_sims=200)
             self.assertFalse(r["real_schedule"])
-            self.assertAlmostEqual(sum(t["playoff"] for t in r["teams"]), 6, places=3)
+            self.assertAlmostEqual(sum(t["playoff"] for t in r["teams"]), 4, places=3)
 
     def test_string_week_keys_are_accepted(self):
         sched = {str(w): PAIRINGS[(w - 1) % 3 + 1] for w in range(4, 15)}
@@ -195,12 +237,15 @@ class EdgeCaseTest(unittest.TestCase):
     def test_no_weeks_played_returns_none(self):
         self.assertIsNone(po.build(standings([]), [], LEAGUE))
 
-    def test_four_team_config(self):
-        r = po.build(standings([1, 2, 3]), [1, 2, 3], league(teams=4, byes=0), n_sims=SIMS)
-        self.assertIsNone(r["bracket"])
-        self.assertAlmostEqual(sum(t["playoff"] for t in r["teams"]), 4, places=3)
-        self.assertAlmostEqual(sum(t["title"] for t in r["teams"]), 1, places=3)
-        self.assertEqual(sum(t["bye"] for t in r["teams"]), 0)
+    def test_missing_config_defaults_to_the_league_format(self):
+        cfg = po._config({})
+        self.assertEqual((cfg["teams"], cfg["byes"], cfg["championship_weeks"]), (4, 0, 1))
+        self.assertEqual(po._config({"playoffs": {"championship_weeks": 0}})["championship_weeks"], 1)
+
+    def test_byes_follow_the_field_size(self):
+        self.assertEqual(po._config({"playoffs": {"teams": 4, "byes": 2}})["byes"], 0)
+        self.assertEqual(po._config({"playoffs": {"teams": 6, "byes": 0}})["byes"], 2)
+        self.assertEqual(po._config({"playoffs": {"teams": 0}})["teams"], 2)
 
     def test_week_one_has_no_trend(self):
         r = po.build(standings([1]), [1], LEAGUE, n_sims=500)
@@ -209,6 +254,7 @@ class EdgeCaseTest(unittest.TestCase):
     def test_labels_come_from_odds(self):
         label = po._label
         self.assertEqual(label({"playoff": 0.996, "bye": 0.9}, 5, True), "Near lock")
+        self.assertEqual(label({"playoff": 0.97, "bye": 0.0}, 5, True), "Comfortable")
         self.assertEqual(label({"playoff": 0.97, "bye": 0.6}, 5, True), "Bye race")
         self.assertEqual(label({"playoff": 0.85, "bye": 0.1}, 5, True), "Comfortable")
         self.assertEqual(label({"playoff": 0.5, "bye": 0.0}, 5, False), "Bubble")
