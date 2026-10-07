@@ -27,7 +27,8 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
     comments for the exact holiday-window coverage). Captures the current week headlessly
     (`scripts/capture_node.mjs`, same `capture.js` trimming), then the week after it (`capture_node.mjs next`) for
     the Coach page, a step allowed to fail without taking the live scores down with it. Skips the rest of the run
-    once that week's recap is already published — nothing left to show live.
+    once that week's recap is already published — nothing left to show live. Before the build it also fetches
+    ESPN's public headlines for the Week hub (`scripts/fetch_news.py`), another step allowed to fail.
   - **Push to `main`**, scoped to the paths that affect the site (`recaps/`, `data/`, `site/`, `scripts/`, `api/`,
     `league.json`, `vercel.json`): deploys within minutes of a merge, and — unlike the scheduled trigger — never
     skips, since it fires because something (often a just-published recap or a coach-daily snapshot) needs to go
@@ -55,6 +56,51 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   a player whose game is on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime").
 - Each matchup card counts, per side, "2 playing now" (a starter whose game is on) and "1 starter yet to play"
   (kickoff still ahead), or "all starters done" when neither is left.
+
+## Week hub ("This week")
+
+What the Live tab shows when nothing is on the field (`landingPage` in `site/template.html`): before the week's
+first kickoff, and again once every game is final and the recap isn't out yet.
+
+- **Before kickoff**: a season strip, up to four stickers, then one card per matchup beside Coach's desk and
+  the projections ranked. The reader's own game sorts first when the browser remembers her team (picked on
+  Coach); otherwise the game with the most at stake leads.
+- **Where each piece comes from.** Everything a lineup change can move is drawn in the browser from the live
+  games and Coach rows, so it refreshes with `/api/live` and can't disagree with the projected scores beside it:
+  the split bar, the **edge strip** (per lineup spot, who leads and by how many projected points, RB and WR
+  summing both starters), the ranked projections, the stickers and **Coach's desk** (every team's "do this now"
+  swaps, byes, outs and empty slots, biggest projected gain first; a swap card carries its `gain` as a number
+  for this).
+- **League wire** (`wire()` in `site/build.py`, part of `live_payload`, so `/api/live` refreshes it too): the
+  last seven days of ESPN's transaction log from the live capture and the ones before it. Pickups and drops,
+  lineup changes (with the players promoted off the bench, counted once each per day) and trades. ESPN records that a trade went
+  through but not who was in it (the record's players are empty and its team id isn't reliably one of the two),
+  so the players are read off the rosters: on a different league team than in the previous capture, with no
+  pickup on record, in both directions between the same two teams, dated by the league's go-ahead. No trade
+  record, no trade. Known limit: if a traded player is dropped again before the next capture, the rosters can no
+  longer prove the trade and the wire leaves it out rather than guess. Declined offers are never shown. A log in
+  a shape nobody expected costs the page its wire, never the build or `/api/live`. The browser rolls a manager's day into one line, groups by the reader's local day, and caps
+  the feed at 12 lines with trades first.
+- **Stakes** (`stakes()` in `site/playoffs.py`, baked by `hub_payload` into `live.hub.stakes`; `/api/live` never
+  touches them): one more simulation of the rest of the season with this week's real pairings, read twice per
+  team, once over the seasons where she won this week's game and once where she lost. Every other game is left
+  to chance, so the two numbers sit either side of her Standings odds, give or take a point (it's a separate run
+  of the same model, with the same optional `schedule.json`). Only for the next unplayed
+  regular-season week (an unrecapped earlier week, or a playoff week, means no stakes), and a side with under
+  100 simulated seasons behind it reports nothing. Games are ranked by the two teams' swings added together.
+- **ESPN on your rosters** (`live.hub.news`, baked): `scripts/fetch_news.py` runs in the live-update workflow
+  before the build and writes `data/<season>/news/latest.json`, never committed. It keeps an article only if it
+  tags four or fewer players, at least one on a league roster, and nothing in the headline or description reads
+  as off-field. The build re-matches each article against the live rosters, shows the newest six as a headline
+  linking out to ESPN (the link must be `https://www.espn.com/...`), and ignores a file over 36 hours old. Since
+  it only refreshes on a deploy, midweek headlines are up to a day old. Off switch: the repo variable
+  `NEWS_ENABLED=false` skips the fetch.
+- **After the last game**: the final scores and stickers as before, plus the wire and the headlines. No
+  stakes, edge strip or Coach's desk for a week nobody can change.
+- A module with nothing to show is left out, never drawn empty.
+- `tests/hub_preview.py <dir>` renders both states from committed data for a look in a browser. A normal build
+  of committed data has no live week, so a Vercel branch preview never shows this page; review it with
+  `scripts/deploy.sh --preview` from a checkout that has a live capture.
 
 ## Coach page
 

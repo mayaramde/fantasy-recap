@@ -87,7 +87,7 @@ def check_team_profiles(errors):
     """Every team on both builds has a profile, and every audit card is fully formed."""
     sys.path.insert(0, str(ROOT / "site"))
     import build  # noqa: E402  (site/build.py; imported late so a broken build fails here, not at import)
-    recap_weeks, captured, ahead, fp = build.load_inputs(build.LEAGUE["season"])
+    recap_weeks, captured, ahead, fp, _news = build.load_inputs(build.LEAGUE["season"])
     for preview in (False, True):
         data, _ = build.site_data(recap_weeks, captured, preview=preview, ahead=ahead, fp=fp)
         for s in data["season"]["standings"]:

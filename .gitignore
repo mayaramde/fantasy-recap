@@ -5,6 +5,9 @@ data/**/raw/
 # throwaway. It is recaptured on every live update and is stale the moment the week
 # starts, so it never belongs in a commit.
 data/*/next-week/
+# ESPN headlines for the Week hub (scripts/fetch_news.py): refetched on every live update and
+# ignored by the build once it's 36 hours old, so it never belongs in a commit either.
+data/*/news/
 .DS_Store
 __pycache__/
 site/dist/

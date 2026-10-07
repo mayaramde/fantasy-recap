@@ -36,7 +36,7 @@ AUDIT_KEYS = ("key", "kind", "stat", "title", "text")
 
 
 def brief(season):
-    recap_weeks, captured, ahead, _ = build.load_inputs(season)
+    recap_weeks, captured, ahead, _, _ = build.load_inputs(season)
     # The league site's view (published recaps only), since that's the page managers read.
     data, weeks = build.site_data(recap_weeks, captured, preview=False, ahead=ahead, fp=None)
     # The season audit exists all season, live week or not.

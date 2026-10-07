@@ -705,7 +705,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         items.append({"kind": "swap", "level": "now",
                       "key": _key("swap", s["player_id"], s["slot"], b["player_id"], b.get("injury_status")),
                       "title": f"Start {b['name']} over {s['name']}",
-                      "stat": f"+{_f1(gain)} projected",
+                      "stat": f"+{_f1(gain)} projected", "gain": gain,
                       "text": (f"ESPN projects {b['name']} for {_f1(_proj(b))} points and {s['name']} for "
                                f"{_f1(_proj(s))}. Both can play {s['slot']}, so that's {_f1(gain)} points of "
                                f"difference for one tap"
@@ -1037,12 +1037,158 @@ def next_payload(capture, previous, fp=None):
             "teams": rows}
 
 
-def live_payload(facts, espn, previous=None, fp=None):
+# ---------- week hub: the league wire ----------
+WIRE_DAYS = 7
+TRADE_DONE = ("TRADE_ACCEPT", "TRADE_UPHOLD")
+
+
+def _when(iso):
+    return datetime.fromisoformat(iso.replace("Z", "+00:00"))
+
+
+def _rosters(capture):
+    """{player_id: (team_id, name)} for everyone on a league roster in one capture."""
+    return {p["player_id"]: (m[s]["team_id"], p["name"])
+            for m in capture.get("matchups") or [] for s in ("home", "away") for p in m[s]["lineup"]}
+
+
+def _trades(capture, before):
+    """Trades executed during `capture`'s week, as [(date, {team_id: [names she received]})].
+
+    ESPN's log says a trade went through (TRADE_UPHOLD) but leaves the players empty, and the team
+    on that record isn't reliably one of the two who traded. So who moved is read off the rosters
+    instead: a player on a different league team than in the capture before, with no pickup on record
+    to explain it, was traded. No trade record in the log, no trade here, however the rosters look.
+    """
+    txs = capture["transactions"]
+    done = sorted(t["date"] for t in txs if t["type"] in TRADE_DONE)
+    if not done:
+        return []
+    # The league's go-ahead (UPHOLD) is when the players actually moved; the accept can be days earlier.
+    upheld = [t["date"] for t in txs if t["type"] == "TRADE_UPHOLD"]
+    when = max(upheld) if upheld else done[-1]
+    out = []
+    for t in txs:      # the well-formed case, if ESPN ever sends it: the players are on the record
+        got = {}
+        for i in t["items"] if t["type"] == "TRADE_ACCEPT" else ():
+            if i["type"] == "TRADE" and i.get("to_team_id"):
+                got.setdefault(i["to_team_id"], []).append(i["name"])
+        if len(got) == 2:
+            out.append((t["date"], got))
+    if out or not before:
+        return out
+    picked_up = {(i["player_id"], i["to_team_id"]) for t in txs for i in t["items"] if i["type"] == "ADD"}
+    was, pairs = _rosters(before), {}
+    for pid, (team, name) in _rosters(capture).items():
+        if pid in was and was[pid][0] != team and (pid, team) not in picked_up:
+            pairs.setdefault(frozenset((team, was[pid][0])), {}).setdefault(team, []).append(name)
+    # A trade moves players both ways; anything one-directional is something else, so it's left out.
+    return [(when, got) for _, got in sorted(pairs.items(), key=lambda kv: sorted(kv[0])) if len(got) == 2]
+
+
+def wire(espn, history=()):
+    """The league's last week of roster activity, newest first, for the Week hub.
+
+    Three kinds of event, each one read off ESPN's transaction log: "move" (a pickup and/or a drop),
+    "trade", and "lineup" (somebody rearranged her starters; `promoted` is the player ids she moved off
+    the bench, which can be none). Declined trade offers are deliberately not here: they're private between two managers.
+    The page groups these by day in the reader's own time zone, so that's left to the browser.
+    """
+    manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
+    cutoff = _when(espn["captured_at"]) - timedelta(days=WIRE_DAYS)
+    captures = sorted([h for h in history if h["week"] < espn["week"]], key=lambda c: c["week"]) + [espn]
+    events = []
+    for before, cap in zip([None] + captures, captures):
+        for t in cap["transactions"]:
+            if _when(t["date"]) < cutoff or t["team_id"] not in manager:
+                continue
+            base = {"date": t["date"], "team_id": t["team_id"], "manager": manager[t["team_id"]]}
+            added = [i["name"] for i in t["items"] if i["type"] == "ADD" and i["to_team_id"] == t["team_id"]]
+            dropped = [i["name"] for i in t["items"] if i["type"] == "DROP"]
+            lineup = [i for i in t["items"] if i["type"] == "LINEUP"]
+            if (added or dropped) and not t["type"].startswith("TRADE"):
+                events.append({**base, "kind": "move", "added": added, "dropped": dropped,
+                               "waiver": t["type"] == "WAIVER"})
+            elif lineup:
+                events.append({**base, "kind": "lineup", "promoted": sorted(
+                    i["player_id"] for i in lineup if i.get("from_slot") in ("BENCH", "IR")
+                    and i.get("to_slot") not in ("BENCH", "IR"))})
+        for date, got in _trades(cap, before):
+            a, b = sorted(got)
+            if _when(date) >= cutoff and a in manager and b in manager:
+                events.append({"date": date, "kind": "trade", "team_id": a, "manager": manager[a],
+                               "with_id": b, "with": manager[b], "added": got[a], "dropped": got[b]})
+    events.sort(key=lambda e: e["date"], reverse=True)
+    return events
+
+
+# ---------- week hub: ESPN headlines about players on a league roster ----------
+NEWS_MAX_AGE = timedelta(hours=36)
+NEWS_SHOWN = 6
+_ESPN_LINK = re.compile(r"https://www\.espn\.com/[^\s\"'<>]+")
+
+
+def load_news(season):
+    """scripts/fetch_news.py's file, as a list of articles. Best effort like the FantasyPros snapshot:
+    missing, malformed or more than 36 hours old is just [], and the page goes without the module."""
+    try:
+        data = json.loads((ROOT / "data" / str(season) / "news" / "latest.json").read_text())
+        fetched = datetime.fromisoformat(data["fetched_at"].replace("Z", "+00:00"))
+        if datetime.now(timezone.utc) - fetched > NEWS_MAX_AGE:
+            return []
+        return [a for a in data["articles"] if isinstance(a, dict)]
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return []
+
+
+def news_items(articles, espn):
+    """The newest few headlines, each tagged with whose roster it touches right now. Only the headline
+    and a link out to ESPN ever reach the page; an article about nobody on a roster is dropped."""
+    manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
+    rosters = _rosters(espn)
+    out = []
+    for a in articles:
+        try:
+            ids = [i for i in a["athlete_ids"] if i in rosters]
+            owners = sorted({rosters[i][0] for i in ids if rosters[i][0] in manager})
+            if not owners or not isinstance(a["headline"], str) or not _ESPN_LINK.fullmatch(a["link"]):
+                continue
+            _when(a["published"])
+            out.append({"headline": a["headline"][:200], "link": a["link"], "published": a["published"],
+                        "owners": [{"team_id": t, "manager": manager[t]} for t in owners],
+                        "players": sorted({rosters[i][1] for i in ids})})
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    out.sort(key=lambda n: n["published"], reverse=True)
+    return out[:NEWS_SHOWN]
+
+
+def hub_payload(live, season, espn, news, schedule=None):
+    """What the Week hub needs that /api/live can't recompute: the stakes (they need the season's
+    standings) and the headlines (a file only the build has). Baked here and left alone by a live
+    refresh, like the week-ahead tab. Everything else on the hub is drawn from the live games and
+    Coach rows in the browser, so it can never disagree with a refreshed projection."""
+    hub = {}
+    if not live["complete"] and not live["kicked_off"]:
+        pairs = [tuple(int(x) for x in g["key"].split("-")) for g in live["games"]]
+        stakes = playoffs.stakes(season["standings"], season["weeks_played"], LEAGUE, live["week"], pairs,
+                                 schedule=schedule)
+        if stakes:
+            hub["stakes"] = stakes
+    items = news_items(news or [], espn)
+    if items:
+        hub["news"] = items
+    return hub
+
+
+def live_payload(facts, espn, previous=None, fp=None, history=None):
     """The in-progress (or final but not yet recapped) week: data only, no commentary.
 
     `previous` is the capture before this one, used only to tell a new injury
     designation from one that was already there last week. `fp` is today's FantasyPros
     snapshot (see load_fantasypros); passed straight through to advice_payload.
+    `history` is every earlier capture, for the league wire (see wire()); without it the
+    wire reads this week and `previous`.
     """
     w = week_payload(facts, {"status": "live"}, live=True)
     manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
@@ -1076,7 +1222,13 @@ def live_payload(facts, espn, previous=None, fp=None):
             apply_written([extra], written_cards(row["team_id"], fp, facts["week"])[0])
             row["items"] = [extra] + row["items"]
             row["counts"]["info"] += 1
-    w.update(live=True, captured_at=espn["captured_at"], moves=moves, kicked_off=kicked_off, advice=advice)
+    # The wire is decoration next to the scores: a transaction in a shape nobody expected must
+    # cost the page its wire, never the build or a /api/live response.
+    try:
+        feed = wire(espn, history if history is not None else [previous] if previous else [])
+    except (KeyError, TypeError, ValueError, AttributeError):
+        feed = []
+    w.update(live=True, captured_at=espn["captured_at"], moves=moves, kicked_off=kicked_off, advice=advice, wire=feed)
     return w
 
 
@@ -1160,7 +1312,7 @@ def load_schedule(season):
         return {}
 
 
-def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
+def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
     """(data, weeks): everything the page's RECAP_DATA blob carries, and the week payloads
     (live included) render() hands back to its callers."""
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
@@ -1172,7 +1324,7 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     if pending:
         facts, espn = pending[-1]
         previous = next((e for f, e in reversed(captured) if f["week"] < facts["week"]), None)
-        live = live_payload(facts, espn, previous, fp=fp)
+        live = live_payload(facts, espn, previous, fp=fp, history=[e for f, e in captured if f["week"] < facts["week"]])
         # The week-ahead capture is only good for the week after the live one. A stale
         # one (captured before this week started) is dropped rather than shown as next.
         if ahead and ahead["week"] == facts["week"] + 1:
@@ -1182,7 +1334,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     # The schedule file belongs to the season being built (`--season`), which the facts carry;
     # league.json's season is only the default.
     year = next((f["season"] for f, _ in included if f.get("season")), LEAGUE["season"])
-    season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, load_schedule(year))
+    schedule = load_schedule(year)
+    season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, schedule)
     # Team profiles: the audit reads only this output's included weeks (a draft week never
     # reaches the league site); moves read every captured week, same as the Live page does.
     profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
@@ -1192,6 +1345,7 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
         s["profile"] = {"audit": apply_written(p["cards"], written_audit(s["team_id"], fp)),
                         "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured, names)}
     if live:
+        live["hub"] = hub_payload(live, season, pending[-1][1], news, schedule)
         weak = {s["team_id"]: s["profile"]["weak_spot"] for s in season["standings"]}
         for rows in (live["advice"], (live.get("next") or {}).get("teams") or []):
             for row in rows:
@@ -1208,8 +1362,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None):
     return data, weeks + ([live] if live else [])
 
 
-def render(recap_weeks, captured, preview, ahead=None, fp=None):
-    data, weeks = site_data(recap_weeks, captured, preview, ahead=ahead, fp=fp)
+def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
+    data, weeks = site_data(recap_weeks, captured, preview, ahead=ahead, fp=fp, news=news)
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     title = "Fantasy Football for the Girls (Preview)" if preview else "Fantasy Football for the Girls"
     template = (SITE / "template.html").read_text()
@@ -1243,7 +1397,7 @@ def standalone(html, description="Weekly recaps, live scores and standings for o
 
 
 def load_inputs(season):
-    """(recap_weeks, captured, ahead, fp): everything render() reads from disk."""
+    """(recap_weeks, captured, ahead, fp, news): everything render() reads from disk."""
     recap_weeks = []
     for recap_path in sorted((ROOT / "recaps" / str(season)).glob("week-*.json")):
         recap = json.loads(recap_path.read_text())
@@ -1268,18 +1422,18 @@ def load_inputs(season):
 
     # Today's FantasyPros snapshot, if fantasy-coach-daily has written one. Optional by
     # design, same as `ahead`: missing, malformed or stale just means ESPN-only advice.
-    return recap_weeks, captured, ahead, load_fantasypros(season)
+    return recap_weeks, captured, ahead, load_fantasypros(season), load_news(season)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--season", type=int, default=LEAGUE["season"])
     args = ap.parse_args()
-    recap_weeks, captured, ahead, fp = load_inputs(args.season)
+    recap_weeks, captured, ahead, fp, news = load_inputs(args.season)
 
     dist = SITE / "dist"
     dist.mkdir(exist_ok=True)
-    html, weeks = render(recap_weeks, captured, preview=False, ahead=ahead, fp=fp)
+    html, weeks = render(recap_weeks, captured, preview=False, ahead=ahead, fp=fp, news=news)
     (dist / "index.html").write_text(html)
     # Standalone site for Vercel: league content only (never the preview), not indexed by search engines
     web = dist / "web"
@@ -1289,7 +1443,7 @@ def main():
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
           + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
-    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead, fp=fp)
+    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead, fp=fp, news=news)
     (dist / "preview.html").write_text(html)
     # The same preview as a standalone page, for `scripts/deploy.sh --preview` (a real
     # URL to review a draft on a phone). preview.html itself is the artifact build, which

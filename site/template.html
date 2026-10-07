@@ -110,7 +110,7 @@
 
   /* the sticker: every raised surface shares one outline + hard offset shadow */
   a.game, .card, .lineup, .std-card, .tile, .coach-card, .decided li, .other-games a, .versus,
-  .matchup-lite, .story, .final-lines {
+  .story, .final-lines {
     border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -213,34 +213,9 @@
   a.game:hover .open { text-decoration: underline; }
 
   /* ---------- landing page: compact matchup cards ---------- */
-  .games-lite { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 14px; }
-  .matchup-lite { background: var(--card); padding: 0; display: grid; align-content: start; align-self: start; overflow: hidden; }
-  .ml-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px; padding: 11px 16px; }
-  .ml-row + .ml-row { border-top: 2px dashed var(--rule); }
-  .ml-name { display: flex; align-items: center; gap: 8px; font: 800 19px/1.1 var(--display); min-width: 0; }
-  .ml-name a { text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ml-name a:hover { text-decoration: underline; }
-  .ml-num { font: 700 20px/1 var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
-  .ml-num small { display: block; margin-top: 3px; font: 500 10px/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
   .ml-w { flex: none; font: 700 10.5px/1 var(--mono); padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--edge); background: var(--lime); color: var(--on-pop); transform: rotate(-4deg); }
   /* Pre-kickoff card: each side is its own <details>, the score row is the toggle, and that
      side's lineup opens directly underneath it. Cobalt for the first side, bubblegum for the second. */
-  .ml-team + .ml-team { border-top: 2px solid var(--edge); }
-  .ml-team > summary { cursor: pointer; list-style: none; }
-  .ml-team > summary::-webkit-details-marker { display: none; }
-  .ml-team > summary .ml-name::before { content: "▶"; flex: none; font-size: 9px; color: var(--accent-ink); }
-  .ml-team[open] > summary .ml-name::before { content: "▼"; }
-  .ml-team.tone-a > summary { background: var(--accent-soft); }
-  .ml-team.tone-b > summary { background: var(--pink-soft); }
-  .ml-team.tone-b > summary .ml-name::before { color: var(--ink); }
-  .ml-team > summary:hover .ml-name a { text-decoration: underline; }
-  .ml-num .ml-pill { display: inline-block; padding: 4px 9px; border-radius: 9px; border: 2px solid var(--edge); background: var(--orange); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); font: 700 18px/1 var(--mono); }
-  .ml-team .ml-num small { margin-top: 5px; }
-  .ml-roster-table { width: calc(100% - 32px); margin: 8px 16px 12px; border-collapse: collapse; font-size: 13px; }
-  .ml-roster-table td { padding: 5px 0; border-top: 1px solid var(--rule); }
-  .ml-roster-table tr:first-child td { border-top: none; }
-  .ml-roster-table td.slot { width: 48px; }
-  .ml-roster-table td.r { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
   .slot-chip { display: inline-block; min-width: 34px; padding: 3px 0; border-radius: 6px; border: 1.5px solid var(--edge); text-align: center; font: 600 10.5px/1 var(--mono); background: var(--card); color: var(--ink); }
   .slot-chip.s-QB { background: var(--pink); color: var(--on-pop); }
   .slot-chip.s-RB { background: var(--lime); color: var(--on-pop); }
@@ -261,6 +236,115 @@
   .story.lime { box-shadow: 4px 4px 0 var(--lime); } .story.lime .tag { background: var(--lime); }
   .story.pink { box-shadow: 4px 4px 0 var(--pink); } .story.pink .tag { background: var(--pink); }
   .story.accent { box-shadow: 4px 4px 0 var(--accent); } .story.accent .tag { background: var(--accent-soft); color: var(--ink); }
+  /* ---------- week hub (the landing page before kickoff) ----------
+     One column on a phone; from 860px the matchups take the wide column and Coach's desk and the
+     ranked projections sit beside them. Side A of every game is cobalt, side B is pink, and nothing
+     relies on the color alone: every cell and bar says who and how much in text. */
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .hub-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 28px; }
+  .hub-head .page-head { flex: 1 1 340px; }
+  .season-strip { flex: 1 1 300px; max-width: 460px; display: grid; gap: 7px; margin-bottom: 8px; }
+  .season-strip .lab { display: flex; justify-content: space-between; gap: 10px; font: 500 11.5px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .season-strip .weeks { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; }
+  .season-strip .weeks span { height: 24px; border: 2px solid var(--edge); border-radius: 6px; background: var(--card); font: 500 10px/20px var(--mono); text-align: center; color: var(--muted); }
+  .season-strip .weeks .done { background: var(--board); color: var(--on-board); }
+  .season-strip .weeks .now { background: var(--orange); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); transform: translateY(-3px); }
+  .season-strip .weeks .po { background: var(--pink-soft); color: var(--ink); }
+  .hub-grid { display: grid; gap: 28px; margin-top: 30px; align-items: start; }
+  .hub-grid > * { min-width: 0; }
+  .hub-side { display: grid; gap: 26px; }
+  .hub-wire { display: grid; gap: 28px; align-items: start; }
+  .hub-wire > * { min-width: 0; }
+  @media (min-width: 860px) {
+    .hub-grid { grid-template-columns: minmax(0, 1.75fr) minmax(280px, 1fr); }
+    .hub-wire { grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr); }
+  }
+  .hub-game, .hub-panel, .hub-news a { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); }
+  .hub-game { overflow: hidden; }
+  .hub-game + .hub-game { margin-top: 18px; }
+  .hub-tag { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px; border-bottom: 2px solid var(--edge); font: 600 12px/1.2 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .hub-tag.mine { background: var(--lime-soft); }
+  .hub-tag.swing { background: var(--pink-soft); }
+  .hub-pill { font: 600 11px/1 var(--script); padding: 4px 9px; border: 2px solid var(--edge); border-radius: 999px; background: var(--lime); color: var(--on-pop); text-transform: none; letter-spacing: 0; }
+  .hub-pill.swing { background: var(--pink); }
+  .hub-sides { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 4px 12px; padding: 14px 16px 6px; }
+  .hub-sides .nm { font: 800 26px/1 var(--display); }
+  .hub-sides .nm a { text-decoration: none; }
+  .hub-sides .nm a:hover { text-decoration: underline; }
+  .hub-sides .rc { font: 500 11.5px/1.3 var(--mono); color: var(--muted); margin-top: 4px; overflow-wrap: anywhere; }
+  .hub-sides .r { text-align: right; }
+  .hub-sides .mid { font: 500 11px/1.3 var(--mono); color: var(--muted); text-align: center; }
+  .hub-score { font: 800 40px/1 var(--display); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; }
+  .hub-score.r { justify-content: flex-end; }
+  .hub-score i { width: 12px; height: 12px; flex: none; border: 2px solid var(--edge); border-radius: 4px; }
+  .hub-a { background: var(--accent); } .hub-b { background: var(--pink); }
+  .hub-bar { display: flex; height: 14px; margin: 6px 16px 4px; border: 2px solid var(--edge); border-radius: 99px; overflow: hidden; background: var(--rule); }
+  .hub-bar span { display: block; height: 100%; }
+  .hub-edges { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; padding: 12px 16px 6px; list-style: none; margin: 0; }
+  .hub-edges li { border: 2px solid var(--edge); border-radius: 9px; padding: 6px 2px 5px; text-align: center; background: var(--card); min-width: 0; }
+  .hub-edges li.a { background: var(--accent-soft); } .hub-edges li.b { background: var(--pink-soft); }
+  .hub-edges .sl { display: block; font: 500 10px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+  .hub-edges .mg { display: block; font: 700 13.5px/1.3 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .hub-edges .ar { display: block; font: 500 10px/1 var(--mono); }
+  .hub-key { padding: 0 16px 12px; margin: 0; font: 500 11px/1.4 var(--mono); color: var(--muted); }
+  .hub-key i { display: inline-block; width: 10px; height: 10px; border: 1.5px solid var(--edge); border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+  .hub-stake { margin: 0; padding: 11px 16px; border-top: 2px solid var(--edge); background: var(--bg); display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; font-size: 13.5px; }
+  .hub-stake .odds { font: 700 13px/1 var(--mono); background: var(--card); border: 2px solid var(--edge); border-radius: 8px; padding: 4px 7px; }
+  .hub-stake .to { color: var(--muted); }
+  .hub-lineups { border-top: 2px solid var(--edge); }
+  .hub-lineups > summary { cursor: pointer; list-style: none; padding: 10px 16px; font-weight: 700; font-size: 13.5px; color: var(--accent); }
+  .hub-lineups > summary::-webkit-details-marker { display: none; }
+  .hub-lineups > summary::after { content: " ▾"; }
+  .hub-lineups[open] > summary::after { content: " ▴"; }
+  .hub-lineups .cols { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--edge); }
+  .hub-lineups .cols > div + div { border-left: 2px solid var(--edge); }
+  .hub-lineups table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .hub-lineups caption { text-align: left; padding: 7px 10px 3px; font: 600 11px/1 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .hub-lineups td { padding: 5px 6px; border-top: 1px solid var(--rule); }
+  .hub-lineups td:first-child { padding-left: 10px; width: 40px; font: 500 10px/1 var(--mono); color: var(--muted); }
+  .hub-lineups td.r { text-align: right; padding-right: 10px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .hub-lineups td.zero { font-weight: 700; text-decoration: underline; }
+  .hub-panel { padding: 6px 16px 12px; }
+  .hub-fix { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .hub-fix:last-of-type { border-bottom: none; }
+  .hub-who { font: 700 12px/1 var(--mono); background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 8px; padding: 5px 7px; min-width: 64px; text-align: center; text-decoration: none; }
+  .hub-who.me { background: var(--orange); color: var(--on-pop); }
+  .hub-fix .t { font-weight: 700; font-size: 13.5px; line-height: 1.25; min-width: 0; }
+  .hub-fix .t small { display: block; font-weight: 500; font-size: 12px; color: var(--muted); }
+  .hub-fix .pts { font: 700 12.5px/1 var(--mono); border: 2px solid var(--edge); border-radius: 8px; padding: 4px 6px; background: var(--lime); color: var(--on-pop); white-space: nowrap; }
+  .hub-fix .pts.flag { background: var(--pink); }
+  .hub-clear { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 0 2px; font-size: 12.5px; color: var(--muted); }
+  .hub-clear b { font: 600 11px/1 var(--script); background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+  .hub-rank { display: grid; grid-template-columns: minmax(64px, auto) 1fr 46px; gap: 8px; align-items: center; padding: 4px 0; font-size: 13px; }
+  .hub-rank .nm { font-weight: 700; }
+  .hub-rank .tr { height: 14px; background: var(--rule); border: 2px solid var(--edge); border-radius: 99px; overflow: hidden; }
+  .hub-rank .tr span { display: block; height: 100%; background: var(--accent); }
+  .hub-rank .tr span.me { background: var(--orange); }
+  .hub-rank .v { font: 500 12.5px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+  .hub-note { font: 500 11.5px/1.4 var(--mono); color: var(--muted); margin: 8px 0 0; }
+  .hub-day { font: 600 11.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 12px 0 4px; margin: 0; }
+  .hub-ev { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
+  .hub-ev:last-child { border-bottom: none; }
+  .hub-ev .ic { width: 26px; height: 26px; border: 2px solid var(--edge); border-radius: 8px; font: 700 14px/22px var(--mono); text-align: center; background: var(--lime); color: var(--on-pop); }
+  .hub-ev .ic.trade { background: var(--orange); } .hub-ev .ic.lineup { background: var(--accent-soft); color: var(--ink); } .hub-ev .ic.drop { background: var(--pink-soft); color: var(--ink); }
+  .hub-ev .how { color: var(--muted); }
+  .hub-news { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+  .hub-news a { padding: 14px 16px; display: grid; gap: 8px; align-content: start; text-decoration: none; }
+  .hub-news .h { font-weight: 700; font-size: 15px; line-height: 1.3; }
+  .hub-news a:hover .h { text-decoration: underline; }
+  .hub-news .src { font: 500 11.5px/1.3 var(--mono); color: var(--muted); }
+  .hub-news .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .hub-news .tags span { font: 600 11px/1 var(--script); background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+  .hub-news .tags span.me { background: var(--orange); color: var(--on-pop); }
+  @media (max-width: 760px) {
+    /* The four stickers become one row to swipe: it scrolls inside itself, so the page never does. */
+    .stickers.hub-chips { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: -16px; padding: 2px 20px 8px 16px; scrollbar-width: none; }
+    .stickers.hub-chips::-webkit-scrollbar { display: none; }
+    .stickers.hub-chips .story { flex: 0 0 68%; scroll-snap-align: start; scroll-margin-left: 16px; }
+    .hub-sides .nm { font-size: 22px; } .hub-score { font-size: 32px; }
+    .hub-edges { gap: 4px; padding-inline: 12px; } .hub-edges .mg { font-size: 11.5px; }
+    .hub-lineups .cols { grid-template-columns: 1fr; } .hub-lineups .cols > div + div { border-left: none; border-top: 2px solid var(--edge); }
+  }
   .recap-when { margin-top: 22px; display: flex; gap: 12px; align-items: center; padding: 12px 16px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; font-weight: 600; }
   .recap-when .d { flex: none; font: 900 26px/0.9 var(--display); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 9px 4px; }
   .final-lines { background: var(--card); overflow: hidden; display: grid; }
@@ -730,26 +814,6 @@
       </a>`;
   }
 
-  // The landing page's matchup card for a week that hasn't kicked off: an expandable look
-  // at each side's projected lineup, since there's no live box score to open yet. (A
-  // finished week gets the compact .final-lines rows in landingPage instead.)
-  function landingScoreCard(g) {
-    const team = (s, tone) => {
-      const starters = [...s.starters].sort((a, b) => SLOT_ORDER.indexOf(a.slot) - SLOT_ORDER.indexOf(b.slot));
-      return `
-        <details class="ml-team ${tone}">
-          <summary class="ml-row"><span class="ml-name">${mgrLink(s.manager)}</span><span class="ml-num"><span class="ml-pill">${f1(s.projected)}</span><small>proj</small></span></summary>
-          <table class="ml-roster-table"><tbody>${starters.map((p) => `
-            <tr><td class="slot"><span class="slot-chip s-${esc(p.slot)}">${esc(p.slot)}</span></td><td>${esc(p.name)}</td><td class="r">${f1(p.projected)}</td></tr>`).join('')}
-          </tbody></table>
-        </details>`;
-    };
-    return `
-      <div class="matchup-lite">
-        ${team(g.winner, 'tone-a')}${team(g.loser, 'tone-b')}
-      </div>`;
-  }
-
   // Where a side stands this minute: who is on the field right now, then who hasn't
   // kicked off yet. "0 starters left to play" alone couldn't tell a finished afternoon
   // from three players mid-game, so the ones on the field get named first, with the
@@ -1209,9 +1273,15 @@
         text: `${top.manager} has ESPN's highest projected lineup. No pressure.` });
     }
 
-    // Busiest to-do list: straight from the Coach rows, framed as help, not homework
+    // Biggest fix: the one lineup swap worth the most projected points, league-wide. Without
+    // one, the busiest to-do list, straight from the Coach rows and framed as help, not homework.
+    const fix = rows.flatMap((r) => r.items.filter((it) => it.kind === 'swap' && it.gain > 0).map((it) => ({ r, it })))
+      .sort((a, b) => b.it.gain - a.it.gain)[0];
     const busiest = [...rows].sort((a, b) => b.counts.now - a.counts.now)[0];
-    if (busiest && busiest.counts.now) {
+    if (fix) {
+      out.push({ tone: 'pink', label: 'Biggest fix', fig: `+${f1(fix.it.gain)}`,
+        text: `One swap is worth that many projected points to ${fix.r.manager}. Coach has it.` });
+    } else if (busiest && busiest.counts.now) {
       const n = busiest.counts.now;
       out.push({ tone: 'pink', label: 'Busiest to-do list', fig: String(n),
         text: `${busiest.manager} has ${n} ${n === 1 ? 'thing' : 'things'} on her Coach list before kickoff. Coach has her back.` });
@@ -1223,44 +1293,320 @@
     return out.slice(0, 4);
   }
 
+  /* ---------- week hub ----------
+     Everything below is drawn from LIVE.games, LIVE.advice and LIVE.wire, which /api/live
+     refreshes, so a lineup change shows up in the strip, the bar and Coach's desk together.
+     Only the stakes and the headlines (LIVE.hub) are baked at build time; see hub_payload. */
+  const projOf = (s) => s.live_projection ?? s.projected ?? 0;
+  const NUM_WORD = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+  const count = (n, one, many) => `${NUM_WORD[n] || n} ${n === 1 ? one : many}`;
+  const shortDay = (iso) => new Date(iso).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  const hub = () => (LIVE && LIVE.hub) || {};
+  const stakesFor = (w, g) => {
+    const st = hub().stakes;
+    return st && st.week === w.week ? st.games.find((x) => x.key === g.key) : null;
+  };
+  // Lineups somebody opened, by game: the minute-by-minute refresh re-renders the page, and
+  // a <details> she just opened shouldn't snap shut under her thumb (same idea as PEEK).
+  const HUB_OPEN = new Set();
+
+  function seasonStrip(w) {
+    const po = SEASON.playoffs;
+    if (!po) return '';
+    const first = po.config.first_round_week;
+    const rounds = (po.bracket && po.bracket.rounds) || [];
+    const last = first - 1 + (rounds.reduce((n, r) => n + r.weeks, 0) || 1);
+    const cls = (n) => (n === w.week ? 'now' : n < w.week ? 'done' : n >= first ? 'po' : '');
+    const cells = Array.from({ length: last }, (_, i) => `<span class="${cls(i + 1)}">${i + 1}</span>`).join('');
+    return `
+      <div class="season-strip" role="img" aria-label="Season so far: ${w.week - 1} of ${last} weeks played, Week ${w.week} is ${w.complete ? 'final' : 'next'}, playoffs start in Week ${first}.">
+        <div class="lab" aria-hidden="true"><span>Season</span><span>Playoffs start Week ${first}</span></div>
+        <div class="weeks" aria-hidden="true">${cells}</div>
+      </div>`;
+  }
+
+  // Who has the edge at each lineup spot, in projected points. RB and WR add up both starters.
+  function edgeStrip(a, b) {
+    const sum = (s, slot) => s.starters.filter((p) => p.slot === slot).reduce((n, p) => n + (p.projected || 0), 0);
+    return `<ul class="hub-edges">${SLOT_ORDER.map((slot) => {
+      const d = sum(a, slot) - sum(b, slot);
+      const lead = Math.abs(d) < 0.05 ? null : d > 0 ? a : b;
+      return `<li class="${lead ? (lead === a ? 'a' : 'b') : ''}">
+        <span class="sl" aria-hidden="true">${slot === 'FLEX' ? 'FLX' : slot}</span>
+        <span class="mg" aria-hidden="true">${lead ? `+${f1(Math.abs(d))}` : 'even'}</span>
+        <span class="ar" aria-hidden="true">${lead ? (lead === a ? '◀' : '▶') : '·'}</span>
+        <span class="vh">${slot}: ${lead ? `${esc(lead.manager)} by ${f1(Math.abs(d))}` : 'even'}</span></li>`;
+    }).join('')}</ul>`;
+  }
+
+  // One sentence on what the game does to each side's playoff odds. A side whose odds
+  // barely move is said plainly rather than given two near-identical numbers.
+  function stakesLine(g, st) {
+    if (!st) return '';
+    const rows = [g.winner, g.loser].map((s) => ({ s, t: st.teams.find((t) => t.team_id === s.team_id) }))
+      .filter((x) => x.t && x.t.win != null && x.t.lose != null);
+    if (rows.length < 2) return '';
+    const MOVES = 0.05;
+    const odds = (x) => `<b>${esc(x.s.manager)}</b> <span class="odds">${pct(x.t.lose)}</span><span class="to">→</span><span class="odds">${pct(x.t.win)}</span>`;
+    // At the ends a percentage is either a taunt or a jinx, so those are said in words.
+    const steady = (x) => {
+      const p = (x.t.win + x.t.lose) / 2;
+      return p >= 0.97 ? `${esc(x.s.manager)} is all but in either way.` : p <= 0.03 ? `${esc(x.s.manager)}'s odds hold where they are.` : `${esc(x.s.manager)} sits near ${pct(p)} either way.`;
+    };
+    const moving = rows.filter((x) => x.t.swing >= MOVES);
+    let body;
+    if (moving.length === 2) body = `${odds(rows[0])} <span class="to">·</span> ${odds(rows[1])}`;
+    else if (moving.length === 1) body = `${odds(moving[0])} <span class="to">·</span> <span>${steady(rows.find((x) => x !== moving[0]))}</span>`;
+    else body = `<span>This one barely moves the playoff odds. ${steady(rows[0])} ${steady(rows[1])}</span>`;
+    return `<p class="hub-stake"><b>Stakes</b>${moving.length ? '<span class="to">playoff odds, loss → win:</span>' : ''} ${body}</p>`;
+  }
+
+  function hubGame(w, g, { mine, swing }) {
+    const [a, b] = [g.winner, g.loser];
+    const hasProj = projOf(a) > 0 || projOf(b) > 0;
+    const fav = [a, b].filter((s) => s.win_probability != null).sort((x, y) => y.win_probability - x.win_probability)[0];
+    const mid = fav && fav.win_probability > 0.5 ? `ESPN: ${esc(fav.manager)} ${pct(fav.win_probability)} to win`
+      : hasProj ? `${f1(Math.abs(projOf(a) - projOf(b)))} apart` : 'no projections yet';
+    const rc = (s) => `${TEAMS[s.team_id] && TEAMS[s.team_id].weekly.length ? `${record(TEAMS[s.team_id])} · ` : ''}${esc(s.team_name)}`;
+    const table = (s) => `<div><table><caption>${esc(s.manager)}</caption><tbody>${
+      [...s.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot)).map((p) => `
+        <tr><td>${esc(p.slot)}</td><td>${esc(p.name)}</td><td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td></tr>`).join('')}</tbody></table></div>`;
+    return `
+      <article class="hub-game" aria-label="${esc(a.manager)} vs ${esc(b.manager)}">
+        <div class="hub-tag${mine ? ' mine' : swing ? ' swing' : ''}">
+          ${mine ? '<span class="hub-pill">Your game</span>' : ''}${swing ? '<span class="hub-pill swing">Most at stake</span>' : ''}
+          <span>${esc(a.manager)} vs ${esc(b.manager)}</span>
+        </div>
+        <div class="hub-sides">
+          <div><div class="nm">${mgrLink(a.manager)}</div><div class="rc">${rc(a)}</div></div>
+          <div class="mid">PROJ</div>
+          <div class="r"><div class="nm">${mgrLink(b.manager)}</div><div class="rc">${rc(b)}</div></div>
+          <div class="hub-score"><i class="hub-a" aria-hidden="true"></i>${f1(projOf(a))}</div>
+          <div class="mid">${mid}</div>
+          <div class="hub-score r">${f1(projOf(b))}<i class="hub-b" aria-hidden="true"></i></div>
+        </div>
+        ${hasProj ? `
+        <div class="hub-bar" role="img" aria-label="Projected points: ${esc(a.manager)} ${f1(projOf(a))}, ${esc(b.manager)} ${f1(projOf(b))}">
+          <span class="hub-a" style="flex:${projOf(a).toFixed(2)}"></span><span class="hub-b" style="flex:${projOf(b).toFixed(2)}"></span>
+        </div>
+        ${edgeStrip(a, b)}
+        <p class="hub-key"><i class="hub-a" aria-hidden="true"></i>◀ ${esc(a.manager)}'s edge &nbsp; <i class="hub-b" aria-hidden="true"></i>▶ ${esc(b.manager)}'s edge</p>` : ''}
+        ${stakesLine(g, stakesFor(w, g))}
+        <details class="hub-lineups" data-hub-open="${g.key}"${HUB_OPEN.has(g.key) ? ' open' : ''}>
+          <summary>Full lineups</summary>
+          <div class="cols">${table(a)}${table(b)}</div>
+        </details>
+      </article>`;
+  }
+
+  // Your game first (when the page knows whose page this is), then the most at stake.
+  function hubGames(w) {
+    const me = myTeam.get();
+    const st = hub().stakes;
+    const order = st && st.week === w.week ? st.games.map((x) => x.key) : [];
+    const rank = (g) => (order.includes(g.key) ? order.indexOf(g.key) : order.length);
+    const isMine = (g) => g.winner.team_id === me || g.loser.team_id === me;
+    const top = order.length ? st.games[0] : null;
+    const swingKey = top && top.teams.reduce((n, t) => n + t.swing, 0) >= 0.1 ? top.key : null;
+    return [...w.games].sort((x, y) => (isMine(y) - isMine(x)) || (rank(x) - rank(y)))
+      .map((g) => hubGame(w, g, { mine: isMine(g), swing: g.key === swingKey })).join('');
+  }
+
+  const DESK_KINDS = { swap: null, bye: 'BYE', out: 'OUT', empty: 'EMPTY', hole: '0 PROJ' };
+  // Coach cards talk to "you"; on the desk they sit under somebody else's name.
+  const deskTitle = (t) => t.replace(/^Your (.)/, (_, c) => c.toUpperCase());
+  function coachDesk(rows) {
+    const me = myTeam.get();
+    const fixes = rows.flatMap((r) => r.items.filter((it) => it.level === 'now' && it.kind in DESK_KINDS).map((it) => ({ r, it })))
+      .sort((x, y) => ((y.it.kind === 'swap') - (x.it.kind === 'swap')) || ((y.it.gain || 0) - (x.it.gain || 0)));
+    const clear = rows.filter((r) => !r.counts.now);
+    if (!fixes.length && !clear.length) return '';
+    return `
+      <section>
+        ${secHead('flag', 'Coach desk', `<a class="more" href="${coachHref()}">Open Coach →</a>`)}
+        <p class="sec-sub">${fixes.length ? 'Lineup fixes across the whole league, biggest projected gain first.' : clear.length === rows.length ? 'Nothing urgent on anybody’s list.' : 'No lineup fixes to make right now.'}</p>
+        <div class="hub-panel">
+          ${fixes.slice(0, 7).map(({ r, it }) => `
+            <div class="hub-fix">
+              <a class="hub-who${r.team_id === me ? ' me' : ''}" href="${coachUrl(false, r.team_id)}">${esc(r.manager)}</a>
+              <div class="t">${esc(deskTitle(it.title))}<small>${ADVICE_KIND[it.kind] || ''}</small></div>
+              <span class="pts${it.kind === 'swap' ? '' : ' flag'}">${it.kind === 'swap' ? `+${f1(it.gain)}` : DESK_KINDS[it.kind]}</span>
+            </div>`).join('')}
+          ${clear.length ? `<div class="hub-clear"><b>All clear</b>${clear.map((r) => esc(r.manager)).join(' · ')}</div>` : ''}
+        </div>
+      </section>`;
+  }
+
+  function rankedProjections(w) {
+    const me = myTeam.get();
+    const sides = w.games.flatMap((g) => [g.winner, g.loser]).sort((x, y) => projOf(y) - projOf(x));
+    const max = sides.length ? projOf(sides[0]) : 0;
+    if (!max) return '';
+    return `
+      <section>
+        ${secHead('board', 'Projected, ranked')}
+        <p class="sec-sub">ESPN's projected score for every lineup as it's set right now.</p>
+        <div class="hub-panel" style="padding-top:10px">
+          ${sides.map((s) => `
+            <div class="hub-rank"><span class="nm">${esc(s.manager)}</span>
+              <span class="tr" aria-hidden="true"><span class="${s.team_id === me ? 'me' : ''}" style="width:${(100 * projOf(s) / max).toFixed(1)}%"></span></span>
+              <span class="v">${f1(projOf(s))}</span></div>`).join('')}
+          <p class="hub-note">${sides.some((s) => s.team_id === me) ? 'Orange is your team. ' : ''}A starter on a bye, a week off for his NFL team, counts for zero until he's swapped out.</p>
+        </div>
+      </section>`;
+  }
+
+  /* The league wire, capped so a busy Sunday of lineup tinkering can't push Wednesday's
+     waiver run off the page. Days are the reader's own, not UTC's. */
+  const WIRE_MAX = 12, WIRE_LINEUPS = 3;
+  function wireSection() {
+    const events = (LIVE && LIVE.wire) || [];
+    if (!events.length) return '';
+    const day = (e) => new Date(e.date).toDateString();
+    // One line per manager per day: five separate adds and drops on a Wednesday read as one
+    // busy Wednesday, and a morning of lineup tinkering as one "set her lineup".
+    const rolled = new Map();
+    for (const e of events) {
+      if (e.kind === 'trade') { rolled.set(`trade|${e.date}|${e.team_id}|${e.with_id}`, e); continue; }
+      const k = `${e.kind}|${day(e)}|${e.team_id}`;
+      const had = rolled.get(k);
+      if (!had) rolled.set(k, { ...e, added: [...(e.added || [])], dropped: [...(e.dropped || [])], promoted: new Set(e.promoted || []) });
+      else if (e.kind === 'lineup') (e.promoted || []).forEach((id) => had.promoted.add(id));
+      else { had.added.push(...e.added); had.dropped.push(...e.dropped); had.waiver = had.waiver && e.waiver; }
+    }
+    for (const e of rolled.values()) {
+      if (e.kind !== 'move') continue;
+      // Picked up and dropped again the same day nets out to nothing worth a line.
+      const both = e.added.filter((n) => e.dropped.includes(n));
+      e.added = e.added.filter((n) => !both.includes(n));
+      e.dropped = e.dropped.filter((n) => !both.includes(n));
+    }
+    // Trades always make the cut, then pickups and drops. Lineup changes get what's left, and
+    // at least WIRE_LINEUPS lines of it, so the newest days are never blank.
+    const WEIGHT = { trade: 0, move: 1 };
+    const newest = (x, y) => (x.date < y.date ? 1 : -1);
+    const rows = [...rolled.values()].filter((e) => e.kind !== 'move' || e.added.length || e.dropped.length);
+    const lineupRows = rows.filter((e) => e.kind === 'lineup').sort(newest);
+    const realRows = rows.filter((e) => e.kind !== 'lineup').sort((x, y) => (WEIGHT[x.kind] - WEIGHT[y.kind]) || newest(x, y))
+      .slice(0, WIRE_MAX - Math.min(WIRE_LINEUPS, lineupRows.length));
+    const shown = [...realRows, ...lineupRows.slice(0, WIRE_MAX - realRows.length)].sort(newest);
+    const list = (xs) => xs.map(esc).join(', ');
+    const line = (e) => {
+      if (e.kind === 'trade') return `<span class="ic trade" aria-hidden="true">⇄</span><span><b>${esc(e.manager)}</b> and <b>${esc(e.with)}</b> made a trade. ${esc(e.manager)} gets ${list(e.added).replace(/\.$/, '')}. ${esc(e.with)} gets ${list(e.dropped).replace(/\.$/, '')}.</span>`;
+      if (e.kind === 'lineup') return `<span class="ic lineup" aria-hidden="true">↕</span><span><b>${esc(e.manager)}</b> set her lineup${e.promoted.size ? ` <span class="how">· ${e.promoted.size} ${e.promoted.size === 1 ? 'player' : 'players'} moved in off the bench</span>` : ''}</span>`;
+      return `<span class="ic${e.added.length ? '' : ' drop'}" aria-hidden="true">${e.added.length ? '+' : '−'}</span><span><b>${esc(e.manager)}</b> ${[e.added.length ? `added ${list(e.added)}` : '', e.dropped.length ? `dropped ${list(e.dropped)}` : ''].filter(Boolean).join(', ')}${e.waiver ? ' <span class="how">· off waivers</span>' : ''}</span>`;
+    };
+    let last = '';
+    const feed = shown.map((e) => {
+      const head = day(e) === last ? '' : `<h3 class="hub-day">${shortDay(e.date)}</h3>`;
+      last = day(e);
+      return `${head}<div class="hub-ev">${line(e)}</div>`;
+    }).join('');
+    const picks = new Map();
+    // Counted off the same netted rows the feed shows, so the two can't disagree.
+    for (const e of rows) if (e.kind === 'move' && e.added.length) picks.set(e.manager, (picks.get(e.manager) || 0) + e.added.length);
+    const busy = [...picks.entries()].sort((x, y) => y[1] - x[1]);
+    const total = busy.reduce((n, [, c]) => n + c, 0);
+    return `
+      <section>
+        ${secHead('board', 'League wire')}
+        <p class="sec-sub">Pickups, drops, trades and lineup changes from the last seven days, newest first, straight from ESPN's activity log. "Off waivers" means the pickup waited its turn overnight instead of being grabbed on the spot.</p>
+        <div class="hub-wire">
+          <div class="hub-panel">${feed}</div>
+          ${busy.length ? `
+          <div>
+            <h3 class="hub-day" style="padding-top:0">Most pickups, last seven days</h3>
+            <div class="hub-panel" style="padding-top:10px">
+              ${busy.map(([m, c]) => `
+                <div class="hub-rank"><span class="nm">${esc(m)}</span>
+                  <span class="tr" aria-hidden="true"><span style="width:${(100 * c / busy[0][1]).toFixed(1)}%"></span></span>
+                  <span class="v">${c}</span></div>`).join('')}
+              <p class="hub-note">${total} ${total === 1 ? 'pickup' : 'pickups'} across the league in seven days.${busy.length > 1 && busy[0][1] > busy[1][1] ? ` ${esc(busy[0][0])} made ${busy[0][1]} of them.` : ''}</p>
+            </div>
+          </div>` : ''}
+        </div>
+      </section>`;
+  }
+
+  // Headlines only, each one a link out to ESPN. No article text ever reaches this page.
+  function newsSection() {
+    const items = hub().news || [];
+    if (!items.length) return '';
+    const me = myTeam.get();
+    return `
+      <section>
+        ${secHead('book', 'ESPN on your rosters')}
+        <p class="sec-sub">ESPN headlines about players somebody in this league has on her roster. Each one opens on ESPN.</p>
+        <div class="hub-news">${items.map((n) => `
+          <a href="${esc(n.link)}" target="_blank" rel="noopener noreferrer">
+            <span class="h">${esc(n.headline)}</span>
+            <span class="tags">${n.owners.map((o) => `<span class="${o.team_id === me ? 'me' : ''}">${esc(o.manager)}</span>`).join('')}</span>
+            <span class="src">ESPN · ${shortDay(n.published)} · ${n.players.map(esc).join(', ')}</span>
+          </a>`).join('')}</div>
+      </section>`;
+  }
+
   function landingPage(w) {
     const next = leadWithNext();
     const rows = coachRows(next) || [];
     const weekNum = next ? ahead().week : w.week;
     // Always this week's Coach rows: `rows` can be next week's when this week's list is empty.
-    const stickers = w.complete ? finalStickers(w) : preKickoffStickers(w, advice() || []);
+    const mine = advice() || [];
+    const stickers = w.complete ? finalStickers(w) : preKickoffStickers(w, mine);
     const title = w.complete
       ? (stickers.length ? `Week ${w.week} in ${STICKER_COUNT[stickers.length]} sticker${stickers.length === 1 ? '' : 's'}` : 'This week, wrapped')
       : `Getting ready for Week ${w.week}`;
+    const toFix = mine.filter((r) => r.counts.now).length;
+    // "Every lineup looks set" is only true once ESPN has projections to judge a lineup by.
+    const judged = mine.length && mine.every((r) => r.projected !== false);
+    const dek = w.complete
+      ? `Every game is final. The recap's still being written, so the numbers get the first word.`
+      : toFix
+        ? `${count(toFix, 'lineup has', 'lineups have')} something to fix and there's still time. Here's every matchup before kickoff.`
+        : judged
+          ? `Every lineup looks set and nobody's kicked off yet. Here's every matchup before kickoff.`
+          : `Nobody's kicked off yet. Here's every matchup and what's worth sorting out before kickoff.`;
     return `
-      <div class="page-head">
-        <div class="kicker">Week ${w.week} · ${w.complete ? 'in the books' : 'not started yet'}</div>
-        <div class="head-row">
-          <h1>${title}</h1>
-          ${w.complete && !stickers.length ? scorePills(w) : ''}
+      <div class="hub-head">
+        <div class="page-head">
+          <div class="kicker">Week ${w.week} · ${w.complete ? 'in the books' : 'not started yet'}</div>
+          <div class="head-row">
+            <h1>${title}</h1>
+            ${w.complete && !stickers.length ? scorePills(w) : ''}
+          </div>
+          <p class="dek">${dek}</p>
         </div>
-        <p class="dek">${w.complete
-          ? `Every game is final. The recap's still being written, so the numbers get the first word.`
-          : `Nobody's kicked off yet. Here's the matchup slate and what's worth sorting out before Thursday.`}</p>
+        ${seasonStrip(w)}
       </div>
 
-      ${stickers.length ? `<div class="stickers">${stickers.map(sticker).join('')}</div>` : ''}
+      ${stickers.length ? `<div class="stickers hub-chips">${stickers.map(sticker).join('')}</div>` : ''}
 
       ${w.complete ? `<div class="recap-when"><span class="d">TUE</span><span>The full recap, game balls and flags included, lands Tuesday. Nobody's safe.</span></div>` : ''}
 
+      ${w.complete ? `
       <section>
-        ${secHead('board', w.complete ? 'Final scores' : "This week's matchups")}
-        ${w.complete
-          ? `<div class="final-lines">${w.games.map((g) => `
-              <a href="#live.game-${g.key}">
-                <span class="w"><span class="ml-w">${isTie(g) ? 'T' : 'W'}</span><b>${esc(g.winner.manager)}</b><span class="num">${f2(g.winner.points)}</span></span>
-                <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
-              </a>`).join('')}</div>`
-          : `<p class="sec-sub">Projected scores are ESPN's. Tap a team to see her projected lineup.</p>
-             <div class="games-lite">${w.games.map((g) => landingScoreCard(g)).join('')}</div>`}
+        ${secHead('board', 'Final scores')}
+        <div class="final-lines">${w.games.map((g) => `
+          <a href="#live.game-${g.key}">
+            <span class="w"><span class="ml-w">${isTie(g) ? 'T' : 'W'}</span><b>${esc(g.winner.manager)}</b><span class="num">${f2(g.winner.points)}</span></span>
+            <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
+          </a>`).join('')}</div>
       </section>
+      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}` : `
+      <div class="hub-grid">
+        <section style="margin-top:0">
+          ${secHead('board', 'Matchups')}
+          <p class="sec-sub">Projected scores are ESPN's. The strip under each game shows who has the edge at every lineup spot, in projected points${hub().stakes ? `. "Stakes" is what a win or a loss does to a team's chance of making the playoffs, by the same math as Standings` : ''}.</p>
+          ${hubGames(w)}
+        </section>
+        <div class="hub-side">
+          ${coachDesk(mine)}
+          ${rankedProjections(w)}
+        </div>
+      </div>`}
 
-      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}
+      ${wireSection()}
+      ${newsSection()}
 
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(w)}</p>`;
   }
@@ -1701,6 +2047,13 @@
     if (open) PEEK.add(id); else PEEK.delete(id);
   });
 
+  /* `toggle` doesn't bubble, so it's caught on the way down. */
+  $('#main').addEventListener('toggle', (e) => {
+    const key = e.target.dataset && e.target.dataset.hubOpen;
+    if (!key) return;
+    if (e.target.open) HUB_OPEN.add(key); else HUB_OPEN.delete(key);
+  }, true);
+
   /* Picking a team from Coach (a grid card or the team switcher) is what makes it "my team"
      for the Coach tab. Opening someone's profile from Standings or a matchup link isn't. */
   document.addEventListener('click', (e) => {
@@ -1732,7 +2085,13 @@
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
-      if (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '') route();
+      if (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '') {
+        // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
+        const chips = document.querySelector('.hub-chips');
+        const left = chips ? chips.scrollLeft : 0;
+        route();
+        if (left) { const again = document.querySelector('.hub-chips'); if (again) again.scrollLeft = left; }
+      }
     } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
   }
 

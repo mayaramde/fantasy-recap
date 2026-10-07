@@ -35,6 +35,12 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   says which NFL games are in progress, so a live box score can mark the players who are on the field right now.
   Both captures call it without cookies, and both treat it as best effort: if it fails, the capture still succeeds
   and the site just shows no "playing" stickers.
+- **ESPN public NFL news** (public, no auth): `https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50`,
+  fetched by `scripts/fetch_news.py` in the cloud live update for the Week hub's "ESPN on your rosters" module. Only an
+  article's headline, link, publish time, byline and tagged ESPN athlete ids are kept, never its text, and only when it
+  tags four or fewer players, one of them on a league roster, and nothing in it reads as off-field (lawsuits, arrests,
+  suspensions, deaths). Lands in `data/<season>/news/latest.json`, never committed. Best effort like the scoreboard: a
+  failed fetch, or a file over 36 hours old, just means the page has no headlines.
 - **ESPN scoring lines** (part of the same private capture): ESPN's own points for each stat a player
   earned them with (`appliedStats`), paired with the stat behind it, ride along in `espn.json` as
   `scoring`: `[{stat, value, points}]`. The stat ids are ESPN's; `scripts/analyze.py` names the ones this
@@ -72,6 +78,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `data/<season>/next-week/`: the week-ahead capture behind the Coach page's "next week" tab (uncommitted)
+- `data/<season>/news/latest.json`: ESPN headlines about rostered players, for the Week hub (uncommitted)
 - `data/<season>/schedule.json` (optional): `{"<week>": [[team_id, team_id], ...]}`, the real remaining matchups for the
   playoff odds; without it they draw random opponents
 - `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
@@ -82,15 +89,17 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
   `site/build.py` and `scripts/coach_brief.py`
 - `site/playoffs.py`: the Standings page's playoff odds and projected bracket (stdlib-only Monte Carlo, read by
-  `site/build.py` into `season.playoffs`)
+  `site/build.py` into `season.playoffs`), and the Week hub's `stakes()`: each team's odds with a win and with a loss
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
   `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
-  `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
+  `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
+  `fetch_news.py` (ESPN headlines for the Week hub, best effort)
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
-  profile and the playoff odds (also run by `checks`)
+  profile, the playoff odds, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
+  `hub_preview.py` renders the Week hub's two states for a look in a browser
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages

@@ -58,7 +58,8 @@ def live_payload():
     # Today's FantasyPros snapshot, if fantasy-coach-daily has written one — committed to
     # git (unlike next-week/espn.json), so it ships in this bundle like league.json does.
     fp = build.load_fantasypros(current["season"])
-    return build.live_payload(analyze.analyze(current, history), current, previous, fp=fp)
+    return build.live_payload(analyze.analyze(current, history), current, previous, fp=fp,
+                              history=[w for w in history if w["week"] < week])
 
 
 class handler(BaseHTTPRequestHandler):
