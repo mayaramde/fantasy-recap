@@ -1,7 +1,7 @@
 # Fantasy Recap
 
 Weekly recap page for the ESPN league "Fantasy Football for the Girls" (8 teams, PPR).
-League facts (IDs, teams, managers, roster slots) live in `league.json`, and that file is the source of truth.
+League facts (IDs, teams, managers, roster slots, playoff format) live in `league.json`, and that file is the source of truth.
 
 ## Harness: Fantasy Recap
 
@@ -72,6 +72,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 ## Layout
 - `data/<season>/week-NN/`: trimmed per-week data (JSON)
 - `data/<season>/next-week/`: the week-ahead capture behind the Coach page's "next week" tab (uncommitted)
+- `data/<season>/schedule.json` (optional): `{"<week>": [[team_id, team_id], ...]}`, the real remaining matchups for the
+  playoff odds; without it they draw random opponents
 - `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
   cards and roster ideas (committed)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
@@ -79,14 +81,16 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
   `site/build.py` and `scripts/coach_brief.py`
+- `site/playoffs.py`: the Standings page's playoff odds and projected bracket (stdlib-only Monte Carlo, read by
+  `site/build.py` into `season.playoffs`)
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
   `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet)
-- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy and the team
-  profile (also run by `checks`)
+- `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
+  profile and the playoff odds (also run by `checks`)
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
 ## Published pages
