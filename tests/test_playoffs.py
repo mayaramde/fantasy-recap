@@ -265,5 +265,68 @@ class EdgeCaseTest(unittest.TestCase):
             self.assertNotIn(t["label"], ("Locked in", "Clinched"))
 
 
+class StakesTest(unittest.TestCase):
+    """Week 4 of a four-week season, on the three-week table in this file's docstring. Teams 1 and 5
+    (3-0) are in whatever happens and 4 and 8 (0-3) are out. Team 2 (2-1) has the points to survive a
+    loss and team 7 can't catch up, so 3 v 6 is the only game with a playoff spot riding on it: the
+    winner takes the fourth seed."""
+    GAMES = [(1, 8), (4, 5), (2, 7), (3, 6)]
+
+    @classmethod
+    def setUpClass(cls):
+        cls.league = league(regular_season_weeks=4, first_round_week=5)
+        cls.out = po.stakes(standings([1, 2, 3]), [1, 2, 3], cls.league, 4, cls.GAMES, SIMS)
+        cls.rows = {t["team_id"]: t for g in cls.out["games"] for t in g["teams"]}
+
+    def test_every_team_has_a_row(self):
+        self.assertEqual(sorted(self.rows), IDS)
+        self.assertEqual(sorted(g["key"] for g in self.out["games"]), ["1-8", "2-7", "3-6", "4-5"])
+
+    def test_a_win_never_hurts(self):
+        for t in self.rows.values():
+            self.assertGreaterEqual(t["win"], t["lose"], t)
+
+    def test_decided_teams_do_not_swing(self):
+        for t in (1, 5, 2, 7, 4, 8):
+            self.assertEqual(self.rows[t]["swing"], 0.0, t)
+        self.assertEqual((self.rows[1]["win"], self.rows[8]["lose"]), (1.0, 0.0))
+
+    def test_a_bubble_game_swings(self):
+        self.assertEqual(self.rows[3]["swing"], 1.0)
+        self.assertEqual(self.rows[6]["swing"], 1.0)
+
+    def test_the_two_sides_of_a_game_split_the_wins(self):
+        for g in self.out["games"]:
+            a, b = g["teams"]
+            self.assertAlmostEqual(a["p_win"] + b["p_win"], 1.0, places=3)
+
+    def test_win_and_lose_average_back_to_todays_odds(self):
+        today = by_team(po.build(standings([1, 2, 3]), [1, 2, 3], self.league, {4: self.GAMES}, SIMS))
+        for i, t in self.rows.items():
+            blended = t["p_win"] * t["win"] + (1 - t["p_win"]) * t["lose"]
+            self.assertAlmostEqual(blended, today[i]["playoff"], delta=0.05, msg=i)
+
+    def test_the_game_with_something_riding_on_it_leads(self):
+        self.assertEqual(self.out["games"][0]["key"], "3-6")
+
+    def test_deterministic_after_clearing_cache(self):
+        po._CACHE.clear()
+        self.assertEqual(po.stakes(standings([1, 2, 3]), [1, 2, 3], self.league, 4, self.GAMES, SIMS), self.out)
+
+    def test_nothing_to_say_returns_empty(self):
+        s = standings([1, 2, 3])
+        self.assertEqual(po.stakes(s, [1, 2, 3], self.league, 3, self.GAMES, SIMS), {})         # already played
+        self.assertEqual(po.stakes(s, [1, 2, 3], self.league, 5, self.GAMES, SIMS), {})         # a playoff week
+        self.assertEqual(po.stakes(s, [1, 2], self.league, 4, self.GAMES, SIMS), {})            # week 3 unplayed
+        self.assertEqual(po.stakes(s, [1, 2, 3], self.league, 4, self.GAMES[:3], SIMS), {})     # a game missing
+        self.assertEqual(po.stakes(s, [], self.league, 1, self.GAMES, SIMS), {})                # nothing played
+
+    def test_malformed_input_never_raises(self):
+        for bad in (None, [], [{"team_id": 1}], "nope"):
+            self.assertEqual(po.stakes(bad, [1, 2, 3], self.league, 4, self.GAMES, SIMS), {})
+        self.assertEqual(po.stakes(standings([1, 2, 3]), [1, 2, 3], self.league, 4, None, SIMS), {})
+        self.assertEqual(po.stakes(standings([1, 2, 3]), [1, 2, 3], self.league, 4, [(1,), "x"], SIMS), {})
+
+
 if __name__ == "__main__":
     unittest.main()

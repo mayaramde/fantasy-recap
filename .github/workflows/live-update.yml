@@ -128,6 +128,16 @@ jobs:
                   f.write(f"skip={'true' if done else 'false'}\n")
           PY
 
+      # The Week hub's "ESPN on your rosters" headlines, from ESPN's public news feed (no
+      # cookies). Best effort twice over: the script exits 0 whatever happens, and the step
+      # may fail without stopping the run, because a missing headline must never cost the
+      # league its scores. Off switch: set the repo variable NEWS_ENABLED to "false" and the
+      # module disappears from the next deploy.
+      - name: Fetch ESPN headlines (best effort)
+        if: steps.gate.outputs.skip != 'true' && vars.NEWS_ENABLED != 'false'
+        continue-on-error: true
+        run: python3 scripts/fetch_news.py
+
       - name: Analyze and check
         if: steps.gate.outputs.skip != 'true'
         run: |

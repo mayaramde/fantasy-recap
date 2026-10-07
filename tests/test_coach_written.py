@@ -28,7 +28,7 @@ def _now(hours_ago=0):
 class CoachWrittenTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        recap_weeks, captured, _, _ = build.load_inputs(SEASON)
+        recap_weeks, captured, _, _, _ = build.load_inputs(SEASON)
         cls.recap_weeks = [rw for rw in recap_weeks if rw[1]["week"] < WEEK]
         facts, espn = copy.deepcopy(next(c for c in captured if c[0]["week"] == WEEK))
         facts["complete"] = False

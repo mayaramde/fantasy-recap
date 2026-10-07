@@ -144,7 +144,10 @@ def _random_pairs(ids, rng):
     return list(zip(ids[::2], ids[1::2]))
 
 
-def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed):
+def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed, watch=None):
+    """`watch` names one remaining week. Every simulated season is then also filed under who won
+    each of that week's games, so stakes() can read a team's odds given a win and given a loss off
+    the same seasons, with every other game left to chance."""
     ids = [t["id"] for t in teams]
     n = len(ids)
     mu, sigma = _ratings(teams)
@@ -161,15 +164,21 @@ def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed):
     seeds = {i: [0] * n for i in ids}
     sim_w = dict.fromkeys(ids, 0)
     sim_l = dict.fromkeys(ids, 0)
+    # cond[team][won?] = [seasons, made the playoffs, won the title]
+    cond = {i: {True: [0, 0, 0], False: [0, 0, 0]} for i in ids}
 
     for _ in range(n_sims):
+        won = {}
         w = {i: base[i]["wins"] for i in ids}
         l = {i: base[i]["losses"] for i in ids}
         tie = {i: base[i]["ties"] for i in ids}
         pf = {i: base[i]["pf"] for i in ids}
         for wk in remaining:
+            watching = wk == watch
             for a, b in schedule.get(wk) or _random_pairs(ids, rng):
                 pa, pb = gauss(mu[a], sigma), gauss(mu[b], sigma)
+                if watching and pa != pb:
+                    won[a], won[b] = pa > pb, pb > pa
                 pf[a] += pa
                 pf[b] += pb
                 if pa > pb:
@@ -199,8 +208,14 @@ def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed):
 
         champ, _ = _play_bracket(n_po, cfg["reseed"], game, cfg["championship_weeks"])
         title[order[champ - 1]] += 1
+        for rank, i in enumerate(order if won else ()):
+            if i in won:
+                c = cond[i][won[i]]
+                c[0] += 1
+                c[1] += rank < n_po
+                c[2] += rank == champ - 1
 
-    return {"mu": mu, "sigma": sigma, "remaining": remaining,
+    return {"mu": mu, "sigma": sigma, "remaining": remaining, "cond": cond,
             "teams": {i: {"playoff": playoff[i] / n_sims, "bye": bye[i] / n_sims, "title": title[i] / n_sims,
                           "seed_dist": [c / n_sims for c in seeds[i]],
                           "avg_seed": sum((r + 1) * c for r, c in enumerate(seeds[i])) / n_sims,
@@ -306,3 +321,66 @@ def _build(teams, weeks_played, cfg, sched, n_sims, key):
     return {"config": cfg, "sims": n_sims, "sigma": round(now["sigma"], 2), "games_left": games_left,
             "real_schedule": all(w in sched for w in now["remaining"]),
             "weeks_played": weeks_played, "now_cut": now_cut, "bracket": bracket, "teams": rows}
+
+
+# ---------- stakes: what this week's game does to a team's playoff odds ----------
+
+MIN_BUCKET = 100         # fewer simulated seasons than this on one side of a game is too few to quote
+
+
+def _game_weight(a, b):
+    """How much one game matters, for ranking the week's slate (the top one is "Biggest swing").
+
+    `a` and `b` are the two teams' stakes rows. Bigger means it leads the page."""
+    # The sum, so a game that moves both teams leads one that only moves one of them.
+    return a["swing"] + b["swing"]
+
+
+def stakes(standings, weeks_played, league, week, games, n_sims=8000, schedule=None):
+    """Each team's playoff and title odds if she wins `week`'s game and if she loses it.
+
+    `games` is that week's real pairings, [(team_id, team_id), ...]. One simulation of the rest of the
+    season, read twice: the seasons where she won that game, and the ones where she lost. Every other
+    game, that week's included, is left to chance, so the two numbers sit either side of her odds today
+    (near enough: this is its own run of the simulation, not the Standings page's). `schedule` is the same
+    optional real schedule build() takes, for the weeks after this one.
+
+    Returns {"week", "sims", "games": [{"key", "teams": [row, row]}, ...]} with the games ranked by
+    _game_weight, or {} when there is nothing honest to say: no finished week, a playoff week, an
+    earlier week still unplayed, or pairings that don't name every team once. Never raises.
+    """
+    try:
+        cfg = _config(league)
+        played = sorted(w for w in weeks_played if w <= cfg["regular_season_weeks"])
+        remaining = [w for w in range(1, cfg["regular_season_weeks"] + 1) if w not in played]
+        if not played or not standings or not remaining or week != remaining[0]:
+            return {}
+        teams = _teams(standings, cfg["regular_season_weeks"])
+        sched = _schedule({**(schedule or {}), week: games}, [t["id"] for t in teams])
+        if week not in sched:
+            return {}
+        key = hashlib.sha256(b"stakes" + _digest(teams, played, cfg, sched, n_sims)).digest()
+        if key not in _CACHE:
+            sim = _simulate(teams, played, cfg, sched, n_sims, int.from_bytes(key, "big"), watch=week)
+            _CACHE[key] = {"week": week, "sims": n_sims, "games": _stakes_games(sim["cond"], sched[week])}
+        return copy.deepcopy(_CACHE[key])
+    except (KeyError, TypeError, ValueError, AttributeError):
+        return {}
+
+
+def _stakes_games(cond, pairs):
+    def row(i):
+        win, lose = cond[i][True], cond[i][False]
+        decided = win[0] + lose[0]
+        out = {"team_id": i, "p_win": round(win[0] / decided, 4) if decided else None}
+        for name, c in (("win", win), ("lose", lose)):
+            ok = c[0] >= MIN_BUCKET
+            out[name] = round(c[1] / c[0], 4) if ok else None
+            out[f"title_{name}"] = round(c[2] / c[0], 4) if ok else None
+        known = out["win"] is not None and out["lose"] is not None
+        out["swing"] = round(out["win"] - out["lose"], 4) if known else 0.0
+        return out
+
+    out = [{"key": f"{a}-{b}", "teams": [row(a), row(b)]} for a, b in pairs]
+    out.sort(key=lambda g: _game_weight(*g["teams"]), reverse=True)
+    return out
