@@ -1,202 +1,99 @@
 {
-  "generated_at": "2026-10-06T19:50:30Z",
+  "generated_at": "2026-10-08T02:32:20Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
-  "weeks": {
+  "weeks": {},
+  "audit": {
+    "1": {
+      "lineup:C:4035538:w1": {
+        "title": "David Montgomery had the Week 1 you wanted",
+        "text": "James Cook III got the Week 1 nod at running back while David Montgomery racked up a near-30-point day on your bench. One early swap and that week looks a lot better."
+      },
+      "pos:K1:FLEX6": {
+        "title": "Your kicker is an all-star. Your flex spot, less so.",
+        "text": "Top kicker production in the league, dead last at flex, the wild-card spot. Funny sport where the guy kicking field goals is outperforming the guy catching touchdowns."
+      }
+    },
+    "2": {
+      "lineup:B:4259545:w1": {
+        "title": "D'Andre Swift's best day happened in street clothes",
+        "text": "Emeka Egbuka got the Week 1 flex nod while D'Andre Swift quietly had one of the best bench days in the league. Nearly everything else on your sheet, you got right."
+      },
+      "pos:WR1:K8": {
+        "title": "Your receivers are the best in the league. Your kicker, not so much.",
+        "text": "Wide receiver points, first in the league. Kicker points, dead last. The waiver wire's full of guys who kick, if you ever feel like upgrading the least glamorous spot on your roster."
+      },
+      "proj:over:4241389:4360248": {
+        "title": "CeeDee Lamb didn't get the ESPN memo",
+        "text": "Lamb keeps blowing past his weekly number like it's a suggestion. Kyle Pitts Sr. is coming in under his more often than not, the quieter story on the same roster."
+      }
+    },
+    "3": {
+      "lineup:C:4241416:w1": {
+        "title": "The Waddle bet, origin story",
+        "text": "Before the Waddle bet became a running joke, there was Week 1: Jaylen Waddle got the flex nod and mustered next to nothing while Chuba Hubbard quietly erupted on your bench. The bet lives on anyway."
+      },
+      "pos:RB3:QB8": {
+        "title": "Quarterback is the one hole in an otherwise solid roster",
+        "text": "Running back ranks third in the league for you, no complaints there. Quarterback ranks dead last though, proof that even a solid roster needs one position to keep it humble."
+      },
+      "proj:under:4258173:4572680": {
+        "title": "Nico Collins is outplaying his own scouting report",
+        "text": "Collins keeps topping his projection by a wide margin most weeks. Tucker Kraft's running a bit behind his, the one soft spot in an otherwise strong lineup."
+      }
+    },
     "4": {
-      "teams": {
-        "1": {
-          "advice_cards": [
-            {
-              "kind": "consensus",
-              "level": "info",
-              "title": "Kittle over Andrews stays the right call",
-              "stat": "TE4 vs TE17",
-              "text": "Mark Andrews caught his first touchdown of the season against the Titans this week, per FantasyPros' news desk. FantasyPros' expert consensus still ranks George Kittle 4th among tight ends for the rest of the season against Andrews' 17th, so the lineup call doesn't change. Andrews found the end zone again, still polishing the view from 17th."
-            }
-          ],
-          "roster_ideas": [],
-          "coach_cards": {
-            "recap:4:L:4:5.7": {
-              "title": "A loss your own bench disagrees with",
-              "text": "Your best possible lineup would have won this one. Somewhere on your bench, a better version of this week was just sitting there. Early gift for next week: start that guy."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Close loss, and the tape shows you had the horses. More below."
-          }
-        },
-        "2": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "kind": "trade",
-              "level": "watch",
-              "title": "Trade lead: a running back for a tight end, with Samantha",
-              "stat": "RB glut, TE of one",
-              "text": "You have seven running backs, and four of them (D'Andre Swift, Jadarian Price, Jacory Croskey-Merritt, Kyle Monangai) spent this week on your bench. Juwan Johnson is a perfectly fine tight end, but he's your only one. Samantha has two FantasyPros ranks highly: Sam LaPorta 5th and Dalton Kincaid 6th among tight ends, plus a running back room that's gotten crowded since De'Von Achane's injury. Swift, ranked 11th at running back per FantasyPros, for Kincaid would fix both rosters at once. Worth floating, not a lock."
-            }
-          ],
-          "coach_cards": {
-            "recap:4:W:2:70.0": {
-              "title": "A blowout, with room to spare",
-              "text": "You won by a wide margin and still left a useful chunk of production on the bench. When the final score isn't close, nobody notices the bench math, but it's there."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Blowout win banked. Bench math below for the curious."
-          }
-        },
-        "3": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "recap:4:W:1:47.3": {
-              "title": "Top score in the league",
-              "text": "Nobody in the league outscored your lineup this week, and you barely left anything behind on the bench doing it. About as clean a week as this game gets."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          }
-        },
-        "4": {
-          "advice_cards": [
-            {
-              "kind": "consensus",
-              "level": "info",
-              "title": "Christian Watson is not bench material anymore",
-              "stat": "WR17 ROS",
-              "text": "Christian Watson caught all three of his targets for the Packers this week. FantasyPros' news desk now calls him a fantasy WR1 heading into Week 5, and its expert consensus has him 17th among receivers for the rest of the season. You already had him in your flex spot. Keep doing that."
-            }
-          ],
-          "roster_ideas": [
-            {
-              "kind": "waiver",
-              "level": "watch",
-              "title": "A backup quarterback is sitting right there",
-              "stat": "FP QB19, free agent",
-              "text": "Jalen Hurts is your only rostered quarterback, and he had a rough one Sunday: two touchdowns, but under 100 passing yards. Justin Herbert is a free agent nobody in the league owns, per FantasyPros' ownership numbers, and FantasyPros' expert consensus ranks him 19th among quarterbacks for the rest of the season, miles better than an empty roster spot. One bad week or bye from Hurts and you'd have nowhere to turn. Grab the insurance."
-            }
-          ],
-          "coach_cards": {
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Toughest week in the league. Nowhere to go but up, details below."
-          }
-        },
-        "5": {
-          "advice_cards": [
-            {
-              "kind": "consensus",
-              "level": "info",
-              "title": "Bowers is a top-five tight end again, no debate needed",
-              "stat": "TE1 ROS",
-              "text": "Brock Bowers caught a touchdown against the Chiefs this week, his second straight big game back. FantasyPros' expert consensus still ranks him 1st among tight ends for the rest of the season. Meanwhile you're carrying eight wide receivers like roster spots are a loyalty program."
-            }
-          ],
-          "roster_ideas": [],
-          "coach_cards": {
-            "recap:4:W:5:41.6": {
-              "title": "A win, with extra left in the tank",
-              "text": "You won comfortably and still had a solid chunk of points sitting on your bench. No harm done this week since the win was never in doubt, but that bench stash won't forgive you forever."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Win in the books, some bench regret included. Details below."
-          }
-        },
-        "6": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "recap:4:W:3:5.7": {
-              "title": "A win by the thinnest of margins",
-              "text": "This one came down to the wire, and your lineup barely left anything on the bench while winning it. That's about as sharp as a lineup card gets."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Survived a nailbiter. Tight lineup, tighter final score."
-          }
-        },
-        "7": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "kind": "trade",
-              "level": "watch",
-              "title": "Trade lead: a tight end for a running back, with Amie",
-              "stat": "TE surplus, RB respray",
-              "text": "You rostered two legitimate running backs this week in Ollie Gordon II and Braelon Allen, on top of Breece Hall and Bhayshul Tuten, after De'Von Achane's season ended. FantasyPros' expert consensus still ranks Dalton Kincaid 6th among tight ends, right behind your own Sam LaPorta at 5th. You don't need both. Amie has seven running backs and just one tight end. Her D'Andre Swift, ranked 11th at running back per FantasyPros, for Kincaid would turn a duplicate into a real need filled. It's an opener, not a verdict."
-            }
-          ],
-          "coach_cards": {
-            "recap:4:L:7:41.6": {
-              "title": "A loss, and the bench didn't help the case",
-              "text": "You lost this week, and left more unused production on your bench than almost anyone else in the league. Your best possible lineup still comes up short against what you faced, so it's not one swap undoing the week, just a tough matchup made tougher."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Rough week, and your bench did nothing to make the case otherwise. Full breakdown below."
-          }
-        },
-        "8": {
-          "advice_cards": [
-            {
-              "kind": "fp_back",
-              "level": "watch",
-              "title": "Puka Nacua is back, and he looked like it",
-              "stat": "125 yds, 1 TD",
-              "text": "Puka Nacua made his return this week and went for a big day on the ground and through the air. FantasyPros' news desk calls him a must-start wide receiver going forward. Good thing you never actually benched him."
-            }
-          ],
-          "roster_ideas": [],
-          "coach_cards": {
-            "recap:4:L:6:47.3": {
-              "title": "Ran into the week's best lineup",
-              "text": "You lost to the top score in the league this week. Nothing drastic left on your bench, so there wasn't much more available to you. Some weeks are just about who you're across from."
-            },
-            "clear:done": {
-              "title": "Nothing left to change",
-              "text": "Every game on your schedule this week is done, so this lineup is locked in as history. Anything worth fixing lands on next week's list instead."
-            }
-          },
-          "summary": {
-            "key": "done",
-            "text": "Ran into the week's best lineup. Some matchups you just tip your cap. Breakdown below."
-          }
-        }
+      "lineup:D:4248528:w1": {
+        "title": "Christian Watson, still waiting for his shot",
+        "text": "Quinshon Judkins started at flex in Week 1 while Christian Watson put up one of the league's biggest bench performances right next to him. He's been doing that quietly all season. At some point the lineup card has to notice."
+      }
+    },
+    "5": {
+      "lineup:C:4432665:w3": {
+        "title": "The Brock Bowers decision still stings",
+        "text": "Dalton Schultz started at tight end in Week 3 while Brock Bowers put up one of the best bench days anyone had all season, on your own roster. That one's going to come up again."
+      },
+      "pos:QB2:K7": {
+        "title": "Quarterback's strong. Kicker's an afterthought.",
+        "text": "Your quarterback production ranks second in the league. Kicker ranks near the bottom, which is the least surprising sentence in this entire audit."
+      },
+      "proj:over:4685472:4596448": {
+        "title": "Tetairoa McMillan is making ESPN look silly",
+        "text": "McMillan keeps clearing his projection by a wide margin most weeks. Bucky Irving's the opposite case, settling in under his more often than not."
+      }
+    },
+    "6": {
+      "lineup:B:5083076:w3": {
+        "title": "One tight end call away from perfect",
+        "text": "Week 3 is the only blemish here: Tyler Warren got the start at tight end while Harold Fannin Jr. piled up points from the bench. Everywhere else, you played it exactly right."
+      },
+      "pos:RB1:WR8": {
+        "title": "Running back is doing the heavy lifting",
+        "text": "Your running backs lead the league, doing enough work for two positions. Your receivers rank dead last, so that's the shopping list if a name worth adding shows up on waivers."
+      },
+      "proj:over:4430737:4870795": {
+        "title": "Kyren Williams has stopped listening to ESPN",
+        "text": "Kyren Williams keeps blowing past his projection every week, like the algorithm hasn't noticed. Makai Lemon's the opposite story, quietly coming in under his number."
+      }
+    },
+    "7": {
+      "pos:QB1:RB8": {
+        "title": "Quarterback's elite. Running back needs the help.",
+        "text": "Your quarterback room leads the entire league. Running back ranks dead last, mostly because the position lost its workhorse for the year. Still the clearest spot to upgrade."
+      },
+      "proj:under:3918298:4429160": {
+        "title": "Josh Allen has carried this roster",
+        "text": "Allen keeps clearing his weekly number by a solid margin. Achane's season ended on a torn ACL, which is the real reason that side of the roster has struggled, not a projection miss."
+      }
+    },
+    "8": {
+      "lineup:B:15847:w2": {
+        "title": "Travis Kelce picked the wrong week to sit",
+        "text": "Dallas Goedert started at tight end in Week 2 while Travis Kelce quietly piled up points from your bench. One swap away from a very different week."
+      },
+      "pos:WR3:DST8": {
+        "title": "Receivers are solid. Defense is the real gap.",
+        "text": "Your wide receivers rank solidly in the top half of the league. Your defense ranks dead last, dragging the rest of the roster down like it's trying to make a point."
       }
     }
   }
