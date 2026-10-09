@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T02:32:20Z",
+  "generated_at": "2026-10-09T18:17:10Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "weeks": {},
@@ -12,6 +12,10 @@
       "pos:K1:FLEX6": {
         "title": "Your kicker is an all-star. Your flex spot, less so.",
         "text": "Top kicker production in the league, dead last at flex, the wild-card spot. Funny sport where the guy kicking field goals is outperforming the guy catching touchdowns."
+      },
+      "proj:under:3040151:4035538": {
+        "title": "George Kittle never got ESPN's memo",
+        "text": "Kittle keeps topping his projection most weeks. Montgomery's the quieter case, running under his more often than not."
       }
     },
     "2": {
@@ -46,6 +50,10 @@
       "lineup:D:4248528:w1": {
         "title": "Christian Watson, still waiting for his shot",
         "text": "Quinshon Judkins started at flex in Week 1 while Christian Watson put up one of the league's biggest bench performances right next to him. He's been doing that quietly all season. At some point the lineup card has to notice."
+      },
+      "pos:TE1:RB7": {
+        "title": "Tight end is doing the heavy lifting here",
+        "text": "Tight end leads the league for you. Running back sits near the bottom, right where a waiver add would actually move the needle."
       }
     },
     "5": {
@@ -77,6 +85,10 @@
       }
     },
     "7": {
+      "lineup:C:4431299:w4": {
+        "title": "Rome Odunze had the Week 4 you wanted",
+        "text": "Rashee Rice started at wide receiver and came up empty, while Rome Odunze quietly had one of the bigger bench days in the league. One swap and that week looks completely different."
+      },
       "pos:QB1:RB8": {
         "title": "Quarterback's elite. Running back needs the help.",
         "text": "Your quarterback room leads the entire league. Running back ranks dead last, mostly because the position lost its workhorse for the year. Still the clearest spot to upgrade."
