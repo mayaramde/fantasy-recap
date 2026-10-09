@@ -1,46 +1,23 @@
 // Headless ESPN capture. Primary caller is the cloud live update
 // (.github/workflows/live-update.yml); it also serves as the local fallback for the
-// Tuesday recap when Maya's Chrome session has logged out of ESPN (Claude in Chrome
-// returns a 401).
+// Tuesday recap when Claude in Chrome isn't available.
 //
 // Runs the same scripts/capture.js that Chrome runs, so the trimming logic lives in one
-// place. Instead of a logged-in browser, ESPN requests carry the cookies from the
-// ESPN_S2 and ESPN_SWID environment variables (GitHub Actions secrets that Maya set in
-// CI; on this Mac, read from a local .env.espn.local Maya fills in herself — see
-// .env.espn.local.example). The cookies are never printed or written to disk. The POST
-// that capture.js normally sends to scripts/receive.py is handled here and written to
+// place. No cookies and no login: the league is public on ESPN (the commissioner's
+// setting), so ESPN answers anonymous reads. If it goes private again, ESPN answers 401 and
+// this exits with "ESPN 401: is the league still public on ESPN?". The POST that capture.js
+// normally sends to scripts/receive.py is handled here and written to
 // data/<season>/week-NN/espn.json with the same checks receive.py applies.
 //
-// Usage: ESPN_S2=... ESPN_SWID=... node scripts/capture_node.mjs current   (or: next, or: 3 4)
-//    or, with .env.espn.local present: node scripts/capture_node.mjs 3
+// Usage: node scripts/capture_node.mjs current   (or: next, or: 3 4)
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-
-// Local-only fallback: parse KEY=VALUE lines from .env.espn.local into process.env,
-// without ever logging the file's contents. Real env vars (as CI sets them) win.
-if (!process.env.ESPN_S2 || !process.env.ESPN_SWID) {
-  const localEnv = join(ROOT, '.env.espn.local');
-  if (existsSync(localEnv)) {
-    for (const line of readFileSync(localEnv, 'utf8').split('\n')) {
-      const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*?)\s*$/);
-      if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
-    }
-  }
-}
-
-const { ESPN_S2, ESPN_SWID } = process.env;
-if (!ESPN_S2 || !ESPN_SWID) {
-  console.error('ESPN_S2 and ESPN_SWID must be set (or add them to .env.espn.local)');
-  process.exit(1);
-}
-const COOKIE = `espn_s2=${ESPN_S2}; SWID=${ESPN_SWID}`;
 const ESPN = 'https://lm-api-reads.fantasy.espn.com/';
-// ESPN's public NFL scoreboard (game states for the live box score). It takes no session,
-// so it is fetched as-is and the cookies below never go anywhere near it.
+// ESPN's public NFL scoreboard (game states for the live box score).
 const PUBLIC = 'https://site.api.espn.com/';
 const RECEIVER = 'http://127.0.0.1:8765/save';
 const realFetch = globalThis.fetch;
@@ -68,8 +45,13 @@ globalThis.fetch = async (url, init = {}) => {
   if (url.startsWith(RECEIVER)) return save(url, init);
   if (url.startsWith(PUBLIC)) return realFetch(url, init);
   if (!url.startsWith(ESPN)) throw new Error(`unexpected fetch: ${url}`);
-  const res = await realFetch(url, { ...init, headers: { ...init.headers, Cookie: COOKIE } });
-  if (!res.ok) throw new Error(`ESPN ${res.status}: cookies may have expired`);
+  // capture.js asks the browser to send its session (credentials: 'include'); there is none here.
+  const { credentials, ...rest } = init;
+  const res = await realFetch(url, rest);
+  if (!res.ok) {
+    const hint = res.status === 401 || res.status === 403 ? ': is the league still public on ESPN?' : '';
+    throw new Error(`ESPN ${res.status}${hint}`);
+  }
   return res;
 };
 

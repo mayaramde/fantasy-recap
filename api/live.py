@@ -43,9 +43,8 @@ def live_payload():
     import build
     import espn_fetch
 
-    ck = espn_fetch.cookie()
-    week = espn_fetch.current_week(ck)
-    current = espn_fetch.fetch_week(week, ck)
+    week = espn_fetch.current_week()
+    current = espn_fetch.fetch_week(week)
 
     season_dir = ROOT / "data" / str(current["season"])
     history = [json.loads(p.read_text()) for p in sorted(season_dir.glob("week-*/espn.json"))]
@@ -67,9 +66,8 @@ class handler(BaseHTTPRequestHandler):
         try:
             body = json.dumps(live_payload(), ensure_ascii=False, separators=(",", ":"))
         except Exception as e:  # noqa: BLE001 - any failure here is just "no live upgrade"
-            # RuntimeError is ours and safe to show ("ESPN 401: cookies may have expired").
-            # Anything else could carry internals, so it stays generic. Neither can contain
-            # the cookies: espn_fetch never puts them in a message.
+            # RuntimeError is ours and safe to show ("ESPN 401: is the league still public on
+            # ESPN?"). Anything else could carry internals, so it stays generic.
             reason = str(e) if isinstance(e, RuntimeError) else "live data unavailable"
             self.send_response(503)
             self.send_header("Content-Type", "application/json")
