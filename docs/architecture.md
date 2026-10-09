@@ -135,10 +135,12 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `scripts/trade_eval.py --scan`) and ships only trades the script passed against its ground rules: both
   lineups gain at least about a point a week, with the next four weeks counted double; the proposer's playoff
   or title odds rise and the partner's fall in neither (`site/playoffs.py`'s `trade_odds`, the same simulated
-  seasons with and without each team's lineup gain); no rival gains more than the proposer; the two sides'
+  seasons with and without each team's lineup gain); no rival (this or next week's opponent, or both teams on
+  the playoff bubble) gains more playoff plus title odds than the proposer; the two sides'
   rest-of-season value within 15%; nobody hurt changes hands; 1-for-1 or 2-for-1; nothing past
   `league.json`'s `trade_deadline_week` or the regular season. Values are FantasyPros' rest-of-season PPR
-  projections spread over each player's remaining games, byes at zero (from ESPN's public scoreboard). The card
+  projections spread over each player's remaining games, byes at zero (from ESPN's public scoreboard); once
+  the week's games have started it scores from next week, since this week's points are already banked. The card
   carries the script's numbers in a `trade` block, which the page prints as the give/get boxes and both sides'
   lineup and playoff-odds changes. The build drops a trade card with no `trade` block, and (`live_trades`) one
   whose players have since changed rosters or been ruled out, so a card never outlives its trade between runs.

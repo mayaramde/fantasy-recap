@@ -41,15 +41,15 @@ def lineup(base, extra=()):
     return starters + list(extra)
 
 
-def league(rosters, standings=None, opp_now=None, deadline=None):
+def league(rosters, standings=None, opp_now=None, deadline=None, week=WEEK):
     """A trade_eval.League built in memory, skipping the disk reads in __init__."""
     lg = object.__new__(te.League)
-    lg.week = WEEK
+    lg.week = week
     lg.rosters = rosters
     lg.opp_now, lg.opp_next = opp_now or {}, {}
     lg.schedule = {}
     players = [p for r in rosters.values() for p in r]
-    lg.vals = te.Values(players, te.ros_table(ros_rows(players)), {}, WEEK)
+    lg.vals = te.Values(players, te.ros_table(ros_rows(players)), {}, week)
     lg.standings, lg.weeks_played = standings or [], [1, 2, 3, 4] if standings else []
     lg.sims, lg._base, lg._now = 400, None, {}
     lg.reg_weeks = [w for w in lg.vals.weeks if w <= 14]
@@ -97,6 +97,20 @@ class LineupMath(unittest.TestCase):
         self.assertEqual(len(new), te.ROSTER_MAX)
 
 
+    def test_cut_is_the_player_she_would_miss_least(self):
+        # Her starting kicker scores 1 a week, the lowest on the roster, but he's her only kicker:
+        # cutting him empties a slot. A 15-a-week backup QB never starts, so he goes instead.
+        full = [dict(p) for p in TEAM_1] + [player(170, "QB", 15)]
+        full[8]["projected"] = 1                      # the K
+        full += [player(171 + i, "WR", 3 + i) for i in range(te.ROSTER_MAX - len(full))]
+        incoming = [player(900, "TE", 20)]
+        lg = league({1: full, 2: incoming})
+        new, cut = te.after_trade(full, set(), incoming, lg.vals, {900})
+        self.assertNotEqual(cut["pos"], "K")
+        total = lambda r: sum(te.team_week(r, lg.vals, w) for w in lg.vals.weeks)  # noqa: E731
+        self.assertAlmostEqual(total(new), total(full + incoming))   # the cut cost her nothing
+
+
 class Rules(unittest.TestCase):
     def setUp(self):
         self.lg = league({1: TEAM_1, 2: TEAM_2})
@@ -129,6 +143,16 @@ class Rules(unittest.TestCase):
     def test_rule_10_deadline(self):
         lg = league({1: TEAM_1, 2: TEAM_2}, deadline=WEEK - 1)
         self.assertIn(10, {f["rule"] for f in lg.quick(**FAIR_SWAP)[1]})
+
+    def test_season_over_fails_without_crashing(self):
+        lg = league({1: TEAM_1, 2: TEAM_2}, week=te.last_week() + 1)
+        res = lg.evaluate(**FAIR_SWAP)
+        self.assertFalse(res["pass"])
+        self.assertEqual(res["failures"][0]["rule"], 10)
+
+    def test_same_team_or_stranger_is_refused(self):
+        self.assertEqual(self.lg.quick(team_id=1, partner_id=1, give=[150], get=[100])[1][0]["rule"], 0)
+        self.assertEqual(self.lg.quick(team_id=1, partner_id=9, give=[150], get=[250])[1][0]["rule"], 0)
 
     def test_unknown_player_is_not_scored(self):
         res, fails = self.lg.quick(team_id=1, partner_id=2, give=[999], get=[250])
@@ -170,6 +194,42 @@ class OddsRules(unittest.TestCase):
         not_playing = self.finish(sim)
         self.assertTrue(playing["flags"]["plays_this_week"] and playing["flags"]["rival"])
         self.assertLess(te.rank(not_playing), te.rank(playing))
+
+
+    def test_rule_4_ignores_noise_for_a_near_lock(self):
+        # a near-lock proposer's odds can't move much; this week's opponent gaining a hair isn't arming her
+        r = self.finish(odds_pair((0.99, 0.99, 0.30, 0.31), (0.40, 0.402, 0.05, 0.051)), opp_now={1: 2, 2: 1})
+        self.assertNotIn(4, {f["rule"] for f in r["failures"]})
+
+    def test_rival_reasons(self):
+        self.assertEqual(te.rival_reason(True, True, True), "this_week")
+        self.assertEqual(te.rival_reason(False, True, True), "next_week")
+        self.assertEqual(te.rival_reason(False, False, True), "bubble")
+        self.assertIsNone(te.rival_reason(False, False, False))
+
+
+class Byes(unittest.TestCase):
+    def test_fantasypros_spellings_count(self):
+        playing = te.byes_to_playing({"JAC": 8, "kc": 10}, WEEK)
+        self.assertNotIn(30, playing[8])               # Jacksonville, ESPN's "jax"
+        self.assertNotIn(12, playing[10])
+        self.assertIn(30, playing[9])
+        self.assertEqual(min(playing), WEEK)
+        self.assertEqual(max(playing), te.NFL_LAST_WEEK)
+
+    def test_league_runs_through_the_last_week(self):
+        self.assertEqual(te.last_week(), 17)           # semifinal week 15, a two-week final
+
+
+class FromDisk(unittest.TestCase):
+    """League.__init__ against the committed captures, with no network."""
+
+    def test_loads_the_league(self):
+        lg = te.League(2026, [], byes={}, sims=50)
+        self.assertEqual(len(lg.rosters), 8)
+        played = max(f["week"] for f, _ in build.load_inputs(2026)[1] if f.get("complete"))
+        self.assertEqual(lg.week, played + 1)
+        self.assertTrue(lg.vals.weeks and lg.vals.weeks[-1] == te.last_week())
 
 
 class TradeOdds(unittest.TestCase):

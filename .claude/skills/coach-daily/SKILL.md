@@ -131,7 +131,7 @@ the rest are yours.
    weeks fails.
 4. (s) **Don't arm a rival.** A rival is this week's or next week's opponent, or a team as
    unsure of the playoffs as she is (both somewhere between 10% and 90%). A rival may not gain
-   more playoff odds from the deal than the proposer does.
+   more from the deal, playoff plus title odds, than the proposer does.
 5. (s) **The odds go up.** The proposer's playoff or title odds rise; the partner's fall in
    neither. Both rising ranks first.
 6. (s) **Fair-looking, never a fleece.** The two sides' rest-of-season value lands within 15%
@@ -164,8 +164,11 @@ the rest are yours.
   as `[{"team_id", "partner_id", "give": [ESPN ids], "get": [ESPN ids]}]` and run
   `trade_eval.py --ros <ros file> --proposals <file>`. `team_id` is the proposer.
 
-Check the output's `no_fantasypros_projection` list (players scored on ESPN's weekly number
-instead) and `byes_known_for_weeks` before trusting a result that leans on one of them.
+Check the output's header before trusting a result that leans on it: `no_fantasypros_projection`
+(players scored on ESPN's weekly number instead), `byes_known_for_weeks`, and
+`opponents_known_for_weeks` (rules 2 and 4 can only see opponents for the weeks listed; with this
+week or next missing, check ESPN's schedule yourself before shipping a trade between those two
+teams). `scored_from_week` is one past `week` once this week's games have started.
 
 **Choosing.** Of the passing trades (`"pass": true`), pick at most one per team (rule 9),
 preferring ones that fill her `weak_spot`, never a pair twice, and never one you couldn't
