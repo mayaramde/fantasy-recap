@@ -145,8 +145,9 @@ the rest are yours.
    player she'd have to cut.
 9. (s, plus you) **Keep it simple.** 1-for-1 or 2-for-1 only (the script); at most one trade
    card per team per day, and at most one per pair of teams (you).
-10. (s) **Respect the clock.** Nothing after the trade deadline (`league.json`'s
-    `trade_deadline_week`, once Maya has set it) or once the regular season is over.
+10. (s) **Respect the clock.** Nothing once ESPN's trade deadline has passed (`league.json`'s
+    `trade_deadline`, Dec 2 at 9am Eastern this season) or the regular season is over. The site
+    also hides every trade card from that moment, even one written that morning.
 11. **Stale cards disappear.** `site/build.py` drops a trade card as soon as a player in it
     changes rosters or is ruled out, and this skill re-runs the whole evaluation every morning.
 12. (you) **Honest about both sides.** Each card says what the partner gets out of it too. If

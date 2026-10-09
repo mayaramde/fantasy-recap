@@ -8,6 +8,7 @@ import json
 import re
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -101,6 +102,21 @@ def check_team_profiles(errors):
                         errors.append(f"team {s['team_id']}: audit card {c.get('kind')} missing {k}")
 
 
+def check_trade_deadline(errors):
+    """league.json's "trade_deadline", when set, is a time with its UTC offset. Without one the
+    site can't tell when it has passed, and trade cards would quietly outlive the deadline."""
+    raw = json.loads((ROOT / "league.json").read_text()).get("trade_deadline")
+    if raw is None:
+        return
+    try:
+        when = datetime.fromisoformat(raw)
+    except (TypeError, ValueError):
+        errors.append(f"league.json: trade_deadline {raw!r} isn't an ISO 8601 time")
+        return
+    if when.tzinfo is None:
+        errors.append(f"league.json: trade_deadline {raw!r} needs its UTC offset, e.g. -05:00 for Eastern")
+
+
 def main():
     errors = []
     files = tracked_files()
@@ -127,6 +143,7 @@ def main():
     check_capture_shape(errors)
     check_scoring_rows(errors)
     check_team_profiles(errors)
+    check_trade_deadline(errors)
 
     recap_errors, recap_warnings = check_recaps.check_all_recaps(ROOT)
     errors.extend(recap_errors)

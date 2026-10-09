@@ -19,8 +19,8 @@ trade whose `pass` is true. The rules (numbered as in the coach-daily skill):
   6  fair-looking: the two sides' rest-of-season value within FAIR_GAP of each other
   7  nobody OUT, on IR, or suspended changes hands
   9  1-for-1 or 2-for-1 only
-  10 not after the trade deadline (league.json "trade_deadline_week", when set) or once the
-     regular season is over
+  10 not once ESPN's trade deadline has passed (league.json "trade_deadline", an ISO time with
+     its offset) or the regular season is over
 
 Rules 8 (a startable bench player keeps BENCH_SHARE of his value; a team pushed over the roster
 limit cuts her least valuable player) and 12 (each side's own gain, reported honestly) are in the
@@ -45,6 +45,7 @@ import json
 import re
 import sys
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -285,7 +286,8 @@ class League:
         self._now = {}
         cfg = playoffs._config(LEAGUE)
         self.reg_weeks = [w for w in self.vals.weeks if w <= cfg["regular_season_weeks"]]
-        self.deadline = LEAGUE.get("trade_deadline_week")
+        self.deadline = build.trade_deadline()
+        self.now = datetime.now(timezone.utc)
 
     def player(self, team_id, pid):
         return next((p for p in self.rosters.get(team_id, []) if p["player_id"] == pid), None)
@@ -331,8 +333,8 @@ class League:
             fails.append({"rule": 9, "why": "only 1-for-1 and 2-for-1 trades"})
         if self.week > playoffs._config(LEAGUE)["regular_season_weeks"]:
             fails.append({"rule": 10, "why": "the regular season is over"})
-        elif self.deadline and self.week > self.deadline:
-            fails.append({"rule": 10, "why": f"past the trade deadline (week {self.deadline})"})
+        elif build.past_trade_deadline(self.now):
+            fails.append({"rule": 10, "why": f"past the trade deadline ({self.deadline:%b %-d, %-I:%M %p})"})
         if any(f["rule"] == 10 for f in fails) or not self.vals.weeks:
             return None, fails or [{"rule": 10, "why": "no weeks left to play"}]
         gp = [self.player(team_id, i) for i in give]

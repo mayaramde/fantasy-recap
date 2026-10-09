@@ -8,6 +8,7 @@ TE, FLEX (RB/WR/TE), DST, K, plus seven bench spots.
 """
 import sys
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -18,6 +19,7 @@ import playoffs as po  # noqa: E402
 import trade_eval as te  # noqa: E402
 
 WEEK = 5
+NOW = datetime(2026, 10, 9, 12, 0, tzinfo=timezone.utc)
 SPAN = te.NFL_LAST_WEEK - WEEK + 1   # games left for a player with no bye
 
 
@@ -41,7 +43,7 @@ def lineup(base, extra=()):
     return starters + list(extra)
 
 
-def league(rosters, standings=None, opp_now=None, deadline=None, week=WEEK):
+def league(rosters, standings=None, opp_now=None, week=WEEK):
     """A trade_eval.League built in memory, skipping the disk reads in __init__."""
     lg = object.__new__(te.League)
     lg.week = week
@@ -53,7 +55,8 @@ def league(rosters, standings=None, opp_now=None, deadline=None, week=WEEK):
     lg.standings, lg.weeks_played = standings or [], [1, 2, 3, 4] if standings else []
     lg.sims, lg._base, lg._now = 400, None, {}
     lg.reg_weeks = [w for w in lg.vals.weeks if w <= 14]
-    lg.deadline = deadline
+    lg.deadline = build.trade_deadline()
+    lg.now = NOW
     return lg
 
 
@@ -141,8 +144,12 @@ class Rules(unittest.TestCase):
         self.assertIn(9, self.rules(team_id=1, partner_id=2, give=[150, 151], get=[250, 251]))
 
     def test_rule_10_deadline(self):
-        lg = league({1: TEAM_1, 2: TEAM_2}, deadline=WEEK - 1)
+        deadline = build.trade_deadline()
+        lg = league({1: TEAM_1, 2: TEAM_2})
+        lg.now = deadline
         self.assertIn(10, {f["rule"] for f in lg.quick(**FAIR_SWAP)[1]})
+        lg.now = deadline - timedelta(minutes=1)
+        self.assertEqual(lg.quick(**FAIR_SWAP)[1], [])
 
     def test_season_over_fails_without_crashing(self):
         lg = league({1: TEAM_1, 2: TEAM_2}, week=te.last_week() + 1)
@@ -277,12 +284,19 @@ class SiteCards(unittest.TestCase):
         waiver = {"kind": "waiver", "level": "info", "title": "t", "text": "x"}
         self.assertTrue(build._valid_fp_card(waiver))  # other kinds are unchanged
 
+    def test_trades_disappear_at_the_deadline(self):
+        deadline = build.trade_deadline()
+        self.assertEqual(deadline.utcoffset(), timedelta(hours=-5))   # league.json's, with its offset
+        rows = lambda: [{"team_id": 1, "roster_ideas": [card()]}]  # noqa: E731
+        self.assertEqual(len(build.live_trades(rows(), self.teams(), now=deadline - timedelta(minutes=1))[0]["roster_ideas"]), 1)
+        self.assertEqual(build.live_trades(rows(), self.teams(), now=deadline)[0]["roster_ideas"], [])
+
     def test_stale_trades_disappear(self):
         rows = [{"team_id": 1, "roster_ideas": [card(), card(give=999), card(get=999)]}]
-        kept = build.live_trades(rows, self.teams())[0]["roster_ideas"]
+        kept = build.live_trades(rows, self.teams(), now=NOW)[0]["roster_ideas"]
         self.assertEqual(len(kept), 1)                  # the two naming a player who isn't there go
         rows = [{"team_id": 1, "roster_ideas": [card()]}]
-        self.assertEqual(build.live_trades(rows, self.teams(injury="OUT"))[0]["roster_ideas"], [])
+        self.assertEqual(build.live_trades(rows, self.teams(injury="OUT"), now=NOW)[0]["roster_ideas"], [])
 
 
 if __name__ == "__main__":

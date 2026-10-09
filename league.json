@@ -12,7 +12,7 @@
   "transactions": { "lineup_lock": "individual_game_time", "acquisition_system": "waivers", "acquisition_limit": null,
                     "waiver_period_days": 1, "waiver_order": "inverse_standings_weekly_reset",
                     "lock_eliminated_teams_in_playoffs": false },
-  "trade_deadline_week": null,
+  "trade_deadline": "2026-12-02T09:00:00-05:00",
   "roster_slots": { "QB": 1, "RB": 2, "WR": 2, "TE": 1, "FLEX (RB/WR/TE)": 1, "DST": 1, "K": 1, "BENCH": 7 },
   "teams": [
     { "team_id": 1, "team_name": "Amon Raw, Next Question", "manager": "Marlee" },
