@@ -31,19 +31,29 @@
       "mcp__ccd_session_mgmt__list_events",
       "mcp__terminal__read_terminal",
       "Bash(git fetch *)",
-"Bash(git checkout main)",
-"Bash(git checkout -b:*)",
-"Bash(git pull:*)",
-"Bash(git add:*)",
-"Bash(git commit:*)",
-"Bash(git push origin:*)",
-"Bash(gh pr create:*)",
-"Bash(gh pr merge:*)",
-"Bash(gh pr close:*)",
-"Bash(git worktree add:*)",
-"Bash(git worktree remove:*)",
-"Bash(python3 scripts/receive.py:*)",
-"Bash(scripts/deploy.sh --preview:*)"
+      "Bash(git checkout main)",
+      "Bash(git checkout -b:*)",
+      "Bash(git pull:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push origin:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr close:*)",
+      "Bash(git worktree add:*)",
+      "Bash(git worktree remove:*)",
+      "Bash(python3 scripts/receive.py:*)",
+      "Bash(scripts/deploy.sh --preview:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(:(){ :|:& };:)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.espn.local)",
+      "Read(./.vercel/**)"
     ],
     "ask": [
       "Bash(git push:*)",
@@ -55,16 +65,6 @@
       "Bash(gh variable:*)",
       "Bash(vercel:*)",
       "Bash(scripts/deploy.sh:*)"
-    ],
-    "deny": [
-      "Bash(rm -rf /*)",
-      "Bash(git push --force:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(:(){ :|:& };:)",
-      "Read(./.env)",
-      "Read(./.env.local)",
-      "Read(./.env.espn.local)",
-      "Read(./.vercel/**)"
     ]
   },
   "hooks": {
@@ -79,5 +79,17 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "trade-analyzer@fantasy-football-skills": true,
+    "fantasy-league-setup@fantasy-football-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "fantasy-football-skills": {
+      "source": {
+        "source": "github",
+        "repo": "derekrbreese/fantasy-football-skills"
+      }
+    }
   }
 }
