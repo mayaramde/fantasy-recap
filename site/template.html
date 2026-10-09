@@ -378,6 +378,16 @@
   .decided .tag.good { background: var(--lime); }
   .decided .tag.bad { background: var(--pink); }
   .decided .tag.info { background: var(--card); color: var(--ink); }
+  /* An evaluated trade (scripts/trade_eval.py): who goes where, then both sides' numbers */
+  .trade { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 8px; }
+  .trade-side { border: 1.5px solid var(--edge); border-radius: 8px; padding: 8px 10px; display: grid; gap: 3px; font-size: 14px; }
+  .trade-side b { font: 600 11px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .trade-math { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 6px 12px; margin: 0; }
+  .trade-math div { display: grid; gap: 2px; }
+  .trade-math dt { font-size: 12px; color: var(--muted); }
+  .trade-math dd { margin: 0; font: 600 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+  .trade-flags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .trade-flags span { font: 600 11px/1 var(--mono); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 8px; }
   .card .fit { font: 600 11px/1 var(--mono); background: var(--lime); color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 8px; transform: rotate(-2deg); white-space: nowrap; }
 
   .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
@@ -1803,7 +1813,29 @@
       <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.fills_weak_spot ? '<span class="fit">fills your weak spot</span>' : ''}${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
       <h3>${esc(it.title)}</h3>
       <p>${esc(it.text)}</p>
+      ${it.trade ? tradeBlock(it.trade) : ''}
     </article>`;
+
+  /* The numbers behind an evaluated trade card, straight from scripts/trade_eval.py: the
+     players each way, each side's lineup gain over the next few weeks, and each side's
+     playoff odds before and after. The card's text says why; this shows the receipts. */
+  const tradeBlock = (t) => {
+    const who = (xs) => xs.map((x) => `<span>${esc(x.name)}${x.pos ? ` <small>${esc(x.pos)}</small>` : ''}</span>`).join('');
+    const odds = (s) => `${pct(s.playoff[0])} → ${pct(s.playoff[1])}`;
+    const her = nameOf(t.partner_id);
+    return `
+      <div class="trade">
+        <div class="trade-side"><b>You send</b>${who(t.give)}</div>
+        <div class="trade-side"><b>You get from ${esc(her)}</b>${who(t.get)}</div>
+      </div>
+      <dl class="trade-math">
+        <div><dt>Your lineup, next few weeks</dt><dd>${signed(t.you.near)} pts a week</dd></div>
+        <div><dt>${esc(her)}'s lineup</dt><dd>${signed(t.them.near)} pts a week</dd></div>
+        <div><dt>Your playoff odds</dt><dd>${odds(t.you)}</dd></div>
+        <div><dt>${esc(her)}'s playoff odds</dt><dd>${odds(t.them)}</dd></div>
+      </dl>
+      ${t.flags && (t.flags.plays_this_week || t.flags.rival) ? `<div class="trade-flags">${t.flags.plays_this_week ? '<span>You play her this week</span>' : ''}${t.flags.rival ? '<span>Playoff rival</span>' : ''}</div>` : ''}`;
+  };
 
   const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
   const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"}. Worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
@@ -1967,7 +1999,7 @@
       <section>
         ${secHead('board', 'Worth a look')}
         ${ideas.length
-          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and your league's rosters. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and everyone's rosters. A trade only shows up here if it helps both teams. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
           : '<p class="sec-sub">No new ideas today.</p>'}
       </section>`;
   }

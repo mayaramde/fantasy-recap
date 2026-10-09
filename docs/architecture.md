@@ -42,7 +42,7 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging
   that PR is what triggers the push-deploy above.
 - **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
-  (start/sit, waiver and trade leads, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
+  (start/sit, waiver ideas, evaluated trades, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
   and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
   session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
@@ -131,6 +131,17 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   decimal or a percentage (the build rejects it); the live number stays in the computed stat pill.
 - **Authored cards** (`consensus`, `waiver`, `trade`, `fp_news`, `fp_back`, and the "Worth a look" section) come
   from `coach-daily`'s snapshot. `site/build.py` only decides whether that day's snapshot is fresh enough to merge in.
+- **Trade cards** are evaluated proposals, never leads. `coach-daily` finds candidates (its own ideas plus
+  `scripts/trade_eval.py --scan`) and ships only trades the script passed against its ground rules: both
+  lineups gain at least about a point a week, with the next four weeks counted double; the proposer's playoff
+  or title odds rise and the partner's fall in neither (`site/playoffs.py`'s `trade_odds`, the same simulated
+  seasons with and without each team's lineup gain); no rival gains more than the proposer; the two sides'
+  rest-of-season value within 15%; nobody hurt changes hands; 1-for-1 or 2-for-1; nothing past
+  `league.json`'s `trade_deadline_week` or the regular season. Values are FantasyPros' rest-of-season PPR
+  projections spread over each player's remaining games, byes at zero (from ESPN's public scoreboard). The card
+  carries the script's numbers in a `trade` block, which the page prints as the give/get boxes and both sides'
+  lineup and playoff-odds changes. The build drops a trade card with no `trade` block, and (`live_trades`) one
+  whose players have since changed rosters or been ruled out, so a card never outlives its trade between runs.
 - **Player cards** (`player_cards` in `site/build.py`): every lineup row opens into one cheeky line about his week,
   ESPN's scoring broken down stat by stat, and a few notes (his share of your total, what the injury report says
   and whether that's new, where his game is up to, what else you have at that spot). The numbers are ESPN's, the
