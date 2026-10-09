@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit, waiver, trade ideas and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
 model: inherit
 ---
 
@@ -57,10 +57,14 @@ every call (never hardcode it): `get_projections` (weekly, target week, PPR), `i
 for rostered players and any candidate you're considering, `get_ecr` (ROS, PPR) for the
 relevant positions, `get_player_ownership` (confirm a pickup is actually unowned in *this*
 league), `get_leaders` (recent weeks, for real recent form over preseason rank), and
-`get_roster(all_teams=true)` to see all 8 rosters at once.
+`get_roster(all_teams=true)` to see all 8 rosters at once. For trades (Step 5a), also
+`get_projections(projection_type="ros")` for each of QB, RB, WR, TE, K and DST with a `limit` big
+enough to cover every rostered player (200 does it): save the six responses, as returned, to one
+JSON list in the worktree's scratch space (not the repo), e.g. `/tmp/fantasy-coach-daily-<date>-ros.json`.
 
 If `waiver_finder`/`trade_finder`/`trade_analyzer` return `status: "premium_required"`, don't
-retry them — building the idea yourself from the free tools above is the point of this skill.
+retry them — building the idea yourself from the free tools above (and `scripts/trade_eval.py`
+for trades) is the point of this skill.
 - Waiver Finder's upsell has already been shown to Maya — don't repeat it.
 - Trade Finder's disclosure **hasn't** been shown yet. If a call surfaces a
   `required_user_disclosure` for it, relay it once, in this run's final summary, and persist
@@ -72,11 +76,10 @@ retry them — building the idea yourself from the free tools above is the point
 For each of the 8 teams (in `league.json` order): compare its position counts and bench depth
 against the rest of the league (from `get_roster(all_teams=true)`); cross-reference ECR,
 ownership, and recent performance for unowned adds tied to a *real* roster gap (a thin
-position, an injured starter with no backup, an RB1 with no handcuff rostered); look for
-mirror-image trade partners — a team thin exactly where another is deep. This is judgment, not
-a formula: decide what's actually worth a manager's attention, the way you would if she asked
-directly. An empty list for a team with no real gap is the right answer, not a stretch to fill
-one in.
+position, an injured starter with no backup, an RB1 with no handcuff rostered); trades are
+Step 5a's. This is judgment, not a formula: decide what's actually worth a manager's attention,
+the way you would if she asked directly. An empty list for a team with no real gap is the right
+answer, not a stretch to fill one in.
 
 The brief (Step 5b) names each team's `weak_spot`: her lowest-ranked lineup group this season. When a
 real waiver or trade option exists at that group, prefer it, and set `pos` (`QB`, `RB`, `WR`, `TE`,
@@ -91,8 +94,9 @@ explain jargon in passing). Every card is `{kind, level, title, stat, text}`:
   agreement or disagreement with it — just state what FantasyPros' numbers say.
 - `kind: "waiver"` — an unowned player (confirmed via `get_player_ownership`) worth a claim,
   tied to a real gap on that specific roster.
-- `kind: "trade"` — a lead naming both sides and the roster imbalance behind it — worth
-  floating, never a verdict that it's a good trade (no `trade_analyzer` grade backs it up).
+- `kind: "trade"` — an evaluated trade proposal from Step 5a, and only one that
+  `scripts/trade_eval.py` passed. Never a trade idea without its `trade` block: the site drops
+  those.
 - `kind: "fp_news"` / `"fp_back"` — a real day-over-day change in a rostered player's
   FantasyPros injury/news status since yesterday's snapshot (mirror the "that's new since Week
   N" pattern `site/build.py`'s `team_advice` already uses for ESPN's own injury field, but
@@ -106,6 +110,86 @@ FantasyPros' ownership numbers") — never state a FantasyPros claim as if it we
 never invent an injury/news/ranking claim no tool actually returned. `level` is `"now"` only for
 something worth acting on before this week's games lock; otherwise `"watch"` or `"info"`. A team
 with nothing real to say gets an empty list for that section, not a filler card.
+
+## Step 5a: find, evaluate and propose trades
+
+The method is the trade-analyzer plugin's (`trade-finder`, `trade-evaluation`), adapted to a
+page the whole league reads. `scripts/trade_eval.py` does the evaluating; you do the finding
+and the writing. A trade card means "we scored this for both of you and it's good for both of
+you", so nothing ships that the script didn't pass.
+
+**Ground rules.** Every proposal follows all twelve. The script enforces the ones marked (s);
+the rest are yours.
+
+1. (s) **Both teams benefit.** Each side's best starting lineup gains at least about a point a
+   week (blended, rule 3). A trade that only helps the proposer is not a proposal.
+2. (s) **Not this week's opponents.** Partners she isn't playing this week rank first. A trade
+   with this week's opponent counts as a rival trade (rule 4) and is flagged "you play her this week".
+3. (s) **The next three to four weeks, not just this one.** Gains are scored week by week over
+   the next four (byes at zero) and over the rest of the season, the near term counted double,
+   the way a bubble team has to think. A deal that wins the season but loses the next four
+   weeks fails.
+4. (s) **Don't arm a rival.** A rival is this week's or next week's opponent, or a team as
+   unsure of the playoffs as she is (both somewhere between 10% and 90%). A rival may not gain
+   more from the deal, playoff plus title odds, than the proposer does.
+5. (s) **The odds go up.** The proposer's playoff or title odds rise; the partner's fall in
+   neither. Both rising ranks first.
+6. (s) **Fair-looking, never a fleece.** The two sides' rest-of-season value lands within 15%
+   of each other. The plugin's lowball "anchor" opener doesn't apply here: the partner reads the
+   same card, and most of this league is in its first season.
+7. (s, plus you) **No injury gambles.** Nobody OUT, on IR or suspended changes hands (the
+   script). And no trade whose case rests on an injury or a return date unless FantasyPros'
+   `injury_status` and ESPN's own designation agree (you).
+8. (s) **Count the roster cost.** A startable bench player keeps about a quarter of his value
+   as injury and bye cover, and a 2-for-1 that pushes a team over the roster limit costs her the
+   player she'd have to cut.
+9. (s, plus you) **Keep it simple.** 1-for-1 or 2-for-1 only (the script); at most one trade
+   card per team per day, and at most one per pair of teams (you).
+10. (s) **Respect the clock.** Nothing after the trade deadline (`league.json`'s
+    `trade_deadline_week`, once Maya has set it) or once the regular season is over.
+11. **Stale cards disappear.** `site/build.py` drops a trade card as soon as a player in it
+    changes rosters or is ruled out, and this skill re-runs the whole evaluation every morning.
+12. (you) **Honest about both sides.** Each card says what the partner gets out of it too. If
+    she gains more per week than the proposer, say so; that's what a fair trade looks like.
+
+**Finding.** Two sources, both scored the same way:
+
+- `python3 scripts/trade_eval.py --ros <ros file> --scan` scores every 1-for-1 and 2-for-1 in
+  the league and prints up to three passing trades per team, best first. Use `--sims 4000` (the
+  default); `--byes '{"<abbr>": week}'` only if ESPN's scoreboard can't be reached.
+- Your own ideas, from the plugin's finder logic: each team's surplus against its starting slots
+  (weight running backs above receivers, since waivers refill receivers and not backs), and
+  mispriced players from `get_leaders` and ECR (buy: a top-15 share of targets or carries with a
+  points rank outside the top 30; sell: touchdowns running well ahead of the volume). Write them
+  as `[{"team_id", "partner_id", "give": [ESPN ids], "get": [ESPN ids]}]` and run
+  `trade_eval.py --ros <ros file> --proposals <file>`. `team_id` is the proposer.
+
+Check the output's header before trusting a result that leans on it: `no_fantasypros_projection`
+(players scored on ESPN's weekly number instead), `byes_known_for_weeks`, and
+`opponents_known_for_weeks` (rules 2 and 4 can only see opponents for the weeks listed; with this
+week or next missing, check ESPN's schedule yourself before shipping a trade between those two
+teams). `scored_from_week` is one past `week` once this week's games have started.
+
+**Choosing.** Of the passing trades (`"pass": true`), pick at most one per team (rule 9),
+preferring ones that fill her `weak_spot`, never a pair twice, and never one you couldn't
+explain to her in two sentences. If a trade passes for both teams as proposer, it may go on
+both pages, each from her own side. None passing is a normal day: no trade card.
+
+**Writing the card.** `kind: "trade"`, `pos` (the position she receives), `level: "watch"`
+(`"info"` when it's a rival trade), and a `trade` block copied from the script's result
+without changing a number: `partner_id`, `give` and `get` (each `{id, name, pos}`), `you` and
+`them` (each `{near, playoff, title}`), `week` and `flags`. The page prints those numbers itself, so the
+`title` and `text` carry none (no decimals, no `%`, same rule as Step 5b). The `title` is the
+offer ("Offer DeVonta Smith to Amie for D'Andre Swift"). The `text` leads with why it works for
+both rosters in plain words, gives the one-line pitch she could send ("you're deep at running
+back and thin at receiver"), and names a fallback version if there's a sensible one. Then one
+line of personality, at most, aimed at the rosters, the projections or the fantasy gods, never
+at either manager: the partner reads this card too. No fleece words ("steal", "fleece", "buy low
+from her", "sell her on"); they break rule 6's spirit in front of the person they describe. The
+`stat` pill is short, number-free, and says something true of *this* trade that isn't true of
+every one: "both odds go up" when both sides' playoff odds rise, "a straight 1-for-1" for a
+1-for-1. Never "both lineups improve": every card clears that bar. Credit FantasyPros for its
+projections.
 
 ## Step 5b: write this week's advice for the computed cards
 
@@ -199,7 +283,8 @@ One top-level entry under `weeks` for each week you wrote cards for (Step 3), ea
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
 `coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover.
 `audit` (top level, one entry per team) also comes from Step 5b; waiver and trade cards in
-`roster_ideas` carry `pos` (Step 5).
+`roster_ideas` carry `pos` (Step 5), and trade cards their `trade` block (Step 5a). A trade isn't
+tied to one week, so put it in `roster_ideas` under every week you write.
 
 ## Step 7: build, check, commit, ship the PR
 
@@ -221,7 +306,7 @@ team entry for every `team_id` in `league.json` (all 8), even when both lists ar
 
 ## Output
 
-A short summary: the PR link and whether auto-merge is on, which teams got a new waiver/trade
-idea today, any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
+A short summary: the PR link and whether auto-merge is on, which teams got a new waiver idea or
+an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
 for failing the voice gate twice, and — only the first time
 it comes up — Trade Finder's premium disclosure.

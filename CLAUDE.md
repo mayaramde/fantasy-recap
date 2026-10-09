@@ -61,7 +61,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   Maya is on the free tier. Waiver Finder is premium and its upsell has already been shown. Trade Finder and Trade
   Analyzer are premium too; relay their disclosure once, the first time either gates a call
   (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `coach-daily` builds its
-  start/sit, waiver and trade ideas from free-tier tools instead of the gated finders.
+  start/sit and waiver ideas from free-tier tools instead of the gated finders, and evaluates trades itself with
+  `scripts/trade_eval.py` on FantasyPros' free rest-of-season projections.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
   `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
   computed card (keyed by situation, see `docs/architecture.md`) and, top level, each team's written season-audit
@@ -94,11 +95,12 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
   `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
-  `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for), `deploy.sh` + `vercel_build.sh` (deploy),
+  `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for),
+  `trade_eval.py` (finds and scores trades for both teams against `coach-daily`'s ground rules; only a passing trade becomes a card), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
   `fetch_news.py` (ESPN headlines for the Week hub, best effort)
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
-  profile, the playoff odds, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
+  profile, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
   `hub_preview.py` renders the Week hub's two states for a look in a browser
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 

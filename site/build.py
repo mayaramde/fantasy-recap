@@ -204,7 +204,45 @@ def _fp_fresh(fp):
 
 def _valid_fp_card(it):
     return (isinstance(it, dict) and it.get("kind") and it.get("level") in LEVELS
-            and it.get("title") and it.get("text"))
+            and it.get("title") and it.get("text") and (it["kind"] != "trade" or _valid_trade(it.get("trade"))))
+
+
+def _valid_trade(t):
+    """A trade card's `trade` block, as coach-daily copies it from scripts/trade_eval.py: who it's
+    with, the players each way, and both sides' numbers. A trade card without one is a lead nobody
+    evaluated, and the Coach page no longer shows those."""
+    def players(xs):
+        return (isinstance(xs, list) and xs
+                and all(isinstance(x, dict) and type(x.get("id")) is int and x.get("name") for x in xs))
+
+    def side(s):
+        return (isinstance(s, dict) and isinstance(s.get("near"), (int, float))
+                and all(isinstance(s.get(k), list) and len(s[k]) == 2 for k in ("playoff", "title")))
+
+    return (isinstance(t, dict) and type(t.get("partner_id")) is int and players(t.get("give"))
+            and players(t.get("get")) and side(t.get("you")) and side(t.get("them")))
+
+
+# An injury designation that takes a player out of a trade (scripts/trade_eval.py's rule 7).
+_CANT_PLAY = {"OUT", "INJURY_RESERVE", "SUSPENSION"}
+
+
+def live_trades(rows, teams):
+    """Drop every trade card that no longer describes the league: a player in it has changed
+    rosters, or has since been ruled out. coach-daily re-runs the evaluation every morning; this
+    keeps a card from outliving its trade between runs. `rows` are advice_payload()'s, `teams`
+    the facts-shaped teams they were built from."""
+    roster = {t["team_id"]: {p["player_id"]: p for p in t["starters"] + t["bench"]} for t in teams}
+
+    def holds(team_id, players):
+        mine = roster.get(team_id, {})
+        return all(x["id"] in mine and mine[x["id"]].get("injury_status") not in _CANT_PLAY for x in players)
+
+    for row in rows:
+        row["roster_ideas"] = [it for it in row["roster_ideas"] if it.get("kind") != "trade"
+                               or (holds(row["team_id"], it["trade"]["give"])
+                                   and holds(it["trade"]["partner_id"], it["trade"]["get"]))]
+    return rows
 
 
 def fantasypros_cards(team_id, fp, week):
@@ -911,7 +949,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
                                     states_known, projected, week_open, fp_items, fp_ideas,
                                     written, written_summary))
-    return rows_out
+    return live_trades(rows_out, teams)
 
 
 # ---------- midweek landing page: two computed cards for a week nobody's watching live ----------

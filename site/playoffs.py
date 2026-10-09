@@ -144,13 +144,19 @@ def _random_pairs(ids, rng):
     return list(zip(ids[::2], ids[1::2]))
 
 
-def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed, watch=None):
+def _simulate(teams, weeks_played, cfg, schedule, n_sims, seed, watch=None, shift=None):
     """`watch` names one remaining week. Every simulated season is then also filed under who won
     each of that week's games, so stakes() can read a team's odds given a win and given a loss off
-    the same seasons, with every other game left to chance."""
+    the same seasons, with every other game left to chance.
+
+    `shift` ({team id: points per week}) moves a team's weekly mean, for trade_odds(). It never
+    changes how many random numbers a season draws, so the same seed with and without it plays
+    the same seasons and the difference is the shift alone."""
     ids = [t["id"] for t in teams]
     n = len(ids)
     mu, sigma = _ratings(teams)
+    if shift:
+        mu = {i: m + shift.get(i, 0.0) for i, m in mu.items()}
     played = set(weeks_played)
     remaining = [w for w in range(1, cfg["regular_season_weeks"] + 1) if w not in played]
     n_po = min(cfg["teams"], n)
@@ -321,6 +327,30 @@ def _build(teams, weeks_played, cfg, sched, n_sims, key):
     return {"config": cfg, "sims": n_sims, "sigma": round(now["sigma"], 2), "games_left": games_left,
             "real_schedule": all(w in sched for w in now["remaining"]),
             "weeks_played": weeks_played, "now_cut": now_cut, "bracket": bracket, "teams": rows}
+
+
+# ---------- trade_odds: what a trade does to both teams' odds ----------
+
+def trade_odds(standings, weeks_played, league, shift, schedule=None, n_sims=8000):
+    """Every team's playoff and title odds today and with `shift` applied ({team id: points per week},
+    e.g. two teams' lineup gains from a trade), from the same simulated seasons, so a small change is
+    the trade and not the dice. {"before": {id: {"playoff", "title"}}, "after": {...}}, or None before
+    any week has been played or after the regular season. Never raises on a bad shift: unknown ids are
+    ignored."""
+    cfg = _config(league)
+    weeks_played = sorted(w for w in weeks_played if w <= cfg["regular_season_weeks"])
+    if not weeks_played or not standings or len(weeks_played) >= cfg["regular_season_weeks"]:
+        return None
+    teams = _teams(standings, cfg["regular_season_weeks"])
+    sched = _schedule(schedule, [t["id"] for t in teams])
+    seed = int.from_bytes(_digest(teams, weeks_played, cfg, sched, n_sims), "big")
+
+    def odds(sim):
+        return {i: {"playoff": round(s["playoff"], 4), "title": round(s["title"], 4)} for i, s in sim["teams"].items()}
+
+    before = odds(_simulate(teams, weeks_played, cfg, sched, n_sims, seed))
+    after = odds(_simulate(teams, weeks_played, cfg, sched, n_sims, seed, shift=shift))
+    return {"before": before, "after": after}
 
 
 # ---------- stakes: what this week's game does to a team's playoff odds ----------

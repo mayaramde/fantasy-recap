@@ -378,6 +378,16 @@
   .decided .tag.good { background: var(--lime); }
   .decided .tag.bad { background: var(--pink); }
   .decided .tag.info { background: var(--card); color: var(--ink); }
+  /* An evaluated trade (scripts/trade_eval.py): who goes where, then both sides' numbers */
+  .trade { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 8px; }
+  .trade-side { border: 1.5px solid var(--edge); border-radius: 8px; padding: 8px 10px; display: grid; gap: 3px; font-size: 14px; }
+  .trade-side b { font: 600 11px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .trade-math { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 6px 12px; margin: 0; }
+  .trade-math div { display: grid; gap: 2px; }
+  .trade-math dt { font-size: 12px; color: var(--muted); }
+  .trade-math dd { margin: 0; font: 600 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+  .trade-flags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .trade-flags span { font: 600 11px/1 var(--mono); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 8px; }
   .card .fit { font: 600 11px/1 var(--mono); background: var(--lime); color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 8px; transform: rotate(-2deg); white-space: nowrap; }
 
   .box-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
@@ -1803,7 +1813,38 @@
       <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.fills_weak_spot ? '<span class="fit">fills your weak spot</span>' : ''}${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
       <h3>${esc(it.title)}</h3>
       <p>${esc(it.text)}</p>
+      ${it.trade ? tradeBlock(it.trade) : ''}
     </article>`;
+
+  /* The numbers behind an evaluated trade card, straight from scripts/trade_eval.py: the
+     players each way, each side's lineup gain over the next few weeks, and each side's
+     playoff odds before and after. The card's text says why; this shows the receipts. */
+  const tradeBlock = (t) => {
+    const who = (xs) => xs.map((x) => `<span>${esc(x.name)}${x.pos ? ` <small>${esc(x.pos)}</small>` : ''}</span>`).join('');
+    // A trade can pass on title odds alone (a near-lock's playoff odds barely move), so show
+    // whichever of the two her odds actually moved on.
+    const onTitle = Math.abs(t.you.playoff[1] - t.you.playoff[0]) < 0.005;
+    const kind = onTitle ? 'title' : 'playoff';
+    const odds = (s) => `${pct(s[kind][0])} → ${pct(s[kind][1])}`;
+    const gain = (n) => (Math.abs(n) < 0.05 ? 'about even' : `${signed(n)} pts a week`);
+    const her = nameOf(t.partner_id);
+    const f = t.flags || {};
+    const sticker = f.plays_this_week ? `You play her in Week ${t.week}`
+      : f.rival === 'next_week' ? `You play her in Week ${t.week + 1}`
+      : f.rival === 'bubble' ? "You're both on the playoff bubble" : '';
+    return `
+      <div class="trade">
+        <div class="trade-side"><b>You send</b>${who(t.give)}</div>
+        <div class="trade-side"><b>You get from ${esc(her)}</b>${who(t.get)}</div>
+      </div>
+      <dl class="trade-math">
+        <div><dt>Your lineup, next 4 weeks</dt><dd>${gain(t.you.near)}</dd></div>
+        <div><dt>${esc(her)}'s lineup</dt><dd>${gain(t.them.near)}</dd></div>
+        <div><dt>Your ${kind} odds</dt><dd>${odds(t.you)}</dd></div>
+        <div><dt>${esc(her)}'s ${kind} odds</dt><dd>${odds(t.them)}</dd></div>
+      </dl>
+      ${sticker && t.week ? `<div class="trade-flags"><span>${esc(sticker)}</span></div>` : ''}`;
+  };
 
   const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
   const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"}. Worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
@@ -1967,7 +2008,7 @@
       <section>
         ${secHead('board', 'Worth a look')}
         ${ideas.length
-          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and your league's rosters. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">Roster ideas from FantasyPros' rankings and everyone's rosters. A trade only shows up here if it helps both teams. Ideas, not orders.</p><div class="cards">${ideas.map(adviceCard).join('')}</div>`
           : '<p class="sec-sub">No new ideas today.</p>'}
       </section>`;
   }
