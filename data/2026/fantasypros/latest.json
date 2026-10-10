@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T18:17:10Z",
+  "generated_at": "2026-10-10T15:01:55Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "weeks": {},
@@ -106,6 +106,10 @@
       "pos:WR3:DST8": {
         "title": "Receivers are solid. Defense is the real gap.",
         "text": "Your wide receivers rank solidly in the top half of the league. Your defense ranks dead last, dragging the rest of the roster down like it's trying to make a point."
+      },
+      "proj:over:4239993:15847": {
+        "title": "Tee Higgins is out-producing the projection machine",
+        "text": "Higgins keeps beating his weekly number by a solid margin, no slowdown in sight. Kelce's coming in a touch under his most weeks."
       }
     }
   }
