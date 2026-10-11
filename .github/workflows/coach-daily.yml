@@ -1,0 +1,190 @@
+name: coach-daily
+
+# The daily Coach cards (the `coach-daily` skill), run by Claude Code in GitHub Actions.
+# Claude writes data/2026/fantasypros/latest.json and commits it on a local branch; it has
+# no push credential and never sees a Vercel token. The steps after it check that the
+# commit touches only that file, then push it and open the auto-merging PR. Merging that
+# PR triggers live-update.yml's push deploy, same as before.
+#
+# Repo settings (Settings → Secrets and variables → Actions), set by Maya:
+#   secrets: CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`) or ANTHROPIC_API_KEY
+#            RECAP_BOT_TOKEN: fine-grained token for this repo, Contents + Pull requests
+#              read/write. A PR opened with the default GITHUB_TOKEN doesn't trigger
+#              `checks`, so auto-merge would wait forever, and its merge wouldn't deploy.
+#            FANTASYPROS_MCP_URL, FANTASYPROS_MCP_AUTH (optional): a FantasyPros MCP
+#              endpoint and its Authorization header value. Without them the run is
+#              ESPN-only: written copy for the computed cards and the season audit, but
+#              no FantasyPros start/sit, waiver or trade cards.
+
+on:
+  schedule:
+    - cron: "41 12 * * *"   # daily, 8:41 AM EDT / 7:41 AM EST (off the hour on purpose)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run Claude and validate its commit, but don't push or open a PR"
+        type: boolean
+        default: false
+
+concurrency:
+  group: coach-daily
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+jobs:
+  coach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          # Claude runs in this checkout; leave no credential in it that could push.
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      # The live week and next week are never committed, so capture them here, exactly as
+      # live-update does. Next week is best effort for the same reason it is there.
+      - name: Capture current week from ESPN
+        run: |
+          node scripts/capture_node.mjs current > "$RUNNER_TEMP/capture.json" 2> "$RUNNER_TEMP/capture-stderr.log" || { cat "$RUNNER_TEMP/capture-stderr.log" >&2; exit 1; }
+          cat "$RUNNER_TEMP/capture-stderr.log" >&2
+      - name: Capture next week from ESPN (best effort)
+        continue-on-error: true
+        run: node scripts/capture_node.mjs next
+      - name: Analyze
+        run: python3 scripts/analyze.py
+
+      # coach-daily's Step 2 reads yesterday's snapshot from an unmerged coach-daily PR when
+      # there is one. Claude has no GitHub access here, so hand it that file.
+      - name: Fetch the newest open coach-daily snapshot, if any
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pr_branch=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --search "head:coach-daily-" \
+            --json headRefName,createdAt --jq 'sort_by(.createdAt) | last | .headRefName // empty')
+          if [ -n "$pr_branch" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/contents/data/2026/fantasypros/latest.json?ref=$pr_branch" \
+              -H "Accept: application/vnd.github.raw" > "$RUNNER_TEMP/open-pr-latest.json" || rm -f "$RUNNER_TEMP/open-pr-latest.json"
+          fi
+
+      - name: Configure FantasyPros MCP (optional)
+        id: mcp
+        env:
+          FP_URL: ${{ secrets.FANTASYPROS_MCP_URL }}
+          FP_AUTH: ${{ secrets.FANTASYPROS_MCP_AUTH }}
+        run: |
+          if [ -n "$FP_URL" ]; then
+            python3 - <<'PY'
+          import json, os
+          server = {"type": "http", "url": os.environ["FP_URL"]}
+          if os.environ.get("FP_AUTH"):
+              server["headers"] = {"Authorization": os.environ["FP_AUTH"]}
+          path = os.path.join(os.environ["RUNNER_TEMP"], "mcp.json")
+          with open(path, "w") as f:
+              json.dump({"mcpServers": {"fantasypros": server}}, f)
+          PY
+            echo "args=--mcp-config $RUNNER_TEMP/mcp.json" >> "$GITHUB_OUTPUT"
+            echo "FantasyPros MCP configured"
+          else
+            echo "No FANTASYPROS_MCP_URL secret: ESPN-only run"
+          fi
+
+      - name: Git identity for Claude's local commit
+        run: |
+          git config user.name "fantasy-recap bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "TODAY=$(TZ=America/New_York date +%F)" >> "$GITHUB_ENV"
+
+      - name: Run coach-daily with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Run the coach-daily skill for ${{ env.TODAY }}, through fantasy-orchestrator, in
+            GitHub Actions mode (see "GitHub Actions mode" in the fantasy-orchestrator skill).
+
+            - This checkout is a fresh origin/main with this week's and next week's ESPN data
+              already captured and analyzed. Skip coach-daily's worktree and git fetch: run
+              `git checkout -b coach-daily-${{ env.TODAY }}` here and work in this checkout.
+            - Yesterday's snapshot from an unmerged coach-daily PR, if one is open, is at
+              ${{ runner.temp }}/open-pr-latest.json (absent means none is open; use main's).
+            - Stop after Step 7.2: commit only data/2026/fantasypros/latest.json on that
+              branch. Don't push, open or close PRs, or deploy; the workflow does that.
+            - Write the Output summary to ${{ runner.temp }}/claude-summary.md. Its first line
+              must be exactly one of `RESULT: committed`, `RESULT: nothing-to-do` (season
+              over), or `RESULT: blocked` followed by a line saying what stopped you.
+          claude_args: >-
+            ${{ steps.mcp.outputs.args }}
+            --allowedTools "Skill,Agent,Read,Write,Edit,Glob,Grep,TodoWrite,mcp__fantasypros,Bash(python3:*),Bash(node scripts/capture_node.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout -b:*),Bash(git branch:*),Bash(git add:*),Bash(git commit:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Bash(cp:*),Bash(date:*)"
+
+      - name: Check Claude's result
+        id: result
+        run: |
+          summary="$RUNNER_TEMP/claude-summary.md"
+          test -s "$summary" || { echo "Claude wrote no summary"; exit 1; }
+          cat "$summary" >> "$GITHUB_STEP_SUMMARY"
+          result=$(head -1 "$summary" | sed -n 's/^RESULT: *//p')
+          echo "result=$result" >> "$GITHUB_OUTPUT"
+          case "$result" in
+            committed|nothing-to-do) ;;
+            *) echo "Claude reported: $(head -2 "$summary" | tail -1)"; exit 1 ;;
+          esac
+
+      # The only gate between Claude's commit and an auto-merging PR, so it's strict: one
+      # branch, commits on top of main, and exactly one file changed.
+      - name: Validate the commit
+        if: steps.result.outputs.result == 'committed'
+        run: |
+          branch=$(git branch --show-current)
+          test "$branch" = "coach-daily-$TODAY" || { echo "unexpected branch: $branch"; exit 1; }
+          git merge-base --is-ancestor origin/main HEAD
+          changed=$(git diff --name-only origin/main...HEAD)
+          echo "$changed"
+          test "$changed" = "data/2026/fantasypros/latest.json" || { echo "commit touches more than latest.json"; exit 1; }
+          python3 -c "import json; json.load(open('data/2026/fantasypros/latest.json'))"
+
+      - name: Push and open the auto-merging PR
+        if: steps.result.outputs.result == 'committed' && github.event.inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.RECAP_BOT_TOKEN }}
+        run: |
+          branch="coach-daily-$TODAY"
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
+          body=$(sed 1d "$RUNNER_TEMP/claude-summary.md"; printf '\n\nOpened by the `coach-daily` workflow: %s\n' "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID")
+          url=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$branch" --state open --json url --jq '.[0].url // empty')
+          [ -n "$url" ] || url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
+            --title "Coach: daily FantasyPros cards ($TODAY)" --body "$body")
+          gh pr merge "$url" --repo "$GITHUB_REPOSITORY" --auto --squash --delete-branch
+          # Older coach-daily PRs are superseded: the file is a rolling snapshot.
+          gh pr list --repo "$GITHUB_REPOSITORY" --state open --search "head:coach-daily-" --json number,headRefName \
+            --jq ".[] | select(.headRefName != \"$branch\") | .number" |
+            while read -r n; do gh pr close "$n" --repo "$GITHUB_REPOSITORY" --delete-branch --comment "Superseded by $url"; done
+          echo "PR: $url" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="A coach-daily run failed or stopped. $(sed -n 2p "$RUNNER_TEMP/claude-summary.md" 2>/dev/null)
+
+          Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "coach-daily failing"' --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "coach-daily failing" --assignee "$GITHUB_REPOSITORY_OWNER" --body "$body"
+          fi

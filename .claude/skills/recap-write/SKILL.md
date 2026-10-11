@@ -78,6 +78,9 @@ draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
 3. Run `scripts/deploy.sh --preview` from the tree that holds the draft (see `recap-ship` Step 1
    for the on-disk check) and share the preview URL with Maya.
 
+In GitHub Actions (fantasy-orchestrator's "GitHub Actions mode"), do item 1 only. The
+`weekly-recap` workflow pushes, opens the PR with auto-merge, and deploys and links the preview.
+
 ## Output
 
 `recaps/2026/week-NN.json` with `status: "draft"`, `check.py`-clean, fact-checker-PASSed and

@@ -1,0 +1,211 @@
+name: weekly-recap
+
+# Drafts last week's recap (fantasy-orchestrator → recap-capture → recap-write, with the
+# fact-check and voice gates) with Claude Code in GitHub Actions, then opens the
+# `Week NN recap draft` PR and deploys a review preview. It stops there: publishing still
+# waits for Maya's approval of the preview (recap-ship, from a Claude session).
+#
+# Claude commits the draft on a local recap-week-NN branch. It has no push credential and
+# never sees the Vercel token; the steps after it validate the commit, push it, open the PR
+# and deploy the preview.
+#
+# Secrets: the same as coach-daily.yml (CLAUDE_CODE_OAUTH_TOKEN or ANTHROPIC_API_KEY,
+# RECAP_BOT_TOKEN, optional FANTASYPROS_MCP_URL / FANTASYPROS_MCP_AUTH), plus live-update's
+# VERCEL_TOKEN and VERCEL_ORG_ID / VERCEL_PROJECT_ID for the preview. Without FantasyPros
+# the recap is written from ESPN alone and names no injury causes (recap-write's rule).
+
+on:
+  schedule:
+    # Tuesdays, after Monday night's stats settle. The later runs are retries for a week
+    # that wasn't final yet; once a draft exists they find nothing to do.
+    - cron: "17 12 * * 2"   # 8:17 AM EDT / 7:17 AM EST
+    - cron: "17 17 * * 2"   # 1:17 PM EDT
+    - cron: "17 12 * * 3"   # Wednesday morning, last try
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "Week to draft (blank: the most recent final week with no recap)"
+        type: string
+        default: ""
+      dry_run:
+        description: "Run Claude and validate its commit, but don't push, open a PR or deploy"
+        type: boolean
+        default: false
+
+concurrency:
+  group: weekly-recap
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
+jobs:
+  recap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      # A draft already in review means this week is handled, whatever its week number.
+      - name: Skip if a recap draft PR is already open
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          open=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --search "head:recap-week-" --json url --jq '.[0].url // empty')
+          if [ -n "$open" ] && [ -z "${{ github.event.inputs.week }}" ]; then
+            echo "A recap draft is already open: $open" | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure FantasyPros MCP (optional)
+        id: mcp
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          FP_URL: ${{ secrets.FANTASYPROS_MCP_URL }}
+          FP_AUTH: ${{ secrets.FANTASYPROS_MCP_AUTH }}
+        run: |
+          if [ -n "$FP_URL" ]; then
+            python3 - <<'PY'
+          import json, os
+          server = {"type": "http", "url": os.environ["FP_URL"]}
+          if os.environ.get("FP_AUTH"):
+              server["headers"] = {"Authorization": os.environ["FP_AUTH"]}
+          path = os.path.join(os.environ["RUNNER_TEMP"], "mcp.json")
+          with open(path, "w") as f:
+              json.dump({"mcpServers": {"fantasypros": server}}, f)
+          PY
+            echo "args=--mcp-config $RUNNER_TEMP/mcp.json" >> "$GITHUB_OUTPUT"
+            echo "FantasyPros MCP configured"
+          else
+            echo "No FANTASYPROS_MCP_URL secret: ESPN-only run"
+          fi
+
+      - name: Git identity for Claude's local commit
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          git config user.name "fantasy-recap bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Draft the recap with Claude
+        if: steps.gate.outputs.skip != 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Draft the ${{ github.event.inputs.week && format('week {0}', github.event.inputs.week) || 'latest' }}
+            recap, through fantasy-orchestrator, in GitHub Actions mode (see "GitHub Actions
+            mode" in the fantasy-orchestrator skill).
+
+            - This checkout is a fresh origin/main, and no recap draft PR is open. If the
+              target week already has a recap on main, stop with `RESULT: nothing-to-do`.
+            - Stop after recap-write Step 4.1: the draft committed on its recap-week-NN
+              branch. Don't push, open a PR, or deploy; the workflow does that.
+            - Write a summary to ${{ runner.temp }}/claude-summary.md. Its first line must be
+              exactly one of `RESULT: drafted week NN` (NN zero-padded), `RESULT: not-ready`
+              (the week isn't final yet), `RESULT: nothing-to-do`, or `RESULT: blocked`. Then
+              a line saying why for anything but drafted, then the draft's headline, dek,
+              and the fact-check and voice-check verdicts.
+          claude_args: >-
+            ${{ steps.mcp.outputs.args }}
+            --allowedTools "Skill,Agent,Read,Write,Edit,Glob,Grep,TodoWrite,mcp__fantasypros,Bash(python3:*),Bash(node scripts/capture_node.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(git branch:*),Bash(git add:*),Bash(git commit:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Bash(date:*)"
+
+      - name: Check Claude's result
+        id: result
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          summary="$RUNNER_TEMP/claude-summary.md"
+          test -s "$summary" || { echo "Claude wrote no summary"; exit 1; }
+          cat "$summary" >> "$GITHUB_STEP_SUMMARY"
+          line=$(head -1 "$summary")
+          case "$line" in
+            "RESULT: drafted week "[0-9][0-9])
+              echo "result=drafted" >> "$GITHUB_OUTPUT"
+              echo "week=${line##* }" >> "$GITHUB_OUTPUT" ;;
+            "RESULT: not-ready"|"RESULT: nothing-to-do")
+              echo "result=${line#RESULT: }" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Claude reported: $line / $(sed -n 2p "$summary")"; exit 1 ;;
+          esac
+
+      # The draft PR auto-merges, so this is the gate: the right branch, on top of main,
+      # touching only that week's recap and data (plus the player-name cache), and still a
+      # draft. Publishing is recap-ship's job, never this workflow's.
+      - name: Validate the commit
+        if: steps.result.outputs.result == 'drafted'
+        env:
+          WEEK: ${{ steps.result.outputs.week }}
+        run: |
+          branch=$(git branch --show-current)
+          test "$branch" = "recap-week-$WEEK" || { echo "unexpected branch: $branch"; exit 1; }
+          git merge-base --is-ancestor origin/main HEAD
+          git diff --name-only origin/main...HEAD | tee "$RUNNER_TEMP/changed.txt"
+          bad=$(grep -vE "^(recaps/2026/week-$WEEK\.json|data/2026/week-$WEEK/[^/]+\.json|data/player_names\.json)$" "$RUNNER_TEMP/changed.txt" || true)
+          test -z "$bad" || { echo "commit touches files outside the week's recap: $bad"; exit 1; }
+          grep -qx "recaps/2026/week-$WEEK.json" "$RUNNER_TEMP/changed.txt"
+          python3 -c "import json,sys; s=json.load(open('recaps/2026/week-$WEEK.json')).get('status'); sys.exit(0 if s=='draft' else f'status is {s!r}, not draft')"
+          python3 scripts/check.py
+
+      - name: Push and open the draft PR
+        id: pr
+        if: steps.result.outputs.result == 'drafted' && github.event.inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.RECAP_BOT_TOKEN }}
+          WEEK: ${{ steps.result.outputs.week }}
+        run: |
+          branch="recap-week-$WEEK"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
+          body=$(sed 1d "$RUNNER_TEMP/claude-summary.md"; printf '\n\nDrafted by the `weekly-recap` workflow: %s\nA draft never shows on the league site; publishing waits for your approval of the preview.\n' "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID")
+          url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" --title "Week $WEEK recap draft" --body "$body")
+          gh pr merge "$url" --repo "$GITHUB_REPOSITORY" --auto --squash
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "PR: $url" >> "$GITHUB_STEP_SUMMARY"
+
+      # recap-write's review preview. Built from this checkout, which holds the draft; the
+      # draft-on-disk check is recap-ship Step 1's, already guaranteed by "Validate".
+      - name: Deploy the review preview
+        if: steps.pr.outputs.url
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+          GH_TOKEN: ${{ secrets.RECAP_BOT_TOKEN }}
+          PR_URL: ${{ steps.pr.outputs.url }}
+        run: |
+          npm install --global vercel@60
+          python3 -m pip install --quiet uv
+          scripts/deploy.sh --preview | tee "$RUNNER_TEMP/deploy.log"
+          preview=$(grep -Eo 'https://[A-Za-z0-9.-]+\.vercel\.app' "$RUNNER_TEMP/deploy.log" | tail -1)
+          test -n "$preview"
+          gh pr comment "$PR_URL" --body "Review preview: $preview (behind your Vercel login). Say the word in a Claude session to publish it."
+          echo "Preview: $preview" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Alert on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="The weekly-recap run failed or stopped short of a draft. $(sed -n 1,2p "$RUNNER_TEMP/claude-summary.md" 2>/dev/null)
+
+          Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "weekly-recap failing"' --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "weekly-recap failing" --assignee "$GITHUB_REPOSITORY_OWNER" --body "$body"
+          fi
