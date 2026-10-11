@@ -83,7 +83,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `data/<season>/news/latest.json`: ESPN headlines about rostered players, for the Week hub (uncommitted)
 - `data/<season>/schedule.json` (optional): `{"<week>": [[team_id, team_id], ...]}`, the real remaining matchups for the
   playoff odds; without it they draw random opponents
-- `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
+- `data/<season>/fantasypros/latest.json`: the `coach-daily` workflow's rolling snapshot of FantasyPros-sourced Coach
   cards and roster ideas (committed)
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
@@ -101,6 +101,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `dev.py` (`npm run dev`, alias `dev:vercel` for v0: local server for `web-preview/`, or `web/` with `--prod`, plus `/api/live`; rebuilds and reloads on change; never a deploy path),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
   `fetch_news.py` (ESPN headlines for the Week hub, best effort)
+- `.github/workflows/`: `checks.yml`, `live-update.yml` (capture + deploy), and the two scheduled Claude runs,
+  `weekly-recap.yml` (drafts the recap) and `coach-daily.yml` (the Coach cards); see `docs/architecture.md`
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
   profile, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
   `hub_preview.py` renders the Week hub's two states for a look in a browser
