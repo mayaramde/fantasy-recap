@@ -99,7 +99,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for),
   `trade_eval.py` (finds and scores trades for both teams against `coach-daily`'s ground rules; only a passing trade becomes a card), `deploy.sh` + `vercel_build.sh` (deploy),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
-  `fetch_news.py` (ESPN headlines for the Week hub, best effort)
+  `fetch_news.py` (ESPN headlines for the Week hub, best effort),
+  `dev_server.py` (`npm run dev:vercel`: builds and serves the draft copy, as a branch preview does, plus `/api/live` on
+  `$PORT`, for v0 or a local look; never a deploy path)
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
   profile, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
   `hub_preview.py` renders the Week hub's two states for a look in a browser
