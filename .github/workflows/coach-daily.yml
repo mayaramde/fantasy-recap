@@ -85,11 +85,12 @@ jobs:
         run: |
           # Only this repo's own branches: the repo is public, so anyone can open a fork PR
           # with a branch named coach-daily-anything.
+          mkdir -p .ci-out
           pr_branch=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json headRefName,createdAt,isCrossRepository \
             --jq '[.[] | select((.isCrossRepository | not) and (.headRefName | startswith("coach-daily-")))] | sort_by(.createdAt) | last | .headRefName // empty')
           if [ -n "$pr_branch" ]; then
             gh api "repos/$GITHUB_REPOSITORY/contents/data/2026/fantasypros/latest.json?ref=$pr_branch" \
-              -H "Accept: application/vnd.github.raw" > "$RUNNER_TEMP/open-pr-latest.json" || rm -f "$RUNNER_TEMP/open-pr-latest.json"
+              -H "Accept: application/vnd.github.raw" > .ci-out/open-pr-latest.json || rm -f .ci-out/open-pr-latest.json
           fi
 
       - name: Configure FantasyPros MCP (optional)
@@ -113,6 +114,7 @@ jobs:
           fi
 
       - name: Run coach-daily with Claude
+        id: claude
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -127,10 +129,11 @@ jobs:
               `git checkout -b coach-daily-${{ steps.today.outputs.today }}` here and work in
               this checkout.
             - Yesterday's snapshot from an unmerged coach-daily PR, if one is open, is at
-              ${{ runner.temp }}/open-pr-latest.json (absent means none is open; use main's).
+              .ci-out/open-pr-latest.json in this checkout (absent means none is open; use main's).
             - Stop after Step 7.2: commit only data/2026/fantasypros/latest.json on that
               branch. Don't push, open or close PRs, or deploy; the workflow does that.
-            - Write the Output summary to ${{ runner.temp }}/claude-summary.md. Its first line
+            - Write the Output summary to .ci-out/claude-summary.md in this checkout (git-ignored,
+              never commit it). Its first line
               must be exactly one of `RESULT: committed`, `RESULT: nothing-to-do` (season
               over), or `RESULT: blocked` followed by a line saying what stopped you.
           claude_args: >-
@@ -144,9 +147,31 @@ jobs:
         if: always()
         env:
           TODAY: ${{ steps.today.outputs.today }}
+          EXEC_FILE: ${{ steps.claude.outputs.execution_file }}
         run: |
+          # Claude's own output is hidden (the logs are public), so name what it was refused.
+          if [ -f "$EXEC_FILE" ]; then
+            python3 - "$EXEC_FILE" <<'PYX'
+          import json, sys
+          def walk(x):
+              if isinstance(x, dict):
+                  for d in x.get("permission_denials") or []:
+                      yield d
+                  for v in x.values():
+                      yield from walk(v)
+              elif isinstance(x, list):
+                  for v in x:
+                      yield from walk(v)
+          try:
+              data = json.load(open(sys.argv[1]))
+          except Exception as e:
+              sys.exit(f"could not read the execution file: {e}")
+          for d in walk(data):
+              print("permission denied:", d.get("tool_name"), json.dumps(d.get("tool_input"))[:200])
+          PYX
+          fi
           mkdir -p "$RUNNER_TEMP/out"
-          summary="$RUNNER_TEMP/claude-summary.md"
+          summary=.ci-out/claude-summary.md
           [ -s "$summary" ] || printf 'RESULT: blocked\nClaude wrote no summary (it errored or ran out of time).\n' > "$summary"
           cp "$summary" "$RUNNER_TEMP/out/summary.md"
           cat "$summary" >> "$GITHUB_STEP_SUMMARY"
