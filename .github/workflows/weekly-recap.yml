@@ -170,9 +170,15 @@ jobs:
               exactly one of `RESULT: drafted`, `RESULT: not-ready` (the week isn't final
               yet), or `RESULT: blocked`. Then a line saying why for anything but drafted,
               then the draft's headline and dek and the fact-check and voice-check verdicts.
+            - Keep scratch files in .ci-out/ (never /tmp or anywhere outside this checkout),
+              and run one command at a time rather than chaining many with ; or &&.
+              If a command is refused, try a simpler form (read a script's output directly, or
+              save a file with the Write tool instead of shell redirection) before giving up.
+            - Always write that summary before you finish, including when you stop early or
+              something fails: an unexplained stop costs a whole run to diagnose.
           claude_args: >-
             ${{ steps.mcp.outputs.args }}
-            --allowedTools "Skill,Agent,Read,Write,Edit,Glob,Grep,TodoWrite,mcp__fantasypros,Bash(python3:*),Bash(node scripts/capture_node.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(git branch:*),Bash(git add:*),Bash(git commit:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Bash(date:*)"
+            --allowedTools "Skill,Agent,Read,Write,Edit,Glob,Grep,TodoWrite,mcp__fantasypros,Bash(python3:*),Bash(node scripts/capture_node.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout:*),Bash(git switch:*),Bash(git branch:*),Bash(git add:*),Bash(git commit:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Bash(date:*),Bash(cp:*),Bash(wc:*),Bash(head:*),Bash(tail:*),Bash(grep:*),Bash(sort:*),Bash(jq:*),Bash(diff:*),Bash(echo:*)"
 
       # Only the commits leave this runner, as a patch. `ship` re-checks everything in it.
       - name: Package Claude's result
