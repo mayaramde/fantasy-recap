@@ -227,9 +227,25 @@ def _valid_trade(t):
 _CANT_PLAY = {"OUT", "INJURY_RESERVE", "SUSPENSION"}
 
 
-def live_trades(rows, teams):
+def trade_deadline():
+    """league.json's "trade_deadline" (ESPN's, an ISO 8601 time with its offset) as an aware
+    datetime, or None when it isn't set or doesn't parse."""
+    try:
+        return datetime.fromisoformat(LEAGUE["trade_deadline"])
+    except (KeyError, TypeError, ValueError):
+        return None
+
+
+def past_trade_deadline(now=None):
+    """True once ESPN stops taking trades. A card written the morning before still has a
+    day and a half to live in the snapshot, so the page checks the clock itself."""
+    deadline = trade_deadline()
+    return bool(deadline and deadline.tzinfo) and (now or datetime.now(timezone.utc)) >= deadline
+
+
+def live_trades(rows, teams, now=None):
     """Drop every trade card that no longer describes the league: a player in it has changed
-    rosters, or has since been ruled out. coach-daily re-runs the evaluation every morning; this
+    rosters, or has since been ruled out, or the trade deadline has passed. coach-daily re-runs the evaluation every morning; this
     keeps a card from outliving its trade between runs. `rows` are advice_payload()'s, `teams`
     the facts-shaped teams they were built from."""
     roster = {t["team_id"]: {p["player_id"]: p for p in t["starters"] + t["bench"]} for t in teams}
@@ -238,9 +254,10 @@ def live_trades(rows, teams):
         mine = roster.get(team_id, {})
         return all(x["id"] in mine and mine[x["id"]].get("injury_status") not in _CANT_PLAY for x in players)
 
+    closed = past_trade_deadline(now)
     for row in rows:
         row["roster_ideas"] = [it for it in row["roster_ideas"] if it.get("kind") != "trade"
-                               or (holds(row["team_id"], it["trade"]["give"])
+                               or (not closed and holds(row["team_id"], it["trade"]["give"])
                                    and holds(it["trade"]["partner_id"], it["trade"]["get"]))]
     return rows
 
