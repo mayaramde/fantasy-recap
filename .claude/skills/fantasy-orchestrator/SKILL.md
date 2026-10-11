@@ -61,7 +61,7 @@ Before anything else, sort the request:
 
 Input: target season/week. Output: `data/<season>/week-NN/{espn.json,facts.json}` on disk,
 `complete: true` confirmed. See `recap-capture`'s own SKILL.md for the exact steps (Chrome
-capture, the 401 fallback, `analyze.py`) — this orchestrator just confirms the output exists
+capture, the headless fallback, `analyze.py`) — this orchestrator just confirms the output exists
 and is complete before moving on. If capture fails and the documented fallback also fails,
 **stop and tell the user** — don't proceed to writing a recap from data that isn't there.
 
@@ -105,7 +105,7 @@ file (its Step 5b), since that PR merges without a human reading it. Doesn't tou
 
 | Situation | Strategy |
 |-----------|----------|
-| ESPN capture 401s and the documented fallback (`.env.espn.local` + `capture_node.mjs`) also fails | Stop. Tell the user what's missing — don't guess at data. |
+| ESPN capture 401s and the documented fallback (`capture_node.mjs`) also fails | Stop. The league has likely gone private again: tell the user (the commissioner switches it back to public) — don't guess at data. |
 | FantasyPros MCP is unavailable or gated (premium tool) | `recap-write` proceeds on ESPN data alone, notes the gap; never invents an injury/bad-luck cause it can't source. |
 | The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and the voice gate and re-deploy the preview — don't skip re-verification because "it was already approved." |
 

@@ -1,6 +1,6 @@
 """Fetch one week from ESPN and trim it exactly the way scripts/capture.js does.
 
-capture.js runs in Chrome on Maya's logged-in session and stays the primary capture
+capture.js runs in Chrome (Claude in Chrome) and stays the primary capture
 path. This module is its Python twin, for the /api/live function (api/live.py), which
 has to build the same espn.json shape server-side so scripts/analyze.py can consume it
 unchanged — that is what keeps the Live page's numbers identical to the recap's.
@@ -15,13 +15,13 @@ matches it. That catches a field added, renamed or retyped on one side. It canno
 the two sides computing the same field differently, so when you change capture.js's
 trimming, change this too.
 
-Cookies come from ESPN_S2 / ESPN_SWID. They are never logged, returned or written, and
-the one call to ESPN's public NFL scoreboard (game states) carries none of them.
+No cookies: the league is public on ESPN (the commissioner's setting), so every read here is
+anonymous, the same as the public NFL scoreboard call. If the league goes private again, ESPN
+answers 401 and every caller reports that rather than serving stale data.
 """
 
 import json
 import math
-import os
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
@@ -35,13 +35,6 @@ SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scorebo
 
 SLOT = {0: "QB", 2: "RB", 4: "WR", 6: "TE", 16: "DST", 17: "K", 20: "BENCH", 21: "IR", 23: "FLEX"}
 POS = {1: "QB", 2: "RB", 3: "WR", 4: "TE", 5: "K", 16: "DST"}
-
-
-def cookie():
-    s2, swid = os.environ.get("ESPN_S2"), os.environ.get("ESPN_SWID")
-    if not s2 or not swid:
-        raise RuntimeError("ESPN_S2 and ESPN_SWID are not set")
-    return f"espn_s2={s2}; SWID={swid}"
 
 
 def round2(x):
@@ -72,14 +65,14 @@ def _now_iso():
     return dt.strftime("%Y-%m-%dT%H:%M:%S.") + f"{dt.microsecond // 1000:03d}Z"
 
 
-def _get(url, ck, headers=None):
-    req = urllib.request.Request(url, headers={"Cookie": ck, "Accept": "application/json",
-                                               **(headers or {})})
+def _get(url, headers=None):
+    req = urllib.request.Request(url, headers={"Accept": "application/json", **(headers or {})})
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
             return json.load(r)
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f"ESPN {e.code}: cookies may have expired") from None
+        hint = ": is the league still public on ESPN?" if e.code in (401, 403) else ""
+        raise RuntimeError(f"ESPN {e.code}{hint}") from None
 
 
 def _pro_games(week):
@@ -184,18 +177,16 @@ def _side(s, week, names, games):
     }
 
 
-def current_week(ck=None):
-    ck = ck or cookie()
-    return _get(f"{BASE}?view=mStatus", ck)["status"]["currentMatchupPeriod"]
+def current_week():
+    return _get(f"{BASE}?view=mStatus")["status"]["currentMatchupPeriod"]
 
 
-def fetch_week(week, ck=None):
+def fetch_week(week):
     """The trimmed capture for one week: the same dict scripts/capture.js POSTs."""
-    ck = ck or cookie()
-    box = _get(f"{BASE}?view=mBoxscore&view=mMatchupScore&scoringPeriodId={week}", ck)
-    teams_res = _get(f"{BASE}?view=mTeam", ck)
-    status_res = _get(f"{BASE}?view=mStatus", ck)
-    tx_res = _get(f"{BASE}?view=mTransactions2&scoringPeriodId={week}", ck)
+    box = _get(f"{BASE}?view=mBoxscore&view=mMatchupScore&scoringPeriodId={week}")
+    teams_res = _get(f"{BASE}?view=mTeam")
+    status_res = _get(f"{BASE}?view=mStatus")
+    tx_res = _get(f"{BASE}?view=mTransactions2&scoringPeriodId={week}")
     games = _pro_games(week)
 
     names = {}
@@ -209,7 +200,7 @@ def fetch_week(week, ck=None):
     missing = sorted({i.get("playerId") for t in txs for i in t.get("items") or []} - set(names))
     if missing:
         filt = json.dumps({"filterIds": {"value": missing}})
-        for pl in _get(PLAYERS, ck, {"x-fantasy-filter": filt}) or []:
+        for pl in _get(PLAYERS, {"x-fantasy-filter": filt}) or []:
             names[pl["id"]] = pl["fullName"]
 
     def name_of(pid):

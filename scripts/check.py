@@ -24,11 +24,9 @@ FORBIDDEN = [
     re.compile(r'"lastName"'),
     re.compile(r'"notificationSettings"'),
 ]
-# Files that mention those strings on purpose (the names of the cookie environment
-# variables, never a value).
-SKIP = {"CLAUDE.md", "docs/vercel.md", "scripts/check.py", "scripts/capture_node.mjs",
-        "scripts/espn_fetch.py", "scripts/deploy.sh", "api/live.py",
-        ".env.espn.local.example", ".claude/skills/recap-capture/SKILL.md"}
+# Files that mention those strings on purpose (the names of ESPN's login cookies, which the
+# repo no longer uses but still guards against, never a value).
+SKIP = {"CLAUDE.md", "docs/vercel.md", "scripts/check.py", ".claude/skills/recap-capture/SKILL.md"}
 
 
 def check_capture_shape(errors):

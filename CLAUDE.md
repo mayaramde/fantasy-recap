@@ -6,7 +6,7 @@ League facts (IDs, teams, managers, roster slots, playoff format) live in `leagu
 ## Harness: Fantasy Recap
 
 **Goal:** produce the weekly recap (capture, write, fact-check, voice-check, ship) and the daily Coach
-cards, without ever publishing anything unreviewed or touching an ESPN cookie/Vercel token.
+cards, without ever publishing anything unreviewed or touching a Vercel token.
 
 **Entry point — applies to every prompt in this repo:** You MUST invoke the
 `fantasy-orchestrator` skill *before* responding to any request about drafting, redoing,
@@ -22,12 +22,13 @@ The skills say *how* the work gets done. `docs/architecture.md` says *when* the 
 run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys and the Vercel dashboard.
 
 ## Data sources
-- **ESPN** (primary): the league is private. Read it through **Claude in Chrome**, which uses Maya's logged-in session:
+- **ESPN** (primary): the league is **public** (the commissioner's setting since 2026-10-09), so it's read
+  anonymously, with no cookies or secrets anywhere: `scripts/capture_node.mjs` in the cloud live update and as the
+  local fallback, `api/live.py` on Vercel, and Claude in Chrome for the Tuesday capture:
   `https://lm-api-reads.fantasy.espn.com/apis/v3/games/ffl/seasons/2026/segments/0/leagues/698468554?view=...&scoringPeriodId=N`
-  Never ask for, copy, print, or store ESPN cookies (`espn_s2`, `SWID`) or any credentials.
-  Only scripts ever consume the cookies, from values Maya sets herself: `scripts/capture_node.mjs` in the cloud
-  live update (GitHub Actions secrets) and as the local 401 fallback (`.env.espn.local`, see `recap-capture`),
-  and `api/live.py` on Vercel (env vars, see `docs/vercel.md` §6). Claude never sees, sets, or rotates them.
+  If ESPN answers 401 the league has gone private again; that's the commissioner's setting to fix, not a secret
+  to add (`docs/vercel.md` §6). Still never ask for, copy, print, or store ESPN cookies (`espn_s2`, `SWID`) or
+  any credentials.
 - **ESPN CDN headshots** (public, no auth): `https://a.espncdn.com/i/headshots/nfl/players/full/<espnId>.png`,
   and `https://a.espncdn.com/i/teamlogos/nfl/500/<abbr>.png` for a D/ST. `scripts/analyze.py` writes the URL into
   each week's top scorers; the site falls back to a silhouette when ESPN has no photo (rookies, call-ups).
@@ -41,17 +42,17 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   tags four or fewer players, one of them on a league roster, and nothing in it reads as off-field (lawsuits, arrests,
   suspensions, deaths). Lands in `data/<season>/news/latest.json`, never committed. Best effort like the scoreboard: a
   failed fetch, or a file over 36 hours old, just means the page has no headlines.
-- **ESPN scoring lines** (part of the same private capture): ESPN's own points for each stat a player
+- **ESPN scoring lines** (part of the same ESPN capture): ESPN's own points for each stat a player
   earned them with (`appliedStats`), paired with the stat behind it, ride along in `espn.json` as
   `scoring`: `[{stat, value, points}]`. The stat ids are ESPN's; `scripts/analyze.py` names the ones this
   league can score and folds anything else into one "Other scoring" row, so a player card's rows always
   add up to his total (`scripts/check.py` asserts that). Weeks captured before this don't carry the field,
   and the site simply shows no breakdown for them.
-- **ESPN injury designations** (part of the same private capture): each rostered player's `injuryStatus`
+- **ESPN injury designations** (part of the same ESPN capture): each rostered player's `injuryStatus`
   (`QUESTIONABLE`, `DOUBTFUL`, `OUT`, `INJURY_RESERVE`, `SUSPENSION`, ...) rides along in `espn.json` as
   `injury_status`. It's what the Coach page and the box-score injury pills are built on. Weeks captured before
   this existed simply don't carry the field, and the site treats that as "we don't know", never as "healthy".
-- **ESPN next week** (same private capture, `fantasyCapture('next')`): rosters and projections for the week
+- **ESPN next week** (same ESPN capture, `fantasyCapture('next')`): rosters and projections for the week
   ahead, from `view=mRoster&scoringPeriodId=N+1` plus the season schedule for the pairings. Lands in
   `data/<season>/next-week/espn.json` — deliberately not under `week-NN/`, where the site would read it as the
   week in progress and it would take over the Live page. Never committed (`.gitignore`); it's recaptured on every
@@ -93,7 +94,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `site/build.py` into `season.playoffs`), and the Week hub's `stakes()`: each team's odds with a win and with a loss
 - `api/live.py`: the Vercel function behind `/api/live`, which recomputes the live week from ESPN per request
 - `scripts/`: `capture.js` (runs in Chrome), `receive.py` (localhost receiver that also serves capture.js),
-  `capture_node.mjs` (headless capture, cookie-based), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
+  `capture_node.mjs` (headless capture, no login), `espn_fetch.py` (capture.js's Python twin for `/api/live`), `analyze.py` (→ `facts.json`),
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
   `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for),
   `trade_eval.py` (finds and scores trades for both teams against `coach-daily`'s ground rules; only a passing trade becomes a card), `deploy.sh` + `vercel_build.sh` (deploy),
@@ -113,8 +114,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   trigger `live-update.yml` to run that same `scripts/deploy.sh` within minutes (`docs/vercel.md` §3). `scripts/deploy.sh`
   run by hand stays as a manual backstop. The site sends
   `noindex` (header, meta tag, robots.txt): public to anyone with the link, but kept out of search results.
-  `/api/live` keeps the Live page fresh between deploys; without the `ESPN_S2`/`ESPN_SWID` Vercel env vars it
-  answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
+  `/api/live` keeps the Live page fresh between deploys, reading ESPN anonymously; if ESPN refuses (the league
+  went private) it answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
   or Vercel tokens.
 - Branch previews (Vercel, automatic): every push to a branch other than `main` gets its own preview URL, built on
   Vercel's servers from that branch's committed data only (the draft copy, no uncommitted live week). For design and
