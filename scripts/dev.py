@@ -7,6 +7,11 @@ the Live page's refresh works locally exactly as it does on Vercel.
 Watches site/, data/, recaps/ and league.json. Any change reruns site/build.py and the
 open page reloads itself. Nothing here deploys; use scripts/deploy.sh for that.
 
+HOST defaults to 127.0.0.1 on macOS, so drafts never reach the rest of the Wi-Fi, and to
+0.0.0.0 elsewhere, so a v0/container sandbox's preview proxy can reach it. The server is
+single-threaded on purpose: /api/live rewrites data/player_names.json when it resolves a
+new name, and two overlapping requests could read it half-written.
+
 Usage: python3 scripts/dev.py [--prod] [--port 3000] [--season 2026]
        npm run dev
 """
@@ -19,7 +24,7 @@ import sys
 import threading
 import time
 from functools import partial
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -137,7 +142,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
     ap.add_argument("--prod", action="store_true", help="serve the league copy (site/dist/web) instead of the draft preview")
     ap.add_argument("--port", type=int, default=int(os.environ.get("PORT", 3000)))
-    ap.add_argument("--host", default=os.environ.get("HOST", "0.0.0.0"))
+    ap.add_argument("--host", default=os.environ.get("HOST") or ("127.0.0.1" if sys.platform == "darwin" else "0.0.0.0"))
     ap.add_argument("--season", type=int, default=None)
     args = ap.parse_args()
 
@@ -150,7 +155,7 @@ def main():
     threading.Thread(target=builder.watch, daemon=True).start()
 
     handler = partial(make_handler(builder, load_live_module()), directory=str(out))
-    server = ThreadingHTTPServer((args.host, args.port), handler)
+    server = HTTPServer((args.host, args.port), handler)
     label = "league site" if args.prod else "draft preview"
     print(f"dev: serving {label} from {out.relative_to(ROOT)} at http://localhost:{args.port}", flush=True)
     try:
