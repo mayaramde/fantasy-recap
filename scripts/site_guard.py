@@ -15,7 +15,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SITE = "https://fantasy-recap-eight.vercel.app"
+SITE = "https://fantasyforthegirls.vercel.app"
 DATA = re.compile(r'<script id="recap-data" type="application/json">(.*?)</script>', re.S)
 
 

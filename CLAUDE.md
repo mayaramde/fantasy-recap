@@ -110,7 +110,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 
 ## Published pages
 - `docs/vercel.md` explains the deploy model and the Vercel dashboard for Maya; keep it true if this section changes.
-- **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (also answers at fantasy-recap-eight.vercel.app), built from `site/dist/web/`.
+- **League website (Vercel, what the league uses):** https://fantasyforthegirls.vercel.app (the only domain the repo uses), built from `site/dist/web/`.
   Deploy only with `scripts/deploy.sh`: it builds locally (including the uncommitted live week) and uploads a prebuilt
   bundle. Vercel's own git integration is off for `main` in `vercel.json` — a merge alone can't build-and-wipe the Live page —
   but a push to `main` touching `recaps/`, `data/`, `site/`, `scripts/`, `api/`, `league.json`, or `vercel.json` does

@@ -31,7 +31,6 @@ destructive. The previous one still exists, and rolling back just moves the poin
 | Scope (workspace) | `maya-fd13` |
 | Project | `fantasy-recap` |
 | Live site | https://fantasyforthegirls.vercel.app |
-| Older alias, same site | https://fantasy-recap-eight.vercel.app |
 | Plan | Hobby (free) |
 | Search engines | Blocked — `noindex` header, meta tag and robots.txt |
 
