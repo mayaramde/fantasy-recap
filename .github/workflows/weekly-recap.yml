@@ -149,8 +149,10 @@ jobs:
         run: |
           git config user.name "fantasy-recap bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p .ci-out
 
       - name: Draft the recap with Claude
+        id: claude
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -163,7 +165,8 @@ jobs:
               recap draft PR is open.
             - Stop after recap-write Step 4.1: the draft committed on recap-week-${{ needs.gate.outputs.week }}.
               Don't push, open a PR, or deploy; the workflow does that.
-            - Write a summary to ${{ runner.temp }}/claude-summary.md. Its first line must be
+            - Write a summary to .ci-out/claude-summary.md in this checkout (git-ignored, never
+              commit it). Its first line must be
               exactly one of `RESULT: drafted`, `RESULT: not-ready` (the week isn't final
               yet), or `RESULT: blocked`. Then a line saying why for anything but drafted,
               then the draft's headline and dek and the fact-check and voice-check verdicts.
@@ -177,9 +180,31 @@ jobs:
         if: always()
         env:
           WEEK: ${{ needs.gate.outputs.week }}
+          EXEC_FILE: ${{ steps.claude.outputs.execution_file }}
         run: |
+          # Claude's own output is hidden (the logs are public), so name what it was refused.
+          if [ -f "$EXEC_FILE" ]; then
+            python3 - "$EXEC_FILE" <<'PYX'
+          import json, sys
+          def walk(x):
+              if isinstance(x, dict):
+                  for d in x.get("permission_denials") or []:
+                      yield d
+                  for v in x.values():
+                      yield from walk(v)
+              elif isinstance(x, list):
+                  for v in x:
+                      yield from walk(v)
+          try:
+              data = json.load(open(sys.argv[1]))
+          except Exception as e:
+              sys.exit(f"could not read the execution file: {e}")
+          for d in walk(data):
+              print("permission denied:", d.get("tool_name"), json.dumps(d.get("tool_input"))[:200])
+          PYX
+          fi
           mkdir -p "$RUNNER_TEMP/out"
-          summary="$RUNNER_TEMP/claude-summary.md"
+          summary=.ci-out/claude-summary.md
           [ -s "$summary" ] || printf 'RESULT: blocked\nClaude wrote no summary (it errored or ran out of time).\n' > "$summary"
           cp "$summary" "$RUNNER_TEMP/out/summary.md"
           cat "$summary" >> "$GITHUB_STEP_SUMMARY"
