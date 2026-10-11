@@ -207,11 +207,20 @@ jobs:
               sys.exit(f"could not read the execution file: {e}")
           for d in walk(data):
               print("permission denied:", d.get("tool_name"), json.dumps(d.get("tool_input"))[:200])
+          # Claude's last message: why it stopped, when it wrote no summary.
+          final = next((x.get("result") for x in (data if isinstance(data, list) else [data])
+                        if isinstance(x, dict) and x.get("type") == "result"), None)
+          if final:
+              print("Claude's last message:\n" + str(final)[:1500])
+              open(".ci-out/claude-final.txt", "w").write(str(final)[:1500])
           PYX
           fi
           mkdir -p "$RUNNER_TEMP/out"
           summary=.ci-out/claude-summary.md
-          [ -s "$summary" ] || printf 'RESULT: blocked\nClaude wrote no summary (it errored or ran out of time).\n' > "$summary"
+          if [ ! -s "$summary" ]; then
+            { printf 'RESULT: blocked\nClaude wrote no summary. Its last message:\n\n'
+              cat .ci-out/claude-final.txt 2>/dev/null || echo "(none; it errored or ran out of time)"; } > "$summary"
+          fi
           cp "$summary" "$RUNNER_TEMP/out/summary.md"
           cat "$summary" >> "$GITHUB_STEP_SUMMARY"
           result=$(head -1 "$summary" | sed -n 's/^RESULT: *//p')
