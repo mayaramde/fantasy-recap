@@ -15,7 +15,8 @@ name: weekly-recap
 #          the auto-merging PR and deploys the preview with RECAP_BOT_TOKEN / VERCEL_TOKEN.
 #   alert  opens or comments on a "weekly-recap failing" issue if anything failed.
 #
-# Secrets: CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`) or ANTHROPIC_API_KEY;
+# Secrets: CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`; Maya's Claude plan, never a
+# per-token API key);
 # RECAP_BOT_TOKEN (fine-grained, this repo, Contents + Pull requests read/write: a PR
 # opened with the default GITHUB_TOKEN doesn't run `checks`, so auto-merge would wait
 # forever, and its merge wouldn't deploy); live-update's VERCEL_TOKEN with VERCEL_ORG_ID /
@@ -105,7 +106,7 @@ jobs:
     needs: gate
     if: needs.gate.outputs.week
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 60
     permissions:
       contents: read
     outputs:
@@ -152,7 +153,6 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ github.token }}
           prompt: |
             Draft the week ${{ needs.gate.outputs.week }} recap, through fantasy-orchestrator,

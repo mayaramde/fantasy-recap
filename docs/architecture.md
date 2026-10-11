@@ -55,7 +55,8 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
 - In both, Claude runs in a job with no publishing secret and a read-only token, and only a patch of its commits
   leaves that runner. A separate job on a fresh runner applies the patch to a clean checkout, re-checks its file list,
   and does the pushing and deploying with `RECAP_BOT_TOKEN` (a fine-grained token, so the PRs it opens run `checks` and the
-  merges deploy) and `VERCEL_TOKEN`. Claude signs in with `CLAUDE_CODE_OAUTH_TOKEN` or `ANTHROPIC_API_KEY`.
+  merges deploy) and `VERCEL_TOKEN`. Claude signs in only with `CLAUDE_CODE_OAUTH_TOKEN`, so runs use Maya's Claude plan and never bill per token.
+  Coach daily runs on Sonnet 5.5 (30-minute cap); the recap keeps the default model (60-minute cap).
   FantasyPros is optional (`FANTASYPROS_MCP_URL` / `FANTASYPROS_MCP_AUTH`). Without it the recap is written from
   ESPN alone and the Coach page gets written copy for its computed cards and season audit, but no FantasyPros
   start/sit, waiver or trade cards. Each workflow's `workflow_dispatch` has a `dry_run` input that runs Claude and

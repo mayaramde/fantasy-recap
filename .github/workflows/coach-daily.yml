@@ -11,7 +11,11 @@ name: coach-daily
 #          auto-merging PR with RECAP_BOT_TOKEN and closes superseded coach-daily PRs.
 #   alert  opens or comments on a "coach-daily failing" issue if anything failed.
 #
-# Secrets: CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`) or ANTHROPIC_API_KEY;
+# Claude runs on Sonnet 5.5 here (the recap keeps the default model), signed in only with
+# CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`): it uses Maya's Claude plan, never a
+# per-token API key. The 30-minute cap bounds the Actions minutes a stuck run can use.
+#
+# Secrets: CLAUDE_CODE_OAUTH_TOKEN;
 # RECAP_BOT_TOKEN (see weekly-recap.yml for why the default token won't do); optional
 # FANTASYPROS_MCP_URL / FANTASYPROS_MCP_AUTH. Without FantasyPros the run writes the copy
 # for the computed cards and the season audit, but no start/sit, waiver or trade cards.
@@ -36,7 +40,7 @@ permissions:
 jobs:
   cards:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
     permissions:
       contents: read
       pull-requests: read
@@ -110,7 +114,6 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ github.token }}
           prompt: |
             Run the coach-daily skill for ${{ steps.today.outputs.today }}, through
@@ -130,6 +133,7 @@ jobs:
               over), or `RESULT: blocked` followed by a line saying what stopped you.
           claude_args: >-
             ${{ steps.mcp.outputs.args }}
+            --model claude-sonnet-5-5
             --allowedTools "Skill,Agent,Read,Write,Edit,Glob,Grep,TodoWrite,mcp__fantasypros,Bash(python3:*),Bash(node scripts/capture_node.mjs:*),Bash(git status:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git checkout -b:*),Bash(git branch:*),Bash(git add:*),Bash(git commit:*),Bash(ls:*),Bash(cat:*),Bash(mkdir:*),Bash(cp:*),Bash(date:*)"
 
       # Only the commits leave this runner, as a patch. `ship` re-checks everything in it.
