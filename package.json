@@ -7,6 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
+    "dev": "python3 scripts/dev.py",
+    "dev:prod": "python3 scripts/dev.py --prod",
+    "build": "python3 site/build.py",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

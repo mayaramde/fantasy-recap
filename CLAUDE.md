@@ -98,6 +98,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `check.py` + `check_recaps.py` (data and recap checks, run by the CI `checks` workflow),
   `coach_brief.py` (the computed Coach cards and season-audit cards and their keys, which `coach-daily` writes advice for),
   `trade_eval.py` (finds and scores trades for both teams against `coach-daily`'s ground rules; only a passing trade becomes a card), `deploy.sh` + `vercel_build.sh` (deploy),
+  `dev.py` (`npm run dev`: local server for `web-preview/`, or `web/` with `--prod`, plus `/api/live`; rebuilds and reloads on change),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
   `fetch_news.py` (ESPN headlines for the Week hub, best effort)
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
