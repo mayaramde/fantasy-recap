@@ -77,6 +77,13 @@ jobs:
       - name: Analyze
         run: python3 scripts/analyze.py
 
+      # The brief Claude writes against. Built here, not by Claude, so the run never
+      # depends on Claude getting a shell redirect past its allow-list.
+      - name: Build the Coach brief
+        run: |
+          mkdir -p .ci-out
+          python3 scripts/coach_brief.py > .ci-out/brief.json
+
       # coach-daily's Step 2 reads yesterday's snapshot from an unmerged coach-daily PR when
       # there is one. Claude has no GitHub access here, so hand it that file.
       - name: Fetch the newest open coach-daily snapshot, if any
@@ -136,8 +143,9 @@ jobs:
               never commit it). Its first line
               must be exactly one of `RESULT: committed`, `RESULT: nothing-to-do` (season
               over), or `RESULT: blocked` followed by a line saying what stopped you.
-            - Follow the skill's steps in order: write against scripts/coach_brief.py's real
-              output, and run Step 5c's voice-check before writing the file.
+            - Step 5b's brief is already built: read .ci-out/brief.json (scripts/coach_brief.py's
+              output) instead of running the script. Follow the skill's steps in order, and
+              run Step 5c's voice-check before writing the file.
             - Keep scratch files in .ci-out/ (never /tmp or anywhere outside this checkout),
               and run one command at a time rather than chaining many with ; or &&.
               If a command is refused, try a simpler form (read a script's output directly, or
@@ -176,11 +184,20 @@ jobs:
               sys.exit(f"could not read the execution file: {e}")
           for d in walk(data):
               print("permission denied:", d.get("tool_name"), json.dumps(d.get("tool_input"))[:200])
+          # Claude's last message: why it stopped, when it wrote no summary.
+          final = next((x.get("result") for x in (data if isinstance(data, list) else [data])
+                        if isinstance(x, dict) and x.get("type") == "result"), None)
+          if final:
+              print("Claude's last message:\n" + str(final)[:1500])
+              open(".ci-out/claude-final.txt", "w").write(str(final)[:1500])
           PYX
           fi
           mkdir -p "$RUNNER_TEMP/out"
           summary=.ci-out/claude-summary.md
-          [ -s "$summary" ] || printf 'RESULT: blocked\nClaude wrote no summary (it errored or ran out of time).\n' > "$summary"
+          if [ ! -s "$summary" ]; then
+            { printf 'RESULT: blocked\nClaude wrote no summary. Its last message:\n\n'
+              cat .ci-out/claude-final.txt 2>/dev/null || echo "(none; it errored or ran out of time)"; } > "$summary"
+          fi
           cp "$summary" "$RUNNER_TEMP/out/summary.md"
           cat "$summary" >> "$GITHUB_STEP_SUMMARY"
           result=$(head -1 "$summary" | sed -n 's/^RESULT: *//p')
