@@ -83,8 +83,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          pr_branch=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json headRefName,createdAt \
-            --jq '[.[] | select(.headRefName | startswith("coach-daily-"))] | sort_by(.createdAt) | last | .headRefName // empty')
+          # Only this repo's own branches: the repo is public, so anyone can open a fork PR
+          # with a branch named coach-daily-anything.
+          pr_branch=$(gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json headRefName,createdAt,isCrossRepository \
+            --jq '[.[] | select((.isCrossRepository | not) and (.headRefName | startswith("coach-daily-")))] | sort_by(.createdAt) | last | .headRefName // empty')
           if [ -n "$pr_branch" ]; then
             gh api "repos/$GITHUB_REPOSITORY/contents/data/2026/fantasypros/latest.json?ref=$pr_branch" \
               -H "Accept: application/vnd.github.raw" > "$RUNNER_TEMP/open-pr-latest.json" || rm -f "$RUNNER_TEMP/open-pr-latest.json"
@@ -213,13 +215,14 @@ jobs:
           # workflow ever writes.
           git push --force "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
           body=$(sed 1d "$RUNNER_TEMP/in/summary.md"; printf '\n\nOpened by the `coach-daily` workflow: %s\n' "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID")
-          url=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$branch" --state open --json url --jq '.[0].url // empty')
+          url=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$branch" --state open --json url,isCrossRepository \
+            --jq '[.[] | select(.isCrossRepository | not)][0].url // empty')
           [ -n "$url" ] || url=$(gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
             --title "Coach: daily FantasyPros cards ($TODAY)" --body "$body")
           gh pr merge "$url" --repo "$GITHUB_REPOSITORY" --auto --squash --delete-branch
-          # Older coach-daily PRs are superseded: the file is a rolling snapshot.
-          gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,headRefName \
-            --jq ".[] | select((.headRefName | startswith(\"coach-daily-\")) and .headRefName != \"$branch\") | .number" |
+          # Older coach-daily PRs are superseded: the file is a rolling snapshot. Never a fork's PR.
+          gh pr list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,headRefName,isCrossRepository \
+            --jq ".[] | select((.isCrossRepository | not) and (.headRefName | startswith(\"coach-daily-\")) and .headRefName != \"$branch\") | .number" |
             while read -r n; do gh pr close "$n" --repo "$GITHUB_REPOSITORY" --delete-branch --comment "Superseded by $url"; done
           echo "PR: $url" >> "$GITHUB_STEP_SUMMARY"
 

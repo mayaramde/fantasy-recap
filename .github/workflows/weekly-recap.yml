@@ -85,8 +85,9 @@ jobs:
           recap = Path(f"recaps/2026/week-{week:02d}.json")
           prs = json.loads(subprocess.check_output(
               ["gh", "pr", "list", "--repo", os.environ["GITHUB_REPOSITORY"], "--state", "open",
-               "--json", "headRefName", "--limit", "100"]))
-          open_draft = any(p["headRefName"].startswith("recap-week-") for p in prs)
+               "--json", "headRefName,isCrossRepository", "--limit", "100"]))
+          # Only this repo's own branches: the repo is public, so a fork PR could carry any name.
+          open_draft = any(not p["isCrossRepository"] and p["headRefName"].startswith("recap-week-") for p in prs)
           if not 1 <= week <= 17:
               why = f"week {week} is outside the season (1-17)"
           elif recap.exists():
