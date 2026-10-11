@@ -18,6 +18,7 @@ Usage: python3 scripts/dev.py [--prod] [--port 3000] [--season 2026]
 
 import argparse
 import importlib.util
+import json
 import os
 import subprocess
 import sys
@@ -31,6 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 WATCH = [ROOT / "site", ROOT / "data", ROOT / "recaps", ROOT / "league.json"]
 IGNORE = {"dist", "__pycache__", "raw"}
 POLL_SECONDS = 0.75
+LIVE_PLACEHOLDER = b'"live":null'
 
 RELOAD_SNIPPET = b"""<script>(()=>{let v;setInterval(async()=>{try{const r=await fetch('/__dev/version',{cache:'no-store'});const n=await r.text();if(v&&n!==v)location.reload();v=n}catch{}},1000)})()</script>"""
 
@@ -117,7 +119,7 @@ def make_handler(builder, live):
             if not index.exists():
                 self.send_error(503, "No build yet; check the terminal for build errors")
                 return
-            html = index.read_bytes()
+            html = self.with_live_week(index.read_bytes())
             marker = b"</body>"
             html = html.replace(marker, RELOAD_SNIPPET + marker, 1) if marker in html else html + RELOAD_SNIPPET
             self.send_response(200)
@@ -126,6 +128,19 @@ def make_handler(builder, live):
             self.send_header("Content-Length", str(len(html)))
             self.end_headers()
             self.wfile.write(html)
+
+        def with_live_week(self, html):
+            # No captured live week means the build embeds "live":null and the Coach page
+            # has nothing to show; fill it from /api/live so it always works locally.
+            if LIVE_PLACEHOLDER not in html:
+                return html
+            try:
+                payload = json.dumps(live.live_payload(), ensure_ascii=False, separators=(",", ":"))
+            except Exception as err:
+                print(f"dev: couldn't fetch live week for the page ({err}); serving without it", flush=True)
+                return html
+            injected = b'"live":' + payload.replace("</", "<\\/").encode()
+            return html.replace(LIVE_PLACEHOLDER, injected, 1)
 
         def end_headers(self):
             self.send_header("X-Robots-Tag", "noindex, nofollow")
