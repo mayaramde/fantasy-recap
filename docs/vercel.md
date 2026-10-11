@@ -19,7 +19,7 @@ Almost everything in the dashboard is one of these:
   currently "the site". Ours is **fantasyforthegirls.vercel.app**. Deploying to
   production means: make a new deployment, then move this pointer to it.
 - **Environment variable** — a named secret or setting handed to code at runtime,
-  so it isn't written in the repo. Ours hold the ESPN login cookies.
+  so it isn't written in the repo. We don't need any: ESPN is read anonymously (§5b).
 
 The useful consequence of "deployments are frozen": a bad deploy is never
 destructive. The previous one still exists, and rolling back just moves the pointer.
@@ -101,7 +101,7 @@ Open the project and you'll see a row of tabs. These are the ones that matter:
 - **Logs** (and **Observability**) — what the `/api/live` function actually did on
   real requests: status codes, errors, how long it took. The only way to see why
   the Live page isn't refreshing.
-- **Settings → Environment Variables** — where the ESPN cookies go. See §5.
+- **Settings → Environment Variables** — empty on purpose. See §5b.
 - **Analytics** — page views, via the CDN script described in §5a.
 - **Settings → General** — the project name, and the delete button. Rarely needed.
 
@@ -127,54 +127,33 @@ site is static HTML written by `site/build.py`, so a plain script tag is the sim
 Analytics data appears in the Vercel dashboard after the site receives traffic. The
 script loads with `defer`, so it doesn't block page rendering.
 
-### b. The ESPN cookies as environment variables
+### b. No ESPN secrets
 
-`ESPN_S2` and `ESPN_SWID` are set as **Production** variables, added 2026-09-28 and
-marked sensitive — which makes them write-only. Even you can't read them back from the
-dashboard, only overwrite them. That's the right setting for these.
+The league is **public** on ESPN (the commissioner set it on 2026-10-09), so everything the
+site reads from ESPN is read anonymously: the `live-update` capture in GitHub Actions, the
+`/api/live` function on Vercel, and the headless fallback on the Mac. There are no ESPN
+cookies anywhere any more, and no environment variables to set.
 
-Keep them **Production only**, never Preview. Every branch except `main` gets an automatic
-preview (§3), and a preview runs whatever code is on its branch, so a Preview-scoped
-cookie would reach any branch anyone pushes. Without them a preview's `/api/live` answers
-503 and the page shows its baked data, which is fine for reviewing a design.
+If `ESPN_S2` and `ESPN_SWID` are still listed under Settings → Environment Variables (they
+were added 2026-09-28, back when the league was private), delete them. Nothing reads them.
 
-The `/api/live` function (`api/live.py`) reads them to recompute the current week from
-ESPN per request, which is how the Live page refreshes between deploys. Without them it
-answers 503 and the page keeps showing the numbers baked in at deploy time.
+## 6. If ESPN stops answering
 
-To add or replace one:
+Every ESPN read depends on the league staying public. If it's ever switched back to private,
+ESPN starts answering **401**, and you'll see it in two places at once:
 
-```bash
-vercel env add ESPN_S2 production --sensitive
-```
+- A GitHub issue titled **"live-update failing: ESPN league not public"** (the workflow opens it).
+- The Live page stuck on old numbers, with `/api/live` returning **503** and
+  `"ESPN 401: is the league still public on ESPN?"`.
 
-It prompts for the value. Then **deploy again** — a deployment gets its variables as
-they were when it was created, so an existing deployment won't pick up a new value.
-`vercel env ls` lists the names, never the values.
+The fix is one setting, not a secret: the commissioner sets the league back to public in
+ESPN's league settings. Nothing in the repo or on Vercel needs changing.
 
-These are your credentials. Don't paste them into a chat, a commit, or this file.
+Other failure emails:
 
-## 6. Why the ESPN cookies live in two places
-
-This is the most confusing part of the setup, and it isn't a mistake:
-
-| Where | Who reads it | What for |
-|---|---|---|
-| **GitHub Actions secrets** (repo → Settings → Secrets and variables → Actions) | `scripts/capture_node.mjs` in the `live-update` workflow | Capturing the week in CI, before deploying |
-| **Vercel environment variables** (project → Settings) | the `/api/live` function on the live site | Answering `/api/live` when someone opens the page |
-
-Same two values, two completely separate systems. Neither can see the other's
-copy. **When the ESPN cookies expire, both need updating** — otherwise you fix one
-symptom and the other keeps failing.
-
-Symptoms, so you can tell which is which:
-
-- A GitHub Actions failure email saying **"ESPN 401"** → the *GitHub* copy expired.
-- One saying **"Could not retrieve Project Settings"** → the Vercel token. It has to be scoped to the
+- **"Could not retrieve Project Settings"** → the Vercel token. It has to be scoped to the
   whole account, not to the `fantasy-recap` project: `vercel build` looks the account up first, and a
   project-scoped token gets "User not found" for that, which the CLI reports as the message above.
-- The Live page stuck on old numbers, `/api/live` returning **503** → the *Vercel*
-  copy expired or was never set.
 
 GitHub Actions also needs `VERCEL_TOKEN` so it can deploy. It's listed in the
 header comment of `.github/workflows/live-update.yml`.

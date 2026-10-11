@@ -36,7 +36,7 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   - Either way: analyze + check, then `scripts/site_guard.py` refuses to deploy if the live site has a published
     recap that `main` doesn't (a recap shipped from the Mac whose PR hasn't merged), then `scripts/deploy.sh`.
     Nothing is committed. On failure, a step opens (or comments on) a GitHub issue — a message mentioning "ESPN
-    401" means the ESPN cookie secrets expired, in both GitHub Actions secrets and the matching Vercel env vars.
+    401" means the league is no longer public on ESPN (every ESPN read is anonymous; there are no ESPN secrets).
 - **`fantasy-weekly-recap`** runs Tuesdays around 8:15 AM: invokes `fantasy-orchestrator` to capture last week
   (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
   there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging

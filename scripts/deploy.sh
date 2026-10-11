@@ -10,8 +10,8 @@
 #
 # The bundle also carries the /api/live function (api/live.py), which recomputes the
 # current week from ESPN per request so the Live page can refresh itself instead of
-# waiting for a redeploy. It needs ESPN_S2 and ESPN_SWID as Vercel environment
-# variables; without them it answers 503 and the page keeps showing its baked data.
+# waiting for a redeploy. It needs no secrets: the league is public on ESPN. If ESPN refuses
+# (the league went private), it answers 503 and the page keeps showing its baked data.
 #
 # Usage: scripts/deploy.sh [--preview]
 #   (no flag)  build the league site and deploy it to production

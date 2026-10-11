@@ -7,10 +7,11 @@ name: live-update
 # Data only: capture, analyze, build, deploy. Nothing is committed.
 #
 # Repo settings (Settings → Secrets and variables → Actions), set by Maya:
-#   secrets:   ESPN_S2, ESPN_SWID (ESPN login cookies), VERCEL_TOKEN
+#   secrets:   VERCEL_TOKEN
 #   variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (from .vercel/project.json)
-# When the ESPN cookies expire the capture step fails with "ESPN 401" — this workflow
-# opens (or comments on) a GitHub issue when that happens, see "Alert on failure" below.
+# ESPN needs no secret: the league is public, so the capture reads it anonymously. If it goes
+# private again the capture fails with "ESPN 401" — this workflow opens (or comments on) a
+# GitHub issue when that happens, see "Alert on failure" below.
 
 on:
   push:
@@ -81,9 +82,6 @@ jobs:
           exit 1
 
       - name: Capture current week from ESPN
-        env:
-          ESPN_S2: ${{ secrets.ESPN_S2 }}
-          ESPN_SWID: ${{ secrets.ESPN_SWID }}
         run: |
           set +e
           node scripts/capture_node.mjs current > "$RUNNER_TEMP/capture.json" 2> "$RUNNER_TEMP/capture-stderr.log"
@@ -96,9 +94,6 @@ jobs:
       # scores, so a failure here is logged and the run carries on without the tab.
       - name: Capture next week from ESPN (best effort)
         continue-on-error: true
-        env:
-          ESPN_S2: ${{ secrets.ESPN_S2 }}
-          ESPN_SWID: ${{ secrets.ESPN_SWID }}
         run: node scripts/capture_node.mjs next
 
       # Scheduled runs skip when nothing's changed (the week they'd show is already
@@ -178,16 +173,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if grep -qi "ESPN 401" "$RUNNER_TEMP/capture-stderr.log" 2>/dev/null; then
-            title="live-update failing: ESPN cookies expired"
-            body="ESPN returned 401 — the session cookies expired. Update **both** copies, or the other one keeps failing after you fix the first:
-          - GitHub Actions secrets (\`ESPN_S2\`, \`ESPN_SWID\`) — repo → Settings → Secrets and variables → Actions
-          - The matching Vercel environment variables — a separate copy, see \`docs/vercel.md\` §6
+          if grep -qiE "ESPN 40[13]" "$RUNNER_TEMP/capture-stderr.log" 2>/dev/null; then
+            title="live-update failing: ESPN league not public"
+            body="ESPN refused an anonymous read (401/403), which means the league is no longer public. The site reads ESPN without any login, so the commissioner needs to set the league back to public in ESPN's league settings (see \`docs/vercel.md\` §6).
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else
             title="live-update failing"
-            body="A live-update run failed outside the usual ESPN-401 case. Check the run log for what broke.
+            body="A live-update run failed outside the ESPN-401 case. Check the run log for what broke.
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           fi

@@ -6,7 +6,7 @@ the fallback: a missing tool degrades the pipeline, it doesn't stop it.
 | Role | Preferred tool | Fallback |
 |------|----------------|----------|
 | fantasy-data | FantasyPros MCP (free-tier tools; pass `league_key` on every call) | ESPN capture only: no FantasyPros start/sit, waiver, or trade cards, and no injury causes in the recap |
-| browser-capture | Claude in Chrome | `scripts/capture_node.mjs` with `.env.espn.local`, run by the script, never read by Claude |
+| browser-capture | Claude in Chrome | `scripts/capture_node.mjs` (the league is public, so it needs no login) |
 | source-control | GitHub MCP tools or `gh` CLI | plain `git` (PR steps then need the user) |
 | deploy-inspection | Vercel MCP (read-only lookups) | `vercel ls`, `vercel logs` |
 

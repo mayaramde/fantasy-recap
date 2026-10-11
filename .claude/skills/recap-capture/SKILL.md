@@ -9,10 +9,9 @@ model: inherit
 Gets one week's ESPN data onto disk and turns it into `facts.json`, whether as the first
 step of a recap or on its own.
 
-**Claude in Chrome**, on Maya's logged-in session, is always the first attempt and the only
-way you touch ESPN's private data. Never ask for, copy, print, or store `espn_s2`/`SWID`
-(CLAUDE.md, Data sources). The one local fallback, Step 5, has a script read the cookies
-from `.env.espn.local`, a file Maya fills in herself; you never read or write it.
+**Claude in Chrome** is always the first attempt. The league is public on ESPN, so neither it
+nor the fallback in Step 5 needs a login. Still never ask for, copy, print, or store
+`espn_s2`/`SWID` (CLAUDE.md, Data sources).
 
 ## Step 0: get on the right branch
 
@@ -49,12 +48,12 @@ if that PR already merged.
    This writes `data/2026/next-week/espn.json` — deliberately never committed
    (`.gitignore`); it's recaptured on every live update and goes stale the moment the week
    starts, so there's no reason to keep an old copy around.
-5. **If ESPN returns 401** (Maya's Chrome session logged out): check whether `.env.espn.local`
-   exists. If it does, stop the Chrome attempt (kill `receive.py`, close the tab) and fall back
-   to `node scripts/capture_node.mjs N`, same output file, same `complete` field to check. If
-   it doesn't exist, or the fallback also fails, **stop and tell the user** what's missing
-   (she copies `.env.espn.local.example` and fills it in from Chrome DevTools herself). Don't
-   guess at data or proceed with a partial capture.
+5. **If the Chrome capture fails** (Claude in Chrome unavailable, or the tab errors): stop the
+   Chrome attempt (kill `receive.py`, close the tab) and fall back to
+   `node scripts/capture_node.mjs N`, same output file, same `complete` field to check. If that
+   fails too with **ESPN 401**, the league has gone private again: **stop and tell the user**
+   (the commissioner switches it back to public in ESPN's league settings). Don't guess at data
+   or proceed with a partial capture.
 6. **If the capture reports `complete: false`** (a game is still in progress or stats haven't
    settled): stop without drafting anything, switch back to `main`, delete the empty
    `recap-week-NN` branch you created in Step 0, and tell the user to try again later. Keep the

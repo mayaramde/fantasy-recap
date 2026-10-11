@@ -1,6 +1,6 @@
 """Fetch one week from ESPN and trim it exactly the way scripts/capture.js does.
 
-capture.js runs in Chrome on Maya's logged-in session and stays the primary capture
+capture.js runs in Chrome (Claude in Chrome) and stays the primary capture
 path. This module is its Python twin, for the /api/live function (api/live.py), which
 has to build the same espn.json shape server-side so scripts/analyze.py can consume it
 unchanged — that is what keeps the Live page's numbers identical to the recap's.

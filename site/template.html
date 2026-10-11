@@ -2133,7 +2133,7 @@
         route();
         if (left) { const again = document.querySelector('.hub-chips'); if (again) again.scrollLeft = left; }
       }
-    } catch { /* offline, blocked, or a 503 from expired cookies: keep the baked numbers */ }
+    } catch { /* offline, blocked, or a 503 (ESPN refused): keep the baked numbers */ }
   }
 
   /* How soon to ask again. While somebody's game is on, points land every few seconds and

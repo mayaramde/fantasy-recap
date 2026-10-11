@@ -1,10 +1,8 @@
 # Keeps Cursor's AI features and codebase indexing away from these files.
 # Claude Code doesn't read this file; CLAUDE.md's privacy rules cover it.
 
-# ESPN cookies (.env.espn.local) and the Vercel token (.env.local)
+# The Vercel token (.env.local), and any old ESPN cookie file (.env.espn.local)
 .env*
-# Template only, no real values
-!.env.espn.local.example
 
 # Raw ESPN captures carry members' personal info
 data/**/raw/
