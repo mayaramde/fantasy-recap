@@ -162,7 +162,7 @@ jobs:
             scripts/deploy.sh --preview
           else
             scripts/deploy.sh
-            test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasy-recap-eight.vercel.app)" = 200
+            test "$(curl -sS -o /dev/null -w '%{http_code}' https://fantasyforthegirls.vercel.app)" = 200
           fi
 
       # Fires on any failed step above, including the simulate_failure test step. Comments
