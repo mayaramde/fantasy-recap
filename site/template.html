@@ -695,38 +695,38 @@
   /* "Where everyone's strong": a cobalt heat grid. Rank 1 is solid cobalt, rank 8 almost white;
      ranks 1-2 take the on-accent ink, the rest the page ink, which holds 4.5:1 in both themes.
      The rank number and the corner sticker say the same thing, so color is never the only cue. */
-  .heat { border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); background: var(--card); }
-  .heat table { width: 100%; min-width: 560px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
-  .heat th, .heat td { padding: 0; text-align: center; }
-  .heat thead th { padding: 10px 4px; font: 600 12.5px/1 var(--mono); letter-spacing: 0.04em; color: var(--muted); border-bottom: 2px solid var(--edge); }
-  .heat thead th:first-child, .heat tbody th { position: sticky; left: 0; z-index: 1; text-align: left; padding-left: 14px; background: var(--card); border-right: 2px solid var(--edge); }
-  .heat thead th:first-child, .heat tbody th { width: 148px; }
-  .heat tbody th { padding-right: 8px; font: 800 20px/1 var(--display); white-space: nowrap; }
-  .heat tbody th a { color: var(--ink); text-decoration: none; }
-  .heat tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
-  .heat td { position: relative; height: 52px; border: 2px solid var(--card); color: var(--ink); }
-  .heat .rk { font: 500 20px/1 var(--mono); }
-  .heat td.h1 { background: var(--accent); }
-  .heat td.h2 { background: color-mix(in srgb, var(--accent) 84%, var(--card)); }
-  .heat td.h3 { background: color-mix(in srgb, var(--accent) 68%, var(--card)); }
-  .heat td.h4 { background: color-mix(in srgb, var(--accent) 52%, var(--card)); }
-  .heat td.h5 { background: color-mix(in srgb, var(--accent) 38%, var(--card)); }
-  .heat td.h6 { background: color-mix(in srgb, var(--accent) 26%, var(--card)); }
-  .heat td.h7 { background: color-mix(in srgb, var(--accent) 16%, var(--card)); }
-  .heat td.h8 { background: color-mix(in srgb, var(--accent) 7%, var(--card)); }
-  .heat td.h1, .heat td.h2 { color: var(--on-accent); }
+  .strength { border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); background: var(--card); }
+  .strength table { width: 100%; min-width: 560px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+  .strength th, .strength td { padding: 0; text-align: center; }
+  .strength thead th { padding: 10px 4px; font: 600 12.5px/1 var(--mono); letter-spacing: 0.04em; color: var(--muted); border-bottom: 2px solid var(--edge); }
+  .strength thead th:first-child, .strength tbody th { position: sticky; left: 0; z-index: 1; text-align: left; padding-left: 14px; background: var(--card); border-right: 2px solid var(--edge); }
+  .strength thead th:first-child, .strength tbody th { width: 148px; }
+  .strength tbody th { padding-right: 8px; font: 800 20px/1 var(--display); white-space: nowrap; }
+  .strength tbody th a { color: var(--ink); text-decoration: none; }
+  .strength tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .strength td { position: relative; height: 52px; border: 2px solid var(--card); color: var(--ink); }
+  .strength .rk { font: 500 20px/1 var(--mono); }
+  .strength td.h1 { background: var(--accent); }
+  .strength td.h2 { background: color-mix(in srgb, var(--accent) 84%, var(--card)); }
+  .strength td.h3 { background: color-mix(in srgb, var(--accent) 62%, var(--card)); }
+  .strength td.h4 { background: color-mix(in srgb, var(--accent) 52%, var(--card)); }
+  .strength td.h5 { background: color-mix(in srgb, var(--accent) 38%, var(--card)); }
+  .strength td.h6 { background: color-mix(in srgb, var(--accent) 26%, var(--card)); }
+  .strength td.h7 { background: color-mix(in srgb, var(--accent) 16%, var(--card)); }
+  .strength td.h8 { background: color-mix(in srgb, var(--accent) 7%, var(--card)); }
+  .strength td.h1, .strength td.h2 { color: var(--on-accent); }
   /* your row: outlined all the way round, manager cell tinted, "You" tag beside the name */
-  .heat tbody tr.me th { background: var(--accent-soft); box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset 3px 0 0 var(--edge); }
-  .heat tbody tr.me td { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge); }
-  .heat tbody tr.me td:last-child { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset -3px 0 0 var(--edge); }
+  .strength tbody tr.me th { background: var(--accent-soft); box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset 3px 0 0 var(--edge); }
+  .strength tbody tr.me td { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge); }
+  .strength tbody tr.me td:last-child { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset -3px 0 0 var(--edge); }
   /* the corner sticker: lime for a team's best spot, pink for her weakest, each with its own glyph */
   .corner { position: absolute; top: 2px; right: 2px; display: grid; place-items: center; width: 18px; height: 18px; font: 700 9px/1 var(--display);
     font-style: normal; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 50% 4px 50% 4px; }
   .corner.best { background: var(--lime); transform: rotate(4deg); }
   .corner.weak { background: var(--pink); transform: rotate(-4deg); }
-  .heat-key { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
-  .heat-key .corner { position: static; display: inline-grid; vertical-align: -6px; margin-right: 6px; transform: none; }
-  @media (max-width: 559px) { .heat thead th:first-child, .heat tbody th { width: 112px; } .heat tbody th { font-size: 18px; } .heat tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
+  .strength-key { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+  .strength-key .corner { position: static; display: inline-grid; vertical-align: -6px; margin-right: 6px; transform: none; }
+  @media (max-width: 559px) { .strength thead th:first-child, .strength tbody th { width: 112px; } .strength tbody th { font-size: 18px; } .strength tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
   .card.now .stat { background: var(--pink); }
   .card.watch .stat { background: var(--orange); }
   .card.info .stat { background: var(--lime); }
@@ -2100,13 +2100,13 @@
         </tr>`;
     };
     return `
-      <div class="heat table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
+      <div class="strength table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
         <table>
           <thead><tr><th scope="col">Manager</th>${GRID_COLS.map((c) => `<th scope="col" title="${esc(GRID_NAME[c])}">${c}</th>`).join('')}</tr></thead>
           <tbody>${teams.map(row).join('')}</tbody>
         </table>
       </div>
-      <p class="heat-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>1 is the league's best, ${n} the worst</span></p>`;
+      <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>1 is the league's best, ${n} the worst</span></p>`;
   }
 
   function coachPage(next) {
