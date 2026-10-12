@@ -157,10 +157,16 @@ def _rank(n, n_teams):
     return f"{_ordinal(n)}, also known as last" if n == n_teams else _ordinal(n)
 
 
-def position_card(ranks, n_teams=8):
-    """(card, weak_spot) for one team, from its {group: league rank} (1 = best)."""
+def extremes(ranks):
+    """(best, worst) group from a team's {group: league rank}; ties go to the first in GROUPS order."""
     best = [g for g in GROUPS if ranks[g] == min(ranks.values())][0]
     worst = [g for g in GROUPS if ranks[g] == max(ranks.values())][0]
+    return best, worst
+
+
+def position_card(ranks, n_teams=8):
+    """(card, weak_spot) for one team, from its {group: league rank} (1 = best)."""
+    best, worst = extremes(ranks)
     stat = f"Best: {best} (#{ranks[best]}) · Worst: {worst} (#{ranks[worst]})"
     if ranks[best] == ranks[worst]:
         title = "Even across the board"
@@ -217,15 +223,17 @@ def projection_card(rows):
 # ---------- audit: all three, every team ----------
 
 def audits(facts_list, team_ids):
-    """{team_id: {"cards": [lineup_iq, position, projection], "weak_spot": group}}, from the
-    weeks given (the build passes only recapped ones). No weeks → no cards, no weak spot."""
+    """{team_id: {"cards": [lineup_iq, position, projection], "weak_spot": group, "best_spot": group,
+    "ranks": {group: league rank}}}, from the weeks given (the build passes only recapped ones).
+    No weeks → no cards, no spots, no ranks."""
     ranks = position_ranks(position_totals(facts_list)) if facts_list else {}
     out = {}
     for tid in team_ids:
         rows = [(f["week"], t) for f in facts_list for t in f["teams"] if t["team_id"] == tid]
         if not rows:
-            out[tid] = {"cards": [], "weak_spot": None}
+            out[tid] = {"cards": [], "weak_spot": None, "best_spot": None, "ranks": None}
             continue
         pos, weak = position_card(ranks[tid], len(team_ids))
-        out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak}
+        out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak,
+                    "best_spot": extremes(ranks[tid])[0], "ranks": ranks[tid]}
     return out

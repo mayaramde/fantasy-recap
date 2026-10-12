@@ -109,15 +109,15 @@
   main:focus { outline: none; }
 
   /* the sticker: every raised surface shares one outline + hard offset shadow */
-  a.game, .card, .lineup, .std-card, .tile, .coach-card, .decided li, .other-games a, .versus,
+  a.game, .card, .lineup, .std-card, .tile, .decided li, .other-games a, .versus,
   .story, .final-lines {
     border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px;
   }
   @media (prefers-reduced-motion: no-preference) {
-    a.game, .coach-card, .other-games a, .chips a, .profile-btn { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+    a.game, .other-games a, .chips a, .profile-btn { transition: transform 0.12s ease, box-shadow 0.12s ease; }
   }
-  a.game:hover, .coach-card:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
-  a.game:active, .coach-card:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  a.game:hover, .other-games a:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
+  a.game:active, .other-games a:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
   .badge-tilt { display: inline-block; transform: rotate(-3deg); }
 
   /* ---------- site header ---------- */
@@ -595,12 +595,6 @@
 
   /* ---------- coach ---------- */
   /* One card per team on the overview: the manager, what needs doing, a way in. */
-  .coach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
-  .coach-card { text-decoration: none; background: var(--card); padding: 14px 16px 16px; display: grid; gap: 8px; align-content: start; }
-  .coach-card .mgr { font: 800 26px/1.05 var(--display); }
-  .coach-card .tname { font-size: 12.5px; color: var(--muted); }
-  .coach-card .lead { margin: 0; font-size: 14px; }
-  .coach-card.clear { background: var(--lime-soft); }
   .cc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
   .cc-head .todo { flex: none; }
   /* her top two items as a mini checklist; the box color is how urgent each one is */
@@ -611,8 +605,6 @@
   .cc-box.now { background: var(--pink); }
   .cc-box.watch { background: var(--orange); }
   .cc-box.info { background: var(--accent-soft); }
-  .coach-card .go { font-size: 13.5px; font-weight: 700; color: var(--accent); }
-  .coach-card:hover .go { text-decoration: underline; }
   /* the count sticker: how many things need doing before kickoff */
   .todo { justify-self: start; font: 600 12.5px/1 var(--script); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .todo.now { background: var(--pink); }
@@ -624,7 +616,7 @@
   .card.info { box-shadow: 5px 5px 0 var(--drop); }
 
   /* Coach overview: your team pinned on top, a radar of the league's loudest items, then the
-     week's games as face-offs. One column on a phone; from 860px the hero and radar sit side by side. */
+     "where everyone's strong" grid. One column on a phone; from 860px the hero and radar sit side by side. */
   .coach-top { display: grid; gap: 22px; margin-top: 14px; }
   /* the global `section` margin would stack on the grid's own and open a gap under the header */
   .coach-top > section { margin-top: 0; }
@@ -634,10 +626,11 @@
   .you-sticker { position: absolute; top: -14px; right: 18px; font: 600 14px/1 var(--script); color: var(--on-pop); background: var(--pink);
     border: 2px solid var(--edge); border-radius: 999px; padding: 6px 13px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .ch-eyebrow { margin: 0 0 4px; font: 600 12px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-  .ch-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .ch-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+  .ch-who { flex: 0 1 auto; min-width: 0; }
   .ch-head .mgr { margin: 0; font: 900 clamp(36px, 7vw, 48px)/0.95 var(--display); }
   .ch-head .tname { margin-top: 4px; font-size: 14px; color: var(--muted); }
-  .ch-head .todo { flex: none; margin-top: 6px; }
+  .ch-head .todo { flex: none; margin: 6px 0 0 auto; }
   .ch-stand { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font: 500 13px/1.3 var(--mono); color: var(--muted); }
   .ch-stand .po-label { font-family: var(--body); }
   .ch-game { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 18px; align-items: end; padding: 14px; background: var(--card);
@@ -651,7 +644,7 @@
   .ch-game .fo-bar { grid-column: 1 / -1; }
   .ch-sum { margin: 0; font-size: 15.5px; line-height: 1.45; }
   .ch-list li { font-size: 15px; }
-  .ch-go { justify-self: start; padding: 9px 16px; font-size: 14px; }
+  .ch-go { flex: none; align-self: center; padding: 9px 16px; font-size: 14px; }
   .ch-pick { display: grid; gap: 12px; }
   .ch-pick p { margin: 0; font-size: 15px; }
   .ch-pick .profile-btn { justify-self: start; cursor: pointer; padding: 9px 16px; font-size: 14px; }
@@ -695,31 +688,88 @@
   .rt-pill { font: 600 11.5px/1 var(--script); color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
   .rt-empty { margin: 0; font-size: 14px; color: var(--muted); }
 
-  /* matchup face-offs: two team cards, a "vs" sticker between them, the odds bar under both */
-  .faceoffs { display: grid; gap: 26px; }
-  @media (min-width: 1000px) { .faceoffs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .faceoff { display: grid; gap: 12px; }
-  .fo-row { display: grid; gap: 8px; align-items: stretch; }
-  @media (min-width: 560px) { .fo-row { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); } }
-  .fo-side { display: grid; gap: 8px; align-content: start; padding: 14px 14px 12px; text-decoration: none; color: var(--ink); background: var(--card);
-    border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); }
-  .fo-side.me { background: var(--accent-soft); box-shadow: 4px 4px 0 var(--accent); }
-  .fo-side .mgr { font: 800 24px/1 var(--display); }
-  .fo-side .tname { margin-top: 2px; font-size: 12.5px; color: var(--muted); }
-  .fo-side .todo { font-size: 11.5px; padding: 4px 9px; }
-  .fo-top { display: grid; grid-template-columns: 16px 1fr; gap: 8px; margin: 0; font-size: 13.5px; line-height: 1.3; }
-  .fo-top .cc-box { width: 16px; height: 16px; }
-  .fo-proj { font: 500 12px/1 var(--mono); color: var(--muted); }
-  .fo-proj b { font: 800 20px/1 var(--display); color: var(--ink); margin-right: 3px; }
-  .fo-side .go { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--accent); }
-  .fo-side:hover .go { text-decoration: underline; }
-  .vs { align-self: center; justify-self: center; font: 600 14px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge);
-    border-radius: 999px; padding: 7px 10px; transform: rotate(-4deg); box-shadow: 2px 2px 0 var(--drop); }
   .you-tag { margin-left: 6px; vertical-align: 4px; font: 600 11px/1 var(--script); color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 2px 7px; }
-  @media (prefers-reduced-motion: no-preference) { .fo-side, a.radar-tile { transition: transform 0.12s ease, box-shadow 0.12s ease; } }
-  .fo-side:hover, a.radar-tile:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
-  .fo-side.me:hover { box-shadow: 6px 6px 0 var(--accent); }
-  .fo-side:active, a.radar-tile:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  @media (prefers-reduced-motion: no-preference) { a.radar-tile { transition: transform 0.12s ease, box-shadow 0.12s ease; } }
+  a.radar-tile:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); }
+  a.radar-tile:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+
+  /* "Where everyone's strong": a cobalt heat grid. Rank 1 is solid cobalt, rank 8 almost white;
+     ranks 1-2 take the on-accent ink, the rest the page ink, which holds 4.5:1 in both themes.
+     The rank number and the corner sticker say the same thing, so color is never the only cue. */
+  .strength { border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); background: var(--card); }
+  .strength table { width: 100%; min-width: 560px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+  .strength th, .strength td { padding: 0; text-align: center; }
+  .strength thead th { padding: 10px 4px; font: 600 12.5px/1 var(--mono); letter-spacing: 0.04em; color: var(--muted); border-bottom: 2px solid var(--edge); }
+  .strength thead th:first-child, .strength tbody th { position: sticky; left: 0; z-index: 1; text-align: left; padding-left: 14px; background: var(--card); border-right: 2px solid var(--edge); }
+  .strength thead th:first-child, .strength tbody th { width: 148px; }
+  .strength tbody th { padding-right: 8px; font: 800 20px/1 var(--display); white-space: nowrap; }
+  .strength tbody th a { color: var(--ink); text-decoration: none; }
+  .strength tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .strength td { position: relative; height: 52px; border: 2px solid var(--card); color: var(--ink); }
+  .strength .rk { font: 500 20px/1 var(--mono); }
+  .strength td.h1 { background: var(--accent); }
+  .strength td.h2 { background: color-mix(in srgb, var(--accent) 84%, var(--card)); }
+  .strength td.h3 { background: color-mix(in srgb, var(--accent) 62%, var(--card)); }
+  .strength td.h4 { background: color-mix(in srgb, var(--accent) 52%, var(--card)); }
+  .strength td.h5 { background: color-mix(in srgb, var(--accent) 38%, var(--card)); }
+  .strength td.h6 { background: color-mix(in srgb, var(--accent) 26%, var(--card)); }
+  .strength td.h7 { background: color-mix(in srgb, var(--accent) 16%, var(--card)); }
+  .strength td.h8 { background: color-mix(in srgb, var(--accent) 7%, var(--card)); }
+  .strength td.h1, .strength td.h2 { color: var(--on-accent); }
+  /* your row: outlined all the way round, manager cell tinted, "You" tag beside the name */
+  .strength tbody tr.me th { background: var(--accent-soft); box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset 3px 0 0 var(--edge); }
+  .strength tbody tr.me td { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge); }
+  .strength tbody tr.me td:last-child { box-shadow: inset 0 3px 0 var(--edge), inset 0 -3px 0 var(--edge), inset -3px 0 0 var(--edge); }
+  /* the corner sticker: lime for a team's best spot, pink for her weakest, each with its own glyph */
+  .corner { position: absolute; top: 2px; right: 2px; display: grid; place-items: center; width: 18px; height: 18px; font: 700 9px/1 var(--display);
+    font-style: normal; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 50% 4px 50% 4px; }
+  .corner.best { background: var(--lime); transform: rotate(4deg); }
+  .corner.weak { background: var(--pink); transform: rotate(-4deg); }
+  .strength-key { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+  .strength-key .corner { position: static; display: inline-grid; vertical-align: -6px; margin-right: 6px; transform: none; }
+  @media (max-width: 559px) { .strength thead th:first-child, .strength tbody th { width: 112px; } .strength tbody th { font-size: 18px; } .strength tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
+
+  /* Coach: two side-by-side cards (stacked on a phone): waiver order and the injury report */
+  .coach-duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 34px; }
+  @media (min-width: 900px) { .coach-duo { grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); align-items: start; } }
+  .coach-duo > .panel { margin-top: 0; }
+  .panel { padding: 16px 18px 18px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); }
+  .panel h2 { margin: 0; font: 800 24px/1.05 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .panel .sec-sub { margin: 6px 0 12px; }
+  .panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+  .waiver { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .waiver li { color: var(--ink); display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 7px 10px; border: 2px solid var(--edge); border-radius: 10px; background: var(--card); }
+  .waiver li.me { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .waiver .pos { font: 800 22px/1 var(--display); }
+  .waiver .wname { font: 800 19px/1 var(--display); letter-spacing: 0.01em; }
+  .waiver .wname a { color: inherit; text-decoration: none; }
+  .waiver .wname a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .waiver .wname .you-tag { margin-left: 8px; }
+  .waiver .rec { font: 500 14px/1 var(--mono); }
+  .inj-toggle { display: inline-flex; border: 2px solid var(--edge); border-radius: 999px; overflow: hidden; background: var(--card); }
+  .inj-toggle button { cursor: pointer; padding: 6px 12px; font: 600 13px/1 var(--body); color: var(--ink); background: transparent; border: 0; }
+  .inj-toggle button + button { border-left: 2px solid var(--edge); }
+  .inj-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .inj-toggle .wk-n { font: 500 11px/1 var(--mono); opacity: 0.85; margin-left: 2px; }
+  .inj-wrap { border: 2px solid var(--edge); border-radius: 10px; }
+  .inj-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .inj-table th, .inj-table td { padding: 8px 8px; text-align: left; vertical-align: middle; }
+  .inj-table thead th { font: 600 11.5px/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--edge); }
+  .inj-table tbody + tbody { border-top: 2px solid var(--edge); }
+  .inj-table tbody th { width: 84px; font: 800 17px/1.1 var(--display); vertical-align: top; padding-top: 10px; }
+  .inj-table tbody th a { color: var(--ink); text-decoration: none; }
+  .inj-table tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .inj-table tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; }
+  .inj-table .pl { font-weight: 700; }
+  .inj-table .pl small { font: 500 11px/1 var(--mono); color: var(--muted); }
+  .inj-table .nfl { margin-left: 4px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px 2px 3px; border: 2px solid var(--edge); border-radius: 999px; font: 500 11px/1 var(--mono); background: var(--card); white-space: nowrap; vertical-align: 1px; }
+  .inj-table .role { font: 500 12px/1 var(--mono); color: var(--muted); }
+  .spill { display: inline-block; padding: 4px 9px; font: 600 11.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; white-space: nowrap; }
+  .spill.out { background: var(--pink); }
+  .spill.q { background: var(--orange); }
+  .spill.bye { background: var(--accent-soft); color: var(--ink); }
+  .inj-empty { margin: 4px 0 0; padding: 18px 14px; text-align: center; font-size: 15px; background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 10px; }
+  @media (max-width: 559px) { .inj-table { font-size: 13px; } .inj-table tbody th { width: 58px; font-size: 15px; } .inj-table th, .inj-table td { padding: 7px 4px; } .inj-table .role { font-size: 10.5px; } .spill { padding: 3px 6px; font-size: 10.5px; } .inj-table thead th { font-size: 10.5px; } .panel { padding-inline: 14px; } }
   .card.now .stat { background: var(--pink); }
   .card.watch .stat { background: var(--orange); }
   .card.info .stat { background: var(--lime); }
@@ -1965,33 +2015,16 @@
       <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
-  /* Her top two items as a mini checklist, most urgent first. build.py already sorts
-     items by level, then puts a lookback or opponent-preview card in front of them, so
-     re-sort here (stable) to let a real to-do outrank that "info" card. */
+  /* Her top two items, most urgent first. build.py already sorts items by level, then puts a
+     lookback or opponent-preview card in front of them, so re-sort here (stable) to let a real
+     to-do outrank that "info" card. */
   const LEVEL_RANK = { now: 0, watch: 1, info: 2 };
-  function coachCard(a, next) {
-    const badge = a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
-      : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
-      : '<span class="todo clear">all clear</span>';
-    const items = [...a.items].sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3));
-    const shown = items.slice(0, 2);
-    const rest = items.length - shown.length;
-    return `
-      <a class="coach-card${a.counts.now || a.counts.watch ? '' : ' clear'}" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">
-        <div class="cc-head"><div><div class="mgr">${esc(a.manager)}</div><div class="tname">${esc(a.team_name)}</div></div>${badge}</div>
-        ${shown.length ? `<ul class="cc-list">${shown.map((it) => `
-          <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>`
-          : '<p class="lead">Nothing on her list. Suspiciously calm.</p>'}
-        <span class="go">${rest ? `+${rest} more on her list →` : 'Open her list →'}</span>
-      </a>`;
-  }
-  // Most to fix first, then most to watch; ties keep ESPN's team order.
-  const byUrgency = (rows) => [...rows].sort((x, y) => (y.counts.now - x.counts.now) || (y.counts.watch - x.counts.watch));
 
   const todoBadge = (a, next) => (a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
     : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
     : '<span class="todo clear">all clear</span>');
-  const topItems = (a, n) => [...a.items].sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3)).slice(0, n);
+  // The "nothing to fix" item is left out: the card's summary line already says so.
+  const topItems = (a, n) => a.items.filter((it) => it.kind !== 'clear').sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3)).slice(0, n);
 
   function winBar(a, b) {
     const p = a.win_probability;
@@ -2025,7 +2058,8 @@
       <section class="coach-hero" aria-labelledby="ch-mgr">
         <span class="you-sticker" aria-hidden="true">You</span>
         <div class="ch-head">
-          <div><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
+          <div class="ch-who"><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
+          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my full profile →</a>
           ${todoBadge(a, next)}
         </div>
         ${stand.length || po ? `<p class="ch-stand">${stand.map(esc).join(' · ')}${po ? ` <span class="po-label ${PO_LABEL[po.label] || ''}" title="${esc(PO_TIP[po.label] || '')}">${esc(po.label)}</span>` : ''}</p>` : ''}
@@ -2038,7 +2072,6 @@
         ${a.summary ? `<p class="ch-sum">${esc(a.summary)}</p>` : ''}
         ${items.length ? `<ul class="cc-list ch-list">${items.map((it) => `
           <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>` : ''}
-        <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my profile →</a>
       </section>`;
   }
 
@@ -2083,23 +2116,92 @@
       </section>`;
   }
 
-  function faceOff([a, b], next, me) {
-    const side = (s) => {
-      const top = topItems(s, 1)[0];
-      const mine = s.team_id === me;
+  /* "Where everyone's strong": every team's rank (1 = best of 8) at each lineup spot, from
+     the season's points at that spot (the same ranks behind the profile's Position strength
+     card). Shade is a single cobalt ramp, but the number and the corner sticker carry the
+     meaning, so nothing depends on color alone. */
+  const GRID_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
+  const GRID_NAME = { QB: 'quarterback', RB: 'running back', WR: 'wide receiver', TE: 'tight end', FLEX: 'flex', DST: 'defense', K: 'kicker' };
+  function strengthGrid(next, me) {
+    const teams = SEASON.standings.filter((t) => t.profile && t.profile.pos_ranks);
+    if (!teams.length) return '<p class="sec-sub">Coach needs one finished week before she can rank anybody.</p>';
+    const n = teams.length;
+    const row = (t) => {
+      const ranks = t.profile.pos_ranks;
+      const mine = t.team_id === me;
+      const best = t.profile.best_spot;
+      const weak = t.profile.weak_spot;
+      const spread = best && weak && ranks[best] !== ranks[weak];
+      // No data-myteam on these links: tapping someone else's name must not make her "You".
       return `
-        <a class="fo-side${mine ? ' me' : ''}" href="${coachUrl(next, s.team_id)}" data-myteam="${s.team_id}">
-          <div class="cc-head"><div><div class="mgr">${esc(s.manager)}${mine ? '<span class="you-tag">You</span>' : ''}</div><div class="tname">${esc(s.team_name)}</div></div>${todoBadge(s, next)}</div>
-          ${top ? `<p class="fo-top"><span class="cc-box ${esc(top.level)}" aria-hidden="true"></span><span>${esc(mine ? top.title : deskTitle(top.title))}</span></p>` : ''}
-          ${s.projected != null ? `<div class="fo-proj"><b>${f1(s.projected)}</b>projected</div>` : ''}
-          <span class="go">${mine ? 'See my profile →' : `See ${esc(s.manager)}'s profile →`}</span>
-        </a>`;
+        <tr${mine ? ' class="me"' : ''}>
+          <th scope="row"><a href="${coachUrl(next, t.team_id)}">${esc(t.manager)}</a>${mine ? '<span class="you-tag">You</span>' : ''}</th>
+          ${GRID_COLS.map((c) => {
+            const r = ranks[c];
+            const tag = spread && c === best ? ['best', 'Best spot', '▲'] : spread && c === weak ? ['weak', 'Weakest spot', '▼'] : null;
+            return `<td class="h${r}"><span class="rk" aria-hidden="true">${r}</span>${tag ? `<span class="corner ${tag[0]}" aria-hidden="true">${tag[2]}</span>` : ''}<span class="sr">${esc(t.manager)} at ${GRID_NAME[c]}: ${ordinal(r)} of ${n}${tag ? `, ${tag[1].toLowerCase()}` : ''}</span></td>`;
+          }).join('')}
+        </tr>`;
     };
     return `
-      <article class="faceoff" aria-label="${esc(a.manager)} vs ${esc(b.manager)}">
-        <div class="fo-row">${side(a)}<span class="vs" aria-hidden="true">vs</span>${side(b)}</div>
-        ${winBar(a, b)}
-      </article>`;
+      <div class="strength table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Manager</th>${GRID_COLS.map((c) => `<th scope="col" title="${esc(GRID_NAME[c])}">${c}</th>`).join('')}</tr></thead>
+          <tbody>${teams.map(row).join('')}</tbody>
+        </table>
+      </div>
+      <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>1 is the league's best, ${n} the worst</span></p>`;
+  }
+
+  /* "Waiver order this week": the league's waivers run worst record first and reset to that every
+     week (league.json: inverse_standings_weekly_reset), so it's the standings upside down. The
+     standings already break ties on points for, so reversing them keeps that tiebreak honest. */
+  function waiverCard(next, me) {
+    const order = [...SEASON.standings].reverse();
+    return `
+      <section class="panel" aria-labelledby="wo-h">
+        <h2 id="wo-h">Waiver order this week</h2>
+        <p class="sec-sub">Worst record picks first. The order resets every week.</p>
+        <ol class="waiver">${order.map((t, i) => {
+          const mine = t.team_id === me;
+          return `<li${mine ? ' class="me"' : ''}><span class="pos">${i + 1}</span><span class="wname"><a href="${coachUrl(next, t.team_id)}">${esc(t.manager)}</a>${mine ? '<span class="you-tag">You</span>' : ''}</span><span class="rec">${record(t)}</span></li>`;
+        }).join('')}</ol>
+      </section>`;
+  }
+
+  /* "Injuries and byes": everyone on a roster who's hurt or whose NFL team is off, grouped by team.
+     The status is always spelled out in the pill, so its fill is a hint and never the message. */
+  let injPick = null;
+  const INJ_PILL = (status) => (OUTISH.includes(status) ? 'out' : status === 'Bye' ? 'bye' : 'q');
+  function injuryCard(next, me) {
+    const view = ahead() && (injPick || (next ? 'next' : 'this')) === 'next' ? 'next' : 'this';
+    const rows = coachRows(view === 'next') || [];
+    const known = rows.some((r) => Array.isArray(r.report));
+    const groups = rows.filter((r) => (r.report || []).length)
+      .sort((x, y) => (y.team_id === me) - (x.team_id === me));
+    const body = !known
+      ? '<p class="inj-empty">Coach hasn\'t got the injury report for this one yet. Check back soon.</p>'
+      : groups.length
+        ? `<div class="inj-wrap table-scroll"><table class="inj-table">
+            <thead><tr><th scope="col">Manager</th><th scope="col">Player</th><th scope="col">Status</th><th scope="col">Spot</th></tr></thead>
+            ${groups.map((g) => `<tbody>${g.report.map((p, i) => `
+              <tr>${i === 0 ? `<th scope="rowgroup" rowspan="${g.report.length}"><a href="${coachUrl(next, g.team_id)}">${esc(g.manager)}</a>${g.team_id === me ? '<span class="you-tag">You</span>' : ''}</th>` : ''}
+                <td class="pl">${esc(p.name)}${p.pos && p.pos !== 'DST' ? ` <small>${esc(p.pos)}</small>` : ''}${p.team ? ` <span class="nfl">${p.logo ? `<img src="${esc(p.logo)}" alt="" width="16" height="16" loading="lazy" onerror="this.remove()">` : ''}${esc(p.team)}</span>` : ''}</td>
+                <td><span class="spill ${INJ_PILL(p.status)}">${esc(p.status)}</span></td>
+                <td class="role">${esc(p.role)}</td></tr>`).join('')}</tbody>`).join('')}
+          </table></div>`
+        : '<p class="inj-empty">Nobody\'s hurt. Enjoy it while it lasts.</p>';
+    return `
+      <section class="panel" aria-labelledby="ib-h">
+        <div class="panel-head">
+          <h2 id="ib-h">Injuries and byes</h2>
+          ${ahead() ? `<div class="inj-toggle" role="group" aria-label="Choose a week">
+            <button type="button" data-inj="this" aria-pressed="${view === 'this'}">This week <span class="wk-n">W${LIVE.week}</span></button>
+            <button type="button" data-inj="next" aria-pressed="${view === 'next'}">Next week <span class="wk-n">W${ahead().week}</span></button></div>` : ''}
+        </div>
+        <p class="sec-sub">Hurt players and byes across every roster, starters first. A bye means his NFL team doesn't play that week.</p>
+        ${body}
+      </section>`;
   }
 
   function coachPage(next) {
@@ -2116,20 +2218,22 @@
         </div>
         <h1>Coach</h1>
         <p class="dek">${next
-          ? `Planning ahead for Week ${week}: byes, injuries, and anyone ESPN likes more than your current starter.`
-          : `Every team's to-do list for Week ${week}: who to swap in, who's hurt, and which spot is about to score nothing.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
+          ? `Coach is already on Week ${week}, with your to-do list and everyone's lineup holes. Nothing has kicked off. Fix away.`
+          : `Coach read all eight rosters so you don't have to. Your to-do list, the week's biggest swap, and who's strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <div class="coach-top">
         ${mine ? coachHero(mine, rows, next) : heroPicker(next)}
         ${coachRadar(rows, pairs, next)}
       </div>
-      <section style="margin-top:34px" aria-labelledby="fo-h">
-        ${secHead('flag', `<span id="fo-h">Matchup face-offs</span>`)}
-        <p class="sec-sub">Every game this week, both to-do lists side by side. The bar is ESPN's chance to win. Tap a team for her full list.</p>
-        ${pairs.length
-          ? `<div class="faceoffs">${pairs.map((p) => faceOff(p, next, me)).join('')}</div>`
-          : `<div class="coach-grid">${byUrgency(rows).map((a) => coachCard(a, next)).join('')}</div>`}
+      <section style="margin-top:34px" aria-labelledby="sg-h">
+        ${secHead('board', `<span id="sg-h">Where everyone's strong</span>`)}
+        <p class="sec-sub">Each team's lineup spots, ranked against the league. Darker means stronger.</p>
+        ${strengthGrid(next, me)}
       </section>
+      <div class="coach-duo">
+        ${waiverCard(next, me)}
+        ${injuryCard(next, me)}
+      </div>
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
 
@@ -2339,11 +2443,14 @@
     // Coach's hello modal: remember the pick and redraw Coach as her team.
     const pick = e.target.closest('button[data-pick]');
     if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
+    const inj = e.target.closest('button[data-inj]');
+    if (inj) { injPick = inj.dataset.inj; route(); const again = document.querySelector(`button[data-inj="${injPick}"]`); if (again) again.focus({ preventScroll: true }); }
     const reopen = e.target.closest('button[data-open-pick]');
     if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
   });
 
   window.addEventListener('hashchange', () => {
+    injPick = null;
     route();
     window.scrollTo({ top: 0 });
     $('#main').focus({ preventScroll: true });

@@ -165,6 +165,10 @@ class PositionTest(unittest.TestCase):
         for _ in range(3):
             self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:RB1:TE7")
 
+    def test_extremes_match_the_card(self):
+        ranks = {"QB": 3, "RB": 1, "WR": 1, "TE": 7, "FLEX": 7, "DST": 4, "K": 5}
+        self.assertEqual(tp.extremes(ranks), ("RB", "TE"))
+
     def test_same_rank_everywhere(self):
         card, weak = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
         self.assertEqual((card["key"], weak), ("pos:RB1:RB1", "RB"))
@@ -235,8 +239,8 @@ class ProjectionTest(unittest.TestCase):
 
 class AuditsTest(unittest.TestCase):
     def test_no_weeks(self):
-        self.assertEqual(tp.audits([], [1, 2]), {1: {"cards": [], "weak_spot": None},
-                                                 2: {"cards": [], "weak_spot": None}})
+        empty = {"cards": [], "weak_spot": None, "best_spot": None, "ranks": None}
+        self.assertEqual(tp.audits([], [1, 2]), {1: dict(empty), 2: dict(empty)})
 
     def test_three_cards_in_order_and_stable_keys(self):
         def facts():
@@ -250,6 +254,12 @@ class AuditsTest(unittest.TestCase):
         self.assertEqual([c["key"] for c in a[1]["cards"]], [c["key"] for c in b[1]["cards"]])
         # Team 1 is 1st at QB and, on the team-id tie-break, at every empty group; 2nd only at TE.
         self.assertEqual(a[1]["weak_spot"], "TE")
+        # The Coach page's heat grid reads these: every group ranked, plus the best spot.
+        self.assertEqual(a[1]["ranks"]["QB"], 1)
+        self.assertEqual(a[1]["ranks"]["TE"], 2)
+        self.assertEqual(set(a[1]["ranks"]), set(tp.GROUPS))
+        self.assertEqual(a[1]["best_spot"], "RB")
+        self.assertEqual(a[2]["best_spot"], "TE")
 
 
 if __name__ == "__main__":
