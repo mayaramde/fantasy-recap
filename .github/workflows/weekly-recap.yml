@@ -170,6 +170,9 @@ jobs:
               exactly one of `RESULT: drafted`, `RESULT: not-ready` (the week isn't final
               yet), or `RESULT: blocked`. Then a line saying why for anything but drafted,
               then the draft's headline and dek and the fact-check and voice-check verdicts.
+            - Run every subagent (recap-fact-checker, voice-check) in the foreground, with
+              `run_in_background: false`, and wait for its report before going on. Never end your
+              turn while one is running: this is a one-shot run, so ending the turn ends the run.
             - Keep scratch files in .ci-out/ (never /tmp or anywhere outside this checkout),
               and run one command at a time rather than chaining many with ; or &&.
               If a command is refused, try a simpler form (read a script's output directly, or
