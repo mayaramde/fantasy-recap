@@ -668,7 +668,8 @@
     padding: 13px 10px; border-radius: 10px; box-shadow: 3px 3px 0 var(--drop); }
   .pick-grid button:hover, .pick-grid button:focus-visible { background: var(--lime); color: var(--on-pop); }
   .pick-grid button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
-  .pick-grid .dot { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); font: 800 10px/1 var(--display); color: var(--on-pop); }
+  .pick-dialog .pick-hint { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
+  .pick-dialog .dot, .pick-grid .dot { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); font: 800 10px/1 var(--display); color: var(--on-pop); }
 
   /* the split win-probability bar: filled halves, navy or white ink on top */
   .fo-bar { display: flex; height: 28px; border: 2px solid var(--edge); border-radius: 999px; overflow: hidden; background: var(--card); }
@@ -2048,9 +2049,10 @@
         <button type="button" class="profile-btn" data-open-pick>Tell Coach your name</button>
         <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
           <h2 id="pick-h">Hi, I'm Coach.</h2>
-          <p>I'm an agentic AI harness trained on your league's data, including the numbers you missed before that regrettable trade. Tell me your name and I'll give you some insight from yours truly.</p>
+          <p>I've read every roster in this league, ESPN's injury report and 8,000 simulated seasons, so yes, I already know what's wrong with your lineup. Pick your name and I'll tell you before kickoff.</p>
           <div class="pick-grid">${coachRows(next).map((a) => `
             <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
+          <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
         </dialog>
       </section>`;
   }
