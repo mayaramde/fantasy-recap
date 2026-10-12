@@ -44,6 +44,18 @@ class FetchProductionLive(unittest.TestCase):
         with d:
             self.assertIsNone(build.fetch_production_live(url))
 
+    def test_malformed_rows_are_none_not_a_crash(self):
+        bad = [dict(LIVE, advice=["x"]), dict(LIVE, advice=[{"roster_ideas": []}]),
+               dict(LIVE, advice=[{"team_id": 1, "roster_ideas": ["x"]}]), dict(LIVE, next="x"),
+               dict(LIVE, next={"teams": [{}]})]
+        for live in bad:
+            d, url = served(page({"live": live}))
+            with d:
+                self.assertIsNone(build.fetch_production_live(url), live)
+        d, url = served(page(["not", "an", "object"]))
+        with d:
+            self.assertIsNone(build.fetch_production_live(url))
+
     def test_unreadable_page_is_none_not_a_crash(self):
         d, url = served("<html>no data here</html>")
         with d:
@@ -69,6 +81,13 @@ class SiteDataBorrowsLive(unittest.TestCase):
             self.skipTest("this checkout has its own uncommitted live week")
         live = self.data(True, LIVE)["live"]
         self.assertEqual(live["week"], 99)
+
+    def test_borrowed_ideas_get_the_weak_spot_flag(self):
+        if any(c[0]["week"] > max((w["week"] for _, w in self.inputs[0]), default=0) for c in self.inputs[1]):
+            self.skipTest("this checkout has its own uncommitted live week")
+        data = self.data(True, LIVE)
+        weak = next(s for s in data["season"]["standings"] if s["team_id"] == 1)["profile"]["weak_spot"]
+        self.assertEqual(data["live"]["advice"][0]["roster_ideas"][0]["fills_weak_spot"], weak == "WR")
 
     def test_league_build_never_borrows(self):
         self.assertNotEqual((self.data(False, LIVE)["live"] or {}).get("week"), 99)
