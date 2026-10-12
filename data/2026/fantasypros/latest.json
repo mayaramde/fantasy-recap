@@ -1,115 +1,95 @@
 {
-  "generated_at": "2026-10-10T15:01:55Z",
+  "generated_at": "2026-10-11T20:26:26Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "weeks": {},
   "audit": {
     "1": {
       "lineup:C:4035538:w1": {
-        "title": "David Montgomery had the Week 1 you wanted",
-        "text": "James Cook III got the Week 1 nod at running back while David Montgomery racked up a near-30-point day on your bench. One early swap and that week looks a lot better."
+        "title": "David Montgomery had the game you wanted, on your bench",
+        "text": "James Cook III got the Week 1 start at running back. David Montgomery, stuck on your bench, had the better game by a mile. Worth remembering before you set this lineup again."
       },
       "pos:K1:FLEX6": {
-        "title": "Your kicker is an all-star. Your flex spot, less so.",
-        "text": "Top kicker production in the league, dead last at flex, the wild-card spot. Funny sport where the guy kicking field goals is outperforming the guy catching touchdowns."
+        "title": "Your kicker's an MVP. Your flex spot is not.",
+        "text": "Best kicker production in the league, worst flex production, the wild-card spot where anyone can start. If you're hunting a waiver add, that's exactly where to look."
       },
       "proj:under:3040151:4035538": {
-        "title": "George Kittle never got ESPN's memo",
-        "text": "Kittle keeps topping his projection most weeks. Montgomery's the quieter case, running under his more often than not."
+        "title": "George Kittle, defying projections like it's a hobby",
+        "text": "Kittle's been outscoring his number since Week 1, apparently just to spite the algorithm. Montgomery's doing the opposite, quietly losing the argument every week."
       }
     },
     "2": {
       "lineup:B:4259545:w1": {
-        "title": "D'Andre Swift's best day happened in street clothes",
-        "text": "Emeka Egbuka got the Week 1 flex nod while D'Andre Swift quietly had one of the best bench days in the league. Nearly everything else on your sheet, you got right."
+        "title": "D'Andre Swift made your flex decision look rough",
+        "text": "Week 1, Emeka Egbuka got the flex nod while D'Andre Swift torched it from your bench. Swift's the one that got loose."
       },
       "pos:WR1:K8": {
-        "title": "Your receivers are the best in the league. Your kicker, not so much.",
-        "text": "Wide receiver points, first in the league. Kicker points, dead last. The waiver wire's full of guys who kick, if you ever feel like upgrading the least glamorous spot on your roster."
+        "title": "Elite receivers, an afterthought at kicker",
+        "text": "Your wide receivers rank first in the league. Your kicker ranks dead last. Easiest fix on the roster: stream a new leg off the waiver wire."
       },
       "proj:over:4241389:4360248": {
-        "title": "CeeDee Lamb didn't get the ESPN memo",
-        "text": "Lamb keeps blowing past his weekly number like it's a suggestion. Kyle Pitts Sr. is coming in under his more often than not, the quieter story on the same roster."
+        "title": "CeeDee Lamb is bullying his own projection",
+        "text": "Lamb's been blowing past his number weekly, no mercy. Kyle Pitts Sr. keeps falling short of his, the quieter kind of letdown."
       }
     },
     "3": {
-      "lineup:C:4241416:w1": {
-        "title": "The Waddle bet, origin story",
-        "text": "Before the Waddle bet became a running joke, there was Week 1: Jaylen Waddle got the flex nod and mustered next to nothing while Chuba Hubbard quietly erupted on your bench. The bet lives on anyway."
-      },
       "pos:RB3:QB8": {
-        "title": "Quarterback is the one hole in an otherwise solid roster",
-        "text": "Running back ranks third in the league for you, no complaints there. Quarterback ranks dead last though, proof that even a solid roster needs one position to keep it humble."
+        "title": "Your backfield's solid. Quarterback isn't.",
+        "text": "Running back ranks third in the league. Quarterback ranks last. That's the spot to watch on the waiver wire or in a trade."
       },
       "proj:under:4258173:4572680": {
-        "title": "Nico Collins is outplaying his own scouting report",
-        "text": "Collins keeps topping his projection by a wide margin most weeks. Tucker Kraft's running a bit behind his, the one soft spot in an otherwise strong lineup."
+        "title": "Nico Collins didn't get ESPN's memo",
+        "text": "Collins keeps clearing his number with room to spare. Tucker Kraft's stuck under his, the tight end equivalent of running out the clock."
       }
     },
     "4": {
       "lineup:D:4248528:w1": {
-        "title": "Christian Watson, still waiting for his shot",
-        "text": "Quinshon Judkins started at flex in Week 1 while Christian Watson put up one of the league's biggest bench performances right next to him. He's been doing that quietly all season. At some point the lineup card has to notice."
+        "title": "Christian Watson, still waiting on your bench",
+        "text": "Week 1, Quinshon Judkins got the flex spot while Christian Watson quietly stacked points behind him. Not the last time this happens this season, so maybe it's time to trust him."
       },
       "pos:TE1:RB7": {
-        "title": "Tight end is doing the heavy lifting here",
-        "text": "Tight end leads the league for you. Running back sits near the bottom, right where a waiver add would actually move the needle."
+        "title": "Tight end carries this team. Running back doesn't.",
+        "text": "Your tight end production ranks first in the league. Running back ranks near the bottom. If a trade or waiver add is coming, that's the spot."
+      },
+      "proj:under:4361370:3929630": {
+        "title": "Chris Olave's quietly out-earning the hype",
+        "text": "Olave keeps topping his projection without much fuss. Saquon Barkley's the one coming up short, which is not the plotline anyone paid for."
       }
     },
     "5": {
       "lineup:C:4432665:w3": {
-        "title": "The Brock Bowers decision still stings",
-        "text": "Dalton Schultz started at tight end in Week 3 while Brock Bowers put up one of the best bench days anyone had all season, on your own roster. That one's going to come up again."
+        "title": "Brock Bowers made Maya's tight end call look brutal",
+        "text": "Week 3, Dalton Schultz got the start at tight end while Brock Bowers quietly dropped a monster day on the bench. Rough one, even for the person who built this site."
       },
       "pos:QB2:K7": {
-        "title": "Quarterback's strong. Kicker's an afterthought.",
-        "text": "Your quarterback production ranks second in the league. Kicker ranks near the bottom, which is the least surprising sentence in this entire audit."
+        "title": "Strong at quarterback, shaky at kicker",
+        "text": "Maya's quarterback production ranks second in the league. Her kicker ranks near the bottom. An easy fix sitting on the waiver wire."
       },
       "proj:over:4685472:4596448": {
-        "title": "Tetairoa McMillan is making ESPN look silly",
-        "text": "McMillan keeps clearing his projection by a wide margin most weeks. Bucky Irving's the opposite case, settling in under his more often than not."
+        "title": "Tetairoa McMillan is making Maya look like a genius",
+        "text": "McMillan's been blowing past his projection, carrying a lineup Maya definitely didn't draft for this. Bucky Irving's the drag, stuck under his number most weeks."
       }
     },
     "6": {
-      "lineup:B:5083076:w3": {
-        "title": "One tight end call away from perfect",
-        "text": "Week 3 is the only blemish here: Tyler Warren got the start at tight end while Harold Fannin Jr. piled up points from the bench. Everywhere else, you played it exactly right."
-      },
       "pos:RB1:WR8": {
-        "title": "Running back is doing the heavy lifting",
-        "text": "Your running backs lead the league, doing enough work for two positions. Your receivers rank dead last, so that's the shopping list if a name worth adding shows up on waivers."
+        "title": "Running back is carrying this roster",
+        "text": "Your running backs rank first in the league. Your receivers rank dead last. That gap is exactly where a waiver add or a trade should go to work."
       },
       "proj:over:4430737:4870795": {
-        "title": "Kyren Williams has stopped listening to ESPN",
-        "text": "Kyren Williams keeps blowing past his projection every week, like the algorithm hasn't noticed. Makai Lemon's the opposite story, quietly coming in under his number."
+        "title": "Kyren Williams, projections' least favorite guy",
+        "text": "Williams keeps blowing past his number like it insulted him personally. Makai Lemon's landing under his more often than not."
       }
     },
     "7": {
-      "lineup:C:4431299:w4": {
-        "title": "Rome Odunze had the Week 4 you wanted",
-        "text": "Rashee Rice started at wide receiver and came up empty, while Rome Odunze quietly had one of the bigger bench days in the league. One swap and that week looks completely different."
-      },
       "pos:QB1:RB8": {
-        "title": "Quarterback's elite. Running back needs the help.",
-        "text": "Your quarterback room leads the entire league. Running back ranks dead last, mostly because the position lost its workhorse for the year. Still the clearest spot to upgrade."
-      },
-      "proj:under:3918298:4429160": {
-        "title": "Josh Allen has carried this roster",
-        "text": "Allen keeps clearing his weekly number by a solid margin. Achane's season ended on a torn ACL, which is the real reason that side of the roster has struggled, not a projection miss."
+        "title": "Quarterback is elite. Running back is a problem.",
+        "text": "Your quarterback production ranks first in the league. Running back ranks dead last. That's the spot to attack on the waiver wire or in a trade."
       }
     },
     "8": {
-      "lineup:B:15847:w2": {
-        "title": "Travis Kelce picked the wrong week to sit",
-        "text": "Dallas Goedert started at tight end in Week 2 while Travis Kelce quietly piled up points from your bench. One swap away from a very different week."
-      },
       "pos:WR3:DST8": {
-        "title": "Receivers are solid. Defense is the real gap.",
-        "text": "Your wide receivers rank solidly in the top half of the league. Your defense ranks dead last, dragging the rest of the roster down like it's trying to make a point."
-      },
-      "proj:over:4239993:15847": {
-        "title": "Tee Higgins is out-producing the projection machine",
-        "text": "Higgins keeps beating his weekly number by a solid margin, no slowdown in sight. Kelce's coming in a touch under his most weeks."
+        "title": "Your receivers are solid. Your defense is not.",
+        "text": "Wide receiver production ranks third in the league. Defense ranks dead last. That's the easiest spot to upgrade off the waiver wire."
       }
     }
   }
