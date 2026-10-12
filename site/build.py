@@ -93,6 +93,46 @@ def side(t, live=False):
     }
 
 
+LOWLIGHT_COUNT = 3
+
+
+def upsets(facts):
+    """Finished games the underdog won, biggest first. "Underdog" is ESPN's own projection:
+    the winner was projected below the loser, and `gap` is how far below. A game still in
+    progress isn't decided yet, so a week that isn't final has none."""
+    if not facts["complete"]:
+        return []
+    teams = {t["team_id"]: t for t in facts["teams"]}
+    out, seen = [], set()
+    for t in facts["teams"]:
+        key = tuple(sorted((t["team_id"], t["opponent_id"])))
+        if key in seen:
+            continue
+        seen.add(key)
+        a, b = teams[key[0]], teams[key[1]]
+        w, l = (a, b) if a["points"] >= b["points"] else (b, a)
+        gap = round((l["projected"] or 0) - (w["projected"] or 0), 2)
+        if w["result"] == "W" and gap > 0:
+            out.append({"winner": w["manager"], "loser": l["manager"], "winner_points": w["points"],
+                        "loser_points": l["points"], "winner_projected": w["projected"],
+                        "loser_projected": l["projected"], "gap": gap})
+    return sorted(out, key=lambda u: u["gap"], reverse=True)[:LOWLIGHT_COUNT]
+
+
+def worst_performances(facts):
+    """The starters who fell furthest short of ESPN's projection. Only players whose NFL game
+    is over count, so a live week never calls a Sunday-night starter a bust at kickoff."""
+    rows = []
+    for t in facts["teams"]:
+        for p in t["starters"]:
+            final = facts["complete"] or p.get("game_state") == "post"
+            if final and (p.get("projected") or 0) > 0 and p["points"] < p["projected"]:
+                rows.append({"name": p["name"], "pos": p.get("pos"), "manager": t["manager"], "slot": p["slot"],
+                             "points": p["points"], "projected": p["projected"],
+                             "short": round(p["projected"] - p["points"], 2)})
+    return sorted(rows, key=lambda r: r["short"], reverse=True)[:LOWLIGHT_COUNT]
+
+
 def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
     games, seen = [], set()
@@ -119,6 +159,8 @@ def week_payload(facts, recap, live=False):
         "glossary": recap.get("glossary", []),
         "standings": facts["standings"],
         "top_performers": lg["top_performers"],
+        "upsets": upsets(facts),
+        "worst_performances": worst_performances(facts),
         "high_score": lg["high_score"],
         "low_score": lg["low_score"],
         "median": lg["median_score"],
