@@ -105,7 +105,12 @@ first kickoff, and again once every game is final and the recap isn't out yet.
 ## Coach page
 
 - A league-wide grid at `#coach` (the week being played) and `#coach-next` (the week after it, from the
-  `next-week` capture; no tab when that capture is missing or stale), one card per team. Each team's own week lives
+  `next-week` capture; no tab when that capture is missing or stale): the viewer's team and a league radar on
+  top, then **Where everyone's strong**, an 8 × 7 heat grid of each team's league rank (1–8) at QB, RB, WR, TE, FLEX,
+  DST and K. The ranks are season points at each lineup spot, the same ones behind the profile's Position strength
+  card (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid and it
+  stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
+  are no letter grades. Each team's own week lives
   on her **team profile** (`#team-<id>`, and `#team-<id>.next` for next week); the old `#coach-<id>` and
   `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
   remembers the last team opened. The grid and the profile's week sections disappear once the live week's recap is

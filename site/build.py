@@ -1438,7 +1438,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, li
     for s in season["standings"]:
         p = profiles[s["team_id"]]
         s["profile"] = {"audit": apply_written(p["cards"], written_audit(s["team_id"], fp)),
-                        "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured, names)}
+                        "weak_spot": p["weak_spot"], "best_spot": p["best_spot"], "pos_ranks": p["ranks"],
+                        "moves": team_profile.moves(s["team_id"], captured, names)}
     if live:
         if pending:
             live["hub"] = hub_payload(live, season, pending[-1][1], news, schedule)
