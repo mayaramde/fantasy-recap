@@ -626,7 +626,8 @@
   .you-sticker { position: absolute; top: -14px; right: 18px; font: 600 14px/1 var(--script); color: var(--on-pop); background: var(--pink);
     border: 2px solid var(--edge); border-radius: 999px; padding: 6px 13px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .ch-eyebrow { margin: 0 0 4px; font: 600 12px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
-  .ch-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .ch-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+  .ch-who { flex: 1 1 140px; min-width: 0; }
   .ch-head .mgr { margin: 0; font: 900 clamp(36px, 7vw, 48px)/0.95 var(--display); }
   .ch-head .tname { margin-top: 4px; font-size: 14px; color: var(--muted); }
   .ch-head .todo { flex: none; margin-top: 6px; }
@@ -643,7 +644,7 @@
   .ch-game .fo-bar { grid-column: 1 / -1; }
   .ch-sum { margin: 0; font-size: 15.5px; line-height: 1.45; }
   .ch-list li { font-size: 15px; }
-  .ch-go { justify-self: start; padding: 9px 16px; font-size: 14px; }
+  .ch-go { flex: none; align-self: center; padding: 9px 16px; font-size: 14px; }
   .ch-pick { display: grid; gap: 12px; }
   .ch-pick p { margin: 0; font-size: 15px; }
   .ch-pick .profile-btn { justify-self: start; cursor: pointer; padding: 9px 16px; font-size: 14px; }
@@ -2014,7 +2015,8 @@
       <section class="coach-hero" aria-labelledby="ch-mgr">
         <span class="you-sticker" aria-hidden="true">You</span>
         <div class="ch-head">
-          <div><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
+          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my full profile →</a>
+          <div class="ch-who"><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
           ${todoBadge(a, next)}
         </div>
         ${stand.length || po ? `<p class="ch-stand">${stand.map(esc).join(' · ')}${po ? ` <span class="po-label ${PO_LABEL[po.label] || ''}" title="${esc(PO_TIP[po.label] || '')}">${esc(po.label)}</span>` : ''}</p>` : ''}
@@ -2027,7 +2029,6 @@
         ${a.summary ? `<p class="ch-sum">${esc(a.summary)}</p>` : ''}
         ${items.length ? `<ul class="cc-list ch-list">${items.map((it) => `
           <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>` : ''}
-        <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my profile →</a>
       </section>`;
   }
 
