@@ -93,6 +93,29 @@ def side(t, live=False):
     }
 
 
+LOWLIGHT_COUNT = 3
+HEADSHOT_URL = "https://a.espncdn.com/i/headshots/nfl/players/full/{}.png"
+
+
+def worst_performances(facts):
+    """The starters who fell furthest short of ESPN's projection. Only players whose NFL game
+    is over count, so a live week never calls a Sunday-night starter a bust at kickoff."""
+    rows = []
+    for t in facts["teams"]:
+        for p in t["starters"]:
+            final = facts["complete"] or p.get("game_state") == "post"
+            # A starter who never played (scratch, inactive) is a missing player, not a bad game
+            if final and p.get("played", True) and (p.get("projected") or 0) > 0 and p["points"] < p["projected"]:
+                dst = p.get("pos") == "DST"
+                rows.append({"name": p["name"], "pos": p.get("pos"), "manager": t["manager"], "slot": p["slot"],
+                             "points": p["points"], "projected": p["projected"],
+                             "short": round(p["projected"] - p["points"], 2),
+                             # Same photo/logo shape as top_performers, so the site draws both alike
+                             "headshot": p.get("logo") if dst else HEADSHOT_URL.format(p["player_id"]),
+                             "logo": None if dst else p.get("logo"), "team": None if dst else p.get("team")})
+    return sorted(rows, key=lambda r: r["short"], reverse=True)[:LOWLIGHT_COUNT]
+
+
 def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
     games, seen = [], set()
@@ -119,6 +142,7 @@ def week_payload(facts, recap, live=False):
         "glossary": recap.get("glossary", []),
         "standings": facts["standings"],
         "top_performers": lg["top_performers"],
+        "worst_performances": worst_performances(facts),
         "high_score": lg["high_score"],
         "low_score": lg["low_score"],
         "median": lg["median_score"],

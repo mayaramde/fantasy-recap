@@ -801,6 +801,8 @@
   .moves { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .moves li { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); padding: 10px 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; }
   .moves .when { grid-row: span 2; font: 500 11.5px/1.3 var(--mono); color: var(--muted); padding-top: 2px; }
+  .lows { margin-top: 28px; }
+  .leaders.low .pts { background: var(--pink); }
   .moves .add { color: var(--win); font-weight: 700; }
   .moves .drop { color: var(--loss); font-weight: 700; }
 
@@ -935,10 +937,18 @@
   // from reading every leader twice.
   const headshot = (p) => `<span class="mug"><img class="shot" src="${esc(p.headshot || NO_HEADSHOT)}" alt="" width="46" height="46" loading="lazy" onerror="this.onerror=null;this.src='${NO_HEADSHOT}'">${
     p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="24" height="24" loading="lazy" onerror="this.remove()">` : ''}</span>`;
-  const leaderList = (players) => `<ol class="leaders">${players.map((p) => `
+  const leaderList = (players, tone = '') => `<ol class="leaders ${tone}">${players.map((p) => `
     <li>${headshot(p)}<span class="pname">${esc(p.name)}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
-    <span class="meta">${mgrLink(p.manager)}${p.slot === 'FLEX' ? ' · in the flex' : ''} · projected <span class="num">${f1(p.projected)}</span></span></li>`).join('')}
+    <span class="meta">${mgrLink(p.manager)}${p.slot === 'FLEX' ? ' · in the flex' : ''} · projected <span class="num">${f1(p.projected)}</span>${p.short != null ? `, short by <span class="num">${f1(p.short)}</span>` : ''}</span></li>`).join('')}
   </ol>`;
+  /* Worst performances: the top scorers list turned upside down, drawn the same way and
+     sitting right under it. Skipped when the week has nothing to put in it. */
+  const lowlights = (w, sub = true) => (w.worst_performances || []).length ? `
+    <div class="lows">
+      ${secHead('flag', w.complete ? 'Worst performances' : 'Worst performances so far')}
+      ${sub ? '<p class="sec-sub">Starters who fell furthest short of their projection.</p>' : ''}
+      ${leaderList(w.worst_performances, 'low')}
+    </div>` : '';
   const record = (t) => `${t.wins}–${t.losses}${t.ties ? `–${t.ties}` : ''}`;
   const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
   const latest = () => WEEKS[WEEKS.length - 1];
@@ -1301,6 +1311,7 @@
             ${secHead('ball', 'Top scorers')}
             <p class="sec-sub">The five best starters in the league in Week ${w.week}.</p>
             ${leaderList(w.top_performers)}
+            ${lowlights(w)}
           </div>
         </div>
       </section>
@@ -1337,6 +1348,7 @@
           <div>
             ${secHead('ball', w.complete ? 'Top scorers' : 'Top scorers so far')}
             ${leaderList(w.top_performers)}
+            ${lowlights(w, false)}
           </div>
           <div>
             ${secHead('flag', 'On the wire this week')}
