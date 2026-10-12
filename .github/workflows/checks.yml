@@ -25,4 +25,5 @@ jobs:
       - run: python -m unittest tests.test_hub -v
       - run: python -m unittest tests.test_news -v
       - run: python -m unittest tests.test_trade_eval -v
+      - run: python -m unittest tests.test_preview_live -v
       - run: python scripts/check.py

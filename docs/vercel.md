@@ -53,8 +53,11 @@ integration for `main` means a merge can never silently wipe the Live page that 
 
 **Every other branch still gets an automatic preview.** Push a branch (or open a PR) and
 Vercel builds it on its own servers and posts the preview link on the PR. That build only
-sees what's committed on the branch, so it shows the draft copy with the committed weeks
-and no uncommitted live week. It's for looking at design and code changes, never the
+sees what's committed on the branch, so it shows the draft copy with the committed weeks.
+The live week isn't committed, so the build borrows it: `scripts/vercel_build.sh` sets
+`FANTASY_LIVE_FROM` to the league site, and `site/build.py` reads the live-week data out of that
+page (best effort; if the fetch fails the preview just has no Live or Coach tab). Only the draft
+copy does this, and only when the live week is newer than the branch's last recap. It's for looking at design and code changes, never the
 league's site: it can't touch production, and Deployment Protection (§7) keeps it behind
 Maya's Vercel login. When a preview needs the live week too, `scripts/deploy.sh --preview`
 is still the way (§8).

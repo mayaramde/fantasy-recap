@@ -27,6 +27,13 @@ if [ -z "${FANTASY_TARGET:-}" ] && [ "${VERCEL_ENV:-}" = "production" ]; then
   exit 1
 fi
 
+# Vercel's own preview build has only committed data, so no live week and no Coach tab. Borrow
+# the live week production is serving (best effort; the draft copy only). deploy.sh sets
+# FANTASY_TARGET and builds with the real live capture, so it never takes this branch.
+if [ -z "${FANTASY_TARGET:-}" ]; then
+  export FANTASY_LIVE_FROM="${FANTASY_LIVE_FROM:-https://fantasyforthegirls.vercel.app/}"
+fi
+
 python3 site/build.py
 
 src=site/dist/web-preview
