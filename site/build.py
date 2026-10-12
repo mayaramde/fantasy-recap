@@ -18,7 +18,9 @@ Usage: python3 site/build.py [--season 2026]
 
 import argparse
 import json
+import os
 import re
+import urllib.request
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -1367,9 +1369,30 @@ def load_schedule(season):
         return {}
 
 
-def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
+def fetch_production_live(url, timeout=20):
+    """The live-week payload the site at `url` is serving right now, read out of its own page,
+    or None. Best effort by design: any failure just means a preview with no live week.
+
+    Why: a Vercel branch preview builds from committed data, and the live capture never is, so
+    it has no Coach tab. Borrowing what production already computed shows the same week."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "fantasy-recap-preview-build"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            page = r.read().decode("utf-8")
+        m = re.search(r'<script id="recap-data" type="application/json">(.*?)</script>', page, re.S)
+        live = json.loads(m.group(1)).get("live") if m else None
+    except (OSError, ValueError):
+        return None
+    ok = isinstance(live, dict) and isinstance(live.get("week"), int) and isinstance(live.get("advice"), list)
+    return live if ok else None
+
+
+def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_from=None):
     """(data, weeks): everything the page's RECAP_DATA blob carries, and the week payloads
-    (live included) render() hands back to its callers."""
+    (live included) render() hands back to its callers.
+
+    `live_from` is a ready-made live payload (see fetch_production_live) for a draft build that
+    has no live week of its own. It never touches the league site's build."""
     included = [(f, w) for f, w in recap_weeks if preview or w["status"] == "published"]
     weeks = [w for _, w in included]
     # Live page: the newest captured week that isn't in this output's recaps yet
@@ -1384,6 +1407,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
         # one (captured before this week started) is dropped rather than shown as next.
         if ahead and ahead["week"] == facts["week"] + 1:
             live["next"] = next_payload(ahead, previous, fp=fp)
+    elif live_from and preview and live_from["week"] > last:
+        live = live_from                    # already carries its hub and next week
 
     season = season_payload([f for f, _ in included], weeks)
     # The schedule file belongs to the season being built (`--season`), which the facts carry;
@@ -1400,7 +1425,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
         s["profile"] = {"audit": apply_written(p["cards"], written_audit(s["team_id"], fp)),
                         "weak_spot": p["weak_spot"], "moves": team_profile.moves(s["team_id"], captured, names)}
     if live:
-        live["hub"] = hub_payload(live, season, pending[-1][1], news, schedule)
+        if pending:
+            live["hub"] = hub_payload(live, season, pending[-1][1], news, schedule)
         weak = {s["team_id"]: s["profile"]["weak_spot"] for s in season["standings"]}
         for rows in (live["advice"], (live.get("next") or {}).get("teams") or []):
             for row in rows:
@@ -1417,8 +1443,8 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
     return data, weeks + ([live] if live else [])
 
 
-def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None):
-    data, weeks = site_data(recap_weeks, captured, preview, ahead=ahead, fp=fp, news=news)
+def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_from=None):
+    data, weeks = site_data(recap_weeks, captured, preview, ahead=ahead, fp=fp, news=news, live_from=live_from)
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     title = "Fantasy Football for the Girls (Preview)" if preview else "Fantasy Football for the Girls"
     template = (SITE / "template.html").read_text()
@@ -1498,7 +1524,13 @@ def main():
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
           + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
-    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead, fp=fp, news=news)
+    # Vercel's own branch-preview build (scripts/vercel_build.sh) has no live capture; borrow
+    # production's. Set only there, and only the draft copy ever reads it.
+    borrow = os.environ.get("FANTASY_LIVE_FROM")
+    live_from = fetch_production_live(borrow) if borrow else None
+    if borrow:
+        print("live week for the preview: " + (f"borrowed from {borrow} (week {live_from['week']})" if live_from else f"none, {borrow} didn't give one"))
+    html, weeks = render(recap_weeks, captured, preview=True, ahead=ahead, fp=fp, news=news, live_from=live_from)
     (dist / "preview.html").write_text(html)
     # The same preview as a standalone page, for `scripts/deploy.sh --preview` (a real
     # URL to review a draft on a phone). preview.html itself is the artifact build, which

@@ -120,7 +120,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   went private) it answers 503 and the page shows its baked data. Needs `vercel login` on this Mac. Never read or print `.env.local`
   or Vercel tokens.
 - Branch previews (Vercel, automatic): every push to a branch other than `main` gets its own preview URL, built on
-  Vercel's servers from that branch's committed data only (the draft copy, no uncommitted live week). For design and
+  Vercel's servers from that branch's committed data only (the draft copy), plus the live week borrowed from the
+  league site (`FANTASY_LIVE_FROM`, best effort, `docs/vercel.md` §3). For design and
   code review; the link shows on the PR. Same Deployment Protection as below.
 - Preview (Vercel, for Maya): `scripts/deploy.sh --preview` deploys `site/dist/web-preview/` (drafts included) to a
   new throwaway `fantasy-recap-*.vercel.app` URL every time it runs. Drafts are reviewed here before they go to the
