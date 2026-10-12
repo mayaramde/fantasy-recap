@@ -16,14 +16,6 @@ this merges.
 
 ## Step 1: work in your own worktree, never the project checkout
 
-In GitHub Actions (fantasy-orchestrator's "GitHub Actions mode"), nothing else shares the
-checkout and the workflow has already captured and analyzed both weeks. Skip this step and
-work in the checkout on a new `coach-daily-<date>` branch. Step 2's open-PR snapshot is the
-file the prompt names (no `gh`). Step 7 stops after item 2: the workflow pushes, opens the PR
-with auto-merge, and closes superseded ones. With no FantasyPros MCP configured, Step 4 has no
-data: write Step 5b's copy and the season audit, leave `advice_cards` and `roster_ideas` empty,
-and skip Step 5a (`trade_eval.py` needs FantasyPros' rest-of-season projections).
-
 Other sessions (the weekly recap, an interactive one) switch branches in the project's own
 checkout while this runs — working there would pull the rug out from under them.
 

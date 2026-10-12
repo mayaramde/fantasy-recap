@@ -15,10 +15,6 @@ nor the fallback in Step 5 needs a login. Still never ask for, copy, print, or s
 
 ## Step 0: get on the right branch
 
-In GitHub Actions (fantasy-orchestrator's "GitHub Actions mode"), the checkout is already a
-fresh `main`: skip item 1's `git pull`, and skip Steps 1-4 (there's no Chrome) for Step 5's
-`node scripts/capture_node.mjs N`.
-
 Only do this for a *new* recap (fantasy-orchestrator's context check found no
 `recaps/2026/week-NN.json` yet). A re-capture for an existing draft happens wherever
 `recap-write` will revise it: the open draft PR's branch, or `recap-week-NN-rev` from `main`
