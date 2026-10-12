@@ -101,28 +101,6 @@ PR with auto-merge. `coach-daily` runs its own `voice-check` gate on the cards b
 file (its Step 5b), since that PR merges without a human reading it. Doesn't touch any recap or any `data/<season>/week-NN/` file — see
 `coach-daily`'s own SKILL.md.
 
-## GitHub Actions mode
-
-The scheduled runs happen in GitHub Actions: `.github/workflows/weekly-recap.yml` (Phases 1-2)
-and `coach-daily.yml` (Phase 4). The workflow's prompt says so. There the pipeline is the same,
-fact-check and voice gates included, with these differences:
-
-- **No Chrome, no GitHub, no Vercel.** Capture goes straight to `recap-capture`'s Step 5
-  fallback (`capture_node.mjs`). The checkout is a fresh `origin/main`, so skip `git fetch` and
-  `git pull` (there are no credentials for them) and don't call `gh`.
-- **Commit, then stop.** Commit on the skill's usual branch (`recap-week-NN`, `coach-daily-<date>`)
-  and stop there. Don't push, open or close PRs, or run `scripts/deploy.sh`. The workflow checks
-  the commit's file list, then pushes it, opens the PR with auto-merge, and deploys the review
-  preview itself.
-- **Report through the summary file.** Write the summary to the path the prompt gives, starting
-  with the `RESULT:` line it asks for. A stop that the skills call for (a week that isn't final, a
-  judge still failing after two rounds) is a `RESULT`, not an error. Nobody is watching the run,
-  so don't ask questions: stop and say what you'd have asked.
-- **FantasyPros is optional.** It's there only when the workflow has its MCP secrets. Without it,
-  use the `fantasy-data` fallback in `references/tools.md`, and say so in the summary.
-- **Phase 3 never runs here.** Publishing waits for Maya's approval of the preview, in a session
-  with her.
-
 ## Error handling
 
 | Situation | Strategy |
