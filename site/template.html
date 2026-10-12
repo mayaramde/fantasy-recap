@@ -697,7 +697,7 @@
      ranks 1-2 take the on-accent ink, the rest the page ink, which holds 4.5:1 in both themes.
      The rank number and the corner sticker say the same thing, so color is never the only cue. */
   .strength { border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); background: var(--card); }
-  .strength table { width: 100%; min-width: 560px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
+  .strength table { width: 100%; min-width: 640px; table-layout: fixed; border-collapse: separate; border-spacing: 0; }
   .strength th, .strength td { padding: 0; text-align: center; }
   .strength thead th { padding: 10px 4px; font: 600 12.5px/1 var(--mono); letter-spacing: 0.04em; color: var(--muted); border-bottom: 2px solid var(--edge); }
   .strength thead th:first-child, .strength tbody th { position: sticky; left: 0; z-index: 1; text-align: left; padding-left: 14px; background: var(--card); border-right: 2px solid var(--edge); }
@@ -707,6 +707,8 @@
   .strength tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
   .strength td { position: relative; height: 52px; border: 2px solid var(--card); color: var(--ink); }
   .strength .rk { font: 500 20px/1 var(--mono); }
+  .strength td.avg { background: var(--card); border-left: 2px solid var(--edge); }
+  .strength td.avg .rk { font-weight: 700; }
   .strength td.h1 { background: var(--accent); }
   .strength td.h2 { background: color-mix(in srgb, var(--accent) 84%, var(--card)); }
   .strength td.h3 { background: color-mix(in srgb, var(--accent) 62%, var(--card)); }
@@ -2132,6 +2134,7 @@
       const best = t.profile.best_spot;
       const weak = t.profile.weak_spot;
       const spread = best && weak && ranks[best] !== ranks[weak];
+      const avg = GRID_COLS.reduce((a, c) => a + ranks[c], 0) / GRID_COLS.length;
       // No data-myteam on these links: tapping someone else's name must not make her "You".
       return `
         <tr${mine ? ' class="me"' : ''}>
@@ -2141,16 +2144,17 @@
             const tag = spread && c === best ? ['best', 'Best spot', '▲'] : spread && c === weak ? ['weak', 'Weakest spot', '▼'] : null;
             return `<td class="h${r}"><span class="rk" aria-hidden="true">${r}</span>${tag ? `<span class="corner ${tag[0]}" aria-hidden="true">${tag[2]}</span>` : ''}<span class="sr">${esc(t.manager)} at ${GRID_NAME[c]}: ${ordinal(r)} of ${n}${tag ? `, ${tag[1].toLowerCase()}` : ''}</span></td>`;
           }).join('')}
+          <td class="avg"><span class="rk" aria-hidden="true">${avg.toFixed(1)}</span><span class="sr">${esc(t.manager)}, average across all spots: ${avg.toFixed(1)}</span></td>
         </tr>`;
     };
     return `
       <div class="strength table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
         <table>
-          <thead><tr><th scope="col">Manager</th>${GRID_COLS.map((c) => `<th scope="col" title="${esc(GRID_NAME[c])}">${c}</th>`).join('')}</tr></thead>
+          <thead><tr><th scope="col">Manager</th>${GRID_COLS.map((c) => `<th scope="col" title="${esc(GRID_NAME[c])}">${c}</th>`).join('')}<th scope="col" title="average rank across all spots">AVG</th></tr></thead>
           <tbody>${teams.map(row).join('')}</tbody>
         </table>
       </div>
-      <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>1 is the league's best, ${n} the worst</span></p>`;
+      <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>AVG is the mean of a team's seven ranks</span><span>1 is the league's best, ${n} the worst</span></p>`;
   }
 
   /* "Waiver order this week": the league's waivers run worst record first and reset to that every
