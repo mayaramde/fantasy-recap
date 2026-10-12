@@ -816,8 +816,8 @@
   const liveShut = () => { const rows = advice(); return !!rows && rows.every((a) => a.can_change === false); };
   // Nothing left to fix in this week, so the tab leads with next week instead.
   const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
-  // Eight people, one page: remembering the last team someone opened lets the Coach tab
-  // go straight back to hers. Private windows throw on localStorage, which costs nothing.
+  // Eight people, one page: remembering the last team someone picked lets the Coach page
+  // open as hers. Private windows throw on localStorage, which costs nothing.
   // The in-memory copy matters now that Coach's team picker can't be dismissed: with storage
   // blocked, a pick still has to stick for the visit or the picker would reopen forever.
   let pickedTeam = null;
@@ -825,7 +825,8 @@
     get() { try { return Number(localStorage.getItem('ffg-coach-team')) || pickedTeam; } catch { return pickedTeam; } },
     set(id) { pickedTeam = id; try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
   };
-  const coachHref = () => coachUrl(leadWithNext(), coachFor(myTeam.get(), leadWithNext()) ? myTeam.get() : null);
+  // Always the Coach page itself, never her profile: her team shows up there as the hero card.
+  const coachHref = () => coachUrl(leadWithNext(), null);
   if (advice()) {
     const tab = document.getElementById('nav-coach');
     tab.hidden = false;
