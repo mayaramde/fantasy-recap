@@ -146,6 +146,9 @@ jobs:
             - Step 5b's brief is already built: read .ci-out/brief.json (scripts/coach_brief.py's
               output) instead of running the script. Follow the skill's steps in order, and
               run Step 5c's voice-check before writing the file.
+            - Run every subagent (recap-fact-checker, voice-check) in the foreground, with
+              `run_in_background: false`, and wait for its report before going on. Never end your
+              turn while one is running: this is a one-shot run, so ending the turn ends the run.
             - Keep scratch files in .ci-out/ (never /tmp or anywhere outside this checkout),
               and run one command at a time rather than chaining many with ; or &&.
               If a command is refused, try a simpler form (read a script's output directly, or
