@@ -8,7 +8,7 @@ import json
 import re
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -115,6 +115,71 @@ def check_trade_deadline(errors):
         errors.append(f"league.json: trade_deadline {raw!r} needs its UTC offset, e.g. -05:00 for Eastern")
 
 
+# Snapshots generated before this moment predate the `fantasypros` field and are left alone;
+# every one after it must carry it, so a run that never reached FantasyPros can't pass for one that did.
+FANTASYPROS_FIELD_REQUIRED_FROM = datetime(2026, 10, 13, tzinfo=timezone.utc)
+
+
+def _parse_utc(raw):
+    """An ISO 8601 time that is explicitly UTC (a trailing Z or a zero offset), else None."""
+    if not isinstance(raw, str):
+        return None
+    try:
+        when = datetime.fromisoformat(raw[:-1] + "+00:00" if raw[-1:] in "Zz" else raw)
+    except ValueError:
+        return None
+    if when.tzinfo is None or when.utcoffset().total_seconds() != 0:
+        return None
+    return when
+
+
+def check_fantasypros_snapshot(errors, root=ROOT):
+    """coach-daily's snapshot says whether the run reached the FantasyPros MCP:
+    `fantasypros: {reached, checked_at, error?}`. A run that didn't can't hold FantasyPros-sourced
+    cards, and a failed probe has to say why."""
+    for path in sorted((root / "data").glob("*/fantasypros/latest.json")):
+        rel = path.relative_to(root)
+        try:
+            snap = json.loads(path.read_text())
+        except json.JSONDecodeError:
+            continue  # the generic JSON check already reports it
+        if not isinstance(snap, dict):
+            errors.append(f"{rel}: must be a JSON object")
+            continue
+        generated = _parse_utc(snap.get("generated_at"))
+        if generated is None:
+            errors.append(f"{rel}: generated_at must be an ISO 8601 UTC time, e.g. 2026-10-14T06:00:00Z")
+        fp = snap.get("fantasypros")
+        if fp is None:
+            if generated and generated >= FANTASYPROS_FIELD_REQUIRED_FROM:
+                errors.append(f"{rel}: missing the `fantasypros` field (reached, checked_at)")
+            continue
+        if not isinstance(fp, dict) or not isinstance(fp.get("reached"), bool):
+            errors.append(f"{rel}: fantasypros.reached must be true or false")
+            continue
+        if _parse_utc(fp.get("checked_at")) is None:
+            errors.append(f"{rel}: fantasypros.checked_at must be an ISO 8601 UTC time")
+        if fp["reached"]:
+            continue
+        if not (isinstance(fp.get("error"), str) and fp["error"].strip()):
+            errors.append(f"{rel}: fantasypros.reached is false, so fantasypros.error must say why")
+        weeks = snap.get("weeks")
+        if not isinstance(weeks, dict):
+            errors.append(f"{rel}: weeks must be an object")
+            continue
+        for week, wk in weeks.items():
+            teams = wk.get("teams") if isinstance(wk, dict) else None
+            if not isinstance(teams, dict):
+                errors.append(f"{rel}: week {week} must have a teams object")
+                continue
+            for team, t in teams.items():
+                if not isinstance(t, dict):
+                    errors.append(f"{rel}: week {week} team {team} must be an object")
+                elif t.get("advice_cards") or t.get("roster_ideas"):
+                    errors.append(f"{rel}: week {week} team {team} has FantasyPros cards "
+                                  "but fantasypros.reached is false")
+
+
 def main():
     errors = []
     files = tracked_files()
@@ -142,6 +207,7 @@ def main():
     check_scoring_rows(errors)
     check_team_profiles(errors)
     check_trade_deadline(errors)
+    check_fantasypros_snapshot(errors)
 
     recap_errors, recap_warnings = check_recaps.check_all_recaps(ROOT)
     errors.extend(recap_errors)

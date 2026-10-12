@@ -61,7 +61,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - **FantasyPros MCP**: rankings, projections, injury news, player context. Pass `league_key` explicitly on every league-scoped call.
   Maya is on the free tier. Waiver Finder is premium and its upsell has already been shown. Trade Finder and Trade
   Analyzer are premium too; relay their disclosure once, the first time either gates a call
-  (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `coach-daily` builds its
+  (`trade_finder_disclosure_shown` in `latest.json` records whether it has been). `latest.json`'s `fantasypros` field (`reached`, `checked_at`, `error?`) records whether that day's run actually reached the MCP; `scripts/check.py` requires it on snapshots from 2026-10-13 on. `coach-daily` builds its
   start/sit and waiver ideas from free-tier tools instead of the gated finders, and evaluates trades itself with
   `scripts/trade_eval.py` on FantasyPros' free rest-of-season projections.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
