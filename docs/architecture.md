@@ -114,7 +114,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   league's waivers reset to worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
   `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
   the card). Each team's own week lives
-  on her **team profile** (`#team-<id>`, and `#team-<id>.next` for next week); the old `#coach-<id>` and
+  on her **team profile** (`#team-<id>`, `.lineup`, `.next` for next week, `.season`); the old `#coach-<id>` and
   `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
   remembers the last team opened. The grid and the profile's week sections disappear once the live week's recap is
   published; the rest of the profile stays all season.
@@ -178,8 +178,14 @@ the luck report.
 
 ## Team profile
 
-`#team-<id>`: header, the **coach's audit** right under it, season tiles, this week's to-dos and lineup (the
-Coach page section above), roster ideas ("Worth a look"), her **recent moves**, week by week, and awards.
+Three tabs (`site/template.html`, `teamPage`):
+
+- **Overview** `#team-<id>`: hero scoreboard, this week's matchup and odds, **Coach's take** (the audit cards, a swipe row
+  on phones), **Coach's advice** (roster ideas: waiver wire and trades), the season-so-far chips. From 860px up a side rail
+  adds her lineup, latest moves and latest award; phones get two links into the other tabs instead.
+- **Lineup** `#team-<id>.lineup`, and `#team-<id>.next` for next week (the week toggle lives here): the week's tiles,
+  to-do cards and lineup (the Coach page section above).
+- **Season** `#team-<id>.season`: score-by-week chart, the full audit, week by week, awards, and moves grouped by week.
 
 - **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
   Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
