@@ -1844,6 +1844,7 @@
         <div class="kicker">${esc(t.team_name)}</div>
         <h1>${esc(t.manager)}</h1>
       </div>
+      ${auditSection(p)}
       <div class="stat-tiles">
         <div class="tile"><div class="label">Record</div><div class="value">${record(t)}</div><div class="sub">${ordinal(rank)} place</div></div>
         <div class="tile"><div class="label">Average score</div><div class="value">${f1(t.avg)}</div><div class="sub">${f2(t.points_for)} total</div></div>
@@ -1853,7 +1854,6 @@
       </div>
 
       ${thisWeekSection(id, next)}
-      ${auditSection(p)}
       ${suggestionsSection(id, next)}
       ${movesSection(p)}
 
