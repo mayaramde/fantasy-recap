@@ -121,11 +121,16 @@ FANTASYPROS_FIELD_REQUIRED_FROM = datetime(2026, 10, 13, tzinfo=timezone.utc)
 
 
 def _parse_utc(raw):
-    try:
-        when = datetime.fromisoformat(raw.replace("Z", "+00:00"))
-    except (AttributeError, ValueError):
+    """An ISO 8601 time that is explicitly UTC (a trailing Z or a zero offset), else None."""
+    if not isinstance(raw, str):
         return None
-    return when if when.tzinfo else None
+    try:
+        when = datetime.fromisoformat(raw[:-1] + "+00:00" if raw[-1:] in "Zz" else raw)
+    except ValueError:
+        return None
+    if when.tzinfo is None or when.utcoffset().total_seconds() != 0:
+        return None
+    return when
 
 
 def check_fantasypros_snapshot(errors, root=ROOT):
@@ -138,7 +143,12 @@ def check_fantasypros_snapshot(errors, root=ROOT):
             snap = json.loads(path.read_text())
         except json.JSONDecodeError:
             continue  # the generic JSON check already reports it
+        if not isinstance(snap, dict):
+            errors.append(f"{rel}: must be a JSON object")
+            continue
         generated = _parse_utc(snap.get("generated_at"))
+        if generated is None:
+            errors.append(f"{rel}: generated_at must be an ISO 8601 UTC time, e.g. 2026-10-14T06:00:00Z")
         fp = snap.get("fantasypros")
         if fp is None:
             if generated and generated >= FANTASYPROS_FIELD_REQUIRED_FROM:
@@ -149,14 +159,25 @@ def check_fantasypros_snapshot(errors, root=ROOT):
             continue
         if _parse_utc(fp.get("checked_at")) is None:
             errors.append(f"{rel}: fantasypros.checked_at must be an ISO 8601 UTC time")
-        if not fp["reached"]:
-            if not (isinstance(fp.get("error"), str) and fp["error"].strip()):
-                errors.append(f"{rel}: fantasypros.reached is false, so fantasypros.error must say why")
-            for week, wk in (snap.get("weeks") or {}).items():
-                for team, t in ((wk or {}).get("teams") or {}).items():
-                    if t.get("advice_cards") or t.get("roster_ideas"):
-                        errors.append(f"{rel}: week {week} team {team} has FantasyPros cards "
-                                      "but fantasypros.reached is false")
+        if fp["reached"]:
+            continue
+        if not (isinstance(fp.get("error"), str) and fp["error"].strip()):
+            errors.append(f"{rel}: fantasypros.reached is false, so fantasypros.error must say why")
+        weeks = snap.get("weeks")
+        if not isinstance(weeks, dict):
+            errors.append(f"{rel}: weeks must be an object")
+            continue
+        for week, wk in weeks.items():
+            teams = wk.get("teams") if isinstance(wk, dict) else None
+            if not isinstance(teams, dict):
+                errors.append(f"{rel}: week {week} must have a teams object")
+                continue
+            for team, t in teams.items():
+                if not isinstance(t, dict):
+                    errors.append(f"{rel}: week {week} team {team} must be an object")
+                elif t.get("advice_cards") or t.get("roster_ideas"):
+                    errors.append(f"{rel}: week {week} team {team} has FantasyPros cards "
+                                  "but fantasypros.reached is false")
 
 
 def main():

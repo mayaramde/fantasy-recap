@@ -54,9 +54,9 @@ published recap, the season's over: stop and say so.
 
 First prove the connection: call `get_leagues` (sport `nfl`) and check that one league's `key` equals
 `league.json`'s `fantasypros_league_key`. Record the outcome for Step 6's `fantasypros` field. If the
-FantasyPros tools aren't available to this run, the call errors, or no league matches, record
+FantasyPros tools aren't available to this run, the call errors, or no league matches (or `get_leagues` lists it under `locked_leagues`), record
 `reached: false` with the exact error, skip the rest of this step, and carry on ESPN-only
-(`advice_cards` and `roster_ideas` stay empty, since nothing may be sourced from FantasyPros without a
+(`advice_cards` and `roster_ideas` stay empty (Steps 5 and 5a's FantasyPros-sourced cards and trades are skipped too; 5b and the audit still run from the ESPN brief), since nothing may be sourced from FantasyPros without a
 tool call that returned it). Lead the Output summary with that failure; it must never read like a
 normal run. Don't use a premium-gated tool as the probe.
 
@@ -80,6 +80,9 @@ for trades) is the point of this skill.
   showing it again.
 
 ## Step 5: do the actual roster analysis
+
+If Step 4 recorded `reached: false`, skip this step's FantasyPros-sourced cards and Step 5a's trades
+entirely; Steps 5b and 5c and the audit still run from the ESPN brief.
 
 For each of the 8 teams (in `league.json` order): compare its position counts and bench depth
 against the rest of the league (from `get_roster(all_teams=true)`); cross-reference ECR,
