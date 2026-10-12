@@ -37,30 +37,14 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
     recap that `main` doesn't (a recap shipped from the Mac whose PR hasn't merged), then `scripts/deploy.sh`.
     Nothing is committed. On failure, a step opens (or comments on) a GitHub issue — a message mentioning "ESPN
     401" means the league is no longer public on ESPN (every ESPN read is anonymous; there are no ESPN secrets).
-- **Weekly recap** (`.github/workflows/weekly-recap.yml`, GitHub Actions, Claude Code via
-  `anthropics/claude-code-action`) runs Tuesdays at 8:17 AM EDT, with retries Tuesday afternoon and Wednesday
-  morning for a week that wasn't final yet. A gate job picks the week (the most recent final one) and skips, without starting Claude, when it already has a
-  recap, a draft PR is open, or the season is over. Claude runs `fantasy-orchestrator` in its "GitHub Actions mode": capture
-  last week (`capture_node.mjs`), draft, fact-check and voice-check, and commit the draft on `recap-week-NN`. The
-  workflow then checks that the commit touches only that week's recap and data and is still a `draft`, pushes it,
-  opens the auto-merging `Week NN recap draft` PR, deploys the review preview and links it on the PR. It stops there.
-  Maya approves the preview before `recap-ship` publishes (from a Claude session) and opens the
-  `Publish week NN recap` PR. Merging that PR is what triggers the push-deploy above. A run that stops short (a
-  judge still failing, an error) opens or comments on a "weekly-recap failing" issue. A week that isn't final yet
-  waits for the next retry, and alerts if it's still not final on Wednesday.
-- **Coach daily** (`.github/workflows/coach-daily.yml`, same setup) runs daily at 8:41 AM EDT. The workflow
-  captures both weeks first, then Claude runs `coach-daily` and commits `data/2026/fantasypros/latest.json` on
-  `coach-daily-<date>`. The workflow checks that the commit touches only that file, opens its auto-merging PR, and
-  closes any older coach-daily PR. Merging it triggers the push-deploy above, same as a recap.
-- In both, Claude runs in a job with no publishing secret and a read-only token, and only a patch of its commits
-  leaves that runner. A separate job on a fresh runner applies the patch to a clean checkout, re-checks its file list,
-  and does the pushing and deploying with `RECAP_BOT_TOKEN` (a fine-grained token, so the PRs it opens run `checks` and the
-  merges deploy) and `VERCEL_TOKEN`. Claude signs in only with `CLAUDE_CODE_OAUTH_TOKEN`, so runs use Maya's Claude plan and never bill per token.
-  Coach daily runs on Sonnet 5.5 (30-minute cap); the recap keeps the default model (60-minute cap).
-  FantasyPros is optional (`FANTASYPROS_MCP_URL` / `FANTASYPROS_MCP_AUTH`). Without it the recap is written from
-  ESPN alone and the Coach page gets written copy for its computed cards and season audit, but no FantasyPros
-  start/sit, waiver or trade cards. Each workflow's `workflow_dispatch` has a `dry_run` input that runs Claude and
-  the checks without pushing anything.
+- **`fantasy-weekly-recap`** runs Tuesdays around 8:15 AM: invokes `fantasy-orchestrator` to capture last week
+  (final), draft and fact-check the recap, open the `Week NN recap draft` PR, and deploy a review preview. It stops
+  there. Maya approves the preview before `recap-ship` publishes and opens the `Publish week NN recap` PR — merging
+  that PR is what triggers the push-deploy above.
+- **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
+  (start/sit, waiver ideas, evaluated trades, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
+  and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
+  session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
 ## Live page

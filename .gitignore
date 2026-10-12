@@ -20,6 +20,3 @@ node_modules/
 
 # Claude Code — per-developer local overrides, never shared
 .claude/settings.local.json
-
-# The scheduled Claude workflows' scratch folder (summary, yesterday's snapshot); never committed.
-.ci-out/
