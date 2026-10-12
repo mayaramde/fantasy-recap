@@ -808,6 +808,182 @@
 
   footer { margin-top: 56px; padding-top: 14px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   footer .script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; display: inline-block; transform: rotate(-2deg); }
+  /* ---------- team profile: Overview / Lineup / Season ----------
+     One hero on Overview, a slim identity bar on the other two tabs, and a tab bar in
+     between. Phones get one column; from 860px up Overview grows a side rail. */
+  .tp-hero { margin-top: 18px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent);
+    padding: 18px 18px 16px; display: grid; gap: 12px 14px; grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "top top" "name rec" "stats stats"; align-items: end; }
+  .tp-hero-top { grid-area: top; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .tp-tname { font: 600 12.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--pink); border: 2px solid #f4f6ff; border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); }
+  .tp-you { font: 600 12px/1 var(--script); color: #151a33; background: var(--lime); border-radius: 999px; padding: 5px 11px; }
+  .tp-hero h1 { grid-area: name; margin: 0; font: 900 clamp(48px, 17vw, 68px)/0.9 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  .tp-rec { grid-area: rec; text-align: right; }
+  .tp-rec b { display: block; font: 900 clamp(38px, 12vw, 50px)/0.9 var(--display); color: var(--lime); }
+  .tp-rec span { display: block; margin-top: 4px; font: 500 12px/1 var(--mono); color: #a9b2dc; }
+  .tp-stats { grid-area: stats; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1.5px solid #2b3263; padding-top: 12px; }
+  .tp-stats > :nth-child(4) { display: none; }
+  .tp-stats .l { font: 600 10.5px/1 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-stats .v { margin-top: 5px; font: 500 19px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-stats .v small { font-size: 11px; color: #a9b2dc; }
+  @media (min-width: 860px) {
+    .tp-hero { padding: 26px 30px; box-shadow: 6px 6px 0 var(--accent); gap: 10px 36px; grid-template-columns: auto auto minmax(0, 1fr);
+      grid-template-areas: "top rec stats" "name rec stats"; align-items: center; }
+    .tp-hero h1 { font-size: clamp(72px, 9vw, 104px); }
+    .tp-rec b { font-size: clamp(60px, 7vw, 84px); }
+    .tp-rec span { font-size: 14px; margin-top: 8px; }
+    .tp-stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); gap: 16px 36px; border-top: none; padding-top: 0; justify-self: end; }
+    .tp-stats > :nth-child(4) { display: block; }
+    .tp-stats .v { font-size: 26px; }
+  }
+
+  /* the slim version, for Lineup and Season: it is also the way back to Overview */
+  .tp-bar { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 12px 16px; text-decoration: none;
+    background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--accent); }
+  .tp-bar:hover { color: #f4f6ff; }
+  .tp-bar .back { display: block; font: 600 11px/1 var(--script); letter-spacing: 0.06em; text-transform: uppercase; color: #ff82c0; }
+  .tp-bar .nm { display: block; margin-top: 3px; font: 900 34px/0.95 var(--display); }
+  .tp-bar .rec { text-align: right; }
+  .tp-bar .rec b { display: block; font: 900 32px/0.95 var(--display); color: var(--lime); }
+  .tp-bar .rec span { display: block; margin-top: 2px; font: 500 11.5px/1 var(--mono); color: #a9b2dc; }
+
+  .tp-tabs { margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 5px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
+  .tp-tabs a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 9px; padding: 13px 0; }
+  .tp-tabs a:hover { background: var(--accent-soft); }
+  .tp-tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+  @media (min-width: 860px) { .tp-tabs { max-width: 440px; } .tp-tabs a { font-size: 15px; } }
+
+  .tp-sec { margin-top: 26px; display: grid; gap: 10px; align-content: start; }
+  .tp-head { display: flex; align-items: center; gap: 8px; }
+  .tp-head .mark { flex: none; width: 14px; height: 14px; background: var(--c, var(--accent)); border: 2px solid var(--edge); border-radius: 4px; }
+  .tp-head h2 { font: 800 26px/1 var(--display); letter-spacing: 0.01em; }
+  .tp-head .more { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; text-align: right; }
+  .tp-head .more:hover { text-decoration: underline; }
+  .tp-sec > .sec-sub { margin: -4px 0 0; }
+  .tp-sub { margin-top: 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font: 600 12px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .tp-sub small { font: 400 12px/1.2 var(--body); letter-spacing: 0; text-transform: none; }
+
+  /* Overview: this week */
+  .tp-match { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--lime); padding: 16px; display: grid; gap: 14px; }
+  .tp-vs { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .tp-vs .nm { font: 800 28px/1 var(--display); }
+  .tp-vs .nm a { color: var(--accent); text-decoration: none; }
+  .tp-badge { flex: none; font: 600 12px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 10px; transform: rotate(-2deg); }
+  .tp-badge.now { background: var(--pink); } .tp-badge.watch { background: var(--orange); }
+  .tp-win .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .tp-win .lab { font: 600 11px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .tp-win .big { font: 900 40px/0.9 var(--display); }
+  .tp-meter { height: 12px; border: 2px solid var(--edge); border-radius: 7px; background: var(--card); overflow: hidden; }
+  .tp-meter i { display: block; height: 100%; background: var(--accent); }
+  .tp-win .src { margin-top: 5px; font-size: 11.5px; color: var(--muted); }
+  .tp-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1.5px dashed var(--rule); padding-top: 12px; }
+  .tp-nums b { display: block; font: 500 18px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-nums span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
+  .tp-note { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; color: var(--ink); background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 12px; }
+  .tp-note.now { background: var(--pink-soft); } .tp-note.watch { background: var(--orange-soft); }
+  .tp-note p { margin: 0; font-size: 14px; line-height: 1.35; font-weight: 600; }
+  .tp-note a { display: inline-block; margin-top: 4px; color: var(--accent); font-weight: 700; }
+  .tp-note svg { flex: none; margin-top: 1px; }
+  .tp-live { font-size: 13px; font-weight: 700; color: var(--accent); }
+
+  /* Overview: Coach's take swipes on a phone and lays out flat on a laptop */
+  .tp-take { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -16px; padding: 2px 16px 12px 16px; scrollbar-width: none; }
+  .tp-take::-webkit-scrollbar { display: none; }
+  .tp-take > .card { flex: 0 0 min(292px, 82%); scroll-snap-align: start; }
+  .tp-take .card h3 { font-size: 23px; }
+  .tp-take .card p { font-size: 13.5px; line-height: 1.4; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (min-width: 860px) {
+    .tp-take { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; overflow: visible; margin-inline: 0; padding: 0; }
+    .tp-take > .card { flex: none; }
+    .tp-take .card p { display: block; font-size: 14px; }
+  }
+  .tp-ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
+  .tp-ideas > div { display: grid; gap: 12px; align-content: start; }
+
+  /* Overview: season so far */
+  .tp-weeks { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
+  .tp-wk { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 9px 6px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); }
+  .tp-wk .wl { font: 500 11px/1.2 var(--script); color: var(--muted); }
+  .tp-wk .tp-opp { display: none; }
+  .tp-wk b { font: 500 15px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-wk small { font-size: 11px; color: var(--muted); }
+  @media (min-width: 860px) { .tp-weeks { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; } .tp-wk .tp-opp { display: inline; } .tp-wk b { font-size: 22px; } }
+  .tp-res { font: 600 11px/1 var(--script); color: #fff; background: var(--muted); border-radius: 6px; padding: 3px 8px; }
+  .tp-res.W { background: var(--win); } .tp-res.L { background: var(--loss); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tp-res { color: var(--on-pop); } }
+  :root[data-theme="dark"] .tp-res { color: var(--on-pop); }
+
+  .tp-dig { margin-top: 26px; display: grid; gap: 10px; }
+  .tp-dig a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 14px 16px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
+  .tp-dig b { font-weight: 800; }
+  .tp-dig small { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+  .tp-dig .chev { flex: none; font: 800 20px/1 var(--display); }
+  .tp-foot { margin: 22px 0 0; font-size: 12px; color: var(--muted); max-width: 64ch; }
+
+  /* Overview on a laptop: the main column plus a rail of quick looks */
+  .tp-rail { display: none; }
+  .tp-rail > * { margin: 0; }
+  .tp-take .card { min-width: 0; }
+  .tp-take .card-top { flex-wrap: wrap; justify-content: flex-start; }
+  .tp-take .card-top .who { white-space: nowrap; }
+  .tp-val { background: var(--card); }
+  @media (min-width: 860px) {
+    .tp-cols { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(300px, 1fr); gap: 0 26px; align-items: start; }
+    .tp-rail { display: grid; gap: 22px; margin-top: 26px; }
+    .tp-dig { display: none; }
+  }
+  .tp-panel { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); overflow: hidden; }
+  .tp-panel > header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 14px 16px 8px; }
+  .tp-panel h2 { font: 800 26px/1 var(--display); }
+  .tp-panel header span { font: 400 12.5px/1 var(--mono); color: var(--muted); }
+  .tp-ln { display: grid; grid-template-columns: 54px minmax(0, 1fr) 54px; gap: 8px; align-items: center; padding: 0 16px; min-height: 40px; border-top: 1.5px solid var(--rule); font-size: 14.5px; }
+  .tp-ln .slot { justify-self: start; font: 600 11.5px/1 var(--script); padding: 3px 8px; background: var(--accent-soft); border: 1.5px solid var(--edge); border-radius: 6px; }
+  .tp-ln b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tp-ln .pts { text-align: right; font: 500 14px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-panel > a.go { display: block; padding: 13px 16px; text-align: center; font-weight: 700; font-size: 14px; color: var(--accent); text-decoration: none; border-top: 2px solid var(--edge); }
+  .tp-panel > a.go:hover { background: var(--accent-soft); }
+  .tp-panel.award { background: var(--orange-soft); box-shadow: 4px 4px 0 var(--orange); padding: 14px 16px; display: grid; gap: 8px; }
+  .tp-panel.award h2 { font-size: 22px; }
+  .tp-panel.award header { padding: 0; align-items: center; }
+  .tp-panel header .rail-pill { font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); background: var(--accent-soft); border: 1.5px solid var(--edge); border-radius: 999px; }
+  .tp-panel header .rail-pill.balls { background: var(--orange); } .tp-panel header .rail-pill.flags { background: var(--pink); }
+  .tp-panel.award p { margin: 0; font-size: 15px; font-weight: 600; }
+
+  /* Season tab */
+  .tp-chart { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); padding: 14px 14px 12px; }
+  .tp-plot { position: relative; height: 150px; margin-top: 24px; display: flex; gap: 14px; }
+  .tp-col { position: relative; flex: 1; min-width: 0; }
+  .tp-bar-w, .tp-bar-l { position: absolute; left: 0; right: 0; bottom: 0; height: var(--h); border: 2px solid var(--edge); border-radius: 8px 8px 0 0; box-sizing: border-box; }
+  .tp-bar-w { background: var(--accent); } .tp-bar-l { background: var(--pink); }
+  .tp-val { position: absolute; left: 0; right: 0; bottom: calc(var(--h) + 3px); text-align: center; font: 500 12.5px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-avg { position: absolute; left: 0; right: 0; bottom: var(--h); border-top: 1.5px dashed var(--ink); pointer-events: none; }
+  .tp-avg span { position: absolute; left: 0; bottom: 3px; font: 400 10.5px/1 var(--mono); color: var(--muted); background: var(--card); padding-right: 4px; }
+  .tp-axis { display: flex; gap: 14px; margin-top: 6px; }
+  .tp-axis span { flex: 1; text-align: center; font: 500 11.5px/1 var(--script); color: var(--muted); }
+  .tp-gm { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 44px; padding: 12px 14px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
+  .tp-gm .tp-res { text-align: center; font-size: 13px; padding: 5px 0; border-radius: 7px; }
+  .tp-gm b { font-weight: 800; font-size: 15px; }
+  .tp-gm .sc { display: block; margin-top: 2px; font: 400 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+  .tp-gm .rt { text-align: right; font-size: 12px; color: var(--muted); }
+  .tp-gm .rt b { display: block; font: 500 13px/1.3 var(--mono); color: var(--ink); }
+  .tp-aw { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; line-height: 1.35; }
+  .tp-aw .aw-pill { flex: none; font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; background: var(--accent-soft); }
+  .tp-aw .aw-pill.balls { background: var(--orange); } .tp-aw .aw-pill.flags { background: var(--pink); }
+  .tp-aw a { font-weight: 800; color: var(--accent); text-decoration: none; }
+  .tp-mv { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; overflow: hidden; }
+  .tp-mv[open] { box-shadow: 3px 3px 0 var(--drop); }
+  .tp-mv summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 50px; padding: 0 14px; cursor: pointer; list-style: none; font-weight: 800; font-size: 15px; }
+  .tp-mv summary::-webkit-details-marker { display: none; }
+  .tp-mv summary small { margin-left: 6px; font-weight: 500; font-size: 12.5px; color: var(--muted); }
+  .tp-mv summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-top: -4px; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+  .tp-mv[open] summary { background: var(--accent-soft); border-bottom: 2px solid var(--edge); }
+  .tp-mv[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
+  .tp-mvrow { display: grid; gap: 5px; padding: 10px 14px; font-size: 14px; }
+  .tp-mvrow + .tp-mvrow { border-top: 1.5px solid var(--rule); }
+  .tp-mvrow > span { display: flex; gap: 8px; align-items: baseline; }
+  .tp-mvrow > span.out { color: var(--muted); }
+  .tp-mvrow em { flex: none; width: 56px; padding: 3px 0; text-align: center; font: 600 10.5px/1 var(--script); font-style: normal; color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; }
+  .tp-mvrow .out em { background: var(--pink-soft); color: var(--ink); }
 </style>
 
 <header class="site-head">
@@ -1916,57 +2092,244 @@
       </section>` : ''}` : ''}`;
   }
 
-  function teamPage(id, next) {
+  /* ---------- team profile: three tabs ----------
+     #team-<id> is Overview (the hero, this week, Coach's take and advice), #team-<id>.lineup
+     is the week's lineup and to-dos, #team-<id>.next is the same tab pointed at next week, and
+     #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves. */
+  const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season']];
+  const tpTabs = (id, tab) => `<nav class="tp-tabs" aria-label="Profile sections">${TP_TABS.map(([k, label, sfx]) =>
+    `<a href="#team-${id}${sfx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
+  const tpHead = (color, title, more = '') =>
+    `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
+  const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+  const TP_SEEDED = new Set();
+
+  function teamPage(id, tab = 'overview', next = false) {
     const t = TEAMS[id];
     if (!t) return notFound();
     next = !!(next && ahead());                     // no current next-week capture → This week
     const rank = SEASON.standings.indexOf(t) + 1;
     const p = t.profile || { audit: [], moves: [], weak_spot: null };
-    const onCoach = !!coachFor(id, next);
+    const onCoach = !!coachFor(id, false);
+    if (tab !== 'overview') {
+      return `
+        <a class="tp-bar" href="#team-${id}" aria-label="${esc(t.manager)}, back to the overview">
+          <span><span class="back">‹ ${esc(t.team_name)}</span><span class="nm">${esc(t.manager)}</span></span>
+          <span class="rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></span>
+        </a>
+        ${tpTabs(id, tab)}
+        ${tab === 'lineup' ? thisWeekSection(id, next) : tpSeason(id, t, p)}`;
+    }
     return `
-      <div class="crumbs"><a href="${onCoach ? coachUrl(next, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span>›</span><span>${esc(t.manager)}</span></div>
-      ${onCoach ? teamSwitch(id, next) : ''}
-      <div class="page-head">
-        <div class="kicker">${esc(t.team_name)}</div>
-        <h1>${esc(t.manager)}</h1>
+      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span>›</span><span>${esc(t.manager)}</span></div>
+      ${onCoach ? teamSwitch(id, false) : ''}
+      <section class="tp-hero" aria-labelledby="tp-h">
+        <div class="tp-hero-top"><span class="tp-tname">${esc(t.team_name)}</span>${myTeam.get() === id ? '<span class="tp-you">You</span>' : ''}</div>
+        <h1 id="tp-h">${esc(t.manager)}</h1>
+        <div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div>
+        <div class="tp-stats">
+          <div><div class="l">Avg score</div><div class="v">${f1(t.avg)}</div></div>
+          <div><div class="l">Best week</div><div class="v">${t.best ? `${f1(t.best.points)} <small>W${t.best.week}</small>` : '–'}</div></div>
+          <div><div class="l">Vs. everyone</div><div class="v">${t.all_play_w}–${t.all_play_l}</div></div>
+          <div><div class="l">Points benched</div><div class="v">${f1(t.bench_left)}</div></div>
+        </div>
+      </section>
+      ${tpTabs(id, 'overview')}
+      <div class="tp-cols">
+        <div>
+          ${tpMatchup(id)}
+          ${tpTake(id, p)}
+          ${tpAdvice(id)}
+          ${tpSoFar(t)}
+          ${tpDig(id, t, p)}
+        </div>
+        <aside class="tp-rail" aria-label="Quick looks">${tpRail(id, t, p)}</aside>
       </div>
-      ${auditSection(p)}
-      <div class="stat-tiles">
-        <div class="tile"><div class="label">Record</div><div class="value">${record(t)}</div><div class="sub">${ordinal(rank)} place</div></div>
-        <div class="tile"><div class="label">Average score</div><div class="value">${f1(t.avg)}</div><div class="sub">${f2(t.points_for)} total</div></div>
-        <div class="tile"><div class="label">Best week</div><div class="value">${t.best ? f1(t.best.points) : '–'}</div><div class="sub">${t.best ? `Week ${t.best.week}` : ''}</div></div>
-        <div class="tile"><div class="label">Vs. everyone</div><div class="value">${t.all_play_w}–${t.all_play_l}</div><div class="sub">if she played all 7 teams weekly</div></div>
-        <div class="tile"><div class="label">Points benched</div><div class="value">${f1(t.bench_left)}</div><div class="sub">season total</div></div>
-      </div>
+      <p class="tp-foot">Everything here comes from ESPN's projections and injury report. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.</p>`;
+  }
 
-      ${thisWeekSection(id, next)}
-      ${suggestionsSection(id, next)}
-      ${movesSection(p)}
+  /* Overview: the week being played, boiled down to the matchup, the odds and one sentence. */
+  function tpMatchup(id) {
+    const a = coachFor(id, false);
+    if (!a) {
+      const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
+      return `<section class="tp-sec">${tpHead('--accent', 'This week')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
+    }
+    const g = LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
+    const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
+    const opp = g ? (g.winner.team_id === id ? g.loser : g.winner) : TEAMS[a.opponent_id];
+    const tone = a.counts.now ? 'now' : a.counts.watch ? 'watch' : 'ok';
+    const badge = a.can_change === false ? 'Locked in' : a.counts.now ? `${a.counts.now} to fix` : a.counts.watch ? `${a.counts.watch} to watch` : 'All clear';
+    const wp = a.win_probability;
+    return `
+      <section class="tp-sec" aria-labelledby="tp-wk">
+        <div class="tp-head"><span class="mark" style="--c:var(--accent)" aria-hidden="true"></span><h2 id="tp-wk">Week ${LIVE.week}, right now</h2>${g ? `<a class="more" href="#live.game-${g.key}">Live box score →</a>` : ''}</div>
+        <div class="tp-match">
+          <div class="tp-vs"><span class="nm">${opp ? `vs <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>` : 'Opponent TBD'}</span><span class="tp-badge ${tone}">${badge}</span></div>
+          ${wp == null ? '' : `<div class="tp-win">
+            <div class="row"><span class="lab">Chance to win</span><span class="big">${Math.round(wp * 100)}%</span></div>
+            <div class="tp-meter" role="img" aria-label="Chance to win ${Math.round(wp * 100)} percent"><i style="width:${(wp * 100).toFixed(1)}%"></i></div>
+            <div class="src">ESPN's number</div></div>`}
+          <div class="tp-nums">
+            <div><b>${f1(a.projected)}</b><span>projected</span></div>
+            <div><b>${mine ? f1(mine.points) : '–'}</b><span>on the board</span></div>
+            <div><b>${a.yet_to_play}</b><span>starter${a.yet_to_play === 1 ? '' : 's'} left to play</span></div>
+          </div>
+          <div class="tp-note ${tone}">${tone === 'ok' ? TP_CHECK : ''}<p>${esc(a.summary)}${a.counts.now ? `<br><a href="#team-${id}.lineup">See the fixes →</a>` : ''}</p></div>
+          ${ahead() ? `<a class="tp-live" href="#team-${id}.next">Week ${ahead().week} is coming up. See next week →</a>` : ''}
+        </div>
+      </section>`;
+  }
 
+  /* The audit cards, swipeable on a phone. The full text lives on the Season tab. */
+  function tpTake(id, p) {
+    return `
+      <section class="tp-sec" aria-labelledby="tp-take">
+        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-take">Coach's take</h2>${p.audit.length ? `<a class="more" href="#team-${id}.season">All ${p.audit.length} →</a>` : ''}</div>
+        ${p.audit.length
+          ? `<div class="tp-take">${p.audit.map(adviceCard).join('')}</div>`
+          : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
+      </section>`;
+  }
+
+  function tpAdvice(id) {
+    const a = coachFor(id, false);
+    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
+    // never went through site_data(), so a baked tag would vanish on the first refresh.
+    const weak = (TEAMS[id].profile || {}).weak_spot;
+    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
+    const waiver = ideas.filter((it) => !it.trade);
+    const trades = ideas.filter((it) => it.trade);
+    const col = (label, note, items) => (items.length ? `<div><div class="tp-sub"><span>${label}</span><small>${note}</small></div>${items.map(adviceCard).join('')}</div>` : '');
+    return `
+      <section class="tp-sec" aria-labelledby="tp-adv">
+        ${tpHead('--lime', "Coach's advice").replace('<h2>', '<h2 id="tp-adv">')}
+        ${ideas.length
+          ? `<p class="sec-sub">Ideas, not orders. A trade only shows up here if it helps both teams.</p>
+             <div class="tp-ideas">${col('Waiver wire', 'From FantasyPros and everyone\'s rosters', waiver)}${col('Trade idea', 'Checked against both lineups', trades)}</div>`
+          : '<p class="sec-sub">No new ideas today.</p>'}
+      </section>`;
+  }
+
+  function tpSoFar(t) {
+    if (!t.weekly.length) return '';
+    return `
+      <section class="tp-sec" aria-labelledby="tp-sofar">
+        <div class="tp-head"><span class="mark" style="--c:var(--pink)" aria-hidden="true"></span><h2 id="tp-sofar">Season so far</h2><a class="more" href="#team-${t.team_id}.season">Week by week and awards →</a></div>
+        <div class="tp-weeks">${t.weekly.map((g) => `
+          <a class="tp-wk" href="#week-${g.week}.game-${g.game_key}" aria-label="Week ${g.week} against ${esc(g.opponent)}: ${g.result === 'W' ? 'won' : 'lost'}, ${f1(g.points)} points, ${g.score_rank} of 8 that week">
+            <span class="wl">WEEK ${g.week}<span class="tp-opp"> · ${esc(g.opponent).toUpperCase()}</span></span><span class="tp-res ${g.result}">${g.result}</span><b>${f1(g.points)}</b><small>${g.score_rank} of 8</small>
+          </a>`).join('')}</div>
+        <p class="sec-sub">Score, then where it ranked among all 8 teams that week.</p>
+      </section>`;
+  }
+
+  // Phones skip the side rail, so its quick looks become two doors into the other tabs.
+  function tpDig(id, t, p) {
+    const kinds = AWARD_KINDS.map((k) => [k, t.awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
+    const counts = [...kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`), `${p.moves.length} roster move${p.moves.length === 1 ? '' : 's'}`].join(', ');
+    return `
+      <section class="tp-dig" aria-label="More detail">
+        <a href="#team-${id}.lineup"><span><b>Full lineup</b><small>Starters, bench and ${f1(t.bench_left)} points benched this season</small></span><span class="chev" aria-hidden="true">›</span></a>
+        <a href="#team-${id}.season"><span><b>Week by week, awards and moves</b><small>${counts}</small></span><span class="chev" aria-hidden="true">›</span></a>
+      </section>`;
+  }
+
+  // Laptop only: her starters, the latest moves and the latest award, without leaving Overview.
+  function tpRail(id, t, p) {
+    const a = coachFor(id, false);
+    const g = a && LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
+    const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
+    const starters = mine ? [...mine.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot)) : [];
+    const latestWeek = p.moves.length ? p.moves[0].week : null;
+    const latest = p.moves.filter((m) => m.week === latestWeek);
+    const award = [...t.awards].sort((x, y) => y.week - x.week)[0];
+    const names = (xs) => xs.map(esc).join(', ');
+    return `
+      ${mine ? `
+      <section class="tp-panel" aria-labelledby="tp-ln">
+        <header><h2 id="tp-ln">Your lineup</h2><span>${f2(mine.points)} · proj ${f1(a.projected)}</span></header>
+        ${starters.map((s) => `<div class="tp-ln"><span class="slot">${esc(s.slot)}</span><b>${esc(s.name)}</b><span class="pts">${f2(s.points)}</span></div>`).join('')}
+        <a class="go" href="#team-${id}.lineup">Bench and full lineup →</a>
+      </section>` : ''}
+      <section class="tp-panel" aria-labelledby="tp-mv">
+        <header><h2 id="tp-mv">Latest moves</h2>${latestWeek ? `<span>Week ${latestWeek}</span>` : ''}</header>
+        ${latest.length ? latest.map((m) => `<div class="tp-mvrow" style="border-top:1.5px solid var(--rule)">${moveLines(m, names)}</div>`).join('')
+          : '<p class="sec-sub" style="padding:0 16px 14px">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
+        <a class="go" href="#team-${id}.season">${p.moves.length ? `See all ${p.moves.length} move${p.moves.length === 1 ? '' : 's'} →` : 'Open the season →'}</a>
+      </section>
+      ${award ? `
+      <section class="tp-panel award" aria-labelledby="tp-aw">
+        <header><h2 id="tp-aw">Latest award</h2><span class="rail-pill ${KIND[award.kind].cls}">${KIND[award.kind].label}</span></header>
+        <p><a href="#week-${award.week}.awards" style="color:var(--accent);font-weight:800;text-decoration:none">Week ${award.week}</a> · ${esc(award.title)}</p>
+        <a href="#team-${id}.season" style="font-weight:700;font-size:13.5px;color:var(--accent)">All ${t.awards.length} awards →</a>
+      </section>` : ''}`;
+  }
+
+  const moveLines = (m, names) => `
+    ${m.added.length ? `<span><em>Added</em><b>${names(m.added)}</b></span>` : ''}
+    ${m.dropped.length ? `<span class="out"><em>${m.type === 'trade' ? 'Sent' : 'Dropped'}</em>${names(m.dropped)}</span>` : ''}`;
+
+  /* Season tab: how every week went, the audit in full, every game, her awards and every move. */
+  function tpSeason(id, t, p) {
+    const weeks = [...t.weekly].sort((x, y) => y.week - x.week);
+    const top = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1);
+    const h = (n) => `${Math.max(2, (n / top) * 100).toFixed(1)}%`;
+    const kinds = AWARD_KINDS.map((k) => [k, t.awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
+    const awards = [...t.awards].sort((x, y) => y.week - x.week);
+    const names = (xs) => xs.map(esc).join(', ');
+    const byWeek = [];
+    for (const m of p.moves) {
+      const last = byWeek[byWeek.length - 1];
+      if (last && last.week === m.week) last.moves.push(m); else byWeek.push({ week: m.week, moves: [m] });
+    }
+    // The newest week starts open, once per visit; after that the page remembers what she opened or shut.
+    if (byWeek.length && !TP_SEEDED.has(id)) { TP_SEEDED.add(id); HUB_OPEN.add(`mv-${id}-${byWeek[0].week}`); }
+    return `
       ${t.weekly.length ? `
-      <section>
-        ${secHead('board', 'Week by week')}
-        <div class="std-card table-scroll">
-          <table class="std">
-            <thead><tr><th>Week</th><th>Opponent</th><th class="r">Score</th><th class="r">Result</th><th class="r" title="Where her score ranked among all 8 teams that week">Week rank</th><th class="r">Benched</th></tr></thead>
-            <tbody>${t.weekly.map((g) => `
-              <tr>
-                <td><a href="#week-${g.week}.game-${g.game_key}" style="font-weight:700;text-decoration:none;color:var(--accent)">Week ${g.week}</a></td>
-                <td class="mgr"><a href="#team-${g.opponent_id}">${esc(g.opponent)}</a></td>
-                <td class="r">${f2(g.points)} – ${f2(g.opponent_points)}</td>
-                <td class="r"><span class="res ${g.result}">${g.result}</span></td>
-                <td class="r">${g.score_rank} of 8</td>
-                <td class="r">${f2(g.points_left)}</td>
-              </tr>`).join('')}
-            </tbody>
-          </table>
+      <section class="tp-sec" aria-labelledby="tp-sc">
+        ${tpHead('--accent', 'Score by week').replace('<h2>', '<h2 id="tp-sc">')}
+        <div class="tp-chart">
+          <div class="tp-plot" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">
+            ${t.weekly.map((g) => `<div class="tp-col" style="--h:${h(g.points)}"><span class="tp-val">${f1(g.points)}</span><div class="${g.result === 'L' ? 'tp-bar-l' : 'tp-bar-w'}"></div></div>`).join('')}
+            <div class="tp-avg" style="--h:${h(t.avg)}"><span>average: ${f1(t.avg)}</span></div>
+          </div>
+          <div class="tp-axis" aria-hidden="true">${t.weekly.map((g) => `<span>W${g.week} · ${g.result}</span>`).join('')}</div>
         </div>
       </section>` : ''}
 
-      <section>
-        ${secHead('ball', 'Her awards')}
-        ${t.awards.length ? `<ul class="decided">${t.awards.map((a) => `<li><span class="tag ${KIND[a.kind].tag}">${KIND[a.kind].label}</span><span><a href="#week-${a.week}.awards" style="font-weight:700;text-decoration:none">Week ${a.week}</a> · ${esc(a.title)}</span></li>`).join('')}</ul>`
+      <section class="tp-sec">
+        ${tpHead('--orange', "Coach's audit")}
+        ${p.audit.length
+          ? `<p class="sec-sub">Your season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
+      </section>
+
+      ${weeks.length ? `
+      <section class="tp-sec" aria-labelledby="tp-ww">
+        ${tpHead('--lime', 'Week by week').replace('<h2>', '<h2 id="tp-ww">')}
+        ${weeks.map((g) => `
+          <a class="tp-gm" href="#week-${g.week}.game-${g.game_key}"><span class="tp-res ${g.result}">${g.result}</span>
+            <span><b>Week ${g.week} · ${esc(g.opponent)}</b><span class="sc">${f2(g.points)} – ${f2(g.opponent_points)}</span></span>
+            <span class="rt"><b>${g.score_rank} of 8</b>${f2(g.points_left)} benched</span></a>`).join('')}
+      </section>` : ''}
+
+      <section class="tp-sec" aria-labelledby="tp-aw">
+        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards</h2>${kinds.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(' · ')}</span>` : ''}</div>
+        ${awards.length
+          ? awards.map((a) => `<div class="tp-aw"><span class="aw-pill ${KIND[a.kind].cls}">${KIND[a.kind].label}</span><span><a href="#week-${a.week}.awards">Week ${a.week}</a> · ${esc(a.title)}</span></div>`).join('')
           : '<p class="sec-sub">No awards yet. Give it time.</p>'}
+      </section>
+
+      <section class="tp-sec" aria-labelledby="tp-mvs">
+        <div class="tp-head"><span class="mark" style="--c:var(--pink)" aria-hidden="true"></span><h2 id="tp-mvs">Roster moves</h2>${p.moves.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${p.moves.length} this season</span>` : ''}</div>
+        ${byWeek.length
+          ? byWeek.map((w) => `
+            <details class="tp-mv" data-hub-open="mv-${id}-${w.week}"${HUB_OPEN.has(`mv-${id}-${w.week}`) ? ' open' : ''}>
+              <summary><span>Week ${w.week}<small>· ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</small></span></summary>
+              ${w.moves.map((m) => `<div class="tp-mvrow">${m.type === 'trade' ? '<b>Trade</b>' : ''}${moveLines(m, names)}</div>`).join('')}
+            </details>`).join('')
+          : '<p class="sec-sub">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
       </section>`;
   }
 
@@ -2020,7 +2383,8 @@
      a second row of tabs, since it's one choice with only two states. */
   function weekToggle(next, id) {
     if (!ahead()) return '';
-    const tab = (isNext, label, week) => `<a href="${coachUrl(isNext, id)}" ${isNext === next ? 'aria-current="page"' : ''}>${label} <span class="wk-n">W${week}</span></a>`;
+    // On a team's profile the toggle flips the Lineup tab; on the league grid it flips the grid.
+    const tab = (isNext, label, week) => `<a href="${id ? `#team-${id}${isNext ? '.next' : '.lineup'}` : coachUrl(isNext, null)}" ${isNext === next ? 'aria-current="page"' : ''}>${label} <span class="wk-n">W${week}</span></a>`;
     return `<div class="week-toggle" data-state="${next ? 'next' : 'this'}" role="group" aria-label="Choose a week"><span class="knob" aria-hidden="true"></span>${tab(false, 'This week', LIVE.week)}${tab(true, 'Next week', ahead().week)}</div>`;
   }
 
@@ -2402,7 +2766,7 @@
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
     else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(`#team-${m[2]}${m[1] ? '.next' : ''}`); return; }
-    else if ((m = /^team-(\d+)(\.next)?$/.exec(h))) { html = teamPage(Number(m[1]), !!m[2]); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
+    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
