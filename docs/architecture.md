@@ -170,8 +170,8 @@ the luck report.
 
 ## Team profile
 
-`#team-<id>`: header and season tiles, this week's to-dos and lineup (the Coach page section above), the
-**coach's audit**, roster ideas ("Worth a look"), her **recent moves**, week by week, and awards.
+`#team-<id>`: header, the **coach's audit** right under it, season tiles, this week's to-dos and lineup (the
+Coach page section above), roster ideas ("Worth a look"), her **recent moves**, week by week, and awards.
 
 - **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
   Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
