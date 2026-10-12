@@ -1981,7 +1981,8 @@
   const todoBadge = (a, next) => (a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
     : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
     : '<span class="todo clear">all clear</span>');
-  const topItems = (a, n) => [...a.items].sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3)).slice(0, n);
+  // The "nothing to fix" item is left out: the card's summary line already says so.
+  const topItems = (a, n) => a.items.filter((it) => it.kind !== 'clear').sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3)).slice(0, n);
 
   function winBar(a, b) {
     const p = a.win_probability;
