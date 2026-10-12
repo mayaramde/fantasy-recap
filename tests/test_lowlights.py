@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the upsets and worst-performances lists in site/build.py."""
+"""Tests for the worst-performances list in site/build.py."""
 import sys
 import unittest
 from pathlib import Path
@@ -14,22 +14,7 @@ def team(tid, opp, pts, proj, starters=(), result="W"):
 
 
 def starter(name, pts, proj, state=None):
-    return {"name": name, "pos": "WR", "slot": "WR", "points": pts, "projected": proj, "game_state": state}
-
-
-class Upsets(unittest.TestCase):
-    def facts(self, complete=True):
-        return {"complete": complete, "teams": [
-            team(1, 2, 100, 90), team(2, 1, 80, 110, result="L"),      # underdog 1 won by 20 on paper
-            team(3, 4, 120, 130), team(4, 3, 90, 100, result="L"),     # favorite held
-        ]}
-
-    def test_underdog_win_only(self):
-        got = build.upsets(self.facts())
-        self.assertEqual([(u["winner"], u["loser"], u["gap"]) for u in got], [("M1", "M2", 20.0)])
-
-    def test_unfinished_week_has_none(self):
-        self.assertEqual(build.upsets(self.facts(complete=False)), [])
+    return {"player_id": 7, "logo": "L", "team": "DET", "name": name, "pos": "WR", "slot": "WR", "points": pts, "projected": proj, "game_state": state}
 
 
 class Worst(unittest.TestCase):
