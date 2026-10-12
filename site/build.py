@@ -1369,22 +1369,37 @@ def load_schedule(season):
         return {}
 
 
-def fetch_production_live(url, timeout=20):
+def _live_shape_ok(live):
+    """Is a borrowed payload shaped the way site_data and the template read it? Production can
+    lag a schema change on a branch, and a draft build must never fail on that."""
+    def rows_ok(rows):
+        return isinstance(rows, list) and all(
+            isinstance(r, dict) and isinstance(r.get("team_id"), int)
+            and isinstance(r.get("roster_ideas") or [], list)
+            and all(isinstance(it, dict) for it in r.get("roster_ideas") or [])
+            for r in rows)
+    nxt = live.get("next")
+    return (isinstance(live, dict) and isinstance(live.get("week"), int) and rows_ok(live.get("advice"))
+            and (nxt is None or (isinstance(nxt, dict) and rows_ok(nxt.get("teams") or []))))
+
+
+def fetch_production_live(url, timeout=20, limit=16_000_000):
     """The live-week payload the site at `url` is serving right now, read out of its own page,
     or None. Best effort by design: any failure just means a preview with no live week.
 
     Why: a Vercel branch preview builds from committed data, and the live capture never is, so
-    it has no Coach tab. Borrowing what production already computed shows the same week."""
+    it has no Coach tab. Borrowing what production already computed shows the same week. It is
+    production's snapshot (its standings and odds, published recaps only), good for reviewing
+    design, not a computation over this branch's data."""
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "fantasy-recap-preview-build"})
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            page = r.read().decode("utf-8")
+            page = r.read(limit).decode("utf-8")
         m = re.search(r'<script id="recap-data" type="application/json">(.*?)</script>', page, re.S)
         live = json.loads(m.group(1)).get("live") if m else None
-    except (OSError, ValueError):
+        return live if live and _live_shape_ok(live) else None
+    except Exception:  # noqa: BLE001 - best effort: anything wrong with the page means no live week
         return None
-    ok = isinstance(live, dict) and isinstance(live.get("week"), int) and isinstance(live.get("advice"), list)
-    return live if ok else None
 
 
 def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_from=None):
