@@ -177,6 +177,7 @@
   .week-toggle .knob { position: absolute; top: 2px; bottom: 2px; left: 2px; width: calc(50% - 2px); background: var(--lime); border-radius: 999px; }
   .week-toggle[data-state="next"] .knob { left: auto; right: 2px; }
   .week-toggle a { position: relative; z-index: 1; text-decoration: none; font: 700 13px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); padding: 8px 14px; white-space: nowrap; }
+  .week-toggle a[aria-current="page"] { color: var(--on-pop); }
   .week-toggle .wk-n { font: 500 10.5px/1 var(--mono); opacity: 0.65; margin-left: 3px; }
 
   /* ---------- sections ---------- */
