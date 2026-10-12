@@ -52,7 +52,15 @@ published recap, the season's over: stop and say so.
 
 ## Step 4: pull FantasyPros data (free tier only)
 
-Use the `fantasy-data` role's free-tier calls, with `league.json`'s `fantasypros_league_key` on
+First prove the connection: call `get_leagues` (sport `nfl`) and check that one league's `key` equals
+`league.json`'s `fantasypros_league_key`. Record the outcome for Step 6's `fantasypros` field. If the
+FantasyPros tools aren't available to this run, the call errors, or no league matches, record
+`reached: false` with the exact error, skip the rest of this step, and carry on ESPN-only
+(`advice_cards` and `roster_ideas` stay empty, since nothing may be sourced from FantasyPros without a
+tool call that returned it). Lead the Output summary with that failure; it must never read like a
+normal run. Don't use a premium-gated tool as the probe.
+
+Otherwise use the `fantasy-data` role's free-tier calls, with `league.json`'s `fantasypros_league_key` on
 every call (never hardcode it): `get_projections` (weekly, target week, PPR), `injury_status`
 for rostered players and any candidate you're considering, `get_ecr` (ROS, PPR) for the
 relevant positions, `get_player_ownership` (confirm a pickup is actually unowned in *this*
@@ -263,6 +271,7 @@ is the archive):
   "generated_at": "<ISO-8601 UTC timestamp for right now>",
   "league_key": "<league.json's fantasypros_league_key>",
   "trade_finder_disclosure_shown": <yesterday's value, or true if you relayed it this run>,
+  "fantasypros": {"reached": true, "checked_at": "<ISO-8601 UTC time of Step 4's get_leagues call>"},
   "weeks": {
     "<week number>": {
       "teams": {
@@ -279,6 +288,10 @@ is the archive):
   }
 }
 ```
+
+`fantasypros` records Step 4's probe: `reached` is `true` only if `get_leagues` returned this league. When
+it's `false`, add `"error": "<what failed>"` and write no FantasyPros-sourced cards. `scripts/check.py`
+enforces both, and requires the field on every snapshot generated from 2026-10-13 on.
 
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
@@ -307,7 +320,7 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 ## Output
 
-A short summary: the PR link and whether auto-merge is on, which teams got a new waiver idea or
+A short summary, opening with "FantasyPros reached" or the reason it wasn't: the PR link and whether auto-merge is on, which teams got a new waiver idea or
 an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
 for failing the voice gate twice, and — only the first time
 it comes up — Trade Finder's premium disclosure.
