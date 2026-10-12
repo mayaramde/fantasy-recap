@@ -625,7 +625,9 @@
 
   /* Coach overview: your team pinned on top, a radar of the league's loudest items, then the
      week's games as face-offs. One column on a phone; from 860px the hero and radar sit side by side. */
-  .coach-top { display: grid; gap: 22px; margin-top: 22px; }
+  .coach-top { display: grid; gap: 22px; margin-top: 14px; }
+  /* the global `section` margin would stack on the grid's own and open a gap under the header */
+  .coach-top > section { margin-top: 0; }
   @media (min-width: 860px) { .coach-top { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; } }
   .coach-hero { position: relative; display: grid; gap: 14px; padding: 22px 20px 20px; background: var(--accent-soft); color: var(--ink);
     border: 2px solid var(--edge); border-radius: 14px; box-shadow: 5px 5px 0 var(--accent); }
@@ -652,6 +654,21 @@
   .ch-go { justify-self: start; padding: 9px 16px; font-size: 14px; }
   .ch-pick { display: grid; gap: 12px; }
   .ch-pick p { margin: 0; font-size: 15px; }
+  .ch-pick .profile-btn { justify-self: start; cursor: pointer; padding: 9px 16px; font-size: 14px; }
+
+  /* "Which one is you?": a modal with no way out but picking a team. Names wrap, never scroll. */
+  .pick-dialog { width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; margin: auto; padding: 22px 20px 20px;
+    background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 5px 5px 0 var(--accent); }
+  .pick-dialog::backdrop { background: rgba(10, 20, 50, 0.6); }
+  .pick-dialog h2 { margin: 0 0 6px; font: 900 clamp(32px, 8vw, 40px)/1 var(--display); }
+  .pick-dialog p { margin: 0 0 16px; font-size: 15px; }
+  .pick-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .pick-grid button { display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; color: var(--ink);
+    font: 700 16px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card);
+    padding: 13px 10px; border-radius: 10px; box-shadow: 3px 3px 0 var(--drop); }
+  .pick-grid button:hover, .pick-grid button:focus-visible { background: var(--lime); color: var(--on-pop); }
+  .pick-grid button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  .pick-grid .dot { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); font: 800 10px/1 var(--display); color: var(--on-pop); }
 
   /* the split win-probability bar: filled halves, navy or white ink on top */
   .fo-bar { display: flex; height: 28px; border: 2px solid var(--edge); border-radius: 999px; overflow: hidden; background: var(--card); }
@@ -800,9 +817,12 @@
   const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
   // Eight people, one page: remembering the last team someone opened lets the Coach tab
   // go straight back to hers. Private windows throw on localStorage, which costs nothing.
+  // The in-memory copy matters now that Coach's team picker can't be dismissed: with storage
+  // blocked, a pick still has to stick for the visit or the picker would reopen forever.
+  let pickedTeam = null;
   const myTeam = {
-    get() { try { return Number(localStorage.getItem('ffg-coach-team')) || null; } catch { return null; } },
-    set(id) { try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
+    get() { try { return Number(localStorage.getItem('ffg-coach-team')) || pickedTeam; } catch { return pickedTeam; } },
+    set(id) { pickedTeam = id; try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
   };
   const coachHref = () => coachUrl(leadWithNext(), coachFor(myTeam.get(), leadWithNext()) ? myTeam.get() : null);
   if (advice()) {
@@ -2024,8 +2044,14 @@
     return `
       <section class="coach-hero ch-pick" aria-labelledby="ch-pick">
         <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Which one is you?</h2>
-        <p>Tap your name once and this spot becomes your team: your game, your odds, your to-dos. No password, no judgment.</p>
-        ${teamSwitch(null, next)}
+        <p>Pick your team and this spot becomes yours: your game, your odds, your to-dos.</p>
+        <button type="button" class="profile-btn" data-open-pick>Pick my team</button>
+        <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
+          <h2 id="pick-h">Which one is you?</h2>
+          <p>Tap your name once and Coach becomes your team: your game, your odds, your to-dos. No password, no judgment.</p>
+          <div class="pick-grid">${coachRows(next).map((a) => `
+            <button type="button" data-pick="${a.team_id}">${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</button>`).join('')}</div>
+        </dialog>
       </section>`;
   }
 
@@ -2270,7 +2296,15 @@
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
+    // "Which one is you?" is a modal: it opens on its own and only a pick closes it.
+    const pick = document.getElementById('pick-dialog');
+    if (pick && !pick.open && pick.showModal) pick.showModal();
   }
+
+  /* Escape is the one way out of a modal, so it's blocked (`cancel` and `close` don't bubble,
+     hence the capture), and a close that slips through reopens until there's a team. */
+  document.addEventListener('cancel', (e) => { if (e.target.id === 'pick-dialog') e.preventDefault(); }, true);
+  document.addEventListener('close', (e) => { if (e.target.id === 'pick-dialog' && e.target.isConnected) e.target.showModal(); }, true);
 
   /* Opening a player card. #main survives every re-render (only its contents change), so
      one listener here outlives the router and the live refresh. */
@@ -2299,6 +2333,11 @@
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[data-myteam]');
     if (a) myTeam.set(Number(a.dataset.myteam));
+    // The "Which one is you?" modal: remember the pick and redraw Coach as her team.
+    const pick = e.target.closest('button[data-pick]');
+    if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
+    const reopen = e.target.closest('button[data-open-pick]');
+    if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
   });
 
   window.addEventListener('hashchange', () => {
