@@ -2123,8 +2123,8 @@
         </div>
         <h1>Coach</h1>
         <p class="dek">${next
-          ? `Coach is already on Week ${week}: your to-do list, the league's loudest problems, and who's actually strong where. Nothing has kicked off, so it's all still fixable.`
-          : `Coach read all eight rosters so you don't have to: your to-do list, the league's loudest problems, and who's actually strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
+          ? `Coach is already on Week ${week}, with your to-do list and everyone's lineup holes. Nothing has kicked off. Fix away.`
+          : `Coach read all eight rosters so you don't have to. Your to-do list, the week's biggest swap, and who's strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <div class="coach-top">
         ${mine ? coachHero(mine, rows, next) : heroPicker(next)}
