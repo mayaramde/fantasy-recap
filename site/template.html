@@ -728,6 +728,48 @@
   .strength-key { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
   .strength-key .corner { position: static; display: inline-grid; vertical-align: -6px; margin-right: 6px; transform: none; }
   @media (max-width: 559px) { .strength thead th:first-child, .strength tbody th { width: 112px; } .strength tbody th { font-size: 18px; } .strength tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
+
+  /* Coach: two side-by-side cards (stacked on a phone): waiver order and the injury report */
+  .coach-duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 34px; }
+  @media (min-width: 900px) { .coach-duo { grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); align-items: start; } }
+  .coach-duo > .panel { margin-top: 0; }
+  .panel { padding: 16px 18px 18px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 4px 4px 0 var(--drop); }
+  .panel h2 { margin: 0; font: 800 24px/1.05 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .panel .sec-sub { margin: 6px 0 12px; }
+  .panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+  .waiver { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .waiver li { color: var(--ink); display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 7px 10px; border: 2px solid var(--edge); border-radius: 10px; background: var(--card); }
+  .waiver li.me { background: var(--lime); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .waiver .pos { font: 800 22px/1 var(--display); }
+  .waiver .wname { font: 800 19px/1 var(--display); letter-spacing: 0.01em; }
+  .waiver .wname a { color: inherit; text-decoration: none; }
+  .waiver .wname a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .waiver .wname .you-tag { margin-left: 8px; }
+  .waiver .rec { font: 500 14px/1 var(--mono); }
+  .inj-toggle { display: inline-flex; border: 2px solid var(--edge); border-radius: 999px; overflow: hidden; background: var(--card); }
+  .inj-toggle button { cursor: pointer; padding: 6px 12px; font: 600 13px/1 var(--body); color: var(--ink); background: transparent; border: 0; }
+  .inj-toggle button + button { border-left: 2px solid var(--edge); }
+  .inj-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+  .inj-toggle .wk-n { font: 500 11px/1 var(--mono); opacity: 0.85; margin-left: 2px; }
+  .inj-wrap { border: 2px solid var(--edge); border-radius: 10px; }
+  .inj-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .inj-table th, .inj-table td { padding: 8px 8px; text-align: left; vertical-align: middle; }
+  .inj-table thead th { font: 600 11.5px/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--edge); }
+  .inj-table tbody + tbody { border-top: 2px solid var(--edge); }
+  .inj-table tbody th { width: 84px; font: 800 17px/1.1 var(--display); vertical-align: top; padding-top: 10px; }
+  .inj-table tbody th a { color: var(--ink); text-decoration: none; }
+  .inj-table tbody th a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .inj-table tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; }
+  .inj-table .pl { font-weight: 700; }
+  .inj-table .pl small { font: 500 11px/1 var(--mono); color: var(--muted); }
+  .inj-table .nfl { margin-left: 4px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px 2px 3px; border: 2px solid var(--edge); border-radius: 999px; font: 500 11px/1 var(--mono); background: var(--card); white-space: nowrap; vertical-align: 1px; }
+  .inj-table .role { font: 500 12px/1 var(--mono); color: var(--muted); }
+  .spill { display: inline-block; padding: 4px 9px; font: 600 11.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px; white-space: nowrap; }
+  .spill.out { background: var(--pink); }
+  .spill.q { background: var(--orange); }
+  .spill.bye { background: var(--accent-soft); color: var(--ink); }
+  .inj-empty { margin: 4px 0 0; padding: 18px 14px; text-align: center; font-size: 15px; background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 10px; }
+  @media (max-width: 559px) { .inj-table { font-size: 13px; } .inj-table tbody th { width: 58px; font-size: 15px; } .inj-table th, .inj-table td { padding: 7px 4px; } .inj-table .role { font-size: 10.5px; } .spill { padding: 3px 6px; font-size: 10.5px; } .inj-table thead th { font-size: 10.5px; } .panel { padding-inline: 14px; } }
   .card.now .stat { background: var(--pink); }
   .card.watch .stat { background: var(--orange); }
   .card.info .stat { background: var(--lime); }
@@ -2111,6 +2153,57 @@
       <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>1 is the league's best, ${n} the worst</span></p>`;
   }
 
+  /* "Waiver order this week": the league's waivers run worst record first and reset to that every
+     week (league.json: inverse_standings_weekly_reset), so it's the standings upside down. The
+     standings already break ties on points for, so reversing them keeps that tiebreak honest. */
+  function waiverCard(next, me) {
+    const order = [...SEASON.standings].reverse();
+    return `
+      <section class="panel" aria-labelledby="wo-h">
+        <h2 id="wo-h">Waiver order this week</h2>
+        <p class="sec-sub">Worst record picks first. The order resets every week.</p>
+        <ol class="waiver">${order.map((t, i) => {
+          const mine = t.team_id === me;
+          return `<li${mine ? ' class="me"' : ''}><span class="pos">${i + 1}</span><span class="wname"><a href="${coachUrl(next, t.team_id)}">${esc(t.manager)}</a>${mine ? '<span class="you-tag">You</span>' : ''}</span><span class="rec">${record(t)}</span></li>`;
+        }).join('')}</ol>
+      </section>`;
+  }
+
+  /* "Injuries and byes": everyone on a roster who's hurt or whose NFL team is off, grouped by team.
+     The status is always spelled out in the pill, so its fill is a hint and never the message. */
+  let injPick = null;
+  const INJ_PILL = (status) => (OUTISH.includes(status) ? 'out' : status === 'Bye' ? 'bye' : 'q');
+  function injuryCard(next, me) {
+    const view = ahead() && (injPick || (next ? 'next' : 'this')) === 'next' ? 'next' : 'this';
+    const rows = coachRows(view === 'next') || [];
+    const known = rows.some((r) => Array.isArray(r.report));
+    const groups = rows.filter((r) => (r.report || []).length)
+      .sort((x, y) => (y.team_id === me) - (x.team_id === me));
+    const body = !known
+      ? '<p class="inj-empty">Coach hasn\'t got the injury report for this one yet. Check back soon.</p>'
+      : groups.length
+        ? `<div class="inj-wrap table-scroll"><table class="inj-table">
+            <thead><tr><th scope="col">Manager</th><th scope="col">Player</th><th scope="col">Status</th><th scope="col">Spot</th></tr></thead>
+            ${groups.map((g) => `<tbody>${g.report.map((p, i) => `
+              <tr>${i === 0 ? `<th scope="rowgroup" rowspan="${g.report.length}"><a href="${coachUrl(next, g.team_id)}">${esc(g.manager)}</a>${g.team_id === me ? '<span class="you-tag">You</span>' : ''}</th>` : ''}
+                <td class="pl">${esc(p.name)}${p.pos && p.pos !== 'DST' ? ` <small>${esc(p.pos)}</small>` : ''}${p.team ? ` <span class="nfl">${p.logo ? `<img src="${esc(p.logo)}" alt="" width="16" height="16" loading="lazy" onerror="this.remove()">` : ''}${esc(p.team)}</span>` : ''}</td>
+                <td><span class="spill ${INJ_PILL(p.status)}">${esc(p.status)}</span></td>
+                <td class="role">${esc(p.role)}</td></tr>`).join('')}</tbody>`).join('')}
+          </table></div>`
+        : '<p class="inj-empty">Nobody\'s hurt. Enjoy it while it lasts.</p>';
+    return `
+      <section class="panel" aria-labelledby="ib-h">
+        <div class="panel-head">
+          <h2 id="ib-h">Injuries and byes</h2>
+          ${ahead() ? `<div class="inj-toggle" role="group" aria-label="Choose a week">
+            <button type="button" data-inj="this" aria-pressed="${view === 'this'}">This week <span class="wk-n">W${LIVE.week}</span></button>
+            <button type="button" data-inj="next" aria-pressed="${view === 'next'}">Next week <span class="wk-n">W${ahead().week}</span></button></div>` : ''}
+        </div>
+        <p class="sec-sub">Hurt players and byes across every roster, starters first. A bye means his NFL team doesn't play that week.</p>
+        ${body}
+      </section>`;
+  }
+
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
     const rows = coachRows(next);
@@ -2137,6 +2230,10 @@
         <p class="sec-sub">Each team's lineup spots, ranked against the league. Darker means stronger.</p>
         ${strengthGrid(next, me)}
       </section>
+      <div class="coach-duo">
+        ${waiverCard(next, me)}
+        ${injuryCard(next, me)}
+      </div>
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
 
@@ -2346,11 +2443,14 @@
     // Coach's hello modal: remember the pick and redraw Coach as her team.
     const pick = e.target.closest('button[data-pick]');
     if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
+    const inj = e.target.closest('button[data-inj]');
+    if (inj) { injPick = inj.dataset.inj; route(); const again = document.querySelector(`button[data-inj="${injPick}"]`); if (again) again.focus({ preventScroll: true }); }
     const reopen = e.target.closest('button[data-open-pick]');
     if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
   });
 
   window.addEventListener('hashchange', () => {
+    injPick = null;
     route();
     window.scrollTo({ top: 0 });
     $('#main').focus({ preventScroll: true });

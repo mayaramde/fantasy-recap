@@ -600,6 +600,22 @@ def player_cards(starters, bench, ctx):
     return cards
 
 
+def injury_report(starters, bench, on_bye):
+    """Who on one roster is hurt or on a bye, for the Coach page's "Injuries and byes" card:
+    [{name, pos, team, logo, status, role}], starters first. `status` is ESPN's designation in
+    plain words (see INJURY_LABEL), or "Bye" for a healthy player whose NFL team has no game;
+    `role` is "starting" or "bench" (a player on IR counts as bench). A designation wins over
+    a bye, since being hurt is the more useful thing to say."""
+    out = []
+    for role, pool in (("starting", starters), ("bench", bench)):
+        for p in pool:
+            status = INJURY_LABEL.get(p.get("injury_status")) or ("Bye" if on_bye(p) else None)
+            if status:
+                out.append({"name": p["name"], "pos": p.get("pos"), "team": p.get("team"),
+                            "logo": p.get("logo"), "status": status, "role": role})
+    return out
+
+
 def team_advice(team, before, before_week, states_known, projected=True, week_open=True,
                 fp_items=(), fp_ideas=(), written=None, written_summary=None):
     """One team's to-do list for a week.
@@ -915,6 +931,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
                     team_summary(team["team_id"], items, counts, can_change, team.get("win_probability"))),
         # What a written summary has to be keyed to, for coach-daily's brief
         "summary_key": skey,
+        # Everyone on the roster who is hurt or on a bye, for the "Injuries and byes" card
+        "report": injury_report(starters, team["bench"], on_bye),
         # One card per player on the roster, for the lineup rows on her Coach page
         "players": player_cards(starters, team["bench"], ctx),
         # Waiver/trade leads from FantasyPros — not a per-week to-do, so kept separate from

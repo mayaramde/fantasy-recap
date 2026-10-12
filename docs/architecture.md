@@ -110,7 +110,10 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   DST and K. The ranks are season points at each lineup spot, the same ones behind the profile's Position strength
   card (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid and it
   stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
-  are no letter grades. Each team's own week lives
+  are no letter grades. Under it sit two cards: **Waiver order this week** (the standings upside down, since the
+  league's waivers reset to worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
+  `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
+  the card). Each team's own week lives
   on her **team profile** (`#team-<id>`, and `#team-<id>.next` for next week); the old `#coach-<id>` and
   `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
   remembers the last team opened. The grid and the profile's week sections disappear once the live week's recap is
