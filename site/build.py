@@ -126,7 +126,8 @@ def worst_performances(facts):
     for t in facts["teams"]:
         for p in t["starters"]:
             final = facts["complete"] or p.get("game_state") == "post"
-            if final and (p.get("projected") or 0) > 0 and p["points"] < p["projected"]:
+            # A starter who never played (scratch, inactive) is a missing player, not a bad game
+            if final and p.get("played", True) and (p.get("projected") or 0) > 0 and p["points"] < p["projected"]:
                 rows.append({"name": p["name"], "pos": p.get("pos"), "manager": t["manager"], "slot": p["slot"],
                              "points": p["points"], "projected": p["projected"],
                              "short": round(p["projected"] - p["points"], 2)})

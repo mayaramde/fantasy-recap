@@ -40,6 +40,12 @@ class Worst(unittest.TestCase):
         self.assertEqual([p["name"] for p in got], ["Done"])
         self.assertEqual(got[0]["short"], 13.0)
 
+    def test_starter_who_did_not_play_is_not_a_bust(self):
+        ghost = dict(starter("Ghost", 0, 12), played=False)
+        t = team(1, 2, 0, 0, [ghost, starter("Real", 3, 10)])
+        got = build.worst_performances({"complete": True, "teams": [t]})
+        self.assertEqual([p["name"] for p in got], ["Real"])
+
     def test_final_week_counts_everyone_sorted(self):
         t = team(1, 2, 0, 0, [starter("A", 5, 10), starter("B", 1, 14), starter("C", 9, 8)])
         got = build.worst_performances({"complete": True, "teams": [t]})

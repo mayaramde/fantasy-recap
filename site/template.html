@@ -949,7 +949,7 @@
     if (!ups.length && !low.length) return '';
     const upsetList = ups.length ? `<ol class="lows">${ups.map((u) => `
       <li><span><b>${mgrLink(u.winner)}</b> beat ${mgrLink(u.loser)}</span><span class="big">+${f1(u.gap)}</span>
-        <span class="meta">Won ${f2(u.winner_points)} to ${f2(u.loser_points)}. ESPN projected ${f1(u.winner_projected)} to ${f1(u.loser_projected)} the other way.</span></li>`).join('')}</ol>`
+        <span class="meta">Won ${f2(u.winner_points)} to ${f2(u.loser_points)}. ESPN had ${esc(u.loser)} ahead on paper, ${f1(u.loser_projected)} to ${f1(u.winner_projected)}.</span></li>`).join('')}</ol>`
       : '<p class="sec-sub">Nobody pulled one off. The favorites held.</p>';
     const lowList = low.length ? `<ol class="lows">${low.map((p) => `
       <li><span><b>${esc(p.name)}</b>${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="big">${f1(p.points)}</span>
