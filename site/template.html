@@ -968,6 +968,7 @@
   .tp-gm .rt b { display: block; font: 500 13px/1.3 var(--mono); color: var(--ink); }
   .tp-aw { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; line-height: 1.35; }
   .tp-aw .aw-pill { flex: none; font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; background: var(--accent-soft); }
+  .tp-aw .aw-pill.breaks, .tp-panel header .rail-pill.breaks { background: var(--lime); }
   .tp-aw .aw-pill.balls { background: var(--orange); } .tp-aw .aw-pill.flags { background: var(--pink); }
   .tp-aw a { font-weight: 800; color: var(--accent); text-decoration: none; }
   .tp-mv { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; overflow: hidden; }
@@ -1039,6 +1040,8 @@
   const coachFor = (id, next) => (coachRows(next) || []).find((a) => a.team_id === id);
   const adviceFor = (id) => coachFor(id, false);
   // A team's coach page is now a section of her profile; the league-wide grid keeps #coach.
+  // Where a to-do lives: the Lineup tab (this week) or the next-week tab.
+  const lineupUrl = (next, id) => `#team-${id}${next ? '.next' : '.lineup'}`;
   const coachUrl = (next, id) => (id ? `#team-${id}${next ? '.next' : ''}` : `#coach${next ? '-next' : ''}`);
   // Every game of the week played, so no lineup change can score another point. It
   // happens hours before ESPN calls the week final, and it's the moment this week's
@@ -1780,7 +1783,7 @@
         <div class="hub-panel">
           ${fixes.slice(0, 7).map(({ r, it }) => `
             <div class="hub-fix">
-              <a class="hub-who${r.team_id === me ? ' me' : ''}" href="${coachUrl(false, r.team_id)}">${esc(r.manager)}</a>
+              <a class="hub-who${r.team_id === me ? ' me' : ''}" href="${lineupUrl(false, r.team_id)}">${esc(r.manager)}</a>
               <div class="t">${esc(deskTitle(it.title))}<small>${ADVICE_KIND[it.kind] || ''}</small></div>
               <span class="pts${it.kind === 'swap' ? '' : ' flag'}">${it.kind === 'swap' ? `+${f1(it.gain)}` : DESK_KINDS[it.kind]}</span>
             </div>`).join('')}
@@ -2117,6 +2120,7 @@
           <span><span class="back">‹ ${esc(t.team_name)}</span><span class="nm">${esc(t.manager)}</span></span>
           <span class="rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></span>
         </a>
+        ${coachFor(id, false) ? teamSwitch(id, next) : ''}
         ${tpTabs(id, tab)}
         ${tab === 'lineup' ? thisWeekSection(id, next) : tpSeason(id, t, p)}`;
     }
@@ -2175,7 +2179,7 @@
             <div><b>${mine ? f1(mine.points) : '–'}</b><span>on the board</span></div>
             <div><b>${a.yet_to_play}</b><span>starter${a.yet_to_play === 1 ? '' : 's'} left to play</span></div>
           </div>
-          <div class="tp-note ${tone}">${tone === 'ok' ? TP_CHECK : ''}<p>${esc(a.summary)}${a.counts.now ? `<br><a href="#team-${id}.lineup">See the fixes →</a>` : ''}</p></div>
+          <div class="tp-note ${tone}">${tone === 'ok' ? TP_CHECK : ''}<p>${esc(a.summary)}${a.counts.now && a.can_change !== false ? `<br><a href="#team-${id}.lineup">See the fixes →</a>` : ''}</p></div>
           ${ahead() ? `<a class="tp-live" href="#team-${id}.next">Week ${ahead().week} is coming up. See next week →</a>` : ''}
         </div>
       </section>`;
@@ -2194,6 +2198,7 @@
 
   function tpAdvice(id) {
     const a = coachFor(id, false);
+    if (!a) return '';
     // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
     // never went through site_data(), so a baked tag would vanish on the first refresh.
     const weak = (TEAMS[id].profile || {}).weak_spot;
@@ -2248,7 +2253,7 @@
     return `
       ${mine ? `
       <section class="tp-panel" aria-labelledby="tp-ln">
-        <header><h2 id="tp-ln">Your lineup</h2><span>${f2(mine.points)} · proj ${f1(a.projected)}</span></header>
+        <header><h2 id="tp-ln">${id === myTeam.get() ? 'Your' : `${esc(t.manager)}\'s`} lineup</h2><span>${f2(mine.points)} · proj ${f1(a.projected)}</span></header>
         ${starters.map((s) => `<div class="tp-ln"><span class="slot">${esc(s.slot)}</span><b>${esc(s.name)}</b><span class="pts">${f2(s.points)}</span></div>`).join('')}
         <a class="go" href="#team-${id}.lineup">Bench and full lineup →</a>
       </section>` : ''}
@@ -2283,7 +2288,7 @@
       const last = byWeek[byWeek.length - 1];
       if (last && last.week === m.week) last.moves.push(m); else byWeek.push({ week: m.week, moves: [m] });
     }
-    // The newest week starts open, once per visit; after that the page remembers what she opened or shut.
+    // The newest week starts open, once per page load; after that the page remembers what she opened or shut.
     if (byWeek.length && !TP_SEEDED.has(id)) { TP_SEEDED.add(id); HUB_OPEN.add(`mv-${id}-${byWeek[0].week}`); }
     return `
       ${t.weekly.length ? `
@@ -2301,7 +2306,7 @@
       <section class="tp-sec">
         ${tpHead('--orange', "Coach's audit")}
         ${p.audit.length
-          ? `<p class="sec-sub">Your season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">${id === myTeam.get() ? 'Your' : `${esc(t.manager)}\'s`} season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
           : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
       </section>
 
@@ -2477,7 +2482,7 @@
     const close = pairs.filter(([a]) => a.win_probability != null)
       .sort((x, y) => Math.abs(x[0].win_probability - 0.5) - Math.abs(y[0].win_probability - 0.5))[0];
     const tile = (cls, tag, body, r) => (r
-      ? `<a class="radar-tile ${cls}" href="${coachUrl(next, r.team_id)}" data-myteam="${r.team_id}"><span class="rt-tag">${tag}</span>${body}</a>`
+      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}" data-myteam="${r.team_id}"><span class="rt-tag">${tag}</span>${body}</a>`
       : `<div class="radar-tile ${cls}"><span class="rt-tag">${tag}</span>${body}</div>`);
     return `
       <section class="radar" aria-labelledby="radar-h">
@@ -2765,7 +2770,7 @@
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
-    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(`#team-${m[2]}${m[1] ? '.next' : ''}`); return; }
+    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
     else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
