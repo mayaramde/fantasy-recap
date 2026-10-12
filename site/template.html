@@ -656,7 +656,7 @@
   .ch-pick p { margin: 0; font-size: 15px; }
   .ch-pick .profile-btn { justify-self: start; cursor: pointer; padding: 9px 16px; font-size: 14px; }
 
-  /* "Which one is you?": a modal with no way out but picking a team. Names wrap, never scroll. */
+  /* Coach's hello: a modal with no way out but picking a team. Names wrap, never scroll. */
   .pick-dialog { width: min(440px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow-y: auto; margin: auto; padding: 22px 20px 20px;
     background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 5px 5px 0 var(--accent); }
   .pick-dialog::backdrop { background: rgba(10, 20, 50, 0.6); }
@@ -2043,12 +2043,12 @@
   function heroPicker(next) {
     return `
       <section class="coach-hero ch-pick" aria-labelledby="ch-pick">
-        <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Which one is you?</h2>
-        <p>Pick your team and this spot becomes yours: your game, your odds, your to-dos.</p>
-        <button type="button" class="profile-btn" data-open-pick>Pick my team</button>
+        <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Hi, I'm Coach.</h2>
+        <p>Tell me your name and this spot becomes yours: your game, your odds, your to-dos.</p>
+        <button type="button" class="profile-btn" data-open-pick>Tell Coach your name</button>
         <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
-          <h2 id="pick-h">Which one is you?</h2>
-          <p>Tap your name once and Coach becomes your team: your game, your odds, your to-dos. No password, no judgment.</p>
+          <h2 id="pick-h">Hi, I'm Coach.</h2>
+          <p>I'm an agentic AI harness trained on your league's data, including the numbers you missed before that regrettable trade. Tell me your name and I'll give you some insight from yours truly.</p>
           <div class="pick-grid">${coachRows(next).map((a) => `
             <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
         </dialog>
@@ -2296,7 +2296,7 @@
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
-    // "Which one is you?" is a modal: it opens on its own and only a pick closes it.
+    // Coach's hello is a modal: it opens on its own and only a pick closes it.
     const pick = document.getElementById('pick-dialog');
     if (pick && !pick.open && pick.showModal) pick.showModal();
   }
@@ -2333,7 +2333,7 @@
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[data-myteam]');
     if (a) myTeam.set(Number(a.dataset.myteam));
-    // The "Which one is you?" modal: remember the pick and redraw Coach as her team.
+    // Coach's hello modal: remember the pick and redraw Coach as her team.
     const pick = e.target.closest('button[data-pick]');
     if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
     const reopen = e.target.closest('button[data-open-pick]');
