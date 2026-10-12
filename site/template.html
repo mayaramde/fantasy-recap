@@ -2050,7 +2050,7 @@
           <h2 id="pick-h">Which one is you?</h2>
           <p>Tap your name once and Coach becomes your team: your game, your odds, your to-dos. No password, no judgment.</p>
           <div class="pick-grid">${coachRows(next).map((a) => `
-            <button type="button" data-pick="${a.team_id}">${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</button>`).join('')}</div>
+            <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
         </dialog>
       </section>`;
   }
@@ -2364,7 +2364,9 @@
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
-      if (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '') {
+      // The team picker has nothing live in it; redrawing would reset its focus every minute.
+      const picking = (document.getElementById('pick-dialog') || {}).open;
+      if (!picking && (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '')) {
         // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
         const chips = document.querySelector('.hub-chips');
         const left = chips ? chips.scrollLeft : 0;
