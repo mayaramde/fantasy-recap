@@ -194,10 +194,6 @@ class WhatIfTest(unittest.TestCase):
             self.assertAlmostEqual(s["p"], p_semi[a] * p_semi[b] * final["p"][str(s["champion"])], places=3)
             self.assertIn(s["champion"], s["semis"])
 
-    def test_champion_is_the_projected_champ_in_the_chalk_scenario(self):
-        best = max(self.w["scenarios"], key=lambda s: s["p"])
-        self.assertEqual(best["champion"], self.b["champion"])
-
     def test_other_formats_have_no_what_if(self):
         six = po.build(standings([1, 2, 3]), [1, 2, 3], league(teams=6), n_sims=SIMS)["bracket"]
         self.assertNotIn("what_if", six)

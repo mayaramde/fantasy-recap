@@ -1420,7 +1420,7 @@
     const M = WI.model, on = WI.on;
     const lit = k[slot] === id, out = on && k[slot] && !lit;
     const pctTxt = p == null ? '' : `<span class="pb-pct">${est ? '~' : ''}${pct(p)}</span>`;
-    const inner = `<span class="pb-seed" aria-label="Seed ${M.seed[id]}">${M.seed[id]}</span>${on
+    const inner = `<span class="pb-seed" aria-hidden="true">${M.seed[id]}</span><span class="sr">Seed ${M.seed[id]}</span>${on
       ? `<span class="pb-name">${esc(nameOf(id))}</span>` : `<a class="pb-name" href="#team-${id}">${esc(nameOf(id))}</a>`}${pctTxt}<span class="pb-ck" aria-hidden="true">${lit ? '✓' : ''}</span>${lit && !on ? '<span class="sr">projected winner</span>' : ''}`;
     const cls = `pb-row${lit ? ' fav' : ''}${out ? ' out' : ''}${on ? ' pickable' : ''}`;
     return on ? `<button type="button" class="${cls}" data-m="${slot}" data-t="${id}" aria-pressed="${lit}">${inner}</button>` : `<div class="${cls}">${inner}</div>`;
@@ -1491,11 +1491,9 @@
     const m = {
       1: [`Pick your Week ${WI.model.B.rounds[0].week} winners (${picked}/2)`, 'Tap a team in each matchup. Once both are locked in, we move to the final.'],
       2: ['Pick the champion', both ? `This final happens in ${pct(reachP)} of scenarios. Who takes the title?` : 'Who takes the title?'],
-      3: [k.fin ? `${nameOf(k.fin)} takes the crown` : 'Pick a champion', sc ? `This exact scenario: ${sc.est ? '~' : ''}${pct(sc.p)} likely` : 'Change any round with Back or the step tabs.'],
+      3: [k.fin ? `${esc(nameOf(k.fin))} takes the crown` : 'Pick a champion', sc ? `This exact scenario: ${sc.est ? '~' : ''}${pct(sc.p)} likely` : 'Change any round with Back or the step tabs.'],
     }[WI.step];
-    return `<div class="pb-steps" role="group" aria-label="What-if steps">${steps}</div>
-      <div class="pb-msg" role="status" aria-live="polite">${m[0]}<span>${m[1]}</span></div>
-      <div class="pb-tools"><button type="button" class="pb-ghost" data-wi="back"${WI.step === 1 ? ' disabled' : ''}>← Back</button><button type="button" class="pb-ghost" data-wi="reset">Reset</button><button type="button" class="pb-ghost" data-wi="exit">Exit</button></div>`;
+    return { steps, msg: `${m[0]}<span>${m[1]}</span>`, tools: `<button type="button" class="pb-ghost" data-wi="back"${WI.step === 1 ? ' disabled' : ''}>← Back</button><button type="button" class="pb-ghost" data-wi="reset">Reset</button><button type="button" class="pb-ghost" data-wi="exit">Exit</button>` };
   }
 
   function pbDraw() {
@@ -1503,7 +1501,12 @@
     if (!root || !WI.model) return;
     root.classList.toggle('whatif', WI.on);
     document.getElementById('pb-bracket').innerHTML = pbBracketHTML();
-    if (WI.on) document.getElementById('pb-panel').innerHTML = pbPanelHTML();
+    if (WI.on) {
+      const P = pbPanelHTML();
+      document.getElementById('pb-steps').innerHTML = P.steps;
+      document.getElementById('pb-msg').innerHTML = P.msg;
+      document.getElementById('pb-tools').innerHTML = P.tools;
+    }
   }
 
   function pbAlign(instant) {
@@ -1515,7 +1518,7 @@
     WI.step = n;
     pbDraw();
     pbAlign(instant);
-    if (focus) { const b = document.querySelector('.pb-col.active button'); if (b) b.focus({ preventScroll: true }); }
+    if (focus) { const b = document.querySelector('.pb-col.active button, .pb-col.active a'); if (b) b.focus({ preventScroll: true }); }
   }
 
   /* After the second semifinal pick (or the champion pick) wait a beat so the pick registers, then pan on. */
@@ -1595,7 +1598,7 @@
             <div class="pb-promo-txt"><span class="pb-eyebrow">NEW · INTERACTIVE</span><b>What if your team pulls off the upset?</b><span class="pb-promo-sub">Pick the winner of every game and see how likely your scenario is.</span></div>
             <button type="button" class="pb-cta" data-wi="enter">⚡ Play what-if <i aria-hidden="true">→</i></button>
           </div>
-          <div class="pb-panel" id="pb-panel"></div>
+          <div class="pb-panel" id="pb-panel"><div class="pb-steps" id="pb-steps" role="group" aria-label="What-if steps"></div><div class="pb-msg" id="pb-msg" role="status" aria-live="polite"></div><div class="pb-tools" id="pb-tools"></div></div>
           <div class="pb-scroll" id="pb-scroll" tabindex="0" role="group" aria-label="Projected playoff bracket"><div class="pb-bracket" id="pb-bracket">${pbBracketHTML()}</div></div>
           <div class="pb-legend"><span class="l1">Projected winner</span><span class="l2">Win probability</span></div>
           <p class="pb-foot">🎯 = chance this exact path plays out (semifinal odds × semifinal odds × final odds, treated as independent). It runs lower than the title odds above because those count every way a team can win it, including from a different seed.${WI.model.estimated ? ' <b>~</b> = estimated: that final matchup isn\'t simulated directly, so it is inferred from the odds shown.' : ''}</p>
