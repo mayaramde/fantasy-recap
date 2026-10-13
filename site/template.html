@@ -1295,12 +1295,6 @@
     const tiebreak = cfg.tiebreaker === 'points_for' ? 'whoever has scored more points' : esc(cfg.tiebreaker.replace(/_/g, ' '));
 
     return `
-      <section>
-        <div class="po-note">
-          <p><b>How this works.</b> We played out the rest of the season ${sims} times, drawing each team's weekly score from her scoring so far (nudged toward the league average, since a few weeks is a tiny sample). ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random, since the real schedule isn\'t loaded yet.'} Ties go to ${tiebreak}. Treat the odds like a weather forecast: great for planning, terrible for trash talk.</p>
-        </div>
-      </section>
-
       ${B ? `
       <section>
         ${secHead('ball', 'Playoff picture')}
@@ -1321,7 +1315,7 @@
 
       <section>
         ${secHead('board', 'Playoff odds')}
-        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. The title still has to be won.' : `How often each team makes it, ${cfg.byes ? `earns a bye (a week off while seeds ${cfg.byes + 1} to ${cut} play Round 1), ` : ''}and wins the title, across ${sims} simulated seasons.`}</p>
+        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. The title still has to be won.' : `<b>How this works.</b> We played out the rest of the season ${sims} times, drawing each team's weekly score from her scoring so far (nudged toward the league average, since a few weeks is a tiny sample). ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random, since the real schedule isn\'t loaded yet.'} Ties go to ${tiebreak}. Treat the odds like a weather forecast: great for planning, terrible for trash talk.`}</p>
         <div class="std-card table-scroll">
           <table class="std po-odds" aria-label="Playoff odds by team">
             <thead><tr><th title="Projected final spot in the standings, which sets the bracket">Seed</th><th>Team</th><th>Makes it</th>${cfg.byes ? '<th class="r">Bye</th>' : ''}<th class="r">Title</th><th class="r" title="Expected final regular-season record">Proj. record</th><th class="r" title="Change in playoff odds since last week, in percentage points">Vs. last week</th></tr></thead>
