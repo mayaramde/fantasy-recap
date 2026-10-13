@@ -17,8 +17,9 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   none), so the Standings page's Bye column and stickers can't disagree with the bracket.
 - **Transactions** (`transactions`): lineups lock per player at his game's kickoff (the Coach page's "locked"),
   waivers with no season limit, a 1-day waiver period, waiver order reset each week to inverse standings, and
-  eliminated teams are not locked out of moves during the playoffs. Nothing computes waiver priority yet;
-  these are recorded so copy and Coach cards don't contradict them.
+  eliminated teams are not locked out of moves during the playoffs. The Coach page's waiver order is ESPN's own `waiverRank`
+  (captured as `waiver_rank`, read by `build.waiver_order` from the newest capture), since ESPN's tiebreaks aren't ours;
+  captures from before the field fall back to the standings upside down.
 
 ## Schedule
 
@@ -110,8 +111,8 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   DST and K. The ranks are season points at each lineup spot, the same ones behind the profile's Position strength
   card (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid and it
   stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
-  are no letter grades. A last **AVG** column is the mean of her seven ranks, unshaded. Under it sit two cards: **Waiver order this week** (the standings upside down, since the
-  league's waivers reset to worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
+  are no letter grades. A last **AVG** column is the mean of her seven ranks, unshaded. Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
+  worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
   `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
   the card). Each team's own week lives
   on her **team profile** (`#team-<id>`, `.lineup`, `.next` for next week, `.season`); the old `#coach-<id>` and

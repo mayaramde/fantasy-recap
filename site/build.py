@@ -1331,6 +1331,20 @@ def live_payload(facts, espn, previous=None, fp=None, history=None):
     return w
 
 
+def waiver_order(captures):
+    """Team ids in ESPN's own waiver order (first pick first), from the newest capture that has it.
+
+    ESPN resets the order after each week from its own standings and tiebreaks, which
+    aren't ours, so the site shows ESPN's rank rather than reversing its standings. Weeks
+    captured before `waiver_rank` existed don't carry it; None then means "the page falls back".
+    """
+    for cap in sorted(captures, key=lambda c: c.get("captured_at", ""), reverse=True):
+        ranks = {t["team_id"]: t.get("waiver_rank") for t in cap.get("teams", [])}
+        if ranks and all(isinstance(r, int) for r in ranks.values()):
+            return sorted(ranks, key=ranks.get)
+    return None
+
+
 def season_payload(facts_list, weeks):
     """Season-to-date stats per team, from the included weeks only."""
     teams = {t["team_id"]: {"team_id": t["team_id"], "manager": t["manager"].split(" (")[0],
@@ -1473,6 +1487,7 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, li
     year = next((f["season"] for f, _ in included if f.get("season")), LEAGUE["season"])
     schedule = load_schedule(year)
     season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, schedule)
+    season["waiver_order"] = waiver_order([e for _, e in captured] + ([ahead] if ahead else []))
     # Team profiles: the audit reads only this output's included weeks (a draft week never
     # reaches the league site); moves read every captured week, same as the Live page does.
     profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])

@@ -2857,11 +2857,13 @@
       <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>AVG is the mean of a team's seven ranks</span><span>1 is the league's best, ${n} the worst</span></p>`;
   }
 
-  /* "Waiver order this week": the league's waivers run worst record first and reset to that every
-     week (league.json: inverse_standings_weekly_reset), so it's the standings upside down. The
-     standings already break ties on points for, so reversing them keeps that tiebreak honest. */
+  /* "Waiver order this week": ESPN's own order, captured as waiver_rank (SEASON.waiver_order). ESPN
+     resets it each week to worst record first, but with its own tiebreaks, so the standings upside
+     down only stands in for captures that predate the field. */
   function waiverCard(next, me) {
-    const order = [...SEASON.standings].reverse();
+    const order = SEASON.waiver_order
+      ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean)
+      : [...SEASON.standings].reverse();
     return `
       <section class="panel" aria-labelledby="wo-h">
         <h2 id="wo-h">Waiver order this week</h2>
