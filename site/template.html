@@ -548,6 +548,115 @@
   /* phones: the team name already links to her profile, so the team-name line goes to buy room for the numbers */
   @media (max-width: 520px) { table.std.po-odds .tname { display: none; } .po-make { min-width: 110px; } }
 
+  /* ---------- playoff bracket + what-if ---------- */
+  .pb-promo { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 22px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); padding: 16px 20px; margin: 0 0 26px; }
+  .pb-promo-txt { display: flex; flex-direction: column; flex: 1; min-width: 230px; }
+  .pb-eyebrow { align-self: flex-start; background: var(--board); color: var(--lime); font: 600 11px/1 var(--script); letter-spacing: 0.12em; padding: 5px 10px; border-radius: 999px; margin-bottom: 8px; }
+  .pb-promo-txt b { font: 800 30px/1.05 var(--display); }
+  .pb-promo-sub { font-size: 14px; font-weight: 500; margin-top: 5px; }
+  .pb-cta { background: var(--board); color: var(--lime); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 4px 4px 0 var(--card); padding: 14px 24px; font: 700 18px/1.1 var(--body); white-space: nowrap; cursor: pointer; }
+  .pb-cta i { font-style: normal; display: inline-block; margin-left: 6px; }
+  .pb-cta:hover { transform: translate(-1px, -2px); box-shadow: 6px 6px 0 var(--card); }
+  .pb-cta:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--card); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pb-cta { animation: pb-nudge 2.4s ease-in-out infinite; transition: box-shadow 0.1s; }
+    .pb-cta:hover, .pb-cta:active { animation: none; }
+    .pb-cta i { transition: transform 0.15s; }
+    .pb-cta:hover i { transform: translateX(5px); }
+    .pb-card.pulse, .pb-champ-card.pulse { animation: pb-pop 0.35s ease; }
+    .pb-tag.odds { animation: pb-stick 0.4s cubic-bezier(0.3, 1.6, 0.5, 1); }
+    .pb-bar i { transition: width 0.3s; }
+    .pb-col { transition: opacity 0.35s; }
+  }
+  @keyframes pb-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes pb-pop { 0% { transform: scale(0.96); } 60% { transform: scale(1.02); } 100% { transform: scale(1); } }
+  @keyframes pb-stick { 0% { transform: rotate(3deg) scale(0.4); opacity: 0; } 100% { transform: rotate(3deg) scale(1); opacity: 1; } }
+
+  .pb-panel { display: none; flex-wrap: wrap; align-items: center; gap: 12px 20px; background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); padding: 12px 16px; margin: 0 0 22px; }
+  .pb-root.whatif .pb-panel { display: flex; }
+  .pb-root.whatif .pb-promo, .pb-root.whatif .pb-intro, .pb-root.whatif .pb-legend { display: none; }
+  .pb-steps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pb-dot { display: flex; align-items: center; gap: 8px; background: none; border: 0; padding: 2px; color: var(--muted); font: 700 13px/1 var(--body); cursor: pointer; border-radius: 999px; }
+  .pb-dot b { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--edge); display: grid; place-items: center; background: var(--card); color: var(--ink); font-size: 13px; }
+  .pb-dot.cur { color: var(--ink); }
+  .pb-dot.cur b { background: var(--board); color: var(--on-board); }
+  .pb-dot.done b { background: var(--lime); color: var(--on-pop); }
+  .pb-dot:disabled { cursor: default; opacity: 0.5; }
+  .pb-sep { width: 20px; height: 3px; background: var(--rule); border-radius: 3px; }
+  .pb-msg { flex: 1; min-width: 200px; font-weight: 700; font-size: 15px; }
+  .pb-msg span { display: block; font-weight: 500; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .pb-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pb-ghost { background: var(--card); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 7px 13px; font: 700 13px/1 var(--body); cursor: pointer; }
+  .pb-ghost:hover:not(:disabled) { background: var(--lime); color: var(--on-pop); }
+  .pb-ghost:disabled { opacity: 0.35; cursor: default; }
+
+  .pb-scroll { overflow-x: auto; padding: 8px 8px 28px; margin: 0 -8px; }
+  .pb-bracket { display: flex; align-items: flex-start; min-width: 860px; position: relative; }
+  .pb-col { flex: none; }
+  .pb-col h3 { height: 30px; margin: 0; font: 600 12.5px/16px var(--script); letter-spacing: 0.02em; color: var(--muted); text-transform: uppercase; }
+  .pb-col.semis, .pb-col.final { width: 280px; }
+  .pb-col.champ { width: 224px; }
+  .pb-col.final .pb-card { margin-top: 86px; }
+  .pb-col.champ .pb-champ-card { margin-top: 64px; }
+  .pb-stack { display: flex; flex-direction: column; gap: 40px; }
+  .pb-card { position: relative; height: 132px; background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); padding: 8px; display: flex; flex-direction: column; justify-content: space-between; }
+  .pb-row { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 10px; border-radius: 10px; font: 700 17px/1 var(--body); color: var(--ink); width: 100%; text-align: left; background: transparent; border: 2px solid transparent; }
+  .pb-seed { width: 26px; height: 26px; border-radius: 50%; background: var(--board); color: var(--on-board); font: 800 14px/1 var(--display); display: grid; place-items: center; flex: none; }
+  .pb-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; color: inherit; }
+  a.pb-name:hover { color: var(--accent); text-decoration: underline; }
+  .pb-pct { font: 500 14px/1 var(--mono); color: var(--muted); }
+  .pb-ck { width: 20px; height: 20px; flex: none; border-radius: 50%; font: 700 11px/1 var(--body); display: grid; place-items: center; }
+  .pb-row.fav { background: var(--lime); color: var(--on-pop); }
+  .pb-row.fav a.pb-name:hover { color: var(--on-pop); }
+  .pb-row.fav .pb-pct { color: var(--on-pop); font-weight: 600; }
+  .pb-row.fav .pb-ck { border: 2px solid var(--edge); background: var(--card); color: var(--ink); }
+  .pb-row.out { opacity: 0.45; }
+  .pb-row.tbd { justify-content: center; color: var(--muted); font-weight: 500; font-size: 15px; font-style: italic; }
+  .pb-row.pickable { cursor: pointer; border: 2px dashed var(--rule); }
+  .pb-row.pickable.fav { border: 2px solid transparent; }
+  .pb-row.pickable:not(.fav):hover { border-color: var(--edge); background: var(--bg); }
+  .pb-bar { height: 8px; border-radius: 8px; border: 1.5px solid var(--edge); background: var(--accent-soft); overflow: hidden; margin: 0 4px 2px; }
+  .pb-bar i { display: block; height: 100%; background: var(--accent); }
+  .pb-conn { flex: none; width: 52px; margin-top: 30px; }
+  .pb-conn svg { display: block; overflow: visible; stroke: var(--edge); }
+  .pb-conn path { transition: stroke 0.2s; }
+  .pb-conn path.on { stroke: var(--accent); }
+  .pb-champ-card { position: relative; height: 176px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); padding: 18px; display: flex; flex-direction: column; justify-content: center; }
+  .pb-champ-card.empty { background: var(--card); color: var(--muted); border-style: dashed; box-shadow: none; }
+  .pb-champ-card .n { font: 800 44px/1 var(--display); overflow-wrap: anywhere; }
+  .pb-champ-card .n a { color: inherit; text-decoration: none; }
+  .pb-champ-card .n a:hover { text-decoration: underline; }
+  .pb-champ-card .t { font-size: 14px; font-weight: 600; margin-top: 6px; line-height: 1.35; }
+  .pb-tag { position: absolute; top: -16px; left: 14px; background: var(--card); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 12px; font: 600 13px/1.1 var(--script); transform: rotate(-3deg); white-space: nowrap; }
+  .pb-tag.odds { top: auto; left: auto; bottom: -15px; right: 12px; transform: rotate(3deg); background: var(--board); color: var(--lime); font: 500 12px/1.1 var(--mono); box-shadow: 2px 2px 0 var(--lime); }
+  .pb-tag.odds b { font-size: 15px; color: var(--on-board); font-weight: 700; }
+  .pb-legend { margin: 8px 0 0; font-size: 13px; color: var(--muted); display: flex; gap: 18px; flex-wrap: wrap; }
+  .pb-legend span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 4px; border: 2px solid var(--edge); margin-right: 6px; vertical-align: -2px; }
+  .pb-legend .l1::before { background: var(--lime); }
+  .pb-legend .l2::before { background: var(--accent); }
+  .pb-foot { margin: 6px 0 0; max-width: 62ch; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+  /* what-if: focus mode, one round per screen, panned sideways */
+  .pb-root.whatif .pb-scroll { overflow-x: hidden; padding: 8px 0 28px; margin: 0; }
+  .pb-root.whatif .pb-bracket { min-width: 0; }
+  .pb-root.whatif .pb-conn { display: none; }
+  .pb-root.whatif .pb-col { width: 100%; flex: 0 0 100%; display: flex; flex-direction: column; align-items: center; padding: 0 8px; opacity: 0.35; pointer-events: none; }
+  .pb-root.whatif .pb-col.active { opacity: 1; pointer-events: auto; }
+  .pb-root.whatif .pb-col > * { width: min(420px, 100%); }
+  .pb-root.whatif .pb-col h3 { text-align: center; }
+  .pb-root.whatif .pb-col.final .pb-card, .pb-root.whatif .pb-col.champ .pb-champ-card { margin-top: 0; }
+  .pb-root.whatif .pb-card { height: 140px; }
+  .pb-root.whatif .pb-stack { gap: 28px; }
+  @media (max-width: 600px) {
+    .pb-promo { padding: 16px; }
+    .pb-promo-txt b { font-size: 25px; }
+    .pb-cta { width: 100%; font-size: 17px; }
+    .pb-sep { display: none; }
+    .pb-dot { font-size: 12px; }
+    .pb-tools { width: 100%; }
+    .pb-tools .pb-ghost { flex: 1; }
+  }
+
   /* a share bar: cobalt fill on a soft track, the number always printed beside it */
   .po-bar { display: block; height: 10px; border-radius: 999px; background: var(--accent-soft); border: 1.5px solid var(--edge); overflow: hidden; }
   .po-bar > span { display: block; height: 100%; background: var(--accent); }
@@ -1277,6 +1386,187 @@
 
   const weeksLabel = (r) => (r.weeks > 1 ? `Weeks ${r.week} ${r.weeks === 2 ? 'and' : 'to'} ${r.week + r.weeks - 1}` : `Week ${r.week}`);
 
+  /* ---------- playoff bracket + what-if ----------
+     The chalk bracket and the what-if mode share one renderer. What-if keeps its picks in WI and redraws
+     only the bracket and the control panel, so the scroller (and its scroll position) outlives every pick.
+     Odds come from SEASON.playoffs.bracket.what_if (site/playoffs.py), never from numbers in this file. */
+  const WI = { on: false, step: 1, pick: { sf1: null, sf2: null, fin: null }, timer: 0, model: null };
+  const noMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function wiModel(B) {
+    const W = B && B.what_if;
+    if (!W || !B.rounds || B.rounds.length !== 2 || B.rounds[0].games.length !== 2) return null;
+    const seed = {}, pSemi = {};
+    W.semis.forEach((g) => g.teams.forEach((t) => { seed[t.team_id] = t.seed; pSemi[t.team_id] = t.p; }));
+    const chalk = { sf1: B.rounds[0].games[0].favorite, sf2: B.rounds[0].games[1].favorite, fin: B.champion };
+    return {
+      B, W, seed, pSemi, chalk, semis: B.rounds[0].games.map((g, k) => W.semis[k].teams),
+      estimated: W.finals.some((f) => f.est) || W.scenarios.some((x) => x.est),
+      finalOf: (a, b) => W.finals.find((f) => f.teams.includes(a) && f.teams.includes(b)),
+      scenario: (a, b, c) => W.scenarios.find((x) => x.semis[0] === a && x.semis[1] === b && x.champion === c),
+    };
+  }
+
+  const wiPicks = () => (WI.on ? WI.pick : WI.model.chalk);
+  const wiBoth = () => !!(WI.pick.sf1 && WI.pick.sf2);
+  const wiScenario = (k) => (k.sf1 && k.sf2 && k.fin ? WI.model.scenario(k.sf1, k.sf2, k.fin) : null);
+  const wiReach = (k) => { const sc = k.sf1 && k.sf2 ? WI.model.W.scenarios.find((x) => x.semis[0] === k.sf1 && x.semis[1] === k.sf2) : null; return sc ? sc.reach : null; };
+
+  /* One team row. Static: a link to her profile, lime for the favorite. What-if: a real button, lime for
+     the pick. `slot` is the pick it belongs to (sf1, sf2 or fin). */
+  function pbRow(slot, id, p, est, k) {
+    const M = WI.model, on = WI.on;
+    const lit = k[slot] === id, out = on && k[slot] && !lit;
+    const pctTxt = p == null ? '' : `<span class="pb-pct">${est ? '~' : ''}${pct(p)}</span>`;
+    const inner = `<span class="pb-seed" aria-hidden="true">${M.seed[id]}</span><span class="sr">Seed ${M.seed[id]}</span>${on
+      ? `<span class="pb-name">${esc(nameOf(id))}</span>` : `<a class="pb-name" href="#team-${id}">${esc(nameOf(id))}</a>`}${pctTxt}<span class="pb-ck" aria-hidden="true">${lit ? '✓' : ''}</span>${lit && !on ? '<span class="sr">projected winner</span>' : ''}`;
+    const cls = `pb-row${lit ? ' fav' : ''}${out ? ' out' : ''}${on ? ' pickable' : ''}`;
+    return on ? `<button type="button" class="${cls}" data-m="${slot}" data-t="${id}" aria-pressed="${lit}">${inner}</button>` : `<div class="${cls}">${inner}</div>`;
+  }
+
+  function pbSemi(k, slot) {
+    const teams = WI.model.semis[slot === 'sf1' ? 0 : 1];
+    const top = Math.max(...teams.map((t) => t.p));
+    return `<div class="pb-card${WI.on && k[slot] ? ' pulse' : ''}">${teams.map((t) => pbRow(slot, t.team_id, t.p, false, k)).join('')}
+      <div class="pb-bar"><i style="width:${(top * 100).toFixed(1)}%"></i></div></div>`;
+  }
+
+  function pbFinal(k) {
+    const M = WI.model;
+    if (WI.on && !(k.sf1 && k.sf2)) return '<div class="pb-card"><div class="pb-row tbd">Waiting on semifinal picks…</div></div>';
+    const [a, b] = [k.sf1, k.sf2].sort((x, y) => M.seed[x] - M.seed[y]);
+    const f = M.finalOf(a, b);
+    const top = Math.max(f.p[a], f.p[b]);
+    const reach = wiReach(k);
+    const sticker = WI.on && reach != null ? `<span class="pb-tag odds">🎯 <b>${pct(reach)}</b> this final happens</span>` : '';
+    return `<div class="pb-card">${[a, b].map((t) => pbRow('fin', t, f.p[t], f.est, k)).join('')}
+      <div class="pb-bar"><i style="width:${(top * 100).toFixed(1)}%"></i></div>${sticker}</div>`;
+  }
+
+  function pbChamp(k, byId) {
+    const M = WI.model;
+    if (WI.on && !k.fin) return '<div class="pb-champ-card empty"><span class="pb-tag">🏆 Champion</span><div class="n">?</div><div class="t">Pick the championship winner</div></div>';
+    const sc = wiScenario(k);
+    const chalk = ['sf1', 'sf2', 'fin'].every((x) => k[x] === M.chalk[x]);
+    const sticker = sc ? `<span class="pb-tag odds">🎯 <b>${sc.est ? '~' : ''}${pct(sc.p)}</b> scenario odds</span>` : '';
+    return `<div class="pb-champ-card${WI.on ? ' pulse' : ''}"><span class="pb-tag">🏆 ${chalk ? 'Projected champ' : 'Your champ'}</span>
+      <div class="n"><a href="#team-${k.fin}">${esc(nameOf(k.fin))}</a></div>
+      <div class="t">${chalk ? `Wins it all in <b>${pct(byId[k.fin].title)}</b> of simulated seasons` : 'Not the projected path'}</div>${sticker}</div>`;
+  }
+
+  function pbConn(kind, k) {
+    const attrs = 'width="52" height="304" viewBox="0 0 52 304" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+    return kind === 'a'
+      ? `<div class="pb-conn"><svg ${attrs}><path class="${k.sf1 ? 'on' : ''}" d="M0 66 H26 V152 H52"/><path class="${k.sf2 ? 'on' : ''}" d="M0 238 H26 V152"/></svg></div>`
+      : `<div class="pb-conn"><svg ${attrs}><path class="${k.fin ? 'on' : ''}" d="M0 152 H52"/></svg></div>`;
+  }
+
+  function pbBracketHTML() {
+    const M = WI.model, k = wiPicks(), B = M.B;
+    const byId = Object.fromEntries(SEASON.playoffs.teams.map((t) => [t.team_id, t]));
+    const act = (n) => (WI.on && WI.step === n ? ' active' : '');
+    const inert = (n) => (WI.on && WI.step !== n ? ' inert aria-hidden="true"' : '');
+    const [r0, r1] = B.rounds;
+    return `
+      <div class="pb-col semis${act(1)}" data-step="1"${inert(1)}><h3>Semifinals · ${weeksLabel(r0)}</h3><div class="pb-stack">${pbSemi(k, 'sf1')}${pbSemi(k, 'sf2')}</div></div>
+      ${pbConn('a', k)}
+      <div class="pb-col final${act(2)}" data-step="2"${inert(2)}><h3>Championship · ${weeksLabel(r1)}</h3>${pbFinal(k)}</div>
+      ${pbConn('b', k)}
+      <div class="pb-col champ${act(3)}" data-step="3"${inert(3)}><h3>${WI.on ? 'Champion' : 'Projected champ'}</h3>${pbChamp(k, byId)}</div>`;
+  }
+
+  function pbPanelHTML() {
+    const k = WI.pick, both = wiBoth();
+    const reach = { 1: true, 2: both, 3: !!k.fin };
+    const names = { 1: 'Semifinals', 2: 'Championship', 3: 'Champion' };
+    const steps = [1, 2, 3].map((n) => {
+      const done = (n === 1 && both) || (n >= 2 && k.fin);
+      const mark = done && WI.step !== n;
+      return `${n > 1 ? '<i class="pb-sep"></i>' : ''}<button type="button" class="pb-dot${WI.step === n ? ' cur' : ''}${mark ? ' done' : ''}" data-wi="go" data-go="${n}"${WI.step === n ? ' aria-current="step"' : ''}${reach[n] ? '' : ' disabled'}><b>${mark ? '✓' : n}</b>${names[n]}</button>`;
+    }).join('');
+    const picked = ['sf1', 'sf2'].filter((x) => k[x]).length;
+    const sc = wiScenario(k), reachP = wiReach(k);
+    const m = {
+      1: [`Pick your Week ${WI.model.B.rounds[0].week} winners (${picked}/2)`, 'Tap a team in each matchup. Once both are locked in, we move to the final.'],
+      2: ['Pick the champion', both ? `This final happens in ${pct(reachP)} of scenarios. Who takes the title?` : 'Who takes the title?'],
+      3: [k.fin ? `${esc(nameOf(k.fin))} takes the crown` : 'Pick a champion', sc ? `This exact scenario: ${sc.est ? '~' : ''}${pct(sc.p)} likely` : 'Change any round with Back or the step tabs.'],
+    }[WI.step];
+    return { steps, msg: `${m[0]}<span>${m[1]}</span>`, tools: `<button type="button" class="pb-ghost" data-wi="back"${WI.step === 1 ? ' disabled' : ''}>← Back</button><button type="button" class="pb-ghost" data-wi="reset">Reset</button><button type="button" class="pb-ghost" data-wi="exit">Exit</button>` };
+  }
+
+  function pbDraw() {
+    const root = document.getElementById('pb-root');
+    if (!root || !WI.model) return;
+    root.classList.toggle('whatif', WI.on);
+    document.getElementById('pb-bracket').innerHTML = pbBracketHTML();
+    if (WI.on) {
+      const P = pbPanelHTML();
+      document.getElementById('pb-steps').innerHTML = P.steps;
+      document.getElementById('pb-msg').innerHTML = P.msg;
+      document.getElementById('pb-tools').innerHTML = P.tools;
+    }
+  }
+
+  function pbAlign(instant) {
+    const sc = document.getElementById('pb-scroll'), col = sc && sc.querySelector(`.pb-col[data-step="${WI.on ? WI.step : 1}"]`);
+    if (sc && col) sc.scrollTo({ left: WI.on ? col.offsetLeft : 0, behavior: instant || noMotion() ? 'auto' : 'smooth' });
+  }
+
+  function pbGo(n, instant, focus) {
+    WI.step = n;
+    pbDraw();
+    pbAlign(instant);
+    if (focus) { const b = document.querySelector('.pb-col.active button, .pb-col.active a'); if (b) b.focus({ preventScroll: true }); }
+  }
+
+  /* After the second semifinal pick (or the champion pick) wait a beat so the pick registers, then pan on. */
+  function pbAdvance(to) {
+    clearTimeout(WI.timer);
+    WI.timer = setTimeout(() => {
+      const ready = to === 2 ? wiBoth() && WI.step === 1 : !!WI.pick.fin && WI.step === 2;
+      if (WI.on && ready) pbGo(to, false, true);
+    }, 500);
+  }
+
+  function pbAction(btn) {
+    const a = btn.dataset.wi;
+    clearTimeout(WI.timer);
+    if (a === 'enter') {
+      WI.on = true; WI.pick = { sf1: null, sf2: null, fin: null };
+      pbGo(1, true, true);
+      const top = document.getElementById('pb-root');
+      if (top) top.scrollIntoView({ behavior: noMotion() ? 'auto' : 'smooth', block: 'start' });
+    } else if (a === 'exit') {
+      WI.on = false; WI.step = 1; WI.pick = { sf1: null, sf2: null, fin: null };
+      pbDraw(); pbAlign(true);
+      const again = document.querySelector('[data-wi="enter"]'); if (again) again.focus({ preventScroll: true });
+    } else if (a === 'reset') {
+      WI.pick = { sf1: null, sf2: null, fin: null }; pbGo(1, false, true);
+    } else if (a === 'back') {
+      if (WI.step > 1) pbGo(WI.step - 1, false, true);
+    } else if (a === 'go') {
+      pbGo(Number(btn.dataset.go), false, true);
+    }
+  }
+
+  function pbPick(btn) {
+    const slot = btn.dataset.m, id = Number(btn.dataset.t), k = WI.pick;
+    k[slot] = id;
+    if (slot !== 'fin' && k.fin && ![k.sf1, k.sf2].includes(k.fin)) k.fin = null;
+    pbDraw();
+    const again = document.querySelector(`.pb-row[data-m="${slot}"][data-t="${id}"]`); if (again) again.focus({ preventScroll: true });
+    if (slot === 'fin') pbAdvance(3); else if (wiBoth()) pbAdvance(2);
+  }
+
+  $('#main').addEventListener('click', (e) => {
+    if (!WI.on && !e.target.closest('[data-wi="enter"]')) return;
+    const act = e.target.closest('button[data-wi]');
+    if (act && !act.disabled) return pbAction(act);
+    const row = e.target.closest('button.pb-row[data-m]');
+    if (row && WI.on) pbPick(row);
+  });
+  window.addEventListener('resize', () => { if (WI.on) pbAlign(true); });
+
   function playoffPicture() {
     const P = SEASON.playoffs;
     if (!P || !P.teams || !P.teams.length) return '';
@@ -1287,6 +1577,9 @@
     const B = P.bracket;
     const byId = Object.fromEntries(P.teams.map((t) => [t.team_id, t]));
     const champ = B ? byId[B.champion] : null;
+    // Drawing the page starts the bracket over: what-if is a visit, not a saved setting.
+    clearTimeout(WI.timer);
+    Object.assign(WI, { on: false, step: 1, pick: { sf1: null, sf2: null, fin: null }, model: wiModel(B) });
     const shade = (p) => (p > 0 ? `background: color-mix(in srgb, var(--heat-hi) ${(6 + p * 50).toFixed(0)}%, var(--card))` : '');
     const seeds = Array.from({ length: n }, (_, k) => k + 1);
     const sims = Number(P.sims).toLocaleString('en-US');
@@ -1297,13 +1590,25 @@
       <section>
         ${secHead('ball', 'Playoff picture')}
         <p class="sec-sub full">Top ${cfg.teams} make the playoffs${cfg.byes ? `, top ${cfg.byes} get a bye (a week off)` : ', no byes (a bye is a week off)'}, starting Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round.' : 'The bracket stays put.'}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder to settle final placing.' : ''}</p>
-        <p class="sec-sub">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
+        ${WI.model ? `
+        <div class="pb-root" id="pb-root">
+          <p class="sec-sub pb-intro">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
+          <div class="pb-promo">
+            <div class="pb-promo-txt"><span class="pb-eyebrow">NEW · INTERACTIVE</span><b>What if your team pulls off the upset?</b><span class="pb-promo-sub">Pick the winner of every game and see how likely your scenario is.</span></div>
+            <button type="button" class="pb-cta" data-wi="enter">⚡ Play what-if <i aria-hidden="true">→</i></button>
+          </div>
+          <div class="pb-panel" id="pb-panel"><div class="pb-steps" id="pb-steps" role="group" aria-label="What-if steps"></div><div class="pb-msg" id="pb-msg" role="status" aria-live="polite"></div><div class="pb-tools" id="pb-tools"></div></div>
+          <div class="pb-scroll" id="pb-scroll" tabindex="0" role="group" aria-label="Projected playoff bracket"><div class="pb-bracket" id="pb-bracket">${pbBracketHTML()}</div></div>
+          <div class="pb-legend"><span class="l1">Projected winner</span><span class="l2">Win probability</span></div>
+          <p class="pb-foot">🎯 = chance this exact path plays out (semifinal odds × semifinal odds × final odds, treated as independent). It runs lower than the title odds above because those count every way a team can win it, including from a different seed.${WI.model.estimated ? ' <b>~</b> = estimated: that final matchup isn\'t simulated directly, so it is inferred from the odds shown.' : ''}</p>
+        </div>` : `
+        <p class="sec-sub pb-intro">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
         <div class="bracket" role="group" aria-label="Projected playoff bracket" style="--br-cols: ${B.rounds.length}">${B.rounds.slice(0, -1).map((r, k, early) => `
           <div class="br-col"><h3>${k === early.length - 1 ? 'Semifinals' : `Round ${k + 1}`} · ${weeksLabel(r)}</h3>${r.games.map(bracketGame).join('')}</div>`).join('')}
           <div class="br-col"><h3>Championship · ${weeksLabel(B.rounds[B.rounds.length - 1])}</h3>${bracketGame(B.final)}
             <div class="br-champ"><span class="badge-tilt">Projected champ</span><span class="br-champ-name"><a href="#team-${B.champion}">${esc(nameOf(B.champion))}</a></span><span class="sub">Wins it all in ${pct(champ.title)} of simulated seasons</span></div>
           </div>
-        </div>
+        </div>`}
       </section>` : ''}
 
       <section>

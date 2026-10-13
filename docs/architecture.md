@@ -175,6 +175,11 @@ the luck report.
 - Labels come from the odds alone (Near lock, Bye race, Comfortable, Bubble, Long shot, Near out), and In/Out only once
   no regular-season games are left. A simulation proves nothing mathematically, so no label ever claims a clinch.
 - The section is skipped without odds; the projected bracket only renders for 6 teams with 2 byes.
+- **What-if mode** (four-team, no-reseed format only): `bracket.what_if` carries every semifinal winner probability,
+  all four possible finals, and the eight scenarios (`P = P(semi 1) × P(semi 2) × P(final)`, treated as independent;
+  they sum to 1). Final odds come from the same Gaussian `win_prob()` as the chalk bracket, so none are estimated
+  (`est: false`; the page prints a "~" and a footnote line only if a future source sets it). A scenario's odds run
+  lower than the champion's title odds because title odds also count other seeds. Other formats keep the plain bracket.
 
 ## Team profile
 

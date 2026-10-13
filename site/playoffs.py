@@ -276,7 +276,48 @@ def _projected_bracket(ranked, cfg, mu, sigma):
             {"teams": [{"seed": s, "team_id": ranked[s - 1]} for s in (a, b)],
              "favorite": ranked[w - 1], "win_prob": round(probs[(a, b)], 3)} for a, b, _, w in games]})
         week += weeks
-    return {"rounds": rounds, "final": rounds[-1]["games"][0], "champion": ranked[champ - 1]}
+    out = {"rounds": rounds, "final": rounds[-1]["games"][0], "champion": ranked[champ - 1]}
+    what_if = _what_if(ranked, cfg, mu, sigma)
+    if what_if:
+        out["what_if"] = what_if
+    return out
+
+
+def _what_if(ranked, cfg, mu, sigma):
+    """Every path through a four-team bracket (two semifinals, then a final), for the page's what-if mode.
+
+    The model that draws the chalk bracket answers every other pairing too: win_prob() is exact for any
+    two teams, so each possible final carries its own probabilities and `est` is False. (`est` stays in
+    the payload so a rougher source can flag itself and the page will print the "~".)
+
+    A scenario is one winner per semifinal plus a champion: P = P(semi 1) * P(semi 2) * P(final),
+    treating the three games as independent. The eight scenarios cover every outcome, so they sum to 1.
+    Returns None for any other format (byes, six teams, a reseed), where the page keeps the plain bracket."""
+    if min(cfg["teams"], len(ranked)) != 4 or cfg["reseed"]:
+        return None
+
+    def beats(a, b, weeks):
+        return win_prob(weeks * mu[a], weeks * mu[b], sigma * math.sqrt(weeks))
+
+    semis, p_semi, seed_of = [], {}, {}
+    for sa, sb in ((1, 4), (2, 3)):
+        a, b = ranked[sa - 1], ranked[sb - 1]
+        pa = beats(a, b, 1)
+        p_semi.update({a: pa, b: 1 - pa})
+        seed_of.update({a: sa, b: sb})
+        semis.append({"teams": [{"team_id": a, "seed": sa, "p": round(pa, 4)},
+                                {"team_id": b, "seed": sb, "p": round(1 - pa, 4)}]})
+    finals, scenarios = [], []
+    for x in semis[0]["teams"]:
+        for y in semis[1]["teams"]:
+            a, b = sorted((x["team_id"], y["team_id"]), key=seed_of.get)
+            pa = beats(a, b, cfg["championship_weeks"])
+            finals.append({"teams": [a, b], "p": {str(a): round(pa, 4), str(b): round(1 - pa, 4)}, "est": False})
+            reach = p_semi[a] * p_semi[b]
+            for champ, pf in ((a, pa), (b, 1 - pa)):
+                scenarios.append({"semis": [x["team_id"], y["team_id"]], "champion": champ,
+                                  "reach": round(reach, 4), "p": round(reach * pf, 6), "est": False})
+    return {"semis": semis, "finals": finals, "scenarios": scenarios}
 
 
 def build(standings, weeks_played, league, schedule=None, n_sims=8000):
