@@ -326,8 +326,9 @@
   .hub-day { font: 600 11.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 12px 0 4px; margin: 0; }
   .hub-ev { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
   .hub-ev:last-child { border-bottom: none; }
-  .hub-ev .ic { width: 26px; height: 26px; border: 2px solid var(--edge); border-radius: 8px; font: 700 14px/22px var(--mono); text-align: center; background: var(--lime); color: var(--on-pop); }
-  .hub-ev .ic.trade { background: var(--orange); } .hub-ev .ic.lineup { background: var(--accent-soft); color: var(--ink); } .hub-ev .ic.drop { background: var(--pink-soft); color: var(--ink); }
+  .hub-ev .ic { width: 26px; height: 26px; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 2px solid var(--edge); border-radius: 8px; background: var(--lime); color: var(--on-pop); }
+  .hub-ev .ic svg { width: 14px; height: 14px; display: block; }
+  .hub-ev .ic.trade { background: var(--orange); } .hub-ev .ic.swap { background: var(--accent-soft); color: var(--ink); } .hub-ev .ic.drop { background: var(--pink-soft); color: var(--ink); }
   .hub-ev .how { color: var(--muted); }
   .hub-news { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
   .hub-news a { padding: 14px 16px; display: grid; gap: 8px; align-content: start; text-decoration: none; }
@@ -1847,10 +1848,15 @@
       .slice(0, WIRE_MAX - Math.min(WIRE_LINEUPS, lineupRows.length));
     const shown = [...realRows, ...lineupRows.slice(0, WIRE_MAX - realRows.length)].sort(newest);
     const list = (xs) => xs.map(esc).join(', ');
+    const wireIcon = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+    const IC_ADD = wireIcon('<path d="M12 5v14M5 12h14"/>');
+    const IC_DROP = wireIcon('<path d="M5 12h14"/>');
+    const IC_TRADE = wireIcon('<path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/>');
+    const IC_LINEUP = wireIcon('<path d="M8 20V5M4 9l4-4 4 4M16 4v15M12 15l4 4 4-4"/>');
     const line = (e) => {
-      if (e.kind === 'trade') return `<span class="ic trade" aria-hidden="true">⇄</span><span><b>${esc(e.manager)}</b> and <b>${esc(e.with)}</b> made a trade. ${esc(e.manager)} gets ${list(e.added).replace(/\.$/, '')}. ${esc(e.with)} gets ${list(e.dropped).replace(/\.$/, '')}.</span>`;
-      if (e.kind === 'lineup') return `<span class="ic lineup" aria-hidden="true">↕</span><span><b>${esc(e.manager)}</b> set her lineup${e.promoted.size ? ` <span class="how">· ${e.promoted.size} ${e.promoted.size === 1 ? 'player' : 'players'} moved in off the bench</span>` : ''}</span>`;
-      return `<span class="ic${e.added.length ? '' : ' drop'}" aria-hidden="true">${e.added.length ? '+' : '−'}</span><span><b>${esc(e.manager)}</b> ${[e.added.length ? `added ${list(e.added)}` : '', e.dropped.length ? `dropped ${list(e.dropped)}` : ''].filter(Boolean).join(', ')}${e.waiver ? ' <span class="how">· off waivers</span>' : ''}</span>`;
+      if (e.kind === 'trade') return `<span class="ic trade" aria-hidden="true">${IC_TRADE}</span><span><b>${esc(e.manager)}</b> and <b>${esc(e.with)}</b> made a trade. ${esc(e.manager)} gets ${list(e.added).replace(/\.$/, '')}. ${esc(e.with)} gets ${list(e.dropped).replace(/\.$/, '')}.</span>`;
+      if (e.kind === 'lineup') return `<span class="ic swap" aria-hidden="true">${IC_LINEUP}</span><span><b>${esc(e.manager)}</b> set her lineup${e.promoted.size ? ` <span class="how">· ${e.promoted.size} ${e.promoted.size === 1 ? 'player' : 'players'} moved in off the bench</span>` : ''}</span>`;
+      return `<span class="ic${e.added.length ? '' : ' drop'}" aria-hidden="true">${e.added.length ? IC_ADD : IC_DROP}</span><span><b>${esc(e.manager)}</b> ${[e.added.length ? `added ${list(e.added)}` : '', e.dropped.length ? `dropped ${list(e.dropped)}` : ''].filter(Boolean).join(', ')}${e.waiver ? ' <span class="how">· off waivers</span>' : ''}</span>`;
     };
     let last = '';
     const feed = shown.map((e) => {
