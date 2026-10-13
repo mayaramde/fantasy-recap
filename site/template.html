@@ -566,9 +566,6 @@
   .po-heat td.cell { min-width: 52px; }
   .po-heat .po-sep { width: 6px; padding: 0; border-bottom-color: transparent;
     background: repeating-linear-gradient(to bottom, var(--accent) 0 6px, transparent 6px 11px) center / 2px 100% no-repeat; }
-  .po-note { background: var(--card); border: 2px dashed var(--edge); border-radius: 14px; padding: 12px 16px; font-size: 14px; max-width: 70ch; }
-  .po-note p { margin: 0; }
-  .po-note p + p { margin-top: 6px; }
 
   .leaders { list-style: none; margin: 0; padding: 0; display: grid; }
   .leaders li { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; padding: 10px 0; border-bottom: 2px dashed var(--rule); }
@@ -1299,6 +1296,7 @@
       ${B ? `
       <section>
         ${secHead('ball', 'Playoff picture')}
+        <p class="sec-sub full">Top ${cfg.teams} make the playoffs${cfg.byes ? `, top ${cfg.byes} get a bye (a week off)` : ', no byes (a bye is a week off)'}, starting Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round.' : 'The bracket stays put.'}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder to settle final placing.' : ''}</p>
         <p class="sec-sub">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
         <div class="bracket" role="group" aria-label="Projected playoff bracket" style="--br-cols: ${B.rounds.length}">${B.rounds.slice(0, -1).map((r, k, early) => `
           <div class="br-col"><h3>${k === early.length - 1 ? 'Semifinals' : `Round ${k + 1}`} · ${weeksLabel(r)}</h3>${r.games.map(bracketGame).join('')}</div>`).join('')}
@@ -1307,12 +1305,6 @@
           </div>
         </div>
       </section>` : ''}
-
-      <section>
-        <div class="po-note">
-          <p>Top ${cfg.teams} make the playoffs${cfg.byes ? `, top ${cfg.byes} get a bye (a week off)` : ', no byes (a bye is a week off)'}, starting Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round.' : 'The bracket stays put.'}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder to settle final placing.' : ''}</p>
-        </div>
-      </section>
 
       <section>
         ${secHead('board', 'Playoff odds')}
