@@ -1295,6 +1295,13 @@
     const tiebreak = cfg.tiebreaker === 'points_for' ? 'whoever has scored more points' : esc(cfg.tiebreaker.replace(/_/g, ' '));
 
     return `
+      <section>
+        <div class="po-note">
+          <p><b>How this works.</b> We played out the rest of the season ${sims} times, drawing each team's weekly score from her scoring so far (nudged toward the league average, since a few weeks is a tiny sample). ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random, since the real schedule isn\'t loaded yet.'} Ties go to ${tiebreak}. Treat the odds like a weather forecast: great for planning, terrible for trash talk.</p>
+          <p>Top ${cfg.teams} make the playoffs${cfg.byes ? `, top ${cfg.byes} get a bye (a week off)` : ', no byes (a bye is a week off)'}, starting Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round.' : 'The bracket stays put.'}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder to settle final placing.' : ''}</p>
+        </div>
+      </section>
+
       ${B ? `
       <section>
         ${secHead('ball', 'Playoff picture')}
@@ -1342,13 +1349,6 @@
             </tbody>
           </table>
           <div class="heat-legend"><span>Never</span><span class="ramp" aria-hidden="true"></span><span>Often</span></div>
-        </div>
-      </section>
-
-      <section>
-        <div class="po-note">
-          <p><b>How this works.</b> We played out the rest of the season ${sims} times. Each team's weekly score is drawn from her scoring so far, nudged toward the league average because a few weeks is a tiny sample. ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random each week, since the real schedule isn\'t loaded yet.'} Ties in the standings go to ${tiebreak}. Treat these odds like a weather forecast: great for planning, terrible for trash talk.</p>
-          <p>The format: the top ${cfg.teams} make the playoffs${cfg.byes ? `, and the top ${cfg.byes} get a bye (a week off while the others play)` : ', and nobody gets a bye (a week off while the others play)'}. The playoffs start Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round, so the best seed left always plays the worst one left.' : "The bracket stays put, so nobody's matchup gets reshuffled."}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder, games that settle final placing.' : ''}</p>
         </div>
       </section>`;
   }
