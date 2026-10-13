@@ -155,6 +155,50 @@ class BracketTest(unittest.TestCase):
                 self.assertLessEqual(g["win_prob"], 1)
 
 
+class WhatIfTest(unittest.TestCase):
+    """The what-if mode's data: every semifinal and final path, priced by the same model as the chalk bracket."""
+    @classmethod
+    def setUpClass(cls):
+        cls.r = po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, n_sims=SIMS)
+        cls.b = cls.r["bracket"]
+        cls.w = cls.b["what_if"]
+
+    def test_eight_scenarios_cover_every_outcome(self):
+        self.assertEqual(len(self.w["scenarios"]), 8)
+        self.assertEqual(len({(tuple(s["semis"]), s["champion"]) for s in self.w["scenarios"]}), 8)
+        self.assertAlmostEqual(sum(s["p"] for s in self.w["scenarios"]), 1, places=4)
+
+    def test_four_possible_finals_each_sum_to_one(self):
+        self.assertEqual(len(self.w["finals"]), 4)
+        for f in self.w["finals"]:
+            self.assertAlmostEqual(sum(f["p"].values()), 1, places=3)
+            self.assertFalse(f["est"])
+
+    def test_semis_are_one_v_four_and_two_v_three(self):
+        self.assertEqual([[t["seed"] for t in g["teams"]] for g in self.w["semis"]], [[1, 4], [2, 3]])
+        for g in self.w["semis"]:
+            self.assertAlmostEqual(sum(t["p"] for t in g["teams"]), 1, places=3)
+
+    def test_chalk_path_matches_the_chalk_bracket(self):
+        semi_favs = [g["favorite"] for g in self.b["rounds"][0]["games"]]
+        chalk = next(s for s in self.w["scenarios"] if s["semis"] == semi_favs and s["champion"] == self.b["champion"])
+        win = lambda g: g["win_prob"]  # noqa: E731
+        expected = win(self.b["rounds"][0]["games"][0]) * win(self.b["rounds"][0]["games"][1]) * win(self.b["final"])
+        self.assertAlmostEqual(chalk["p"], expected, places=2)
+
+    def test_scenario_is_semis_times_final(self):
+        p_semi = {t["team_id"]: t["p"] for g in self.w["semis"] for t in g["teams"]}
+        for s in self.w["scenarios"]:
+            a, b = s["semis"]
+            final = next(f for f in self.w["finals"] if sorted(f["teams"]) == sorted(s["semis"]))
+            self.assertAlmostEqual(s["p"], p_semi[a] * p_semi[b] * final["p"][str(s["champion"])], places=3)
+            self.assertIn(s["champion"], s["semis"])
+
+    def test_other_formats_have_no_what_if(self):
+        six = po.build(standings([1, 2, 3]), [1, 2, 3], league(teams=6), n_sims=SIMS)["bracket"]
+        self.assertNotIn("what_if", six)
+
+
 class SixTeamBracketTest(unittest.TestCase):
     """A six-team, two-bye field still works, so a format change is a league.json edit."""
     @classmethod
