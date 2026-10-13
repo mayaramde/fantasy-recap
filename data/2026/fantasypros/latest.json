@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T06:08:37Z",
+  "generated_at": "2026-10-13T04:28:35Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "weeks": {},
@@ -110,7 +110,15 @@
       "pos:WR3:DST8": {
         "title": "Receivers solid, defense is the drag",
         "text": "Your receivers rank near the top of the league and your defense sits dead last. Defense is the cheapest, easiest upgrade on the waiver wire."
+      },
+      "proj:over:4239993:15847": {
+        "title": "Higgins picking up the slack Kelce left behind",
+        "text": "Tee Higgins keeps beating his projection while Travis Kelce keeps coming up short of his. Father Time remains undefeated."
       }
     }
+  },
+  "fantasypros": {
+    "reached": true,
+    "checked_at": "2026-10-13T04:28:35Z"
   }
 }
