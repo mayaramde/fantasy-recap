@@ -188,6 +188,7 @@
   .sec-head .more { font-size: 13.5px; font-weight: 700; color: var(--accent); text-decoration: none; white-space: nowrap; }
   .sec-head .more:hover { text-decoration: underline; }
   .sec-sub { margin: 0 0 16px; color: var(--muted); font-size: 13.5px; max-width: 70ch; }
+  .sec-sub.full { max-width: none; }
   .marker { width: 20px; height: 22px; flex: none; border: 2px solid var(--edge); }
   .marker.flag { background: var(--pink); border: none; clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); }
   .marker.ball { background: var(--orange); border-radius: 50% / 38%; transform: rotate(-30deg); width: 24px; height: 15px; }
@@ -1315,7 +1316,7 @@
 
       <section>
         ${secHead('board', 'Playoff odds')}
-        <p class="sec-sub">${done ? 'The regular season is over, so the field is set. The title still has to be won.' : `<b>How this works.</b> We played out the rest of the season ${sims} times, drawing each team's weekly score from her scoring so far (nudged toward the league average, since a few weeks is a tiny sample). ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random, since the real schedule isn\'t loaded yet.'} Ties go to ${tiebreak}. Treat the odds like a weather forecast: great for planning, terrible for trash talk.`}</p>
+        <p class="sec-sub full">${done ? 'The regular season is over, so the field is set. The title still has to be won.' : `<b>How this works.</b> We played out the rest of the season ${sims} times, drawing each team's weekly score from her scoring so far (nudged toward the league average, since a few weeks is a tiny sample). ${P.real_schedule ? 'Matchups follow the real schedule.' : 'Opponents are random, since the real schedule isn\'t loaded yet.'} Ties go to ${tiebreak}. Treat the odds like a weather forecast: great for planning, terrible for trash talk.`}</p>
         <div class="std-card table-scroll">
           <table class="std po-odds" aria-label="Playoff odds by team">
             <thead><tr><th title="Projected final spot in the standings, which sets the bracket">Seed</th><th>Team</th><th>Makes it</th>${cfg.byes ? '<th class="r">Bye</th>' : ''}<th class="r">Title</th><th class="r" title="Expected final regular-season record">Proj. record</th><th class="r" title="Change in playoff odds since last week, in percentage points">Vs. last week</th></tr></thead>
