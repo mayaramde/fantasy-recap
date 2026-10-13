@@ -216,6 +216,7 @@ const teams = (teamsRes.teams || []).map((t) => ({
   ties: t.record?.overall?.ties ?? 0,
   points_for: round2(t.record?.overall?.pointsFor ?? 0),
   points_against: round2(t.record?.overall?.pointsAgainst ?? 0),
+  waiver_rank: t.waiverRank ?? null,
 }));
 
 const capture = {
@@ -301,6 +302,7 @@ const teams = (teamsRes.teams || []).map((t) => ({
   ties: t.record?.overall?.ties ?? 0,
   points_for: round2(t.record?.overall?.pointsFor ?? 0),
   points_against: round2(t.record?.overall?.pointsAgainst ?? 0),
+  waiver_rank: t.waiverRank ?? null,
 }));
 
 const capture = {

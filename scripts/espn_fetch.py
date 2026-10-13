@@ -227,7 +227,8 @@ def fetch_week(week):
               "losses": (t.get("record") or {}).get("overall", {}).get("losses") or 0,
               "ties": (t.get("record") or {}).get("overall", {}).get("ties") or 0,
               "points_for": round2((t.get("record") or {}).get("overall", {}).get("pointsFor") or 0),
-              "points_against": round2((t.get("record") or {}).get("overall", {}).get("pointsAgainst") or 0)}
+              "points_against": round2((t.get("record") or {}).get("overall", {}).get("pointsAgainst") or 0),
+              "waiver_rank": t.get("waiverRank")}
              for t in teams_res.get("teams") or []]
 
     status = status_res.get("status") or {}
@@ -268,7 +269,7 @@ SHAPE = {
     "complete": "bool",
     "matchups": [{"id": "int", "winner": "str", "home": _SIDE, "away": _SIDE}],
     "teams": [{"team_id": "int", "wins": "int", "losses": "int", "ties": "int",
-               "points_for": "num", "points_against": "num"}],
+               "points_for": "num", "points_against": "num", "waiver_rank?": "int?"}],
     "transactions": [{"type": "str", "team_id": "int", "date": "str", "bid": "num",
                       "items": [_ITEM]}],
 }
