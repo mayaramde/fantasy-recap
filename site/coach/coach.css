@@ -38,6 +38,10 @@
   .cl-top { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
   @media (min-width: 900px) { .cl-top { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: stretch; } }
   .cl-take { background: var(--board); color: #f4f6ff; border: 2px solid var(--edge); border-radius: 20px; box-shadow: 6px 6px 0 var(--accent); padding: 28px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  /* The recap hero's background: a faint dot grid and a cobalt glow in the top-right corner. */
+  .cl-take { position: relative; overflow: hidden; isolation: isolate; }
+  .cl-take::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; z-index: -2; }
+  .cl-take::after { content: ""; position: absolute; right: -60px; top: -80px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; z-index: -1; }
   .cl-take-label { font: 500 13px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--lime); }
   .cl-take h2 { margin: 0; font: 900 clamp(46px, 8vw, 68px)/0.95 var(--display); color: #fff; text-wrap: balance; }
   .cl-take p { margin: 0; max-width: 560px; font-size: 18px; line-height: 1.45; color: #c4cbee; }
