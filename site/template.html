@@ -858,6 +858,9 @@
   .awc-sub { margin: 0; max-width: 64ch; color: var(--muted); font-size: 14.5px; }
   .awc-grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
   @container (min-width: 560px) { .awc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* exactly three cards share one row once there is room; they run taller instead of wrapping to a lone fourth-row card */
+  @container (min-width: 760px) { .awc-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .awc-grid .awc-body { flex: 1; }
   .awc { background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); overflow: hidden; display: flex; flex-direction: column; }
   .awc.balls { --k: var(--orange); --s: var(--orange-soft); }
   .awc.flags { --k: var(--pink); --s: var(--pink-soft); }
@@ -2485,7 +2488,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const me = myTeam.get();
     const rows = cards.map((c, i) => [c, i, !!me && teamIdByManager[c.manager] === me]);
     rows.sort((a, b) => b[2] - a[2] || a[1] - b[1]);
-    return `<div class="awc-grid">${rows.map(([c, i, mine]) => awardCard(c, kind, i, mine)).join('')}</div>`;
+    return `<div class="awc-grid${cards.length === 3 ? ' n3' : ''}">${rows.map(([c, i, mine]) => awardCard(c, kind, i, mine)).join('')}</div>`;
   };
   // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
   // so its filter chips can hide them.
