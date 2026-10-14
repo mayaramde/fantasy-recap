@@ -279,5 +279,98 @@ class HubPayloadTest(unittest.TestCase):
             self.assertEqual(it["stat"], f"+{it['gain']:.1f} projected")
 
 
+class HubLineupRowTest(unittest.TestCase):
+    """The starter rows behind the Week hub's "Full lineups": who he is, where he plays, when, and whether
+    he can play at all. Built from the newest committed capture turned into the week after it, with a few
+    players edited to be the case under test."""
+    KICKOFF = "2026-10-18T17:00:00Z"
+
+    @classmethod
+    def setUpClass(cls):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        sys.path.insert(0, str(ROOT / "tests"))
+        import analyze
+        import hub_preview
+        cls.analyze, cls.hub_preview = analyze, hub_preview
+        _, captured, _, _, _ = build.load_inputs(build.LEAGUE["season"])
+        cls.history = [e for _, e in captured]
+
+    def week(self, edit=None, states=True, live=True):
+        """The hub's rows for every starter, keyed by player id (by name on a finished week, whose rows
+        carry no id). `edit(p)` may change a captured player."""
+        nxt = self.hub_preview.upcoming(self.history[-1])
+        for m in nxt["matchups"]:
+            for s in ("home", "away"):
+                for p in m[s]["lineup"]:
+                    p["kickoff"] = self.KICKOFF
+                    p.pop("injury_status", None)
+                    if not states:
+                        p.pop("game_state", None)
+                        p.pop("kickoff", None)
+                    if edit:
+                        edit(p)
+        facts = self.analyze.analyze(nxt, self.history + [nxt])
+        w = build.week_payload(facts, {"status": "live"}, live=live)
+        return {p.get("player_id") or p["name"]: p for g in w["games"] for s in (g["winner"], g["loser"]) for p in s["starters"]}
+
+    def starter(self, rows, pos=None):
+        return next(p for p in rows.values() if p["slot"] != "BENCH" and (pos is None or p["pos"] == pos))
+
+    def dst_id(self):
+        nxt = self.hub_preview.upcoming(self.history[-1])
+        return next(p["player_id"] for m in nxt["matchups"] for s in ("home", "away") for p in m[s]["lineup"]
+                    if p["pos"] == "DST" and p["slot"] != "BENCH")
+
+    def test_a_starter_on_a_bye_is_flagged_and_has_no_kickoff(self):
+        dst = self.dst_id()
+        rows = self.week(lambda p: p.update(game_state=None, kickoff=None) if p["player_id"] == dst else None)
+        d = rows[dst]
+        self.assertIs(d["bye"], True)
+        self.assertIsNone(d["kickoff"])
+        # A D/ST gets his team from the pro team id: a logo and an abbreviation, never a headshot
+        self.assertRegex(d["team"], r"^[A-Z]{2,3}$")
+        self.assertTrue(d["logo"].endswith(f"/{d['team'].lower()}.png"))
+        self.assertEqual(d["player_id"], dst)
+
+    def test_a_healthy_starter_has_everything_and_no_flags(self):
+        p = self.starter(self.week(), "WR")
+        self.assertTrue(all(p.get(k) for k in ("player_id", "team", "logo")))
+        self.assertEqual(p["kickoff"], self.KICKOFF)
+        self.assertNotIn("bye", p)
+        self.assertNotIn("injury", p)
+        self.assertNotIn("playing", p)
+
+    def test_an_injured_starter_carries_his_designation_and_is_not_on_a_bye(self):
+        pid = self.starter(self.week(), "WR")["player_id"]
+        rows = self.week(lambda p: p.update(injury_status="QUESTIONABLE") if p["player_id"] == pid else None)
+        self.assertEqual(rows[pid]["injury"], "Questionable")
+        self.assertNotIn("bye", rows[pid])
+        self.assertEqual(rows[pid]["kickoff"], self.KICKOFF)
+
+    def test_a_capture_with_no_game_states_has_no_byes_and_no_injuries(self):
+        """Unknown stays unknown: without the NFL scoreboard nobody is on a bye, and with no
+        injury_status in the capture nobody is hurt, and nobody is called healthy either."""
+        rows = self.week(states=False)
+        self.assertTrue(rows)
+        for p in rows.values():
+            self.assertNotIn("bye", p)
+            self.assertNotIn("injury", p)
+            self.assertNotIn("playing", p)
+            self.assertIsNone(p["kickoff"])
+            self.assertTrue(p["team"] and p["logo"] and p["player_id"])
+
+    def test_a_finished_week_gains_no_live_fields(self):
+        dst = self.dst_id()
+        rows = self.week(lambda p: p.update(game_state=None) if p["player_id"] == dst else None, live=False)
+        for p in rows.values():
+            for k in ("bye", "playing", "team", "logo", "player_id", "kickoff"):
+                self.assertNotIn(k, p)
+
+    def test_one_definition_of_a_bye(self):
+        """The hub row and the Coach card read the same rule."""
+        src = (ROOT / "site" / "build.py").read_text()
+        self.assertEqual(src.count("game_state\") is None"), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

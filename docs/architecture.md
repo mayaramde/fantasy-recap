@@ -73,6 +73,14 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   summing both starters), the ranked projections, the stickers and **Coach's desk** (every team's "do this now"
   swaps, byes, outs and empty slots, biggest projected gain first; a swap card carries its `gain` as a number
   for this).
+- **Lineup rows** (`player()` in `site/build.py`, built on the live week by `/api/live` and the build alike): each
+  starter in "Full lineups" carries `player_id` (ESPN's player id, the headshot's key), `team` (NFL abbreviation),
+  `logo`, `kickoff` and, when it applies, `injury` and `bye: true`. A D/ST has no headshot, so its `team` and
+  `logo` come from its pro team id like everyone else's. Each is whatever ESPN gave: the scoreboard is best effort,
+  so a capture without game states has no `kickoff` and no `bye`, and one without `injury_status` has no `injury`.
+  Absent means unknown, never "healthy" or "has a game". `bye` uses the Coach cards' own rule (`is_on_bye`: game
+  states are known and he has no game), so a bye starter has `bye: true` and no `kickoff`. `playing` is still
+  present only while his game is on. Recapped (finished) weeks keep the plain rows without any of these.
 - **League wire** (`wire()` in `site/build.py`, part of `live_payload`, so `/api/live` refreshes it too): the
   last seven days of ESPN's transaction log from the live capture and the ones before it. Pickups and drops,
   lineup changes (with the players promoted off the bench, counted once each per day) and trades. ESPN records that a trade went
