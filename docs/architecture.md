@@ -90,13 +90,20 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   of the same model, with the same optional `schedule.json`). Only for the next unplayed
   regular-season week (an unrecapped earlier week, or a playoff week, means no stakes), and a side with under
   100 simulated seasons behind it reports nothing. Games are ranked by the two teams' swings added together.
-- **ESPN on your rosters** (`live.hub.news`, baked): `scripts/fetch_news.py` runs in the live-update workflow
-  before the build and writes `data/<season>/news/latest.json`, never committed. It keeps an article only if it
-  tags four or fewer players, at least one on a league roster, and nothing in the headline or description reads
-  as off-field. The build re-matches each article against the live rosters, shows the newest six as a headline
-  linking out to ESPN (the link must be `https://www.espn.com/...`), and ignores a file over 36 hours old. Since
-  it only refreshes on a deploy, midweek headlines are up to a day old. Off switch: the repo variable
-  `NEWS_ENABLED=false` skips the fetch.
+- **Ticker and Latest news** (`live.hub.news` and `news_at`, baked): `scripts/fetch_news.py` runs in the live-update
+  workflow before the build and writes `data/<season>/news/latest.json`, never committed. It keeps an article only if
+  it tags four or fewer players, at least one on a league roster, and nothing in the headline or description reads
+  as off-field, plus its tag and ESPN-CDN photo. The build (`news_items`) re-matches each article against the live
+  rosters and keeps up to twelve in ESPN's order, each with its owners and the rostered players (name, position,
+  NFL team, headshot). The link must be `https://www.espn.com/...` and the photo `https://a.espncdn.com/...`. The
+  browser ranks them: the viewer's team first, then injuries, then ESPN's order. The viewer is the team Coach
+  already remembers in `localStorage` (`ffg-coach-team`); with none there are no highlights. The ticker (a bar under
+  the nav on This week only, drawn outside `#main` so a live refresh doesn't restart its scroll) shows the first
+  twelve; Latest news sits at the bottom with team chips, a lead card and a grid. A file over 36 hours old is
+  ignored, and a fetch that fails or finds nothing hides both quietly. Since it only refreshes on a deploy,
+  midweek headlines are up to a day old. Off switch: the repo variable `NEWS_ENABLED=false` skips the fetch.
+- **Phone tabs** (620px and under): the bottom of This week becomes a tab switch (Latest news, League wire,
+  Projected) over the same sections the desktop draws. Local state, not persisted, and it never refetches.
 - **After the last game**: the final scores and stickers as before, plus the wire and the headlines. No
   stakes, edge strip or Coach's desk for a week nobody can change.
 - A module with nothing to show is left out, never drawn empty.

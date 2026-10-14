@@ -19,8 +19,8 @@ import build  # noqa: E402
 NAME = {t["team_id"]: t["manager"].split(" (")[0] for t in build.LEAGUE["teams"]}
 
 
-def player(pid, name, slot="BENCH"):
-    return {"player_id": pid, "name": name, "slot": slot}
+def player(pid, name, slot="BENCH", pos="WR", pro_team_id=2):
+    return {"player_id": pid, "name": name, "slot": slot, "pos": pos, "pro_team_id": pro_team_id}
 
 
 def capture(week, rosters, transactions=(), captured_at="2026-10-07T12:00:00.000Z"):
@@ -163,10 +163,25 @@ def article(**over):
 
 class NewsTest(unittest.TestCase):
     def test_tags_the_owner_and_the_player(self):
-        got = build.news_items([article()], BEFORE)
-        self.assertEqual(got, [{"headline": "Ann Alpha is a must-start", "link": "https://www.espn.com/nfl/story/_/id/1/x",
-                                "published": "2026-10-06T12:00:00Z", "owners": [{"team_id": 3, "manager": NAME[3]}],
-                                "players": ["Ann Alpha"]}])
+        got = build.news_items([article(tag="Injury", image="https://a.espncdn.com/photo/x.jpg")], BEFORE)
+        self.assertEqual(got, [{"headline": "Ann Alpha is a must-start", "url": "https://www.espn.com/nfl/story/_/id/1/x",
+                                "date": "2026-10-06T12:00:00Z", "tag": "Injury",
+                                "image": "https://a.espncdn.com/photo/x.jpg",
+                                "owners": [{"team_id": 3, "manager": NAME[3]}],
+                                "players": [{"name": "Ann Alpha", "pos": "WR", "team": "BUF",
+                                             "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/1.png"}]}])
+
+    def test_a_dst_gets_its_team_logo_and_no_image_means_no_key(self):
+        cap = capture(3, {3: [player(7, "Bills D/ST", pos="DST")], 4: []})
+        got = build.news_items([article(athlete_ids=[7])], cap)
+        self.assertEqual(got[0]["players"][0]["headshot"], "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png")
+        self.assertNotIn("image", got[0])
+        self.assertEqual(got[0]["tag"], "Team news")      # an untagged or unknown tag falls back to the plain one
+
+    def test_two_owners_and_only_rostered_players(self):
+        got = build.news_items([article(athlete_ids=[1, 3, 999])], BEFORE)
+        self.assertEqual([o["team_id"] for o in got[0]["owners"]], [3, 4])
+        self.assertEqual([p["name"] for p in got[0]["players"]], ["Ann Alpha", "Cy Charlie"])
 
     def test_nobody_on_a_roster_is_dropped(self):
         self.assertEqual(build.news_items([article(athlete_ids=[999])], BEFORE), [])
@@ -175,14 +190,18 @@ class NewsTest(unittest.TestCase):
         for link in ("http://www.espn.com/x", "https://evil.example/x", "javascript:alert(1)", "https://www.espn.com/a b", None):
             self.assertEqual(build.news_items([article(link=link)], BEFORE), [], link)
 
+    def test_only_espn_cdn_images_reach_the_page(self):
+        for image in ("https://evil.example/x.jpg", "javascript:alert(1)", "http://a.espncdn.com/x.jpg", 5):
+            self.assertNotIn("image", build.news_items([article(image=image)], BEFORE)[0], image)
+
     def test_malformed_rows_are_skipped_not_fatal(self):
         rows = [article(published="yesterday"), article(headline=None), {"id": 2}, article(athlete_ids=None), article()]
         self.assertEqual(len(build.news_items(rows, BEFORE)), 1)
 
-    def test_newest_six(self):
-        rows = [article(id=i, published=f"2026-10-06T{i:02d}:00:00Z") for i in range(1, 10)]
+    def test_espn_order_is_kept_and_capped(self):
+        rows = [article(id=i, headline=f"Story {i}") for i in range(1, 20)]
         got = build.news_items(rows, BEFORE)
-        self.assertEqual([n["published"][11:13] for n in got], ["09", "08", "07", "06", "05", "04"])
+        self.assertEqual([n["headline"] for n in got], [f"Story {i}" for i in range(1, 13)])
 
 
 class LoadNewsTest(unittest.TestCase):
@@ -200,15 +219,17 @@ class LoadNewsTest(unittest.TestCase):
         return (datetime.now(timezone.utc) - timedelta(hours=hours_ago)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     def test_fresh_file(self):
-        self.assertEqual(self.load({"fetched_at": self.stamp(1), "articles": [article(), "junk"]}), [article()])
+        at = self.stamp(1)
+        self.assertEqual(self.load({"fetched_at": at, "articles": [article(), "junk"]}),
+                         {"fetched_at": at, "articles": [article()]})
 
     def test_missing_stale_and_malformed_are_empty(self):
-        self.assertEqual(self.load(None), [])
-        self.assertEqual(self.load({"fetched_at": self.stamp(37), "articles": [article()]}), [])
-        self.assertEqual(self.load("{not json"), [])
-        self.assertEqual(self.load({"articles": [article()]}), [])
-        self.assertEqual(self.load({"fetched_at": self.stamp(1), "articles": None}), [])
-        self.assertEqual(self.load([1, 2]), [])
+        self.assertEqual(self.load(None), {})
+        self.assertEqual(self.load({"fetched_at": self.stamp(37), "articles": [article()]}), {})
+        self.assertEqual(self.load("{not json"), {})
+        self.assertEqual(self.load({"articles": [article()]}), {})
+        self.assertEqual(self.load({"fetched_at": self.stamp(1), "articles": None}), {})
+        self.assertEqual(self.load([1, 2]), {})
 
 
 class HubPayloadTest(unittest.TestCase):
@@ -224,21 +245,23 @@ class HubPayloadTest(unittest.TestCase):
         return {"week": 4, "complete": False, "kicked_off": False, "games": self.games, **over}
 
     def test_stakes_before_kickoff(self):
-        hub = build.hub_payload(self.live(), self.season, BEFORE, [])
+        hub = build.hub_payload(self.live(), self.season, BEFORE, {})
         self.assertEqual(hub["stakes"]["week"], 4)
         self.assertEqual(sorted(g["key"] for g in hub["stakes"]["games"]), ["1-8", "2-7", "3-6", "4-5"])
         self.assertNotIn("news", hub)
 
     def test_no_stakes_once_it_starts_or_ends(self):
-        self.assertEqual(build.hub_payload(self.live(kicked_off=True), self.season, BEFORE, []), {})
-        self.assertEqual(build.hub_payload(self.live(complete=True), self.season, BEFORE, []), {})
+        self.assertEqual(build.hub_payload(self.live(kicked_off=True), self.season, BEFORE, {}), {})
+        self.assertEqual(build.hub_payload(self.live(complete=True), self.season, BEFORE, {}), {})
 
     def test_no_stakes_when_an_earlier_week_has_no_recap(self):
-        self.assertEqual(build.hub_payload(self.live(week=5), self.season, BEFORE, []), {})
+        self.assertEqual(build.hub_payload(self.live(week=5), self.season, BEFORE, {}), {})
 
     def test_news_rides_along_in_either_state(self):
-        hub = build.hub_payload(self.live(complete=True), self.season, BEFORE, [article()])
-        self.assertEqual(list(hub), ["news"])
+        hub = build.hub_payload(self.live(complete=True), self.season, BEFORE,
+                                {"fetched_at": "2026-10-06T13:00:00Z", "articles": [article()]})
+        self.assertEqual(list(hub), ["news", "news_at"])
+        self.assertEqual(hub["news_at"], "2026-10-06T13:00:00Z")
 
     def test_swap_cards_carry_a_number_to_sort_on(self):
         """Coach's desk sorts on `gain`; it has to be the number behind the card's own stat pill."""

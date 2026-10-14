@@ -24,13 +24,17 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import analyze  # noqa: E402
 import build  # noqa: E402
 
+PHOTO = "https://a.espncdn.com/photo/2026/1014/r1730452_600x400_3-2.jpg"
+# (headline, tag, has a photo, how many players it tags). Players are dealt out from the rosters in order,
+# so the stories land on different teams; the last teams get nothing, which is what the empty state is for.
 SAMPLE_NEWS = [
-    {"headline": "Sample headline about a player on a roster", "link": "https://www.espn.com/nfl/story/_/id/1/sample",
-     "published": "2026-10-06T15:00:00Z"},
-    {"headline": "A second sample headline, this one long enough to wrap onto another line on a phone",
-     "link": "https://www.espn.com/nfl/story/_/id/2/sample", "published": "2026-10-06T12:00:00Z"},
-    {"headline": "Third sample headline", "link": "https://www.espn.com/nfl/story/_/id/3/sample",
-     "published": "2026-10-05T18:00:00Z"},
+    ("Sample injury headline: starter is questionable and might not play Sunday", "Injury", True, 1),
+    ("A second sample headline, this one long enough to wrap onto another line on a phone", "Team news", True, 2),
+    ("Sample feature: why one offense keeps stalling on third down", "Feature", False, 1),
+    ("Third sample headline", "Team news", False, 1),
+    ("Fourth sample headline about a quarterback", "Team news", True, 1),
+    ("Sample injury headline: a running back is out for the season", "Injury", False, 1),
+    ("Sixth sample feature about the rookies", "Feature", True, 2),
 ]
 
 
@@ -53,8 +57,12 @@ def main(out):
     recap_weeks, captured, _, fp, _ = build.load_inputs(build.LEAGUE["season"])
     history = [e for _, e in captured]
     players = [p for m in history[-1]["matchups"] for s in ("home", "away") for p in m[s]["lineup"][:1]]
-    news = [{**n, "athlete_ids": [players[i * 3]["player_id"], players[i * 3 + 1]["player_id"]][: 1 + i % 2]}
-            for i, n in enumerate(SAMPLE_NEWS)]
+    news = {"fetched_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "articles": [
+        {"id": i, "headline": h, "link": f"https://www.espn.com/nfl/story/_/id/{i}/sample", "tag": tag,
+         "published": f"2026-10-{14 - i % 5:02d}T15:00:00Z",
+         "athlete_ids": [players[(i * 2 + k) % len(players)]["player_id"] for k in range(n)],
+         **({"image": PHOTO} if photo else {})}
+        for i, (h, tag, photo, n) in enumerate(SAMPLE_NEWS, 1)]}
 
     nxt = upcoming(history[-1])
     before = captured + [(analyze.analyze(nxt, history + [nxt]), nxt)]
