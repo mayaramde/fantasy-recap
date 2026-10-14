@@ -291,7 +291,7 @@ function coachLanding(next, rows, me) {
 /* The one-line note under the week toggle: what this tab is built from, and what it leaves out. */
 function clWeekNote(next, rows) {
   const injuryKnown = rows.some((r) => r.injuries_known);
-  if (!next) return `Week ${LIVE.week} is live: ESPN's current lineups and projected points, the injury report and the last seven days of pickups.`;
+  if (!next) return '';   // this week needs no explaining; only Next week says what it leaves out
   const a = ahead();
   return a.projected
     ? `Week ${a.week} is projected: ESPN's projected points, byes${injuryKnown ? ' and injury report' : ''} as of ${updated(a.captured_at)}. No pickups or waiver order until the week starts.`
