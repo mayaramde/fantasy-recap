@@ -102,6 +102,8 @@
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--ink); font: 400 15.5px/1.55 var(--body); padding-inline: 16px; padding-block: 0 56px; }
   .wrap { max-width: 1000px; margin: 0 auto; }
+  /* flow-root: the phone header's compensating margin must not collapse into the page's first margin */
+  body > .wrap { display: flow-root; }
   h1, h2, h3 { text-wrap: balance; margin: 0; }
   a { color: inherit; }
   .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
@@ -122,15 +124,77 @@
 
   /* ---------- site header ---------- */
   .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-inline: -16px; padding-inline: 16px; border-bottom: 2px solid var(--edge); }
-  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 12px; }
+  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 12px; max-width: 1160px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .flag-mark { width: 24px; height: 28px; flex: none; background: var(--pink); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); transform: rotate(-8deg); filter: drop-shadow(2px 2px 0 var(--drop)); }
   .brand-name { font: 800 24px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
   .brand-script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 9px; margin-left: 6px; display: inline-block; transform: rotate(-4deg); vertical-align: 3px; }
-  nav.site-nav { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; padding: 2px 4px 4px 2px; }
-  nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 13px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
+  nav.site-nav { display: flex; gap: 2px; overflow-x: auto; max-width: 100%; margin-left: auto; padding: 2px 4px 4px 2px; }
+  nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 11px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
   nav.site-nav a:hover { border-color: var(--edge); }
   nav.site-nav a[aria-current="page"] { background: var(--accent); color: var(--on-accent); border-color: var(--edge); box-shadow: 2px 2px 0 var(--drop); }
+
+  /* ---------- "Viewing as": whose eyes the site is wearing ----------
+     Orange means "you" everywhere. The chip glows on purpose, all the time, so nobody forgets
+     which view they're in; people who ask for less motion get a steady glow instead. */
+  .va { position: relative; }
+  .va-btn { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; color: var(--ink); background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 999px;
+    padding: 5px 12px 5px 9px; font: 700 13px/1.2 var(--body); white-space: nowrap; box-shadow: 2px 2px 0 var(--drop); animation: glow 2.2s ease-in-out infinite; }
+  @keyframes glow {
+    0%, 100% { box-shadow: 2px 2px 0 var(--drop), 0 0 0 0 rgba(255, 122, 26, 0), 0 0 10px 2px rgba(255, 122, 26, 0.45); }
+    50% { box-shadow: 2px 2px 0 var(--drop), 0 0 0 6px rgba(255, 122, 26, 0.2), 0 0 24px 7px rgba(255, 122, 26, 0.7); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .va-btn { animation: none; box-shadow: 2px 2px 0 var(--drop), 0 0 16px 4px rgba(255, 122, 26, 0.55); }
+  }
+  .va-btn .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); border: 2px solid var(--edge); }
+  .va-btn .ini { display: none; }
+  .va-btn small { font: 500 10px/1 var(--mono); color: var(--muted); }
+  .va-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: 260px; max-width: calc(100vw - 32px); background: var(--card); color: var(--ink);
+    border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); padding: 8px; }
+  .va-menu[hidden] { display: none; }
+  .va-menu h2 { margin: 4px 8px 6px; font: 500 10px/1.2 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .va-menu .it { display: flex; width: 100%; align-items: center; gap: 8px; padding: 8px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; text-decoration: none; font: 600 14px/1.2 var(--body); }
+  .va-menu .it:hover, .va-menu .it:focus-visible { background: var(--accent-soft); }
+  .va-menu .it .ck { width: 16px; flex: none; color: var(--accent); font-weight: 800; }
+  .va-menu .it .rec { margin-left: auto; font: 500 11px/1 var(--mono); color: var(--muted); }
+  .va-menu hr { border: 0; border-top: 2px dotted var(--rule); margin: 6px 4px; }
+  .va-menu .it.open-team { justify-content: space-between; margin-bottom: 4px; background: var(--lime-soft); border: 2px solid var(--edge); }
+  .va-menu .it.open-team:hover, .va-menu .it.open-team:focus-visible { background: var(--lime); color: var(--on-pop); }
+  .who-dialog .pick-grid button.me { background: var(--orange-soft); }
+  .who-dialog .pick-grid button.me::after { content: "you"; font: 500 10px/1 var(--mono); text-transform: none; letter-spacing: 0; color: var(--muted); }
+  .who-dialog .just-looking { display: block; width: 100%; margin-top: 12px; cursor: pointer; color: var(--ink); font: 700 15px/1 var(--body); background: transparent; border: 2px dashed var(--edge); border-radius: 10px; padding: 12px 10px; }
+  .who-dialog .just-looking:hover, .who-dialog .just-looking:focus-visible { background: var(--card); }
+  .va-toast { position: fixed; z-index: 60; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: calc(100vw - 32px);
+    background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); padding: 8px 8px 8px 16px; font: 600 14px/1.2 var(--body); }
+  .va-toast[hidden] { display: none; }
+  .va-toast button { cursor: pointer; font: 800 13px/1 var(--body); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; }
+
+  /* ---------- phone header: two rows at the top, one slim bar once you scroll ----------
+     Row 1 is the brand and the glowing chip, row 2 is the swipeable nav. Past ~70px of scroll the
+     header collapses to a solid 48px bar (flag, page-name pill, avatar-only chip); it only opens
+     again below ~20px so it can't flicker at the threshold. siteHead adds the height it gave up
+     as a margin so the content underneath never jumps. */
+  .site-head .pgn { display: none; }
+  @media (max-width: 380px) { .va-pre { display: none; } }
+  @media (max-width: 640px) {
+    .site-head .wrap { padding-block: 10px 0; gap: 6px 10px; }
+    .brand-script { display: none; }
+    .brand-name { font-size: 21px; }
+    .va { margin-left: auto; }
+    nav.site-nav { order: 3; flex: 1 0 100%; margin-left: 0; padding: 4px 0 10px; scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+    nav.site-nav::-webkit-scrollbar { display: none; }
+    nav.site-nav a { padding: 8px 13px; }
+    .site-head.sc { box-shadow: 0 2px 0 var(--drop); }
+    .site-head.sc .wrap { height: 48px; flex-wrap: nowrap; padding-block: 0; gap: 8px; align-content: center; }
+    .site-head.sc .brand-name, .site-head.sc nav.site-nav { display: none; }
+    .site-head.sc .pgn { display: inline-block; font: 800 13px/1 var(--body); background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 11px; white-space: nowrap; }
+    .site-head.sc .va { margin-left: auto; }
+    .site-head.sc .va-btn { padding: 2px; gap: 0; }
+    .site-head.sc .va-btn .dot, .site-head.sc .va-btn .va-txt, .site-head.sc .va-btn small { display: none; }
+    .site-head.sc .va-btn .ini { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--orange); color: var(--on-pop); border: 2px solid var(--edge); font: 800 13px/1 var(--body); }
+  }
 
   .draft-banner { margin-top: 18px; padding: 10px 14px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); font-size: 13.5px; font-weight: 700; }
 
@@ -309,6 +373,52 @@
   .pill .txt { display: grid; gap: 1px; font: 600 11px/1.1 var(--body); text-transform: uppercase; letter-spacing: 0.07em; }
   .pill .txt b { font: 700 14px/1.15 var(--body); text-transform: none; letter-spacing: 0; }
 
+  /* ---------- recap page (#week-N): the hero, in the approved mock-up's navy panel ---------- */
+  body:has(.rp) { overflow-x: clip; }
+  .rp-hero { position: relative; margin-top: 22px; border: 2px solid var(--edge); border-radius: 28px; background: var(--board); color: var(--on-board); box-shadow: 8px 8px 0 var(--accent); overflow: hidden; padding: 48px 48px 40px; isolation: isolate; }
+  .rp-hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; z-index: -2; }
+  .rp-hero::after { content: ""; position: absolute; right: -60px; top: -80px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; z-index: -1; }
+  .rp-big { position: absolute; right: 36px; bottom: -70px; font: 900 420px/1 var(--display); color: transparent; -webkit-text-stroke: 3px rgba(244, 246, 255, 0.22); z-index: -1; user-select: none; pointer-events: none; }
+  .rp-hero-in { position: relative; max-width: 880px; }
+  .rp-hero .kicker { display: inline-flex; align-items: center; gap: 10px; min-height: 34px; padding: 0 14px; background: var(--lime); color: var(--on-pop); font: 600 15px/1 var(--script); transform: rotate(-1.5deg); }
+  .rp-hero .kicker i { width: 9px; height: 9px; border-radius: 50%; background: var(--on-pop); display: inline-block; }
+  .rp-hero h1 { margin: 18px 0 16px; font: 900 clamp(40px, 5.4vw, 78px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; color: var(--on-board); }
+  .rp-hero .dek { margin: 0; font-size: 19px; line-height: 1.55; color: var(--on-board-muted); max-width: 64ch; }
+  .rp-hero .pills { gap: 14px; margin-top: 30px; }
+  .rp-hero .pill { min-height: 52px; padding: 4px 18px 4px 4px; box-shadow: 3px 3px 0 var(--drop); transition: transform 0.2s; }
+  .rp-hero .pill-plain { padding-left: 18px; }
+  .rp-hero .pill-top { transform: rotate(-1.5deg); }
+  .rp-hero .pill-mid { background: #fff; transform: rotate(0.5deg); }
+  .rp-hero .pill-bot { transform: rotate(1deg); }
+  .rp-hero .pill:hover { transform: rotate(0deg) translateY(-3px); }
+  .rp-hero .pill .medal { min-width: 38px; height: 38px; font-size: 17px; }
+  .rp-hero .pill .txt { font: 600 12px/1.1 var(--script); text-transform: none; letter-spacing: 0.02em; }
+  .rp-hero .pill .txt b { font: 800 20px/1.15 var(--display); letter-spacing: 0.01em; }
+  .rp-hero .pill .txt b .num { font: 500 18px/1 var(--mono); margin-left: 4px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .rp-big { animation: rp-bob 6s ease-in-out infinite; }
+    .rp-rv { animation: rp-rise 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+    .rp-rv.d1 { animation-delay: 0.05s; } .rp-rv.d2 { animation-delay: 0.15s; } .rp-rv.d3 { animation-delay: 0.28s; } .rp-rv.d4 { animation-delay: 0.42s; }
+  }
+  @keyframes rp-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+  @keyframes rp-pop { from { opacity: 0; transform: scale(0.96) translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes rp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes rp-marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes rp-bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(-1deg); } }
+  .rp [hidden] { display: none !important; }
+  .rp section { margin-top: 64px; }
+  .rp .sec-head { gap: 14px; margin-bottom: 0; }
+  .rp .sec-head h2 { font: 900 40px/1 var(--display); text-transform: uppercase; white-space: nowrap; }
+  .rp .sec-head .rule { height: 3px; background: var(--edge); border-radius: 3px; min-width: 20px; }
+  .rp .sec-sub { margin: 10px 0 0; font-size: 15px; }
+  @media (max-width: 980px) { .rp-hero { padding: 36px 28px; } .rp-big { font-size: 300px; right: 10px; } }
+  @media (max-width: 640px) {
+    .rp-hero { padding: 28px 20px; border-radius: 22px; }
+    .rp-big { font-size: 220px; bottom: -40px; }
+    .rp-hero .dek { font-size: 17px; }
+    .rp .sec-head h2 { font-size: 30px; white-space: normal; }
+  }
+
   .week-switch, .team-switch { display: flex; gap: 8px; overflow-x: auto; margin-top: 20px; padding: 2px 4px 5px 2px; }
   .week-switch a, .team-switch a { text-decoration: none; font: 700 15px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid var(--edge); background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
   .week-switch a:hover, .team-switch a:hover { background: var(--accent-soft); }
@@ -357,6 +467,59 @@
   .blurb { margin: 0; font-size: 14.5px; }
   .open { font-size: 13.5px; font-weight: 700; color: var(--accent); }
   a.game:hover .open { text-decoration: underline; }
+
+  /* recap page: the ticker band under the hero, then the horizontal game cards and the open "tape" */
+  .rp-ticker { width: 100vw; margin: 30px 0 0 calc(50% - 50vw); border-block: 2px solid var(--edge); background: var(--accent); color: var(--on-accent); overflow: hidden; white-space: nowrap; }
+  .rp-ticker .ticker-track { display: inline-flex; padding: 11px 0; }
+  .rp-ticker:hover .ticker-track { animation-play-state: paused; }
+  .tk { display: inline-flex; align-items: center; gap: 10px; padding: 0 26px; font: 800 18px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
+  .tk .num { font: 500 15px/1 var(--mono); letter-spacing: 0; background: var(--on-accent); color: var(--accent); padding: 3px 7px; border-radius: 6px; }
+  .tk::after { content: ""; width: 8px; height: 8px; background: var(--lime); transform: rotate(45deg); margin-left: 16px; }
+  @media (prefers-reduced-motion: no-preference) { .rp-ticker .ticker-track { animation: rp-marq 38s linear infinite; } }
+  .rp-sb { display: grid; gap: 28px; margin-top: 26px; }
+  .rp .game-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .gb { display: block; width: 100%; min-width: 0; text-align: left; font: inherit; padding: 14px 16px 16px; border: 2px solid var(--edge); border-radius: 18px; background: var(--card); color: var(--ink); box-shadow: 3px 3px 0 var(--drop); cursor: pointer; }
+  .gb:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--drop); }
+  .gb.sel { background: var(--accent); color: var(--on-accent); transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--orange); }
+  @media (prefers-reduced-motion: no-preference) { .gb { transition: transform 0.18s, box-shadow 0.18s, background 0.18s; } }
+  .gb-split { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+  .gb-row { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .gb-row.lose { align-items: flex-end; text-align: right; }
+  .gb-who { display: flex; flex-direction: column; min-width: 0; max-width: 100%; }
+  .gb-row.lose .gb-who { align-items: flex-end; }
+  .gb-mgr { font: 800 22px/1.15 var(--display); letter-spacing: 0.02em; text-transform: uppercase; }
+  .gb-row.lose .gb-mgr { opacity: 0.7; }
+  .gb-team { max-width: 100%; font-size: 13px; line-height: 1.3; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gb-stand { align-self: flex-start; margin-top: 5px; padding: 3px 8px; border-radius: 999px; border: 2px solid var(--edge); background: var(--lime); color: var(--on-pop); font: 500 12px/1 var(--mono); white-space: nowrap; }
+  .gb-row.lose .gb-stand { align-self: flex-end; background: var(--pink); }
+  .gb-score { display: flex; align-items: center; gap: 8px; margin-top: 2px; font: 500 22px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .gb .wl { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; padding: 0; border-radius: 6px; font: 800 12px/1 var(--body); color: var(--on-accent); }
+  .gb .wl.W { background: var(--win); }
+  .gb .wl.L { background: var(--loss); }
+  .gb .tug { display: flex; height: 10px; margin-top: 10px; border-radius: 99px; overflow: hidden; border: 2px solid var(--edge); background: var(--card); }
+  .gb .tug .a { background: var(--lime); }
+  .gb .tug .b { background: var(--pink); flex: 1; }
+  .gb.sel .tug { border-color: var(--on-board); }
+  .gb .live-strip { margin-top: 12px; border: 2px solid var(--edge); border-radius: 12px; color: var(--ink); }
+  .tape { border: 2px solid var(--edge); border-radius: 24px; background: var(--board); color: var(--on-board); box-shadow: 8px 8px 0 var(--lime); padding: 26px; }
+  @media (prefers-reduced-motion: no-preference) { .tape { animation: rp-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; } .tape-bar .tw { transition: width 0.6s cubic-bezier(0.2, 0.9, 0.3, 1); } }
+  .tape-top { display: flex; justify-content: space-between; gap: 16px; }
+  .tp { display: flex; flex-direction: column; min-width: 0; }
+  .tp.lose { text-align: right; align-items: flex-end; }
+  .tp-m { font: 900 44px/1 var(--display); text-transform: uppercase; letter-spacing: 0.01em; }
+  .tp.win .tp-m { color: var(--lime); }
+  .tp.lose .tp-m { color: var(--pink); }
+  .tp-t { margin-top: 4px; font-size: 13.5px; color: var(--on-board-muted); }
+  .tape-bar { display: flex; height: 58px; margin-top: 18px; border: 2px solid var(--on-board); border-radius: 999px; overflow: hidden; }
+  .tape-bar .tw { flex: none; min-width: 96px; display: flex; align-items: center; padding-left: 20px; background: var(--lime); color: var(--on-pop); }
+  .tape-bar .tl { flex: 1; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px; background: var(--pink); color: var(--on-pop); }
+  .tape-bar .tn { font: 500 24px/1 var(--mono); font-variant-numeric: tabular-nums; }
+  .tape-quote { position: relative; margin-top: 22px; padding: 34px 28px 24px; border: 2px solid var(--edge); border-radius: 18px; background: var(--card); color: var(--ink); }
+  .tape-quote .qm { position: absolute; left: 18px; top: -6px; font: 900 84px/1 var(--display); color: var(--accent); }
+  .tape-quote .blurb { font-size: 19px; line-height: 1.6; }
+  .tape-quote .open { display: inline-block; margin-top: 18px; font-size: 15px; text-decoration: none; }
+  .tape-quote .open:hover { text-decoration: underline; }
+  @media (max-width: 640px) { .rp .game-list { grid-template-columns: minmax(0, 1fr); } .tp-m { font-size: 30px; } .tape-bar .tn { font-size: 18px; } .tape-quote .blurb { font-size: 17px; } .tape { padding: 20px; } }
 
   /* ---------- landing page: compact matchup cards ---------- */
   .ml-w { flex: none; font: 700 10.5px/1 var(--mono); padding: 4px 6px; border-radius: 6px; border: 1.5px solid var(--edge); background: var(--lime); color: var(--on-pop); transform: rotate(-4deg); }
@@ -633,6 +796,42 @@
   .card h3 { font: 800 22px/1.05 var(--display); letter-spacing: 0.01em; }
   .card p { margin: 0; font-size: 14.5px; }
 
+  /* recap page awards: filter chips, grouped by kind, a round sticker beside each manager */
+  .rp-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
+  .rp .chip:hover { transform: translateY(-2px); }
+  .rp .chip.sel { background: var(--ink); color: var(--bg); }
+  .rp-grp { margin-top: 34px; }
+  .grp-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .grp-head h3 { font: 900 30px/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .grp-head p { margin: 0; max-width: 64ch; color: var(--muted); font-size: 15px; }
+  .rp .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
+  .rp .card { display: block; position: relative; padding: 20px 22px 22px; border-radius: 20px; }
+  .rp .card:hover { transform: translate(-3px, -3px) rotate(-0.4deg); }
+  .rp .card.balls:hover { box-shadow: 9px 9px 0 var(--orange); }
+  .rp .card.flags:hover { box-shadow: 9px 9px 0 var(--pink); }
+  .rp .card.breaks:hover { box-shadow: 9px 9px 0 var(--drop); }
+  @media (prefers-reduced-motion: no-preference) { .rp .card { transition: transform 0.2s, box-shadow 0.2s; animation: rp-rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; } }
+  .rp .card-top { flex-wrap: wrap; }
+  .aw-lhs { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .aw-stk { flex: none; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); display: flex; align-items: center; justify-content: center; color: var(--on-pop); transform: rotate(-8deg); }
+  .rp .card:nth-child(even) .aw-stk { transform: rotate(7deg); }
+  .rp .card:hover .aw-stk { transform: rotate(14deg) scale(1.15); }
+  @media (prefers-reduced-motion: no-preference) { .aw-stk { transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); } }
+  .rp .card.balls .aw-stk { background: var(--orange); }
+  .rp .card.flags .aw-stk { background: var(--pink); }
+  .rp .card.breaks .aw-stk { background: var(--lime); }
+  .rp .card .who { font: 900 26px/1 var(--display); letter-spacing: 0.02em; color: var(--ink); }
+  .rp .card .stat { font: 500 13px/1 var(--mono); padding: 7px 10px; border-radius: 999px; border: 2px solid var(--edge); transform: none; }
+  .aw-kind { display: inline-block; margin: 14px 0 0; padding: 4px 10px; border-radius: 999px; border: 2px solid var(--edge); color: var(--ink); font: 600 13px/1.1 var(--script); }
+  .rp .card.balls .aw-kind { background: var(--orange-soft); }
+  .rp .card.flags .aw-kind { background: var(--pink-soft); }
+  .rp .card.breaks .aw-kind { background: var(--lime-soft); }
+  .rp .card h3 { margin: 10px 0 8px; font-size: 24px; }
+  .rp .card p { font-size: 15.5px; line-height: 1.6; }
+  @media (max-width: 980px) { .rp .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .rp .cards { grid-template-columns: minmax(0, 1fr); } .grp-head h3 { font-size: 26px; } }
+
   /* ---------- tables ---------- */
   .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px 32px; }
   .table-scroll { overflow-x: auto; }
@@ -842,6 +1041,47 @@
   .leaders .meta a { text-decoration: none; font-weight: 700; }
   .leaders .pts { grid-row: 1 / span 2; grid-column: 3; align-self: center; font: 800 20px/1 var(--display); font-variant-numeric: tabular-nums; color: var(--on-pop); background: var(--orange); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 8px; transform: rotate(-2deg); }
 
+  /* recap page: standings as a sticker card with score bars, and the leaders as little cards */
+  .rp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
+  @media (max-width: 980px) { .rp-two { grid-template-columns: minmax(0, 1fr); } }
+  .rp-std-card { margin-top: 22px; border: 2px solid var(--edge); border-radius: 22px; background: var(--card); box-shadow: 6px 6px 0 var(--accent); overflow: hidden; }
+  .rp-std { width: 100%; border-collapse: collapse; }
+  .rp-std th { padding: 0 12px; height: 42px; background: var(--board); color: var(--on-board); font: 600 13px/1 var(--script); letter-spacing: 0.03em; text-align: left; white-space: nowrap; }
+  .rp-std th:first-child, .rp-std td:first-child { padding-left: 18px; }
+  .rp-std th:last-child, .rp-std td:last-child { padding-right: 18px; }
+  .rp-std td { height: 66px; padding: 0 12px; border-top: 2px solid var(--rule); }
+  .rp-std tbody tr:hover { background: var(--accent-soft); }
+  .rp-std .r { text-align: right; }
+  .rp-std .rk { width: 34px; font: 900 26px/1 var(--display); }
+  .rp-std .mv { display: inline-flex; align-items: center; justify-content: center; gap: 3px; min-width: 40px; height: 26px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 500 12px/1 var(--mono); }
+  .rp-std .mv.up { background: var(--lime); color: var(--on-pop); }
+  .rp-std .mv.down { background: var(--pink); color: var(--on-pop); }
+  .rp-std .mv.flat { color: var(--muted); }
+  .rp-std .tm { display: flex; flex-direction: column; min-width: 0; }
+  .rp-std .mg { font: 800 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
+  .rp-std .mg:hover { color: var(--accent); }
+  .rp-std .tn { max-width: 190px; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rp-std .rec { font: 500 15px/1 var(--mono); }
+  .rp-std .sc { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 120px; }
+  .rp-std .sc .v { font: 500 15px/1 var(--mono); }
+  .rp-std .bar { width: 100%; height: 9px; border-radius: 99px; background: var(--rule); overflow: hidden; }
+  .rp-std .bar i { display: block; height: 100%; border-radius: 99px; background: var(--accent); transform-origin: left; }
+  .rp-std tr.top .bar i { background: var(--orange); }
+  @media (prefers-reduced-motion: no-preference) { .rp-std .bar i { animation: rp-grow 1.1s cubic-bezier(0.2, 0.9, 0.3, 1) both; } .rp .leaders li { animation: rp-rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; transition: transform 0.18s, box-shadow 0.18s; } }
+  @media (max-width: 640px) { .rp-std .c5 { display: none; } .rp-std td { padding: 0 8px; } }
+  .rp .leaders { gap: 12px; margin-top: 20px; }
+  .rp .leaders li { column-gap: 14px; row-gap: 2px; align-items: center; padding: 12px 16px; border: 2px solid var(--edge); border-radius: 18px; background: var(--card); box-shadow: 3px 3px 0 var(--drop); }
+  .rp .leaders li:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--lime); }
+  .rp .leaders.low li:hover { box-shadow: 5px 5px 0 var(--pink); }
+  .rp .leaders .mug { width: 54px; height: 54px; }
+  .rp .leaders .logo { right: -8px; bottom: -6px; width: 26px; height: 26px; }
+  .rp .leaders .pname { font: 800 22px/1.1 var(--display); letter-spacing: 0.01em; }
+  .rp .leaders .ppos { font: 500 13px/1 var(--mono); letter-spacing: 0; }
+  .rp .leaders .meta { font-size: 13.5px; }
+  .rp .leaders .pts { font: 500 28px/1 var(--mono); padding: 6px 10px; border-radius: 12px; background: var(--lime); transform: none; }
+  .rp .leaders.low .pts { background: var(--pink); }
+  .rp .lows { margin-top: 44px; }
+
   .stat-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 14px; margin-top: 14px; }
   .tile { background: var(--card); padding: 12px 14px; }
   .tile:nth-child(1) { background: var(--lime); color: var(--on-pop); }
@@ -861,6 +1101,24 @@
   .chips a:nth-child(3n+2) { background: var(--pink); color: var(--on-pop); }
   .chips a:nth-child(3n) { background: var(--orange); color: var(--on-pop); }
   .chips a:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--drop); }
+
+  /* recap page glossary: each term is a card that opens to its definition */
+  .rp-terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 24px; align-items: start; }
+  .rp-term { border: 2px solid var(--edge); border-radius: 20px; background: var(--card); box-shadow: 4px 4px 0 var(--drop); overflow: hidden; }
+  .rp-term.open { box-shadow: 7px 7px 0 var(--lime); transform: translate(-2px, -2px); }
+  @media (prefers-reduced-motion: no-preference) { .rp-term { transition: box-shadow 0.2s, transform 0.2s; } .rp-term .plus { transition: transform 0.3s; } .rp-term-body { transition: grid-template-rows 0.35s ease, visibility 0s 0.35s; } .rp-term.open .rp-term-body { transition-delay: 0s; } }
+  .rp-term-btn { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; padding: 12px 20px; border: 0; background: transparent; color: var(--ink); text-align: left; font: inherit; cursor: pointer; }
+  .rp-term-btn .tt { font: 900 28px/1.05 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .rp-term .plus { position: relative; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--edge); background: var(--lime); }
+  .rp-term .plus::before, .rp-term .plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; background: var(--on-pop); transform: translate(-50%, -50%); }
+  .rp-term .plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .rp-term.open .plus { transform: rotate(45deg); }
+  .rp-term-body { display: grid; grid-template-rows: 0fr; visibility: hidden; }
+  .rp-term.open .rp-term-body { grid-template-rows: 1fr; visibility: visible; }
+  .rp-term-body > div { overflow: hidden; }
+  .rp-term-body p { margin: 0; padding: 2px 20px 22px; font-size: 15.5px; line-height: 1.6; }
+  @media (max-width: 980px) { .rp-terms { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .rp-terms { grid-template-columns: minmax(0, 1fr); } }
 
   /* ---------- coach ---------- */
   /* One card per team on the overview: the manager, what needs doing, a way in. */
@@ -1080,47 +1338,60 @@
   /* ---------- team profile: Overview / Lineup / Season ----------
      One hero on Overview, a slim identity bar on the other two tabs, and a tab bar in
      between. Phones get one column; from 860px up Overview grows a side rail. */
-  .tp-hero { margin-top: 18px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent);
-    padding: 18px 18px 16px; display: grid; gap: 12px 14px; grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "top top" "name rec" "stats stats"; align-items: end; }
-  .tp-hero-top { grid-area: top; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  /* the team strip: every team, in standings order, with who has homework and who is "you" */
+  .tp-strip { display: flex; gap: 8px; overflow-x: auto; padding: 6px 6px 10px; margin: 8px -6px 0; scrollbar-width: none; }
+  .tp-strip::-webkit-scrollbar { display: none; }
+  .tp-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 11px; text-decoration: none; color: var(--ink); background: var(--card);
+    border: 2px solid var(--edge); border-radius: 999px; font: 800 12px/1 var(--body); letter-spacing: 0.03em; text-transform: uppercase; }
+  .tp-chip:hover { background: var(--accent-soft); }
+  .tp-chip[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); }
+  .tp-chip .n, .tp-key .n { min-width: 18px; height: 18px; padding: 0 3px; border-radius: 9px; background: var(--pink); color: var(--on-pop); border: 2px solid var(--edge); font: 800 10px/14px var(--body); text-align: center; }
+  .tp-chip .you, .tp-key .you { width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--orange); border: 2px solid var(--edge); }
+  .tp-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 12px; font: 500 11px/1.4 var(--mono); color: var(--muted); }
+  .tp-key span { display: inline-flex; align-items: center; gap: 5px; }
+  .tp-key .n { min-width: 16px; height: 16px; padding: 0; display: inline-block; }
+  .tp-key .you { display: inline-block; }
+  .crumbs .you-tag { font: 700 11px/1 var(--script); letter-spacing: 0.04em; color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+
+  /* the identity card: the same on Overview, Lineup and Season */
+  .tp-id { margin-top: 4px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent); padding: 18px 18px 16px; }
+  .tp-id-top { display: flex; align-items: center; gap: 10px; }
   .tp-tname { font: 600 12.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--pink); border: 2px solid #f4f6ff; border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); }
-  .tp-you { font: 600 12px/1 var(--script); color: #151a33; background: var(--lime); border-radius: 999px; padding: 5px 11px; }
-  .tp-hero h1 { grid-area: name; margin: 0; font: 900 clamp(48px, 17vw, 68px)/0.9 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
-  .tp-rec { grid-area: rec; text-align: right; }
+  .tp-you { font: 800 11px/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--orange); border: 2px solid #f4f6ff; border-radius: 999px; padding: 4px 10px; }
+  .tp-id-main { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 8px; }
+  .tp-id h1 { margin: 0; font: 900 clamp(48px, 15vw, 68px)/0.92 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  .tp-rec { text-align: right; flex: none; }
   .tp-rec b { display: block; font: 900 clamp(38px, 12vw, 50px)/0.9 var(--display); color: var(--lime); }
-  .tp-rec span { display: block; margin-top: 4px; font: 500 12px/1 var(--mono); color: #a9b2dc; }
-  .tp-stats { grid-area: stats; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1.5px solid #2b3263; padding-top: 12px; }
-  .tp-stats > :nth-child(4) { display: none; }
-  .tp-stats .l { font: 600 10.5px/1 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
-  .tp-stats .v { margin-top: 5px; font: 500 19px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-stats .v small { font-size: 11px; color: #a9b2dc; }
+  .tp-rec span { display: block; margin-top: 4px; font: 500 11px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin: 14px 0 0; padding-top: 12px; border-top: 1.5px solid #2b3263; }
+  .tp-stats > div { min-width: 0; }
+  .tp-stats dt { font: 500 10px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-stats dd { margin: 3px 0 0; font: 800 24px/1.05 var(--display); }
+  .tp-stats dd small { font: 500 10px/1 var(--mono); color: #a9b2dc; margin-left: 4px; }
+  .tp-stats .po dd { color: var(--lime); }
+  .tp-stats .hs { display: block; margin-top: 2px; font: 500 10px/1.2 var(--mono); color: #a9b2dc; }
   @media (min-width: 860px) {
-    .tp-hero { padding: 26px 30px; box-shadow: 6px 6px 0 var(--accent); gap: 10px 36px; grid-template-columns: auto auto minmax(0, 1fr);
-      grid-template-areas: "top rec stats" "name rec stats"; align-items: center; }
-    .tp-hero h1 { font-size: clamp(72px, 9vw, 104px); }
-    .tp-rec b { font-size: clamp(60px, 7vw, 84px); }
-    .tp-rec span { font-size: 14px; margin-top: 8px; }
-    .tp-stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); gap: 16px 36px; border-top: none; padding-top: 0; justify-self: end; }
-    .tp-stats > :nth-child(4) { display: block; }
-    .tp-stats .v { font-size: 26px; }
+    .tp-id { padding: 24px 30px 22px; box-shadow: 6px 6px 0 var(--accent); }
+    .tp-id h1 { font-size: clamp(72px, 9vw, 96px); }
+    .tp-rec b { font-size: clamp(56px, 7vw, 76px); }
+    .tp-rec span { font-size: 13px; }
+    .tp-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 24px; }
+    .tp-stats dd { font-size: 30px; }
   }
 
-  /* the slim version, for Lineup and Season: it is also the way back to Overview */
-  .tp-bar { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 12px 16px; text-decoration: none;
-    background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--accent); }
-  .tp-bar:hover { color: #f4f6ff; }
-  .tp-bar .back { display: block; font: 600 11px/1 var(--script); letter-spacing: 0.06em; text-transform: uppercase; color: #ff82c0; }
-  .tp-bar .nm { display: block; margin-top: 3px; font: 900 34px/0.95 var(--display); }
-  .tp-bar .rec { text-align: right; }
-  .tp-bar .rec b { display: block; font: 900 32px/0.95 var(--display); color: var(--lime); }
-  .tp-bar .rec span { display: block; margin-top: 2px; font: 500 11.5px/1 var(--mono); color: #a9b2dc; }
-
-  .tp-tabs { margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 5px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-tabs a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 9px; padding: 13px 0; }
-  .tp-tabs a:hover { background: var(--accent-soft); }
-  .tp-tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
-  @media (min-width: 860px) { .tp-tabs { max-width: 440px; } .tp-tabs a { font-size: 15px; } }
+  /* the sticky tab bar. When the identity card has scrolled away it grows a mini identity on the left. */
+  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 10px -16px 6px; padding: 6px 16px 10px; background: var(--bg); }
+  .tp-tabbar { border-bottom: 2px solid transparent; }
+  .tp-tabbar.stuck { border-bottom-color: var(--edge); }
+  .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
+  .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
+  .tp-tabbar.stuck .tp-mini { display: flex; }
+  .tp-seg { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
+  .tp-tabbar.stuck .tp-seg { max-width: 380px; }
+  .tp-seg a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 10px; padding: 11px 0; }
+  .tp-seg a:hover { background: var(--accent-soft); }
+  .tp-seg a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+  @media (max-width: 640px) { .tp-tabbar.stuck .tp-mini { display: none; } .tp-tabbar.stuck .tp-seg { max-width: none; } }
 
   .tp-sec { margin-top: 26px; display: grid; gap: 10px; align-content: start; }
   .tp-head { display: flex; align-items: center; gap: 8px; }
@@ -1132,140 +1403,188 @@
   .tp-sub { margin-top: 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font: 600 12px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .tp-sub small { font: 400 12px/1.2 var(--body); letter-spacing: 0; text-transform: none; }
 
-  /* Overview: this week */
-  .tp-match { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--lime); padding: 16px; display: grid; gap: 14px; }
-  .tp-vs { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .tp-vs .nm { font: 800 28px/1 var(--display); }
-  .tp-vs .nm a { color: var(--accent); text-decoration: none; }
-  .tp-badge { flex: none; font: 600 12px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 10px; transform: rotate(-2deg); }
-  .tp-badge.now { background: var(--pink); } .tp-badge.watch { background: var(--orange); }
-  .tp-win .row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-  .tp-win .lab { font: 600 11px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .tp-win .big { font: 900 40px/0.9 var(--display); }
-  .tp-meter { height: 12px; border: 2px solid var(--edge); border-radius: 7px; background: var(--card); overflow: hidden; }
-  .tp-meter i { display: block; height: 100%; background: var(--accent); }
-  .tp-win .src { margin-top: 5px; font-size: 11.5px; color: var(--muted); }
-  .tp-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1.5px dashed var(--rule); padding-top: 12px; }
-  .tp-nums b { display: block; font: 500 18px/1.1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-nums span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
-  .tp-note { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; color: var(--ink); background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 12px; }
-  .tp-note.now { background: var(--pink-soft); } .tp-note.watch { background: var(--orange-soft); }
-  .tp-note p { margin: 0; font-size: 14px; line-height: 1.35; font-weight: 600; }
-  .tp-note a { display: inline-block; margin-top: 4px; color: var(--accent); font-weight: 700; }
-  .tp-note svg { flex: none; margin-top: 1px; }
-  .tp-live { font-size: 13px; font-weight: 700; color: var(--accent); }
+  /* faces: a headshot with a small NFL badge, from the same source as Recaps' Top scorers */
+  .pf { --s: 48px; position: relative; flex: none; width: var(--s); height: var(--s); }
+  .pf .img { display: block; width: 100%; height: 100%; border: 2px solid var(--edge); border-radius: 50%; background: var(--accent-soft); object-fit: cover; object-position: center; }
+  .pf.dst .img { object-fit: contain; padding: 14%; background: var(--logo-chip); }
+  .pf .nfl { position: absolute; right: -5px; bottom: -4px; width: calc(var(--s) * 0.46); height: calc(var(--s) * 0.46); padding: 1px; border: 2px solid var(--edge); border-radius: 50%; background: var(--logo-chip); object-fit: contain; }
+  .pf.sm { --s: 42px; }
+  .pf.xs { --s: 28px; }
+  .pf.xs .nfl { border-width: 1.5px; right: -6px; }
+  .ref { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; margin: 2px 1px; padding: 2px 11px 2px 3px; color: var(--ink); text-decoration: none; background: var(--card);
+    border: 2px solid var(--edge); border-radius: 999px; font: 700 13px/1.2 var(--body); vertical-align: middle; }
+  .ref .rn { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ref em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); white-space: nowrap; }
+  .refs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
-  /* Overview: Coach's take swipes on a phone and lays out flat on a laptop */
-  .tp-take { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -16px; padding: 2px 16px 12px 16px; scrollbar-width: none; }
-  .tp-take::-webkit-scrollbar { display: none; }
-  .tp-take > .card { flex: 0 0 min(292px, 82%); scroll-snap-align: start; }
-  .tp-take .card h3 { font-size: 23px; }
-  .tp-take .card p { font-size: 13.5px; line-height: 1.4; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  @media (min-width: 860px) {
-    .tp-take { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; overflow: visible; margin-inline: 0; padding: 0; }
-    .tp-take > .card { flex: none; }
-    .tp-take .card p { display: block; font-size: 14px; }
-  }
+  /* Overview */
+  .ov-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 8px; }
+  @media (max-width: 760px) { .ov-grid { grid-template-columns: minmax(0, 1fr); } }
+  .ov-card { min-width: 0; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); padding: 14px 16px; }
+  .ov-lab { font: 700 11px/1.2 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .ov-vs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 12px; }
+  .ov-vs b { font: 900 30px/1 var(--display); }
+  .ov-vs b a { color: inherit; text-decoration: none; }
+  .ov-vs b a:hover { text-decoration: underline; }
+  .ov-vs i { font: 500 12px/1 var(--mono); font-style: normal; text-transform: uppercase; color: var(--muted); }
+  .mg { display: grid; place-items: center; flex: none; width: 30px; height: 30px; border: 2px solid var(--edge); border-radius: 50%; background: var(--accent-soft); font: 900 15px/1 var(--display); }
+  .mg.t { background: var(--pink-soft); }
+  .ov-wc { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+  .ov-wc b { display: block; font: 900 42px/1 var(--display); }
+  .ov-wc span { font: 600 12px/1.2 var(--body); color: var(--muted); }
+  .ov-wc .r { text-align: right; }
+  .ov-bar { height: 14px; margin: 8px 0 4px; overflow: hidden; background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; }
+  .ov-bar i { display: block; height: 100%; background: var(--accent); border-right: 2px solid var(--edge); }
+  .ov-legend { display: flex; justify-content: space-between; gap: 6px; font: 500 11px/1.3 var(--mono); color: var(--muted); }
+  .ov-legend .sq { display: inline-block; width: 10px; height: 10px; margin: 0 5px -1px; border: 2px solid var(--edge); border-radius: 3px; }
+  .ov-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
+  .ov-stats dt { order: 2; font: 500 10px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .ov-stats dd { order: 1; margin: 0; font: 800 22px/1 var(--display); }
+  .ov-stats > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .ov-fix { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 8px 10px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 12px; font-size: 13.5px; }
+  .ov-fix.ok { background: var(--lime-soft); }
+  .ov-fix > div { min-width: 0; flex: 1; }
+  .ov-fix .refs { margin-top: 6px; }
+  .ov-fix a.go { flex: none; align-self: flex-start; color: var(--ink); text-decoration: none; white-space: nowrap; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 11px; font: 700 12px/1.2 var(--body); box-shadow: 2px 2px 0 var(--drop); }
+  .ov-seed { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
+  .ov-seed b { font: 900 40px/1 var(--display); }
+  .ov-tag { display: inline-block; padding: 3px 10px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.2 var(--body); }
+  .ov-tag.og { background: var(--orange); }
+  .ov-p { margin: 8px 0 10px; color: var(--muted); font-size: 13.5px; }
+  .ov-odds { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: center; }
+  .ov-odds > div { padding: 8px 10px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 12px; }
+  .ov-odds > div.w { background: var(--lime); color: var(--on-pop); }
+  .ov-odds > div.n { grid-column: 1 / -1; background: var(--lime-soft); }
+  .ov-odds .ar { padding: 0; background: none; border: 0; font: 900 22px/1 var(--display); }
+  .ov-odds span { display: block; font: 600 12px/1.25 var(--body); }
+  .ov-odds b { font: 900 34px/1 var(--display); }
+  .ov-worth { margin: 12px 0 0; font-size: 13.5px; }
+  .ov-take { padding: 14px 16px; background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .ov-take h3 { margin: 8px 0 4px; font: 800 18px/1.15 var(--display); letter-spacing: 0.01em; }
+  .ov-take p { margin: 0; font-size: 14px; }
+  .ov-next { display: flex; align-items: center; gap: 12px; }
+  .ov-next .mon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 50%; font: 900 20px/1 var(--display); }
+  .ov-next .nm { font-weight: 800; font-size: 16px; }
+  .ov-next .nm a { color: inherit; }
+  .ov-next .sub { font-size: 13.5px; color: var(--muted); }
   .tp-ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
   .tp-ideas > div { display: grid; gap: 12px; align-content: start; }
 
-  /* Overview: season so far */
-  .tp-weeks { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 8px; }
-  .tp-wk { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 9px 6px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-wk .wl { font: 500 11px/1.2 var(--script); color: var(--muted); }
-  .tp-wk .tp-opp { display: none; }
-  .tp-wk b { font: 500 15px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-wk small { font-size: 11px; color: var(--muted); }
-  @media (min-width: 860px) { .tp-weeks { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; } .tp-wk .tp-opp { display: inline; } .tp-wk b { font-size: 22px; } }
-  .tp-res { font: 600 11px/1 var(--script); color: #fff; background: var(--muted); border-radius: 6px; padding: 3px 8px; }
-  .tp-res.W { background: var(--win); } .tp-res.L { background: var(--loss); }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .tp-res { color: var(--on-pop); } }
-  :root[data-theme="dark"] .tp-res { color: var(--on-pop); }
-
-  .tp-dig { margin-top: 26px; display: grid; gap: 10px; }
-  .tp-dig a { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 14px 16px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-dig b { font-weight: 800; }
-  .tp-dig small { display: block; margin-top: 2px; font-size: 12.5px; color: var(--muted); }
-  .tp-dig .chev { flex: none; font: 800 20px/1 var(--display); }
-  .tp-foot { margin: 22px 0 0; font-size: 12px; color: var(--muted); max-width: 64ch; }
-
-  /* Overview on a laptop: the main column plus a rail of quick looks */
-  .tp-rail { display: none; }
-  .tp-rail > * { margin: 0; }
-  .tp-take .card { min-width: 0; }
-  .tp-take .card-top { flex-wrap: wrap; justify-content: flex-start; }
-  .tp-take .card-top .who { white-space: nowrap; }
-  .tp-val { background: var(--card); }
-  @media (min-width: 860px) {
-    .tp-cols { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(300px, 1fr); gap: 0 26px; align-items: start; }
-    .tp-rail { display: grid; gap: 22px; margin-top: 26px; }
-    .tp-dig { display: none; }
+  /* Lineup tab, and the accordion rows Season reuses. Everything sits under .acc so none of it
+     can reach the box-score tables. The panel animates grid-template-rows 0fr to 1fr, so opening
+     is a class toggle and the height is whatever the text needs. */
+  .lu-sum { margin: 0; font-size: 14px; }
+  .lu-fix { padding: 12px 14px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .lu-fix.ok { background: var(--lime-soft); }
+  .lu-fix p { margin: 2px 0 0; font-size: 13.5px; }
+  .lu-fix .it { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
+  .lu-fix .it > div { flex: 1; min-width: 0; }
+  .lhint { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .lu-all { flex: none; cursor: pointer; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 12px; font: 700 12px/1.2 var(--body); box-shadow: 2px 2px 0 var(--drop); }
+  .lu-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 26px; }
+  @media (min-width: 860px) { .lu-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .acc .divider { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font: 500 11px/1 var(--mono); letter-spacing: 0.12em; color: var(--muted); }
+  .acc .divider::after { content: ""; flex: 1; border-top: 2px solid var(--edge); }
+  .acc .prow { border-bottom: 2px dotted var(--rule); }
+  .acc .prow:last-child { border-bottom: 0; }
+  .acc .row { position: relative; display: grid; grid-template-columns: 40px 52px minmax(0, 1fr) auto 24px; align-items: center; gap: 12px; padding: 10px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .acc [data-row]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+  .acc .chev { display: grid; place-items: center; width: 24px; height: 24px; border: 2px solid var(--edge); border-radius: 50%; background: var(--card); font-size: 11px; line-height: 1; transition: transform 0.25s ease, background 0.2s; }
+  .acc .prow.open .chev { transform: rotate(180deg); background: var(--lime); color: var(--on-pop); }
+  .acc .coach { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 0.26s ease, visibility 0s 0.26s; }
+  .acc .prow.open .coach { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows 0.26s ease, visibility 0s; }
+  @media (prefers-reduced-motion: reduce) { .acc .coach, .acc .prow.open .coach, .acc .chev { transition: none; } }
+  .acc .cin { overflow: hidden; min-height: 0; }
+  .acc .cb { margin: 0 0 12px; padding: 10px 14px 12px; background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
+  .acc .cb.fl { background: var(--pink-soft); }
+  .acc .cb h4 { color: var(--ink); margin: 6px 0 3px; font: 800 18px/1.12 var(--display); letter-spacing: 0.01em; }
+  .acc .cb p { margin: 0; font-size: 13.5px; color: var(--ink); }
+  .acc .cb .peek-body { margin-top: 6px; padding: 0; background: none; border: 0; }
+  .acc .ctag { display: inline-block; padding: 1px 9px; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; font: 800 10px/1.5 var(--body); letter-spacing: 0.08em; text-transform: uppercase; }
+  .acc .slot { font: 500 11px/1 var(--mono); text-align: center; background: var(--card); border: 2px solid var(--edge); border-radius: 8px; padding: 3px 0; }
+  .acc .slot.flex { background: var(--lime-soft); }
+  .acc .slot.bn { background: transparent; border-color: var(--rule); color: var(--muted); }
+  .acc .av { position: relative; width: 48px; height: 48px; }
+  .acc .av .pf { --s: 48px; }
+  .acc .bench .av, .acc .bench .av .pf { width: 42px; height: 42px; --s: 42px; }
+  .acc .bye .av { filter: grayscale(1); opacity: 0.55; }
+  .acc .nm { font: 700 16px/1.15 var(--body); }
+  .acc .nm .pos { font-weight: 600; font-size: 13px; color: var(--muted); }
+  .acc .sub { margin-top: 2px; font-size: 12.5px; color: var(--muted); }
+  .acc .sub b { color: var(--ink); font-weight: 700; }
+  .acc .sub .live-dot { display: inline-block; vertical-align: 1px; }
+  .acc .pill { min-width: 60px; padding: 4px 8px; text-align: center; color: var(--on-pop); background: var(--orange); border: 2px solid var(--edge); border-radius: 11px; box-shadow: 2px 2px 0 var(--drop); font: 900 24px/1 var(--display); }
+  .acc .pill small { display: block; margin-top: 2px; font: 500 8.5px/1 var(--mono); letter-spacing: 0.1em; }
+  .acc .pill.proj { padding: 3px 8px 4px; color: var(--muted); background: var(--card); border-style: dashed; box-shadow: none; }
+  .acc .pill.byep { padding: 7px 8px; background: var(--pink); font-size: 17px; }
+  @media (max-width: 640px) {
+    .acc .row { grid-template-columns: 52px minmax(0, 1fr) auto 24px; gap: 10px; padding: 11px 0; }
+    .acc .slot { position: absolute; left: -6px; top: 6px; z-index: 2; min-width: 30px; padding: 2px 5px; font-size: 10px; box-shadow: 1px 1px 0 var(--drop); }
+    .acc .slot.bn { background: var(--bg); box-shadow: none; }
+    .acc .av { margin-left: 6px; }
+    .acc .bench .av { margin-left: 9px; }
   }
-  .tp-panel { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); overflow: hidden; }
-  .tp-panel > header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 14px 16px 8px; }
-  .tp-panel h2 { font: 800 26px/1 var(--display); }
-  .tp-panel header span { font: 400 12.5px/1 var(--mono); color: var(--muted); }
-  .tp-ln { display: grid; grid-template-columns: 54px minmax(0, 1fr) 54px; gap: 8px; align-items: center; padding: 0 16px; min-height: 40px; border-top: 1.5px solid var(--rule); font-size: 14.5px; }
-  .tp-ln .slot { justify-self: start; font: 600 11.5px/1 var(--script); padding: 3px 8px; background: var(--accent-soft); border: 1.5px solid var(--edge); border-radius: 6px; }
-  .tp-ln b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tp-ln .pts { text-align: right; font: 500 14px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-panel > a.go { display: block; padding: 13px 16px; text-align: center; font-weight: 700; font-size: 14px; color: var(--accent); text-decoration: none; border-top: 2px solid var(--edge); }
-  .tp-panel > a.go:hover { background: var(--accent-soft); }
-  .tp-panel.award { background: var(--orange-soft); box-shadow: 4px 4px 0 var(--orange); padding: 14px 16px; display: grid; gap: 8px; }
-  .tp-panel.award h2 { font-size: 22px; }
-  .tp-panel.award header { padding: 0; align-items: center; }
-  .tp-panel header .rail-pill { font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); background: var(--accent-soft); border: 1.5px solid var(--edge); border-radius: 999px; }
-  .tp-panel header .rail-pill.balls { background: var(--orange); } .tp-panel header .rail-pill.flags { background: var(--pink); }
-  .tp-panel.award p { margin: 0; font-size: 15px; font-weight: 600; }
 
   /* Season tab */
-  .tp-chart { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); padding: 14px 14px 12px; }
-  .tp-plot { position: relative; height: 150px; margin-top: 24px; display: flex; gap: 14px; }
-  .tp-col { position: relative; flex: 1; min-width: 0; }
-  .tp-bar-w, .tp-bar-l { position: absolute; left: 0; right: 0; bottom: 0; height: var(--h); border: 2px solid var(--edge); border-radius: 8px 8px 0 0; box-sizing: border-box; }
-  .tp-bar-w { background: var(--accent); } .tp-bar-l { background: var(--pink); }
-  .tp-val { position: absolute; left: 0; right: 0; bottom: calc(var(--h) + 3px); text-align: center; font: 500 12.5px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-avg { position: absolute; left: 0; right: 0; bottom: var(--h); border-top: 1.5px dashed var(--ink); pointer-events: none; }
-  .tp-avg span { position: absolute; left: 0; bottom: 3px; font: 400 10.5px/1 var(--mono); color: var(--muted); background: var(--card); padding-right: 4px; }
-  .tp-axis { display: flex; gap: 14px; margin-top: 6px; }
-  .tp-axis span { flex: 1; text-align: center; font: 500 11.5px/1 var(--script); color: var(--muted); }
-  .tp-gm { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 44px; padding: 12px 14px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-gm .tp-res { text-align: center; font-size: 13px; padding: 5px 0; border-radius: 7px; }
-  .tp-gm b { font-weight: 800; font-size: 15px; }
-  .tp-gm .sc { display: block; margin-top: 2px; font: 400 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-gm .rt { text-align: right; font-size: 12px; color: var(--muted); }
-  .tp-gm .rt b { display: block; font: 500 13px/1.3 var(--mono); color: var(--ink); }
-  .tp-aw { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; line-height: 1.35; }
-  .tp-aw .aw-pill { flex: none; font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; background: var(--accent-soft); }
-  .tp-aw .aw-pill.breaks, .tp-panel header .rail-pill.breaks { background: var(--lime); }
-  .tp-aw .aw-pill.balls { background: var(--orange); } .tp-aw .aw-pill.flags { background: var(--pink); }
-  .tp-aw a { font-weight: 800; color: var(--accent); text-decoration: none; }
-  .tp-mv { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; overflow: hidden; }
-  .tp-mv[open] { box-shadow: 3px 3px 0 var(--drop); }
-  .tp-mv summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 50px; padding: 0 14px; cursor: pointer; list-style: none; font-weight: 800; font-size: 15px; }
-  .tp-mv summary::-webkit-details-marker { display: none; }
-  .tp-mv summary small { margin-left: 6px; font-weight: 500; font-size: 12.5px; color: var(--muted); }
-  .tp-mv summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-top: -4px; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-  .tp-mv[open] summary { background: var(--accent-soft); border-bottom: 2px solid var(--edge); }
-  .tp-mv[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
-  .tp-mvrow { display: grid; gap: 5px; padding: 10px 14px; font-size: 14px; }
-  .tp-mvrow + .tp-mvrow { border-top: 1.5px solid var(--rule); }
-  .tp-mvrow > span { display: flex; gap: 8px; align-items: baseline; }
-  .tp-mvrow > span.out { color: var(--muted); }
-  .tp-mvrow em { flex: none; width: 56px; padding: 3px 0; text-align: center; font: 600 10.5px/1 var(--script); font-style: normal; color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; }
-  .tp-mvrow .out em { background: var(--pink-soft); color: var(--ink); }
+  .sc-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+  @media (max-width: 760px) { .sc-grid { grid-template-columns: minmax(0, 1fr); } }
+  .sc-chart { padding: 14px 16px 10px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sc-chart svg { display: block; width: 100%; height: auto; }
+  .ch-w { fill: var(--lime); stroke: var(--edge); stroke-width: 2.5; }
+  .ch-l { fill: var(--pink-soft); stroke: var(--edge); stroke-width: 2.5; }
+  .ch-v { fill: var(--ink); font: 800 16px var(--display); text-anchor: middle; }
+  .ch-x { fill: var(--muted); font: 500 11px var(--mono); text-anchor: middle; }
+  .ch-avg { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
+  .ch-al { fill: var(--accent-ink); font: 500 10.5px var(--mono); text-anchor: end; }
+  .sc-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
+  @media (max-width: 760px) { .sc-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } }
+  @media (max-width: 520px) { .sc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .sc-tile { padding: 10px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
+  .sc-tile b { display: block; font: 900 28px/1 var(--display); }
+  .sc-tile b em { margin-left: 4px; font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); }
+  .sc-tile span { font: 500 10px/1.2 var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .sc-tile.l { background: var(--lime-soft); } .sc-tile.p { background: var(--pink-soft); } .sc-tile.o { background: var(--orange-soft); } .sc-tile.b { background: var(--accent-soft); }
+  .sc-audit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .sc-audit { grid-template-columns: minmax(0, 1fr); } }
+  .ov-take.l { background: var(--lime-soft); } .ov-take.b { background: var(--accent-soft); }
+  .ov-tag.w { background: var(--card); }
+  .sc-wk { padding: 4px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sc-wl { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--ink); text-decoration: none; border-bottom: 2px dotted var(--rule); }
+  .sc-wl:last-child { border-bottom: 0; }
+  .sc-wl:hover .t b { text-decoration: underline; }
+  .sc-wl .r { display: grid; place-items: center; flex: none; width: 26px; height: 26px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 8px; font: 800 12px/1 var(--body); }
+  .sc-wl .r.L { background: var(--pink-soft); color: var(--ink); }
+  .sc-wl .t { flex: 1; min-width: 0; }
+  .sc-wl .t b { font-weight: 700; }
+  .sc-wl .t small { display: block; font-size: 12px; color: var(--muted); }
+  .sc-wl .s { text-align: right; font: 500 13px/1.2 var(--mono); }
+  .sc-aw { padding: 2px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .acc .arow { display: grid; grid-template-columns: auto minmax(0, 1fr) 24px; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .aw-tag { min-width: 84px; padding: 2px 10px; text-align: center; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.5 var(--body); }
+  .aw-tag.flags { background: var(--pink); } .aw-tag.breaks { background: var(--accent-soft); color: var(--ink); } .aw-tag.moves { background: var(--card); color: var(--ink); }
+  .acc .at small { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .acc .at b { font: 700 15px/1.2 var(--body); }
+  .acc .cb.mvs { background: var(--card); }
+  .acc .mv { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0; }
+  .acc .mv i { padding: 1px 6px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 6px; font: 800 10px/1.5 var(--body); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; }
+  .acc .mv i.d { background: var(--pink-soft); color: var(--ink); }
+  .acc .mvw { margin: 8px 0 0; font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .acc .mvw:first-child { margin-top: 0; }
 
 __BTS_CSS__
 </style>
 
-<header class="site-head">
+<header class="site-head" id="site-head">
   <div class="wrap">
     <a class="brand" href="#">
       <span class="flag-mark" aria-hidden="true"></span>
       <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
     </a>
+    <span class="pgn" id="pgn" aria-hidden="true"></span>
+    <div class="va" id="va"></div>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
+      <a href="#" data-nav="mine" id="nav-mine" hidden>My team</a>
       <a href="#coach" data-nav="coach" id="nav-coach" hidden>Coach</a>
       <a href="#" data-nav="week" id="nav-week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
@@ -1275,6 +1594,8 @@ __BTS_CSS__
   </div>
 </header>
 <div class="ticker" id="ticker" role="region" aria-label="ESPN headlines about players on league rosters" hidden></div>
+<dialog class="pick-dialog who-dialog" id="who-dialog" aria-labelledby="who-h"></dialog>
+<div class="va-toast" id="va-toast" role="status" aria-live="polite" hidden></div>
 <div class="wrap">
   <main id="main" tabindex="-1"></main>
   <footer id="footer"></footer>
@@ -1324,14 +1645,20 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const liveShut = () => { const rows = advice(); return !!rows && rows.every((a) => a.can_change === false); };
   // Nothing left to fix in this week, so the tab leads with next week instead.
   const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
-  // Eight people, one page: remembering the last team someone picked lets the Coach page
-  // open as hers. Private windows throw on localStorage, which costs nothing.
-  // The in-memory copy matters now that Coach's team picker can't be dismissed: with storage
-  // blocked, a pick still has to stick for the visit or the picker would reopen forever.
-  let pickedTeam = null;
+  // Eight people, one page: "Viewing as" remembers which team is hers so her team lights up in
+  // orange everywhere. Private windows throw on localStorage, which costs nothing: the in-memory
+  // copies keep a pick (and the fact that she was asked) for the rest of the visit.
+  let pickedTeam = null, askedMem = false;
+  const KEY_TEAM = 'ffg-coach-team', KEY_ASKED = 'ffg-viewing-asked';
   const myTeam = {
-    get() { try { return Number(localStorage.getItem('ffg-coach-team')) || pickedTeam; } catch { return pickedTeam; } },
-    set(id) { pickedTeam = id; try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
+    get() {
+      let id = pickedTeam;
+      try { id = Number(localStorage.getItem(KEY_TEAM)) || pickedTeam; } catch { /* storage blocked */ }
+      return id && TEAMS[id] ? id : null;
+    },
+    set(id) { pickedTeam = id; askedMem = true; try { localStorage.setItem(KEY_TEAM, String(id)); localStorage.setItem(KEY_ASKED, '1'); } catch { /* no memory, no harm */ } },
+    clear() { pickedTeam = null; askedMem = true; try { localStorage.removeItem(KEY_TEAM); localStorage.setItem(KEY_ASKED, '1'); } catch { /* no memory, no harm */ } },
+    asked() { try { return localStorage.getItem(KEY_ASKED) === '1' || askedMem; } catch { return askedMem; } },
   };
   // Always the Coach page itself, never her profile: her team shows up there as the hero card.
   const coachHref = () => coachUrl(leadWithNext(), null);
@@ -1848,11 +2175,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ? `<tr class="peek-row" id="${id}"${PEEK.has(p.player_id) ? '' : ' hidden'}><td colspan="${cols}">${peekPanel(p, card)}</td></tr>`
     : '');
 
-  function peekPanel(p, card) {
+  // Where the points came from and what else is worth knowing; the blurb is drawn by the caller.
+  function peekDetail(p, card) {
     const lines = card.lines || [];
     return `
-      <div class="peek-body">
-        <p class="peek-blurb">${esc(card.blurb)}</p>
         ${lines.length ? `
         <table class="peek-lines">
           <caption>Where the points came from</caption>
@@ -1861,7 +2187,13 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           </tbody>
           <tfoot><tr><th scope="row">Total</th><td class="val"></td><td>${f2(p.points)}</td></tr></tfoot>
         </table>` : p.points > 0.005 ? `<p class="peek-none">ESPN hasn't broken these ${f2(p.points)} points down yet.</p>` : ''}
-        ${(card.notes || []).length ? `<ul class="peek-notes">${card.notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}
+        ${(card.notes || []).length ? `<ul class="peek-notes">${card.notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}`;
+  }
+
+  function peekPanel(p, card) {
+    return `
+      <div class="peek-body">
+        <p class="peek-blurb">${esc(card.blurb)}</p>${peekDetail(p, card)}
       </div>`;
   }
 
@@ -1927,40 +2259,185 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`;
   }
 
+  /* ---------- recap page (#week-N) pieces ---------- */
+  // What the page remembers while it's redrawn (the live refresh re-routes now and then):
+  // which game is open, which award filter is on, which glossary term is expanded.
+  const RP = { week: null, game: null, filter: 'all', term: null };
+  const rpState = (w) => {
+    if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: 'all', term: null });
+    return RP;
+  };
+
+  // Where a team stood after the week being viewed (rank and record as of then), falling back
+  // to the latest standings for the live week or a team with no history for it.
+  function standAt(id, w) {
+    const t = TEAMS[id];
+    if (!t) return '';
+    const hist = (t.rank_history || []).find((r) => r.week === w.week);
+    const played = (t.weekly || []).filter((g) => g.week <= w.week);
+    if (hist && played.length) {
+      const n = (r) => played.filter((g) => g.result === r).length;
+      return `${ordinal(hist.rank)} · ${n('W')}–${n('L')}${n('T') ? `–${n('T')}` : ''}`;
+    }
+    return `${ordinal(SEASON.standings.indexOf(t) + 1)} · ${record(t)}`;
+  }
+
+  // The winner's share of the two scores, as a percent for the tug bar and the tape.
+  const shareOf = (g) => {
+    const a = Math.max(g.winner.points, 0), b = Math.max(g.loser.points, 0);
+    return a + b > 0 ? (a / (a + b) * 100).toFixed(1) : '50.0';
+  };
+
+  // Every team's score, winner then loser per game, looped twice so the marquee never gaps.
+  function rpTicker(w) {
+    const items = w.games.flatMap((g) => [g.winner, g.loser])
+      .map((s) => `<span class="tk">${esc(s.manager)} <span class="num">${f2(s.points)}</span></span>`).join('');
+    return `<div class="rp-ticker" aria-hidden="true"><div class="ticker-track">${items}${items}</div></div>`;
+  }
+
+  // A collapsed game: winner left, loser right, a tug bar underneath. It's a button that picks
+  // which tape card is open below; the box score itself is the link inside the tape.
+  function gameCard(g, w, on) {
+    return `
+      <button type="button" class="gb${on ? ' sel' : ''}" data-rp-game="${esc(g.key)}" aria-pressed="${on}" aria-controls="rp-tape-${esc(g.key)}">
+        <span class="gb-split">${[['win', g.winner, 'W'], ['lose', g.loser, 'L']].map(([cls, s, r]) => {
+          const badge = w.complete ? `<span class="wl ${r}">${r}</span>` : '';
+          return `
+          <span class="gb-row ${cls}">
+            <span class="gb-who"><span class="gb-mgr">${esc(s.manager)}</span><span class="gb-team">${esc(s.team_name)}</span><span class="gb-stand">${standAt(s.team_id, w)}</span></span>
+            <span class="gb-score">${cls === 'win' ? `${f2(s.points)}${badge}` : `${badge}${f2(s.points)}`}</span>
+          </span>`;
+        }).join('')}</span>
+        <span class="tug" aria-hidden="true"><span class="a" style="width:${shareOf(g)}%"></span><span class="b"></span></span>
+        ${w.live && !w.complete ? liveStrip(g) : ''}
+      </button>`;
+  }
+
+  // The open game: both managers, a bar split by points, then the blurb and the box score link.
+  function tapeCard(g, w, on) {
+    return `
+      <article class="tape" id="rp-tape-${esc(g.key)}"${on ? '' : ' hidden'}>
+        <div class="tape-top">
+          <div class="tp win"><span class="tp-m">${esc(g.winner.manager)}</span><span class="tp-t">${esc(g.winner.team_name)}</span></div>
+          <div class="tp lose"><span class="tp-m">${esc(g.loser.manager)}</span><span class="tp-t">${esc(g.loser.team_name)}</span></div>
+        </div>
+        <div class="tape-bar" role="img" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}"><span class="tw" style="width:${shareOf(g)}%"><span class="tn">${f2(g.winner.points)}</span></span><span class="tl"><span class="tn">${f2(g.loser.points)}</span></span></div>
+        <div class="tape-quote">
+          ${g.blurb ? `<span class="qm" aria-hidden="true">&ldquo;</span><p class="blurb">${esc(g.blurb)}</p>` : ''}
+          <a class="open" href="${base(w)}.game-${g.key}">${w.live ? 'Live box score →' : 'Box score and lineup calls →'}</a>
+        </div>
+      </article>`;
+  }
+
+  // The sticker on each award card: two stroke paths on a 24px grid, in award order within
+  // its kind (it wraps if a week ever has more awards than icons).
+  const AWARD_ICONS = {
+    game_balls: [
+      ['M8 4h8v5a4 4 0 0 1-8 0V4z', 'M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 20h8M10 17h4'], // trophy
+      ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 12h.01'], // target
+      ['M4 20C4 11 11 4 20 4c0 9-7 16-16 16z', 'M9 15l6-6M10.5 10.5l1.5 1.5M12.5 12.5l1.5 1.5'], // football
+    ],
+    flags: [
+      ['M5 21V4', 'M5 4h12l-2 4 2 4H5'], // flag
+      ['M3 17h18M6 17v3M18 17v3', 'M5 17v-4h14v4M8 13V9h8v4'], // bench
+    ],
+    tough_breaks: [
+      ['M13 2L4 14h7l-1 8 9-12h-7l1-8z', 'M13 2'], // lightning bolt
+      ['M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5', 'M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5'], // redo arrows
+      ['M3 7l6 6 4-4 8 8', 'M15 17h6v-6'], // falling trend line
+    ],
+  };
+
+  function rpAwardCard(c, kind, i) {
+    const k = KIND[kind], icons = AWARD_ICONS[kind];
+    const [d1, d2] = icons[i % icons.length];
+    return `
+      <article class="card ${k.cls}" style="animation-delay:${(i * 0.09).toFixed(2)}s">
+        <div class="card-top"><span class="aw-lhs"><span class="aw-stk" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d1}"/><path d="${d2}"/></svg></span><span class="who">${mgrLink(c.manager)}</span></span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
+        <span class="aw-kind">${k.label}</span>
+        <h3>${esc(c.title)}</h3>
+        <p>${esc(c.text)}</p>
+      </article>`;
+  }
+
+  // The compact standings as a sticker card: rank, move, team, record, and a bar for points scored.
+  function rpStandings(rows) {
+    const max = Math.max(...rows.map((t) => t.points_for), 1);
+    return `
+      <div class="rp-std-card"><div class="table-scroll"><table class="rp-std">
+        <thead><tr><th></th><th title="Places gained or lost in the standings after the latest week">Move</th><th>Team</th><th class="r">Record</th><th class="r c5" title="Total points scored this season">Scored</th></tr></thead>
+        <tbody>${rows.map((t, i) => `
+          <tr class="${i === 0 ? 'top' : ''}">
+            <td class="rk">${i + 1}</td>
+            <td>${rankMove(t.rank_move)}</td>
+            <td><span class="tm"><a class="mg" href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tn">${esc(t.team_name)}</span></span></td>
+            <td class="r rec">${record(t)}</td>
+            <td class="r c5"><span class="sc"><span class="v">${f2(t.points_for)}</span><span class="bar"><i style="width:${(t.points_for / max * 100).toFixed(1)}%;animation-delay:${(0.15 + i * 0.07).toFixed(2)}s"></i></span></span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div></div>`;
+  }
+
+  // A glossary term as an expanding card. The wording is the recap's own, untouched.
+  const rpTerm = (g, i, open) => `
+    <div class="rp-term${open ? ' open' : ''}">
+      <button type="button" class="rp-term-btn" data-rp-term="${i}" aria-expanded="${open}" aria-controls="rp-term-${i}"><span class="tt">${esc(g.term)}</span><span class="plus" aria-hidden="true"></span></button>
+      <div class="rp-term-body" id="rp-term-${i}"><div><p>${esc(g.definition)}</p></div></div>
+    </div>`;
+
   /* ---------- pages ---------- */
   function weekPage(w) {
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
+    const st = rpState(w);
+    const open = w.games.some((g) => g.key === st.game) ? st.game : (w.games[0] || {}).key;
+    const filter = st.filter === 'all' || kinds.includes(st.filter) ? st.filter : 'all';
+    const term = st.term == null ? 0 : st.term;
     return `
       ${LIVE ? `<a class="live-banner" href="#live"><span>${deadZone() ? '' : '<span class="live-dot" aria-hidden="true"></span>'}${deadZone() ? `Week ${LIVE.week}: scores, coach cards and who's up next` : liveLabel(LIVE)}</span><span class="go">${deadZone() ? 'Take a look →' : (LIVE.complete ? 'Final scores →' : 'Live scores →')}</span></a>` : ''}
       ${weekSwitch(w)}
       ${draftBanner(w)}
-      <div class="page-head">
-        <div class="kicker">Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
-        <h1>${esc(w.headline || `Week ${w.week}`)}</h1>
-        ${w.dek ? `<p class="dek">${esc(w.dek)}</p>` : ''}
-        ${scorePills(w)}
-      </div>
+      <div class="rp">
+      <header class="rp-hero">
+        <div class="rp-big" aria-hidden="true">${w.week}</div>
+        <div class="rp-hero-in">
+          <div class="kicker rp-rv d1"><i aria-hidden="true"></i>Week ${w.week} recap${w.complete ? ' · final' : ' (in progress)'}</div>
+          <h1 class="rp-rv d2">${esc(w.headline || `Week ${w.week}`)}</h1>
+          ${w.dek ? `<p class="dek rp-rv d3">${esc(w.dek)}</p>` : ''}
+          <div class="rp-rv d4">${scorePills(w)}</div>
+        </div>
+      </header>
+      ${rpTicker(w)}
 
       <section>
         ${secHead('board', 'Scoreboard')}
         <p class="sec-sub">Tap a game for the full box score and the lineup decisions that settled it.</p>
-        <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
+        <div class="rp-sb">
+          <div class="game-list">${w.games.map((g) => gameCard(g, w, g.key === open)).join('')}</div>
+          <div class="rp-tapes" aria-live="polite">${w.games.map((g) => tapeCard(g, w, g.key === open)).join('')}</div>
+        </div>
       </section>
 
       ${kinds.length ? `
-      <section>
+      <section class="rp-aw">
         ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
-        <p class="sec-sub">The top pick from each category. The rest are on the awards page.</p>
-        <div class="cards">${kinds.map((k) => awardCard(w[k][0], k)).join('')}</div>
+        <div class="rp-filters" role="group" aria-label="Filter awards">
+          ${[['all', `All ${nAwards} awards`], ...kinds.map((k) => [k, KIND[k].title])].map(([k, label]) =>
+            `<button type="button" class="chip${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}">${label}</button>`).join('')}
+        </div>
+        ${kinds.map((k) => `
+        <div class="rp-grp" data-rp-kind="${k}"${filter === 'all' || filter === k ? '' : ' hidden'}>
+          <div class="grp-head"><h3>${KIND[k].title}</h3><p>${KIND[k].sub}</p></div>
+          <div class="cards">${w[k].map((c, i) => rpAwardCard(c, k, i)).join('')}</div>
+        </div>`).join('')}
       </section>` : ''}
 
       <section>
-        <div class="two-col">
+        <div class="rp-two">
           <div>
             ${secHead('board', 'Standings', '<a class="more" href="#standings">Full standings →</a>')}
             <p class="sec-sub">Final standings through Week ${latest().week}. Only finished, recapped weeks count${LIVE ? `, so Week ${LIVE.week} joins after its recap` : ''}.</p>
-            <div class="std-card">${standingsTable(SEASON.standings, { compact: true })}</div>
+            ${rpStandings(SEASON.standings)}
           </div>
           <div>
             ${secHead('ball', 'Top scorers')}
@@ -1974,8 +2451,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${w.glossary.length ? `
       <section>
         ${secHead('book', `New words from Week ${w.week}`, '<a class="more" href="#glossary">Full glossary →</a>')}
-        <div class="chips">${w.glossary.map((g) => `<a href="#glossary" title="${esc(g.definition)}">${esc(g.term)}</a>`).join('')}</div>
-      </section>` : ''}`;
+        <div class="rp-terms">${w.glossary.map((g, i) => rpTerm(g, i, i === term)).join('')}</div>
+      </section>` : ''}
+      </div>`;
   }
 
   function livePage(w) {
@@ -2780,241 +3258,317 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      is the week's lineup and to-dos, #team-<id>.next is the same tab pointed at next week, and
      #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves. */
   const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season']];
-  const tpTabs = (id, tab) => `<nav class="tp-tabs" aria-label="Profile sections">${TP_TABS.map(([k, label, sfx]) =>
-    `<a href="#team-${id}${sfx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
   const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
-  const TP_SEEDED = new Set();
+
+  /* Her playoff odds, said so they can't be misread. Before kickoff the Week hub's simulation
+     knows the odds if she loses this week's game and if she wins it, so the header shows that
+     range. Once it has kicked off the range is gone and what is left is today's single number,
+     which the header labels as what it is. */
+  function tpOdds(id) {
+    const st = hub().stakes;
+    if (st && LIVE && st.week === LIVE.week) {
+      const g = st.games.find((x) => x.teams.some((r) => r.team_id === id));
+      const mine = g && g.teams.find((r) => r.team_id === id);
+      const theirs = g && g.teams.find((r) => r.team_id !== id);
+      if (mine && mine.win != null && mine.lose != null) return { lose: mine.lose, win: mine.win, opp: theirs ? nameOf(theirs.team_id) : null };
+    }
+    const po = SEASON.playoffs && SEASON.playoffs.teams.find((x) => x.team_id === id);
+    return po ? { now: po.playoff } : null;
+  }
+  // "81–94%", or one number when the game barely moves it.
+  function oddsRange(o) {
+    if (!o) return null;
+    if (o.now != null) return { text: pct(o.now), sub: 'chance to make the top 4' };
+    const lo = pct(o.lose), hi = pct(o.win);
+    const vs = o.opp ? ` vs ${o.opp}` : '';
+    return lo === hi ? { text: hi, sub: `either way${vs}` } : { text: `${lo.replace('%', '')}–${hi}`, sub: `lose–win${vs}` };
+  }
+
+  function tpStrip(id, sfx, next) {
+    const youId = myTeam.get();
+    return `
+      <nav class="tp-strip" aria-label="Teams, in standings order">${SEASON.standings.map((x) => {
+        const a = coachFor(x.team_id, next);
+        const n = a ? a.counts.now : 0;
+        const bits = [x.manager, n ? `${n} fix${n === 1 ? '' : 'es'} waiting` : '', x.team_id === youId ? 'you' : ''].filter(Boolean).join(', ');
+        return `<a class="tp-chip" href="#team-${x.team_id}${sfx}"${x.team_id === id ? ' aria-current="page"' : ''} aria-label="${esc(bits)}">${esc(x.manager)}${x.team_id === youId ? '<i class="you" aria-hidden="true"></i>' : ''}${n ? `<span class="n" aria-hidden="true">${n}</span>` : ''}</a>`;
+      }).join('')}</nav>
+      <p class="tp-key" aria-hidden="true"><span><i class="n"></i> fixes waiting</span><span><i class="you"></i> you</span><span>sorted by standings</span></p>`;
+  }
+
+  /* The same top on all three tabs: breadcrumb, team strip, identity card, tab bar. The tab bar
+     is sticky; tpSticky keeps its `top` equal to the site header's height and flips `.stuck`
+     (which shows the mini identity) once the identity card has scrolled out from under it. */
+  function tpHeader(id, t, tab, sfx, next) {
+    const rank = SEASON.standings.indexOf(t) + 1;
+    const onCoach = !!coachFor(id, false);
+    const odds = oddsRange(tpOdds(id));
+    const you = myTeam.get() === id;
+    return `
+      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(t.manager)}</span>${you ? '<span class="you-tag">you</span>' : ''}</div>
+      ${tpStrip(id, sfx, next)}
+      <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
+        <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}</div>
+        <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
+        <dl class="tp-stats">
+          ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${odds.text}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
+          <div><dt>Avg score</dt><dd>${f1(t.avg)}</dd></div>
+          <div><dt>Best week</dt><dd>${t.best ? `${f1(t.best.points)}<small>W${t.best.week}</small>` : '–'}</dd></div>
+          <div><dt>Vs. everyone</dt><dd>${t.all_play_w}–${t.all_play_l}</dd></div>
+        </dl>
+      </section>
+      <div class="tp-tabbar" id="tp-tabbar">
+        <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
+        <nav class="tp-seg" aria-label="Profile sections">${TP_TABS.map(([k, label, sx]) =>
+          `<a href="#team-${id}${k === 'lineup' && next ? '.next' : sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+      </div>`;
+  }
 
   function teamPage(id, tab = 'overview', next = false) {
     const t = TEAMS[id];
     if (!t) return notFound();
     next = !!(next && ahead());                     // no current next-week capture → This week
-    const rank = SEASON.standings.indexOf(t) + 1;
     const p = t.profile || { audit: [], moves: [], weak_spot: null };
-    const onCoach = !!coachFor(id, false);
-    if (tab !== 'overview') {
-      return `
-        <a class="tp-bar" href="#team-${id}" aria-label="${esc(t.manager)}, back to the overview">
-          <span><span class="back">‹ ${esc(t.team_name)}</span><span class="nm">${esc(t.manager)}</span></span>
-          <span class="rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></span>
-        </a>
-        ${coachFor(id, false) ? teamSwitch(id, next) : ''}
-        ${tpTabs(id, tab)}
-        ${tab === 'lineup' ? thisWeekSection(id, next) : tpSeason(id, t, p)}`;
-    }
+    const sfx = next ? '.next' : (TP_TABS.find(([k]) => k === tab) || [])[2] || '';
+    const head = tpHeader(id, t, tab, sfx, next);
+    if (tab === 'lineup') return head + tpLineup(id, next);
+    if (tab === 'season') return head + tpSeason(id, t, p);
     return `
-      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span>›</span><span>${esc(t.manager)}</span></div>
-      ${onCoach ? teamSwitch(id, false) : ''}
-      <section class="tp-hero" aria-labelledby="tp-h">
-        <div class="tp-hero-top"><span class="tp-tname">${esc(t.team_name)}</span>${myTeam.get() === id ? '<span class="tp-you">You</span>' : ''}</div>
-        <h1 id="tp-h">${esc(t.manager)}</h1>
-        <div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div>
-        <div class="tp-stats">
-          <div><div class="l">Avg score</div><div class="v">${f1(t.avg)}</div></div>
-          <div><div class="l">Best week</div><div class="v">${t.best ? `${f1(t.best.points)} <small>W${t.best.week}</small>` : '–'}</div></div>
-          <div><div class="l">Vs. everyone</div><div class="v">${t.all_play_w}–${t.all_play_l}</div></div>
-          <div><div class="l">Points benched</div><div class="v">${f1(t.bench_left)}</div></div>
-        </div>
-      </section>
-      ${tpTabs(id, 'overview')}
-      <div class="tp-cols">
-        <div>
-          ${tpMatchup(id)}
-          ${tpTake(id, p)}
-          ${tpAdvice(id)}
-          ${tpSoFar(t)}
-          ${tpDig(id, t, p)}
-        </div>
-        <aside class="tp-rail" aria-label="Quick looks">${tpRail(id, t, p)}</aside>
-      </div>
+      ${head}
+      <div class="ov-grid">${tpMatchup(id)}${tpPlayoffs(id, t)}</div>
+      ${tpTake(id, p)}
+      ${tpNext(id)}
       <p class="tp-foot">Everything here comes from ESPN's projections and injury report. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.</p>`;
   }
 
-  /* Overview: the week being played, boiled down to the matchup, the odds and one sentence. */
+  /* ---------- faces ----------
+     Every place a player is named gets a face chip: his ESPN headshot (a D/ST gets its logo) with a
+     small NFL team badge, the same sources as Recaps' Top scorers. The week-ahead capture, the audit
+     cards and the award stories only carry a player's id, so his NFL team is looked up from the
+     live week's boxes, which list every rostered player. No badge beats a wrong one. */
+  const HEADSHOT_URL = (id) => `https://a.espncdn.com/i/headshots/nfl/players/full/${id}.png`;
+  let proIdx = null, proIdxFor = null;
+  function proOf(id) {
+    if (!LIVE || id == null) return null;
+    if (proIdxFor !== LIVE.games) {
+      proIdx = new Map();
+      LIVE.games.forEach((g) => [g.winner, g.loser].forEach((s) => [...s.starters, ...s.bench].forEach((p) => {
+        if (p.player_id != null) proIdx.set(p.player_id, p);
+      })));
+      proIdxFor = LIVE.games;
+    }
+    return proIdx.get(id) || null;
+  }
+  // A player from anywhere in the data: {player_id|id, name, pos, team?, logo?}, completed from the live boxes.
+  function whoIs(p) {
+    const id = p.player_id ?? p.id;
+    const known = proOf(id) || {};
+    return { id, name: p.name || known.name || '', pos: p.pos || known.pos || '', logo: p.logo || known.logo || null, team: p.team || known.team || '' };
+  }
+  const isDst = (w) => w.pos === 'DST' || w.pos === 'D/ST' || w.id < 0;
+  function face(p, size = '') {
+    const w = whoIs(p);
+    const fallback = `this.onerror=null;this.src='${NO_HEADSHOT}'`;
+    if (w.id == null && !isDst(w)) return `<span class="pf ${size}"><img class="img" src="${NO_HEADSHOT}" alt=""></span>`;
+    if (isDst(w)) return `<span class="pf dst ${size}">${w.logo ? `<img class="img" src="${esc(w.logo)}" alt="" loading="lazy" onerror="${fallback}">` : '<span class="img"></span>'}</span>`;
+    return `<span class="pf ${size}"><img class="img" src="${esc(HEADSHOT_URL(w.id))}" alt="" loading="lazy" onerror="${fallback}">${w.logo ? `<img class="nfl" src="${esc(w.logo)}" alt="" title="${esc(w.team)}" loading="lazy" onerror="this.remove()">` : ''}</span>`;
+  }
+  // The inline version: face, name, and an optional small gray note ("22.2 proj").
+  const ref = (p, note = '') => { const w = whoIs(p); return `<span class="ref">${face(p, 'xs')}<span class="rn">${esc(w.name)}</span>${note ? `<em>${esc(note)}</em>` : ''}</span>`; };
+  const refs = (list) => (list && list.length ? `<div class="refs">${list.map((x) => ref(x)).join('')}</div>` : '');
+  // The players a Coach item is about: every player id inside its key that is on a roster in the live week.
+  function itemFaces(it, limit = 2) {
+    const out = [];
+    for (const tok of String(it.key || '').split(':')) {
+      const n = Number(tok);
+      if (!Number.isInteger(n) || (n > -1000 && n < 1000)) continue;
+      const p = proOf(n);
+      if (p && !out.some((x) => x.player_id === n)) out.push(p);
+    }
+    return out.slice(0, limit);
+  }
+
+  /* ---------- Overview: one snapshot ---------- */
   function tpMatchup(id) {
     const a = coachFor(id, false);
+    const t = TEAMS[id];
     if (!a) {
       const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
-      return `<section class="tp-sec">${tpHead('--accent', 'This week')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
+      return `<div class="ov-card"><div class="ov-lab">This week</div><p class="ov-p" style="margin-bottom:0">Nothing to fix until Week ${wk}'s rosters land.</p></div>`;
     }
     const g = LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
-    const opp = g ? (g.winner.team_id === id ? g.loser : g.winner) : TEAMS[a.opponent_id];
-    const tone = a.counts.now ? 'now' : a.counts.watch ? 'watch' : 'ok';
-    const badge = a.can_change === false ? 'Locked in' : a.counts.now ? `${a.counts.now} to fix` : a.counts.watch ? `${a.counts.watch} to watch` : 'All clear';
+    const theirs = g && (g.winner.team_id === id ? g.loser : g.winner);
+    const opp = theirs ? TEAMS[theirs.team_id] : TEAMS[a.opponent_id];
+    const oppRow = opp && coachFor(opp.team_id, false);
     const wp = a.win_probability;
+    const state = LIVE.complete ? 'final' : LIVE.kicked_off ? 'in progress' : 'not started';
+    const fixes = a.items.filter((it) => it.level === 'now');
+    const first = fixes[0];
+    const oppName = opp ? opp.manager : 'Opponent TBD';
+    const lastName = (s) => esc(s.manager);
     return `
-      <section class="tp-sec" aria-labelledby="tp-wk">
-        <div class="tp-head"><span class="mark" style="--c:var(--accent)" aria-hidden="true"></span><h2 id="tp-wk">Week ${LIVE.week}, right now</h2>${g ? `<a class="more" href="#live.game-${g.key}">Live box score →</a>` : ''}</div>
-        <div class="tp-match">
-          <div class="tp-vs"><span class="nm">${opp ? `vs <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>` : 'Opponent TBD'}</span><span class="tp-badge ${tone}">${badge}</span></div>
-          ${wp == null ? '' : `<div class="tp-win">
-            <div class="row"><span class="lab">Chance to win</span><span class="big">${Math.round(wp * 100)}%</span></div>
-            <div class="tp-meter" role="img" aria-label="Chance to win ${Math.round(wp * 100)} percent"><i style="width:${(wp * 100).toFixed(1)}%"></i></div>
-            <div class="src">ESPN's number</div></div>`}
-          <div class="tp-nums">
-            <div><b>${f1(a.projected)}</b><span>projected</span></div>
-            <div><b>${mine ? f1(mine.points) : '–'}</b><span>on the board</span></div>
-            <div><b>${a.yet_to_play}</b><span>starter${a.yet_to_play === 1 ? '' : 's'} left to play</span></div>
-          </div>
-          <div class="tp-note ${tone}">${tone === 'ok' ? TP_CHECK : ''}<p>${esc(a.summary)}${a.counts.now && a.can_change !== false ? `<br><a href="#team-${id}.lineup">See the fixes →</a>` : ''}</p></div>
-          ${ahead() ? `<a class="tp-live" href="#team-${id}.next">Week ${ahead().week} is coming up. See next week →</a>` : ''}
-        </div>
-      </section>`;
+      <div class="ov-card" aria-labelledby="ov-wk">
+        <div class="ov-lab" id="ov-wk">Week ${LIVE.week} · ${state}</div>
+        <div class="ov-vs"><span class="mg" aria-hidden="true">${esc(t.manager[0])}</span><b>${esc(t.manager)}</b><i>vs</i>${opp ? `<span class="mg t" aria-hidden="true">${esc(opp.manager[0])}</span><b><a href="#team-${opp.team_id}">${esc(oppName)}</a></b>` : `<b>${esc(oppName)}</b>`}</div>
+        ${wp == null ? '' : `
+        <div class="ov-wc"><div><b style="color:var(--accent)">${Math.round(wp * 100)}%</b><span>${lastName(t)}'s chance to win</span></div><div class="r"><b>${Math.round((1 - wp) * 100)}%</b><span>${esc(oppName)}'s chance to win</span></div></div>
+        <div class="ov-bar" role="img" aria-label="ESPN's win chance: ${esc(t.manager)} ${Math.round(wp * 100)} percent, ${esc(oppName)} ${Math.round((1 - wp) * 100)} percent"><i style="width:${(wp * 100).toFixed(1)}%"></i></div>
+        <div class="ov-legend" aria-hidden="true"><span><i class="sq" style="background:var(--accent)"></i>${esc(t.manager)}</span><span>ESPN's win chance</span><span>${esc(oppName)}<i class="sq" style="background:var(--pink)"></i></span></div>`}
+        <dl class="ov-stats">
+          <div><dt>${esc(t.manager)} proj</dt><dd>${f1(mine ? projOf(mine) : a.projected)}</dd></div>
+          <div><dt>${esc(oppName)} proj</dt><dd>${theirs ? f1(projOf(theirs)) : oppRow ? f1(oppRow.projected) : '–'}</dd></div>
+          <div><dt>Starters left</dt><dd>${a.yet_to_play}</dd></div>
+        </dl>
+        ${first
+          ? `<div class="ov-fix"><span aria-hidden="true">⚠</span><div><b>${fixes.length} to fix.</b> ${esc(first.title)}.${refs(itemFaces(first))}</div><a class="go" href="#team-${id}.lineup">See it →</a></div>`
+          : `<div class="ov-fix ok"><span aria-hidden="true">${TP_CHECK}</span><div>${esc(a.summary)}</div></div>`}
+      </div>`;
   }
 
-  /* The audit cards, swipeable on a phone. The full text lives on the Season tab. */
+  // Playoffs, in words. The odds are the chance to finish in the top 4 of 8; the two numbers are what
+  // they become if she loses this week's game and if she wins it, from the same simulation as Standings.
+  function tpPlayoffs(id, t) {
+    const po = SEASON.playoffs;
+    const rank = SEASON.standings.indexOf(t) + 1;
+    const cfg = po && po.config;
+    const o = tpOdds(id);
+    const n = cfg ? cfg.teams : 4;
+    let body;
+    if (o && o.lose != null) {
+      const lo = Math.round(o.lose * 100), hi = Math.round(o.win * 100);
+      const vs = o.opp ? ` ${esc(o.opp)}` : ' this week';
+      body = lo === hi || pct(o.lose) === pct(o.win)
+        ? `<div class="ov-odds"><div class="n"><span>Either way${o.opp ? ` against ${esc(o.opp)}` : ''}</span><b>${pct(o.win)}</b></div></div>
+           <p class="ov-worth">This week's game barely moves ${esc(t.manager)}'s odds.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''}</p>`
+        : `<div class="ov-odds"><div><span>If ${esc(t.manager)} loses to${vs}</span><b>${pct(o.lose)}</b></div><div class="ar" aria-hidden="true">→</div><div class="w"><span>If ${esc(t.manager)} beats${vs}</span><b>${pct(o.win)}</b></div></div>
+           <p class="ov-worth">So this week's game is worth <b>${hi - lo} points</b> of playoff odds.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''} Same math as Standings.</p>`;
+    } else if (o && o.now != null) {
+      body = `<div class="ov-odds"><div class="n"><span>${esc(t.manager)}'s chance of a playoff spot right now</span><b>${pct(o.now)}</b></div></div>
+        <p class="ov-worth">Once this week's games are in, Coach shows what a win or a loss does to it.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''} Same math as Standings.</p>`;
+    } else {
+      body = '<p class="ov-worth">Playoff odds show up once there is a finished week to simulate from.</p>';
+    }
+    return `
+      <div class="ov-card" aria-labelledby="ov-po">
+        <div class="ov-lab" id="ov-po">Playoff picture</div>
+        <div class="ov-seed"><b>${ordinal(rank)} seed</b><span class="ov-tag">Top ${n} advance</span></div>
+        <p class="ov-p">Playoff odds are ${esc(t.manager)}'s chance to finish in the top ${n} of ${SEASON.standings.length} and make the playoffs.</p>
+        ${body}
+      </div>`;
+  }
+
+  // One audit card, as the orange take. The other two are on the Season tab.
   function tpTake(id, p) {
+    if (!p.audit.length) return `<section class="tp-sec">${tpHead('--orange', "Coach's take")}<p class="sec-sub">The coach needs one finished week before she has opinions.</p></section>`;
+    const it = p.audit.find((x) => x.kind === 'position') || p.audit[0];
     return `
       <section class="tp-sec" aria-labelledby="tp-take">
-        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-take">Coach's take</h2>${p.audit.length ? `<a class="more" href="#team-${id}.season">All ${p.audit.length} →</a>` : ''}</div>
-        ${p.audit.length
-          ? `<div class="tp-take">${p.audit.map(adviceCard).join('')}</div>`
-          : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
+        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-take">Coach's take</h2><a class="more" href="#team-${id}.season">All ${p.audit.length} on Season →</a></div>
+        <article class="ov-take"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p>${refs(it.players)}</article>
       </section>`;
   }
 
-  function tpAdvice(id) {
-    const a = coachFor(id, false);
-    if (!a) return '';
-    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
-    // never went through site_data(), so a baked tag would vanish on the first refresh.
-    const weak = (TEAMS[id].profile || {}).weak_spot;
-    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
-    const waiver = ideas.filter((it) => !it.trade);
-    const trades = ideas.filter((it) => it.trade);
-    const col = (label, note, items) => (items.length ? `<div><div class="tp-sub"><span>${label}</span><small>${note}</small></div>${items.map(adviceCard).join('')}</div>` : '');
+  // The opponent after this week's game, from the week-ahead capture, with the one player of hers to watch.
+  function tpNext(id) {
+    const a = ahead() && coachFor(id, true);
+    const opp = a && TEAMS[a.opponent_id];
+    if (!opp) return '';
+    const row = coachFor(opp.team_id, true);
+    const roster = row && row.lineup ? [...row.lineup.starters, ...row.lineup.bench] : [];
+    const key = a.items.find((it) => it.kind === 'matchup');
+    const named = key && itemFaces(key, 5).map((x) => roster.find((r) => r.player_id === x.player_id)).find(Boolean);
+    const watch = named || [...roster.filter((r) => r.slot !== 'BENCH' && r.slot !== 'IR')].sort((x, y) => (y.projected || 0) - (x.projected || 0))[0];
     return `
-      <section class="tp-sec" aria-labelledby="tp-adv">
-        ${tpHead('--lime', "Coach's advice").replace('<h2>', '<h2 id="tp-adv">')}
-        ${ideas.length
-          ? `<p class="sec-sub">Ideas, not orders. A trade only shows up here if it helps both teams.</p>
-             <div class="tp-ideas">${col('Waiver wire', 'From FantasyPros and everyone\'s rosters', waiver)}${col('Trade idea', 'Checked against both lineups', trades)}</div>`
-          : '<p class="sec-sub">No new ideas today.</p>'}
+      <section class="tp-sec" aria-labelledby="tp-next">
+        ${tpHead('--accent', "Who's next").replace('<h2>', '<h2 id="tp-next">')}
+        <div class="ov-card ov-next"><span class="mon" aria-hidden="true">${esc(opp.manager[0])}</span><div><div class="nm"><a href="#team-${opp.team_id}">${esc(opp.manager)}</a> (${record(opp)}), Week ${ahead().week}</div>
+          ${watch ? `<div class="sub">Keep an eye on ${ref(watch, watch.projected ? `${f1(watch.projected)} proj` : '')}</div>` : ''}</div></div>
       </section>`;
   }
 
-  function tpSoFar(t) {
-    if (!t.weekly.length) return '';
-    return `
-      <section class="tp-sec" aria-labelledby="tp-sofar">
-        <div class="tp-head"><span class="mark" style="--c:var(--pink)" aria-hidden="true"></span><h2 id="tp-sofar">Season so far</h2><a class="more" href="#team-${t.team_id}.season">Week by week and awards →</a></div>
-        <div class="tp-weeks">${t.weekly.map((g) => `
-          <a class="tp-wk" href="#week-${g.week}.game-${g.game_key}" aria-label="Week ${g.week} against ${esc(g.opponent)}: ${g.result === 'W' ? 'won' : 'lost'}, ${f1(g.points)} points, ${g.score_rank} of 8 that week">
-            <span class="wl">WEEK ${g.week}<span class="tp-opp"> · ${esc(g.opponent).toUpperCase()}</span></span><span class="tp-res ${g.result}">${g.result}</span><b>${f1(g.points)}</b><small>${g.score_rank} of 8</small>
-          </a>`).join('')}</div>
-        <p class="sec-sub">Score, then where it ranked among all 8 teams that week.</p>
-      </section>`;
+  /* Season tab: the scores, Coach's audit, every game, then awards and roster moves as accordions. */
+  function seasonChart(t) {
+    const W = 560, H = 160, pad = 8, base = H - 26, top = 24;
+    const n = t.weekly.length;
+    const maxv = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1) * 1.04;
+    const slot = (W - pad * 2) / n, bw = Math.min(58, slot * 0.74);
+    const yOf = (v) => base - (base - top) * (v / maxv);
+    const bars = t.weekly.map((g, i) => {
+      const x = pad + i * slot + (slot - bw) / 2, y = yOf(g.points);
+      return `<rect class="${g.result === 'L' ? 'ch-l' : 'ch-w'}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${(base - y).toFixed(1)}" rx="7"/>
+        <text class="ch-v" x="${(x + bw / 2).toFixed(1)}" y="${(y - 6).toFixed(1)}">${f1(g.points)}</text>
+        <text class="ch-x" x="${(x + bw / 2).toFixed(1)}" y="${H - 8}">W${g.week} · ${g.result}</text>`;
+    }).join('');
+    const ay = yOf(t.avg).toFixed(1);
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">${bars}<line class="ch-avg" x1="0" x2="${W}" y1="${ay}" y2="${ay}"/><text class="ch-al" x="${W - 2}" y="${(ay - 5).toFixed(1)}">avg ${f1(t.avg)}</text></svg>`;
   }
 
-  // Phones skip the side rail, so its quick looks become two doors into the other tabs.
-  function tpDig(id, t, p) {
-    const kinds = AWARD_KINDS.map((k) => [k, t.awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
-    const counts = [...kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`), `${p.moves.length} roster move${p.moves.length === 1 ? '' : 's'}`].join(', ');
-    return `
-      <section class="tp-dig" aria-label="More detail">
-        <a href="#team-${id}.lineup"><span><b>Full lineup</b><small>Starters, bench and ${f1(t.bench_left)} points benched this season</small></span><span class="chev" aria-hidden="true">›</span></a>
-        <a href="#team-${id}.season"><span><b>Week by week, awards and moves</b><small>${counts}</small></span><span class="chev" aria-hidden="true">›</span></a>
-      </section>`;
-  }
-
-  // Laptop only: her starters, the latest moves and the latest award, without leaving Overview.
-  function tpRail(id, t, p) {
-    const a = coachFor(id, false);
-    const g = a && LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
-    const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
-    const starters = mine ? [...mine.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot)) : [];
-    const latestWeek = p.moves.length ? p.moves[0].week : null;
-    const latest = p.moves.filter((m) => m.week === latestWeek);
-    const award = [...t.awards].sort((x, y) => y.week - x.week)[0];
-    const names = (xs) => xs.map(esc).join(', ');
-    return `
-      ${mine ? `
-      <section class="tp-panel" aria-labelledby="tp-ln">
-        <header><h2 id="tp-ln">${id === myTeam.get() ? 'Your' : `${esc(t.manager)}\'s`} lineup</h2><span>${f2(mine.points)} · proj ${f1(a.projected)}</span></header>
-        ${starters.map((s) => `<div class="tp-ln"><span class="slot">${esc(s.slot)}</span><b>${esc(s.name)}</b><span class="pts">${f2(s.points)}</span></div>`).join('')}
-        <a class="go" href="#team-${id}.lineup">Bench and full lineup →</a>
-      </section>` : ''}
-      <section class="tp-panel" aria-labelledby="tp-mv">
-        <header><h2 id="tp-mv">Latest moves</h2>${latestWeek ? `<span>Week ${latestWeek}</span>` : ''}</header>
-        ${latest.length ? latest.map((m) => `<div class="tp-mvrow" style="border-top:1.5px solid var(--rule)">${moveLines(m, names)}</div>`).join('')
-          : '<p class="sec-sub" style="padding:0 16px 14px">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
-        <a class="go" href="#team-${id}.season">${p.moves.length ? `See all ${p.moves.length} move${p.moves.length === 1 ? '' : 's'} →` : 'Open the season →'}</a>
-      </section>
-      ${award ? `
-      <section class="tp-panel award" aria-labelledby="tp-aw">
-        <header><h2 id="tp-aw">Latest award</h2><span class="rail-pill ${KIND[award.kind].cls}">${KIND[award.kind].label}</span></header>
-        <p><a href="#week-${award.week}.awards" style="color:var(--accent);font-weight:800;text-decoration:none">Week ${award.week}</a> · ${esc(award.title)}</p>
-        <a href="#team-${id}.season" style="font-weight:700;font-size:13.5px;color:var(--accent)">All ${t.awards.length} awards →</a>
-      </section>` : ''}`;
-  }
-
-  const moveLines = (m, names) => `
-    ${m.added.length ? `<span><em>Added</em><b>${names(m.added)}</b></span>` : ''}
-    ${m.dropped.length ? `<span class="out"><em>${m.type === 'trade' ? 'Sent' : 'Dropped'}</em>${names(m.dropped)}</span>` : ''}`;
-
-  /* Season tab: how every week went, the audit in full, every game, her awards and every move. */
   function tpSeason(id, t, p) {
+    const who = id === myTeam.get() ? 'Your' : `${esc(t.manager)}'s`;
     const weeks = [...t.weekly].sort((x, y) => y.week - x.week);
-    const top = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1);
-    const h = (n) => `${Math.max(2, (n / top) * 100).toFixed(1)}%`;
-    const kinds = AWARD_KINDS.map((k) => [k, t.awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
-    const awards = [...t.awards].sort((x, y) => y.week - x.week);
-    const names = (xs) => xs.map(esc).join(', ');
+    const optimal = t.points_for + t.bench_left;
+    const awards = [...t.awards].map((a, i) => ({ ...a, i })).sort((x, y) => y.week - x.week || x.i - y.i);
+    const kinds = AWARD_KINDS.map((k) => [k, awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
     const byWeek = [];
     for (const m of p.moves) {
       const last = byWeek[byWeek.length - 1];
       if (last && last.week === m.week) last.moves.push(m); else byWeek.push({ week: m.week, moves: [m] });
     }
-    // The newest week starts open, once per page load; after that the page remembers what she opened or shut.
-    if (byWeek.length && !TP_SEEDED.has(id)) { TP_SEEDED.add(id); HUB_OPEN.add(`mv-${id}-${byWeek[0].week}`); }
+    const awardRow = (a, n) => {
+      const key = `aw-${id}-${a.week}-${a.i}`, rid = `${key}-p`, open = LU_OPEN.has(key);
+      const k = KIND[a.kind];
+      return `
+        <div class="prow${open ? ' open' : ''}" data-key="${key}">
+          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag ${k.cls}">${esc(k.label)}</span><div class="at"><small>Week ${a.week}</small><b>${esc(a.title)}</b></div><span class="chev" aria-hidden="true">▾</span></div>
+          <div class="coach" id="${rid}"><div class="cin"><div class="cb${a.kind === 'flags' ? ' fl' : ''}"><p>${esc(a.text || a.stat || a.title)}</p>${a.stat && a.text ? `<p style="margin-top:6px;font:500 11.5px var(--mono);color:var(--muted)">${esc(a.stat)}</p>` : ''}${refs(a.players)}<p style="margin-top:8px"><a href="#week-${a.week}.awards" style="color:var(--accent);font-weight:700;font-size:13px">Week ${a.week}'s awards →</a></p></div></div></div>
+        </div>`;
+    };
+    const mvRef = (m, side) => (m[side].map((name, i) => ref({ id: m[`${side}_ids`] ? m[`${side}_ids`][i] : null, name })).join(''));
+    const movesRow = () => {
+      const key = `mv-${id}`, rid = `${key}-p`, open = LU_OPEN.has(key), latest = byWeek[0];
+      return `
+        <div class="prow${open ? ' open' : ''}" data-key="${key}">
+          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag moves">Roster moves</span><div class="at"><small>${p.moves.length} this season</small><b>Latest: Week ${latest.week}, ${latest.moves.length} move${latest.moves.length === 1 ? '' : 's'}</b></div><span class="chev" aria-hidden="true">▾</span></div>
+          <div class="coach" id="${rid}"><div class="cin"><div class="cb mvs">${byWeek.map((w) => `<p class="mvw">Week ${w.week} · ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</p>${w.moves.map((m) => `
+            <div class="mv">${m.type === 'trade' ? '<i>Trade</i>' : ''}${m.added.length ? `<i>${m.type === 'trade' ? 'Got' : 'Added'}</i>${mvRef(m, 'added')}` : ''}${m.dropped.length ? `<i class="d">${m.type === 'trade' ? 'Sent' : 'Dropped'}</i>${mvRef(m, 'dropped')}` : ''}</div>`).join('')}`).join('')}</div></div></div>
+        </div>`;
+    };
+    const takeCard = (it, i) => `<article class="ov-take ${['l', '', 'b'][i % 3]}"><span class="ov-tag${i % 3 === 1 ? ' og' : i % 3 === 2 ? ' w' : ''}">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(it.title)}</h3><p><b>${esc(it.stat || '')}</b>${it.stat ? ' · ' : ''}${esc(it.text)}</p>${refs(it.players)}</article>`;
     return `
       ${t.weekly.length ? `
       <section class="tp-sec" aria-labelledby="tp-sc">
         ${tpHead('--accent', 'Score by week').replace('<h2>', '<h2 id="tp-sc">')}
-        <div class="tp-chart">
-          <div class="tp-plot" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">
-            ${t.weekly.map((g) => `<div class="tp-col" style="--h:${h(g.points)}"><span class="tp-val">${f1(g.points)}</span><div class="${g.result === 'L' ? 'tp-bar-l' : 'tp-bar-w'}"></div></div>`).join('')}
-            <div class="tp-avg" style="--h:${h(t.avg)}"><span>average: ${f1(t.avg)}</span></div>
-          </div>
-          <div class="tp-axis" aria-hidden="true">${t.weekly.map((g) => `<span>W${g.week} · ${g.result}</span>`).join('')}</div>
-        </div>
+        <div class="sc-grid"><div class="sc-chart">${seasonChart(t)}</div>
+          <div class="sc-tiles">
+            <div class="sc-tile b"><b>${f1(t.avg)}</b><span>Avg score</span></div>
+            <div class="sc-tile l"><b>${t.best ? `${f1(t.best.points)}<em>W${t.best.week}</em>` : '–'}</b><span>Best week</span></div>
+            <div class="sc-tile o"><b>${optimal > 0 ? Math.round((t.points_for / optimal) * 100) : 100}%</b><span>Of optimal lineup</span></div>
+            <div class="sc-tile p"><b>${f1(t.bench_left)}</b><span>Points benched</span></div>
+          </div></div>
       </section>` : ''}
 
-      <section class="tp-sec">
-        ${tpHead('--orange', "Coach's audit")}
+      <section class="tp-sec" aria-labelledby="tp-au">
+        ${tpHead('--orange', "Coach's audit").replace('<h2>', '<h2 id="tp-au">')}
         ${p.audit.length
-          ? `<p class="sec-sub">${id === myTeam.get() ? 'Your' : `${esc(t.manager)}\'s`} season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">${who} season so far, graded on every week with a recap.</p><div class="sc-audit">${p.audit.map(takeCard).join('')}</div>`
           : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
       </section>
 
       ${weeks.length ? `
       <section class="tp-sec" aria-labelledby="tp-ww">
         ${tpHead('--lime', 'Week by week').replace('<h2>', '<h2 id="tp-ww">')}
-        ${weeks.map((g) => `
-          <a class="tp-gm" href="#week-${g.week}.game-${g.game_key}"><span class="tp-res ${g.result}">${g.result}</span>
-            <span><b>Week ${g.week} · ${esc(g.opponent)}</b><span class="sc">${f2(g.points)} – ${f2(g.opponent_points)}</span></span>
-            <span class="rt"><b>${g.score_rank} of 8</b>${f2(g.points_left)} benched</span></a>`).join('')}
+        <div class="sc-wk">${weeks.map((g) => `
+          <a class="sc-wl" href="#week-${g.week}.game-${g.game_key}"><span class="r ${g.result}" aria-label="${g.result === 'W' ? 'Won' : g.result === 'L' ? 'Lost' : 'Tied'}">${g.result}</span>
+            <span class="t"><b>Week ${g.week} · ${esc(g.opponent)}</b><small>${g.score_rank} of 8 · ${f2(g.points_left)} benched</small></span><span class="s">${f2(g.points)} – ${f2(g.opponent_points)}</span></a>`).join('')}</div>
       </section>` : ''}
 
       <section class="tp-sec" aria-labelledby="tp-aw">
-        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards</h2>${kinds.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(' · ')}</span>` : ''}</div>
-        ${awards.length
-          ? awards.map((a) => `<div class="tp-aw"><span class="aw-pill ${KIND[a.kind].cls}">${KIND[a.kind].label}</span><span><a href="#week-${a.week}.awards">Week ${a.week}</a> · ${esc(a.title)}</span></div>`).join('')
-          : '<p class="sec-sub">No awards yet. Give it time.</p>'}
-      </section>
-
-      <section class="tp-sec" aria-labelledby="tp-mvs">
-        <div class="tp-head"><span class="mark" style="--c:var(--pink)" aria-hidden="true"></span><h2 id="tp-mvs">Roster moves</h2>${p.moves.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${p.moves.length} this season</span>` : ''}</div>
-        ${byWeek.length
-          ? byWeek.map((w) => `
-            <details class="tp-mv" data-hub-open="mv-${id}-${w.week}"${HUB_OPEN.has(`mv-${id}-${w.week}`) ? ' open' : ''}>
-              <summary><span>Week ${w.week}<small>· ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</small></span></summary>
-              ${w.moves.map((m) => `<div class="tp-mvrow">${m.type === 'trade' ? '<b>Trade</b>' : ''}${moveLines(m, names)}</div>`).join('')}
-            </details>`).join('')
-          : '<p class="sec-sub">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
+        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards and moves</h2>${awards.length || byWeek.length ? '<a class="more" href="#" data-act="all">Expand all</a>' : ''}</div>
+        <p class="sec-sub">${kinds.length ? `${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(', ')}. ` : 'No awards yet. Give it time. '}Tap one for the story.</p>
+        <div class="sc-aw acc">${awards.map(awardRow).join('')}${byWeek.length ? movesRow() : ''}${byWeek.length ? '' : '<p class="sec-sub" style="padding:10px 0">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}</div>
       </section>`;
   }
 
@@ -3075,7 +3629,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   function teamSwitch(active, next) {
     return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
+      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
   /* Her top two items, most urgent first. build.py already sorts items by level, then puts a
@@ -3122,7 +3676,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <span class="you-sticker" aria-hidden="true">You</span>
         <div class="ch-head">
           <div class="ch-who"><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
-          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my full profile →</a>
+          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}">See my full profile →</a>
           ${todoBadge(a, next)}
         </div>
         ${stand.length || po ? `<p class="ch-stand">${stand.map(esc).join(' · ')}${po ? ` <span class="po-label ${PO_LABEL[po.label] || ''}" title="${esc(PO_TIP[po.label] || '')}">${esc(po.label)}</span>` : ''}</p>` : ''}
@@ -3138,19 +3692,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>`;
   }
 
-  function heroPicker(next) {
+  function heroPicker() {
     return `
       <section class="coach-hero ch-pick" aria-labelledby="ch-pick">
         <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Hi, I'm Coach.</h2>
         <p>Tell me your name and this spot becomes yours: your game, your odds, your to-dos.</p>
-        <button type="button" class="profile-btn" data-open-pick>Tell Coach your name</button>
-        <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
-          <h2 id="pick-h">Hi, I'm Coach.</h2>
-          <p>I've read every roster in this league, ESPN's injury report and 8,000 simulated seasons, so yes, I already know what's wrong with your lineup. Pick your name and I'll tell you before kickoff.</p>
-          <div class="pick-grid">${coachRows(next).map((a) => `
-            <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
-          <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
-        </dialog>
+        <button type="button" class="profile-btn" data-open-who>Tell Coach your name</button>
       </section>`;
   }
 
@@ -3162,7 +3709,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const close = pairs.filter(([a]) => a.win_probability != null)
       .sort((x, y) => Math.abs(x[0].win_probability - 0.5) - Math.abs(y[0].win_probability - 0.5))[0];
     const tile = (cls, tag, body, r) => (r
-      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}" data-myteam="${r.team_id}"><span class="rt-tag">${tag}</span>${body}</a>`
+      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}"><span class="rt-tag">${tag}</span>${body}</a>`
       : `<div class="radar-tile ${cls}"><span class="rt-tag">${tag}</span>${body}</div>`);
     return `
       <section class="radar" aria-labelledby="radar-h">
@@ -3289,7 +3836,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           : `Coach read all eight rosters so you don't have to. Your to-do list, the week's biggest swap, and who's strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <div class="coach-top">
-        ${mine ? coachHero(mine, rows, next) : heroPicker(next)}
+        ${mine ? coachHero(mine, rows, next) : heroPicker()}
         ${coachRadar(rows, pairs, next)}
       </div>
       <section style="margin-top:34px" aria-labelledby="sg-h">
@@ -3306,86 +3853,104 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   /* The week-ahead lineup: no scores exist yet, so the table is the roster and what ESPN
      projects for it, with the same team and injury badges as a live box score. */
-  function nextLineupCard(a) {
-    const starters = [...a.lineup.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
-    const bench = [...a.lineup.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
-    const row = (p, cls, slot) => {
-      const card = a.players && p.player_id != null ? a.players[p.player_id] : null;
-      const id = peekId(`next-${a.team_id}`, p);
-      return `<tr class="${cls}${card && PEEK.has(p.player_id) ? ' peek-open' : ''}"><td class="slot">${esc(slot)}</td><td>${peekName(p, card, id, true)}</td><td class="r proj">${f1(p.projected)}</td></tr>`
-        + peekRow(p, card, id, 3);
-    };
+  /* ---------- Lineup tab: what to fix, then every player ----------
+     Rows are drawn like Recaps' Top scorers (round headshot, NFL badge, name, subline, a pill on the
+     right) and each opens to Coach's one-liner on how that player is doing. Which rows are open lives
+     in LU_OPEN, because the live refresh redraws the page and nobody wants a row snapping shut; opening
+     and closing only flips classes, it never re-renders. */
+  const LU_OPEN = new Set();
+  const kickoffText = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' }) : '');
+
+  function lineupRow(p, card, next, tid, bench) {
+    const w = whoIs(p);
+    const dst = isDst(w);
+    const open = LU_OPEN.has(`${tid}-${next ? 'n' : 't'}-${w.id}`);
+    const rid = `lu-${tid}-${next ? 'n' : 't'}-${String(w.id).replace('-', 'm')}`;
+    const key = `${tid}-${next ? 'n' : 't'}-${w.id}`;
+    const bye = !!(card && card.bye);
+    const started = !bye && !next && (p.playing || (card && (card.state === 'in' || card.state === 'post')) || p.points > 0.005);
+    const slot = p.slot === 'IR' ? 'IR' : bench ? 'BN' : p.slot;
+    const inj = p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '';
+    const when = bye ? 'Bye week · nothing to start' : p.playing ? `<span class="live-dot" aria-hidden="true"></span> on now, ${esc(p.playing)}` : kickoffText(p.kickoff);
+    const sub = `<b>${esc(w.team || (dst ? '' : '–'))}</b>${when ? ` · ${when}` : ''}${inj}`;
+    const pill = bye ? '<div class="pill byep">BYE</div>'
+      : started ? `<div class="pill">${f1(p.points)}<small>PROJ ${f1(p.projected)}</small></div>`
+      : `<div class="pill proj">${f1(p.projected)}<small>PROJ</small></div>`;
     return `
-      <div class="lineup">
-        <h3><span>${mgrLink(a.manager)}</span><span class="num">proj ${f1(a.projected)}</span></h3>
-        <table>
-          <thead><tr><th>Slot</th><th>Player</th><th class="r">Proj</th></tr></thead>
-          <tbody>
-            ${starters.map((p) => row(p, 'starter', p.slot)).join('')}
-            <tr class="bench-head"><td colspan="3">Bench</td></tr>
-            ${bench.map((p) => row(p, 'bench', p.slot === 'IR' ? 'IR' : 'BN')).join('')}
-          </tbody>
-        </table>
-        <div class="opt">This is the lineup you have set for Week ${ahead().week} right now.</div>
+      <div class="prow${open ? ' open' : ''}" data-key="${esc(key)}">
+        <div class="row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye ? ' bye' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
+          <span class="slot${p.slot === 'FLEX' ? ' flex' : ''}${bench ? ' bn' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
+          <div class="av">${face(p)}</div>
+          <div class="pwho"><div class="nm">${esc(w.name)}${posOf(w.pos) ? ` <span class="pos">(${posOf(w.pos)})</span>` : ''}</div><div class="sub">${sub}</div></div>
+          ${pill}<span class="chev" aria-hidden="true">▾</span>
+        </div>
+        <div class="coach" id="${rid}"><div class="cin"><div class="cb">
+          <span class="ctag">Coach says</span>
+          ${card ? `<h4>${esc(card.blurb)}</h4><div class="peek-body">${peekDetail(p, card)}</div>` : '<h4>Nothing to say yet.</h4>'}
+        </div></div></div>
       </div>`;
   }
 
-  /* The week-in-progress part of a team's profile: what used to be her own Coach page.
-     Same cards and lineup, still refreshed by /api/live through LIVE. */
-  function thisWeekSection(id, next) {
+  function tpLineup(id, next) {
     const a = coachFor(id, next);
     if (!a) {
       const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
-      return `<section>${secHead('board', 'This week')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
+      return `<section class="tp-sec">${tpHead('--accent', 'Lineup')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
     }
     const week = next ? ahead().week : LIVE.week;
     const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
-    const opp = g ? (g.winner.team_id === id ? g.loser : g.winner) : TEAMS[a.opponent_id];
-    const byes = a.items.filter((it) => it.kind === 'bye').length;
-    const groups = Object.keys(ADVICE_LEVEL)
-      .map((lvl) => [lvl, a.items.filter((it) => it.level === lvl)])
-      .filter(([, items]) => items.length);
+    const src = next ? a.lineup : mine;
+    if (!src) return `<section class="tp-sec">${tpHead('--accent', 'Lineup')}<p class="sec-sub">No lineup on the board for ${esc(TEAMS[id].manager)} this week.</p></section>`;
+    const opp = g ? TEAMS[(g.winner.team_id === id ? g.loser : g.winner).team_id] : TEAMS[a.opponent_id];
+    const starters = [...src.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
+    const bench = [...src.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
+    const row = (p, b) => lineupRow(p, a.players && p.player_id != null ? a.players[p.player_id] : null, next, id, b);
+    const fixes = a.items.filter((it) => it.level === 'now');
+    const wp = a.win_probability;
+    const sum = [`<b>${f1(mine ? projOf(mine) : a.projected)}</b> projected`, `<b>${a.yet_to_play}</b> starters left`,
+      wp == null ? '' : `<b>${Math.round(wp * 100)}%</b> to win${opp ? ` vs ${esc(opp.manager)}` : ''}`].filter(Boolean).join(' · ');
+    const cols = (cls) => `<div class="${cls}"><div class="divider" style="margin-top:0">STARTERS</div>${starters.map((p) => row(p, false)).join('')}</div>
+      <div class="${cls}"><div class="divider" style="margin-top:0">BENCH</div>${bench.map((p) => row(p, true)).join('')}</div>`;
     return `
-      <section>
-        <div class="kicker-row">
-          ${secHead('board', next ? `Week ${week}, coming up` : `Week ${week}, right now`)}
-          ${weekToggle(next, id)}
-        </div>
-        <p class="dek">${!next && a.can_change === false
-          ? `Your Week ${week} lineup is locked. All your players' games are done.${ahead() ? ` <a href="${coachUrl(true, id)}">Week ${ahead().week}</a> is where the work is now.` : ''}`
-          : (a.counts.now ? `${a.counts.now} thing${a.counts.now === 1 ? '' : 's'} to ${next ? 'sort out before Sunday' : 'fix before kickoff'}.` : 'Nothing urgent.')}${opp ? ` You're playing <a href="#team-${opp.team_id}">${esc(opp.manager)}</a>${next ? ` in Week ${week}.` : `. <a href="#live.game-${g.key}">Live box score →</a>`}` : ''}</p>
-        <p class="team-summary">${esc(a.summary)}</p>
-        <div class="stat-tiles">
-          <div class="tile"><div class="label">To ${next ? 'sort out' : 'fix now'}</div><div class="value">${a.counts.now}</div><div class="sub">${a.counts.watch} to keep an eye on</div></div>
-          <div class="tile"><div class="label">Projected total</div><div class="value">${next && !ahead().projected ? '–' : f1(a.projected)}</div><div class="sub">${next ? (ahead().projected ? "ESPN's estimate for Week " + week : 'not published yet') : (mine ? `${f2(mine.points)} on the board` : "ESPN's estimate")}</div></div>
-          ${next
-            ? `<div class="tile"><div class="label">Starters on a bye</div><div class="value">${byes}</div><div class="sub">${byes ? 'a bye week means his NFL team doesn\'t play' : 'everyone has a game'}</div></div>`
-            : `<div class="tile"><div class="label">Starters left to play</div><div class="value">${a.yet_to_play}</div><div class="sub">${a.playing_now ? `${a.playing_now} on the field right now` : `${a.movable} still swappable`}</div></div>`}
-          ${a.win_probability == null ? '' : `<div class="tile"><div class="label">Chance to win</div><div class="value">${Math.round(a.win_probability * 100)}%</div><div class="sub">ESPN's number${opp ? `, vs ${esc(opp.manager)}` : ''}</div></div>`}
+      <section class="tp-sec" aria-labelledby="lu-h">
+        <div class="kicker-row">${tpHead('--accent', next ? `Week ${week}, coming up` : `Week ${week}, right now`).replace('<h2>', '<h2 id="lu-h">')}${weekToggle(next, id)}</div>
+        <p class="lu-sum">${sum}</p>
+        <div class="lu-fix${fixes.length ? '' : ' ok'}">
+          <div class="ov-lab" style="color:var(--ink)">${fixes.length ? `To fix ${next ? 'before Sunday' : 'now'} · ${fixes.length}` : 'Nothing to fix'}</div>
+          ${fixes.length ? fixes.map((it) => `<div class="it"><div><p><b>${esc(it.title)}.</b> ${esc(it.text)}</p>${refs(itemFaces(it))}</div>${it.stat ? `<span class="ov-tag" style="background:var(--pink)">${esc(it.stat)}</span>` : ''}</div>`).join('')
+            : `<p>${esc(a.summary)}</p>`}
         </div>
       </section>
-
-      ${groups.map(([lvl, items]) => `
-        <section>
-          ${secHead(ADVICE_LEVEL[lvl].marker, (next && ADVICE_LEVEL[lvl].nextTitle) || ADVICE_LEVEL[lvl].title)}
-          <p class="sec-sub">${(next && ADVICE_LEVEL[lvl].nextSub) || ADVICE_LEVEL[lvl].sub}</p>
-          <div class="cards">${items.map(adviceCard).join('')}</div>
-        </section>`).join('')}
-
-      ${next ? `
-      <section>
-        ${secHead('board', `Your lineup for Week ${week}`)}
-        <p class="sec-sub">What you have set right now, and what ESPN projects for it. Tap any player for what ESPN is saying about him. The badge next to a name is his NFL team and a colored pill is ESPN's injury designation. Nobody has played, so there are no points yet.</p>
-        <div class="box-grid">${nextLineupCard(a)}</div>
-      </section>` : (mine ? `
-      <section>
-        ${secHead('board', 'Your lineup right now')}
-        <p class="sec-sub">Tap any player for how his points happened, plus whatever ESPN is saying about him. The badge next to a name is his NFL team, a colored pill is ESPN's injury designation, and a pulsing lime sticker means his game is on right now. A ⚑ on the bench marks a player already outscoring a starter he could have replaced.</p>
-        <div class="box-grid">${lineupCard(mine, true, true, `<span class="res">proj ${f1(a.projected)}</span>`, a.players)}</div>
-      </section>` : '')}
-      <p class="sec-sub">${next ? nextSource() : coachSource(LIVE)}</p>`;
+      <section class="tp-sec" aria-labelledby="lu-lh">
+        ${tpHead('--pink', 'Lineup').replace('<h2>', '<h2 id="lu-lh">')}
+        <div class="lhint"><p class="sec-sub" style="margin:0">Tap a player for Coach's read on how he's doing.</p><button type="button" class="lu-all" data-act="all">Expand all</button></div>
+        <div class="lu-cols acc">${cols('lu-col')}</div>
+      </section>
+      ${tpAdvice(id, next)}
+      <p class="tp-foot">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
+
+  function tpAdvice(id, next) {
+    const a = coachFor(id, next);
+    if (!a) return '';
+    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
+    // never went through site_data(), so a baked tag would vanish on the first refresh.
+    const weak = (TEAMS[id].profile || {}).weak_spot;
+    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
+    const waiver = ideas.filter((it) => !it.trade);
+    const trades = ideas.filter((it) => it.trade);
+    const col = (label, note, items) => (items.length ? `<div><div class="tp-sub"><span>${label}</span><small>${note}</small></div>${items.map(adviceCard).join('')}</div>` : '');
+    return `
+      <section class="tp-sec" aria-labelledby="tp-adv">
+        ${tpHead('--lime', "Coach's advice").replace('<h2>', '<h2 id="tp-adv">')}
+        ${ideas.length
+          ? `<p class="sec-sub">Ideas, not orders. A trade only shows up here if it helps both teams.</p>
+             <div class="tp-ideas">${col('Waiver wire', 'From FantasyPros and everyone\'s rosters', waiver)}${col('Trade idea', 'Checked against both lineups', trades)}</div>`
+          : '<p class="sec-sub">No new ideas today.</p>'}
+      </section>`;
+  }
+
 
   function auditSection(p) {
     return `
@@ -3443,6 +4008,183 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="${WEEKS.length ? `#week-${latest().week}` : '#'}" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
+  /* ---------- "Viewing as" ----------
+     The chip in the header says whose eyes the site is wearing. It only ever changes highlights
+     (orange = you), never what a page says, and a wrong pick is one tap from undone: every change
+     raises a toast with an Undo button, and "League view" is always at the bottom of the menu. */
+  const viewingAs = (() => {
+    const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), mine = $('#nav-mine');
+    const fixes = (id) => { const a = coachFor(id, false); return a ? a.counts.now : 0; };
+    let isOpen = false, toastTimer = 0, drawn = '';
+
+    function draw(focusMenu) {
+      if (!SEASON.standings.length) { host.hidden = true; return; }
+      const me = myTeam.get(), t = me && TEAMS[me];
+      const label = t ? `Viewing as ${t.manager}` : 'League view';
+      drawn = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
+      host.innerHTML = `
+        <button type="button" class="va-btn" id="va-btn" aria-haspopup="menu" aria-expanded="${isOpen}" aria-controls="va-menu" aria-label="${esc(label)}. Change who you are viewing as.">
+          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${t ? `<span class="va-pre">Viewing as </span>${esc(t.manager)}` : 'League view'}</span><small aria-hidden="true">▾</small></button>
+        <div class="va-menu" id="va-menu" role="menu" aria-label="Viewing as"${isOpen ? '' : ' hidden'}>
+          <h2 role="presentation">Viewing the site as</h2>
+          ${t ? `<a class="it open-team" role="menuitem" href="#team-${me}"><span>Open ${esc(t.manager)}'s team page</span><span aria-hidden="true">→</span></a>` : ''}
+          ${SEASON.standings.map((x) => `<button type="button" class="it" role="menuitemradio" aria-checked="${x.team_id === me}" data-as="${x.team_id}"><span class="ck" aria-hidden="true">${x.team_id === me ? '✓' : ''}</span>${esc(x.manager)}<span class="rec">${record(x)}</span></button>`).join('')}
+          <hr role="separator">
+          <button type="button" class="it" role="menuitemradio" aria-checked="${!me}" data-as="0"><span class="ck" aria-hidden="true">${me ? '' : '✓'}</span>League view<span class="rec">no one</span></button>
+        </div>`;
+      if (focusMenu) {
+        const first = host.querySelector('[aria-checked="true"]') || host.querySelector('.it');
+        if (first) first.focus();
+      }
+    }
+
+    function setOpen(next, { refocus = false } = {}) {
+      if (next === isOpen) return;
+      isOpen = next;
+      if (next) draw(true);
+      else {
+        // Close in place: re-rendering would detach whatever has focus and strand it on <body>.
+        const m = $('#va-menu'), b = $('#va-btn');
+        if (m) m.hidden = true;
+        if (b) { b.setAttribute('aria-expanded', 'false'); if (refocus) b.focus(); }
+        drawn = '';
+      }
+    }
+
+    // The nav's "My team" appears with a pick and goes with it.
+    function sync() {
+      const me = myTeam.get();
+      mine.hidden = !me;
+      if (me) mine.href = `#team-${me}`;
+      // The live refresh re-routes every 20s; rebuilding an untouched chip would drop focus mid-menu.
+      const sig = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
+      if (sig !== drawn || !host.firstChild) draw(false);
+    }
+
+    function say(msg, undo) {
+      clearTimeout(toastTimer);
+      toast.innerHTML = `<span>${esc(msg)}</span><button type="button" data-undo>Undo</button>`;
+      toast.hidden = false;
+      toast.querySelector('[data-undo]').onclick = () => { toast.hidden = true; undo(); };
+      toastTimer = setTimeout(() => { toast.hidden = true; }, 8000);
+    }
+
+    function apply(id) { if (id) myTeam.set(id); else myTeam.clear(); route(); }
+
+    function choose(id) {
+      const prev = myTeam.get() || 0;
+      if (id === prev) { setOpen(false, { refocus: true }); return; }
+      isOpen = false;
+      apply(id);
+      say(id ? `Viewing as ${nameOf(id)}` : 'Back to the league view', () => { apply(prev); });
+      const b = $('#va-btn'); if (b) b.focus({ preventScroll: true });
+    }
+
+    function ask() {
+      if (!SEASON.standings.length || dlg.open || !dlg.showModal) return;
+      const me = myTeam.get();
+      dlg.innerHTML = `
+        <h2 id="who-h">Who are you?</h2>
+        <p>Pick your name and your team lights up in orange all over the site. Nothing gets hidden from anyone, and you can switch from the chip at the top any time.</p>
+        <div class="pick-grid">${SEASON.standings.map((x) => `
+          <button type="button" data-pick="${x.team_id}"${x.team_id === me ? ' class="me"' : ''}${fixes(x.team_id) ? ` aria-label="${esc(x.manager)}, ${fixes(x.team_id)} to fix"` : ''}>${esc(x.manager)}${fixes(x.team_id) ? '<span class="dot" aria-hidden="true">!</span>' : ''}</button>`).join('')}</div>
+        <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
+        <button type="button" class="just-looking" data-pick="0">Just looking</button>`;
+      dlg.showModal();
+    }
+
+    // First visit with nothing saved: ask once, politely.
+    function greet() { if (!myTeam.asked() && !myTeam.get()) ask(); }
+
+    host.addEventListener('click', (e) => {
+      const as = e.target.closest('[data-as]');
+      if (as) { choose(Number(as.dataset.as)); return; }
+      if (e.target.closest('.va-btn')) { setOpen(!isOpen, { refocus: false }); return; }
+      if (e.target.closest('a')) setOpen(false);
+    });
+    host.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+      const items = [...host.querySelectorAll('.va-menu .it')];
+      const at = items.indexOf(document.activeElement);
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false, { refocus: true }); }
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        const to = e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1
+          : (at + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items[to].focus();
+      } else if (e.key === 'Tab') setOpen(false);
+    });
+    // composedPath, not contains(): the chip re-renders itself on this very click, so e.target is already detached.
+    document.addEventListener('click', (e) => { if (isOpen && !e.composedPath().includes(host)) setOpen(false); });
+
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) {
+        // The dialog's own padding is part of the dialog; only a click outside its box is the backdrop.
+        const r = dlg.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
+        return;
+      }
+      const pick = e.target.closest('[data-pick]');
+      if (!pick) return;
+      const id = Number(pick.dataset.pick), prev = myTeam.get() || 0;
+      dlg.close();
+      if (id !== prev) { apply(id); say(id ? `Viewing as ${nameOf(id)}` : 'League view. You can pick a team any time.', () => { apply(prev); }); }
+      else apply(id);
+    });
+    // Escape, the backdrop or "Just looking" all count as an answer, so it never nags.
+    dlg.addEventListener('close', () => { if (!myTeam.asked()) { myTeam.clear(); route(); } });
+
+    return { sync, greet, ask };
+  })();
+
+  /* ---------- the phone header's collapse ---------- */
+  const siteHead = (() => {
+    const head = $('#site-head'), phone = window.matchMedia('(max-width: 640px)');
+    let collapsed = false, full = 0, slim = 0;
+    const gap = () => { head.style.marginBottom = collapsed ? `${Math.max(0, full - slim)}px` : ''; };
+    // Both heights, measured rather than assumed: the nav can wrap, the fonts change the line
+    // heights, and the chip's label is a different width for every name.
+    function measure() {
+      const was = collapsed;
+      head.style.marginBottom = '';
+      head.classList.remove('sc'); full = head.getBoundingClientRect().height;
+      head.classList.add('sc'); slim = head.getBoundingClientRect().height;
+      head.classList.toggle('sc', was);
+      gap();
+    }
+    function update() {
+      const want = phone.matches && (collapsed ? window.scrollY > 20 : window.scrollY > 70);
+      if (want === collapsed) return;
+      collapsed = want;
+      head.classList.toggle('sc', want);
+      gap();
+    }
+    phone.addEventListener('change', () => { measure(); update(); });
+    return { measure, update };
+  })();
+
+  /* ---------- sticky bits ----------
+     The team page's tab bar sticks just under the site header, so its `top` has to be the
+     header's current height. That height changes (fonts load, the phone header collapses, the
+     window resizes), and a stale number once left a gap above the bar, so it is re-measured on
+     every scroll, on resize, whenever the header's own size changes, and after the fonts land. */
+  const tpSticky = (() => {
+    function sync() {
+      siteHead.update();
+      const bar = document.getElementById('tp-tabbar'), head = document.getElementById('site-head');
+      if (!bar || !head) return;
+      const edge = Math.round(head.getBoundingClientRect().bottom);
+      bar.style.top = `${edge}px`;
+      const card = document.getElementById('tp-id');
+      bar.classList.toggle('stuck', !!card && card.getBoundingClientRect().bottom <= edge + 4);
+    }
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', () => { siteHead.measure(); sync(); });
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(document.getElementById('site-head'));
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { siteHead.measure(); sync(); });
+    return { sync };
+  })();
+
 __BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
   let btsSection = '';
@@ -3456,8 +4198,8 @@ __BTS_JS__
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
-    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
-    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
+    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { if (TEAMS[Number(m[2])]) myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
+    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() ? 'mine' : coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
@@ -3470,22 +4212,24 @@ __BTS_JS__
     else if (h === '' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (h === '') { html = weekPage(latest()); }
     else { html = notFound(); }
+    // A live refresh redraws #main; put keyboard focus back on the row it was on.
+    const focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('#main .prow[data-key]') : null;
+    const focusKey = focused && document.activeElement.hasAttribute('data-row') ? focused.dataset.key : null;
     $('#main').innerHTML = html;
     drawTicker();
     syncPanelRoles();
+    if (focusKey) { const again = [...document.querySelectorAll('#main .prow[data-key]')].find((r) => r.dataset.key === focusKey); if (again) again.querySelector('[data-row]').focus({ preventScroll: true }); }
+    document.querySelectorAll('#main [data-act="all"]').forEach((b) => syncAll(b.closest('section') || $('#main')));
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
     if (nav === 'behind-the-scenes') btsMount(btsSection);
-    // Coach's hello is a modal: it opens on its own and only a pick closes it.
-    const pick = document.getElementById('pick-dialog');
-    if (pick && !pick.open && pick.showModal) pick.showModal();
+    viewingAs.sync();
+    $('#pgn').textContent = (document.querySelector('#nav a[aria-current]') || {}).textContent || '';
+    siteHead.measure();
+    tpSticky.sync();
+    viewingAs.greet();
   }
-
-  /* Escape is the one way out of a modal, so it's blocked (`cancel` and `close` don't bubble,
-     hence the capture), and a close that slips through reopens until there's a team. */
-  document.addEventListener('cancel', (e) => { if (e.target.id === 'pick-dialog') e.preventDefault(); }, true);
-  document.addEventListener('close', (e) => { if (e.target.id === 'pick-dialog' && e.target.isConnected) e.target.showModal(); }, true);
 
   /* Opening a player card. #main survives every re-render (only its contents change), so
      one listener here outlives the router and the live refresh. */
@@ -3502,6 +4246,77 @@ __BTS_JS__
     if (open) PEEK.add(id); else PEEK.delete(id);
   });
 
+  /* Accordion rows (the Lineup tab's players, Season's awards and moves): a class toggle, never a
+     re-render, so the height animation runs and an open row stays open through a live refresh. */
+  const setRow = (pr, open) => {
+    pr.classList.toggle('open', open);
+    const btn = pr.querySelector('[data-row]');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (pr.dataset.key) { if (open) LU_OPEN.add(pr.dataset.key); else LU_OPEN.delete(pr.dataset.key); }
+  };
+  const syncAll = (scope) => {
+    const b = scope.querySelector('[data-act="all"]');
+    if (b) b.textContent = [...scope.querySelectorAll('.prow')].every((r) => r.classList.contains('open')) ? 'Collapse all' : 'Expand all';
+  };
+  $('#main').addEventListener('click', (e) => {
+    const all = e.target.closest('[data-act="all"]');
+    if (all) {
+      e.preventDefault();
+      const scope = all.closest('section') || $('#main');
+      const rows = [...scope.querySelectorAll('.prow')];
+      const openAll = rows.some((r) => !r.classList.contains('open'));
+      rows.forEach((r) => setRow(r, openAll));
+      syncAll(scope);
+      return;
+    }
+    const row = e.target.closest('[data-row]');
+    if (!row || e.target.closest('a')) return;
+    const pr = row.closest('.prow');
+    setRow(pr, !pr.classList.contains('open'));
+    syncAll(pr.closest('section') || $('#main'));
+  });
+  $('#main').addEventListener('keydown', (e) => {
+    const row = e.target.closest && e.target.closest('[data-row]');
+    if (!row || e.target !== row || (e.key !== 'Enter' && e.key !== ' ')) return;
+    e.preventDefault();
+    const pr = row.closest('.prow');
+    setRow(pr, !pr.classList.contains('open'));
+    syncAll(pr.closest('section') || $('#main'));
+  });
+
+  /* The recap page's three small interactions, redrawn in place so nothing scrolls or re-animates:
+     which game is open, which award kind is showing, which glossary term is expanded. */
+  $('#main').addEventListener('click', (e) => {
+    const game = e.target.closest('button[data-rp-game]');
+    if (game) {
+      const root = game.closest('.rp-sb'), key = game.dataset.rpGame;
+      RP.game = key;
+      root.querySelectorAll('button[data-rp-game]').forEach((b) => {
+        const on = b === game;
+        b.classList.toggle('sel', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      root.querySelectorAll('.tape').forEach((t) => { t.hidden = t.id !== `rp-tape-${key}`; });
+      return;
+    }
+    const chip = e.target.closest('button[data-rp-filter]');
+    if (chip) {
+      const root = chip.closest('.rp-aw'), kind = chip.dataset.rpFilter;
+      RP.filter = kind;
+      root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.setAttribute('aria-pressed', b === chip ? 'true' : 'false'));
+      root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.classList.toggle('sel', b === chip));
+      root.querySelectorAll('.rp-grp').forEach((g) => { g.hidden = kind !== 'all' && g.dataset.rpKind !== kind; });
+      return;
+    }
+    const term = e.target.closest('button[data-rp-term]');
+    if (term) {
+      const card = term.closest('.rp-term'), opening = !card.classList.contains('open');
+      card.classList.toggle('open', opening);
+      term.setAttribute('aria-expanded', opening ? 'true' : 'false');
+      RP.term = opening ? Number(term.dataset.rpTerm) : -1;
+    }
+  });
+
   /* `toggle` doesn't bubble, so it's caught on the way down. */
   $('#main').addEventListener('toggle', (e) => {
     const key = e.target.dataset && e.target.dataset.hubOpen;
@@ -3509,18 +4324,10 @@ __BTS_JS__
     if (e.target.open) HUB_OPEN.add(key); else HUB_OPEN.delete(key);
   }, true);
 
-  /* Picking a team from Coach (a grid card or the team switcher) is what makes it "my team"
-     for the Coach tab. Opening someone's profile from Standings or a matchup link isn't. */
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[data-myteam]');
-    if (a) myTeam.set(Number(a.dataset.myteam));
-    // Coach's hello modal: remember the pick and redraw Coach as her team.
-    const pick = e.target.closest('button[data-pick]');
-    if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
     const inj = e.target.closest('button[data-inj]');
     if (inj) { injPick = inj.dataset.inj; route(); const again = document.querySelector(`button[data-inj="${injPick}"]`); if (again) again.focus({ preventScroll: true }); }
-    const reopen = e.target.closest('button[data-open-pick]');
-    if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
+    if (e.target.closest('button[data-open-who]')) viewingAs.ask();
   });
 
   window.addEventListener('hashchange', () => {
@@ -3548,8 +4355,8 @@ __BTS_JS__
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
-      // The team picker has nothing live in it; redrawing would reset its focus every minute.
-      const picking = (document.getElementById('pick-dialog') || {}).open;
+      // The "Who are you?" prompt has nothing live in it; redrawing would reset its focus every minute.
+      const picking = (document.getElementById('who-dialog') || {}).open;
       if (!picking && (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '')) {
         // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
         const chips = document.querySelector('.hub-chips');
