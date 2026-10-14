@@ -36,7 +36,8 @@ class MovesTest(unittest.TestCase):
         ])]
         self.assertEqual(tp.moves(2, captured), [
             {"week": 1, "date": "2026-09-03T00:00:00Z", "type": "add",
-             "added": ["Patrick Mahomes"], "dropped": ["Marvin Harrison Jr."]}])
+             "added": ["Patrick Mahomes"], "dropped": ["Marvin Harrison Jr."],
+             "added_ids": [3139477], "dropped_ids": [4432708]}])
 
     def test_trade_shows_on_both_sides_with_direction(self):
         # Recorded under team 5's transaction; team 7 is the other party.
@@ -264,3 +265,43 @@ class AuditsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FacesTest(unittest.TestCase):
+    """The audit cards carry the players they're about, so the page can draw their faces."""
+
+    def test_lineup_card_names_the_benched_and_the_started_player(self):
+        rows = [(2, row(6, 90, 100, left=24.1, worst=call("Fannin", "Warren", 24.1, 14.7),
+                        starters=[player(333, "Warren", "TE", 14.7, 10)],
+                        bench=[player(222, "Fannin", "BENCH", 24.1, 9.8)]))]
+        self.assertEqual([p["id"] for p in tp.lineup_iq(rows)["players"]], [222, 333])
+
+    def test_a_player_who_cannot_be_found_is_left_out_not_invented(self):
+        rows = [(1, row(6, 90, 100, left=5, worst=call("Ghost", "Nobody", 12, 5), bench=[]))]
+        self.assertEqual(tp.lineup_iq(rows)["players"], [])
+
+    def test_position_faces_are_the_two_best_starters_at_that_spot(self):
+        rows = [(1, row(6, 0, 0, starters=[player(1, "A", "RB", 10, 0), player(2, "B", "RB", 20, 0), player(3, "C", "WR", 99, 0)])),
+                (2, row(6, 0, 0, starters=[player(1, "A", "RB", 15, 0), player(4, "D", "RB", 1, 0)]))]
+        self.assertEqual([p["id"] for p in tp.position_faces(rows, "RB")], [1, 2])      # A 25, B 20, D 1
+
+    def test_projection_faces_are_the_biggest_beat_and_miss(self):
+        rows = [(w, row(6, 0, 0, starters=[player(1, "Over", "WR", 20, 10), player(2, "Under", "RB", 5, 15)])) for w in (1, 2)]
+        card = tp.projection_card(rows)
+        self.assertEqual([p["id"] for p in card["players"]], [1, 2])
+        self.assertEqual(tp.projection_card([])["players"], [])
+
+    def test_every_audit_card_has_a_players_list(self):
+        for c in tp.audits([{"week": 1, "teams": [row(1, 90, 100, starters=[player(1, "A", "RB", 10, 8)]) | {"team_id": 1}]}], [1])[1]["cards"]:
+            self.assertIsInstance(c["players"], list)
+
+
+class AwardPlayersTest(unittest.TestCase):
+    def test_players_named_in_the_story_in_the_order_it_names_them(self):
+        import build
+        facts = {"teams": [{"starters": [player(1, "Bucky Irving", "RB", 30, 15)],
+                            "bench": [player(2, "Mike Evans", "WR", 26, 17), player(3, "Not Mentioned", "TE", 1, 1)]}]}
+        award = {"title": "Bench regret", "text": "Mike Evans scored 26 on the bench, and Bucky Irving ran for 165."}
+        self.assertEqual([p["id"] for p in build.award_players(award, facts)], [2, 1])
+        self.assertEqual(build.award_players(award, None), [])
+        self.assertEqual(build.award_players({"title": "x", "text": "Nobody here"}, facts), [])

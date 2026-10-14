@@ -1345,6 +1345,22 @@ def waiver_order(captures):
     return None
 
 
+def award_players(award, facts, limit=3):
+    """The players an award's story names, as {id, name, pos}, in the order the story mentions
+    them, so the page can put a face next to each. Matched by full name against that week's
+    rosters; a name the story shortens ("Bowers") or a player since dropped is simply not drawn."""
+    if not facts:
+        return []
+    text = f"{award.get('title', '')} {award.get('text', '')}"
+    found = {}
+    for t in facts["teams"]:
+        for p in t["starters"] + t["bench"]:
+            at = text.find(p["name"])
+            if at >= 0 and p["player_id"] not in found:
+                found[p["player_id"]] = (at, {"id": p["player_id"], "name": p["name"], "pos": p.get("pos")})
+    return [v[1] for v in sorted(found.values(), key=lambda v: v[0])][:limit]
+
+
 def season_payload(facts_list, weeks):
     """Season-to-date stats per team, from the included weeks only."""
     teams = {t["team_id"]: {"team_id": t["team_id"], "manager": t["manager"].split(" (")[0],
@@ -1375,11 +1391,14 @@ def season_payload(facts_list, weeks):
             teams[row["team_id"]]["rank_history"].append({"week": wk, "rank": rank})
 
     by_manager = {s["manager"]: s for s in teams.values()}
+    facts_by_week = {f["week"]: f for f in facts_list}
     for w in weeks:
         for kind in AWARD_KEYS:
             for a in w[kind]:
                 if a["manager"] in by_manager:
-                    by_manager[a["manager"]]["awards"].append({"week": w["week"], "kind": kind, "title": a["title"]})
+                    by_manager[a["manager"]]["awards"].append(
+                        {"week": w["week"], "kind": kind, "title": a["title"], "text": a.get("text", ""),
+                         "stat": a.get("stat", ""), "players": award_players(a, facts_by_week.get(w["week"]))})
 
     for s in teams.values():
         streak = ""
