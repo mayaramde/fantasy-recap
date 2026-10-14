@@ -1,0 +1,275 @@
+<div class="bts" data-bts>
+<div class="page-head">
+  <div class="kicker">Behind the scenes</div>
+  <h1>How this whole thing comes together</h1>
+</div>
+<div class="bts-coach bts-lead">
+  <div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div>
+  <div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Alright, huddle up. Somebody asked how this site actually works, and honestly? <mark>Great question.</mark></p>
+    <p>Quick intro: I'm Coach. <mark>Maya built me</mark> for this league, and she keeps coaching me up whenever I fumble. This site does run on code, but you won't see any here. I'll explain how it works in plain English, no jargon. Six plays, about six minutes. Let's roll.</p>
+  </div>
+</div>
+<div class="bts-chips">
+  <a class="bts-chip" href="#behind-the-scenes.big" data-jump="bts-big"><i>1</i>The big picture</a>
+  <a class="bts-chip" href="#behind-the-scenes.data" data-jump="bts-data"><i>2</i>The data</a>
+  <a class="bts-chip" href="#behind-the-scenes.api" data-jump="bts-api"><i>3</i>ESPN &amp; APIs</a>
+  <a class="bts-chip" href="#behind-the-scenes.harness" data-jump="bts-harness"><i>4</i>Meet the harness</a>
+  <a class="bts-chip" href="#behind-the-scenes.deploy" data-jump="bts-deploy"><i>5</i>Going live</a>
+  <a class="bts-chip" href="#behind-the-scenes.safe" data-jump="bts-safe"><i>6</i>Is it safe?</a>
+</div>
+
+<section class="bts-sec" id="bts-big" aria-labelledby="bts-big-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">1</div><h2 id="bts-big-h">The big picture</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Think game day. The real football happens on a <b>field</b>. <b>Scouts</b> report back what happened. The <b>scoreboard</b> shows it. You watch from the couch.</p>
+    <p>I'm on the sideline calling plays, and a <b>stadium crew</b> keeps the building standing. Here's the route, and you can tap any stop to dig in.</p>
+  </div></div>
+
+  <div class="bts-roadwrap"><p class="bts-tapnote"><span>Tap any stop to see what happens there</span></p><div class="bts-road" data-acc><div class="bts-stop bts-open"><div class="bts-pin">1</div><div class="bts-sbox"><button class="bts-shead" id="bts-d1-b" aria-expanded="true" aria-controls="bts-d1"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-stadium"/></svg></span><span class="bts-stxt"><b>The field</b><span>The real games happen. ESPN records every stat.</span></span><span class="bts-tagr">ESPN + FantasyPros</span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-d1" role="region" aria-labelledby="bts-d1-b"><div class="bts-sin"><p>Every game, play and stat starts here. ESPN keeps the official record: scores, rosters, injuries and projections. Nobody on this site types any of it in.</p><div class="bts-chiprow"><i>Source: ESPN</i><i>Plus FantasyPros for Coach</i></div></div></div></div></div><div class="bts-stop"><div class="bts-pin">2</div><div class="bts-sbox"><button class="bts-shead" id="bts-d2-b" aria-expanded="false" aria-controls="bts-d2"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-search"/></svg></span><span class="bts-stxt"><b>The scouts</b><span>Small programs ask for the latest numbers and tidy them up.</span></span><span class="bts-tagr">Fetch & tidy</span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-d2" role="region" aria-labelledby="bts-d2-b"><div class="bts-sin"><p>On a schedule, small programs ask ESPN for fresh numbers (that question is the API call from section 3). The reply comes back as messy shorthand, so they sort it into neat tables. Then they bake the latest answer into the site, so every page loads fast.</p><div class="bts-chiprow"><i>Hourly while games are on</i><i>Every morning</i><i>Latest answer kept on the page</i></div><a class="bts-jump" href="#behind-the-scenes.data" data-jump="bts-data">See how the numbers get tidied →</a></div></div></div></div><div class="bts-stop bts-lime"><div class="bts-pin">3</div><div class="bts-sbox"><button class="bts-shead" id="bts-d3-b" aria-expanded="false" aria-controls="bts-d3"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-board"/></svg></span><span class="bts-stxt"><b>The scoreboard</b><span>This website draws the standings, brackets and cards.</span></span><span class="bts-tagr">The site</span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-d3" role="region" aria-labelledby="bts-d3-b"><div class="bts-sin"><p>This is the page you are on. It takes the tidy numbers and draws them as standings, win odds and brackets. Every change gets published by the stadium crew, which is GitHub and Vercel.</p><div class="bts-chiprow"><i>Standings</i><i>Playoff odds</i><i>Brackets</i></div><a class="bts-jump" href="#behind-the-scenes.deploy" data-jump="bts-deploy">See how it goes live →</a></div></div></div></div><div class="bts-stop"><div class="bts-pin">4</div><div class="bts-sbox"><button class="bts-shead" id="bts-d4-b" aria-expanded="false" aria-controls="bts-d4"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-phone"/></svg></span><span class="bts-stxt"><b>You</b><span>Check it from the couch. Coach has notes on your team.</span></span><span class="bts-tagr">Your phone</span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-d4" role="region" aria-labelledby="bts-d4-b"><div class="bts-sin"><p>Open it anywhere. Nothing on this site changes your lineup for you, so make your moves in the ESPN app. Coach writes her notes from the same numbers and says what they mean for your week.</p><div class="bts-chiprow"><i>Read-only for your lineup</i><i>Coach has a page for every team</i></div><a class="bts-jump" href="#behind-the-scenes.harness" data-jump="bts-harness">Meet the brain behind Coach →</a></div></div></div></div></div><div class="bts-sub"><div class="bts-lanelab">Behind the scenes the whole time</div><div class="bts-row" data-acc><div class="bts-mini"><button class="bts-mhead" id="bts-h1-b" aria-expanded="false" aria-controls="bts-h1"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-person"/></svg></span><span class="bts-stxt"><b>Maya</b><span>Builds it, coaches me</span></span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-h1" role="region" aria-labelledby="bts-h1-b"><div class="bts-sin"><p>Maya built the site and set the rules I follow. When I fumble, she coaches me up and fixes the playbook.</p></div></div></div><div class="bts-mini"><button class="bts-mhead" id="bts-h2-b" aria-expanded="false" aria-controls="bts-h2"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-wrench"/></svg></span><span class="bts-stxt"><b>Stadium crew</b><span>Publishes the site</span></span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-h2" role="region" aria-labelledby="bts-h2-b"><div class="bts-sin"><p>GitHub saves every version of the site and runs the checks. Vercel builds it and opens the gates, so a change goes live in about a minute.</p><a class="bts-jump" href="#behind-the-scenes.deploy" data-jump="bts-deploy">See how it goes live →</a></div></div></div><div class="bts-mini"><button class="bts-mhead" id="bts-h3-b" aria-expanded="false" aria-controls="bts-h3"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></span><span class="bts-stxt"><b>Coach (me)</b><span>Writes the daily notes</span></span><span class="bts-chev" aria-hidden="true">▾</span></button><div class="bts-sdet" id="bts-h3" role="region" aria-labelledby="bts-h3-b"><div class="bts-sin"><p>I'm the AI on the sideline. Every day I read all eight rosters and the latest ESPN and FantasyPros numbers, write my notes, and get them checked before they go up.</p><a class="bts-jump" href="#behind-the-scenes.harness" data-jump="bts-harness">Meet the harness →</a></div></div></div></div></div></div>
+</section>
+
+<section class="bts-sec" id="bts-data" aria-labelledby="bts-data-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">2</div><h2 id="bts-data-h">Where the numbers come from</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Nobody on this site types in scores. Not me, not the commissioner. Every number shows up on its own. Here's the route it takes.</p>
+  </div></div>
+
+  <div class="bts-board">
+    <div class="bts-frame">
+      <div class="bts-art bts-askbox"><span class="bts-speech">What's the latest?</span><div class="bts-pair"><span class="bts-sc"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-search"/></svg></span><span class="bts-hop">→</span><span class="bts-sc"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-stadium"/></svg></span></div></div>
+      <div class="bts-cap"><b><i>1</i>Ask</b><p>A scout (a small program) asks ESPN for the latest.</p></div>
+    </div>
+    <div class="bts-arrow">→</div>
+    <div class="bts-frame">
+      <div class="bts-art"><div class="bts-messy">tm3 w9 l4 pf1432.7
+seed2 pa1301.2 <s>??</s>
+rstr[17]:{id:4412,
+slot:"WR",pts:18…</div></div>
+      <div class="bts-cap"><b><i>2</i>Receive</b><p>Raw notes come back. Accurate, but messy shorthand.</p></div>
+    </div>
+    <div class="bts-arrow">→</div>
+    <div class="bts-frame">
+      <div class="bts-art"><div class="bts-tidy"><div>Team 3 <em>9–4 ✓</em></div><div>Team 7 <em>8–5 ✓</em></div><div>Team 1 <em>8–5 ✓</em></div></div></div>
+      <div class="bts-cap"><b><i>3</i>Tidy</b><p>We sort it and do the math: standings, playoff odds, projections.</p></div>
+    </div>
+    <div class="bts-arrow">→</div>
+    <div class="bts-frame">
+      <div class="bts-art"><div class="bts-tidy bts-show"><div class="bts-hi"><span class="bts-sd">2</span>Team 3 <em>9–4</em></div><div class="bts-bar"><i></i></div></div></div>
+      <div class="bts-cap"><b><i>4</i>Show</b><p>The site draws it as the cards, bars and brackets you see.</p></div>
+    </div>
+  </div>
+
+  <div class="bts-panel">
+    <div class="bts-lab">See the difference</div>
+    <div class="bts-seg" role="group" aria-label="Compare the raw data with the finished page">
+      <button class="bts-on" data-v="raw" aria-pressed="true">What ESPN sends</button>
+      <button data-v="clean" aria-pressed="false">What you see</button>
+    </div>
+    <div id="bts-rawView"><pre class="bts-raw">{
+  "teamId": 3,
+  "record": { "overall": { "wins": 9, "losses": 4,
+    "pointsFor": 1432.7, "pointsAgainst": 1301.2 } },
+  "playoffSeed": 2,
+  "rosterForCurrentScoringPeriod": { "entries": [ ... 17 more lines ... ] }
+}</pre></div>
+    <div id="bts-cleanView" hidden>
+      <div class="bts-clean">
+        <div class="bts-r bts-lm"><span class="bts-seed">2</span>Team 3<span class="bts-mono">9–4 · 1,432.7 PF</span></div>
+        <div class="bts-barx"><i></i></div>
+      </div>
+    </div>
+    <p class="bts-small bts-note">Example data, for illustration only.</p>
+  </div>
+
+  <div class="bts-callout bts-mt">
+    <div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-note"/></svg></div>
+    <p><b>"Why isn't it instant?"</b> Scouts don't call ESPN every second. That would annoy them and slow you down. Instead the latest answer is kept on the page and refreshed on a schedule: hourly while games are on, plus every morning. While somebody's game is on, the Live page checks again every 20 seconds or so (once a minute the rest of the week). Coach's page stamps the time it was "captured", so you can see how fresh it is. Like a sticky note on the fridge: quick to read, updated often. <span class="bts-small">(Nerds call this a <i>cache</i>.)</span></p>
+  </div>
+</section>
+
+<section class="bts-sec" id="bts-api" aria-labelledby="bts-api-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">3</div><h2 id="bts-api-h">ESPN &amp; APIs, explained with a restaurant</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>"API" sounds scary. It's a <mark>waiter</mark>. That's it.</p>
+    <p>Our site can't just stroll into ESPN's kitchen. So there's a waiter with a menu. You order, the waiter fetches it, you get a plate. Try one.</p>
+  </div></div>
+
+  <div class="bts-panel">
+    <div class="bts-howto"><span class="bts-hn">1</span><div><b>Choose what to ask ESPN</b><p>Each button below is one kind of request. On a real website that request is called an <mark>API call</mark>: a short, specific question sent to ESPN, like ordering one dish off a menu.</p></div><span class="bts-startnote">Start here ↓</span></div>
+    <div class="bts-menu" id="bts-menu" role="group" aria-label="What to ask ESPN">
+      <button class="bts-on" data-k="standings" aria-pressed="true">Standings</button>
+      <button data-k="rosters" aria-pressed="false">Rosters</button>
+      <button data-k="scores" aria-pressed="false">Scores</button>
+      <button data-k="stats" aria-pressed="false">Player stats</button>
+    </div>
+    <div class="bts-hint" id="bts-hint" aria-live="polite"></div>
+    <div class="bts-howto bts-mt"><span class="bts-hn">2</span><div><b>Send it and watch what happens</b><p>Pressing the button below is the API call itself: the order goes to ESPN's kitchen and comes back as a plate of data.</p></div></div>
+    <div class="bts-lane" aria-live="polite">
+      <div class="bts-stn" id="bts-s1"><div class="bts-stic"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-order"/></svg></div><div class="bts-t"><small>STEP 1</small>The order</div><p id="bts-p1">Waiting on you…</p></div>
+      <div class="bts-arrow">→</div>
+      <div class="bts-stn" id="bts-s2"><div class="bts-stic"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-pot"/></svg></div><div class="bts-t"><small>STEP 2</small>The kitchen</div><p id="bts-p2">ESPN's database. Closed to walk-ins.</p></div>
+      <div class="bts-arrow">→</div>
+      <div class="bts-stn" id="bts-s3"><div class="bts-stic"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-plate"/></svg></div><div class="bts-t"><small>STEP 3</small>The plate</div><p id="bts-p3">Nothing yet.</p></div>
+    </div>
+    <button class="bts-btn" id="bts-order">Send the API call ▶</button>
+    <span class="bts-small bts-inline">Sample responses, for illustration. Nothing real is being sent.</span>
+
+    <div class="bts-tip">
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-book"/></svg></span><span><b>The menu</b>Everything ESPN lets us ask for. Nothing more.</span></div>
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-id"/></svg></span><span><b>The membership card</b>Some kitchens check a key or login. Our league is public on ESPN, so ours doesn't.</span></div>
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-pot"/></svg></span><span><b>Other restaurants</b>ESPN is our main kitchen. FantasyPros is the second, for Coach's rankings and news. Same waiter idea.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="bts-sec" id="bts-harness" aria-labelledby="bts-harness-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">4</div><h2 id="bts-harness-h">Coach is an "agentic harness"</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Big phrase. Two words. Let me break it down, because I'm the one wearing it.</p>
+  </div></div>
+
+  <div class="bts-def">
+    <div class="bts-panel"><span class="bts-big">AGENTIC</span><h3>Does things, not just talks</h3>
+      <p>A plain chatbot answers from memory. An agent <b>goes and gets the answer</b>: looks things up, tries something, checks its own work, then tells you.</p></div>
+    <div class="bts-panel"><span class="bts-big">HARNESS</span><h3>The gear around the brain</h3>
+      <p>A star QB with no playbook, no headset, and no film room is just a guy with a good arm. The harness is everything that lets the brain do real work <b>reliably</b>.</p></div>
+  </div>
+
+  <div class="bts-builtby">
+    <div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-person"/></svg></div>
+    <p><b>Built by Maya.</b> She put the harness together and keeps coaching me up the old-fashioned way: test me, catch my mistakes, tweak the instructions, repeat. The AI model is just the starting point.</p>
+  </div>
+
+    <div class="bts-hub">
+    <span class="bts-htag">THE HARNESS</span>
+    <svg class="bts-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <g stroke="#151a33" stroke-width="3" stroke-dasharray="6 6" fill="none">
+        <line x1="50" y1="50" x2="22" y2="30" vector-effect="non-scaling-stroke"/>
+        <line x1="50" y1="50" x2="78" y2="30" vector-effect="non-scaling-stroke"/>
+        <line x1="50" y1="50" x2="22" y2="72" vector-effect="non-scaling-stroke"/>
+        <line x1="50" y1="50" x2="78" y2="72" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+    <div class="bts-hubgrid">
+      <div class="bts-hbox bts-h1"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-h-tools"/></svg></div><b>Tools</b><p>Ways to reach out: pull rosters, check injuries, run the numbers.</p></div>
+      <div class="bts-hbox bts-h2"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-h-play"/></svg></div><b>The playbook</b><p>My instructions: how I talk, what I care about, how I answer.</p></div>
+      <div class="bts-brain"><div><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-h-brain"/></svg></div><b>The brain</b><span>the AI model</span></div></div>
+      <div class="bts-hbox bts-h3"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-h-memory"/></svg></div><b>Memory</b><p>Yesterday's notes, so I know what changed since my last run.</p></div>
+      <div class="bts-hbox bts-h4"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-h-rules"/></svg></div><b>Rules</b><p>What I can touch, and what's off limits.</p></div>
+    </div>
+  </div>
+
+  <div class="bts-panel">
+    <div class="bts-lab">Watch me work</div>
+    <div class="bts-ask">Every morning, for every roster: "Is anybody on the bench better than who's starting?"</div>
+    <div class="bts-loop" id="bts-loop">
+      <span class="bts-lp" data-i="0">1 Understand</span><span class="bts-ar">→</span>
+      <span class="bts-lp" data-i="1">2 Pick a tool</span><span class="bts-ar">→</span>
+      <span class="bts-lp" data-i="2">3 Use it</span><span class="bts-ar">→</span>
+      <span class="bts-lp" data-i="3">4 Check it</span><span class="bts-ar">→</span>
+      <span class="bts-lp" data-i="4">5 Answer</span>
+    </div>
+    <div class="bts-thought" id="bts-thought" aria-live="polite"><small>COACH IS THINKING…</small><span id="bts-tt">Hit "Next" and watch the loop.</span></div>
+    <div class="bts-ctrls">
+      <button class="bts-btn" id="bts-lnext">Next ▶</button>
+      <button class="bts-btn bts-alt" id="bts-lreset">Restart</button>
+    </div>
+  </div>
+
+  <div class="bts-vs"><div class="bts-vsh"><div class="bts-side bts-l"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-robot"/></svg></span><b>Plain chatbot</b><small>Talks about the work</small></div><div class="bts-vsbadge">VS</div><div class="bts-side bts-r"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></span><b>Agentic harness</b><small>Coach: does the work, then explains it</small></div></div><div class="bts-vsrow"><div class="bts-cell bts-l">Guesses from what it already knows</div><div class="bts-mid">How it answers</div><div class="bts-cell bts-r"><span class="bts-win"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-check"/></svg></span>Uses tools to do the legwork</div></div><div class="bts-vsrow"><div class="bts-cell bts-l">Can be out of date</div><div class="bts-mid">How fresh it is</div><div class="bts-cell bts-r"><span class="bts-win"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-check"/></svg></span>Pulls fresh numbers every day</div></div><div class="bts-vsrow"><div class="bts-cell bts-l">Can't see your league</div><div class="bts-mid">Your league</div><div class="bts-cell bts-r"><span class="bts-win"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-check"/></svg></span>Reads all eight rosters in it</div></div><div class="bts-vsrow"><div class="bts-cell bts-l">Answers once and moves on</div><div class="bts-mid">Checking itself</div><div class="bts-cell bts-r"><span class="bts-win"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-check"/></svg></span>Gets its work checked before it ships</div></div><div class="bts-vsfoot">Winner for league questions: <b>the harness</b></div></div>
+</section>
+
+<section class="bts-sec" id="bts-deploy" aria-labelledby="bts-deploy-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">5</div><h2 id="bts-deploy-h">How it gets onto the internet</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Here's the part everybody skips, and it's my favorite. A website is just a pile of files. Somebody has to put them where the world can see them.</p>
+    <p><b>GitHub</b> is the binder where every version of the playbook is saved, with a name, a time, and an undo button. <b>Vercel</b> is the stadium crew: it builds the site and opens the gates. A GitHub robot runs the checks in between.</p>
+  </div></div>
+
+  <div class="bts-panel">
+    <div class="bts-lab">Push a change and watch it travel</div>
+    <div class="bts-flow" id="bts-pipe">
+      <div class="bts-node" data-n="0"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-pencil"/></svg></div><b>Change the playbook</b><span>Maya edits the site, often with an AI coding helper</span></div>
+      <div class="bts-arrow">→</div>
+      <div class="bts-node" data-n="1"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-box"/></svg></div><b>Save to GitHub</b><span>Every save is a "commit", reviewed in a "pull request"</span></div>
+      <div class="bts-arrow">→</div>
+      <div class="bts-node" data-n="2"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-layers"/></svg></div><b>Check, then build</b><span>Checks run first, then Vercel builds the site</span></div>
+      <div class="bts-arrow">→</div>
+      <div class="bts-node" data-n="3"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-arrow"/></svg></div><b>Live</b><span>Same web address, new version</span></div>
+    </div>
+    <div class="bts-status" id="bts-dstatus" role="status">Press a button to start.</div>
+    <div class="bts-ctrls">
+      <button class="bts-btn" id="bts-go">Push a change ▶</button>
+      <button class="bts-btn bts-alt" id="bts-gobad">Push a broken change ▶</button>
+    </div>
+    <div class="bts-tip bts-mt">
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-flask"/></svg></span><span><b>Test field first</b>Changes get a preview link before they touch the real site. Only Maya can open it.</span></div>
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-shield"/></svg></span><span><b>Safety net</b>If a check or build fails, the live site stays as it was, and a GitHub alert goes out.</span></div>
+      <div><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-undo"/></svg></span><span><b>Rewind button</b>Something slips through? Maya can roll back to the last good version in Vercel.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="bts-sec" id="bts-safe" aria-labelledby="bts-safe-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">6</div><h2 id="bts-safe-h">Is this safe?</h2></div>
+  <div class="bts-coach"><div class="bts-avatar"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></div><div class="bts-bubble"><div class="bts-who">COACH</div>
+    <p>Fair question, and I'm glad you asked. Short version: <mark>yes, and here's why.</mark></p>
+    <p>I can run around all I want, but there's a boundary line on the field. Here's everything standing between a mistake and your league.</p>
+  </div></div>
+
+  <div class="bts-panel">
+    <div class="bts-lab">Five layers of defense</div>
+    <div class="bts-pass">a mistake, a bad request, a bug</div>
+    <div class="bts-layer bts-l1"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-lock"/></svg></div><div><b>1 · Look, don't touch</b><p>I read ESPN and FantasyPros. I can't change a lineup, a roster or anything on ESPN. The only thing I write is my own daily notes, and those go through a pull request.</p></div></div>
+    <div class="bts-pass">↓ still here? next layer</div>
+    <div class="bts-layer bts-l2"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-key"/></svg></div><div><b>2 · Keys in the vault</b><p>ESPN needs no key for our public league. The one real secret, the deploy token, lives in GitHub's locked vault. Never in the code, never in my answers.</p></div></div>
+    <div class="bts-pass">↓</div>
+    <div class="bts-layer bts-l3"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-note"/></svg></div><div><b>3 · The rulebook</b><p>My playbook spells out what I can do, what I won't, and what to do when I'm not sure. A guard also blocks risky commands outright. When in doubt, I say so.</p></div></div>
+    <div class="bts-pass">↓</div>
+    <div class="bts-layer bts-l4"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-flask"/></svg></div><div><b>4 · Test field + safety net</b><p>Changes get automated checks and a preview before going live. A failed build never replaces the working site, and there's a rewind button.</p></div></div>
+    <div class="bts-pass">↓</div>
+    <div class="bts-layer bts-l5"><div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-person"/></svg></div><div><b>5 · A human in charge</b><p>Maya approves every recap before it goes up. My daily notes merge on their own after automated checks and a voice check, so if I act up, she tightens the playbook or pulls me off the field.</p></div></div>
+    <div class="bts-pass">your league stays fine</div>
+  </div>
+
+  <div class="bts-panel bts-mt">
+    <div class="bts-lab">Go ahead, try to trip me up</div>
+    <div class="bts-menu" id="bts-tryMenu" role="group" aria-label="Things to try on Coach">
+      <button data-k="key" aria-pressed="false">"What's your secret key?"</button>
+      <button data-k="lineup" aria-pressed="false">"Drop my best player"</button>
+      <button data-k="future" aria-pressed="false">"Give me the exact score"</button>
+      <button data-k="fake" aria-pressed="false">"Make up a stat"</button>
+      <button data-k="ignore" aria-pressed="false">"Ignore your rules"</button>
+    </div>
+    <div id="bts-tryOut" aria-live="polite"><p class="bts-small">Pick one and see what I would say. The site doesn't take live questions, so these are example replies that show how my rules work.</p></div>
+  </div>
+
+  <div class="bts-callout bts-mt">
+    <div class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-check"/></svg></div>
+    <p><b>Straight talk:</b> I can be wrong. Injuries change fast and projections are educated guesses, not promises. For the big calls, glance at the injury report before kickoff. I show my work so you can check it. And if I ever say something weird, tell Maya.</p>
+  </div>
+</section>
+
+<section class="bts-sec" id="bts-cheat" aria-labelledby="bts-cheat-h">
+  <div class="bts-sh"><div class="bts-snum" aria-hidden="true">✓</div><h2 id="bts-cheat-h">The cheat sheet</h2></div>
+  <table class="bts-table">
+    <thead><tr><th>Piece</th><th>On game day it's…</th><th>Its one job</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-person"/></svg></span>Maya</td><td data-label="On game day it's…">The builder</td><td data-label="Its one job">Built the site and keeps coaching me</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-stadium"/></svg></span>ESPN &amp; APIs</td><td data-label="On game day it's…">The field + the waiter</td><td data-label="Its one job">Where the real stats live, and how we ask for them</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-search"/></svg></span>Data pull</td><td data-label="On game day it's…">The scouts</td><td data-label="Its one job">Fetch the numbers and tidy them up</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-board"/></svg></span>The website</td><td data-label="On game day it's…">The scoreboard</td><td data-label="Its one job">Show it all in a way that makes sense</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-megaphone"/></svg></span>Coach</td><td data-label="On game day it's…">The head coach (agentic harness)</td><td data-label="Its one job">Read every roster, check the work, leave you notes</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-box"/></svg></span>GitHub</td><td data-label="On game day it's…">The playbook binder</td><td data-label="Its one job">Save every version of the site, with undo</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-arrow"/></svg></span>Vercel</td><td data-label="On game day it's…">The stadium crew</td><td data-label="Its one job">Build the site and open it to the world</td></tr>
+      <tr><td data-label="Piece"><span class="bts-em"><svg class="bts-ic" aria-hidden="true" focusable="false"><use href="#bts-c-shield"/></svg></span>Guardrails</td><td data-label="On game day it's…">The boundary line</td><td data-label="Its one job">Keep mistakes from reaching your league</td></tr>
+    </tbody>
+  </table>
+
+  <div class="bts-foot">
+    <div><b>That's the whole game plan.</b><div class="bts-small">Now go set your lineup. I'm watching.</div></div>
+    <div class="bts-foot-btns"><a class="bts-btn bts-alt" href="#standings">← Back to Standings</a><a class="bts-btn" href="#coach" data-bts-coach>See Coach's notes ▶</a></div>
+  </div>
+</section>
+</div>

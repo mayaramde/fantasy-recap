@@ -1100,6 +1100,8 @@
   .tp-mvrow > span.out { color: var(--muted); }
   .tp-mvrow em { flex: none; width: 56px; padding: 3px 0; text-align: center; font: 600 10.5px/1 var(--script); font-style: normal; color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; }
   .tp-mvrow .out em { background: var(--pink-soft); color: var(--ink); }
+
+__BTS_CSS__
 </style>
 
 <header class="site-head">
@@ -1114,6 +1116,7 @@
       <a href="#" data-nav="week" id="nav-week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
       <a href="#glossary" data-nav="glossary">Glossary</a>
+      <a href="#behind-the-scenes" data-nav="behind-the-scenes">Behind the scenes</a>
     </nav>
   </div>
 </header>
@@ -1121,6 +1124,8 @@
   <main id="main" tabindex="-1"></main>
   <footer id="footer"></footer>
 </div>
+
+__BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
 <script id="recap-data" type="application/json">__RECAP_DATA__</script>
 <script>
@@ -3074,11 +3079,14 @@
 
   const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="${WEEKS.length ? `#week-${latest().week}` : '#'}" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
+__BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
+  let btsSection = '';
   function route() {
     const h = location.hash.replace(/^#/, '');
     let m, html, nav = 'week';
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
+    else if ((m = /^behind-the-scenes(?:\.(big|data|api|harness|deploy|safe|cheat))?$/.exec(h))) { html = btsPage(); nav = 'behind-the-scenes'; btsSection = m[1] || ''; }
     else if (h === 'live' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
@@ -3101,6 +3109,7 @@
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
+    if (nav === 'behind-the-scenes') btsMount(btsSection);
     // Coach's hello is a modal: it opens on its own and only a pick closes it.
     const pick = document.getElementById('pick-dialog');
     if (pick && !pick.open && pick.showModal) pick.showModal();
