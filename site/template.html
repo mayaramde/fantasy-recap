@@ -665,7 +665,7 @@
     background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 1px 1px 0 var(--edge); transform: rotate(-3deg); white-space: nowrap; }
   .hub-lineups .st.out { background: var(--pink); }
   .hub-lineups .st.iffy { background: var(--orange); }
-  .hub-lineups .st.bye { color: var(--ink); background: var(--accent-soft); }
+  .hub-lineups .st.bye { color: var(--ink); background: var(--card); }
   .hub-lineups .legend, .hub-lineups .strip { margin: 0; padding: 9px 16px 11px; border-top: 2px solid var(--edge); font-size: 12px; color: var(--muted); }
   .hub-lineups .legend b { color: var(--ink); }
   .hub-lineups .strip { background: var(--orange-soft); color: var(--ink); font-size: 12.5px; }
@@ -2851,14 +2851,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const mid = fav && fav.win_probability > 0.5 ? `ESPN: ${esc(fav.manager)} ${pct(fav.win_probability)} to win`
       : hasProj ? `${f1(Math.abs(projOf(a) - projOf(b)))} apart` : 'no projections yet';
     const rc = (s) => `${TEAMS[s.team_id] && TEAMS[s.team_id].weekly.length ? `${record(TEAMS[s.team_id])} · ` : ''}${esc(s.team_name)}`;
-    const known = (advice() || []).some((r) => r.injuries_known);
+    // No advice rows at all says nothing about the injury report, so only a capture that has them and none known gets the note.
+    const adv = advice() || [];
+    const known = !adv.length || adv.some((r) => r.injuries_known);
     const table = (s) => {
       const rows = [...s.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
       if (!rows.length) {
-        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. Nothing to show until ESPN has a lineup.</div></div>`;
+        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. This fills in once ESPN has a lineup.</div></div>`;
       }
       const toFix = rows.filter((p) => hubStatus(p)).length;
-      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to fix</span>` : ''}</div></caption><tbody>${
+      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to check</span>` : ''}</div></caption><tbody>${
         rows.map((p) => hubRow(p, hasProj)).join('')}</tbody></table></div>`;
     };
     return `
@@ -2886,8 +2888,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <summary>Full lineups</summary>
           <div class="body">
             <div class="cols">${table(a)}${table(b)}</div>
-            ${known ? `<p class="legend"><b>Q</b> questionable · <b>DTD</b> day to day · <b>D</b> doubtful · <b>OUT</b> · <b>IR</b> · <b>SUSP</b> suspended · <b>BYE</b> NFL team is off. Status is ESPN's injury report. A starter who is out, on IR or on a bye counts for zero until he's swapped.</p>`
-              : `<p class="strip"><b>No injury report for this week.</b> Blank here does not mean healthy.</p>`}
+            ${known ? `<p class="legend"><b>Q</b> questionable (might play) · <b>DTD</b> day to day · <b>D</b> doubtful (probably not) · <b>OUT</b> · <b>IR</b> injured reserve · <b>SUSP</b> suspended · <b>BYE</b> no game this week. Tags come from ESPN's injury report. Out, IR and bye starters score zero until swapped.</p>`
+              : `<p class="strip"><b>No injury report for this week.</b> Blank here doesn't mean healthy.</p>`}
           </div>
         </details>
       </article>`;

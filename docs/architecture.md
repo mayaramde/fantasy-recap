@@ -93,7 +93,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `playing` is still present only while his game is on. Recapped (finished) weeks keep the plain rows without any of
   these. The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
   badge (a D/ST gets its logo), team and kickoff in the viewer's own time zone, a status sticker (Q, DTD, D, OUT, IR,
-  SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to fix" flag on
+  SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to check" flag on
   the side. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".
 - **League wire** (`wire()` in `site/build.py`, part of `live_payload`, so `/api/live` refreshes it too): the
   last seven days of ESPN's transaction log from the live capture and the ones before it. Pickups and drops,
