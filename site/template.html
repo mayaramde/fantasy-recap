@@ -496,6 +496,10 @@
   table.std th.r { font-family: var(--body); }
   table.std .rank { width: 30px; font: 800 19px/1 var(--display); color: var(--muted); }
   table.std tbody tr:first-child .rank { color: var(--accent); }
+  table.std .rank { width: 44px; white-space: nowrap; }
+  table.std .tick { display: block; margin-top: 3px; font: 700 10.5px/1 var(--mono); }
+  table.std .tick.up { color: var(--win); }
+  table.std .tick.down { color: var(--loss); }
   table.std .mgr a { font-weight: 700; text-decoration: none; }
   table.std .mgr a:hover { color: var(--accent); text-decoration: underline; }
   table.std .tname { display: block; font-size: 12px; color: var(--muted); }
@@ -1313,6 +1317,15 @@
       </article>`;
   }
 
+  // Up/down tick beside a rank when last week's result moved the team's overall standing.
+  // No tick for a team that held its spot or has nothing to compare to.
+  function rankMove(m) {
+    if (!m) return '';
+    const up = m > 0, n = Math.abs(m);
+    const label = `${up ? 'Up' : 'Down'} ${n} ${n === 1 ? 'spot' : 'spots'} after this week`;
+    return `<span class="tick ${up ? 'up' : 'down'}" title="${label}" aria-label="${label}">${up ? '▲' : '▼'}${n}</span>`;
+  }
+
   function standingsTable(rows, { compact } = {}) {
     const full = !compact;
     // The playoff line and bye stickers read league.json's format through the playoff odds;
@@ -1336,7 +1349,7 @@
         </tr></thead>
         <tbody>${rows.map((t, i) => `
           <tr${i + 1 === cut ? ' class="po-cut"' : ''}>
-            <td class="rank">${i + 1}</td>
+            <td class="rank">${i + 1}${rankMove(t.rank_move)}</td>
             <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a>${byeIds.has(t.team_id) ? '<span class="bye-tag" title="A top seed sits out Round 1">Bye</span>' : ''}<span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
             <td class="r">${record(t)}</td>
             ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
