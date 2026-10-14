@@ -37,8 +37,10 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   Both captures call it without cookies, and both treat it as best effort: if it fails, the capture still succeeds
   and the site just shows no "playing" stickers.
 - **ESPN public NFL news** (public, no auth): `https://site.api.espn.com/apis/site/v2/sports/football/nfl/news?limit=50`,
-  fetched by `scripts/fetch_news.py` in the cloud live update for the Week hub's "ESPN on your rosters" module. Only an
-  article's headline, link, publish time, byline and tagged ESPN athlete ids are kept, never its text, and only when it
+  fetched by `scripts/fetch_news.py` in the cloud live update for the Week hub's ticker and "Latest news" section. Only an
+  article's headline, link, publish time, byline, tagged ESPN athlete ids, lead photo URL (ESPN's own CDN only) and a
+  derived tag (Injury, Team news or Feature; read off the headline and blurb, since ESPN's categories carry no injury
+  marker) are kept, never its text, and only when it
   tags four or fewer players, one of them on a league roster, and nothing in it reads as off-field (lawsuits, arrests,
   suspensions, deaths). Lands in `data/<season>/news/latest.json`, never committed. Best effort like the scoreboard: a
   failed fetch, or a file over 36 hours old, just means the page has no headlines.

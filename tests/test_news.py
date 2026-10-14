@@ -16,7 +16,7 @@ ROSTERED = {101, 102, 103}
 
 def story(headline, athletes, description="", href="https://www.espn.com/nfl/story/_/id/1/x", **over):
     return {"id": 1, "headline": headline, "description": description, "published": "2026-10-06T12:00:00Z",
-            "byline": "A. Writer", "links": {"web": {"href": href}}, "images": [{"url": "x"}],
+            "byline": "A. Writer", "links": {"web": {"href": href}}, "images": [{"url": "x"}], "type": "HeadlineNews",
             "categories": [{"type": "athlete", "athleteId": a} for a in athletes] + [{"type": "team", "teamId": 9}],
             **over}
 
@@ -29,7 +29,27 @@ class KeepTest(unittest.TestCase):
         got = self.keep(story("Michael Wilson is a must-start in Week 5", [101]))
         self.assertEqual(got, [{"id": 1, "headline": "Michael Wilson is a must-start in Week 5",
                                 "link": "https://www.espn.com/nfl/story/_/id/1/x", "published": "2026-10-06T12:00:00Z",
-                                "athlete_ids": [101], "byline": "A. Writer"}])
+                                "athlete_ids": [101], "tag": "Team news", "byline": "A. Writer"}])
+
+    def test_tags_and_images(self):
+        photo = "https://a.espncdn.com/photo/2026/1014/r1_600x400.jpg"
+        cases = [("Eagles pass rusher is unlikely vs. Panthers", "HeadlineNews", "Injury"),
+                 ("Patriots lineman out with MCL sprain", "Story", "Injury"),
+                 ("Why the Browns run game is struggling", "Story", "Feature"),
+                 ("Broncos QB says he needs to simplify", "HeadlineNews", "Team news")]
+        for headline, kind, tag in cases:
+            got = self.keep(story(headline, [101], type=kind, images=[{"url": photo}]))
+            self.assertEqual((got[0]["tag"], got[0]["image"]), (tag, photo), headline)
+        self.assertNotIn("image", self.keep(story("No pic", [101], images=[{"url": "https://evil.example/x.jpg"}]))[0])
+        self.assertNotIn("image", self.keep(story("No pic", [101], images=None))[0])
+
+    def test_everyday_football_words_are_not_injuries(self):
+        for headline in ("Mahomes comes out firing", "Kicker misses a 50-yarder", "WR is on a tear",
+                         "Rookie takes a knee", "Kick returner shines", "Practice squad call-up", "Limited targets for WR"):
+            self.assertEqual(fetch_news.tag_of({"type": "HeadlineNews"}, headline), "Team news", headline)
+        for headline in ("Eagles pass rusher Jalyx Hunt (leg) unlikely vs. Panthers", "Star RB ruled out Sunday",
+                         "WR questionable for Week 6", "Lineman out with MCL sprain", "Knee injury ends his year"):
+            self.assertEqual(fetch_news.tag_of({"type": "HeadlineNews"}, headline), "Injury", headline)
 
     def test_a_listicle_is_dropped(self):
         self.assertEqual(self.keep(story("Rest-of-season rankings", list(range(90, 130)))), [])
@@ -93,7 +113,7 @@ class MainTest(unittest.TestCase):
             out = json.loads((Path(tmp) / "data" / "2026" / "news" / "latest.json").read_text())
         self.assertEqual(sorted(out), ["articles", "fetched_at"])
         self.assertEqual([a["headline"] for a in out["articles"]], ["Good one"])
-        self.assertEqual(sorted(out["articles"][0]), ["athlete_ids", "byline", "headline", "id", "link", "published"])
+        self.assertEqual(sorted(out["articles"][0]), ["athlete_ids", "byline", "headline", "id", "link", "published", "tag"])
 
     def test_no_capture_writes_nothing(self):
         with tempfile.TemporaryDirectory() as tmp, mock.patch.object(fetch_news, "ROOT", Path(tmp)), \

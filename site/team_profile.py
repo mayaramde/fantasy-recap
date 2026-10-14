@@ -53,23 +53,37 @@ def moves(team_id, captured, names=None):
             if not kind:
                 continue
             items = t.get("items", [])
-            added = [name(i) for i in items if i["type"] in ("ADD", "TRADE") and i["to_team_id"] == team_id]
-            dropped = [name(i) for i in items if i["type"] in ("DROP", "TRADE") and i["from_team_id"] == team_id]
+            added_i = [i for i in items if i["type"] in ("ADD", "TRADE") and i["to_team_id"] == team_id]
+            dropped_i = [i for i in items if i["type"] in ("DROP", "TRADE") and i["from_team_id"] == team_id]
+            added, dropped = [name(i) for i in added_i], [name(i) for i in dropped_i]
             if not added and not dropped:
                 continue
             key = (t["date"], t["type"], tuple(sorted(str(i["player_id"]) for i in items)))
             if key in seen:
                 continue
             seen.add(key)
-            out.append({"week": facts["week"], "date": t["date"], "type": kind, "added": added, "dropped": dropped})
+            # The ids ride along (same order as the names) so the page can draw a headshot chip.
+            out.append({"week": facts["week"], "date": t["date"], "type": kind, "added": added, "dropped": dropped,
+                        "added_ids": [i["player_id"] for i in added_i], "dropped_ids": [i["player_id"] for i in dropped_i]})
     out.sort(key=lambda m: m["date"], reverse=True)
     return out
 
 
 # ---------- audit: shared ----------
 
-def _card(key, kind, stat, title, text):
-    return {"key": key, "kind": kind, "level": "info", "stat": stat, "title": title, "text": text}
+def _card(key, kind, stat, title, text, players=()):
+    """`players` ([{id, name, pos}]) are the people the card is about, so the page can show
+    their faces next to the words. Display only: never part of the key."""
+    return {"key": key, "kind": kind, "level": "info", "stat": stat, "title": title, "text": text,
+            "players": list(players)}
+
+
+def _ref(p):
+    return {"id": p["player_id"], "name": p["name"], "pos": p.get("pos")}
+
+
+def _find(row, name, side):
+    return next((p for p in row.get(side, []) if p.get("name") == name), None)
 
 
 # ---------- audit: Lineup IQ ----------
@@ -121,7 +135,8 @@ def lineup_iq(rows):
     at = _at(c["slot"]) if c["slot"] in GROUP_LABEL else f"at {c['slot']}"
     text = (f"Biggest miss: Week {wk}, starting {c['started']} ({_f1(c['started_points'])}) "
             f"{at} while {c['benched']} put up {_f1(c['benched_points'])} on your bench, where points don't count.")
-    return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}:w{wk}", "lineup_iq", stat, LINEUP_TITLE[b], text)
+    faces = [_ref(p) for p in (_find(r, c["benched"], "bench"), _find(r, c["started"], "starters")) if p]
+    return _card(f"lineup:{b}:{_benched_id(r, c['benched'])}:w{wk}", "lineup_iq", stat, LINEUP_TITLE[b], text, faces)
 
 
 # ---------- audit: Position strength ----------
@@ -180,6 +195,18 @@ def position_card(ranks, n_teams=8):
     return _card(f"pos:{best}{ranks[best]}:{worst}{ranks[worst]}", "position", stat, title, text), worst
 
 
+def position_faces(rows, group, n=2):
+    """His best two starters at `group` by points over the weeks given (ties by id)."""
+    tot = {}
+    for _, r in rows:
+        for p in r["starters"]:
+            if p["slot"] == group:
+                e = tot.setdefault(p["player_id"], [0.0, p])
+                e[0] += p["points"]
+    top = sorted(tot.values(), key=lambda e: (-round(e[0], 2), e[1]["player_id"]))[:n]
+    return [_ref(e[1]) for e in top]
+
+
 # ---------- audit: Projection vs reality ----------
 
 def _vs(name, avg, its):
@@ -199,7 +226,7 @@ def projection_card(rows):
                 continue
             d = p["points"] - p["projected"]
             delta += d
-            e = per.setdefault(str(p["player_id"]), {"name": p["name"], "n": 0, "sum": 0.0,
+            e = per.setdefault(str(p["player_id"]), {"name": p["name"], "pos": p.get("pos"), "id": p["player_id"], "n": 0, "sum": 0.0,
                                                      "its": p.get("slot") == "DST" or p["name"].endswith("D/ST")})
             e["n"] += 1
             e["sum"] += d
@@ -208,6 +235,7 @@ def projection_card(rows):
     top = eligible[0] if eligible else None
     bottom = eligible[-1] if len(eligible) >= 2 else None
     direction = "over" if delta >= 0 else "under"
+    faces = [{"id": per[x[1]]["id"], "name": x[2], "pos": per[x[1]]["pos"]} for x in (top, bottom) if x]
     stat = f"{'+' if delta >= 0 else '-'}{_f1(abs(delta))} vs projections"
     title = "Your starters are beating ESPN's guesses" if direction == "over" else "ESPN keeps overrating your starters"
     if not top:
@@ -217,7 +245,7 @@ def projection_card(rows):
         if bottom:
             text += f" {_vs(bottom[2], bottom[0], bottom[3])}."
     key = f"proj:{direction}:{top[1] if top else 'none'}:{bottom[1] if bottom else 'none'}"
-    return _card(key, "projection", stat, title, text)
+    return _card(key, "projection", stat, title, text, faces)
 
 
 # ---------- audit: all three, every team ----------
@@ -234,6 +262,7 @@ def audits(facts_list, team_ids):
             out[tid] = {"cards": [], "weak_spot": None, "best_spot": None, "ranks": None}
             continue
         pos, weak = position_card(ranks[tid], len(team_ids))
+        pos["players"] = position_faces(rows, extremes(ranks[tid])[0])
         out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak,
                     "best_spot": extremes(ranks[tid])[0], "ranks": ranks[tid]}
     return out

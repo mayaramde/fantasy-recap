@@ -65,8 +65,8 @@ first kickoff, and again once every game is final and the recap isn't out yet.
 
 - **Before kickoff**: a season strip, up to four scoreboard cards (Closest, Favorite, Top projection, Biggest fix: a label, a
   big number with its unit, a first name and one small line, 2×2 on a phone), then one card per matchup beside Coach's desk and
-  the projections ranked. The reader's own game sorts first when the browser remembers her team (picked on
-  Coach); otherwise the game with the most at stake leads.
+  the projections ranked. The reader's own game sorts first when the browser remembers her team (picked with the
+  "Viewing as" chip in the header); otherwise the game with the most at stake leads.
 - **Where each piece comes from.** Everything a lineup change can move is drawn in the browser from the live
   games and Coach rows, so it refreshes with `/api/live` and can't disagree with the projected scores beside it:
   the split bar, the **edge strip** (per lineup spot, who leads and by how many projected points, RB and WR
@@ -90,13 +90,20 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   of the same model, with the same optional `schedule.json`). Only for the next unplayed
   regular-season week (an unrecapped earlier week, or a playoff week, means no stakes), and a side with under
   100 simulated seasons behind it reports nothing. Games are ranked by the two teams' swings added together.
-- **ESPN on your rosters** (`live.hub.news`, baked): `scripts/fetch_news.py` runs in the live-update workflow
-  before the build and writes `data/<season>/news/latest.json`, never committed. It keeps an article only if it
-  tags four or fewer players, at least one on a league roster, and nothing in the headline or description reads
-  as off-field. The build re-matches each article against the live rosters, shows the newest six as a headline
-  linking out to ESPN (the link must be `https://www.espn.com/...`), and ignores a file over 36 hours old. Since
-  it only refreshes on a deploy, midweek headlines are up to a day old. Off switch: the repo variable
-  `NEWS_ENABLED=false` skips the fetch.
+- **Ticker and Latest news** (`live.hub.news` and `news_at`, baked): `scripts/fetch_news.py` runs in the live-update
+  workflow before the build and writes `data/<season>/news/latest.json`, never committed. It keeps an article only if
+  it tags four or fewer players, at least one on a league roster, and nothing in the headline or description reads
+  as off-field, plus its tag and ESPN-CDN photo. The build (`news_items`) re-matches each article against the live
+  rosters and keeps up to twelve in ESPN's order, each with its owners and the rostered players (name, position,
+  NFL team, headshot). The link must be `https://www.espn.com/...` and the photo `https://a.espncdn.com/...`. The
+  browser ranks them: the viewer's team first, then injuries, then ESPN's order. The viewer is the team Coach
+  already remembers in `localStorage` (`ffg-coach-team`); with none there are no highlights. The ticker (a bar under
+  the nav on This week only, drawn outside `#main` so a live refresh doesn't restart its scroll) shows the first
+  twelve; Latest news sits at the bottom with team chips, a lead card and a grid. A file over 36 hours old is
+  ignored, and a fetch that fails or finds nothing hides both quietly. Since it only refreshes on a deploy,
+  midweek headlines are up to a day old. Off switch: the repo variable `NEWS_ENABLED=false` skips the fetch.
+- **Phone tabs** (620px and under): the bottom of This week becomes a tab switch (Latest news, League wire,
+  Projected) over the same sections the desktop draws. Local state, not persisted, and it never refetches.
 - **After the last game**: the final scores and stickers as before, plus the wire and the headlines. No
   stakes, edge strip or Coach's desk for a week nobody can change.
 - A module with nothing to show is left out, never drawn empty.
@@ -118,7 +125,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   the card). Each team's own week lives
   on her **team profile** (`#team-<id>`, `.lineup`, `.next` for next week, `.season`); the old `#coach-<id>` and
   `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
-  remembers the last team opened. The grid and the profile's week sections disappear once the live week's recap is
+  remembers the team picked with the "Viewing as" chip, never the last one opened. The grid and the profile's week sections disappear once the live week's recap is
   published; the rest of the profile stays all season.
 - Next week's tab is baked at build time and never refreshed by `/api/live`: those numbers move about once a day,
   and asking ESPN for a second week on every request would double what the Live page costs it.
@@ -185,14 +192,28 @@ the luck report.
 
 ## Team profile
 
-Three tabs (`site/template.html`, `teamPage`):
+**Viewing as** (every page): a glowing chip in the site header (`viewingAs` in `site/template.html`) says whose eyes the
+site is wearing. First visit with nothing saved asks "Who are you?" (8 teams or "Just looking"). The menu lists all 8
+teams, "Open <name>'s team page" and "League view"; every change raises an Undo toast. The pick lives in
+`localStorage` (`ffg-coach-team`, and `ffg-viewing-asked` so it never nags), with in-memory fallbacks when storage is
+blocked. It only changes highlights (orange = you, the "My team" nav item, the "You" badge) and never what a page says.
+Browsing a team never makes it "you". On phones the header collapses to a 48px bar past 70px of scroll (and reopens
+below 20px); `siteHead` adds the height it gave up back as a margin, and `tpSticky` keeps the team tab bar's sticky `top`
+equal to the header's measured height (scroll, resize, header resize, fonts).
 
-- **Overview** `#team-<id>`: hero scoreboard, this week's matchup and odds, **Coach's take** (the audit cards, a swipe row
-  on phones), **Coach's advice** (roster ideas: waiver wire and trades), the season-so-far chips. From 860px up a side rail
-  adds her lineup, latest moves and latest award; phones get two links into the other tabs instead.
-- **Lineup** `#team-<id>.lineup`, and `#team-<id>.next` for next week (the week toggle lives here): the week's tiles,
-  to-do cards and lineup (the Coach page section above).
-- **Season** `#team-<id>.season`: score-by-week chart, the full audit, week by week, awards, and moves grouped by week.
+Every tab opens with the same header: breadcrumb, the team strip (standings order, pink badge = fixes waiting, orange dot =
+you), the dark identity card (playoff odds as a range from the Week hub's `stakes`, "lose–win vs <opponent>"; once the week
+has kicked off the range is gone and it shows today's single number, labelled), and a sticky Overview / Lineup / Season bar.
+
+- **Overview** `#team-<id>`: the matchup (ESPN's win chance, both projections, starters left, what to fix), the playoff
+  card (seed, top-4 line, the odds if she loses / beats her opponent and what the game is worth), one **Coach's take**
+  and **Who's next** (the week-ahead opponent and the one player of theirs to watch).
+- **Lineup** `#team-<id>.lineup`, and `#team-<id>.next` for next week (the week toggle lives here): a To fix card, then one
+  expandable row per player (Top scorers' headshot and logo sources, kickoff time from the public scoreboard's `kickoff`,
+  Coach's blurb and scoring lines in the panel), then **Coach's advice** (waiver and trade ideas).
+- **Season** `#team-<id>.season`: score-by-week chart with the season average, stat tiles, the full audit, week by week, and
+  every award and the roster moves as accordion rows. Awards carry their story text and the players they name
+  (`build.award_players`); audit cards carry `players`; moves carry `added_ids` / `dropped_ids`.
 
 - **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
   Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
