@@ -41,6 +41,10 @@ When invoked:
      used, per CLAUDE.md's Voice section.
    - **Glossary**: `glossary` must have 3 to 5 entries, each one sentence, none repeating a
      term defined in an earlier week's recap.
+   - **Coach snapshots are not a source.** `data/<season>/fantasypros/` (`latest.json` and
+     `history/`) holds Claude-written Coach cards. A claim whose only support is a card there, or text
+     lifted from one, is **unsupported**, and so is any "the coach said/flagged" attribution in the recap.
+     Support has to come from `facts.json`/`espn.json` or the injury/news context you were handed.
 3. Report a table: claim | where it comes from | verdict (verified, mismatch,
    unsupported). "Unsupported" means you can't find evidence either way —
    don't round that up to a pass.

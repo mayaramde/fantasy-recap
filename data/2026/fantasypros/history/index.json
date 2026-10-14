@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "days": [
+    {
+      "date": "2026-10-13",
+      "file": "2026-10-13.json",
+      "generated_at": "2026-10-14T01:41:07Z",
+      "fantasypros_reached": true,
+      "weeks": {
+        "6": {
+          "advice_cards": 0,
+          "roster_ideas": 9,
+          "trades": 1,
+          "coach_cards": 22
+        },
+        "7": {
+          "advice_cards": 0,
+          "roster_ideas": 10,
+          "trades": 1,
+          "coach_cards": 38
+        }
+      }
+    }
+  ]
+}

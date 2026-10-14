@@ -90,6 +90,9 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   playoff odds; without it they draw random opponents
 - `data/<season>/fantasypros/latest.json`: `fantasy-coach-daily`'s rolling snapshot of FantasyPros-sourced Coach
   cards and roster ideas (committed)
+- `data/<season>/fantasypros/history/<YYYY-MM-DD>.json` + `index.json`: one dated copy of that snapshot per Pacific-time day (a rerun the same day overwrites it)
+  (written by `scripts/snapshot_history.py`, committed in the same PR), so reflection can read how the team shifted over time.
+  `recap-write` may use them as leads for what to look up, but they are Claude-written advice, never a source for a recap claim.
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
   and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
@@ -117,7 +120,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `trade_eval.py` (finds and scores trades for both teams against `coach-daily`'s ground rules; only a passing trade becomes a card), `deploy.sh` + `vercel_build.sh` (deploy),
   `dev.py` (`npm run dev`, alias `dev:vercel` for v0: local server for `web-preview/`, or `web/` with `--prod`, plus `/api/live`; rebuilds and reloads on change; never a deploy path),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
-  `fetch_news.py` (ESPN headlines for the Week hub, best effort)
+  `fetch_news.py` (ESPN headlines for the Week hub, best effort),
+  `snapshot_history.py` (archives `fantasypros/latest.json` into `history/`)
 - `.github/workflows/`: `checks.yml` and `live-update.yml` (capture + deploy); the scheduled Claude routines run locally, see `docs/architecture.md`
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
   profile, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
