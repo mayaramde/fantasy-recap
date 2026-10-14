@@ -2485,7 +2485,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const livePlaying = (s) => (s.starters || []).filter((p) => p.playing);
 
   function liveMeter(s, rem, scale, cls) {
-    const w = (n) => `${Math.min(n / scale * 100, 100).toFixed(1)}%`;
+    const w = (n) => `${Math.max(Math.min(n / scale * 100, 100), 0).toFixed(1)}%`;
     return `<div class="lv-meter-row"><span class="nm">${esc(s.manager)}</span>
       <div class="lv-meter" role="img" aria-label="${esc(s.manager)}: ${f2(s.points)} scored, ${f1(rem)} projected still to come"><i class="so ${cls}" style="width:${w(s.points)}"></i><i class="to" style="width:${w(rem)}"></i></div>
       <span class="num">${f2(s.points)} +${f1(rem)}</span></div>`;
@@ -2548,7 +2548,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const playing = (a.playing_now || 0) + (b.playing_now || 0);
     const flipped = !!(liveMove && liveMove.flip.has(g.key));
     return `
-      <a class="lv-card" href="${base(w)}.game-${g.key}" aria-label="${esc(a.manager)} ${f2(a.points)}, ${esc(b.manager)} ${f2(b.points)}${v ? `, ${v.label}` : ''}. Open live box score">
+      <a class="lv-card" href="${base(w)}.game-${g.key}" aria-label="${esc(a.manager)} ${f2(a.points)}, ${esc(b.manager)} ${f2(b.points)}. ${leader ? `${esc(leader.manager)} leads by ${f1(liveGap(g))}. ` : 'Tied. '}${v ? `${v.label}, ${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}. ` : ''}${flipped ? 'Lead changed. ' : ''}Open live box score">
         ${v ? `<div class="lv-card-head"><span class="lv-verdict ${v.tone}">${v.label}</span><span class="lv-pct">${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}</span></div>` : ''}
         <div class="lv-top2">
           <div class="lv-s"><div class="m">${esc(a.manager)}</div><div class="lv-sc num ${lead === a.team_id ? 'lead' : ''}">${f1(a.points)}${liveDelta(a.team_id)}</div></div>
@@ -4326,7 +4326,8 @@ __BTS_JS__
       // A new week may have started since this build was deployed; only ever patch the
       // week this page is actually showing.
       if (fresh.week !== LIVE.week) return;
-      liveMove = liveMovement(liveMove, fresh.games || []);
+      // Movement is a nicety: a malformed game must never stop the numbers refreshing.
+      try { liveMove = liveMovement(liveMove, fresh.games || []); } catch { liveMove = null; }
       Object.assign(LIVE, fresh);
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the

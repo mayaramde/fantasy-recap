@@ -42,7 +42,7 @@
   a.lv-card { background: var(--card); overflow: hidden; display: block; text-decoration: none; color: inherit; border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px; }
   .lv-card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px 4px; }
   .lv-verdict { display: inline-block; font: 600 18px/1.2 var(--script); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 8px; padding: 3px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
-  .lv-verdict.lime { background: var(--lime); } .lv-verdict.cobalt { background: var(--accent-soft); } .lv-verdict.pink { background: var(--pink); }
+  .lv-verdict.lime { background: var(--lime); } .lv-verdict.cobalt { background: var(--accent-soft); color: var(--ink); } .lv-verdict.pink { background: var(--pink); }
   .lv-pct { font: 500 12px/1.2 var(--mono); color: var(--muted); text-align: right; }
   .lv-top2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 14px 6px; }
   .lv-s.r { text-align: right; }
