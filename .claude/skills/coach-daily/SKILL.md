@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or any data/<season>/week-NN/ file.
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
 model: inherit
 ---
 
@@ -10,7 +10,7 @@ This is content authoring, not just data capture: you write the finished,
 voiced card text yourself, the same way recap-write writes game_balls/
 flags/tough_breaks. `site/build.py` never invents copy — it only decides
 which of your cards to show and when. Data only otherwise: this skill
-never deploys, never touches a recap, and never touches any
+never deploys, never touches a recap, and never commits any
 `data/<season>/week-NN/` file; the next live-update run picks up whatever
 this merges.
 
@@ -32,6 +32,27 @@ The live week's `data/2026/week-NN/` and `data/2026/next-week/` may be uncommitt
 exist only in the project folder's working tree. Copy them into the same paths inside the
 worktree right away: Step 5b's brief and Step 7's build both read them from there.
 
+Then capture whatever is still missing, from inside the worktree (the league is public, so this is
+anonymous: no cookies, no secrets). Only the project folder's captures ever reach this run, and the
+cloud `live-update` captures on a runner that is thrown away, so on most mornings there is no live
+week folder yet:
+
+```
+cd /tmp/fantasy-coach-daily-<YYYY-MM-DD>
+node scripts/capture_node.mjs current   # writes data/2026/week-NN/espn.json
+python3 scripts/analyze.py --week NN    # NN from `current`'s output; writes that week's facts.json
+node scripts/capture_node.mjs next      # best effort: writes data/2026/next-week/espn.json
+```
+
+Skip `current` and `analyze.py` when the copied `week-NN/facts.json` already belongs to the live week
+(Step 3's definition), and always re-run `next` (a copied one may be days old; it is best effort anyway). If `current` fails,
+don't fall back to an audit-only run quietly: lead the Output summary with the exact error (an `ESPN 401`
+means the league went private again, the commissioner's setting to fix). A failed `next` just means no
+next-week cards today; say so in the summary and carry on. The new `week-NN/` files show up
+as untracked in the worktree and `next-week/` is gitignored; neither is ever committed, because Step 7
+stages only the files it names (never `git add -A`). `analyze.py` may also touch
+`data/player_names.json`; don't stage that either.
+
 ## Step 2: read yesterday's snapshot
 
 Read `data/2026/fantasypros/latest.json` from the worktree (`origin/main`) before touching
@@ -46,8 +67,9 @@ The current live week (the highest week in `data/2026/week-NN/facts.json` whose
 `recaps/2026/week-NN.json` has no *published* status yet), and, if `data/2026/next-week/espn.json`
 exists and its `week` is exactly one more than the live week, that week too — a full week of
 lead time is exactly when start/sit and waiver/trade ideas matter most, so don't skip it just
-because the live week already got cards. If there's no live week, there are no week cards to write,
-but the season audit (Step 5b) still gets written every run. If every week through 17 already has a
+because the live week already got cards. If there's still no live week after Step 1's capture (the week's recap is already published, or ESPN had
+no new week), there are no week cards to write, but the season audit (Step 5b) still gets written every
+run. Say which of those it was at the top of the Output summary, so an audit-only day is never silent. If every week through 17 already has a
 published recap, the season's over: stop and say so.
 
 ## Step 4: pull FantasyPros data (free tier only)
@@ -306,7 +328,7 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 ## Step 7: build, check, commit, ship the PR
 
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
-   touch any recap file or any `data/2026/week-NN/` file.
+   edit or commit any recap file or any `data/2026/week-NN/` file.
 2. Commit **only** `data/2026/fantasypros/latest.json` on the worktree's `coach-daily-<date>`
    branch. Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
@@ -317,7 +339,7 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    would overwrite it) — close it (`gh pr close <n> --delete-branch`) so it can't conflict with
    today's.
 5. Confirm auto-merge is actually on (`gh pr view <n> --json autoMergeRequest`), then remove the
-   worktree: `git worktree remove /tmp/fantasy-coach-daily-<date>`.
+   worktree: `git worktree remove --force /tmp/fantasy-coach-daily-<date>` (--force: the captured week folder is untracked).
 6. Don't deploy the website yourself — the next `live-update.yml` run picks up the merged
    snapshot the next time it builds.
 
