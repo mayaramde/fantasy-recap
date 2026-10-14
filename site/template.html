@@ -1162,7 +1162,7 @@
   .acc .cb { margin: 0 0 12px; padding: 10px 14px 12px; background: var(--lime-soft); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
   .acc .cb.fl { background: var(--pink-soft); }
   .acc .cb h4 { color: var(--ink); margin: 6px 0 3px; font: 800 18px/1.12 var(--display); letter-spacing: 0.01em; }
-  .acc .cb p { margin: 0; font-size: 13.5px; }
+  .acc .cb p { margin: 0; font-size: 13.5px; color: var(--ink); }
   .acc .cb .peek-body { margin-top: 6px; padding: 0; background: none; border: 0; }
   .acc .ctag { display: inline-block; padding: 1px 9px; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; font: 800 10px/1.5 var(--body); letter-spacing: 0.08em; text-transform: uppercase; }
   .acc .slot { font: 500 11px/1 var(--mono); text-align: center; background: var(--card); border: 2px solid var(--edge); border-radius: 8px; padding: 3px 0; }
@@ -1190,41 +1190,50 @@
   }
 
   /* Season tab */
-  .tp-chart { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); padding: 14px 14px 12px; }
-  .tp-plot { position: relative; height: 150px; margin-top: 24px; display: flex; gap: 14px; }
-  .tp-col { position: relative; flex: 1; min-width: 0; }
-  .tp-bar-w, .tp-bar-l { position: absolute; left: 0; right: 0; bottom: 0; height: var(--h); border: 2px solid var(--edge); border-radius: 8px 8px 0 0; box-sizing: border-box; }
-  .tp-bar-w { background: var(--accent); } .tp-bar-l { background: var(--pink); }
-  .tp-val { position: absolute; left: 0; right: 0; bottom: calc(var(--h) + 3px); text-align: center; font: 500 12.5px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-avg { position: absolute; left: 0; right: 0; bottom: var(--h); border-top: 1.5px dashed var(--ink); pointer-events: none; }
-  .tp-avg span { position: absolute; left: 0; bottom: 3px; font: 400 10.5px/1 var(--mono); color: var(--muted); background: var(--card); padding-right: 4px; }
-  .tp-axis { display: flex; gap: 14px; margin-top: 6px; }
-  .tp-axis span { flex: 1; text-align: center; font: 500 11.5px/1 var(--script); color: var(--muted); }
-  .tp-gm { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 44px; padding: 12px 14px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-gm .tp-res { text-align: center; font-size: 13px; padding: 5px 0; border-radius: 7px; }
-  .tp-gm b { font-weight: 800; font-size: 15px; }
-  .tp-gm .sc { display: block; margin-top: 2px; font: 400 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-gm .rt { text-align: right; font-size: 12px; color: var(--muted); }
-  .tp-gm .rt b { display: block; font: 500 13px/1.3 var(--mono); color: var(--ink); }
-  .tp-aw { display: flex; gap: 10px; align-items: flex-start; padding: 11px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; line-height: 1.35; }
-  .tp-aw .aw-pill { flex: none; font: 600 11px/1 var(--script); padding: 4px 9px; color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 999px; background: var(--accent-soft); }
-  .tp-aw .aw-pill.breaks, .tp-panel header .rail-pill.breaks { background: var(--lime); }
-  .tp-aw .aw-pill.balls { background: var(--orange); } .tp-aw .aw-pill.flags { background: var(--pink); }
-  .tp-aw a { font-weight: 800; color: var(--accent); text-decoration: none; }
-  .tp-mv { background: var(--card); border: 2px solid var(--edge); border-radius: 14px; overflow: hidden; }
-  .tp-mv[open] { box-shadow: 3px 3px 0 var(--drop); }
-  .tp-mv summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 50px; padding: 0 14px; cursor: pointer; list-style: none; font-weight: 800; font-size: 15px; }
-  .tp-mv summary::-webkit-details-marker { display: none; }
-  .tp-mv summary small { margin-left: 6px; font-weight: 500; font-size: 12.5px; color: var(--muted); }
-  .tp-mv summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-top: -4px; border: solid var(--ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-  .tp-mv[open] summary { background: var(--accent-soft); border-bottom: 2px solid var(--edge); }
-  .tp-mv[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
-  .tp-mvrow { display: grid; gap: 5px; padding: 10px 14px; font-size: 14px; }
-  .tp-mvrow + .tp-mvrow { border-top: 1.5px solid var(--rule); }
-  .tp-mvrow > span { display: flex; gap: 8px; align-items: baseline; }
-  .tp-mvrow > span.out { color: var(--muted); }
-  .tp-mvrow em { flex: none; width: 56px; padding: 3px 0; text-align: center; font: 600 10.5px/1 var(--script); font-style: normal; color: var(--on-pop); background: var(--lime); border: 1.5px solid var(--edge); border-radius: 999px; }
-  .tp-mvrow .out em { background: var(--pink-soft); color: var(--ink); }
+  .sc-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+  @media (max-width: 760px) { .sc-grid { grid-template-columns: minmax(0, 1fr); } }
+  .sc-chart { padding: 14px 16px 10px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sc-chart svg { display: block; width: 100%; height: auto; }
+  .ch-w { fill: var(--lime); stroke: var(--edge); stroke-width: 2.5; }
+  .ch-l { fill: var(--pink-soft); stroke: var(--edge); stroke-width: 2.5; }
+  .ch-v { fill: var(--ink); font: 800 16px var(--display); text-anchor: middle; }
+  .ch-x { fill: var(--muted); font: 500 11px var(--mono); text-anchor: middle; }
+  .ch-avg { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
+  .ch-al { fill: var(--accent-ink); font: 500 10.5px var(--mono); text-anchor: end; }
+  .sc-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
+  @media (max-width: 760px) { .sc-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } }
+  @media (max-width: 520px) { .sc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .sc-tile { padding: 10px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
+  .sc-tile b { display: block; font: 900 28px/1 var(--display); }
+  .sc-tile b em { margin-left: 4px; font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); }
+  .sc-tile span { font: 500 10px/1.2 var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .sc-tile.l { background: var(--lime-soft); } .sc-tile.p { background: var(--pink-soft); } .sc-tile.o { background: var(--orange-soft); } .sc-tile.b { background: var(--accent-soft); }
+  .sc-audit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 860px) { .sc-audit { grid-template-columns: minmax(0, 1fr); } }
+  .ov-take.l { background: var(--lime-soft); } .ov-take.b { background: var(--accent-soft); }
+  .ov-tag.w { background: var(--card); }
+  .sc-wk { padding: 4px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sc-wl { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--ink); text-decoration: none; border-bottom: 2px dotted var(--rule); }
+  .sc-wl:last-child { border-bottom: 0; }
+  .sc-wl:hover .t b { text-decoration: underline; }
+  .sc-wl .r { display: grid; place-items: center; flex: none; width: 26px; height: 26px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 8px; font: 800 12px/1 var(--body); }
+  .sc-wl .r.L { background: var(--pink-soft); color: var(--ink); }
+  .sc-wl .t { flex: 1; min-width: 0; }
+  .sc-wl .t b { font-weight: 700; }
+  .sc-wl .t small { display: block; font-size: 12px; color: var(--muted); }
+  .sc-wl .s { text-align: right; font: 500 13px/1.2 var(--mono); }
+  .sc-aw { padding: 2px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .acc .arow { display: grid; grid-template-columns: auto minmax(0, 1fr) 24px; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .aw-tag { min-width: 84px; padding: 2px 10px; text-align: center; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.5 var(--body); }
+  .aw-tag.flags { background: var(--pink); } .aw-tag.breaks { background: var(--accent-soft); color: var(--ink); } .aw-tag.moves { background: var(--card); color: var(--ink); }
+  .acc .at small { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .acc .at b { font: 700 15px/1.2 var(--body); }
+  .acc .cb.mvs { background: var(--card); }
+  .acc .mv { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0; }
+  .acc .mv i { padding: 1px 6px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 6px; font: 800 10px/1.5 var(--body); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; }
+  .acc .mv i.d { background: var(--pink-soft); color: var(--ink); }
+  .acc .mvw { margin: 8px 0 0; font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .acc .mvw:first-child { margin-top: 0; }
 
 __BTS_CSS__
 </style>
@@ -2572,7 +2581,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
   const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
-  const TP_SEEDED = new Set();
 
   /* Her playoff odds, said so they can't be misread. Before kickoff the Week hub's simulation
      knows the odds if she loses this week's game and if she wins it, so the header shows that
@@ -2800,70 +2808,86 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>`;
   }
 
-  const moveLines = (m, names) => `
-    ${m.added.length ? `<span><em>Added</em><b>${names(m.added)}</b></span>` : ''}
-    ${m.dropped.length ? `<span class="out"><em>${m.type === 'trade' ? 'Sent' : 'Dropped'}</em>${names(m.dropped)}</span>` : ''}`;
+  /* Season tab: the scores, Coach's audit, every game, then awards and roster moves as accordions. */
+  function seasonChart(t) {
+    const W = 560, H = 160, pad = 8, base = H - 26, top = 24;
+    const n = t.weekly.length;
+    const maxv = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1) * 1.04;
+    const slot = (W - pad * 2) / n, bw = Math.min(58, slot * 0.74);
+    const yOf = (v) => base - (base - top) * (v / maxv);
+    const bars = t.weekly.map((g, i) => {
+      const x = pad + i * slot + (slot - bw) / 2, y = yOf(g.points);
+      return `<rect class="${g.result === 'L' ? 'ch-l' : 'ch-w'}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${(base - y).toFixed(1)}" rx="7"/>
+        <text class="ch-v" x="${(x + bw / 2).toFixed(1)}" y="${(y - 6).toFixed(1)}">${f1(g.points)}</text>
+        <text class="ch-x" x="${(x + bw / 2).toFixed(1)}" y="${H - 8}">W${g.week} · ${g.result}</text>`;
+    }).join('');
+    const ay = yOf(t.avg).toFixed(1);
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">${bars}<line class="ch-avg" x1="0" x2="${W}" y1="${ay}" y2="${ay}"/><text class="ch-al" x="${W - 2}" y="${(ay - 5).toFixed(1)}">avg ${f1(t.avg)}</text></svg>`;
+  }
 
-  /* Season tab: how every week went, the audit in full, every game, her awards and every move. */
   function tpSeason(id, t, p) {
+    const who = id === myTeam.get() ? 'Your' : `${esc(t.manager)}'s`;
     const weeks = [...t.weekly].sort((x, y) => y.week - x.week);
-    const top = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1);
-    const h = (n) => `${Math.max(2, (n / top) * 100).toFixed(1)}%`;
-    const kinds = AWARD_KINDS.map((k) => [k, t.awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
-    const awards = [...t.awards].sort((x, y) => y.week - x.week);
-    const names = (xs) => xs.map(esc).join(', ');
+    const optimal = t.points_for + t.bench_left;
+    const awards = [...t.awards].map((a, i) => ({ ...a, i })).sort((x, y) => y.week - x.week || x.i - y.i);
+    const kinds = AWARD_KINDS.map((k) => [k, awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
     const byWeek = [];
     for (const m of p.moves) {
       const last = byWeek[byWeek.length - 1];
       if (last && last.week === m.week) last.moves.push(m); else byWeek.push({ week: m.week, moves: [m] });
     }
-    // The newest week starts open, once per page load; after that the page remembers what she opened or shut.
-    if (byWeek.length && !TP_SEEDED.has(id)) { TP_SEEDED.add(id); HUB_OPEN.add(`mv-${id}-${byWeek[0].week}`); }
+    const awardRow = (a, n) => {
+      const key = `aw-${id}-${a.week}-${a.i}`, rid = `${key}-p`, open = LU_OPEN.has(key);
+      const k = KIND[a.kind];
+      return `
+        <div class="prow${open ? ' open' : ''}" data-key="${key}">
+          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag ${k.cls}">${esc(k.label)}</span><div class="at"><small>Week ${a.week}</small><b>${esc(a.title)}</b></div><span class="chev" aria-hidden="true">▾</span></div>
+          <div class="coach" id="${rid}"><div class="cin"><div class="cb${a.kind === 'flags' ? ' fl' : ''}"><p>${esc(a.text || a.stat || a.title)}</p>${a.stat && a.text ? `<p style="margin-top:6px;font:500 11.5px var(--mono);color:var(--muted)">${esc(a.stat)}</p>` : ''}${refs(a.players)}<p style="margin-top:8px"><a href="#week-${a.week}.awards" style="color:var(--accent);font-weight:700;font-size:13px">Week ${a.week}'s awards →</a></p></div></div></div>
+        </div>`;
+    };
+    const mvRef = (m, side) => (m[side].map((name, i) => ref({ id: m[`${side}_ids`] ? m[`${side}_ids`][i] : null, name })).join(''));
+    const movesRow = () => {
+      const key = `mv-${id}`, rid = `${key}-p`, open = LU_OPEN.has(key), latest = byWeek[0];
+      return `
+        <div class="prow${open ? ' open' : ''}" data-key="${key}">
+          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag moves">Roster moves</span><div class="at"><small>${p.moves.length} this season</small><b>Latest: Week ${latest.week}, ${latest.moves.length} move${latest.moves.length === 1 ? '' : 's'}</b></div><span class="chev" aria-hidden="true">▾</span></div>
+          <div class="coach" id="${rid}"><div class="cin"><div class="cb mvs">${byWeek.map((w) => `<p class="mvw">Week ${w.week} · ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</p>${w.moves.map((m) => `
+            <div class="mv">${m.type === 'trade' ? '<i>Trade</i>' : ''}${m.added.length ? `<i>${m.type === 'trade' ? 'Got' : 'Added'}</i>${mvRef(m, 'added')}` : ''}${m.dropped.length ? `<i class="d">${m.type === 'trade' ? 'Sent' : 'Dropped'}</i>${mvRef(m, 'dropped')}` : ''}</div>`).join('')}`).join('')}</div></div></div>
+        </div>`;
+    };
+    const takeCard = (it, i) => `<article class="ov-take ${['l', '', 'b'][i % 3]}"><span class="ov-tag${i % 3 === 1 ? ' og' : i % 3 === 2 ? ' w' : ''}">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(it.title)}</h3><p><b>${esc(it.stat || '')}</b>${it.stat ? ' · ' : ''}${esc(it.text)}</p>${refs(it.players)}</article>`;
     return `
       ${t.weekly.length ? `
       <section class="tp-sec" aria-labelledby="tp-sc">
         ${tpHead('--accent', 'Score by week').replace('<h2>', '<h2 id="tp-sc">')}
-        <div class="tp-chart">
-          <div class="tp-plot" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">
-            ${t.weekly.map((g) => `<div class="tp-col" style="--h:${h(g.points)}"><span class="tp-val">${f1(g.points)}</span><div class="${g.result === 'L' ? 'tp-bar-l' : 'tp-bar-w'}"></div></div>`).join('')}
-            <div class="tp-avg" style="--h:${h(t.avg)}"><span>average: ${f1(t.avg)}</span></div>
-          </div>
-          <div class="tp-axis" aria-hidden="true">${t.weekly.map((g) => `<span>W${g.week} · ${g.result}</span>`).join('')}</div>
-        </div>
+        <div class="sc-grid"><div class="sc-chart">${seasonChart(t)}</div>
+          <div class="sc-tiles">
+            <div class="sc-tile b"><b>${f1(t.avg)}</b><span>Avg score</span></div>
+            <div class="sc-tile l"><b>${t.best ? `${f1(t.best.points)}<em>W${t.best.week}</em>` : '–'}</b><span>Best week</span></div>
+            <div class="sc-tile o"><b>${optimal > 0 ? Math.round((t.points_for / optimal) * 100) : 100}%</b><span>Of optimal lineup</span></div>
+            <div class="sc-tile p"><b>${f1(t.bench_left)}</b><span>Points benched</span></div>
+          </div></div>
       </section>` : ''}
 
-      <section class="tp-sec">
-        ${tpHead('--orange', "Coach's audit")}
+      <section class="tp-sec" aria-labelledby="tp-au">
+        ${tpHead('--orange', "Coach's audit").replace('<h2>', '<h2 id="tp-au">')}
         ${p.audit.length
-          ? `<p class="sec-sub">${id === myTeam.get() ? 'Your' : `${esc(t.manager)}\'s`} season so far, graded on every week with a recap.</p><div class="cards">${p.audit.map(adviceCard).join('')}</div>`
+          ? `<p class="sec-sub">${who} season so far, graded on every week with a recap.</p><div class="sc-audit">${p.audit.map(takeCard).join('')}</div>`
           : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
       </section>
 
       ${weeks.length ? `
       <section class="tp-sec" aria-labelledby="tp-ww">
         ${tpHead('--lime', 'Week by week').replace('<h2>', '<h2 id="tp-ww">')}
-        ${weeks.map((g) => `
-          <a class="tp-gm" href="#week-${g.week}.game-${g.game_key}"><span class="tp-res ${g.result}">${g.result}</span>
-            <span><b>Week ${g.week} · ${esc(g.opponent)}</b><span class="sc">${f2(g.points)} – ${f2(g.opponent_points)}</span></span>
-            <span class="rt"><b>${g.score_rank} of 8</b>${f2(g.points_left)} benched</span></a>`).join('')}
+        <div class="sc-wk">${weeks.map((g) => `
+          <a class="sc-wl" href="#week-${g.week}.game-${g.game_key}"><span class="r ${g.result}" aria-label="${g.result === 'W' ? 'Won' : g.result === 'L' ? 'Lost' : 'Tied'}">${g.result}</span>
+            <span class="t"><b>Week ${g.week} · ${esc(g.opponent)}</b><small>${g.score_rank} of 8 · ${f2(g.points_left)} benched</small></span><span class="s">${f2(g.points)} – ${f2(g.opponent_points)}</span></a>`).join('')}</div>
       </section>` : ''}
 
       <section class="tp-sec" aria-labelledby="tp-aw">
-        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards</h2>${kinds.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(' · ')}</span>` : ''}</div>
-        ${awards.length
-          ? awards.map((a) => `<div class="tp-aw"><span class="aw-pill ${KIND[a.kind].cls}">${KIND[a.kind].label}</span><span><a href="#week-${a.week}.awards">Week ${a.week}</a> · ${esc(a.title)}</span></div>`).join('')
-          : '<p class="sec-sub">No awards yet. Give it time.</p>'}
-      </section>
-
-      <section class="tp-sec" aria-labelledby="tp-mvs">
-        <div class="tp-head"><span class="mark" style="--c:var(--pink)" aria-hidden="true"></span><h2 id="tp-mvs">Roster moves</h2>${p.moves.length ? `<span class="more" style="font-weight:400;color:var(--muted)">${p.moves.length} this season</span>` : ''}</div>
-        ${byWeek.length
-          ? byWeek.map((w) => `
-            <details class="tp-mv" data-hub-open="mv-${id}-${w.week}"${HUB_OPEN.has(`mv-${id}-${w.week}`) ? ' open' : ''}>
-              <summary><span>Week ${w.week}<small>· ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</small></span></summary>
-              ${w.moves.map((m) => `<div class="tp-mvrow">${m.type === 'trade' ? '<b>Trade</b>' : ''}${moveLines(m, names)}</div>`).join('')}
-            </details>`).join('')
-          : '<p class="sec-sub">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}
+        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards and moves</h2>${awards.length || byWeek.length ? '<a class="more" href="#" data-act="all">Expand all</a>' : ''}</div>
+        <p class="sec-sub">${kinds.length ? `${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(', ')}. ` : 'No awards yet. Give it time. '}Tap one for the story.</p>
+        <div class="sc-aw acc">${awards.map(awardRow).join('')}${byWeek.length ? movesRow() : ''}${byWeek.length ? '' : '<p class="sec-sub" style="padding:10px 0">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}</div>
       </section>`;
   }
 
