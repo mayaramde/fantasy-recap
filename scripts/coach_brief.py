@@ -35,6 +35,17 @@ def team_brief(row):
 AUDIT_KEYS = ("key", "kind", "stat", "title", "text")
 
 
+def league_brief(rows):
+    """What the Coach's take paragraph is written from: the league key it has to be filed under, and the
+    facts it sums up. Counts and names only, never a projection."""
+    byes = [p for r in rows for p in r.get("report", []) if p.get("role") == "starting" and p.get("bye")]
+    return {"key": rows[0]["league_key"], "teams": len(rows),
+            "teams_with_something_to_fix": sum(1 for r in rows if r["counts"].get("now")),
+            "starters_on_bye": len(byes), "teams_with_a_starter_on_bye": len({r["team_id"] for r in rows
+                                                                              if any(p.get("role") == "starting" and p.get("bye") for p in r.get("report", []))}),
+            "clean_lineups": [r["manager"] for r in rows if not r["counts"].get("now")]}
+
+
 def brief(season):
     recap_weeks, captured, ahead, _, _ = build.load_inputs(season)
     # The league site's view (published recaps only), since that's the page managers read.
@@ -46,10 +57,11 @@ def brief(season):
     live = next((w for w in weeks if w.get("live")), None)
     if not live:
         return out
-    out[str(live["week"])] = {"tab": "this week", "teams": [team_brief(r) for r in live["advice"]]}
+    out[str(live["week"])] = {"tab": "this week", "league": league_brief(live["advice"]),
+                              "teams": [team_brief(r) for r in live["advice"]]}
     nxt = live.get("next")
     if nxt:
-        out[str(nxt["week"])] = {"tab": "next week", "projected": nxt["projected"],
+        out[str(nxt["week"])] = {"tab": "next week", "projected": nxt["projected"], "league": league_brief(nxt["teams"]),
                                  "teams": [team_brief(r) for r in nxt["teams"]]}
     return out
 

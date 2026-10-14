@@ -142,6 +142,51 @@ class CoachWrittenTest(unittest.TestCase):
             got = next(it for it in after["items"] if it["key"] == target["key"])
             self.assertEqual(got["text"], target["text"], text)
 
+    def test_summary_over_the_card_cap_falls_back_to_computed(self):
+        row = self.live()[0]
+        ok = "A tidy line that fits on a card."
+        too_long = "Words " * 19 + "end."            # 114 characters
+        self.assertGreater(len(too_long), build.SUMMARY_MAX)
+        for text, expect_written in ((ok, True), (too_long, False)):
+            fp = self.snapshot({str(row["team_id"]): {"summary": {"key": row["summary_key"], "text": text}}})
+            got = self.live(fp)[0]["summary"]
+            self.assertEqual(got == text, expect_written, text)
+
+    def league_fp(self, key, text, hours_ago=0):
+        fp = self.snapshot({}, hours_ago)
+        fp["weeks"][str(WEEK)]["league"] = {"key": key, "text": text}
+        return fp
+
+    def test_brief_carries_the_league_key_and_facts_for_the_paragraph(self):
+        import coach_brief
+        rows = self.live()
+        brief = coach_brief.league_brief(rows)
+        self.assertEqual(brief["key"], rows[0]["league_key"])
+        self.assertEqual(brief["teams"], len(rows))
+        self.assertEqual(set(brief), {"key", "teams", "teams_with_something_to_fix", "starters_on_bye",
+                                      "teams_with_a_starter_on_bye", "clean_lineups"})
+
+    def test_league_key_is_stable_and_names_the_situation(self):
+        rows = self.live()
+        self.assertEqual(len({r["league_key"] for r in rows}), 1)
+        self.assertEqual(rows[0]["league_key"], self.live()[0]["league_key"])
+        changed = [dict(r, summary_key=r["summary_key"] + "x") if i == 0 else r for i, r in enumerate(rows)]
+        self.assertNotEqual(build.league_key(changed), build.league_key(rows))
+
+    def test_written_league_take_applies_on_key_match_only(self):
+        key = self.live()[0]["league_key"]
+        text = "Two lineups need a swap and everyone else is fine."
+        self.assertEqual({r["league_take"] for r in self.live(self.league_fp(key, text))}, {text})
+        self.assertEqual({r["league_take"] for r in self.live(self.league_fp("stale-key", text))}, {None})
+        self.assertEqual({r["league_take"] for r in self.live()}, {None})
+
+    def test_league_take_rejects_moving_numbers_length_and_stale_snapshots(self):
+        key = self.live()[0]["league_key"]
+        for text, hours in (("Amie projects at 140.3 this week.", 0), ("About 61% of lineups are fine.", 0),
+                            ("Word. " * 80, 0), ("A fine paragraph.", 40), ("   ", 0)):
+            got = {r["league_take"] for r in self.live(self.league_fp(key, text, hours))}
+            self.assertEqual(got, {None}, text)
+
     def test_stale_snapshot_is_ignored(self):
         row, target = self.swap_team()
         fp = self.snapshot({str(row["team_id"]): {"coach_cards": {target["key"]: {"title": "T", "text": "Old news."}}}},

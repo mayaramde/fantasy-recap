@@ -68,8 +68,11 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `scripts/trade_eval.py` on FantasyPros' free rest-of-season projections.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
   `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
-  computed card (keyed by situation, see `docs/architecture.md`) and, top level, each team's written season-audit
-  copy (`audit`, keyed by audit key). Committed through its own auto-merging PR (small,
+  computed card (keyed by situation, see `docs/architecture.md`), each team's one-line card quip (`summary`, 110
+  characters at most), the week's league-wide "Coach's take" paragraph (`weeks.<n>.league`, keyed by the league's
+  situation) and, top level, each team's written season-audit copy (`audit`, keyed by audit key). Yesterday's
+  entries are reused while their key is unchanged; the build shows written copy only while its key still matches
+  and falls back to the computed wording otherwise. Committed through its own auto-merging PR (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards (written season-audit copy still
   applies while its key matches, since it describes finished weeks).
@@ -94,6 +97,12 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `bts.css` and `bts.js` (all `bts-` prefixed), and `sprite.svg` (its illustrated icons, shipped once per document). `site/build.py`
   stitches them into `template.html`. Its claims about how the site works are audited in `docs/behind-the-scenes-audit.md`;
   change the copy and that file together.
+- `site/coach/`: the Coach tab's landing (the league overview shown before anyone opens a team's report). One pure
+  insight function per file (`vitals`, `fixes`, `byeDamage`, `battles`, `pickups`, `strengthMap`, `callouts`,
+  `tradeMatches`, `take`), the editable headline list `headlines.js`, `landing.js` (markup) and `coach.css`.
+  `site/build.py` inlines them into `template.html`. They run in the browser so they refresh with `/api/live`;
+  `tests/coach/*.test.js` (run with `node --test tests/coach/*.test.js`, also in CI) check them against the Week 6
+  golden values in `tests/fixtures/week-06/`. `tests/coach_preview.py` renders the page for a look in a browser.
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
   `site/build.py` and `scripts/coach_brief.py`
 - `site/playoffs.py`: the Standings page's playoff odds and projected bracket (stdlib-only Monte Carlo, read by

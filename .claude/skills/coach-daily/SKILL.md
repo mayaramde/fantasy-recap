@@ -61,6 +61,12 @@ coach-daily PR is still open (`gh pr list --state open --head coach-daily-`), it
 newer snapshot than `main`; read that one instead. A missing snapshot is fine — say so in your
 notes rather than inventing a comparison.
 
+Yesterday's snapshot is also your cache for Step 5b's `summary` and `league` copy: one line per team and one
+league paragraph per situation, never rewritten for its own sake. When a team's `summary.key` (or the week's
+`league.key`) in yesterday's file equals the key the brief prints today, carry that entry forward unchanged
+instead of writing it again. Write fresh copy only for a key that changed or a team that had none. A changed key
+means the situation moved (a swap made, a new injury), and a line about the old one would now be wrong.
+
 ## Step 3: work out which week(s) to write cards for
 
 The current live week (the highest week in `data/2026/week-NN/facts.json` whose
@@ -240,7 +246,15 @@ against those keys, so managers never read a fill-in-the-blank template.
    block too (see **Season audit** below); that key is not a week. With no live week, `audit`
    is the only key, so skip items 2-3 and write the audit.
 2. For **every** card under a week key in the brief, write a `title` and `text` under its exact `key`, and one
-   `summary` line per team under its exact `summary_key`. That key lists the very cards the
+   `summary` line per team under its exact `summary_key`. A `summary` is the one-line quip on that team's card on
+   the Coach landing: **110 characters at most** (the site drops a longer one and shows the computed wording), advice
+   first, then one line of personality. Also write the week's **`league`** paragraph, `{key, text}`, under the
+   brief's `league.key`: two or three sentences for the dark "Coach's take" card at the top of the landing, summing
+   up the whole league from the brief's `league` facts (how many lineups have something to fix, how many starters
+   are on bye, who is clean). It follows the same rules as everything else here: no decimals, percentages or point
+   counts, counts in words ("seven of eight lineups"), no pronouns for a manager (name them), the headline above it
+   already says "Bye week came for everyone" or similar so don't repeat it, one joke aimed at the fantasy gods or the
+   schedule and never at a manager. At most about 400 characters. That key lists the very cards the
    summary sums up, so it's safe to name those players; it stops showing once the list
    changes. Lead with the advice (what to do, and why, in plain words a first-season manager
    follows), then one line of personality. Use
@@ -269,7 +283,8 @@ players and those ranks, and it disappears on its own when any of them changes.
 
 ## Step 5c: voice gate
 
-No card ships without `voice-check`'s sign-off, and that includes Step 5b's copy and the season-audit copy. Once Steps 5
+No card ships without `voice-check`'s sign-off, and that includes Step 5b's copy (every card, every team `summary`, and
+the week's `league` paragraph) and the season-audit copy. Once Steps 5
 and 5b are written, spawn the
 `voice-check` agent (the `Agent` tool, `subagent_type: voice-check`) on them: write the cards to
 a scratch file (or pass them in the prompt), keyed `<week>/<team_id>/<section>/<index>` so its
@@ -305,7 +320,8 @@ is the archive):
           "coach_cards": { "<key from the brief>": {"title": "...", "text": "..."} },
           "summary": {"key": "<summary_key from the brief>", "text": "..."}
         }
-      }
+      },
+      "league": {"key": "<league.key from the brief>", "text": "..."}
     }
   },
   "audit": {
@@ -320,7 +336,8 @@ enforces both, and requires the field on every snapshot generated from 2026-10-1
 
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
-`coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover.
+`coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover. `league` (one per
+week, not per team) comes from Step 5b too; a missing or stale one just means the page words the paragraph itself.
 `audit` (top level, one entry per team) also comes from Step 5b; waiver and trade cards in
 `roster_ideas` carry `pos` (Step 5), and trade cards their `trade` block (Step 5a). A trade isn't
 tied to one week, so put it in `roster_ideas` under every week you write.
