@@ -52,6 +52,29 @@ def upcoming(last):
     return week
 
 
+def sample_flags(week):
+    """Kickoffs for everybody, plus one of each thing a lineup row can say, so the hub's rows can be looked
+    at: a questionable and an out starter, and a D/ST whose team has no game. Layout only, like the rest."""
+    kicks = ["2026-10-18T17:00:00Z", "2026-10-18T20:05:00Z", "2026-10-19T00:20:00Z"]
+    seen = set()
+    for i, m in enumerate(week["matchups"]):
+        for s in ("home", "away"):
+            for j, p in enumerate(m[s]["lineup"]):
+                if p["slot"] in ("BENCH", "IR"):
+                    continue
+                p["kickoff"] = kicks[(i + j) % len(kicks)]
+                if p["pos"] == "DST" and "bye" not in seen:
+                    seen.add("bye")
+                    p.update(game_state=None, kickoff=None)
+                elif p["pos"] == "WR" and "q" not in seen:
+                    seen.add("q")
+                    p["injury_status"] = "QUESTIONABLE"
+                elif p["pos"] == "RB" and "out" not in seen:
+                    seen.add("out")
+                    p["injury_status"] = "OUT"
+    return week
+
+
 def main(out):
     out.mkdir(parents=True, exist_ok=True)
     recap_weeks, captured, _, fp, _ = build.load_inputs(build.LEAGUE["season"])
@@ -64,7 +87,7 @@ def main(out):
          **({"image": PHOTO} if photo else {})}
         for i, (h, tag, photo, n) in enumerate(SAMPLE_NEWS, 1)]}
 
-    nxt = upcoming(history[-1])
+    nxt = sample_flags(upcoming(history[-1]))
     before = captured + [(analyze.analyze(nxt, history + [nxt]), nxt)]
     html, _ = build.render(recap_weeks, before, preview=False, fp=fp, news=news)
     (out / "before.html").write_text(build.standalone(html).replace('window.FANTASY_LIVE_API="/api/live"', ""))

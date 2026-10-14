@@ -637,12 +637,40 @@
   .hub-lineups[open] > summary::after { content: " ▴"; }
   .hub-lineups .cols { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--edge); }
   .hub-lineups .cols > div + div { border-left: 2px solid var(--edge); }
-  .hub-lineups table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  .hub-lineups caption { text-align: left; padding: 7px 10px 3px; font: 600 11px/1 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .hub-lineups td { padding: 5px 6px; border-top: 1px solid var(--rule); }
-  .hub-lineups td:first-child { padding-left: 10px; width: 40px; font: 500 10px/1 var(--mono); color: var(--muted); }
-  .hub-lineups td.r { text-align: right; padding-right: 10px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  /* Full lineups: face + NFL badge, name, team and kickoff, a status sticker, the projection. On a phone
+     the two sides stack; the width it reacts to is the card's own, not the window's. */
+  .hub-lineups .body { container-type: inline-size; }
+  @container (max-width: 520px) {
+    .hub-lineups .cols { grid-template-columns: 1fr; }
+    .hub-lineups .cols > div + div { border-left: none; border-top: 2px solid var(--edge); }
+  }
+  .hub-lineups table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+  .hub-lineups caption { padding: 8px 10px 5px; text-align: left; font: 600 11px/1 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .hub-lineups caption .cap { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .hub-lineups caption .flag { white-space: nowrap; font: 600 10.5px/1 var(--mono); text-transform: none; letter-spacing: 0; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+  .hub-lineups td { padding: 7px 6px; border-top: 1px solid var(--rule); vertical-align: middle; }
+  .hub-lineups td.slot { width: 56px; padding-left: 10px; }
+  .hub-lineups .slotpill { display: inline-block; min-width: 36px; padding: 5px 6px; text-align: center; font: 700 11px/1 var(--mono); color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; }
+  .hub-lineups td.av { width: 56px; padding: 7px 10px 7px 0; }
+  .hub-lineups td.pl { min-width: 0; }
+  .hub-lineups .pl .nm { font-weight: 700; font-size: 14px; line-height: 1.2; overflow-wrap: anywhere; }
+  .hub-lineups .pl .sub { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 7px; margin-top: 3px; min-height: 18px; font: 600 12px/1.2 var(--body); color: var(--muted); }
+  .hub-lineups .pl .sub b { color: var(--ink); font-weight: 800; }
+  .hub-lineups td.r { width: 52px; padding-right: 10px; text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
   .hub-lineups td.zero { font-weight: 700; text-decoration: underline; }
+  .hub-lineups tr.k-out td { background: var(--pink-soft); }
+  .hub-lineups tr.k-iffy td { background: var(--orange-soft); }
+  .hub-lineups tr.k-bye td { background: var(--accent-soft); }
+  .hub-lineups .st { display: inline-block; padding: 3px 7px 2px; font: 600 10.5px/1 var(--script); letter-spacing: 0.05em; text-transform: uppercase; color: var(--on-pop);
+    background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 1px 1px 0 var(--edge); transform: rotate(-3deg); white-space: nowrap; }
+  .hub-lineups .st.out { background: var(--pink); }
+  .hub-lineups .st.iffy { background: var(--orange); }
+  .hub-lineups .st.bye { color: var(--ink); background: var(--accent-soft); }
+  .hub-lineups .legend, .hub-lineups .strip { margin: 0; padding: 9px 16px 11px; border-top: 2px solid var(--edge); font-size: 12px; color: var(--muted); }
+  .hub-lineups .legend b { color: var(--ink); }
+  .hub-lineups .strip { background: var(--orange-soft); color: var(--ink); font-size: 12.5px; }
+  .hub-lineups .none { padding: 18px 12px; text-align: center; font-size: 13.5px; color: var(--muted); background: var(--lime-soft); }
+  @media (prefers-reduced-motion: reduce) { .hub-lineups .st { transform: none; } }
   .hub-panel { padding: 6px 16px 12px; }
   .hub-fix { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule); }
   .hub-fix:last-of-type { border-bottom: none; }
@@ -2795,6 +2823,27 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return `<p class="hub-stake"><b>Stakes</b>${moving.length ? '<span class="to">playoff odds, loss → win:</span>' : ''} ${body}</p>`;
   }
 
+  // A lineup row's one status: ESPN's designation, else a bye. A designation wins over a bye, and a row
+  // with neither says nothing (no injury report in the capture is "we don't know", never "healthy").
+  const HUB_STATUS = { Questionable: ['Q', 'iffy'], 'Day to day': ['DTD', 'iffy'], Doubtful: ['D', 'out'], Out: ['OUT', 'out'],
+    'On IR': ['IR', 'out'], Suspended: ['SUSP', 'out'] };
+  function hubStatus(p) {
+    if (p.injury) { const [abbr, tone] = HUB_STATUS[p.injury] || [p.injury, OUTISH.includes(p.injury) ? 'out' : 'iffy']; return { label: p.injury, abbr, tone }; }
+    return p.bye ? { label: 'Bye', abbr: 'BYE', tone: 'bye' } : null;
+  }
+  function hubRow(p, hasProj) {
+    const st = hubStatus(p);
+    const bits = [p.team ? `<b>${esc(p.team)}</b>` : '', p.bye ? '' : esc(kickoffText(p.kickoff))].filter(Boolean).join(' · ');
+    const sticker = st ? `<span class="st ${st.tone}" title="${esc(st.label)}"><span aria-hidden="true">${esc(st.abbr)}</span><span class="sr">${esc(st.label)}</span></span>` : '';
+    return `
+        <tr${st ? ` class="k-${st.tone}"` : ''}>
+          <td class="slot"><span class="slotpill">${esc(p.slot)}</span></td>
+          <td class="av">${face(p, 'sm')}</td>
+          <td class="pl"><div class="nm">${esc(p.name)}</div><div class="sub">${bits ? `<span>${bits}</span>` : ''}${sticker}</div></td>
+          <td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td>
+        </tr>`;
+  }
+
   function hubGame(w, g, { mine, swing }) {
     const [a, b] = [g.winner, g.loser];
     const hasProj = projOf(a) > 0 || projOf(b) > 0;
@@ -2802,9 +2851,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const mid = fav && fav.win_probability > 0.5 ? `ESPN: ${esc(fav.manager)} ${pct(fav.win_probability)} to win`
       : hasProj ? `${f1(Math.abs(projOf(a) - projOf(b)))} apart` : 'no projections yet';
     const rc = (s) => `${TEAMS[s.team_id] && TEAMS[s.team_id].weekly.length ? `${record(TEAMS[s.team_id])} · ` : ''}${esc(s.team_name)}`;
-    const table = (s) => `<div><table><caption>${esc(s.manager)}</caption><tbody>${
-      [...s.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot)).map((p) => `
-        <tr><td>${esc(p.slot)}</td><td>${esc(p.name)}</td><td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td></tr>`).join('')}</tbody></table></div>`;
+    const known = (advice() || []).some((r) => r.injuries_known);
+    const table = (s) => {
+      const rows = [...s.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
+      if (!rows.length) {
+        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. Nothing to show until ESPN has a lineup.</div></div>`;
+      }
+      const toFix = rows.filter((p) => hubStatus(p)).length;
+      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to fix</span>` : ''}</div></caption><tbody>${
+        rows.map((p) => hubRow(p, hasProj)).join('')}</tbody></table></div>`;
+    };
     return `
       <article class="hub-game" aria-label="${esc(a.manager)} vs ${esc(b.manager)}">
         <div class="hub-tag${mine ? ' mine' : swing ? ' swing' : ''}">
@@ -2828,7 +2884,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         ${stakesLine(g, stakesFor(w, g))}
         <details class="hub-lineups" data-hub-open="${g.key}"${HUB_OPEN.has(g.key) ? ' open' : ''}>
           <summary>Full lineups</summary>
-          <div class="cols">${table(a)}${table(b)}</div>
+          <div class="body">
+            <div class="cols">${table(a)}${table(b)}</div>
+            ${known ? `<p class="legend"><b>Q</b> questionable · <b>DTD</b> day to day · <b>D</b> doubtful · <b>OUT</b> · <b>IR</b> · <b>SUSP</b> suspended · <b>BYE</b> NFL team is off. Status is ESPN's injury report. A starter who is out, on IR or on a bye counts for zero until he's swapped.</p>`
+              : `<p class="strip"><b>No injury report for this week.</b> Blank here does not mean healthy.</p>`}
+          </div>
         </details>
       </article>`;
   }
