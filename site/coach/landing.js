@@ -76,20 +76,21 @@ function clGames(next, rows) {
 const clYou = (on) => (on ? '<span class="cl-you">You</span>' : '');
 
 function clTake(take, v, show) {
-  const tile = (label, big, sub) => `<div class="cl-vital"><span class="cl-vl">${label}</span><span class="cl-vn">${big}</span>${sub ? `<span class="cl-vs">${sub}</span>` : ''}</div>`;
+  const tile = (tone, label, big, sub) => `<div class="cl-vital"><span class="cl-chip ${tone}">${label}</span><span class="cl-vn">${big}</span>${sub ? `<span class="cl-vs">${sub}</span>` : ''}</div>`;
   const tiles = [
-    tile('Lineups to fix', `${v.fixTeams}<small>/${v.total}</small>`, 'teams with something to fix'),
-    show.bye ? tile('Starters on bye', String(v.byeStarters), `across ${v.byeTeams} ${v.byeTeams === 1 ? 'team' : 'teams'}${v.noStarterHurt ? ' · no starter is hurt' : ''}`) : '',
-    show.proj ? tile('Swap gains', `+${f1(v.swapGain)}`, 'projected points on benches') : '',
-    show.proj && v.avgProjection ? tile('Avg projection', f1(v.avgProjection), v.seasonAvg ? `season average is ${f1(v.seasonAvg)}` : '') : '',
+    tile('lime', 'Lineups to fix', `${v.fixTeams}<small> / ${v.total}</small>`, 'teams with something to fix'),
+    show.bye ? tile('pink', 'Starters on bye', String(v.byeStarters), `across ${v.byeTeams} ${v.byeTeams === 1 ? 'team' : 'teams'}${v.noStarterHurt ? ' · no starter is hurt' : ''}`) : '',
+    show.proj ? tile('orange', 'Swap gains', `+${f1(v.swapGain)}`, 'projected points on benches') : '',
+    show.proj && v.avgProjection ? tile('blue', 'Avg projection', f1(v.avgProjection), v.seasonAvg ? `season average is ${f1(v.seasonAvg)}` : '') : '',
   ].filter(Boolean).join('');
+  const PILL = { 'Cleanest lineup': 'lime', 'Biggest swap': 'orange', 'Most on bye': 'pink' };
   return `
     <div class="cl-top">
       <section class="cl-take" aria-labelledby="cl-take-h">
         <span class="cl-take-label">Coach's take</span>
         <h2 id="cl-take-h">${esc(take.headline)}</h2>
         <p>${esc(take.paragraph)}</p>
-        ${take.pills.length ? `<ul class="cl-pills">${take.pills.map((p) => `<li><span>${esc(p.label)}</span>${esc(p.text)}</li>`).join('')}</ul>` : ''}
+        ${take.pills.length ? `<ul class="cl-pills">${take.pills.map((p) => `<li class="${PILL[p.label] || ''}"><span>${esc(p.label)}</span>${esc(p.text)}</li>`).join('')}</ul>` : ''}
       </section>
       <div class="cl-vitals" role="group" aria-label="League vitals">${tiles}</div>
     </div>`;
@@ -131,9 +132,9 @@ function clTeamCards(teams, next, me, waiverIdx) {
         <div class="cl-team-body">
           <h3>${esc(t.manager)}${clYou(mine)}</h3>
           <p class="cl-tn">${esc(t.teamName || '')}</p>
-          <p class="cl-rec">${esc(t.record)}${t.streak ? ` · <span class="cl-streak ${t.streak[0] === 'W' ? 'w' : 'l'}">${esc(t.streak)}</span>` : ''}</p>
-          ${o ? `<div class="cl-odds"><span class="cl-odds-n">${pct(o.playoff)}</span><span class="cl-odds-l">playoff odds</span>
-            <span class="cl-bar" role="img" aria-label="Playoff odds ${pct(o.playoff)}"><span style="width:${(o.playoff * 100).toFixed(1)}%"></span></span></div>` : ''}
+          <div class="cl-stats3"><div><b>${esc(t.record)}${t.streak ? ` · <span class="cl-streak ${t.streak[0] === 'W' ? 'w' : 'l'}">${esc(t.streak)}</span>` : ''}</b><small>record · streak</small></div>
+            ${o ? `<div><b>${pct(o.playoff)}</b><small>playoff odds</small></div>` : ''}</div>
+          ${o ? `<span class="cl-bar" role="img" aria-label="Playoff odds ${pct(o.playoff)}"><span style="width:${(o.playoff * 100).toFixed(1)}%"></span></span>` : ''}
           <p class="cl-quip">${esc(clQuip(t))}</p>
           <ul class="cl-chips">${chips.map(([c, x]) => `<li class="${c}">${esc(x)}</li>`).join('')}</ul>
           <a class="cl-open" href="${coachUrl(next, t.id)}">Open ${esc(t.manager)}'s report →</a>
@@ -155,58 +156,58 @@ function clFixBoard(fixes, me) {
     <div class="cl-card cl-fixes">
       ${fixes.rows.length ? `<ul>${head.map(row).join('')}${clShowAll ? rest.map(row).join('') : ''}</ul>` : '<p class="cl-empty">Nothing to fix on any roster.</p>'}
       ${rest.length ? `<button type="button" class="cl-more" data-cl-more aria-expanded="${clShowAll}">${clShowAll ? 'Show fewer' : `Show all ${fixes.rows.length}`}</button>` : ''}
-      ${fixes.clear.length ? `<div class="cl-allclear">${CL_ICON.check}<span><b>All clear</b> ${fixes.clear.map(esc).join(' · ')}</span></div>` : ''}
+      ${fixes.clear.length ? `<div class="cl-allclear">${CL_ICON.check}<span><b>All clear:</b> ${fixes.clear.map(esc).join(' · ')}</span></div>` : ''}
     </div>`;
 }
 
 function clByes(d, me, teams) {
-  const max = Math.max(1, ...d.exposure.map((e) => e.starters + e.bench));
   const strip = d.injured.length
     ? `<div class="cl-injury"><h4>Hurt starters</h4><ul>${d.injured.map((p) => `<li><b>${esc(p.manager)}</b> ${esc(p.name)} <span class="cl-pill pink">${esc(p.status)}</span> <small>${esc(p.spot)}</small></li>`).join('')}</ul></div>`
-    : `<div class="cl-injury clean">${CL_ICON.check}<span>Injury report is clean. No starter is hurt.</span></div>`;
+    : `<div class="cl-injury clean">${CL_ICON.check}<span><b>Injury report is clean.</b> No starter is hurt.</span></div>`;
   return `
     <div class="cl-card cl-byes">
-      ${d.tiles.length ? `<ul class="cl-tiles">${d.tiles.map((t) => `<li><b>${esc(t.team)}</b><span class="cl-tn2">${t.count}</span><small>${esc(t.names.join(', '))}</small></li>`).join('')}</ul>` : '<p class="cl-empty">No NFL team is off this week.</p>'}
+      ${d.tiles.length ? `<ul class="cl-tiles">${d.tiles.map((t) => `<li><div class="cl-tn2"><b>${t.count}</b><span>${esc(t.team)} on bye</span></div><small>${esc(t.names.join(' · '))}</small></li>`).join('')}</ul>` : '<p class="cl-empty">No NFL team is off this week.</p>'}
+      <div class="cl-label">Exposure by manager</div>
       <ul class="cl-expo">${d.exposure.map((e) => `
         <li><span class="cl-nm${e.team_id === me ? ' me' : ''}">${esc(e.manager)}</span>
-          <span class="cl-track" aria-hidden="true"><span class="s" style="width:${(100 * e.starters / max).toFixed(1)}%"></span><span class="b" style="width:${(100 * e.bench / max).toFixed(1)}%"></span></span>
+          <span class="cl-segs" aria-hidden="true">${e.starters ? `<i class="s" style="width:${e.starters * 34}px"></i>` : ''}${e.bench ? `<i class="b" style="width:${e.bench * 34}px"></i>` : ''}</span>
           <span class="cl-el">${esc(e.label)}</span></li>`).join('')}</ul>
-      <p class="cl-key"><span class="s" aria-hidden="true"></span>starter on bye <span class="b" aria-hidden="true"></span>bench on bye</p>
+      <p class="cl-legend"><span><i class="s" aria-hidden="true"></i>Starter on bye</span><span><i class="b" aria-hidden="true"></i>Bench on bye</span></p>
       ${strip}
     </div>`;
 }
 
 function clBattles(b, me) {
   const maxEdge = b.edges.length ? b.edges[0].margin : 1;
-  const stat = (label, g) => g ? `<div class="cl-stat"><span class="cl-sl">${label}</span><b>${esc(g.a)} vs ${esc(g.b)}</b><span class="cl-sn">${f1(g.gap)}</span><small>projected gap</small></div>` : '';
+  const stat = (label, g) => g ? `<div class="cl-stat"><small>${label}</small><b>${esc(g.a)} vs ${esc(g.b)} · ${f1(g.gap)} pts</b></div>` : '';
   return `
     <div class="cl-card cl-battles">
       <div class="cl-stats">${stat('Closest game', b.closest)}${stat('Biggest gap', b.biggest)}</div>
       ${b.edges.length ? `<ol class="cl-edges">${b.edges.map((e) => `
-        <li><span class="cl-slot">${esc(e.slot)}</span><span class="cl-et"><b>${esc(e.winner)}</b> over ${esc(e.loser)}</span>
-          <span class="cl-bar2" aria-hidden="true"><span style="width:${(100 * e.margin / maxEdge).toFixed(1)}%"></span></span><span class="cl-en">+${f1(e.margin)}</span></li>`).join('')}</ol>` : ''}
+        <li><span class="cl-slot">${esc(e.slot)}</span><div class="cl-mid"><b>${esc(e.winner)} over ${esc(e.loser)}</b>
+          <span class="cl-bar2" aria-hidden="true"><span style="width:${(100 * e.margin / maxEdge).toFixed(1)}%"></span></span></div><span class="cl-en">+${f1(e.margin)}</span></li>`).join('')}</ol>` : ''}
     </div>`;
 }
 
 function clWaiver(order, me, p) {
   return `
     <div class="cl-card cl-waiver">
-      <ol class="cl-order">${order.map((t, i) => `<li class="${i === 0 ? 'first' : ''}${t.team_id === me ? ' me' : ''}"><span class="n">${i + 1}</span>${esc(t.manager)}${clYou(t.team_id === me)}</li>`).join('')}</ol>
-      ${p && p.rows.length ? `<h4>Pickups, last 7 days</h4>
-        <ul class="cl-picks">${p.rows.map((r) => `<li><span class="cl-nm">${esc(r.manager)}</span><span class="cl-track" aria-hidden="true"><span class="s" style="width:${(100 * r.count / p.max).toFixed(1)}%"></span></span><span class="cl-en">${r.count}</span></li>`).join('')}</ul>
-        <p class="cl-note">${p.total} ${p.total === 1 ? 'pickup' : 'pickups'} across the league. ${esc(p.quip)}</p>` : ''}
+      <ol class="cl-order">${order.map((t, i) => `<li class="${i === 0 ? 'first' : ''}${t.team_id === me ? ' me' : ''}"><b class="n">${i + 1}</b><span>${esc(t.manager)}</span>${t.team_id === me ? '<span class="cl-you">You</span>' : `<small>${esc(record(t))}</small>`}</li>`).join('')}</ol>
+      ${p && p.rows.length ? `<div class="cl-pick"><div class="cl-label">Pickups, last seven days · ${p.total} total</div>
+        <ul class="cl-picks">${p.rows.map((r) => `<li><span class="cl-nm">${esc(r.manager)}</span><span class="cl-bar" aria-hidden="true"><span style="width:${(100 * r.count / p.max).toFixed(1)}%"></span></span><b>${r.count}</b></li>`).join('')}</ul>
+        <p class="cl-prow-note">${esc(p.quip)}</p></div>` : ''}
     </div>`;
 }
 
 function clStrength(sm, me, n) {
   const ord = (r) => ordinal(r);
   const body = sm.rows.map((r) => `
-    <tr${r.id === me ? ' class="me"' : ''}><th scope="row">${esc(r.manager)}${clYou(r.id === me)}</th>
+    <tr${r.id === me ? ' class="me"' : ''}><th scope="row"><span>${esc(r.manager)}</span>${clYou(r.id === me)}</th>
       ${sm.cols.map((c) => {
         const rk = r.ranks[c];
         const tag = c === r.best ? ['best', 'best spot', CL_ICON.up] : c === r.weak ? ['weak', 'weakest spot', CL_ICON.down] : null;
         const label = `${r.manager} at ${CL_NAME[c]}: ${ord(rk)} of ${n}${tag ? `, ${tag[1]}` : ''}`;
-        return `<td class="h${rk}" title="${esc(label)}" aria-label="${esc(label)}"><span aria-hidden="true">${rk}</span>${tag ? `<i class="cl-corner ${tag[0]}">${tag[2]}</i>` : ''}</td>`;
+        return `<td title="${esc(label)}" aria-label="${esc(label)}"><div class="cl-hc h${rk}"><span aria-hidden="true">${rk}</span>${tag ? `<i class="cl-corner ${tag[0]}">${tag[2]}</i>` : ''}</div></td>`;
       }).join('')}
       <td class="avg" aria-label="${esc(r.manager)}, average rank ${r.avg.toFixed(1)}"><span aria-hidden="true">${r.avg.toFixed(1)}</span></td></tr>`).join('');
   const foot = (cls, label, by) => `<tr class="${cls}"><th scope="row">${label}</th>${sm.cols.map((c) => `<td title="${esc(`${label} at ${CL_NAME[c]}: ${by[c] || 'nobody'}`)}"><span>${esc(by[c] || '')}</span></td>`).join('')}<td></td></tr>`;
@@ -236,11 +237,11 @@ function clTrades(cards) {
   return `
     <ul class="cl-trades">${cards.map((c) => `
       <li class="cl-trade ${c.kind}">
-        <span class="cl-fit ${c.kind}">${c.kind === 'perfect' ? 'Perfect fit' : 'Partial fit'}</span>
+        <span class="cl-chip ${c.kind === 'perfect' ? 'lime' : 'softpink'}">${c.kind === 'perfect' ? 'Perfect fit' : 'Partial fit'}</span>
         <div class="cl-pair">
-          <div class="cl-side"><h3>${esc(c.a.manager)}</h3>${col('Needs', c.a.needs)}${col('Has', c.a.has)}</div>
+          <div class="cl-side a"><h3>${esc(c.a.manager)}</h3>${col('Needs', c.a.needs)}${col('Has', c.a.has)}</div>
           <span class="cl-swap">${CL_ICON.swap}</span>
-          <div class="cl-side"><h3>${esc(c.b.manager)}</h3>${col('Needs', c.b.needs)}${col('Has', c.b.has)}</div>
+          <div class="cl-side b"><h3>${esc(c.b.manager)}</h3>${col('Needs', c.b.needs)}${col('Has', c.b.has)}</div>
         </div>
         <p>${esc(text(c))}</p>
       </li>`).join('')}</ul>
@@ -266,17 +267,17 @@ function coachLanding(next, rows, me) {
   const calls = sm ? callouts(sm.rows, n) : [];
   const body = [
     clTake(take, v, { bye: known, proj: projected }),
-    clSection('cobalt', 'Pick a team', clTeamCards(teams, next, me, waiverIdx), 'Eight lineups, one tap to the full report. Seeds are today\'s standings; odds come from the same simulation as Standings.'),
-    `<div class="cl-duo">
-      ${clSection('pink', 'Fix board', clFixBoard(fixes, me), 'Every lineup problem on every roster, biggest projected gain first.')}
-      ${dmg ? clSection('orange', 'Bye-week damage', clByes(dmg, me, teams), 'A bye means his NFL team doesn\'t play, so he scores zero.') : ''}
+    clSection('pink', 'Pick a team', clTeamCards(teams, next, me, waiverIdx), 'Eight lineups, one tap to the full report. Seeds are today\'s standings; odds come from the same simulation as Standings.'),
+    `<div class="cl-duo fx">
+      ${clSection('lime', 'Fix board', clFixBoard(fixes, me), 'Every lineup problem on every roster, biggest projected gain first.')}
+      ${dmg ? clSection('pink', 'Bye-week damage', clByes(dmg, me, teams), 'A bye means his NFL team doesn\'t play, so he scores zero.') : ''}
     </div>`,
-    `<div class="cl-duo">
-      ${b && b.edges.length ? clSection('lime', 'Where the week gets decided', clBattles(b, me), 'The biggest projected gaps at a single lineup spot, across every game.') : ''}
+    `<div class="cl-duo wx">
+      ${b && b.edges.length ? clSection('orange', 'Where the week gets decided', clBattles(b, me), 'The biggest projected gaps at a single lineup spot, across every game.') : ''}
       ${order.length ? clSection('cobalt', 'Waiver wire', clWaiver(order, me, pk), next ? 'Order as ESPN has it right now. It resets after the week\'s games.' : 'Worst record picks first. The order resets every week.') : ''}
     </div>`,
-    sm ? clSection('lime', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s lineup spots, ranked against the league. Darker means stronger.') : '',
-    trades.length ? clSection('orange', 'Trade matchmaker', clTrades(trades), 'Pairs whose weak spots line up with each other\'s strengths.') : '',
+    sm ? clSection('cobalt', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s lineup spots, ranked against the league. Darker means stronger.') : '',
+    trades.length ? clSection('lime', 'Trade matchmaker', clTrades(trades), 'Pairs whose weak spots line up with each other\'s strengths.') : '',
   ].join('');
   return body;
 }

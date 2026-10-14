@@ -2787,7 +2787,8 @@ __COACH_JS__
     const me = myTeam.get();
     const mine = rows.find((r) => r.team_id === me);
     return `
-      <div class="page-head">
+      <div class="cl-wide">
+      <div class="page-head cl-pagehead">
         <div class="kicker-row">
           <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
           ${weekToggle(next, null)}
@@ -2801,7 +2802,8 @@ __COACH_JS__
       <div class="cl-page">
         ${coachLanding(next, rows, me)}
       </div>
-      <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
+      <p class="cl-foot">${next ? nextSource() : coachSource(LIVE)}</p>
+      </div>`;
   }
 
   /* The week-ahead lineup: no scores exist yet, so the table is the roster and what ESPN
