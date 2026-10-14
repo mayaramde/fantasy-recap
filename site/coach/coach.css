@@ -14,6 +14,8 @@
   .cl-page :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .cl-sec { padding-top: 56px; }
   .cl-top { padding-top: 28px; }
+  /* The site's global `section { margin-top: 44px }` would push the hero below the vitals beside it. */
+  .cl-top > section, .cl-page section { margin-top: 0; }
   .cl-head { display: flex; align-items: center; gap: 12px; }
   .cl-head h2 { font: 800 34px/1 var(--display); margin: 0; }
   .cl-rule { flex: 1; height: 2px; background: var(--rule); }
