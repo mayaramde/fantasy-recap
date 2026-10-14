@@ -17,6 +17,7 @@ Usage: python3 site/build.py [--season 2026]
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -324,6 +325,32 @@ def _valid_written(it):
             and not _MOVING_NUMBER.search(it["title"] + it["text"]))
 
 
+# A team's one-line quip is capped so it fits a card; the league-level paragraph is two or three sentences.
+SUMMARY_MAX = 110
+LEAGUE_TAKE_MAX = 400
+
+
+def league_key(rows):
+    """The league's situation in one short key: every team's summary key, hashed. coach-daily writes the Coach's
+    take paragraph against it, and the site shows that copy only while the key still matches, so a paragraph that
+    says "nine starters on bye" disappears the moment one of them is swapped in."""
+    joined = "|".join(f"{r['team_id']}={r['summary_key']}" for r in sorted(rows, key=lambda r: r["team_id"]))
+    return hashlib.sha1(joined.encode()).hexdigest()[:12]
+
+
+def written_league(fp, week):
+    """coach-daily's league-wide paragraph for one week, {key, text}, or None if the snapshot is missing,
+    stale, malformed, over the length cap, or carries a moving number (same rule as every written card)."""
+    if not _fp_fresh(fp):
+        return None
+    entry = ((fp.get("weeks") or {}).get(str(week)) or {}).get("league")
+    if not (isinstance(entry, dict) and isinstance(entry.get("key"), str)
+            and _valid_written({"title": "-", "text": entry.get("text")})
+            and len(entry["text"].strip()) <= LEAGUE_TAKE_MAX):
+        return None
+    return entry
+
+
 def written_cards(team_id, fp, week):
     """({key: {title, text}}, summary or None) for one team in one week, from today's
     snapshot — or ({}, None) if it's missing, stale, or has nothing written for them."""
@@ -335,7 +362,8 @@ def written_cards(team_id, fp, week):
     cards = {k: v for k, v in cards.items() if _valid_written(v)} if isinstance(cards, dict) else {}
     summary = row.get("summary")
     ok = (isinstance(summary, dict) and isinstance(summary.get("key"), str)
-          and _valid_written({"title": "-", "text": summary.get("text")}))
+          and _valid_written({"title": "-", "text": summary.get("text")})
+          and len(summary["text"].strip()) <= SUMMARY_MAX)
     return cards, (summary if ok else None)
 
 
@@ -1027,8 +1055,15 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
     # Did this capture record injury designations at all? Without them a roster with nobody listed is
     # "we don't know", never "healthy", so the Coach landing hides what it would say about injuries.
     injuries_known = bool(injury_map(espn))
+    # The Coach's take paragraph: coach-daily's copy when its key still matches the league's situation,
+    # else None and the page words it from the numbers itself.
+    lkey = league_key(rows_out)
+    written = written_league(fp, week)
+    take = written["text"].strip() if written and written["key"] == lkey else None
     for r in rows_out:
         r["injuries_known"] = injuries_known
+        r["league_key"] = lkey
+        r["league_take"] = take
     return live_trades(rows_out, teams)
 
 

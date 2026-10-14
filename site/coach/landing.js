@@ -257,6 +257,9 @@ function coachLanding(next, rows, me) {
   const injuryKnown = rows.some((r) => r.injuries_known);
   const v = vitals(teams, { seasonAvg: seasonAverage(SEASON.standings || []), injuriesKnown: injuryKnown });
   const take = coachTake(teams, v, COACH_HEADLINES, { projected });
+  // coach-daily's paragraph, while it still describes the league as it is; the template wording otherwise.
+  const written = (rows.find((r) => r.league_take) || {}).league_take;
+  if (written) take.paragraph = written;
   const fixes = buildFixes(teams);
   const withRanks = teams.length && teams.every((t) => t.ranks);
   const sm = withRanks ? strengthMap(teams.map((t) => ({ id: t.id, manager: t.manager, ranks: t.ranks }))) : null;

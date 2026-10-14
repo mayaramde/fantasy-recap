@@ -146,6 +146,12 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `summary`). The page shows the written title and text only while that key is still computed, so advice for a
   situation that has since changed falls back to the computed wording on its own. Written copy never carries a
   decimal or a percentage (the build rejects it); the live number stays in the computed stat pill.
+- **The Coach landing's quips and take.** The one-line quip on each team's card is that team's `summary`, capped at
+  110 characters (the build drops a longer one). The dark "Coach's take" paragraph is the week's `league` entry,
+  filed under `league_key` (a hash of every team's `summary_key`, printed by `coach_brief.py` next to the facts it
+  sums up). Both are cached by key: `coach-daily` carries yesterday's entry forward while its key is unchanged and
+  writes fresh copy only when the situation moved. Missing, stale, over-length or mismatched copy falls back to
+  the page's own wording, so a failed generation never leaves a blank or a wrong card.
 - **Authored cards** (`consensus`, `waiver`, `trade`, `fp_news`, `fp_back`, and the "Worth a look" section) come
   from `coach-daily`'s snapshot. `site/build.py` only decides whether that day's snapshot is fresh enough to merge in.
 - **Trade cards** are evaluated proposals, never leads. `coach-daily` finds candidates (its own ideas plus

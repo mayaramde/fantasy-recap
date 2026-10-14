@@ -68,8 +68,11 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `scripts/trade_eval.py` on FantasyPros' free rest-of-season projections.
 - **FantasyPros daily snapshot** (`data/<season>/fantasypros/latest.json`): the finished, voice-checked Coach cards
   `coach-daily` writes once a day for every team, keyed by week, including this week's written advice for each
-  computed card (keyed by situation, see `docs/architecture.md`) and, top level, each team's written season-audit
-  copy (`audit`, keyed by audit key). Committed through its own auto-merging PR (small,
+  computed card (keyed by situation, see `docs/architecture.md`), each team's one-line card quip (`summary`, 110
+  characters at most), the week's league-wide "Coach's take" paragraph (`weeks.<n>.league`, keyed by the league's
+  situation) and, top level, each team's written season-audit copy (`audit`, keyed by audit key). Yesterday's
+  entries are reused while their key is unchanged; the build shows written copy only while its key still matches
+  and falls back to the computed wording otherwise. Committed through its own auto-merging PR (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards (written season-audit copy still
   applies while its key matches, since it describes finished weeks).
