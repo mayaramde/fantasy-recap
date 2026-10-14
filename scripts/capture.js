@@ -105,6 +105,8 @@ const trimPlayer = (e, week, games) => {
     // His NFL game: 'pre', 'in' or 'post', and the game clock while it's 'in'
     game_state: g ? g.state : null,
     game_clock: g ? g.clock : null,
+    // When his NFL game kicks off (ISO, UTC), for the lineup's "Sun 1:00 PM" line
+    kickoff: g ? g.kickoff : null,
   };
 };
 
@@ -130,7 +132,7 @@ const proGames = async (week) => {
             .filter(Boolean).join(' ') || st.type?.shortDetail || null;
       }
       for (const c of ev.competitions?.[0]?.competitors || []) {
-        games[Number(c.id)] = { state, clock };
+        games[Number(c.id)] = { state, clock, kickoff: ev.date || null };
       }
     }
     return games;

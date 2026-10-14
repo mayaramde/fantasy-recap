@@ -102,7 +102,7 @@ def _pro_games(week):
                     clock = " ".join(x for x in (quarter, st.get("displayClock")) if x) or None
                 clock = clock or (st.get("type") or {}).get("shortDetail") or None
             for c in ((ev.get("competitions") or [{}])[0].get("competitors") or []):
-                games[int(c["id"])] = {"state": state, "clock": clock}
+                games[int(c["id"])] = {"state": state, "clock": clock, "kickoff": ev.get("date")}
     except Exception:  # noqa: BLE001 - no game states is a missing marker, not a failed capture
         return {}
     return games
@@ -167,6 +167,7 @@ def _side(s, week, names, games):
             # His NFL game: 'pre', 'in' or 'post', and the game clock while it is 'in'
             "game_state": game["state"] if game else None,
             "game_clock": game["clock"] if game else None,
+            "kickoff": game["kickoff"] if game else None,
         })
     return {
         "team_id": s.get("teamId"),
@@ -250,7 +251,7 @@ def fetch_week(week):
 _PLAYER = {"player_id": "int", "name": "str", "pos": "str", "pro_team_id": "int?",
            "slot": "str", "points": "num", "projected": "num?", "played": "bool",
            # Added for the live box score, so weeks captured before it are missing both keys
-           "game_state?": "str?", "game_clock?": "str?",
+           "game_state?": "str?", "game_clock?": "str?", "kickoff?": "str?",
            # Added for the Coach page; same story for weeks captured before it
            "injury_status?": "str?",
            # Added for the player cards on the Coach page: ESPN's scoring for the week,
