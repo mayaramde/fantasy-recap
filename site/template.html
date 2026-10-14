@@ -134,6 +134,52 @@
 
   .draft-banner { margin-top: 18px; padding: 10px 14px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); font-size: 13.5px; font-weight: 700; }
 
+  /* ---------- ESPN ticker ----------
+     Lives outside #main (see drawTicker) so a live refresh's re-render can't restart the scroll. The
+     second copy of the list is what makes the -50% loop seamless; it is aria-hidden and unfocusable. */
+  .ticker { --tk-dur: 60s; display: flex; align-items: stretch; min-height: 56px; margin-inline: -16px; background: var(--board); color: var(--on-board); border-bottom: 2px solid var(--edge); }
+  .ticker[hidden] { display: none; }
+  .tk-label { flex: none; display: flex; align-items: center; gap: 8px; padding: 0 16px; background: var(--lime); color: var(--on-pop); border-right: 2px solid var(--edge); font: 500 12px/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  .tk-label .short { display: none; }
+  .tk-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--orange); border: 1.5px solid var(--on-pop); }
+  .tk-view { flex: 1; min-width: 0; overflow: hidden; display: flex; align-items: stretch; }
+  .tk-track { display: flex; width: max-content; }
+  .tk-list { display: flex; flex: none; list-style: none; margin: 0; padding: 0; }
+  .tk-item { display: flex; align-items: center; gap: 10px; min-height: 44px; height: 100%; padding: 0 12px 0 20px; color: var(--on-board); text-decoration: none; white-space: nowrap; font: 600 15px/1.2 var(--body); }
+  .tk-item:hover .tk-h { text-decoration: underline; }
+  .tk-item:focus-visible { outline-offset: -3px; }
+  .tk-chip { font: 700 12px/1 var(--body); padding: 5px 9px; border-radius: 999px; border: 2px solid var(--edge); background: var(--accent-soft); color: var(--accent-ink); }
+  .tk-chip.me { background: var(--orange); color: var(--on-pop); }
+  .tk-who { font: 400 12px/1 var(--mono); color: var(--on-board-muted); }
+  .tk-sep { flex: none; width: 9px; height: 9px; margin-left: 8px; background: var(--pink); border: 1.5px solid var(--edge); transform: rotate(45deg); }
+  .tk-btn { flex: none; width: 56px; display: grid; place-items: center; padding: 0; background: var(--board-2); color: var(--on-board); border: 0; border-left: 2px solid var(--edge); cursor: pointer; }
+  .tk-btn:hover { background: var(--accent); color: var(--on-accent); }
+  .tk-btn:focus-visible { outline-offset: -5px; }
+  .tk-btn svg { width: 20px; height: 20px; }
+  .tk-btn .play, .ticker.paused .tk-btn .pause { display: none; }
+  .ticker.paused .tk-btn .play { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .tk-dot { animation: pulse 1.6s ease-in-out infinite; }
+    .tk-track { animation: tk-scroll var(--tk-dur) linear infinite; }
+    .ticker.paused .tk-track, .ticker:focus-within .tk-track { animation-play-state: paused; }
+  }
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) { .tk-view:hover .tk-track { animation-play-state: paused; } }
+  @keyframes tk-scroll { to { transform: translateX(-50%); } }
+  /* No motion: a strip she can scroll by hand, one copy of the list, and no button that does nothing. */
+  @media (prefers-reduced-motion: reduce) {
+    .tk-view { overflow-x: auto; }
+    .tk-list.dup, .tk-btn { display: none; }
+  }
+  @media (max-width: 620px) {
+    .ticker { --tk-dur: 50s; min-height: 48px; }
+    .tk-label { padding: 0 12px; }
+    .tk-label .long { display: none; }
+    .tk-label .short { display: inline; }
+    .tk-item { font-size: 14px; }
+    .tk-who { display: none; }
+    .tk-btn { width: 48px; }
+  }
+
   /* ---------- page heads ---------- */
   .crumbs { margin-top: 20px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; }
   .crumbs a { color: var(--accent); text-decoration: none; font-weight: 700; }
@@ -1144,6 +1190,7 @@ __BTS_CSS__
     </nav>
   </div>
 </header>
+<div class="ticker" id="ticker" role="region" aria-label="ESPN headlines about players on league rosters" hidden></div>
 <div class="wrap">
   <main id="main" tabindex="-1"></main>
   <footer id="footer"></footer>
@@ -2243,6 +2290,55 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>`;
   }
 
+  /* ---------- ESPN news: ranking, and the ticker ----------
+     hub().news is baked at build time (see hub_payload), so the ticker is drawn from it once per
+     change rather than on every route(): the live refresh re-renders #main every minute, and a
+     ticker rebuilt each time would snap back to the start. */
+  const NEWS_TICKER_MAX = 12;
+  // Your team's stories first, then injuries, then ESPN's own order. Without a team the first rule is skipped.
+  function rankedNews() {
+    const me = myTeam.get();
+    const rank = (n) => (me && n.owners.some((o) => o.team_id === me) ? 0 : n.tag === 'Injury' ? 1 : 2);
+    return (hub().news || []).map((n, i) => [n, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map((x) => x[0]);
+  }
+  const ownerText = (n) => n.owners.map((o) => o.manager).join(' + ');
+  const ownedByMe = (n) => !!myTeam.get() && n.owners.some((o) => o.team_id === myTeam.get());
+
+  let tickerWanted = false, tickerSig = '', tickerPaused = false;
+  const IC_PAUSE = '<svg class="pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+  const IC_PLAY = '<svg class="play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>';
+  function drawTicker() {
+    const el = document.getElementById('ticker');
+    const list = tickerWanted ? rankedNews().slice(0, NEWS_TICKER_MAX) : [];
+    el.hidden = !list.length;
+    if (!list.length) { tickerSig = ''; return; }
+    const sig = `${myTeam.get()}|${list.map((n) => n.url).join(' ')}`;
+    if (sig === tickerSig) return;
+    tickerSig = sig;
+    const items = (dup) => list.map((n) => `
+      <li><a class="tk-item" href="${esc(n.url)}" target="_blank" rel="noopener noreferrer"${dup ? ' tabindex="-1"' : ''}>
+        <span class="tk-chip${ownedByMe(n) ? ' me' : ''}">${esc(ownerText(n))}</span>
+        <span class="tk-h">${esc(n.headline)}</span>
+        <span class="tk-who">${esc(n.players[0].name)}</span>
+        <span class="tk-sep" aria-hidden="true"></span>
+      </a></li>`).join('');
+    el.innerHTML = `
+      <div class="tk-label"><span class="tk-dot" aria-hidden="true"></span><span class="long">ESPN · your rosters</span><span class="short">ESPN</span></div>
+      <div class="tk-view"><div class="tk-track">
+        <ul class="tk-list">${items(false)}</ul>
+        <ul class="tk-list dup" aria-hidden="true">${items(true)}</ul>
+      </div></div>
+      <button type="button" class="tk-btn" data-tk aria-label="${tickerPaused ? 'Play' : 'Pause'} news ticker">${IC_PAUSE}${IC_PLAY}</button>`;
+    el.classList.toggle('paused', tickerPaused);
+  }
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-tk]');
+    if (!btn) return;
+    tickerPaused = !tickerPaused;
+    btn.closest('.ticker').classList.toggle('paused', tickerPaused);
+    btn.setAttribute('aria-label', `${tickerPaused ? 'Play' : 'Pause'} news ticker`);
+  });
+
   // Headlines only, each one a link out to ESPN. No article text ever reaches this page.
   function newsSection() {
     const items = hub().news || [];
@@ -2253,15 +2349,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         ${secHead('book', 'ESPN on your rosters')}
         <p class="sec-sub">ESPN headlines about players somebody in this league has on her roster. Each one opens on ESPN.</p>
         <div class="hub-news">${items.map((n) => `
-          <a href="${esc(n.link)}" target="_blank" rel="noopener noreferrer">
+          <a href="${esc(n.url)}" target="_blank" rel="noopener noreferrer">
             <span class="h">${esc(n.headline)}</span>
             <span class="tags">${n.owners.map((o) => `<span class="${o.team_id === me ? 'me' : ''}">${esc(o.manager)}</span>`).join('')}</span>
-            <span class="src">ESPN · ${shortDay(n.published)} · ${n.players.map(esc).join(', ')}</span>
+            <span class="src">ESPN · ${shortDay(n.date)} · ${n.players.map((p) => esc(p.name)).join(', ')}</span>
           </a>`).join('')}</div>
       </section>`;
   }
 
   function landingPage(w) {
+    tickerWanted = !!(hub().news || []).length;
     const next = leadWithNext();
     const rows = coachRows(next) || [];
     const weekNum = next ? ahead().week : w.week;
@@ -3131,6 +3228,7 @@ __BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
   let btsSection = '';
   function route() {
+    tickerWanted = false;
     const h = location.hash.replace(/^#/, '');
     let m, html, nav = 'week';
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
@@ -3154,6 +3252,7 @@ __BTS_JS__
     else if (h === '') { html = weekPage(latest()); }
     else { html = notFound(); }
     $('#main').innerHTML = html;
+    drawTicker();
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
