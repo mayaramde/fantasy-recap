@@ -56,6 +56,49 @@ if [ -n "${VERCEL_TOKEN:-}" ]; then
   fi
 fi
 
+# A git worktree (what an agentic session builds in) has no project link of its own —
+# .vercel/project.json only exists wherever `vercel link` was run once (this Mac's main
+# checkout). Without a local link, `vercel build`/`vercel deploy` fall back to the
+# repo-wide link Vercel's CLI finds by walking up to the nearest directory holding a
+# *real* .git directory. From inside a worktree — where .git is just a pointer file —
+# that walk skips right past it and lands on the main checkout, making the *whole* main
+# checkout the function's bundling root: every other worktree nested under its
+# .claude/worktrees/, each with its own .git pointer file, comes along for the ride, and
+# Vercel then refuses to upload those as "version-control files". Bootstrapping a link
+# scoped to *this* directory — the same trick GitHub Actions already uses above with a
+# token — keeps the build scoped to just this checkout. No secrets involved: the org and
+# project IDs aren't secret, and they're read straight from the main checkout's own
+# .vercel/repo.json (written there by `vercel link`'s repo-aware mode), not typed in here.
+#
+# Gated on `[ -f .git ]`: a worktree's .git is a plain file, a normal checkout's is a
+# directory. That keeps a brand-new Mac's very first `deploy.sh` — before `vercel link`
+# has ever run, where .git is a directory and this block has nothing to do — from paying
+# for `git rev-parse --path-format=absolute` (needs git 2.31+) at all.
+if [ -z "${VERCEL_TOKEN:-}" ] && [ ! -f .vercel/project.json ] && [ -f .git ]; then
+  main_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+  repo_link="$main_root/.vercel/repo.json"
+  if [ "$main_root" != "$(pwd)" ] && [ -f "$repo_link" ]; then
+    # repo.json (as `vercel link`'s repo-aware mode writes it today) nests orgId inside
+    # each projects[] entry; fall back to a top-level orgId too, in case a future CLI
+    # version moves it, rather than dying on a bare KeyError traceback.
+    ids="$(python3 -c "
+import json, sys
+d = json.load(open(sys.argv[1]))
+p = d['projects'][0]
+print(p.get('orgId', d.get('orgId', '')), p['id'])
+" "$repo_link")"
+    read -r VERCEL_ORG_ID VERCEL_PROJECT_ID <<<"$ids"
+    export VERCEL_ORG_ID VERCEL_PROJECT_ID
+    if $preview; then
+      vercel pull --yes --environment=preview
+    else
+      vercel pull --yes --environment=production
+    fi
+  elif [ "$main_root" != "$(pwd)" ]; then
+    echo "deploy.sh: running from a worktree with no $repo_link to link from — the build may sweep in sibling worktrees' .git files (see vercel.json's excludeFiles)" >&2
+  fi
+fi
+
 # scripts/vercel_build.sh reads this to choose which tree to publish. Passed explicitly
 # because `vercel build --prod` leaves VERCEL_ENV unset in the build command.
 if $preview; then
