@@ -347,9 +347,9 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
    edit or commit any recap file or any `data/2026/week-NN/` file.
 2. Archive today's snapshot: `python3 scripts/snapshot_history.py`. It copies `latest.json` to
-   `data/2026/fantasypros/history/<UTC date>.json` and rebuilds `history/index.json`. Earlier days are
-   never touched; a second run on the same day replaces that day's file. Re-run `python3 scripts/check.py`.
-   Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<UTC date>.json`
+   `data/2026/fantasypros/history/<Pacific date>.json` and rebuilds `history/index.json`. Earlier days are
+   never touched; a second run on the same Pacific-time day (manual reruns included) replaces that day's file. Re-run `python3 scripts/check.py`.
+   Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<Pacific date>.json`
    and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
    Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards

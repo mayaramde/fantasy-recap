@@ -2,7 +2,7 @@
 """Archive coach-daily's rolling snapshot as a dated history file.
 
 `data/<season>/fantasypros/latest.json` is overwritten every day. This copies it to
-`data/<season>/fantasypros/history/<YYYY-MM-DD>.json` (the UTC date of its `generated_at`) and
+`data/<season>/fantasypros/history/<YYYY-MM-DD>.json` (the Pacific calendar date of its `generated_at`) and
 rebuilds `history/index.json`, a compact one-row-per-day summary, so a reader can scan a whole season
 cheaply and open a full day only when it needs to.
 
@@ -16,21 +16,25 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_VERSION = 1
+# A "day" is a Pacific-time day (Maya's), not a UTC one, so an evening rerun overwrites that
+# day's file instead of spilling into tomorrow's. PST/PDT is handled by the zone.
+DAY_TZ = ZoneInfo("America/Los_Angeles")
 INDEX = "index.json"
 
 
-def _day(generated_at):
-    """The UTC calendar date ('YYYY-MM-DD') of an ISO 8601 UTC time, else a ValueError."""
+def local_day(generated_at):
+    """The Pacific calendar date ('YYYY-MM-DD') of an ISO 8601 UTC time, else a ValueError."""
     if not isinstance(generated_at, str):
         raise ValueError("generated_at must be an ISO 8601 UTC time")
     raw = generated_at[:-1] + "+00:00" if generated_at[-1:] in "Zz" else generated_at
     when = datetime.fromisoformat(raw)
     if when.tzinfo is None or when.utcoffset().total_seconds() != 0:
         raise ValueError("generated_at must be an ISO 8601 UTC time")
-    return when.date().isoformat()
+    return when.astimezone(DAY_TZ).date().isoformat()
 
 
 def _summarize(snap, day):
@@ -65,7 +69,7 @@ def archive(season_dir):
     snap = json.loads((fp_dir / "latest.json").read_text())
     if not isinstance(snap, dict):
         raise ValueError("latest.json must be a JSON object")
-    day = _day(snap.get("generated_at"))
+    day = local_day(snap.get("generated_at"))
 
     hist = fp_dir / "history"
     hist.mkdir(exist_ok=True)

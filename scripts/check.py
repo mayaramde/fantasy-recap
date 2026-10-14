@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import espn_fetch  # noqa: E402
 import check_recaps  # noqa: E402
+import snapshot_history  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -151,8 +152,9 @@ def check_fantasypros_snapshot(errors, root=ROOT):
         generated = _parse_utc(snap.get("generated_at"))
         if generated is None:
             errors.append(f"{rel}: generated_at must be an ISO 8601 UTC time, e.g. 2026-10-14T06:00:00Z")
-        elif path.parent.name == "history" and generated.date().isoformat() != path.stem:
-            errors.append(f"{rel}: filename date doesn't match generated_at ({generated.date().isoformat()})")
+        elif path.parent.name == "history" and snapshot_history.local_day(snap["generated_at"]) != path.stem:
+            errors.append(f"{rel}: filename date doesn't match generated_at "
+                          f"({snapshot_history.local_day(snap['generated_at'])}, Pacific time)")
         fp = snap.get("fantasypros")
         if fp is None:
             if generated and generated >= FANTASYPROS_FIELD_REQUIRED_FROM:
