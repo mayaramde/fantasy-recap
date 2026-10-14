@@ -15,19 +15,25 @@
       "manager": "Kyra",
       "title": "Five and oh, playing for second",
       "text": "Kyra scored 170.3 behind Jahmyr Gibbs (37.7, two touchdowns, 151 rushing yards) and Jaylen Warren (36.8 from the flex). She's the last unbeaten team in the league, so the rest of you are now playing for second.",
-      "stat": "170.3 pts, 5-0"
+      "stat": "170.3 pts, 5-0",
+      "emoji": "🥈",
+      "player": "Jahmyr Gibbs"
     },
     {
       "manager": "Samantha",
       "title": "Nothing left on the table",
       "text": "Samantha left 2.4 points on her bench, the tightest in the league. Josh Allen gave her 30.5 points against a 19.9 projection, and the Texans D/ST she picked up off free agency the same week added 15 more. Every move worked, and the rest of us would like to see the process, preferably in writing.",
-      "stat": "2.4 pts benched"
+      "stat": "2.4 pts benched",
+      "emoji": "🍽️",
+      "player": "Josh Allen"
     },
     {
       "manager": "Maya",
       "title": "Bucky remembers",
       "text": "Maya benched Bucky Irving in Week 1. This week he ran for 165 yards and scored twice and she won by 49.6. Enjoy this one, Maya, because you're back in the flags section, and this time it's a pattern.",
-      "stat": "49.6-pt win"
+      "stat": "49.6-pt win",
+      "emoji": "🐘",
+      "player": "Bucky Irving"
     }
   ],
   "flags": [
@@ -35,13 +41,17 @@
       "manager": "Marlee",
       "title": "George Pickens, seated",
       "text": "George Pickens scored 28 on Marlee's bench and she lost by 20.98. Swap him in for Michael Wilson's 7.28 and she still loses, by 0.26. Close enough to taste it, not close enough to matter, and the league still has questions about why Wilson started over him.",
-      "stat": "28.0 pts benched"
+      "stat": "28.0 pts benched",
+      "emoji": "🪑",
+      "player": "George Pickens"
     },
     {
       "manager": "Maya",
       "title": "The person writing this recap did it again",
       "text": "Maya played Omarion Hampton (4.9) in the flex and left Mike Evans (26.3) on the bench, for the second week in a row. She won by 49.6, so the damage was zero. But when the author of the recap makes the same mistake twice, the recap has a conflict of interest and the commissioner has no choice but to call it out.",
-      "stat": "−21.4 at flex"
+      "stat": "−21.4 at flex",
+      "emoji": "🤦‍♀️",
+      "player": "Mike Evans"
     }
   ],
   "tough_breaks": [
@@ -49,19 +59,24 @@
       "manager": "Cambri",
       "title": "Five touchdowns, still a loss",
       "text": "Drake Maye accounted for five touchdowns and Puka Nacua caught seventeen passes. Cambri still lost to Tara by 7.84. If losing is her superpower, it's the only one that comes with a fully stacked offense.",
-      "stat": "5 TDs, 17 catches, still L"
+      "stat": "5 TDs, 17 catches",
+      "emoji": "😭",
+      "player": "Drake Maye"
     },
     {
       "manager": "Amie",
       "title": "Right call, wrong week",
       "text": "Amie's waiver move looked perfect: Jayden Daniels in, a scoreless Patrick Mahomes out. She still lost by 64.64. Kyra's backfield did not care about her process.",
-      "stat": "Right call, 64.64-pt loss"
+      "stat": "64.64-pt loss",
+      "emoji": "📞"
     },
     {
       "manager": "Maddie",
       "title": "Below zero",
       "text": "Tyler Shough finished at −0.16 points, a negative score for a quarterback. It's a rare achievement, and nobody should try to repeat it.",
-      "stat": "−0.16 pts"
+      "stat": "−0.16 pts",
+      "emoji": "🥶",
+      "player": "Tyler Shough"
     }
   ],
   "glossary": [

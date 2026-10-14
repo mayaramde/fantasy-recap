@@ -12,6 +12,7 @@ import re
 from datetime import date, timedelta
 from pathlib import Path
 import string
+import unicodedata
 
 # The Fri Oct 2 2026 target from the harness hardening plan. For two weeks
 # after that, a violation in a *draft* recap only warns — a false positive in
@@ -27,6 +28,14 @@ SMALL_INTEGER_CEILING = 20
 
 NUMBER_RE = re.compile(r"[-−]?\d+(?:\.\d+)?")
 MATCHUP_KEY_RE = re.compile(r"(\d+)-(\d+)")
+
+
+# Award card rules. The length and echo limits keep a card's title ticket and stat pill from
+# wrapping; weeks before this one were written without them, so they only apply from here on.
+AWARD_KEYS = ("game_balls", "flags", "tough_breaks")
+AWARD_RULES_FROM_WEEK = 5
+TITLE_MAX, STAT_MAX, EMOJI_MAX = 48, 22, 2
+EM_DASH = "\u2014"
 
 
 def draft_violations_are_warnings(today=None):
@@ -191,6 +200,70 @@ def check_no_last_names(recap, names, problems):
             problems.append(f"{field_name}: {phrase!r} looks like it could include a last name")
 
 
+def emoji_clusters(text):
+    """Split `text` into what a reader sees as characters: a base symbol plus any variation
+    selector, skin tone, keycap or tag, ZWJ-joined sequences (🤦‍♀️) and flag pairs as one. Stdlib
+    only, so it is an approximation of Unicode grapheme clusters, enough for emoji."""
+    clusters, joined = [], False
+    for ch in text:
+        cp = ord(ch)
+        ri = 0x1F1E6 <= cp <= 0x1F1FF
+        extends = (cp in (0x200D, 0xFE0F, 0x20E3) or 0x1F3FB <= cp <= 0x1F3FF or 0xE0020 <= cp <= 0xE007F
+                   or unicodedata.category(ch) in ("Mn", "Me"))
+        flag_pair = ri and clusters and len(clusters[-1]) == 1 and 0x1F1E6 <= ord(clusters[-1]) <= 0x1F1FF
+        if clusters and (extends or joined or flag_pair):
+            clusters[-1] += ch
+        else:
+            clusters.append(ch)
+        joined = cp == 0x200D
+    return clusters
+
+
+def check_awards(recap, roster_names, problems):
+    """Per-award rules: the optional `emoji` and `player` fields, and the title/stat/text limits.
+    `roster_names` is None when the week has no facts.json to check a player against."""
+    week = recap.get("week", 0)
+    for section in AWARD_KEYS:
+        for i, award in enumerate(recap.get(section, [])):
+            at = f"{section}[{i}]"
+            title, stat = award.get("title", ""), award.get("stat", "")
+
+            if "emoji" in award:
+                emoji = award["emoji"]
+                clusters = emoji_clusters(emoji) if isinstance(emoji, str) else []
+                if not clusters or len(clusters) > EMOJI_MAX:
+                    problems.append(f"{at}.emoji {emoji!r} must be 1 or {EMOJI_MAX} visible characters, "
+                                    f"one emoji or one emoji sequence")
+                elif not all(unicodedata.category(c[0]) == "So" for c in clusters):
+                    problems.append(f"{at}.emoji {emoji!r} must be emoji only, no letters, digits or punctuation")
+
+            if "player" in award:
+                player = award["player"]
+                if not isinstance(player, str) or not player.strip():
+                    problems.append(f"{at}.player must be a full player name")
+                elif roster_names is None:
+                    problems.append(f"{at}.player {player!r} can't be checked: no facts.json for week {week}")
+                elif player not in roster_names:
+                    problems.append(f"{at}.player {player!r} isn't on any roster in week {week}'s data "
+                                    f"(use the full name exactly as the roster spells it)")
+
+            if len(title) > TITLE_MAX:
+                problems.append(f"{at}.title is {len(title)} characters, the limit is {TITLE_MAX}")
+            if week >= AWARD_RULES_FROM_WEEK and len(stat) > STAT_MAX:
+                problems.append(f"{at}.stat {stat!r} is {len(stat)} characters, the limit is {STAT_MAX}")
+            norm = lambda x: " ".join(re.findall(r"[a-z0-9.]+", x.lower()))
+            if norm(stat) and norm(title) and (norm(stat) in norm(title) or norm(title) in norm(stat)):
+                problems.append(f"{at}.stat {stat!r} repeats the title {title!r}; give the stat different information")
+            for field in ("title", "stat", "text"):
+                if EM_DASH in award.get(field, ""):
+                    problems.append(f"{at}.{field} has an em dash; use a period or a comma")
+
+
+def roster_names_for(facts):
+    return {p["name"] for t in facts.get("teams", []) for p in t.get("starters", []) + t.get("bench", [])
+            if p.get("name")}
+
+
 def check_one_recap(recap_path, root, league, errors, warnings):
     recap = json.loads(recap_path.read_text())
     season, week = recap["season"], recap["week"]
@@ -203,12 +276,14 @@ def check_one_recap(recap_path, root, league, errors, warnings):
             collect_numbers(json.loads(path.read_text()), source_numbers)
 
     facts_path = week_dir / "facts.json"
-    real_pairs = real_matchup_pairs(json.loads(facts_path.read_text())) if facts_path.exists() else set()
+    facts = json.loads(facts_path.read_text()) if facts_path.exists() else None
+    real_pairs = real_matchup_pairs(facts) if facts else set()
 
     problems = []
     check_numbers(recap, source_numbers, problems)
     check_matchup_structure(recap, real_pairs, problems)
     check_no_last_names(recap, first_names(league), problems)
+    check_awards(recap, roster_names_for(facts) if facts else None, problems)
 
     if not problems:
         return

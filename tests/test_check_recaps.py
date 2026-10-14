@@ -90,6 +90,63 @@ class MatchupStructureTest(unittest.TestCase):
         self.assertEqual(len(problems), 1)
 
 
+class AwardsTest(unittest.TestCase):
+    ROSTER = {"Josh Allen", "Mike Evans"}
+
+    def run_check(self, award, week=5, roster=ROSTER, section="game_balls"):
+        recap = {"week": week, section: [dict({"manager": "Maya", "title": "A title", "stat": "49.6-pt win",
+                                                "text": "Plain text."}, **award)]}
+        problems = []
+        check_recaps.check_awards(recap, roster, problems)
+        return problems
+
+    def test_good_award_passes(self):
+        self.assertEqual(self.run_check({"emoji": "🍽️", "player": "Josh Allen"}), [])
+
+    def test_zwj_sequence_and_flag_count_as_one_character(self):
+        self.assertEqual(self.run_check({"emoji": "🤦‍♀️"}), [])
+        self.assertEqual(self.run_check({"emoji": "🇺🇸"}), [])
+        self.assertEqual(self.run_check({"emoji": "🥈🥶"}), [])
+
+    def test_three_emoji_fail(self):
+        problems = self.run_check({"emoji": "🥈🥶🐘"})
+        self.assertEqual(len(problems), 1)
+        self.assertIn("1 or 2 visible characters", problems[0])
+
+    def test_empty_and_text_emoji_fail(self):
+        self.assertEqual(len(self.run_check({"emoji": ""})), 1)
+        self.assertEqual(len(self.run_check({"emoji": "ok"})), 1)
+
+    def test_unknown_player_fails(self):
+        problems = self.run_check({"player": "Josh Alien"})
+        self.assertEqual(len(problems), 1)
+        self.assertIn("isn't on any roster", problems[0])
+
+    def test_player_without_facts_fails(self):
+        self.assertEqual(len(self.run_check({"player": "Josh Allen"}, roster=None)), 1)
+
+    def test_long_stat_fails_from_week_5_only(self):
+        award = {"stat": "x" * 23}
+        self.assertEqual(len(self.run_check(award, week=5)), 1)
+        self.assertEqual(self.run_check(award, week=4), [])
+
+    def test_stat_repeating_title_fails(self):
+        problems = self.run_check({"title": "Right call, wrong week", "stat": "Right call"})
+        self.assertEqual(len(problems), 1)
+        self.assertIn("repeats the title", problems[0])
+
+    def test_long_title_fails(self):
+        self.assertEqual(len(self.run_check({"title": "t" * 49})), 1)
+
+    def test_em_dash_fails_in_each_field(self):
+        for field in ("title", "stat", "text"):
+            problems = self.run_check({field: "one \u2014 two"})
+            self.assertTrue(any("em dash" in p for p in problems), field)
+
+    def test_old_awards_without_new_fields_pass(self):
+        self.assertEqual(self.run_check({}, week=1, roster=None), [])
+
+
 class RolloutTest(unittest.TestCase):
     def test_within_grace_period(self):
         self.assertTrue(check_recaps.draft_violations_are_warnings(today=date(2026, 10, 5)))
