@@ -81,7 +81,7 @@ def is_on_bye(p, states_known):
     return states_known and p.get("game_state") is None
 
 
-def player(p, live, states_known=False):
+def player(p, live, states_known):
     """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
     NFL game is on, and absent otherwise, so a finished week carries no live leftovers.
     The NFL team logo rides along on the live week, which is the only page that shows it,
@@ -102,7 +102,7 @@ def player(p, live, states_known=False):
     return row
 
 
-def side(t, live=False, states_known=False):
+def side(t, live, states_known):
     return {
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
@@ -142,7 +142,8 @@ def worst_performances(facts):
 
 def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
-    states_known = game_states_known(p for t in facts["teams"] for p in t["starters"] + t["bench"])
+    # Only the live week's rows say who is on a bye; a finished week has no use for the scan
+    states_known = live and game_states_known(p for t in facts["teams"] for p in t["starters"] + t["bench"])
     games, seen = [], set()
     for t in facts["teams"]:
         key = tuple(sorted((t["team_id"], t["opponent_id"])))
@@ -1187,8 +1188,9 @@ def next_payload(capture, previous, fp=None):
     """
     teams = next_week_teams(capture)
     rows = advice_payload(teams, capture, previous, fp=fp, week=capture["week"])
-    lineups = {t["team_id"]: {"starters": [player(p, True) for p in t["starters"]],
-                              "bench": [player(p, True) for p in t["bench"]]} for t in teams}
+    known = game_states_known(p for t in teams for p in t["starters"] + t["bench"])
+    lineups = {t["team_id"]: {"starters": [player(p, True, known) for p in t["starters"]],
+                              "bench": [player(p, True, known) for p in t["bench"]]} for t in teams}
     by_id = {t["team_id"]: t for t in teams}
     record_by_id = {t["team_id"]: t for t in capture["teams"]}
     for r in rows:

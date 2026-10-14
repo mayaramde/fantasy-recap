@@ -366,10 +366,28 @@ class HubLineupRowTest(unittest.TestCase):
             for k in ("bye", "playing", "team", "logo", "player_id", "kickoff"):
                 self.assertNotIn(k, p)
 
-    def test_one_definition_of_a_bye(self):
-        """The hub row and the Coach card read the same rule."""
-        src = (ROOT / "site" / "build.py").read_text()
-        self.assertEqual(src.count("game_state\") is None"), 1)
+    def test_the_hub_row_and_the_coach_card_agree_on_a_bye(self):
+        """Both read is_on_bye: for every player on every roster, the row's flag is the card's."""
+        dst = self.dst_id()
+        nxt = self.hub_preview.upcoming(self.history[-1])
+        for m in nxt["matchups"]:
+            for s in ("home", "away"):
+                for p in m[s]["lineup"]:
+                    if p["player_id"] == dst:
+                        p["game_state"] = None
+        facts = self.analyze.analyze(nxt, self.history + [nxt])
+        live = build.live_payload(facts, nxt, self.history[-1], history=self.history)
+        cards = {r["team_id"]: r["players"] for r in live["advice"]}
+        checked = byes = 0
+        for g in live["games"]:
+            for s in (g["winner"], g["loser"]):
+                for p in s["starters"] + s["bench"]:
+                    card = cards[s["team_id"]][str(p["player_id"])]
+                    self.assertEqual(p.get("bye", False), card["bye"], p["name"])
+                    checked += 1
+                    byes += card["bye"]
+        self.assertTrue(checked)
+        self.assertGreaterEqual(byes, 1)
 
 
 if __name__ == "__main__":
