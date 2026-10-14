@@ -57,8 +57,10 @@
   .lv-foot .live-dot { width: 7px; height: 7px; }
   .lv-stale { background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 999px; padding: 1px 10px; font-size: 14px; font-weight: 600; color: var(--ink); }
   @media (min-width: 700px) {
-    .lv-games { grid-template-columns: 1fr 1fr; }
     .lv-score { font-size: 64px; }
+    /* Your game on the left, the league's cards stacked on the right: no empty grid slot with three other games. */
+    .lv-grid { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 0 26px; align-items: start; }
+    .lv-grid .lv-hero-wrap { max-width: none; }
   }
   @media (prefers-reduced-motion: no-preference) {
     .lv-delta, .lv-sticker { animation: lv-pop 0.5s ease-out; }

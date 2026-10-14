@@ -2569,6 +2569,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   let liveMove = null; // liveMovement()'s last result; refreshLive() advances it, so a tag lives for one refresh
   const liveDelta = (id) => { const d = liveMove && liveMove.delta.get(id); return d ? `<span class="lv-delta">+${f2(d)}</span>` : ''; };
   const livePlaying = (s) => (s.starters || []).filter((p) => p.playing);
+  // Is any starter in the league on the field right now? One answer for the kicker, the dek and
+  // livePace(), so the page never describes a refresh rate the timer isn't using.
+  const liveAnyPlaying = (w) => (w.games || []).some((g) => ((g.winner || {}).playing_now || 0) + ((g.loser || {}).playing_now || 0) > 0);
 
   function liveMeter(s, rem, scale, cls) {
     const w = (n) => `${Math.max(Math.min(n / scale * 100, 100), 0).toFixed(1)}%`;
@@ -2653,28 +2656,39 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   function liveBoard(w) {
     const hero = liveHero(w.games, myTeam.get()).game;
     const rest = hero ? liveClosest(w.games.filter((g) => g !== hero)) : [];
+    // Your game on the left and the rest of the league stacked on the right once there's room (live.css);
+    // on a phone it's one column. The three score stickers sit below the board, not in the page head.
     return `
-      ${liveHeroCard(w)}
-      ${rest.length ? `<section>
-        ${secHead('flag', 'Rest of the league')}
-        <p class="sec-sub">Win chances are ESPN's. The bar is each side's share of the points scored so far. Closest game first, and the sides stay put when the lead changes. Tap a game for the live box score.</p>
-        <div class="lv-games">${rest.map((g) => liveCard(g, w)).join('')}</div>
-      </section>` : ''}`;
+      <div class="lv-grid">
+        ${liveHeroCard(w)}
+        ${rest.length ? `<section>
+          ${secHead('flag', 'Rest of the league')}
+          <p class="sec-sub">Win chances are ESPN's. The bar is each side's share of the points scored so far. Closest game first, and the sides stay put when the lead changes. Tap a game for the live box score.</p>
+          <div class="lv-games">${rest.map((g) => liveCard(g, w)).join('')}</div>
+        </section>` : ''}
+      </div>
+      <section class="lv-extremes">
+        ${secHead('board', 'Score extremes so far')}
+        ${scorePills(w)}
+      </section>`;
   }
 
   function livePage(w) {
     const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+    const anyPlaying = liveAnyPlaying(w);
+    // With a team picked, the hero already carries "Your Coach report", so the banner is for readers who haven't picked.
+    const showBanner = w.advice && (w.complete || !liveHero(w.games, myTeam.get()).picked);
     return `
       <div class="page-head">
-        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : 'live'}</div>
-        <div class="head-row">
-          <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
+        <div class="kicker">Week ${w.week} · ${w.complete ? 'final' : anyPlaying ? 'live' : 'between games'}</div>
+        ${w.complete ? `<div class="head-row">
+          <h1>Final scores</h1>
           ${scorePills(w)}
-        </div>
-        <p class="dek">${liveLabel(w)} ${!w.complete && liveStale(w.captured_at, Date.now(), window.FANTASY_LIVE_API) ? `<span class="lv-stale">Updated ${updated(w.captured_at)}, a few minutes behind</span>.` : `Updated ${updated(w.captured_at)}.`} ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
+        </div>` : '<h1>Live scoreboard</h1>'}
+        <p class="dek">${liveLabel(w)} ${!w.complete && liveStale(w.captured_at, Date.now(), window.FANTASY_LIVE_API) ? `<span class="lv-stale">Updated ${updated(w.captured_at)}, a few minutes behind</span>.` : `Updated ${updated(w.captured_at)}.`} ${window.FANTASY_LIVE_API ? `Scores refresh about every ${w.complete || !anyPlaying ? 'minute' : `${LIVE_PLAYING / 1000} seconds`}${w.complete ? '' : anyPlaying ? ' while games are on' : ', and nothing is on the field right now'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
       </div>
 
-      ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
+      ${showBanner ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
 
       ${w.complete ? `<section>
         ${secHead('board', 'Scoreboard')}
@@ -4519,8 +4533,7 @@ __BTS_JS__
   const LIVE_PLAYING = 20000, LIVE_IDLE = 60000;
   function livePace() {
     if (!LIVE || LIVE.complete || !window.FANTASY_LIVE_API) return 0; // nothing left to follow
-    const onField = (LIVE.games || []).some((g) => (g.winner.playing_now || 0) + (g.loser.playing_now || 0) > 0);
-    return onField ? LIVE_PLAYING : LIVE_IDLE;
+    return liveAnyPlaying(LIVE) ? LIVE_PLAYING : LIVE_IDLE;
   }
 
   /* One timer that re-reads the pace after every refresh, so the page speeds up by itself
