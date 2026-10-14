@@ -2,8 +2,9 @@
 """Fetch ESPN's public NFL headlines for the Week hub's "ESPN on your rosters" module.
 
 Writes data/<season>/news/latest.json: for each article kept, only its id, headline, link,
-publish time, byline and the ESPN athlete ids it tags. No article text, ever: the page shows the
-headline as a link out to ESPN and nothing more.
+publish time, byline, the ESPN athlete ids it tags, its lead image URL (ESPN's own photo CDN) and a
+tag (Injury, Team news or Feature, below). No article text, ever: the page shows the headline and
+photo as a link out to ESPN and nothing more.
 
 An article is kept only if
   - it tags at most MAX_ATHLETES players (a rankings listicle that tags forty is not news about any
@@ -41,6 +42,31 @@ OFF_FIELD = re.compile(
     r"|arraign\w*)\b", re.IGNORECASE)
 
 
+INJURY = re.compile(
+    r"\b(injur\w*|out|questionable|doubtful|ir|il|sprain\w*|strain\w*|tear|torn|fractur\w*|concussion\w*"
+    r"|hamstring|ankle|knee|achilles|groin|shoulder|miss(?:es|ed|ing)?|sidelined|return(?:s|ed|ing)?"
+    r"|unlikely|limited|inactive|week-to-week|day-to-day|designat\w+|practice)\b", re.IGNORECASE)
+IMAGE = re.compile(r"https://a\.espncdn\.com/[^\s\"'<>]+")
+
+
+def tag_of(article, headline):
+    """Injury if the headline or blurb talks about availability, Feature for ESPN's long-form pieces
+    (type Story or Media), Team news for everything else. A proposal, not ESPN's own label: ESPN's
+    categories carry no injury marker, so this reads the words."""
+    if INJURY.search(f"{headline} {article.get('description') or ''}"):
+        return "Injury"
+    return "Team news" if article.get("type") == "HeadlineNews" else "Feature"
+
+
+def image_of(article):
+    """The first story photo that lives on ESPN's own CDN, else None."""
+    for img in article.get("images") or []:
+        url = img.get("url") if isinstance(img, dict) else None
+        if isinstance(url, str) and IMAGE.fullmatch(url):
+            return url
+    return None
+
+
 def roster_ids(season):
     """ESPN player ids on any league roster in the newest captured week. Empty if there's no capture."""
     captures = sorted((ROOT / "data" / str(season)).glob("week-*/espn.json"))
@@ -65,7 +91,9 @@ def keep(feed, rostered):
                     or OFF_FIELD.search(f"{headline} {a.get('description') or ''}")):
                 continue
             row = {"id": a.get("id"), "headline": headline, "link": link, "published": published,
-                   "athlete_ids": sorted(set(ids))}
+                   "athlete_ids": sorted(set(ids)), "tag": tag_of(a, headline)}
+            if image_of(a):
+                row["image"] = image_of(a)
             if isinstance(a.get("byline"), str):
                 row["byline"] = a["byline"]
             out.append(row)

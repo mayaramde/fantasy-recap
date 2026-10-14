@@ -20,15 +20,19 @@ import argparse
 import json
 import os
 import re
+import sys
 import urllib.request
 from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import playoffs
-import team_profile
-
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import analyze  # noqa: E402  (scripts/ holds the ESPN photo and team-abbreviation tables)
+import playoffs  # noqa: E402
+import team_profile  # noqa: E402
+
 SITE = ROOT / "site"
 LEAGUE = json.loads((ROOT / "league.json").read_text())
 
@@ -1151,6 +1155,20 @@ def _rosters(capture):
             for m in capture.get("matchups") or [] for s in ("home", "away") for p in m[s]["lineup"]}
 
 
+def _roster_players(capture):
+    """{player_id: {team_id, card}} for everyone on a league roster in one capture, where `card` is
+    what a news pill needs: name, position, NFL team abbreviation and headshot (a D/ST gets its logo)."""
+    out = {}
+    for m in capture.get("matchups") or []:
+        for s in ("home", "away"):
+            for p in m[s]["lineup"]:
+                abbr = analyze.team_abbr(p)
+                out[p["player_id"]] = {"team_id": m[s]["team_id"], "card": {
+                    "name": p["name"], "pos": p["pos"], "team": abbr.upper() if abbr else None,
+                    "headshot": analyze.headshot(p)}}
+    return out
+
+
 def _trades(capture, before):
     """Trades executed during `capture`'s week, as [(date, {team_id: [names she received]})].
 
@@ -1223,42 +1241,51 @@ def wire(espn, history=()):
 
 # ---------- week hub: ESPN headlines about players on a league roster ----------
 NEWS_MAX_AGE = timedelta(hours=36)
-NEWS_SHOWN = 6
+NEWS_SHOWN = 12
+NEWS_TAGS = ("Injury", "Team news", "Feature")
+_ESPN_IMAGE = re.compile(r"https://a\.espncdn\.com/[^\s\"'<>]+")
 _ESPN_LINK = re.compile(r"https://www\.espn\.com/[^\s\"'<>]+")
 
 
 def load_news(season):
-    """scripts/fetch_news.py's file, as a list of articles. Best effort like the FantasyPros snapshot:
-    missing, malformed or more than 36 hours old is just [], and the page goes without the module."""
+    """scripts/fetch_news.py's file as {"fetched_at", "articles"}. Best effort like the FantasyPros snapshot:
+    missing, malformed or more than 36 hours old is just {}, and the page goes without the module."""
     try:
         data = json.loads((ROOT / "data" / str(season) / "news" / "latest.json").read_text())
         fetched = datetime.fromisoformat(data["fetched_at"].replace("Z", "+00:00"))
         if datetime.now(timezone.utc) - fetched > NEWS_MAX_AGE:
-            return []
-        return [a for a in data["articles"] if isinstance(a, dict)]
+            return {}
+        return {"fetched_at": data["fetched_at"], "articles": [a for a in data["articles"] if isinstance(a, dict)]}
     except (OSError, ValueError, KeyError, TypeError, AttributeError):
-        return []
+        return {}
 
 
 def news_items(articles, espn):
-    """The newest few headlines, each tagged with whose roster it touches right now. Only the headline
-    and a link out to ESPN ever reach the page; an article about nobody on a roster is dropped."""
+    """The Latest news stories, in ESPN's own order: [{headline, url, date, image?, tag, players, owners}].
+
+    Only stories that tag somebody on a league roster survive (`players` is just those people, with
+    the headshot or D/ST logo the player cards already use), and `owners` is derived from them. The
+    ranking (your team first, then injuries) is the browser's, since only it knows whose team is
+    "yours". Only the headline, a photo from ESPN's CDN and a link out ever reach the page."""
     manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
-    rosters = _rosters(espn)
+    rosters = _roster_players(espn)
     out = []
     for a in articles:
         try:
-            ids = [i for i in a["athlete_ids"] if i in rosters]
-            owners = sorted({rosters[i][0] for i in ids if rosters[i][0] in manager})
-            if not owners or not isinstance(a["headline"], str) or not _ESPN_LINK.fullmatch(a["link"]):
+            ids = [i for i in a["athlete_ids"] if i in rosters and rosters[i]["team_id"] in manager]
+            if not ids or not isinstance(a["headline"], str) or not _ESPN_LINK.fullmatch(a["link"]):
                 continue
             _when(a["published"])
-            out.append({"headline": a["headline"][:200], "link": a["link"], "published": a["published"],
-                        "owners": [{"team_id": t, "manager": manager[t]} for t in owners],
-                        "players": sorted({rosters[i][1] for i in ids})})
+            owners = sorted({rosters[i]["team_id"] for i in ids})
+            story = {"headline": a["headline"][:200], "url": a["link"], "date": a["published"],
+                     "tag": a.get("tag") if a.get("tag") in NEWS_TAGS else "Team news",
+                     "owners": [{"team_id": t, "manager": manager[t]} for t in owners],
+                     "players": [rosters[i]["card"] for i in dict.fromkeys(ids)]}
+            if isinstance(a.get("image"), str) and _ESPN_IMAGE.fullmatch(a["image"]):
+                story["image"] = a["image"]
+            out.append(story)
         except (KeyError, TypeError, ValueError, AttributeError):
             continue
-    out.sort(key=lambda n: n["published"], reverse=True)
     return out[:NEWS_SHOWN]
 
 
@@ -1274,9 +1301,10 @@ def hub_payload(live, season, espn, news, schedule=None):
                                  schedule=schedule)
         if stakes:
             hub["stakes"] = stakes
-    items = news_items(news or [], espn)
+    items = news_items((news or {}).get("articles") or [], espn)
     if items:
         hub["news"] = items
+        hub["news_at"] = news["fetched_at"]
     return hub
 
 
