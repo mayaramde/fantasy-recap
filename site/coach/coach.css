@@ -84,6 +84,11 @@
   .cl-chips .soft { background: var(--pink-soft); color: var(--ink); } .cl-chips .blue { background: var(--accent-soft); color: var(--ink); }
   .cl-open { display: flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 6px; padding: 10px 14px; text-align: center; background: var(--accent); color: var(--on-accent); font: 700 15px/1.2 var(--body); text-decoration: none; border: 2px solid var(--edge); border-radius: 999px; box-shadow: 2px 2px 0 var(--drop); }
   @media (prefers-reduced-motion: no-preference) { .cl-open { transition: transform 0.12s, box-shadow 0.12s; } .cl-open:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--drop); } }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .cl-team, .cl-trade, .cl-callouts > li, .cl-vital { transition: transform 0.2s, box-shadow 0.2s; }
+    .cl-team:hover, .cl-trade:hover, .cl-callouts > li:hover, .cl-vital:hover { transform: translate(-3px, -3px) rotate(-0.4deg); box-shadow: 7px 7px 0 var(--drop); }
+    .cl-team.me:hover { box-shadow: 8px 8px 0 var(--orange); }
+  }
 
   /* Fix board */
   .cl-fixes { padding: 0; overflow: hidden; }

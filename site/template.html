@@ -406,6 +406,20 @@
   @keyframes rp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes rp-marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes rp-bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(-1deg); } }
+  /* The recap page's motion on every other page. `#main.enter` is set by route() only when the hash changed (a
+     real navigation), never on a live refresh or a same-page redraw, so a page that redraws every minute doesn't
+     replay its entrance each time. Recap pages keep their own (.rp) timings. */
+  @media (prefers-reduced-motion: no-preference) {
+    #main.enter .page-head > * { animation: rp-rise 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+    #main.enter .page-head > :nth-child(1) { animation-delay: 0.05s; } #main.enter .page-head > :nth-child(2) { animation-delay: 0.15s; }
+    #main.enter .page-head > :nth-child(3) { animation-delay: 0.28s; } #main.enter .page-head > :nth-child(n+4) { animation-delay: 0.42s; }
+    #main.enter:not(:has(.rp)) section:not(section section) { animation: rp-rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+    #main.enter:not(:has(.rp)) section:nth-of-type(n+2) { animation-delay: 0.06s; } #main.enter:not(:has(.rp)) section:nth-of-type(n+3) { animation-delay: 0.12s; }
+    #main.enter:not(:has(.rp)) section:nth-of-type(n+4) { animation-delay: 0.18s; } #main.enter:not(:has(.rp)) section:nth-of-type(n+5) { animation-delay: 0.24s; }
+    /* progress bars fill in from zero, as the recap's standings bars do */
+    #main.enter .po-bar > span, #main.enter .hub-rank .tr > span, #main.enter .cl-bar > span, #main.enter .cl-bar2 > span, #main.enter .cl-segs i,
+    #main.enter .cl-picks .cl-bar > span { animation: rp-fill 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both; animation-delay: 0.2s; }
+  }
   .rp [hidden] { display: none !important; }
   .rp section { margin-top: 64px; }
   .rp .sec-head { gap: 14px; margin-bottom: 0; }
@@ -4002,6 +4016,7 @@ __COACH_JS__
 __BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
   let btsSection = '';
+  let routedHash = null;   // the hash route() last drew: a different one means a navigation, so the page animates in
   function route() {
     tickerWanted = false;
     const h = location.hash.replace(/^#/, '');
@@ -4029,6 +4044,9 @@ __BTS_JS__
     // A live refresh redraws #main; put keyboard focus back on the row it was on.
     const focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('#main .prow[data-key]') : null;
     const focusKey = focused && document.activeElement.hasAttribute('data-row') ? focused.dataset.key : null;
+    const entering = location.hash !== routedHash;
+    routedHash = location.hash;
+    $('#main').classList.toggle('enter', entering);
     $('#main').innerHTML = html;
     drawTicker();
     syncPanelRoles();
