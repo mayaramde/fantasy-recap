@@ -1150,6 +1150,19 @@
   .rp .leaders .ppos { font: 500 13px/1 var(--mono); letter-spacing: 0; }
   .rp .leaders .meta { font-size: 13.5px; }
   .rp .leaders li:nth-child(2) { animation-delay: 0.08s; } .rp .leaders li:nth-child(3) { animation-delay: 0.16s; } .rp .leaders li:nth-child(4) { animation-delay: 0.24s; } .rp .leaders li:nth-child(5) { animation-delay: 0.32s; }
+  /* the viewer's own players, standings row, game and awards (Viewing as) */
+  .rp .leaders li.me { background: var(--orange-soft); box-shadow: 3px 3px 0 var(--orange); }
+  .rp-std tbody tr.me td { background: var(--orange-soft); }
+  .rp-std tbody tr.me td:first-child { box-shadow: inset 5px 0 0 var(--orange); }
+  .rp-std .you-tag { vertical-align: 2px; background: var(--orange); }
+  .gb.mine:not(.sel) { background: var(--orange-soft); }
+  .gb-you { display: inline-block; align-self: flex-start; margin-bottom: 8px; padding: 3px 8px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 600 11px/1 var(--script); letter-spacing: 0.04em; }
+  .tape .open.mine { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 800 18px/1 var(--display); letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; box-shadow: 4px 4px 0 var(--drop); }
+  .tape .open.mine:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); text-decoration: none; }
+  .tape .open.mine:focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; }
+  @media (prefers-reduced-motion: no-preference) { .tape .open.mine { transition: transform 0.15s, box-shadow 0.15s; } }
+  .awc.me { box-shadow: 5px 5px 0 var(--orange); }
+  .awc-you { margin-left: 8px; padding: 2px 7px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 600 11px/1 var(--script); vertical-align: 3px; }
   .rp .leaders .pts { font: 500 28px/1 var(--mono); padding: 6px 10px; border-radius: 12px; background: var(--lime); transform: none; }
   .rp .leaders.low .pts { background: var(--pink); }
   .rp .lows { margin-top: 44px; }
@@ -1805,17 +1818,17 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   // from reading every leader twice.
   const headshot = (p) => `<span class="mug"><img class="shot" src="${esc(p.headshot || NO_HEADSHOT)}" alt="" width="46" height="46" loading="lazy" onerror="this.onerror=null;this.src='${NO_HEADSHOT}'">${
     p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="24" height="24" loading="lazy" onerror="this.remove()">` : ''}</span>`;
-  const leaderList = (players, tone = '') => `<ol class="leaders ${tone}">${players.map((p) => `
-    <li>${headshot(p)}<span class="pname">${esc(p.name)}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
+  const leaderList = (players, tone = '', mark = false) => `<ol class="leaders ${tone}">${players.map((p) => `
+    <li${mark && myTeam.get() && teamIdByManager[p.manager] === myTeam.get() ? ' class="me"' : ''}>${headshot(p)}<span class="pname">${esc(p.name)}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
     <span class="meta">${mgrLink(p.manager)}${p.slot === 'FLEX' ? ' · in the flex' : ''} · projected <span class="num">${f1(p.projected)}</span>${p.short != null ? `, short by <span class="num">${f1(p.short)}</span>` : ''}</span></li>`).join('')}
   </ol>`;
   /* Worst performances: the top scorers list turned upside down, drawn the same way and
      sitting right under it. Skipped when the week has nothing to put in it. */
-  const lowlights = (w, sub = true) => (w.worst_performances || []).length ? `
+  const lowlights = (w, sub = true, mark = false) => (w.worst_performances || []).length ? `
     <div class="lows">
       ${secHead('flag', w.complete ? 'Worst performances' : 'Worst performances so far')}
       ${sub ? '<p class="sec-sub">Starters who fell furthest short of their projection.</p>' : ''}
-      ${leaderList(w.worst_performances, 'low')}
+      ${leaderList(w.worst_performances, 'low', mark)}
     </div>` : '';
   const record = (t) => `${t.wins}–${t.losses}${t.ties ? `–${t.ties}` : ''}`;
   const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
@@ -2339,7 +2352,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   /* ---------- recap page (#week-N) pieces ---------- */
   // What the page remembers while it's redrawn (the live refresh re-routes now and then):
   // which game is open, which award filter is on, which glossary term is expanded.
-  const RP = { week: null, game: null, filter: 'all', term: null };
+  const RP = { week: null, game: null, filter: 'all', term: null, me: undefined };
   const rpState = (w) => {
     if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: 'all', term: null });
     return RP;
@@ -2374,9 +2387,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   // A collapsed game: winner left, loser right, a tug bar underneath. It's a button that picks
   // which tape card is open below; the box score itself is the link inside the tape.
+  const isMyGame = (g) => { const me = myTeam.get(); return !!me && (g.winner.team_id === me || g.loser.team_id === me); };
   function gameCard(g, w, on) {
+    const mine = isMyGame(g);
     return `
-      <button type="button" class="gb${on ? ' sel' : ''}" data-rp-game="${esc(g.key)}" aria-pressed="${on}" aria-controls="rp-tape-${esc(g.key)}">
+      <button type="button" class="gb${on ? ' sel' : ''}${mine ? ' mine' : ''}" data-rp-game="${esc(g.key)}" aria-pressed="${on}" aria-controls="rp-tape-${esc(g.key)}">
+        ${mine ? '<span class="gb-you">Your game</span>' : ''}
         <span class="gb-split">${[['win', g.winner, 'W'], ['lose', g.loser, 'L']].map(([cls, s, r]) => {
           const badge = w.complete ? `<span class="wl ${r}">${r}</span>` : '';
           return `
@@ -2401,7 +2417,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="tape-bar" role="img" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}"><span class="tw" style="width:${shareOf(g)}%"><span class="tn">${f2(g.winner.points)}</span></span><span class="tl"><span class="tn">${f2(g.loser.points)}</span></span></div>
         <div class="tape-quote">
           ${g.blurb ? `<span class="qm" aria-hidden="true">&ldquo;</span><p class="blurb">${esc(g.blurb)}</p>` : ''}
-          <a class="open" href="${base(w)}.game-${g.key}">${w.live ? 'Live box score →' : 'Box score and lineup calls →'}</a>
+          <a class="open${isMyGame(g) ? ' mine' : ''}" href="${base(w)}.game-${g.key}">${w.live ? (isMyGame(g) ? 'Your live box score →' : 'Live box score →') : (isMyGame(g) ? 'Your box score and lineup calls →' : 'Box score and lineup calls →')}</a>
         </div>
       </article>`;
   }
@@ -2447,7 +2463,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return Array.from({ length: 7 }, (_, j) => fl(kind === 'flags' ? 'drift' : 'rise', icons[j % 3],
       `--d:${d[j % 3]}s;--fs:${fs[j % 3]}px;--dl:${dl(j)};--sx:${5 + j * 14}%;--sy:${[8, 21, 34, 47, 60, 3, 16][j]}%`)).join('');
   }
-  function awardCard(c, kind, i = 0) {
+  function awardCard(c, kind, i = 0, mine = false) {
     const k = KIND[kind];
     const emoji = c.emoji ? esc(c.emoji) : '';
     const photo = c.headshot || (c.player_id ? HEADSHOT_URL(c.player_id) : '');
@@ -2457,12 +2473,19 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ? `<div class="awc-sin" data-art="${esc(art)}"><img src="${esc(photo)}" alt="" loading="lazy" onerror="var s=this.parentNode;s.innerHTML=s.dataset.art;s.closest('.awc-band').classList.add('nophoto')"></div>`
       : `<div class="awc-sin">${art}</div>`;
     return `
-      <article class="awc ${k.cls}">
+      <article class="awc ${k.cls}${mine ? ' me' : ''}">
         <div class="awc-band${photo ? '' : ' nophoto'}">${awcFloaters(kind, i)}<div class="awc-stk">${sticker}</div><div class="awc-ttl">${esc(c.title)}${photo && emoji ? `<span class="awc-tb" aria-hidden="true">${emoji}</span>` : ''}</div></div>
-        <div class="awc-body"><div class="awc-who"><b>${mgrLink(c.manager)}</b>${c.stat ? `<span class="awc-stat">${esc(c.stat)}</span>` : ''}</div><p>${esc(c.text)}</p></div>
+        <div class="awc-body"><div class="awc-who"><b>${mgrLink(c.manager)}</b>${mine ? '<span class="awc-you">you</span>' : ''}${c.stat ? `<span class="awc-stat">${esc(c.stat)}</span>` : ''}</div><p>${esc(c.text)}</p></div>
       </article>`;
   }
-  const awardGrid = (cards, kind) => `<div class="awc-grid">${cards.map((c, i) => awardCard(c, kind, i)).join('')}</div>`;
+  // The viewer's own awards lead each kind (stable, so everyone else keeps the recap's order). The card's
+  // index stays its original one, so its fallback icon and animation don't change when it moves.
+  const awardGrid = (cards, kind) => {
+    const me = myTeam.get();
+    const rows = cards.map((c, i) => [c, i, !!me && teamIdByManager[c.manager] === me]);
+    rows.sort((a, b) => b[2] - a[2] || a[1] - b[1]);
+    return `<div class="awc-grid">${rows.map(([c, i, mine]) => awardCard(c, kind, i, mine)).join('')}</div>`;
+  };
   // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
   // so its filter chips can hide them.
   const awardGroups = (w, { rp = false, filter = 'all' } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
@@ -2480,10 +2503,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <div class="rp-std-card"><div class="table-scroll"><table class="rp-std">
         <thead><tr><th></th><th title="Places gained or lost in the standings after the latest week">Move</th><th>Team</th><th class="r">Record</th><th class="r c5" title="Total points scored this season">Scored</th></tr></thead>
         <tbody>${rows.map((t, i) => `
-          <tr class="${i === 0 ? 'top' : ''}">
+          <tr class="${i === 0 ? 'top' : ''}${t.team_id === myTeam.get() ? ' me' : ''}">
             <td class="rk">${i + 1}</td>
             <td>${rankMove(t.rank_move)}</td>
-            <td><span class="tm"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tn">${esc(t.team_name)}</span></span></td>
+            <td><span class="tm"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}${t.team_id === myTeam.get() ? '<span class="you-tag">you</span>' : ''}</a><span class="tn">${esc(t.team_name)}</span></span></td>
             <td class="r rec">${record(t)}</td>
             <td class="r c5"><span class="sc"><span class="v">${f2(t.points_for)}</span><span class="bar"><i style="width:${(t.points_for / max * 100).toFixed(1)}%;animation-delay:${(0.15 + i * 0.07).toFixed(2)}s"></i></span></span></td>
           </tr>`).join('')}
@@ -2503,7 +2526,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
     const st = rpState(w);
-    const open = w.games.some((g) => g.key === st.game) ? st.game : (w.games[0] || {}).key;
+    // Picking (or changing) who is viewing resets the open game to theirs; a tap on another game sticks until then.
+    const me = myTeam.get();
+    if (st.me !== me) { st.me = me; st.game = null; }
+    const mineKey = (w.games.find(isMyGame) || {}).key;
+    const open = w.games.some((g) => g.key === st.game) ? st.game : (mineKey || (w.games[0] || {}).key);
     const filter = st.filter === 'all' || kinds.includes(st.filter) ? st.filter : 'all';
     const term = st.term == null ? 0 : st.term;
     return `
@@ -2551,8 +2578,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <div>
             ${secHead('ball', 'Top scorers')}
             <p class="sec-sub">The five best starters in the league in Week ${w.week}.</p>
-            ${leaderList(w.top_performers)}
-            ${lowlights(w)}
+            ${leaderList(w.top_performers, '', true)}
+            ${lowlights(w, true, true)}
           </div>
         </div>
       </section>
