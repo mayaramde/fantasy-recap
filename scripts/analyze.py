@@ -347,6 +347,22 @@ def yet_to_play(p):
     return not p["played"]
 
 
+def remaining_projection(starters):
+    """ESPN's projection for what the lineup has yet to score: a full projection for every
+    starter whose game is ahead, what is left of it for one mid-game, nothing once his game
+    is over. ESPN's own team projection is not this (it is not 'points so far + remaining'),
+    so the Live page's 'still to come' meter is built from the players instead."""
+    total = 0.0
+    for p in starters:
+        proj = p.get("projected") or 0
+        state = p.get("game_state")
+        if state == "in":
+            total += max(proj - (p.get("points") or 0), 0)
+        elif state == "pre" or (not state and not p.get("played")):
+            total += proj
+    return round(total, 2)
+
+
 def analyze(week, history):
     """history: all captured weeks up to and including this one, in order."""
     rosters, teams = {}, []
@@ -396,6 +412,7 @@ def analyze(week, history):
         # scoreboard is best effort) falls back to "has he put up a stat yet".
         t["playing_now"] = sum(1 for p in t["starters"] if p.get("game_state") == "in")
         t["yet_to_play"] = sum(1 for p in t["starters"] if yet_to_play(p))
+        t["remaining_projection"] = remaining_projection([p for p in r if p["slot"] in STARTING])
         t["zero_point_starters"] = [p["name"] for p in r if p["slot"] in STARTING and (not p["played"] or p["points"] == 0)]
         t["pickups_started"] = [dict(name=p["name"], points=p["points"], slot=p["slot"], **adds[(t["team_id"], p["player_id"])])
                                 for p in r if p["slot"] in STARTING and (t["team_id"], p["player_id"]) in adds]

@@ -103,6 +103,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `site/build.py` inlines them into `template.html`. They run in the browser so they refresh with `/api/live`;
   `tests/coach/*.test.js` (run with `node --test tests/coach/*.test.js`, also in CI) check them against the Week 6
   golden values in `tests/fixtures/week-06/`. `tests/coach_preview.py` renders the page for a look in a browser.
+- `site/live/`: the Live scoreboard's logic (`live.js`, pure, tested by `node --test tests/live/*.test.js`) and CSS;
+  `site/build.py` inlines them into `template.html`. `tests/live_preview.py` renders its states for a look in a browser.
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
   `site/build.py` and `scripts/coach_brief.py`
 - `site/playoffs.py`: the Standings page's playoff odds and projected bracket (stdlib-only Monte Carlo, read by

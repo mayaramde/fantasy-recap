@@ -92,6 +92,7 @@ def side(t, live=False):
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
         "points_left": t["points_left_on_bench"], "result": t["result"],
         "live_projection": t.get("live_projection"), "win_probability": t.get("win_probability"),
+        "remaining_projection": t.get("remaining_projection"),
         "yet_to_play": t.get("yet_to_play", 0), "playing_now": t.get("playing_now", 0),
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
@@ -1631,6 +1632,9 @@ def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_
     # markup that uses them, and its CSS, in site/coach/. Order matters: landing.js calls the others.
     coach = SITE / "coach"
     coach_js = "\n".join(re.sub(r"^if \(typeof module.*\n?", "", (coach / f"{n}.js").read_text(), flags=re.M) for n in COACH_JS)
+    live = SITE / "live"
+    live_js = re.sub(r"^if \(typeof module.*\n?", "", (live / "live.js").read_text(), flags=re.M)
+    template = template.replace("__LIVE_JS__", live_js).replace("__LIVE_CSS__", (live / "live.css").read_text())
     template = template.replace("__COACH_JS__", coach_js).replace("__COACH_CSS__", (coach / "coach.css").read_text())
     template = (template.replace("__BTS_CSS__", (bts / "bts.css").read_text())
                 .replace("__BTS_JS__", (bts / "bts.js").read_text())
