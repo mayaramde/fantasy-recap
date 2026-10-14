@@ -1380,6 +1380,9 @@ __COACH_CSS__
   .tp-rec { text-align: right; flex: none; }
   .tp-rec b { display: block; font: 900 clamp(38px, 12vw, 50px)/0.9 var(--display); color: var(--lime); }
   .tp-rec span { display: block; margin-top: 4px; font: 500 11px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-back { display: inline-flex; align-items: center; min-height: 32px; margin-top: 12px; padding: 5px 12px; text-decoration: none; font: 700 13px/1.2 var(--body); color: #151a33; background: var(--card); border: 2px solid #f4f6ff; border-radius: 999px; }
+  .tp-back:hover { background: var(--lime); }
+  .tp-back:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
   .tp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin: 14px 0 0; padding-top: 12px; border-top: 1.5px solid #2b3263; }
   .tp-stats > div { min-width: 0; }
   .tp-stats dt { font: 500 10px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
@@ -1403,7 +1406,7 @@ __COACH_CSS__
   .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
   .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
   .tp-tabbar.stuck .tp-mini { display: flex; }
-  .tp-seg { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
+  .tp-seg { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(max-content, 1fr)); overflow-x: auto; scrollbar-width: none; gap: 3px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
   .tp-tabbar.stuck .tp-seg { max-width: 380px; }
   .tp-seg a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 10px; padding: 11px 0; }
   .tp-seg a:hover { background: var(--accent-soft); }
@@ -1563,6 +1566,7 @@ __COACH_CSS__
   .sc-tile.l { background: var(--lime-soft); } .sc-tile.p { background: var(--pink-soft); } .sc-tile.o { background: var(--orange-soft); } .sc-tile.b { background: var(--accent-soft); }
   .sc-audit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
   @media (max-width: 860px) { .sc-audit { grid-template-columns: minmax(0, 1fr); } }
+  .ov-take.computed { background: var(--card); } .ov-take .tp-unwritten { margin-top: 8px; font: 500 12px/1.4 var(--mono); color: var(--muted); }
   .ov-take.l { background: var(--lime-soft); } .ov-take.b { background: var(--accent-soft); }
   .ov-tag.w { background: var(--card); }
   .sc-wk { padding: 4px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
@@ -1601,7 +1605,6 @@ __BTS_CSS__
     <div class="va" id="va"></div>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
-      <a href="#" data-nav="mine" id="nav-mine" hidden>My team</a>
       <a href="#coach" data-nav="coach" id="nav-coach" hidden>Coach</a>
       <a href="#" data-nav="week" id="nav-week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
@@ -1662,7 +1665,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const liveShut = () => { const rows = advice(); return !!rows && rows.every((a) => a.can_change === false); };
   // Nothing left to fix in this week, so the tab leads with next week instead.
   const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
-  // Eight people, one page: "Viewing as" remembers which team is hers so her team lights up in
+  // Eight people, one page: "Viewing as" remembers which team is hers: Coach opens it, and it lights up in
   // orange everywhere. Private windows throw on localStorage, which costs nothing: the in-memory
   // copies keep a pick (and the fact that she was asked) for the rest of the visit.
   let pickedTeam = null, askedMem = false;
@@ -1677,13 +1680,13 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     clear() { pickedTeam = null; askedMem = true; try { localStorage.removeItem(KEY_TEAM); localStorage.setItem(KEY_ASKED, '1'); } catch { /* no memory, no harm */ } },
     asked() { try { return localStorage.getItem(KEY_ASKED) === '1' || askedMem; } catch { return askedMem; } },
   };
-  // Always the Coach page itself, never her profile: her team shows up there as the hero card.
-  const coachHref = () => coachUrl(leadWithNext(), null);
-  if (advice()) {
-    const tab = document.getElementById('nav-coach');
-    tab.hidden = false;
-    tab.href = coachHref();
-  }
+  // Coach is one nav item for everyone. With a pick it opens that person's team; without one it
+  // is the league landing. (The tab itself is shown and pointed by viewingAs.sync(), on every route.)
+  const coachHref = () => { const me = myTeam.get(); return me ? `#team-${me}` : coachUrl(leadWithNext(), null); };
+  // Whose team is on screen is not who is looking: a team page that isn't the pick's is written about
+  // "her", not "you" (see voice()). route() clears it, teamPage() sets it.
+  let otherTeam = false, viewName = '';
+  const voice = (s) => (otherTeam ? herCopy(s) : s);
   const base = (w) => (w.live ? '#live' : `#week-${w.week}`);
   const updated = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' });
   const liveLabel = (w) => (w.complete ? `Week ${w.week} is final. The official recap drops Tuesday.` : `Week ${w.week} is happening now.`);
@@ -2204,7 +2207,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           </tbody>
           <tfoot><tr><th scope="row">Total</th><td class="val"></td><td>${f2(p.points)}</td></tr></tfoot>
         </table>` : p.points > 0.005 ? `<p class="peek-none">ESPN hasn't broken these ${f2(p.points)} points down yet.</p>` : ''}
-        ${(card.notes || []).length ? `<ul class="peek-notes">${card.notes.map((n) => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}`;
+        ${(card.notes || []).length ? `<ul class="peek-notes">${card.notes.map((n) => `<li>${esc(voice(n))}</li>`).join('')}</ul>` : ''}`;
   }
 
   function peekPanel(p, card) {
@@ -3270,11 +3273,13 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>` : ''}` : ''}`;
   }
 
-  /* ---------- team profile: three tabs ----------
+  /* ---------- team profile: four tabs ----------
      #team-<id> is Overview (the hero, this week, Coach's take and advice), #team-<id>.lineup
      is the week's lineup and to-dos, #team-<id>.next is the same tab pointed at next week, and
-     #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves. */
-  const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season']];
+     #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves, and
+     #team-<id>.league is the league-wide half of the old Coach landing (take, strength grid, waiver order,
+     injuries and byes) with the viewed team and the viewer's own team marked. */
+  const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season'], ['league', 'League', '.league']];
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
   const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
@@ -3322,13 +3327,14 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const rank = SEASON.standings.indexOf(t) + 1;
     const onCoach = !!coachFor(id, false);
     const odds = oddsRange(tpOdds(id));
-    const you = myTeam.get() === id;
+    const me = myTeam.get(), you = me === id;
     return `
       <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(t.manager)}</span>${you ? '<span class="you-tag">you</span>' : ''}</div>
       ${tpStrip(id, sfx, next)}
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
         <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}</div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
+        ${you ? '' : (me ? `<a class="tp-back" href="#team-${me}">Back to my team (${esc(TEAMS[me].manager)})</a>` : `<a class="tp-back" href="${advice() ? '#coach' : '#standings'}">Back to the league</a>`)}
         <dl class="tp-stats">
           ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${odds.text}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
           <div><dt>Avg score</dt><dd>${f1(t.avg)}</dd></div>
@@ -3343,21 +3349,29 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`;
   }
 
+  /* League tab: the same pieces as the Coach landing (site/coach/landing.js), for this week. */
+  function tpLeague(id) {
+    return `<div class="cl-page cl-intab">${coachLeague(coachRows(false) || [], myTeam.get(), id)}</div>
+      <p class="tp-foot">${voice(LIVE ? coachSource(LIVE) : '')}</p>`;
+  }
+
   function teamPage(id, tab = 'overview', next = false) {
     const t = TEAMS[id];
     if (!t) return notFound();
-    next = !!(next && ahead());                     // no current next-week capture → This week
+    otherTeam = id !== myTeam.get(); viewName = t.manager;
+    next = !!(next && ahead() && tab === 'lineup');   // no current next-week capture → This week; only the Lineup tab has the toggle
     const p = t.profile || { audit: [], moves: [], weak_spot: null };
     const sfx = next ? '.next' : (TP_TABS.find(([k]) => k === tab) || [])[2] || '';
     const head = tpHeader(id, t, tab, sfx, next);
     if (tab === 'lineup') return head + tpLineup(id, next);
     if (tab === 'season') return head + tpSeason(id, t, p);
+    if (tab === 'league') return head + tpLeague(id);
     return `
       ${head}
       <div class="ov-grid">${tpMatchup(id)}${tpPlayoffs(id, t)}</div>
       ${tpTake(id, p)}
       ${tpNext(id)}
-      <p class="tp-foot">Everything here comes from ESPN's projections and injury report. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.</p>`;
+      <p class="tp-foot">${voice("Everything here comes from ESPN's projections and injury report. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.")}</p>`;
   }
 
   /* ---------- faces ----------
@@ -3440,8 +3454,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <div><dt>Starters left</dt><dd>${a.yet_to_play}</dd></div>
         </dl>
         ${first
-          ? `<div class="ov-fix"><span aria-hidden="true">⚠</span><div><b>${fixes.length} to fix.</b> ${esc(first.title)}.${refs(itemFaces(first))}</div><a class="go" href="#team-${id}.lineup">See it →</a></div>`
-          : `<div class="ov-fix ok"><span aria-hidden="true">${TP_CHECK}</span><div>${esc(a.summary)}</div></div>`}
+          ? `<div class="ov-fix"><span aria-hidden="true">⚠</span><div><b>${fixes.length} to fix.</b> ${esc(voice(first.title))}.${refs(itemFaces(first))}</div><a class="go" href="#team-${id}.lineup">See it →</a></div>`
+          : `<div class="ov-fix ok"><span aria-hidden="true">${TP_CHECK}</span><div>${esc(voice(a.summary))}</div></div>`}
       </div>`;
   }
 
@@ -3484,7 +3498,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return `
       <section class="tp-sec" aria-labelledby="tp-take">
         <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-take">Coach's take</h2><a class="more" href="#team-${id}.season">All ${p.audit.length} on Season →</a></div>
-        <article class="ov-take"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p>${refs(it.players)}</article>
+        <article class="ov-take${it.written ? '' : ' computed'}"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p>${esc(voice(it.text))}</p>${it.written ? '' : '<p class="tp-unwritten">Coach hasn\'t written today\'s take yet.</p>'}${refs(it.players)}</article>
       </section>`;
   }
 
@@ -3553,7 +3567,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
             <div class="mv">${m.type === 'trade' ? '<i>Trade</i>' : ''}${m.added.length ? `<i>${m.type === 'trade' ? 'Got' : 'Added'}</i>${mvRef(m, 'added')}` : ''}${m.dropped.length ? `<i class="d">${m.type === 'trade' ? 'Sent' : 'Dropped'}</i>${mvRef(m, 'dropped')}` : ''}</div>`).join('')}`).join('')}</div></div></div>
         </div>`;
     };
-    const takeCard = (it, i) => `<article class="ov-take ${['l', '', 'b'][i % 3]}"><span class="ov-tag${i % 3 === 1 ? ' og' : i % 3 === 2 ? ' w' : ''}">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(it.title)}</h3><p><b>${esc(it.stat || '')}</b>${it.stat ? ' · ' : ''}${esc(it.text)}</p>${refs(it.players)}</article>`;
+    const takeCard = (it, i) => `<article class="ov-take ${['l', '', 'b'][i % 3]}"><span class="ov-tag${i % 3 === 1 ? ' og' : i % 3 === 2 ? ' w' : ''}">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p><b>${esc(it.stat || '')}</b>${it.stat ? ' · ' : ''}${esc(voice(it.text))}</p>${refs(it.players)}</article>`;
     return `
       ${t.weekly.length ? `
       <section class="tp-sec" aria-labelledby="tp-sc">
@@ -3595,9 +3609,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      started. It refreshes with the rest of the live data. */
   const adviceCard = (it) => `
     <article class="card ${it.level}">
-      <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.fills_weak_spot ? '<span class="fit">fills your weak spot</span>' : ''}${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
-      <h3>${esc(it.title)}</h3>
-      <p>${esc(it.text)}</p>
+      <div class="card-top"><span class="who">${esc(ADVICE_KIND[it.kind] || 'Note')}</span>${it.fills_weak_spot ? `<span class="fit">${voice('fills your weak spot')}</span>` : ''}${it.stat ? `<span class="stat">${esc(it.stat)}</span>` : ''}</div>
+      <h3>${esc(voice(it.title))}</h3>
+      <p>${esc(voice(it.text))}</p>
       ${it.trade ? tradeBlock(it.trade) : ''}
     </article>`;
 
@@ -3614,18 +3628,19 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const gain = (n) => (Math.abs(n) < 0.05 ? 'about even' : `${signed(n)} pts a week`);
     const her = nameOf(t.partner_id);
     const f = t.flags || {};
-    const sticker = f.plays_this_week ? `You play her in Week ${t.week}`
-      : f.rival === 'next_week' ? `You play her in Week ${t.week + 1}`
-      : f.rival === 'bubble' ? "You're both on the playoff bubble" : '';
+    const I = otherTeam ? viewName : 'You';
+    const sticker = f.plays_this_week ? `${I} play${otherTeam ? 's' : ''} her in Week ${t.week}`
+      : f.rival === 'next_week' ? `${I} play${otherTeam ? 's' : ''} her in Week ${t.week + 1}`
+      : f.rival === 'bubble' ? (otherTeam ? `${viewName} and ${her} are both on the playoff bubble` : "You're both on the playoff bubble") : '';
     return `
       <div class="trade">
-        <div class="trade-side"><b>You send</b>${who(t.give)}</div>
-        <div class="trade-side"><b>You get from ${esc(her)}</b>${who(t.get)}</div>
+        <div class="trade-side"><b>${voice('You send')}</b>${who(t.give)}</div>
+        <div class="trade-side"><b>${voice('You get from')} ${esc(her)}</b>${who(t.get)}</div>
       </div>
       <dl class="trade-math">
-        <div><dt>Your lineup, next 4 weeks</dt><dd>${gain(t.you.near)}</dd></div>
+        <div><dt>${voice('Your lineup, next 4 weeks')}</dt><dd>${gain(t.you.near)}</dd></div>
         <div><dt>${esc(her)}'s lineup</dt><dd>${gain(t.them.near)}</dd></div>
-        <div><dt>Your ${kind} odds</dt><dd>${odds(t.you)}</dd></div>
+        <div><dt>${voice(`Your ${kind} odds`)}</dt><dd>${odds(t.you)}</dd></div>
         <div><dt>${esc(her)}'s ${kind} odds</dt><dd>${odds(t.them)}</dd></div>
       </dl>
       ${sticker && t.week ? `<div class="trade-flags"><span>${esc(sticker)}</span></div>` : ''}`;
@@ -3714,7 +3729,7 @@ __COACH_JS__
         </div>
         <div class="coach" id="${rid}"><div class="cin"><div class="cb">
           <span class="ctag">Coach says</span>
-          ${card ? `<h4>${esc(card.blurb)}</h4><div class="peek-body">${peekDetail(p, card)}</div>` : '<h4>Nothing to say yet.</h4>'}
+          ${card ? `<h4>${esc(voice(card.blurb))}</h4><div class="peek-body">${peekDetail(p, card)}</div>` : '<h4>Nothing to say yet.</h4>'}
         </div></div></div>
       </div>`;
   }
@@ -3746,8 +3761,8 @@ __COACH_JS__
         <p class="lu-sum">${sum}</p>
         <div class="lu-fix${fixes.length ? '' : ' ok'}">
           <div class="ov-lab" style="color:var(--ink)">${fixes.length ? `To fix ${next ? 'before Sunday' : 'now'} · ${fixes.length}` : 'Nothing to fix'}</div>
-          ${fixes.length ? fixes.map((it) => `<div class="it"><div><p><b>${esc(it.title)}.</b> ${esc(it.text)}</p>${refs(itemFaces(it))}</div>${it.stat ? `<span class="ov-tag" style="background:var(--pink)">${esc(it.stat)}</span>` : ''}</div>`).join('')
-            : `<p>${esc(a.summary)}</p>`}
+          ${fixes.length ? fixes.map((it) => `<div class="it"><div><p><b>${esc(voice(it.title))}.</b> ${esc(voice(it.text))}</p>${refs(itemFaces(it))}</div>${it.stat ? `<span class="ov-tag" style="background:var(--pink)">${esc(it.stat)}</span>` : ''}</div>`).join('')
+            : `<p>${esc(voice(a.summary))}</p>`}
         </div>
       </section>
       <section class="tp-sec" aria-labelledby="lu-lh">
@@ -3756,7 +3771,7 @@ __COACH_JS__
         <div class="lu-cols acc">${cols('lu-col')}</div>
       </section>
       ${tpAdvice(id, next)}
-      <p class="tp-foot">${next ? nextSource() : coachSource(LIVE)}</p>`;
+      <p class="tp-foot">${voice(next ? nextSource() : coachSource(LIVE))}</p>`;
   }
 
   function tpAdvice(id, next) {
@@ -3837,11 +3852,14 @@ __COACH_JS__
   const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="${WEEKS.length ? `#week-${latest().week}` : '#'}" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
   /* ---------- "Viewing as" ----------
-     The chip in the header says whose eyes the site is wearing. It only ever changes highlights
-     (orange = you), never what a page says, and a wrong pick is one tap from undone: every change
-     raises a toast with an Undo button, and "League view" is always at the bottom of the menu. */
+     The chip in the header says whose eyes the site is wearing, and it changes what the site opens:
+     the Coach nav item and the Coach landing both go to the picked team's profile, and her team
+     lights up in orange (the "You" badge) everywhere. It does not change which team is on screen,
+     which is always the URL's (#team-<id>), so a link to anyone's team still shows that team, written
+     about as "her". A wrong pick is one tap from undone: every change raises a toast with an Undo
+     button, and "League view" is always at the bottom of the menu. */
   const viewingAs = (() => {
-    const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), mine = $('#nav-mine');
+    const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), coachTab = $('#nav-coach');
     const fixes = (id) => { const a = coachFor(id, false); return a ? a.counts.now : 0; };
     let isOpen = false, toastTimer = 0, drawn = '';
 
@@ -3879,11 +3897,11 @@ __COACH_JS__
       }
     }
 
-    // The nav's "My team" appears with a pick and goes with it.
+    // The Coach nav item follows the pick (her team, else the league landing) and shows whenever it has somewhere to go.
     function sync() {
       const me = myTeam.get();
-      mine.hidden = !me;
-      if (me) mine.href = `#team-${me}`;
+      coachTab.hidden = !(advice() || me);
+      coachTab.href = coachHref();
       // The live refresh re-routes every 20s; rebuilding an untouched chip would drop focus mid-menu.
       const sig = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
       if (sig !== drawn || !host.firstChild) draw(false);
@@ -3897,7 +3915,20 @@ __COACH_JS__
       toastTimer = setTimeout(() => { toast.hidden = true; }, 8000);
     }
 
-    function apply(id) { if (id) myTeam.set(id); else myTeam.clear(); route(); }
+    function apply(id) {
+      const was = myTeam.get();
+      if (id) myTeam.set(id); else myTeam.clear();
+      // Letting go of the pick while on that team's own pages goes back to the league landing.
+      if (!id && was && advice() && new RegExp(`^#team-${was}(\\.|$)`).test(location.hash)) { location.hash = '#coach'; return; }
+      route();
+    }
+
+    // The landing's "Make this page yours" chips: same pick, same Undo, and straight into her team.
+    function pickCard(id) {
+      const prev = myTeam.get() || 0;
+      if (id !== prev) { myTeam.set(id); say(`Viewing as ${nameOf(id)}`, () => { apply(prev); }); }
+      location.hash = `#team-${id}`;
+    }
 
     function choose(id) {
       const prev = myTeam.get() || 0;
@@ -3913,7 +3944,7 @@ __COACH_JS__
       const me = myTeam.get();
       dlg.innerHTML = `
         <h2 id="who-h">Who are you?</h2>
-        <p>Pick your name and your team lights up in orange all over the site. Nothing gets hidden from anyone, and you can switch from the chip at the top any time.</p>
+        <p>Pick your name and Coach opens your team, which lights up in orange all over the site. Nothing gets hidden from anyone, and you can switch from the chip at the top any time.</p>
         <div class="pick-grid">${SEASON.standings.map((x) => `
           <button type="button" data-pick="${x.team_id}"${x.team_id === me ? ' class="me"' : ''}${fixes(x.team_id) ? ` aria-label="${esc(x.manager)}, ${fixes(x.team_id)} to fix"` : ''}>${esc(x.manager)}${fixes(x.team_id) ? '<span class="dot" aria-hidden="true">!</span>' : ''}</button>`).join('')}</div>
         <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
@@ -3962,7 +3993,7 @@ __COACH_JS__
     // Escape, the backdrop or "Just looking" all count as an answer, so it never nags.
     dlg.addEventListener('close', () => { if (!myTeam.asked()) { myTeam.clear(); route(); } });
 
-    return { sync, greet, ask };
+    return { sync, greet, ask, pickCard };
   })();
 
   /* ---------- the phone header's collapse ---------- */
@@ -4019,16 +4050,19 @@ __BTS_JS__
   let routedHash = null;   // the hash route() last drew: a different one means a navigation, so the page animates in
   function route() {
     tickerWanted = false;
+    otherTeam = false;
     const h = location.hash.replace(/^#/, '');
     let m, html, nav = 'week';
     if (h === 'glossary') { html = glossaryPage(); nav = 'glossary'; }
     else if ((m = /^behind-the-scenes(?:\.(big|data|api|harness|deploy|safe|cheat))?$/.exec(h))) { html = btsPage(); nav = 'behind-the-scenes'; btsSection = m[1] || ''; }
     else if (h === 'live' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
+    // With a pick, Coach is her team: the league landing becomes her League tab.
+    else if ((h === 'coach' || h === 'coach-next') && myTeam.get()) { location.replace(`#team-${myTeam.get()}.league`); return; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
     else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { if (TEAMS[Number(m[2])]) myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
-    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() ? 'mine' : coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
+    else if ((m = /^team-(\d+)(?:\.(lineup|season|next|league))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' || m[2] === 'league' ? m[2] : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() || coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
@@ -4054,7 +4088,6 @@ __BTS_JS__
     document.querySelectorAll('#main [data-act="all"]').forEach((b) => syncAll(b.closest('section') || $('#main')));
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
-    if (advice()) document.getElementById('nav-coach').href = coachHref();
     if (nav === 'behind-the-scenes') btsMount(btsSection);
     viewingAs.sync();
     $('#pgn').textContent = (document.querySelector('#nav a[aria-current]') || {}).textContent || '';
@@ -4158,7 +4191,20 @@ __BTS_JS__
 
   document.addEventListener('click', (e) => {
     if (e.target.closest('button[data-open-who]')) viewingAs.ask();
+    const pickBtn = e.target.closest('button[data-cl-pick]');
+    if (pickBtn) viewingAs.pickCard(Number(pickBtn.dataset.clPick));
+    const openTeam = e.target.closest('#main [data-open-team]');
+    if (openTeam && !e.target.closest('a, button')) location.hash = `#team-${openTeam.dataset.openTeam}`;
     if (e.target.closest('button[data-cl-more]')) { clShowAll = !clShowAll; route(); const again = document.querySelector('button[data-cl-more]'); if (again) again.focus({ preventScroll: true }); }
+  });
+
+  // A team name in the League tab or the landing is a role=button; Enter and Space open it like a tap.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target.closest && e.target.closest('#main [role="button"][data-open-team]');
+    if (!el) return;
+    e.preventDefault();
+    location.hash = `#team-${el.dataset.openTeam}`;
   });
 
   window.addEventListener('hashchange', () => {

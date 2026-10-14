@@ -37,7 +37,7 @@ import team_profile  # noqa: E402
 SITE = ROOT / "site"
 # Coach landing modules, inlined in this order (landing.js calls the ones before it).
 COACH_JS = ("seasonAverage", "vitals", "fixes", "byeDamage", "battles", "pickups", "strengthMap", "callouts",
-            "tradeMatches", "headlines", "take", "landing")
+            "tradeMatches", "headlines", "take", "pronouns", "landing")
 LEAGUE = json.loads((ROOT / "league.json").read_text())
 
 AWARD_KEYS = ("game_balls", "flags", "tough_breaks")

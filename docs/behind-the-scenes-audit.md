@@ -66,7 +66,7 @@ checked against the code, workflows and docs. Each item is labelled **Fixed**, *
   page). Every id on the page is `bts-…`. Chips and "see how…" links keep a real `#behind-the-scenes.<section>` href (so a pasted link works,
   and the same dot pattern as `#week-4.awards`), and a click scrolls and rewrites the URL with `history.replaceState`, so no
   `hashchange`, no redraw, no lost accordion or demo state. Verified in the browser: zero hashchange events per jump.
-- **Dead links.** Footer `#coach-page` → the live Coach route (`coachHref()`, so it follows next-week mode); hidden when the Coach tab
+- **Dead links.** Footer `#coach-page` → the live Coach route (`coachHref()`, so it follows next-week mode, and the picked team's profile once someone is picked); hidden when the Coach tab
   is hidden, because `#coach` is a 404 without advice. "Back to Standings" → `#standings`.
 - **Unknown sub-route.** `#behind-the-scenes.nope` falls through to the site's "Fumble" page; the route only accepts the seven section names.
 - **Scroll offset under the sticky header.** The header is 66 px on desktop and 102 px at 390 px (it wraps to two rows), so jumps

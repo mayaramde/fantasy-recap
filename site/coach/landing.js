@@ -74,8 +74,15 @@ function clGames(next, rows) {
 }
 
 const clYou = (on) => (on ? '<span class="cl-you">You</span>' : '');
+/* "You" is the Viewing-as pick (orange); "viewing" is whichever team's profile is open (cobalt-soft).
+   Only the League tab passes a `view`; the landing has nobody open, so it only ever lights "you". */
+const clTone = (id, me, view) => (id === me ? ' me' : view != null && id === view ? ' view' : '');
+const clTag = (id, me, view) => (id === me ? clYou(true) : view != null && id === view ? '<span class="cl-viewing">Viewing</span>' : '');
+/* A name that opens that team's profile. role=button, not a link: the router handles the tap
+   (and Enter / Space) in template.html, so a name inside a table row or list item stays valid markup. */
+const clOpen = (id, name) => `role="button" tabindex="0" data-open-team="${id}" title="Open ${esc(name)}'s team"`;
 
-function clTake(take, v, show) {
+function clTake(take, v, show, unwritten = false) {
   const tile = (tone, label, big, sub) => `<div class="cl-vital"><span class="cl-chip ${tone}">${label}</span><span class="cl-vn">${big}</span>${sub ? `<span class="cl-vs">${sub}</span>` : ''}</div>`;
   const tiles = [
     tile('lime', 'Lineups to fix', `${v.fixTeams}<small> / ${v.total}</small>`, 'teams with something to fix'),
@@ -86,10 +93,11 @@ function clTake(take, v, show) {
   const PILL = { 'Cleanest lineup': 'lime', 'Biggest swap': 'orange', 'Most on bye': 'pink' };
   return `
     <div class="cl-top">
-      <section class="cl-take" aria-labelledby="cl-take-h">
+      <section class="cl-take${unwritten ? ' light' : ''}" aria-labelledby="cl-take-h">
         <span class="cl-take-label">Coach's take</span>
         <h2 id="cl-take-h">${esc(take.headline)}</h2>
         <p>${esc(take.paragraph)}</p>
+        ${unwritten ? '<p class="cl-unwritten">Coach hasn\'t written today\'s take yet.</p>' : ''}
         ${take.pills.length ? `<ul class="cl-pills">${take.pills.map((p) => `<li class="${PILL[p.label] || ''}"><span>${esc(p.label)}</span>${esc(p.text)}</li>`).join('')}</ul>` : ''}
       </section>
       <div class="cl-vitals" role="group" aria-label="League vitals">${tiles}</div>
@@ -160,7 +168,7 @@ function clFixBoard(fixes, me) {
     </div>`;
 }
 
-function clByes(d, me, injuryKnown) {
+function clByes(d, me, injuryKnown, view) {
   const strip = !injuryKnown ? ''
     : d.injured.length
     ? `<div class="cl-injury"><h4>Hurt starters</h4><ul>${d.injured.map((p) => `<li><b>${esc(p.manager)}</b> ${esc(p.name)} <span class="cl-pill pink">${esc(p.status)}</span> <small>${esc(p.spot)}</small></li>`).join('')}</ul></div>`
@@ -170,7 +178,7 @@ function clByes(d, me, injuryKnown) {
       ${d.tiles.length ? `<ul class="cl-tiles">${d.tiles.map((t) => `<li><div class="cl-tn2"><b>${t.count}</b><span>${esc(t.team)} on bye</span></div><small>${esc(t.names.join(' · '))}</small></li>`).join('')}</ul>` : '<p class="cl-empty">No NFL team is off this week.</p>'}
       <div class="cl-label">Exposure by manager</div>
       <ul class="cl-expo">${d.exposure.map((e) => `
-        <li><span class="cl-nm${e.team_id === me ? ' me' : ''}">${esc(e.manager)}</span>
+        <li><span class="cl-nm${clTone(e.team_id, me, view)}">${esc(e.manager)}</span>
           <span class="cl-segs" aria-hidden="true">${e.starters ? `<i class="s" style="width:${e.starters * 34}px"></i>` : ''}${e.bench ? `<i class="b" style="width:${e.bench * 34}px"></i>` : ''}</span>
           <span class="cl-el">${esc(e.label)}</span></li>`).join('')}</ul>
       <p class="cl-legend"><span><i class="s" aria-hidden="true"></i>Starter on bye</span><span><i class="b" aria-hidden="true"></i>Bench on bye</span></p>
@@ -190,20 +198,20 @@ function clBattles(b, me) {
     </div>`;
 }
 
-function clWaiver(order, me, p) {
+function clWaiver(order, me, p, view) {
   return `
     <div class="cl-card cl-waiver">
-      <ol class="cl-order">${order.map((t, i) => `<li class="${i === 0 ? 'first' : ''}${t.team_id === me ? ' me' : ''}"><b class="n">${i + 1}</b><span>${esc(t.manager)}</span>${t.team_id === me ? '<span class="cl-you">You</span>' : `<small>${esc(record(t))}</small>`}</li>`).join('')}</ol>
+      <ol class="cl-order">${order.map((t, i) => `<li class="${i === 0 ? 'first' : ''}${clTone(t.team_id, me, view)}" data-open-team="${t.team_id}"><b class="n">${i + 1}</b><span class="cl-go" ${clOpen(t.team_id, t.manager)}>${esc(t.manager)}</span>${clTag(t.team_id, me, view) || `<small>${esc(record(t))}</small>`}</li>`).join('')}</ol>
       ${p && p.rows.length ? `<div class="cl-pick"><div class="cl-label">Pickups, last seven days · ${p.total} total</div>
         <ul class="cl-picks">${p.rows.map((r) => `<li><span class="cl-nm">${esc(r.manager)}</span><span class="cl-bar" aria-hidden="true"><span style="width:${(100 * r.count / p.max).toFixed(1)}%"></span></span><b>${r.count}</b></li>`).join('')}</ul>
         <p class="cl-prow-note">${esc(p.quip)}</p></div>` : ''}
     </div>`;
 }
 
-function clStrength(sm, me, n) {
+function clStrength(sm, me, n, view) {
   const ord = (r) => ordinal(r);
   const body = sm.rows.map((r) => `
-    <tr${r.id === me ? ' class="me"' : ''}><th scope="row"><span>${esc(r.manager)}</span>${clYou(r.id === me)}</th>
+    <tr${clTone(r.id, me, view) ? ` class="${clTone(r.id, me, view).trim()}"` : ''}><th scope="row"><span class="cl-go" ${clOpen(r.id, r.manager)}>${esc(r.manager)}</span>${clTag(r.id, me, view)}${r.id === me ? '<span class="vh"> (you)</span>' : view != null && r.id === view ? '<span class="vh"> (viewing)</span>' : ''}</th>
       ${sm.cols.map((c) => {
         const rk = r.ranks[c];
         const tag = c === r.best ? ['best', 'best spot', CL_ICON.up] : c === r.weak ? ['weak', 'weakest spot', CL_ICON.down] : null;
@@ -249,7 +257,10 @@ function clTrades(cards) {
     <p class="cl-note">Ideas, not offers: trades happen in the ESPN app.</p>`;
 }
 
-function coachLanding(next, rows, me) {
+/* Everything both views are built from, computed once per render: the normalized teams, the
+   league's vitals and take, the strength grid and the waiver order. The landing and the League
+   tab both start here, so a number can't differ between them. */
+function clModel(next, rows) {
   const teams = clTeams(rows);
   const known = rows.some((r) => Array.isArray(r.report));
   const projected = next ? !!ahead().projected : true;
@@ -260,11 +271,35 @@ function coachLanding(next, rows, me) {
   // coach-daily's paragraph, while it still describes the league as it is; the template wording otherwise.
   const written = (rows.find((r) => r.league_take) || {}).league_take;
   if (written) take.paragraph = written;
-  const fixes = buildFixes(teams);
   const withRanks = teams.length && teams.every((t) => t.ranks);
   const sm = withRanks ? strengthMap(teams.map((t) => ({ id: t.id, manager: t.manager, ranks: t.ranks }))) : null;
   // Waiver order resets after each week's games, so next week's isn't known yet: no module, no chips.
   const order = next ? [] : SEASON.waiver_order ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean) : [...(SEASON.standings || [])].reverse();
+  return { teams, known, projected, n, injuryKnown, v, take, written: !!written, sm, order };
+}
+
+/* "Make this page yours": the way into a team's profile for someone who hasn't picked a name.
+   The pink ! is the same homework signal the profile's team strip shows (this week's fixes waiting). */
+function clPickCard(teams, rows) {
+  const homework = (id) => ((rows.find((r) => r.team_id === id) || {}).counts || {}).now || 0;
+  return `
+    <section class="cl-sec cl-pickme" aria-labelledby="cl-pick-h">
+      <div class="cl-card">
+        <h2 id="cl-pick-h">Make this page yours</h2>
+        <p class="cl-sub">Tap your name and Coach opens your team.</p>
+        <div class="cl-pickgrid">${teams.map((t) => {
+          const n = homework(t.id);
+          return `<button type="button" class="cl-pickchip" data-cl-pick="${t.id}"${n ? ` aria-label="${esc(t.manager)}, ${n} to fix"` : ''}>${esc(t.manager)}${n ? '<span class="cl-dot" aria-hidden="true">!</span>' : ''}</button>`;
+        }).join('')}</div>
+        <p class="cl-pickhint"><span class="cl-dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
+      </div>
+    </section>`;
+}
+
+function coachLanding(next, rows, me) {
+  const m = clModel(next, rows);
+  const { teams, known, projected, n, injuryKnown, v, take, sm, order } = m;
+  const fixes = buildFixes(teams);
   const waiverIdx = new Map(order.map((t, i) => [t.team_id, i + 1]));
   const b = projected ? battles(clGames(next, rows)) : null;
   const pk = next ? null : pickups((LIVE && LIVE.wire) || []);
@@ -272,6 +307,7 @@ function coachLanding(next, rows, me) {
   const trades = sm ? tradeMatches(sm.rows, unavailableSpots(teams)) : [];
   const calls = sm ? callouts(sm.rows, n) : [];
   const body = [
+    me ? '' : clPickCard(teams, rows),
     clTake(take, v, { bye: known, proj: projected }),
     clSection('pink', 'Pick a team', clTeamCards(teams, next, me, waiverIdx), 'Eight lineups, one tap to the full report. Seeds are today\'s standings; odds come from the same simulation as Standings.'),
     `<div class="cl-duo fx">
@@ -284,6 +320,32 @@ function coachLanding(next, rows, me) {
     </div>`,
     sm ? clSection('cobalt', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s lineup spots, ranked against the league. Darker means stronger.') : '',
     trades.length ? clSection('lime', 'Trade matchmaker', clTrades(trades), 'Pairs whose weak spots line up with each other\'s strengths.') : '',
+  ].join('');
+  return body;
+}
+
+/* The League tab on a team's profile: the league-wide half of the landing (Coach's take, the strength
+   grid, the waiver order, injuries and byes) built from the same pieces, minus the pick card and the
+   team strip, which the profile already has. `me` is the Viewing-as pick (orange), `view` the team
+   whose profile is open (cobalt-soft). Each module that has nothing to show says so instead of
+   drawing an empty table. */
+function coachLeague(rows, me, view) {
+  if (!rows.length) {
+    return clSection('cobalt', 'The league', '<div class="cl-card"><p class="cl-empty">No rosters to read yet. The league view fills in once Coach has captured this week.</p></div>');
+  }
+  const { teams, known, n, injuryKnown, v, take, written, sm, order } = clModel(false, rows);
+  const pk = pickups((LIVE && LIVE.wire) || []);
+  const dmg = known ? byeDamage(teams) : null;
+  const calls = sm ? callouts(sm.rows, n) : [];
+  const body = [
+    clTake(take, v, { bye: known, proj: true }, !written),
+    clSection('cobalt', "Where everyone's strong",
+      sm ? clStrength(sm, me, n, view) + clCallouts(calls) : '<div class="cl-card"><p class="cl-empty"><b>No grid yet.</b> It fills in once a week has been recapped.</p></div>',
+      'Each team\'s lineup spots, ranked against the league. Darker means stronger.'),
+    order.length ? clSection('cobalt', 'Waiver order this week', clWaiver(order, me, pk, view), 'Worst record picks first. The order resets every week.') : '',
+    clSection('pink', 'Injuries and byes',
+      dmg ? clByes(dmg, me, injuryKnown, view) : '<div class="cl-card"><p class="cl-empty">The injury and bye report isn\'t in yet.</p></div>',
+      'A bye means his NFL team doesn\'t play, so he scores zero.'),
   ].join('');
   return body;
 }
