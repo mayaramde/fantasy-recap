@@ -1,97 +1,634 @@
 {
-  "generated_at": "2026-10-13T04:28:35Z",
+  "generated_at": "2026-10-13T23:57:33Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
-  "weeks": {},
+  "fantasypros": {
+    "reached": true,
+    "checked_at": "2026-10-13T23:57:33Z"
+  },
+  "weeks": {
+    "6": {
+      "teams": {
+        "1": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:2:4567048:none": {
+              "title": "Up next: Amie",
+              "text": "You're playing Amie (3-2) next. Her Kenneth Walker III is the engine of that offense, so keep half an eye on him."
+            },
+            "empty:K:0:none:none": {
+              "title": "Your kicker spot is standing empty",
+              "text": "Nobody's in your K spot, and empty scores zero every time. Your bench kicker is hurt, on a bye, or already played, so the waiver wire is the only fix. Go grab one before Sunday."
+            }
+          },
+          "summary": {
+            "key": "now|empty:K:0:none:none",
+            "text": "One open roster spot is doing exactly what empty spots do: nothing. Fill the kicker slot before kickoff."
+          }
+        },
+        "2": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "team_id": 2,
+              "kind": "trade",
+              "pos": "TE",
+              "level": "watch",
+              "title": "Offer D'Andre Swift to Cambri for Travis Kelce",
+              "stat": "a straight 1-for-1",
+              "text": "Your running back room is seven deep and your tight end room is Juwan Johnson, alone. Cambri's sitting on both Travis Kelce and Tucker Kraft at tight end and has plenty of running backs of her own. The pitch: you're buried at one position, she's got a spare starter at the other. Both rosters clear a real logjam, and the math says it, not just the vibes.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4259545,
+                    "name": "D'Andre Swift",
+                    "pos": "RB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 15847,
+                    "name": "Travis Kelce",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 2.07,
+                  "playoff": [
+                    0.8909,
+                    0.9059
+                  ],
+                  "title": [
+                    0.2916,
+                    0.3159
+                  ]
+                },
+                "them": {
+                  "near": 1.61,
+                  "playoff": [
+                    0.09,
+                    0.0872
+                  ],
+                  "title": [
+                    0.0144,
+                    0.0131
+                  ]
+                },
+                "week": 6,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:1:4379399:none": {
+              "title": "Up next: Marlee",
+              "text": "You're playing Marlee (3-2) next. James Cook III is the engine of her offense, so keep tabs on him."
+            },
+            "clear:open": {
+              "title": "Nothing to fix",
+              "text": "Every starter who still has a game is healthy, and nobody on your bench projects meaningfully better. Sit back and enjoy the games."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Clean lineup, decent odds. Go do something else with your Sunday."
+          }
+        },
+        "3": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:7:3918298:none": {
+              "title": "Up next: Samantha",
+              "text": "You're playing Samantha (2-3) next. Josh Allen is the engine of her offense, so keep tabs on him."
+            },
+            "bye:4362238:RB:bye:4241416:none": {
+              "title": "Start Hubbard, not Brown",
+              "text": "Chase Brown's on a bye, so he's out no matter what you do. Chuba Hubbard is healthy and ready on your bench. Waddle Deez Nutz doesn't field a running back named Waddle, but it does field one named Hubbard, so start him."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4362238:RB:bye:4241416:none",
+            "text": "Bye-week housekeeping: move Hubbard into the lineup before kickoff and you're set."
+          }
+        },
+        "4": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:5:4430807:none": {
+              "title": "Up next: Maya",
+              "text": "You're playing Maya (4-1) next. Bijan Robinson is the one to watch."
+            },
+            "bye:-16016:DST:bye:none:none": {
+              "title": "Your defense is on a bye",
+              "text": "The Vikings D/ST doesn't play this week, and nobody on your bench covers defense. The waiver wire, the pool of players nobody in the league owns, is the only fix."
+            },
+            "swap:3929630:RB:4569173:none": {
+              "title": "Start Stevenson over Barkley",
+              "text": "Rhamondre Stevenson projects a couple of points higher than Saquon Barkley, who FantasyPros has out with a hamstring injury. Move him into the lineup."
+            }
+          },
+          "summary": {
+            "key": "now|bye:-16016:DST:bye:none:none|swap:3929630:RB:4569173:none",
+            "text": "Half the roster's on a beach somewhere. Patch the bye weeks and move on."
+          }
+        },
+        "5": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "team_id": 5,
+              "kind": "waiver",
+              "pos": "TE",
+              "level": "watch",
+              "title": "Add Dallas Goedert off waivers",
+              "stat": "unowned leaguewide",
+              "text": "Brock Bowers is your only rostered tight end, and nobody in the league owns Dallas Goedert, per FantasyPros' ownership numbers, even though he's a top-15 rest-of-season tight end by FantasyPros' own projections. Free insurance that costs a waiver claim, not a trade."
+            }
+          ],
+          "coach_cards": {
+            "matchup:4:3117251:none": {
+              "title": "Up next: Tara",
+              "text": "You're playing Tara (2-3) next. Christian McCaffrey is the one to watch on her side."
+            },
+            "bye:-16004:DST:bye:none:none": {
+              "title": "Your defense is on a bye",
+              "text": "The Bengals D/ST doesn't play this week, and nobody on your bench covers defense. The waiver wire, the pool of players nobody in the league owns, is the only fix."
+            }
+          },
+          "summary": {
+            "key": "now|bye:-16004:DST:bye:none:none",
+            "text": "Bye-week housekeeping again, same as everyone else this week. Nothing dramatic."
+          }
+        },
+        "6": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:8:4426515:none": {
+              "title": "Up next: Cambri",
+              "text": "You're playing Cambri (0-5) next. Puka Nacua is the one to watch on her side."
+            },
+            "bye:3915511:QB:bye:12483:none": {
+              "title": "Start Stafford, not Burrow",
+              "text": "Joe Burrow's on a bye, so he doesn't play at all. Matthew Stafford is healthy and ready on your bench. Move him in."
+            },
+            "bye:4429795:RB:bye:4429096:none": {
+              "title": "Start Corum, not Gibbs",
+              "text": "Jahmyr Gibbs is on a bye, so he doesn't play at all. Blake Corum is healthy on your bench. Move him in."
+            },
+            "swap:5083076:TE:4431459:none": {
+              "title": "Start Warren over Fannin",
+              "text": "ESPN likes Tyler Warren by a couple of points over Harold Fannin Jr. this week. A projection's an estimate, not a promise, but a gap like that is usually worth taking."
+            }
+          },
+          "summary": {
+            "key": "now|bye:3915511:QB:bye:12483:none|bye:4429795:RB:bye:4429096:none|swap:5083076:TE:4431459:none",
+            "text": "Three bye-week fixes sitting on your bench. Patch them and move on."
+          }
+        },
+        "7": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:3:4242335:none": {
+              "title": "Up next: Maddie",
+              "text": "You're playing Maddie (1-4) next. Jonathan Taylor is the one to watch on her side."
+            },
+            "bye:4711533:RB:bye:4427366:none": {
+              "title": "Start Hall, not Gordon",
+              "text": "Ollie Gordon II is on a bye, so he doesn't play at all. Breece Hall is healthy on your bench. Move him in."
+            },
+            "bye:4362628:WR:bye:4428331:none": {
+              "title": "Start Rice, not Chase",
+              "text": "Ja'Marr Chase is on a bye, so he doesn't play at all. Rashee Rice is healthy on your bench. Move him in."
+            },
+            "bye:4430027:TE:bye:4385690:none": {
+              "title": "Start Kincaid, not LaPorta",
+              "text": "Sam LaPorta is on a bye, so he doesn't play at all. Dalton Kincaid is healthy on your bench. Move him in."
+            },
+            "swap:4685247:FLEX:4431299:none": {
+              "title": "Start Odunze over Allen",
+              "text": "ESPN has Rome Odunze projected well clear of Braelon Allen at flex, the wild-card spot, this week. Worth the tap."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4362628:WR:bye:4428331:none|bye:4430027:TE:bye:4385690:none|bye:4711533:RB:bye:4427366:none|swap:4685247:FLEX:4431299:none",
+            "text": "Bye weeks everywhere you look. Three swaps and you're done."
+          }
+        },
+        "8": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:6:4430737:none": {
+              "title": "Up next: Kyra",
+              "text": "You're playing Kyra (5-0) next. Kyren Williams is the one to watch on her side."
+            },
+            "bye:4262921:FLEX:bye:3916148:none": {
+              "title": "Start Pollard, not Jefferson",
+              "text": "Justin Jefferson is on a bye, so he doesn't play at all. Tony Pollard is healthy on your bench and can fill the flex spot. Move him in."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4262921:FLEX:bye:3916148:none",
+            "text": "One bye week, one bench player ready to cover it. Simple week."
+          }
+        }
+      }
+    },
+    "7": {
+      "teams": {
+        "1": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:8:4426515:ACTIVE": {
+              "title": "Up next: Cambri",
+              "text": "You're playing Cambri (0-5) next. Puka Nacua is the one to watch on her side."
+            },
+            "bye:4379399:RB:bye:none:none": {
+              "title": "James Cook III is on a bye",
+              "text": "New since Week 5: James Cook III's team has a bye. Your other bench running back is hurt, on a bye, or already spoken for, so the waiver wire is the move."
+            },
+            "bye:3915416:WR:bye:4374302:ACTIVE": {
+              "title": "Start St. Brown, not Moore",
+              "text": "DJ Moore's team is on a bye (new since Week 5). Amon-Ra St. Brown is healthy on your bench. Move him in."
+            },
+            "bye:-16030:DST:bye:none:none": {
+              "title": "Your defense is on a bye",
+              "text": "The Jaguars D/ST doesn't play this week, and nobody on your bench covers defense. The waiver wire is the only fix."
+            },
+            "empty:K:0:4567104:ACTIVE": {
+              "title": "Fill the kicker spot",
+              "text": "There's nobody in your K spot, and empty scores zero. Will Reichard is healthy on your bench and ready to go. Move him in."
+            },
+            "watch:3916387:QUESTIONABLE:3046779:ACTIVE": {
+              "title": "Lamar Jackson is questionable",
+              "text": "New since Week 5: Lamar Jackson is questionable. Teams usually make that call about 90 minutes before kickoff. If he sits, Jared Goff is healthy on your bench and ready to start."
+            },
+            "news:4612826:QUESTIONABLE:bench:open": {
+              "title": "Ladd McConkey is now questionable",
+              "text": "New since Week 5: ESPN has Ladd McConkey, on your bench, listed questionable. Worth a check before you lock your lineup."
+            },
+            "news:4035538:DOUBTFUL:bench:open": {
+              "title": "David Montgomery is now doubtful",
+              "text": "New since Week 5: ESPN has David Montgomery, on your bench, listed doubtful."
+            }
+          },
+          "summary": {
+            "key": "now|bye:-16030:DST:bye:none:none|bye:3915416:WR:bye:4374302:ACTIVE|bye:4379399:RB:bye:none:none|empty:K:0:4567104:ACTIVE",
+            "text": "A full bye-week pileup, a kicker slot to fill, and two names newly worth watching. Busy week, nothing hard."
+          }
+        },
+        "2": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "team_id": 2,
+              "kind": "trade",
+              "pos": "TE",
+              "level": "watch",
+              "title": "Offer D'Andre Swift to Cambri for Travis Kelce",
+              "stat": "a straight 1-for-1",
+              "text": "Your running back room is seven deep and your tight end room is Juwan Johnson, alone. Cambri's sitting on both Travis Kelce and Tucker Kraft at tight end and has plenty of running backs of her own. The pitch: you're buried at one position, she's got a spare starter at the other. Both rosters clear a real logjam, and the math says it, not just the vibes.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4259545,
+                    "name": "D'Andre Swift",
+                    "pos": "RB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 15847,
+                    "name": "Travis Kelce",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 2.07,
+                  "playoff": [
+                    0.8909,
+                    0.9059
+                  ],
+                  "title": [
+                    0.2916,
+                    0.3159
+                  ]
+                },
+                "them": {
+                  "near": 1.61,
+                  "playoff": [
+                    0.09,
+                    0.0872
+                  ],
+                  "title": [
+                    0.0144,
+                    0.0131
+                  ]
+                },
+                "week": 6,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:7:4362628:ACTIVE": {
+              "title": "Up next: Samantha",
+              "text": "You're playing Samantha (2-3) next. Ja'Marr Chase is the one to watch on her side."
+            },
+            "bye:4426348:QB:bye:3139477:ACTIVE": {
+              "title": "Start Mahomes, not Daniels",
+              "text": "Jayden Daniels's team has a bye (new since Week 5). Patrick Mahomes is healthy on your bench. Move him in."
+            },
+            "bye:4362081:K:bye:none:none": {
+              "title": "Your kicker is on a bye",
+              "text": "Cameron Dicker's team has a bye (new since Week 5), and nobody on your bench covers kicker. The waiver wire is the only fix."
+            },
+            "watch:4430878:QUESTIONABLE:4567750:ACTIVE": {
+              "title": "Jaxon Smith-Njigba is questionable",
+              "text": "New since Week 5: Smith-Njigba is questionable. If he sits, Emeka Egbuka is healthy on your bench and ready to start."
+            },
+            "watch:4241389:QUESTIONABLE:4567750:ACTIVE": {
+              "title": "CeeDee Lamb is questionable",
+              "text": "New since Week 5: Lamb is questionable too. Same answer as Smith-Njigba: Emeka Egbuka is the healthy swap if either sits."
+            },
+            "news:4685512:INJURY_RESERVE:bench:open": {
+              "title": "Jadarian Price is now on IR",
+              "text": "New since Week 5: ESPN has Jadarian Price, on your bench, on injured reserve."
+            },
+            "news:4608686:QUESTIONABLE:bench:open": {
+              "title": "Kyle Monangai is now questionable",
+              "text": "New since Week 5: ESPN has Kyle Monangai, on your bench, listed questionable."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4362081:K:bye:none:none|bye:4426348:QB:bye:3139477:ACTIVE",
+            "text": "Two bye weeks to patch and a couple of names worth watching before kickoff."
+          }
+        },
+        "3": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:4:3117251:ACTIVE": {
+              "title": "Up next: Tara",
+              "text": "You're playing Tara (2-3) next. Christian McCaffrey is the one to watch on her side."
+            },
+            "clear:open": {
+              "title": "Nothing to fix",
+              "text": "Every starter who still has a game is healthy, and nobody on your bench projects meaningfully better. Go enjoy the games."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Nothing to fix here. Your lineup is exactly what ESPN would draw up. Look at you."
+          }
+        },
+        "4": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:3:4429615:ACTIVE": {
+              "title": "Up next: Maddie",
+              "text": "You're playing Maddie (1-4) next. Zay Flowers is the one to watch on her side."
+            },
+            "bye:4432620:WR:bye:none:none": {
+              "title": "Parker Washington is on a bye",
+              "text": "New since Week 5: Parker Washington's team has a bye. Every receiver on your bench is hurt, on a bye, or already spoken for, so the waiver wire is the move."
+            },
+            "watch:3929630:QUESTIONABLE:4569173:ACTIVE": {
+              "title": "Saquon Barkley is questionable",
+              "text": "New since Week 5: Barkley is questionable with the hamstring that's already cost him time. If he sits, Rhamondre Stevenson is healthy on your bench and ready to start."
+            },
+            "news:4685702:QUESTIONABLE:bench:open": {
+              "title": "Quinshon Judkins is now questionable",
+              "text": "New since Week 5: ESPN has Quinshon Judkins, on your bench, listed questionable. Worth a check before kickoff."
+            },
+            "news:3126486:OUT:bench:open": {
+              "title": "Deebo Samuel Sr. is now out",
+              "text": "New since Week 5: ESPN has Deebo Samuel Sr., on your bench, listed out."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4432620:WR:bye:none:none",
+            "text": "One bye week, a questionable Barkley, and bad news for your bench. Keep an eye on this one before kickoff."
+          }
+        },
+        "5": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "team_id": 5,
+              "kind": "waiver",
+              "pos": "TE",
+              "level": "watch",
+              "title": "Add Dallas Goedert off waivers",
+              "stat": "unowned leaguewide",
+              "text": "Brock Bowers is your only rostered tight end, and nobody in the league owns Dallas Goedert, per FantasyPros' ownership numbers, even though he's a top-15 rest-of-season tight end by FantasyPros' own projections. Free insurance that costs a waiver claim, not a trade."
+            }
+          ],
+          "coach_cards": {
+            "matchup:6:4429795:ACTIVE": {
+              "title": "Up next: Kyra",
+              "text": "You're playing Kyra (5-0) next. Jahmyr Gibbs is the one to watch on her side."
+            },
+            "bye:4360310:QB:bye:2577417:ACTIVE": {
+              "title": "Start Prescott, not Lawrence",
+              "text": "Trevor Lawrence's team has a bye (new since Week 5). Dak Prescott is healthy on your bench. Move him in."
+            },
+            "news:4241478:QUESTIONABLE:bench:open": {
+              "title": "DeVonta Smith is now questionable",
+              "text": "New since Week 5: ESPN has DeVonta Smith, on your bench, listed questionable."
+            },
+            "news:4695883:QUESTIONABLE:bench:open": {
+              "title": "Jalen Coker is now questionable",
+              "text": "New since Week 5: ESPN has Jalen Coker, on your bench, listed questionable."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4360310:QB:bye:2577417:ACTIVE",
+            "text": "One bye week to patch, two names worth a glance before you lock things in."
+          }
+        },
+        "6": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:5:4430807:ACTIVE": {
+              "title": "Up next: Maya",
+              "text": "You're playing Maya (4-1) next. Bijan Robinson is the one to watch on her side."
+            },
+            "bye:4686361:K:bye:none:none": {
+              "title": "Your kicker is on a bye",
+              "text": "Cam Little's team has a bye (new since Week 5), and nobody on your bench covers kicker. The waiver wire is the only fix."
+            },
+            "news:4035687:INJURY_RESERVE:bench:open": {
+              "title": "Michael Pittman Jr. is now on IR",
+              "text": "New since Week 5: ESPN has Michael Pittman Jr., on your bench, on injured reserve."
+            }
+          },
+          "summary": {
+            "key": "now|bye:4686361:K:bye:none:none",
+            "text": "One bye week at kicker, and a bench name worth knowing about."
+          }
+        },
+        "7": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:2:4430878:QUESTIONABLE": {
+              "title": "Up next: Amie",
+              "text": "You're playing Amie (3-2) next. Her top projected starter, Jaxon Smith-Njigba, is listed questionable, so check back before kickoff to see who she actually starts."
+            },
+            "bye:3918298:QB:bye:4361741:ACTIVE": {
+              "title": "Start Purdy, not Allen",
+              "text": "Josh Allen's team has a bye (new since Week 5). Brock Purdy is healthy on your bench. Move him in."
+            },
+            "bye:4882093:RB:bye:4427366:QUESTIONABLE": {
+              "title": "Start Hall, not Tuten",
+              "text": "Bhayshul Tuten's team has a bye (new since Week 5). Breece Hall is on your bench and projects well, though he's questionable himself, so check he's active before you lock it in."
+            },
+            "swap:4685247:FLEX:4428331:QUESTIONABLE": {
+              "title": "Start Rice over Allen",
+              "text": "ESPN has Rashee Rice projected well clear of Braelon Allen at flex, though Rice is questionable, so confirm he's playing before you lock it in."
+            },
+            "news:4432710:DOUBTFUL:bench:open": {
+              "title": "TreVeyon Henderson is now doubtful",
+              "text": "New since Week 5: ESPN has TreVeyon Henderson, on your bench, listed doubtful."
+            },
+            "news:2976212:QUESTIONABLE:bench:open": {
+              "title": "Stefon Diggs is now questionable",
+              "text": "New since Week 5: ESPN has Stefon Diggs, on your bench, listed questionable."
+            }
+          },
+          "summary": {
+            "key": "now|bye:3918298:QB:bye:4361741:ACTIVE|bye:4882093:RB:bye:4427366:QUESTIONABLE|swap:4685247:FLEX:4428331:QUESTIONABLE",
+            "text": "Two byes, a couple of question marks, and one clean upgrade sitting on your bench. Handle it before kickoff."
+          }
+        },
+        "8": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:1:3916387:QUESTIONABLE": {
+              "title": "Up next: Marlee",
+              "text": "You're playing Marlee (3-2) next. Her top projected starter, Lamar Jackson, is listed questionable, so check back before kickoff to see who she actually starts."
+            },
+            "swap:4871023:WR:4239993:ACTIVE": {
+              "title": "Start Higgins over Tate",
+              "text": "ESPN has Tee Higgins projected well clear of Carnell Tate at receiver this week. Worth the tap."
+            },
+            "news:4426385:OUT:bench:open": {
+              "title": "Zach Charbonnet is now out",
+              "text": "New since Week 5: ESPN has Zach Charbonnet, on your bench, listed out."
+            }
+          },
+          "summary": {
+            "key": "now|swap:4871023:WR:4239993:ACTIVE",
+            "text": "One clean upgrade on your bench, and a lost running back to replace off waivers."
+          }
+        }
+      }
+    }
+  },
   "audit": {
     "1": {
-      "lineup:C:4035538:w1": {
-        "title": "Montgomery outplayed the guy who started",
-        "text": "Back in Week 1 you started James Cook III at running back while David Montgomery had the better day parked on your bench. Cook got the start. Montgomery got the receipts."
-      },
-      "pos:K1:FLEX6": {
+      "pos:K1:FLEX7": {
         "title": "Kicker's elite. Flex is the problem child.",
         "text": "Your kicker leads the league and your flex spot, the wild-card slot, is near the bottom. That's the spot where a waiver pickup would actually move the needle."
       },
-      "proj:under:3040151:4035538": {
-        "title": "Kittle's the exception, not the rule",
-        "text": "George Kittle keeps clearing his projection, but the rest of your lineup, Montgomery especially, keeps coming up just short of ESPN's number. It roughly cancels out, but it's not a trend to lean on."
+      "proj:under:4567104:4035538": {
+        "title": "Reichard's the exception, not the rule",
+        "text": "Will Reichard keeps clearing his projection, but the rest of your lineup, David Montgomery especially, keeps coming up short of ESPN's number. It isn't a trend to lean on."
       }
     },
     "2": {
       "lineup:B:4259545:w1": {
         "title": "Swift made the flex call look rough",
-        "text": "In Week 1 you started Emeka Egbuka at flex while D'Andre Swift had a monster day on your bench. Swift by name, forgotten by lineup."
+        "text": "Biggest miss this season: Week 1, starting Emeka Egbuka at flex while D'Andre Swift had a monster day on your bench. Swift by name, forgotten by lineup."
       },
       "pos:WR1:K8": {
         "title": "Receivers are elite. Your kicker is on strike.",
         "text": "Your receivers lead the league and your kicker sits dead last. That's the cheapest fix on the whole roster, straight off the waiver wire."
       },
-      "proj:over:4241389:4360248": {
-        "title": "Lamb is doing the heavy lifting",
-        "text": "CeeDee Lamb keeps blowing past his projection, and it's covering for Kyle Pitts Sr., who keeps falling short of his. Ride the one that's working."
+      "proj:over:4567048:4360248": {
+        "title": "Walker's doing the heavy lifting",
+        "text": "Kenneth Walker III keeps blowing past his projection, and it's covering for Kyle Pitts Sr., who keeps falling short of his. Ride the one that's working."
       }
     },
     "3": {
       "lineup:C:4241416:w1": {
         "title": "Hubbard's bench afternoon still stings",
-        "text": "In Week 1 you started Jaylen Waddle at flex and got next to nothing back, while Chuba Hubbard quietly went off on your bench. Bet on the player, not the name recognition."
+        "text": "Biggest miss this season: Week 1, starting Jaylen Waddle at flex and getting next to nothing back, while Chuba Hubbard quietly went off on your bench."
       },
-      "pos:RB3:QB8": {
-        "title": "Running backs strong, quarterback's taking the week off",
-        "text": "Your running backs rank near the top of the league and your quarterback sits last. Quarterback is where a waiver claim would help the most."
+      "pos:K2:QB8": {
+        "title": "Kicker's carrying this team, quarterback isn't",
+        "text": "Your kicker ranks 2nd in the league. Your quarterback sits last. Kicker's carrying this team. Quarterback's stuck in the basement."
       },
-      "proj:under:4258173:4572680": {
-        "title": "Collins is outrunning the forecast",
-        "text": "Nico Collins keeps beating his projection, but the rest of the lineup, Tucker Kraft included, has been running behind ESPN's numbers overall. Collins is carrying more than his share."
+      "proj:under:4429615:4572680": {
+        "title": "Flowers is outrunning the forecast",
+        "text": "Zay Flowers keeps beating his projection, but the rest of the lineup, Tucker Kraft included, has been running behind ESPN's numbers overall. Flowers is carrying more than his share."
       }
     },
     "4": {
       "lineup:D:4248528:w1": {
         "title": "Your bench earned a promotion weeks ago",
-        "text": "In Week 1 you started Quinshon Judkins at flex while Christian Watson put up a massive day on your bench. Watson's bench residency was just getting started."
+        "text": "Biggest miss this season: Week 1, starting Quinshon Judkins at flex while Christian Watson put up a massive day on your bench. Watson's bench residency was just getting started."
       },
       "pos:TE1:RB7": {
         "title": "Tight end's thriving, running back isn't",
         "text": "Your tight end leads the league and your running backs sit near the bottom. Running back is exactly where to go shopping on waivers."
       },
-      "proj:under:4361370:3929630": {
-        "title": "Olave's the one outrunning his projection",
-        "text": "Chris Olave keeps clearing his projection. Saquon Barkley is dealing with a hamstring injury and has fallen short of his. Watch his status before leaning on that number again."
+      "proj:under:4248528:3929630": {
+        "title": "Watson's the one beating the forecast",
+        "text": "Christian Watson keeps clearing his projection. Saquon Barkley, out with a hamstring injury per FantasyPros, has fallen short of his. Watch his status before leaning on that number again."
       }
     },
     "5": {
       "lineup:C:4432665:w3": {
-        "title": "Bowers had the game, from your bench",
-        "text": "Back in Week 3 you started Dalton Schultz at tight end while Brock Bowers quietly torched everyone from your bench. Tight end is streaky. That was the stream you missed."
+        "title": "Bowers had the game, from the bench",
+        "text": "Biggest miss this season: Week 3, starting Dalton Schultz at tight end while Brock Bowers quietly torched everyone from behind him. Tight end is streaky. That was the stream missed."
       },
-      "pos:QB2:K7": {
-        "title": "Quarterback's great, kicker's an afterthought",
-        "text": "Your quarterback spot ranks near the top of the league and your kicker is close to the bottom. Kicker is the cheapest upgrade sitting on the waiver wire."
+      "pos:RB3:K7": {
+        "title": "Running back is carrying this team",
+        "text": "Your points at running back rank 3rd in the league. Your points at kicker rank 7th. Running back's pulling its weight. Kicker's asleep at the wheel."
       },
-      "proj:over:4685472:4596448": {
+      "proj:over:4685472:4685382": {
         "title": "McMillan's outrunning every forecast",
-        "text": "Tetairoa McMillan keeps smashing his projection while Bucky Irving keeps falling short of his. ESPN still hasn't adjusted for either."
+        "text": "Tetairoa McMillan keeps smashing his projection while Omarion Hampton keeps falling short of his. ESPN hasn't adjusted for either."
       }
     },
     "6": {
-      "lineup:B:5083076:w3": {
-        "title": "Fannin's big game, wasted on the bench",
-        "text": "In Week 3 you started Tyler Warren at tight end while Harold Fannin Jr. quietly had the better day behind him. Even an unbeaten record has one blemish."
+      "lineup:B:4431459:w5": {
+        "title": "A rare bench regret for an unbeaten team",
+        "text": "Biggest miss this season: Week 5, starting Harold Fannin Jr. at tight end while Jaylen Warren quietly outscored him from your bench. Even a perfect record has one blemish."
       },
       "pos:RB1:WR8": {
-        "title": "Running backs carry, receivers napping",
-        "text": "Your running backs lead the league and your receivers sit dead last. Receiver is where a waiver add would do the most good."
+        "title": "Running backs carry, receivers nap",
+        "text": "Your running backs lead the league. Your receivers sit dead last. That's where a waiver add would do the most good."
       },
-      "proj:over:4430737:4870795": {
-        "title": "Williams is outrunning ESPN's math",
-        "text": "Kyren Williams keeps beating his projection while Makai Lemon keeps coming up short of his. The gap is why the record still looks spotless."
+      "proj:over:4569987:4870795": {
+        "title": "Warren is outrunning ESPN's math",
+        "text": "Jaylen Warren keeps beating his projection while Makai Lemon keeps coming up short of his. The gap is covering for itself."
       }
     },
     "7": {
       "lineup:C:4431299:w4": {
         "title": "This one wasn't a bench mistake",
-        "text": "The optimal-lineup math flagged Rome Odunze over Rashee Rice in Week 4, but Rice left that game early with a hamstring injury. There's no decision to second-guess here, just bad luck."
+        "text": "The optimal-lineup math flagged Rome Odunze over Rashee Rice in Week 4, but Rice left that game early with a hamstring injury, per FantasyPros. There's no decision to second-guess here, just bad luck."
       },
       "pos:QB1:RB8": {
         "title": "Quarterback's elite, running back's underwater",
@@ -99,26 +636,22 @@
       },
       "proj:under:3918298:4429160": {
         "title": "Allen's elite, Achane's stuck in the mud",
-        "text": "Josh Allen keeps clearing his projection, but De'Von Achane keeps falling well short of his. One MVP-caliber week is covering for a lot of underperformance."
+        "text": "Josh Allen keeps clearing his projection, but De'Von Achane keeps falling well short of his. One MVP-caliber stretch is covering for a lot of underperformance."
       }
     },
     "8": {
-      "lineup:B:15847:w2": {
-        "title": "Kelce had the game, from your bench",
-        "text": "In Week 2 you started Dallas Goedert at tight end while Travis Kelce, yes, that Travis Kelce, put up a huge day behind him. Even a future Hall of Famer can't help you from the bench."
+      "lineup:C:15847:w2": {
+        "title": "Kelce had the game, from the bench",
+        "text": "Biggest miss this season: Week 2, starting Dallas Goedert at tight end while Travis Kelce, yes, that Travis Kelce, put up a big day behind him."
       },
-      "pos:WR3:DST8": {
-        "title": "Receivers solid, defense is the drag",
-        "text": "Your receivers rank near the top of the league and your defense sits dead last. Defense is the cheapest, easiest upgrade on the waiver wire."
+      "pos:FLEX2:RB6": {
+        "title": "Flex is carrying this team",
+        "text": "Your points at flex, the wild-card spot, rank 2nd in the league. Your points at running back rank 6th. Flex is doing the heavy lifting. Running back's just along for the ride."
       },
-      "proj:over:4239993:15847": {
-        "title": "Higgins picking up the slack Kelce left behind",
-        "text": "Tee Higgins keeps beating his projection while Travis Kelce keeps coming up short of his. Father Time remains undefeated."
+      "proj:over:4426515:4870808": {
+        "title": "Nacua is outrunning every forecast",
+        "text": "Puka Nacua keeps beating his projection while Jeremiyah Love keeps coming up short of his. The gap is doing a lot of quiet work."
       }
     }
-  },
-  "fantasypros": {
-    "reached": true,
-    "checked_at": "2026-10-13T04:28:35Z"
   }
 }
