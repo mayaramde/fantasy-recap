@@ -402,6 +402,7 @@
   }
   @keyframes rp-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
   @keyframes rp-pop { from { opacity: 0; transform: scale(0.96) translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes rp-fill { from { width: 0; } }
   @keyframes rp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes rp-marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @keyframes rp-bob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(-1deg); } }
@@ -502,7 +503,7 @@
   .gb.sel .tug { border-color: var(--on-board); }
   .gb .live-strip { margin-top: 12px; border: 2px solid var(--edge); border-radius: 12px; color: var(--ink); }
   .tape { border: 2px solid var(--edge); border-radius: 24px; background: var(--board); color: var(--on-board); box-shadow: 8px 8px 0 var(--lime); padding: 26px; }
-  @media (prefers-reduced-motion: no-preference) { .tape { animation: rp-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; } .tape-bar .tw { transition: width 0.6s cubic-bezier(0.2, 0.9, 0.3, 1); } }
+  @media (prefers-reduced-motion: no-preference) { .tape { animation: rp-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; } .tape-bar .tw, .gb .tug .a { animation: rp-fill 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; } }
   .tape-top { display: flex; justify-content: space-between; gap: 16px; }
   .tp { display: flex; flex-direction: column; min-width: 0; }
   .tp.lose { text-align: right; align-items: flex-end; }
@@ -1078,6 +1079,7 @@
   .rp .leaders .pname { font: 800 22px/1.1 var(--display); letter-spacing: 0.01em; }
   .rp .leaders .ppos { font: 500 13px/1 var(--mono); letter-spacing: 0; }
   .rp .leaders .meta { font-size: 13.5px; }
+  .rp .leaders li:nth-child(2) { animation-delay: 0.08s; } .rp .leaders li:nth-child(3) { animation-delay: 0.16s; } .rp .leaders li:nth-child(4) { animation-delay: 0.24s; } .rp .leaders li:nth-child(5) { animation-delay: 0.32s; }
   .rp .leaders .pts { font: 500 28px/1 var(--mono); padding: 6px 10px; border-radius: 12px; background: var(--lime); transform: none; }
   .rp .leaders.low .pts { background: var(--pink); }
   .rp .lows { margin-top: 44px; }
