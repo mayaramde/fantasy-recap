@@ -1475,7 +1475,7 @@ __LIVE_CSS__
   .tp-head .more { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; text-align: right; }
   .tp-head .more:hover { text-decoration: underline; }
   .tp-sec > .sec-sub { margin: -4px 0 0; }
-  .tp-sub { margin-top: 4px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font: 600 12px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .tp-sub { margin-top: 4px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px; font: 600 12px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .tp-sub small { font: 400 12px/1.2 var(--body); letter-spacing: 0; text-transform: none; }
 
   /* faces: a headshot with a small NFL badge, from the same source as Recaps' Top scorers */
@@ -1541,7 +1541,17 @@ __LIVE_CSS__
   .ov-next .mon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 50%; font: 900 20px/1 var(--display); }
   .ov-next .nm { font-weight: 800; font-size: 16px; }
   .ov-next .nm a { color: inherit; }
-  .ov-next .sub { font-size: 13.5px; color: var(--muted); }
+  .ov-next .sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; font-size: 13.5px; color: var(--muted); }
+  .ov-next > div:last-child { min-width: 0; }
+  .ov-next .why { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-top: 8px; font-size: 13.5px; }
+  .ov-next .why > span:last-child { min-width: 0; flex: 1 1 200px; }
+  .ov-next.hurt { background: var(--pink-soft); }
+  .ov-tag.pk { background: var(--pink); }
+  .tp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
+  .tp-cards > *, .tp-cards .card { min-width: 0; }
+  .tp-cards .card-top { flex-wrap: wrap; }
+  .tp-more > summary { cursor: pointer; font: 700 13.5px/1.2 var(--body); color: var(--accent); padding: 6px 0; }
+  .tp-more[open] > summary { margin-bottom: 12px; }
   .tp-ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
   .tp-ideas > div { display: grid; gap: 12px; align-content: start; }
 
@@ -3696,14 +3706,37 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`;
   }
 
-  // One audit card, as the orange take. The other two are on the Season tab.
+  // This week's waiver and trade ideas for a team, with the weak-spot tag matched here, not trusted from the
+  // build: /api/live replaces LIVE.advice with rows that never went through site_data(), so a baked tag
+  // would vanish on the first refresh.
+  function tpIdeas(id, next) {
+    const a = coachFor(id, next);
+    const weak = (TEAMS[id].profile || {}).weak_spot;
+    return ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
+  }
+
+  // One audit card, as the orange take, then this week's ideas: up to 2 waiver and 1 trade up front,
+  // topped up to 3 from whatever is left, the rest behind a closed "N more ideas". The other audit cards
+  // are on the Season tab.
   function tpTake(id, p) {
-    if (!p.audit.length) return `<section class="tp-sec">${tpHead('--orange', "Coach's take")}<p class="sec-sub">The coach needs one finished week before she has opinions.</p></section>`;
+    const ideas = tpIdeas(id, false);
+    const waiver = ideas.filter((it) => !it.trade), trades = ideas.filter((it) => it.trade);
+    const shown = [...waiver.slice(0, 2), ...trades.slice(0, 1)];
+    const rest = [...waiver.slice(2), ...trades.slice(1)];
+    while (shown.length < 3 && rest.length) shown.push(rest.shift());
     const it = p.audit.find((x) => x.kind === 'position') || p.audit[0];
+    const link = p.audit.length ? `<a class="more" href="#team-${id}.season">Full audit on Season →</a>` : '';
     return `
       <section class="tp-sec" aria-labelledby="tp-take">
-        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-take">Coach's take</h2><a class="more" href="#team-${id}.season">All ${p.audit.length} on Season →</a></div>
-        <article class="ov-take${it.written ? '' : ' computed'}"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p>${esc(voice(it.text))}</p>${it.written ? '' : '<p class="tp-unwritten">Coach hasn\'t written today\'s take yet.</p>'}${refs(it.players)}</article>
+        ${tpHead('--orange', "Coach's take", link).replace('<h2>', '<h2 id="tp-take">')}
+        ${it
+          ? `<article class="ov-take${it.written ? '' : ' computed'}"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p>${esc(voice(it.text))}</p>${it.written ? '' : '<p class="tp-unwritten">Coach hasn\'t written today\'s take yet.</p>'}${refs(it.players)}</article>`
+          : '<p class="sec-sub">The coach needs one finished week before she has opinions on the season.</p>'}
+        <div class="tp-sub"><span>Ideas for this week</span><small>Ideas, not orders. A trade only shows up if it helps both teams.</small></div>
+        ${shown.length
+          ? `<div class="tp-cards">${shown.map(adviceCard).join('')}</div>
+             ${rest.length ? `<details class="tp-more" data-hub-open="tp-more-${id}"${HUB_OPEN.has(`tp-more-${id}`) ? ' open' : ''}><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}`
+          : '<p class="sec-sub">No new waiver or trade ideas today.</p>'}
       </section>`;
   }
 
@@ -3716,12 +3749,33 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const roster = row && row.lineup ? [...row.lineup.starters, ...row.lineup.bench] : [];
     const key = a.items.find((it) => it.kind === 'matchup');
     const named = key && itemFaces(key, 5).map((x) => roster.find((r) => r.player_id === x.player_id)).find(Boolean);
-    const watch = named || [...roster.filter((r) => r.slot !== 'BENCH' && r.slot !== 'IR')].sort((x, y) => (y.projected || 0) - (x.projected || 0))[0];
+    const starters = roster.filter((r) => r.slot !== 'BENCH' && r.slot !== 'IR');
+    const byProj = [...starters].sort((x, y) => (y.projected || 0) - (x.projected || 0));
+    const watch = named || byProj[0];
+    // Why this player: an ESPN designation first (never guessed, only when the capture has one), then
+    // whether her week leans on him, else just that he's the one to watch.
+    let why = '';
+    if (watch) {
+      const total = starters.reduce((n, r) => n + (r.projected || 0), 0);
+      const isStarter = starters.includes(watch);
+      const ratio = total > 0 && isStarter && watch.projected ? watch.projected / total : null;
+      const share = ratio == null ? null : Math.round(ratio * 100);
+      if (watch.injury && isStarter) {
+        const desig = String(watch.injury).toLowerCase().replace(/\bir\b/, 'IR');
+        why = { cls: 'inj', tag: 'Injury watch', text: `ESPN lists him ${desig}. If he sits, her whole week changes, so check back before kickoff.` };
+      } else if (ratio != null && ratio >= 0.18) {
+        why = { cls: 'eng', tag: 'Her engine', text: `${share}% of her ${f1(total)} projected points come from him. Slow him down and she's in trouble.` };
+      } else {
+        const lead = watch === byProj[0] ? 'Her highest-projected starter this week' : 'One of her key players this week';
+        why = { cls: 'thr', tag: 'Top threat', text: `${lead}${share != null ? `, about ${share}% of her ${f1(total)} projected points.` : '.'}` };
+      }
+    }
     return `
       <section class="tp-sec" aria-labelledby="tp-next">
         ${tpHead('--accent', "Who's next").replace('<h2>', '<h2 id="tp-next">')}
-        <div class="ov-card ov-next"><span class="mon" aria-hidden="true">${esc(opp.manager[0])}</span><div><div class="nm"><a href="#team-${opp.team_id}">${esc(opp.manager)}</a> (${record(opp)}), Week ${ahead().week}</div>
-          ${watch ? `<div class="sub">Keep an eye on ${ref(watch, watch.projected ? `${f1(watch.projected)} proj` : '')}</div>` : ''}</div></div>
+        <div class="ov-card ov-next${why && why.cls === 'inj' ? ' hurt' : ''}"><span class="mon" aria-hidden="true">${esc(opp.manager[0])}</span><div><div class="nm"><a href="#team-${opp.team_id}">${esc(opp.manager)}</a> (${record(opp)}), Week ${ahead().week}</div>
+          ${watch ? `<div class="sub">Keep an eye on ${ref(watch, watch.projected ? `${f1(watch.projected)} proj` : '')}</div>
+          <div class="why"><span class="ov-tag${why.cls === 'inj' ? ' pk' : why.cls === 'eng' ? ' og' : ''}">${why.tag}</span><span>${esc(why.text)}</span></div>` : ''}</div></div>
       </section>`;
   }
 
@@ -3976,17 +4030,14 @@ __LIVE_JS__
         <div class="lhint"><p class="sec-sub" style="margin:0">Tap a player for Coach's read on how he's doing.</p><button type="button" class="lu-all" data-act="all">Expand all</button></div>
         <div class="lu-cols acc">${cols('lu-col')}</div>
       </section>
-      ${tpAdvice(id, next)}
+      ${next ? tpAdvice(id, next) : ''}
       <p class="tp-foot">${voice(next ? nextSource() : coachSource(LIVE))}</p>`;
   }
 
   function tpAdvice(id, next) {
     const a = coachFor(id, next);
     if (!a) return '';
-    // Matched here, not trusted from the build: /api/live replaces LIVE.advice with rows that
-    // never went through site_data(), so a baked tag would vanish on the first refresh.
-    const weak = (TEAMS[id].profile || {}).weak_spot;
-    const ideas = ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
+    const ideas = tpIdeas(id, next);
     const waiver = ideas.filter((it) => !it.trade);
     const trades = ideas.filter((it) => it.trade);
     const col = (label, note, items) => (items.length ? `<div><div class="tp-sub"><span>${label}</span><small>${note}</small></div>${items.map(adviceCard).join('')}</div>` : '');
