@@ -1392,6 +1392,10 @@ def season_payload(facts_list, weeks):
             else:
                 break
         s["streak"] = f"{streak}{count}" if streak in ("W", "L") else ""
+        # Places gained (+) or lost (-) because of the latest finished week; 0 holds, None when
+        # there's no earlier week to compare to (Week 1, or a team with no prior rank).
+        hist = s["rank_history"]
+        s["rank_move"] = hist[-2]["rank"] - hist[-1]["rank"] if len(hist) >= 2 else None
         games = len(s["weekly"])
         s["avg"] = round(s["points_for"] / games, 2) if games else 0
         s["best"] = max(s["weekly"], key=lambda g: g["points"]) if games else None

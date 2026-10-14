@@ -496,6 +496,12 @@
   table.std th.r { font-family: var(--body); }
   table.std .rank { width: 30px; font: 800 19px/1 var(--display); color: var(--muted); }
   table.std tbody tr:first-child .rank { color: var(--accent); }
+  table.std .mv { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px 4px 8px; border-radius: 999px; font: 700 12.5px/1 var(--mono); }
+  table.std .mv.up { color: var(--win); background: color-mix(in srgb, var(--win) 16%, transparent); }
+  table.std .mv.down { color: var(--loss); background: color-mix(in srgb, var(--loss) 14%, transparent); }
+  table.std .mv.flat { padding: 4px 0 4px 10px; color: var(--muted); font-weight: 500; }
+  table.std tr.moved-up td { background: color-mix(in srgb, var(--win) 6%, transparent); }
+  table.std tr.moved-down td { background: color-mix(in srgb, var(--loss) 6%, transparent); }
   table.std .mgr a { font-weight: 700; text-decoration: none; }
   table.std .mgr a:hover { color: var(--accent); text-decoration: underline; }
   table.std .tname { display: block; font-size: 12px; color: var(--muted); }
@@ -1318,6 +1324,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </article>`;
   }
 
+  // The Move column: a pill when last week's result shifted the team's overall standing, a dash when
+  // it held, nothing to compare to in Week 1. Triangle plus a number, so color is never the only cue.
+  function rankMove(m) {
+    if (m == null) return '';
+    if (!m) return '<span class="mv flat" aria-label="No change in rank">–</span>';
+    const up = m > 0, n = Math.abs(m);
+    const label = `${up ? 'Up' : 'Down'} ${n} ${n === 1 ? 'spot' : 'spots'} after this week`;
+    return `<span class="mv ${up ? 'up' : 'down'}" title="${label}" aria-label="${label}"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><polygon points="${up ? '6,1 11,10 1,10' : '1,2 11,2 6,11'}" fill="currentColor"/></svg>${n}</span>`;
+  }
+
   function standingsTable(rows, { compact } = {}) {
     const full = !compact;
     // The playoff line and bye stickers read league.json's format through the playoff odds;
@@ -1330,18 +1346,19 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const byeIds = new Set(field.slice(0, P ? P.config.byes : 0));
     const inField = new Set(field);
     const cut = field.length && rows.length > field.length && rows.slice(0, field.length).every((t) => inField.has(t.team_id)) ? field.length : 0;
-    const cols = full ? 8 : 4;
+    const cols = full ? 9 : 5;
     return `
       <div class="table-scroll"><table class="std">
         <thead><tr>
-          <th></th><th>Team</th><th class="r">Record</th>
+          <th></th><th title="Places gained or lost in the standings after the latest week">Move</th><th>Team</th><th class="r">Record</th>
           ${full ? '<th class="r">Streak</th>' : ''}
           <th class="r" title="Total points scored this season">Scored</th>
           ${full ? '<th class="r" title="Total points opponents scored">Allowed</th><th class="r" title="Record if this team played every other team every week">Vs. everyone</th><th class="r" title="Season total of points left on the bench">Benched</th>' : ''}
         </tr></thead>
         <tbody>${rows.map((t, i) => `
-          <tr${i + 1 === cut ? ' class="po-cut"' : ''}>
+          <tr class="${t.rank_move > 0 ? 'moved-up' : t.rank_move < 0 ? 'moved-down' : ''}${i + 1 === cut ? ' po-cut' : ''}">
             <td class="rank">${i + 1}</td>
+            <td class="mv-cell">${rankMove(t.rank_move)}</td>
             <td class="mgr"><span class="mgr-cell"><span class="mgr-who"><a href="#team-${t.team_id}">${esc(t.manager)}</a>${byeIds.has(t.team_id) ? '<span class="bye-tag" title="A top seed sits out Round 1">Bye</span>' : ''}<span class="tname">${esc(t.team_name)}</span></span>${full ? `<a class="profile-btn" href="#team-${t.team_id}" aria-label="${esc(t.manager)}'s team profile">Profile →</a>` : ''}</span></td>
             <td class="r">${record(t)}</td>
             ${full ? `<td class="r">${t.streak ? `<span class="res ${t.streak[0]}">${t.streak}</span>` : '–'}</td>` : ''}
