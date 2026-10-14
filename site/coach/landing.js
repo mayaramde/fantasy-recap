@@ -160,8 +160,9 @@ function clFixBoard(fixes, me) {
     </div>`;
 }
 
-function clByes(d, me, teams) {
-  const strip = d.injured.length
+function clByes(d, me, injuryKnown) {
+  const strip = !injuryKnown ? ''
+    : d.injured.length
     ? `<div class="cl-injury"><h4>Hurt starters</h4><ul>${d.injured.map((p) => `<li><b>${esc(p.manager)}</b> ${esc(p.name)} <span class="cl-pill pink">${esc(p.status)}</span> <small>${esc(p.spot)}</small></li>`).join('')}</ul></div>`
     : `<div class="cl-injury clean">${CL_ICON.check}<span><b>Injury report is clean.</b> No starter is hurt.</span></div>`;
   return `
@@ -253,12 +254,14 @@ function coachLanding(next, rows, me) {
   const known = rows.some((r) => Array.isArray(r.report));
   const projected = next ? !!ahead().projected : true;
   const n = teams.length;
-  const v = vitals(teams, { seasonAvg: seasonAverage(SEASON.standings || []) });
-  const take = coachTake(teams, v, COACH_HEADLINES);
+  const injuryKnown = rows.some((r) => r.injuries_known);
+  const v = vitals(teams, { seasonAvg: seasonAverage(SEASON.standings || []), injuriesKnown: injuryKnown });
+  const take = coachTake(teams, v, COACH_HEADLINES, { projected });
   const fixes = buildFixes(teams);
   const withRanks = teams.length && teams.every((t) => t.ranks);
   const sm = withRanks ? strengthMap(teams.map((t) => ({ id: t.id, manager: t.manager, ranks: t.ranks }))) : null;
-  const order = SEASON.waiver_order ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean) : [...(SEASON.standings || [])].reverse();
+  // Waiver order resets after each week's games, so next week's isn't known yet: no module, no chips.
+  const order = next ? [] : SEASON.waiver_order ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean) : [...(SEASON.standings || [])].reverse();
   const waiverIdx = new Map(order.map((t, i) => [t.team_id, i + 1]));
   const b = projected ? battles(clGames(next, rows)) : null;
   const pk = next ? null : pickups((LIVE && LIVE.wire) || []);
@@ -270,14 +273,24 @@ function coachLanding(next, rows, me) {
     clSection('pink', 'Pick a team', clTeamCards(teams, next, me, waiverIdx), 'Eight lineups, one tap to the full report. Seeds are today\'s standings; odds come from the same simulation as Standings.'),
     `<div class="cl-duo fx">
       ${clSection('lime', 'Fix board', clFixBoard(fixes, me), 'Every lineup problem on every roster, biggest projected gain first.')}
-      ${dmg ? clSection('pink', 'Bye-week damage', clByes(dmg, me, teams), 'A bye means his NFL team doesn\'t play, so he scores zero.') : ''}
+      ${dmg ? clSection('pink', 'Bye-week damage', clByes(dmg, me, injuryKnown), 'A bye means his NFL team doesn\'t play, so he scores zero.') : ''}
     </div>`,
     `<div class="cl-duo wx">
       ${b && b.edges.length ? clSection('orange', 'Where the week gets decided', clBattles(b, me), 'The biggest projected gaps at a single lineup spot, across every game.') : ''}
-      ${order.length ? clSection('cobalt', 'Waiver wire', clWaiver(order, me, pk), next ? 'Order as ESPN has it right now. It resets after the week\'s games.' : 'Worst record picks first. The order resets every week.') : ''}
+      ${order.length ? clSection('cobalt', 'Waiver wire', clWaiver(order, me, pk), 'Worst record picks first. The order resets every week.') : ''}
     </div>`,
     sm ? clSection('cobalt', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s lineup spots, ranked against the league. Darker means stronger.') : '',
     trades.length ? clSection('lime', 'Trade matchmaker', clTrades(trades), 'Pairs whose weak spots line up with each other\'s strengths.') : '',
   ].join('');
   return body;
+}
+
+/* The one-line note under the week toggle: what this tab is built from, and what it leaves out. */
+function clWeekNote(next, rows) {
+  const injuryKnown = rows.some((r) => r.injuries_known);
+  if (!next) return `Week ${LIVE.week} is live: ESPN's current lineups and projected points, the injury report and the last seven days of pickups.`;
+  const a = ahead();
+  return a.projected
+    ? `Week ${a.week} is projected: ESPN's projected points, byes${injuryKnown ? ' and injury report' : ''} as of ${updated(a.captured_at)}. No pickups or waiver order until the week starts.`
+    : `Week ${a.week} is byes${injuryKnown ? ' and injuries' : ''} only: ESPN hasn't published projected points yet. No pickups or waiver order until the week starts.`;
 }

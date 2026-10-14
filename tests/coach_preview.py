@@ -7,7 +7,7 @@ same pattern as the Week 6 snapshot's counts, so every module has something to d
 and projections are last week's real capture, NOT Week 6's: this is for layout, not for facts. Unit tests use
 tests/fixtures/week-06/golden.json instead.
 
-Usage: python3 tests/coach_preview.py <output dir>   (writes coach.html)
+Usage: python3 tests/coach_preview.py <output dir>   (writes coach.html and coach-thin.html)
 """
 import copy
 import sys
@@ -36,15 +36,32 @@ def with_byes(week):
     return week
 
 
+def week_ahead(week, projected=True, injuries=True):
+    """A capture of the week after `week`: byes on different players, and optionally no projections and/or no
+    injury designations, the two ways ESPN's next-week capture can come up short."""
+    nxt = with_byes(copy.deepcopy(week))
+    nxt["week"] = week["week"] + 1
+    for m in nxt["matchups"]:
+        for side in ("home", "away"):
+            for p in m[side]["lineup"]:
+                if not projected:
+                    p["projected"] = 0
+                if not injuries:
+                    p.pop("injury_status", None)
+    return nxt
+
+
 def main(out):
     out.mkdir(parents=True, exist_ok=True)
     recap_weeks, captured, _, fp, _ = build.load_inputs(build.LEAGUE["season"])
     history = [e for _, e in captured]
     nxt = with_byes(hub_preview.upcoming(history[-1]))
     before = captured + [(analyze.analyze(nxt, history + [nxt]), nxt)]
-    html, _ = build.render(recap_weeks, before, preview=False, fp=fp, news=[])
-    (out / "coach.html").write_text(build.standalone(html).replace('window.FANTASY_LIVE_API="/api/live"', ""))
-    print(f"wrote {out / 'coach.html'}")
+    # coach.html: Next tab fully projected. coach-thin.html: Next tab with no projections and no injury report.
+    for name, kw in (("coach", {}), ("coach-thin", {"projected": False, "injuries": False})):
+        html, _ = build.render(recap_weeks, before, preview=False, ahead=week_ahead(nxt, **kw), fp=fp, news=[])
+        (out / f"{name}.html").write_text(build.standalone(html).replace('window.FANTASY_LIVE_API="/api/live"', ""))
+        print(f"wrote {out / f'{name}.html'}")
 
 
 if __name__ == "__main__":

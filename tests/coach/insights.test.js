@@ -169,3 +169,18 @@ test('trade matchmaker: Marlee\'s empty kicker slot means Maya\'s K need is not 
   assert.ok(!card || card.kind !== 'perfect');
   assert.ok(tradeMatches(sm.rows, unavailable).every((x) => [x.a, x.b].every((s) => !(s.manager === 'Marlee' && s.has.some((h) => h.spot === 'K')))));
 });
+
+test('next week without projections: no ranks or scores, no arbitrary "cleanest" pick', () => {
+  const v = vitals(g.teams, { seasonAvg: g.seasonAvg });
+  const t = coachTake(g.teams, v, COACH_HEADLINES, { projected: false });
+  assert.match(t.paragraph, /Amie is the only clean lineup\.$/);
+  assert.ok(!/projected|lead the league|\d\.\d/.test(t.paragraph.split('on bye')[1]));
+  const two = g.teams.map((x) => (['Amie', 'Maya'].includes(x.manager) ? { ...x, byeStarters: [] } : x));
+  const t2 = coachTake(two, vitals(two), COACH_HEADLINES, { projected: false });
+  assert.ok(!t2.pills.some((p) => p.label === 'Cleanest lineup'), 'two clean teams and no projections: nobody is "cleanest"');
+});
+
+test('"no starter is hurt" is only said when injuries were captured', () => {
+  assert.equal(vitals(g.teams, { injuriesKnown: true }).noStarterHurt, true);
+  assert.equal(vitals(g.teams, { injuriesKnown: false }).noStarterHurt, false);
+});

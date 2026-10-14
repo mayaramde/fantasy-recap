@@ -1016,6 +1016,11 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
                                     states_known, projected, week_open, fp_items, fp_ideas,
                                     written, written_summary))
+    # Did this capture record injury designations at all? Without them a roster with nobody listed is
+    # "we don't know", never "healthy", so the Coach landing hides what it would say about injuries.
+    injuries_known = bool(injury_map(espn))
+    for r in rows_out:
+        r["injuries_known"] = injuries_known
     return live_trades(rows_out, teams)
 
 

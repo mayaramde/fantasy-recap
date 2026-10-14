@@ -2,7 +2,9 @@
    `teams` are normalized teams (standings order), `v` is vitals(), `headlines` is
    COACH_HEADLINES. Everything is read off the league state; nothing is guessed. Managers are
    named, never pronouned. */
-function coachTake(teams, v, headlines) {
+function coachTake(teams, v, headlines, opts = {}) {
+  // No projections yet (next week, early): the clean lineup is named, never ranked or scored.
+  const projected = opts.projected !== false;
   const ord = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
   const f1 = (n) => (Math.round(n * 10) / 10).toFixed(1);
   const join = (xs) => (xs.length < 3 ? xs.join(' and ') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
@@ -23,14 +25,16 @@ function coachTake(teams, v, headlines) {
   else if (v.fixTeams > 0 && clean.length === 1) {
     const c = clean[0];
     const rank = byProj.indexOf(c) + 1;
-    parts.push(`${c.manager} is the only clean lineup, and projected ${rank === 1 ? `to lead the league at ${f1(c.projected)}` : `${ord(rank)} of ${v.total} at ${f1(c.projected)}`}.`);
+    parts.push(projected
+      ? `${c.manager} is the only clean lineup, and projected ${rank === 1 ? `to lead the league at ${f1(c.projected)}` : `${ord(rank)} of ${v.total} at ${f1(c.projected)}`}.`
+      : `${c.manager} is the only clean lineup.`);
   } else if (v.fixTeams > 0) {
     parts.push(`${join(clean.map((c) => c.manager))} have clean lineups.`);
   }
 
   // Pills: a pill nobody qualifies for is left out.
   const pills = [];
-  if (clean.length) {
+  if (clean.length && (projected || clean.length === 1)) {
     const c = [...clean].sort((a, b) => b.projected - a.projected)[0];
     pills.push({ label: 'Cleanest lineup', text: c.manager });
   }

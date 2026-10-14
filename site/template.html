@@ -2793,6 +2793,7 @@ __COACH_JS__
           <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
           ${weekToggle(next, null)}
         </div>
+        <p class="cl-weeknote">${esc(clWeekNote(next, rows))}</p>
         <h1>Coach</h1>
         <p class="dek">${next
           ? `Coach is already on Week ${week}. Nothing has kicked off, so there's time to fix.`

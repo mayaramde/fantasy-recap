@@ -6,6 +6,7 @@
   /* The site column is 1000px wide; this page is 1200 with 24px gutters, centered on it. The header is untouched. */
   .cl-wide { width: min(1200px, calc(100vw - 48px)); margin-inline: calc(50% - min(600px, 50vw - 24px)); }
   .cl-pagehead h1 { font: 900 80px/0.95 var(--display); letter-spacing: -0.01em; max-width: none; margin-top: 4px; }
+  .cl-weeknote { margin: 0; font: 400 13px/1.4 var(--mono); color: var(--muted); max-width: 760px; }
   .cl-pagehead .dek { font-size: 18px; max-width: 660px; }
   @media (max-width: 900px) { .cl-pagehead h1 { font-size: 64px; } }
   @media (max-width: 600px) { .cl-pagehead h1 { font-size: 56px; } }
