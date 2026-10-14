@@ -102,6 +102,8 @@
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--ink); font: 400 15.5px/1.55 var(--body); padding-inline: 16px; padding-block: 0 56px; }
   .wrap { max-width: 1000px; margin: 0 auto; }
+  /* flow-root: the phone header's compensating margin must not collapse into the page's first margin */
+  body > .wrap { display: flow-root; }
   h1, h2, h3 { text-wrap: balance; margin: 0; }
   a { color: inherit; }
   .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
@@ -167,6 +169,32 @@
     background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); padding: 8px 8px 8px 16px; font: 600 14px/1.2 var(--body); }
   .va-toast[hidden] { display: none; }
   .va-toast button { cursor: pointer; font: 800 13px/1 var(--body); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; }
+
+  /* ---------- phone header: two rows at the top, one slim bar once you scroll ----------
+     Row 1 is the brand and the glowing chip, row 2 is the swipeable nav. Past ~70px of scroll the
+     header collapses to a solid 48px bar (flag, page-name pill, avatar-only chip); it only opens
+     again below ~20px so it can't flicker at the threshold. siteHead adds the height it gave up
+     as a margin so the content underneath never jumps. */
+  .site-head .pgn { display: none; }
+  @media (max-width: 380px) { .va-pre { display: none; } }
+  @media (max-width: 640px) {
+    .site-head .wrap { padding-block: 10px 0; gap: 6px 10px; }
+    .brand-script { display: none; }
+    .brand-name { font-size: 21px; }
+    .va { margin-left: auto; }
+    nav.site-nav { order: 3; flex: 1 0 100%; margin-left: 0; padding: 4px 0 10px; scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
+    nav.site-nav::-webkit-scrollbar { display: none; }
+    nav.site-nav a { padding: 8px 13px; }
+    .site-head.sc { box-shadow: 0 2px 0 var(--drop); }
+    .site-head.sc .wrap { height: 48px; flex-wrap: nowrap; padding-block: 0; gap: 8px; align-content: center; }
+    .site-head.sc .brand-name, .site-head.sc nav.site-nav { display: none; }
+    .site-head.sc .pgn { display: inline-block; font: 800 13px/1 var(--body); background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 11px; white-space: nowrap; }
+    .site-head.sc .va { margin-left: auto; }
+    .site-head.sc .va-btn { padding: 2px; gap: 0; }
+    .site-head.sc .va-btn .dot, .site-head.sc .va-btn .va-txt, .site-head.sc .va-btn small { display: none; }
+    .site-head.sc .va-btn .ini { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--orange); color: var(--on-pop); border: 2px solid var(--edge); font: 800 13px/1 var(--body); }
+  }
 
   .draft-banner { margin-top: 18px; padding: 10px 14px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); font-size: 13.5px; font-weight: 700; }
 
@@ -1017,7 +1045,8 @@
 
   /* the sticky tab bar. When the identity card has scrolled away it grows a mini identity on the left. */
   .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 10px -16px 6px; padding: 6px 16px 10px; background: var(--bg); }
-  .tp-tabbar.stuck { border-bottom: 2px solid var(--edge); }
+  .tp-tabbar { border-bottom: 2px solid transparent; }
+  .tp-tabbar.stuck { border-bottom-color: var(--edge); }
   .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
   .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
   .tp-tabbar.stuck .tp-mini { display: flex; }
@@ -1170,6 +1199,7 @@ __BTS_CSS__
       <span class="flag-mark" aria-hidden="true"></span>
       <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
     </a>
+    <span class="pgn" id="pgn" aria-hidden="true"></span>
     <div class="va" id="va"></div>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
@@ -3210,7 +3240,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       const label = t ? `Viewing as ${t.manager}` : 'League view';
       host.innerHTML = `
         <button type="button" class="va-btn" id="va-btn" aria-haspopup="menu" aria-expanded="${isOpen}" aria-controls="va-menu" aria-label="${esc(label)}. Change who you are viewing as.">
-          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${esc(label)}</span><small aria-hidden="true">▾</small></button>
+          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${t ? `<span class="va-pre">Viewing as </span>${esc(t.manager)}` : 'League view'}</span><small aria-hidden="true">▾</small></button>
         <div class="va-menu" id="va-menu" role="menu" aria-label="Viewing as"${isOpen ? '' : ' hidden'}>
           <h2>Viewing the site as</h2>
           ${t ? `<a class="it open-team" role="menuitem" href="#team-${me}"><span>Open ${esc(t.manager)}'s team page</span><span aria-hidden="true">→</span></a>` : ''}
@@ -3310,6 +3340,32 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return { sync, greet, ask };
   })();
 
+  /* ---------- the phone header's collapse ---------- */
+  const siteHead = (() => {
+    const head = $('#site-head'), phone = window.matchMedia('(max-width: 640px)');
+    let collapsed = false, full = 0, slim = 0;
+    const gap = () => { head.style.marginBottom = collapsed ? `${Math.max(0, full - slim)}px` : ''; };
+    // Both heights, measured rather than assumed: the nav can wrap, the fonts change the line
+    // heights, and the chip's label is a different width for every name.
+    function measure() {
+      const was = collapsed;
+      head.style.marginBottom = '';
+      head.classList.remove('sc'); full = head.getBoundingClientRect().height;
+      head.classList.add('sc'); slim = head.getBoundingClientRect().height;
+      head.classList.toggle('sc', was);
+      gap();
+    }
+    function update() {
+      const want = phone.matches && (collapsed ? window.scrollY > 20 : window.scrollY > 70);
+      if (want === collapsed) return;
+      collapsed = want;
+      head.classList.toggle('sc', want);
+      gap();
+    }
+    phone.addEventListener('change', () => { measure(); update(); });
+    return { measure, update };
+  })();
+
   /* ---------- sticky bits ----------
      The team page's tab bar sticks just under the site header, so its `top` has to be the
      header's current height. That height changes (fonts load, the phone header collapses, the
@@ -3317,6 +3373,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      every scroll, on resize, whenever the header's own size changes, and after the fonts land. */
   const tpSticky = (() => {
     function sync() {
+      siteHead.update();
       const bar = document.getElementById('tp-tabbar'), head = document.getElementById('site-head');
       if (!bar || !head) return;
       const edge = Math.round(head.getBoundingClientRect().bottom);
@@ -3325,9 +3382,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       bar.classList.toggle('stuck', !!card && card.getBoundingClientRect().bottom <= edge + 4);
     }
     window.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
+    window.addEventListener('resize', () => { siteHead.measure(); sync(); });
     if (window.ResizeObserver) new ResizeObserver(sync).observe(document.getElementById('site-head'));
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { siteHead.measure(); sync(); });
     return { sync };
   })();
 
@@ -3363,6 +3420,8 @@ __BTS_JS__
     if (advice()) document.getElementById('nav-coach').href = coachHref();
     if (nav === 'behind-the-scenes') btsMount(btsSection);
     viewingAs.sync();
+    $('#pgn').textContent = (document.querySelector('#nav a[aria-current]') || {}).textContent || '';
+    siteHead.measure();
     tpSticky.sync();
     viewingAs.greet();
   }
