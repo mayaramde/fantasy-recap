@@ -44,7 +44,7 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   that PR is what triggers the push-deploy above.
 - **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
   (start/sit, waiver ideas, evaluated trades, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
-  and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
+  and archives a dated copy as `history/<date>.json` (plus a compact `history/index.json`), then opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
   session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 

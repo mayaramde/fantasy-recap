@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json (plus a dated copy under fantasypros/history/), then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
 model: inherit
 ---
 
@@ -303,8 +303,8 @@ FantasyPros attributions are yours to keep exact, as in Step 5.
 
 ## Step 6: write the snapshot file
 
-Overwrite the whole file (it's a rolling daily snapshot, not a per-week archive — git history
-is the archive):
+Overwrite the whole file (it's the rolling daily snapshot; Step 7 archives a dated copy of it
+under `history/`, which is the record a later reflection reads):
 
 ```json
 {
@@ -346,8 +346,12 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
    edit or commit any recap file or any `data/2026/week-NN/` file.
-2. Commit **only** `data/2026/fantasypros/latest.json` on the worktree's `coach-daily-<date>`
-   branch. Never `git add -A`.
+2. Archive today's snapshot: `python3 scripts/snapshot_history.py`. It copies `latest.json` to
+   `data/2026/fantasypros/history/<UTC date>.json` and rebuilds `history/index.json`. Earlier days are
+   never touched; a second run on the same day replaces that day's file. Re-run `python3 scripts/check.py`.
+   Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<UTC date>.json`
+   and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
+   Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
    (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
    No human review is needed — small, derived data whose copy already passed Step 5c. Never
