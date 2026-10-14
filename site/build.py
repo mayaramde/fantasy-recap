@@ -70,7 +70,7 @@ def player(p, live):
     if live:
         # player_id is what pairs a row with its Coach card (see player_cards); it is an
         # ESPN *player* id, the same one the headshot URLs already carry, never a member's.
-        row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"))
+        row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"), kickoff=p.get("kickoff"))
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
@@ -620,6 +620,10 @@ def player_cards(starters, bench, ctx):
             "blurb": player_blurb(p, starting, ctx),
             "lines": p.get("scoring_lines") or [],
             "notes": player_notes(p, starting, ctx),
+            # His NFL game: 'pre', 'in', 'post', or None; bye is "no game this week", which the
+            # lineup rows draw as BYE rather than as a projection of nothing.
+            "state": p.get("game_state"),
+            "bye": bool(ctx["on_bye"](p)),
         }
     return cards
 
