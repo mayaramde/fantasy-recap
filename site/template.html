@@ -256,6 +256,22 @@
     .nl-head .nl-cap { display: none; }
   }
 
+  /* ---------- phone tab switch: Latest news / League wire / Projected (620px and under) ---------- */
+  .tab-src { display: contents; }
+  .hub-side .tab-src > section { margin-top: 0; }
+  .ph-tabs, .ph-panel.ph-only { display: none; }
+  @media (max-width: 620px) {
+    .tab-src { display: none; }
+    .ph-tabs { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; margin-top: 34px; padding: 4px; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); }
+    .ph-tabs button { min-height: 44px; padding: 0 6px; border: 0; border-radius: 999px; background: none; color: var(--ink); font: 700 14px/1.1 var(--body); cursor: pointer; }
+    .ph-tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+    .ph-tabs { scroll-margin-top: 120px; }
+    .ph-tabs button:focus-visible { outline-offset: 1px; }
+    .ph-tabs button, .nl-chip, .tk-btn { -webkit-tap-highlight-color: transparent; }
+    .ph-panel.ph-only { display: block; }
+    .ph-panel:not(.on) { display: none; }
+  }
+
   /* ---------- page heads ---------- */
   .crumbs { margin-top: 20px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px; }
   .crumbs a { color: var(--accent); text-decoration: none; font-weight: 700; }
@@ -2504,6 +2520,51 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (again) again.focus({ preventScroll: true });
   });
 
+  /* Phone-only tab switch (620px and under) over the bottom of This week: Latest news, League wire,
+     Projected. The wire and the projections are the same sections the desktop draws, so on a phone the
+     originals (.tab-src) hide and each tab shows a second copy of the same function's output. Above
+     620px the tab bar and the extra copies are hidden and the page reads as it always has. The tab she
+     picked outlives the live re-render. */
+  let phoneTab = 'news';
+  function bottomPanels(w) {
+    const wire = wireSection(true), proj = w.complete ? '' : rankedProjections(w), news = newsSection();
+    const tabs = [['news', 'Latest news', news], ['wire', 'League wire', wire], ['proj', 'Projected', proj]].filter((t) => t[2]);
+    if (!tabs.length) return '';
+    const on = tabs.some((t) => t[0] === phoneTab) ? phoneTab : tabs[0][0];
+    return `
+      ${tabs.length > 1 ? `<div class="ph-tabs" role="tablist" aria-label="More from this week">${tabs.map(([k, label]) => `
+        <button type="button" role="tab" id="ptab-${k}" data-ptab="${k}" aria-controls="ppanel-${k}" aria-selected="${k === on}" tabindex="${k === on ? 0 : -1}">${label}</button>`).join('')}</div>` : ''}
+      ${tabs.map(([k, , html]) => `
+        <div class="ph-panel${k === 'news' ? '' : ' ph-only'}${k === on || tabs.length === 1 ? ' on' : ''}" role="tabpanel" id="ppanel-${k}" aria-labelledby="ptab-${k}">${html}</div>`).join('')}`;
+  }
+  function pickPhoneTab(k, focus) {
+    phoneTab = k;
+    document.querySelectorAll('[data-ptab]').forEach((t) => {
+      const sel = t.dataset.ptab === k;
+      t.setAttribute('aria-selected', sel);
+      t.tabIndex = sel ? 0 : -1;
+      if (sel && focus) t.focus({ preventScroll: true });
+    });
+    document.querySelectorAll('.ph-panel').forEach((p) => p.classList.toggle('on', p.id === `ppanel-${k}`));
+    // A shorter panel can pull the page up from under her thumb; keep the switch where she can see it.
+    const bar = document.querySelector('.ph-tabs');
+    const r = bar && bar.getBoundingClientRect();
+    if (r && (r.top < 100 || r.bottom > innerHeight)) bar.scrollIntoView({ block: 'start' });
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('button[data-ptab]');
+    if (t) pickPhoneTab(t.dataset.ptab, false);
+  });
+  document.addEventListener('keydown', (e) => {
+    const t = e.target.closest && e.target.closest('button[data-ptab]');
+    if (!t || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    const all = [...document.querySelectorAll('[data-ptab]')];
+    const i = all.indexOf(t);
+    const next = e.key === 'Home' ? 0 : e.key === 'End' ? all.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + all.length) % all.length;
+    e.preventDefault();
+    pickPhoneTab(all[next].dataset.ptab, true);
+  });
+
   function landingPage(w) {
     tickerWanted = !!(hub().news || []).length;
     const next = leadWithNext();
@@ -2563,13 +2624,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         </section>
         <div class="hub-side">
           ${coachDesk(mine)}
-          ${rankedProjections(w)}
-          ${wireSection(true)}
+          <div class="tab-src">${rankedProjections(w)}${wireSection(true)}</div>
         </div>
       </div>`}
 
-      ${w.complete ? wireSection() : ''}
-      ${newsSection()}
+      ${w.complete ? `<div class="tab-src">${wireSection()}</div>` : ''}
+      ${bottomPanels(w)}
 
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(w)}</p>`;
   }
