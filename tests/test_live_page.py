@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = (ROOT / "site" / "template.html").read_text()
 CSS = (ROOT / "site" / "live" / "live.css").read_text()
-PAGE = SRC[SRC.index("function livePage"):SRC.index("function livePage") + 3500]
+PAGE = SRC[SRC.index("function livePage"):SRC.index("function livePage") + SRC[SRC.index("function livePage"):].index("liveBoard(w)}")]
 BOARD = SRC[SRC.index("function liveBoard"):SRC.index("function livePage")]
 
 
@@ -27,11 +27,14 @@ class LivePageHead(unittest.TestCase):
         self.assertIn("Final scores", head)
         self.assertRegex(head, r"Final scores</h1>\s*\$\{scorePills\(w\)\}")  # final board keeps them in the head
         self.assertIn("Score extremes so far", BOARD)
-        self.assertGreater(BOARD.index("lv-extremes"), BOARD.index("</div>"))  # after the grid
+        self.assertGreater(BOARD.index("lv-extremes"), BOARD.index("</div>\n      <section class=\"lv-extremes\">"))  # after the grid closes
 
     def test_kicker_and_dek_follow_who_is_on_the_field(self):
         self.assertIn("anyPlaying ? 'live' : 'between games'", PAGE)
         self.assertIn("nothing is on the field right now", PAGE)
+        # the dek's rate comes from the timer's own constants, never a number typed into the copy
+        self.assertIn("${LIVE_PLAYING / 1000} seconds", PAGE)
+        self.assertNotIn("—", PAGE + BOARD)  # no em dashes in site copy
         self.assertIn("liveAnyPlaying(LIVE) ? LIVE_PLAYING : LIVE_IDLE", SRC)  # one definition, shared with the timer
 
     def test_desktop_grid_has_no_second_column_of_cards(self):
