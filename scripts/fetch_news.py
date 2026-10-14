@@ -43,17 +43,19 @@ OFF_FIELD = re.compile(
 
 
 INJURY = re.compile(
-    r"\b(injur\w*|out|questionable|doubtful|ir|il|sprain\w*|strain\w*|tear|torn|fractur\w*|concussion\w*"
-    r"|hamstring|ankle|knee|achilles|groin|shoulder|miss(?:es|ed|ing)?|sidelined|return(?:s|ed|ing)?"
-    r"|unlikely|limited|inactive|week-to-week|day-to-day|designat\w+|practice)\b", re.IGNORECASE)
+    r"\b(injur\w*|questionable|doubtful|ruled out|(?:is|are|was|were|will be|be) out\b|out (?:for|with|until|vs|against)"
+    r"|(?:on|to|from) (?:IR|injured reserve)|(?:will|could|may|to) miss|sidelined|week-to-week|day-to-day"
+    r"|sprain\w*|strain\w*|torn|fractur\w*|concussion\w*|hamstring|achilles|groin|unlikely (?:to play|vs|against)|limited in practice|\\((?:knee|ankle|leg|foot|hip|back|calf|shoulder|neck|rib|wrist|hand|quad|thigh|elbow|hamstring|groin)\\)"
+    r"|(?:\(|\b)(?:knee|ankle|leg|foot|hip|back|calf|shoulder|neck|rib|wrist|hand|finger|toe|quad|thigh|elbow)\)?"
+    r" (?:injury|sprain|strain|surgery|issue|soreness))\b", re.IGNORECASE)
 IMAGE = re.compile(r"https://a\.espncdn\.com/[^\s\"'<>]+")
 
 
 def tag_of(article, headline):
-    """Injury if the headline or blurb talks about availability, Feature for ESPN's long-form pieces
+    """Injury if the headline talks about availability (named phrases like "ruled out", "questionable" or "knee injury", not bare words like "out" or "miss"), Feature for ESPN's long-form pieces
     (type Story or Media), Team news for everything else. A proposal, not ESPN's own label: ESPN's
     categories carry no injury marker, so this reads the words."""
-    if INJURY.search(f"{headline} {article.get('description') or ''}"):
+    if INJURY.search(headline):
         return "Injury"
     return "Team news" if article.get("type") == "HeadlineNews" else "Feature"
 

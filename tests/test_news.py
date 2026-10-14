@@ -43,6 +43,14 @@ class KeepTest(unittest.TestCase):
         self.assertNotIn("image", self.keep(story("No pic", [101], images=[{"url": "https://evil.example/x.jpg"}]))[0])
         self.assertNotIn("image", self.keep(story("No pic", [101], images=None))[0])
 
+    def test_everyday_football_words_are_not_injuries(self):
+        for headline in ("Mahomes comes out firing", "Kicker misses a 50-yarder", "WR is on a tear",
+                         "Rookie takes a knee", "Kick returner shines", "Practice squad call-up", "Limited targets for WR"):
+            self.assertEqual(fetch_news.tag_of({"type": "HeadlineNews"}, headline), "Team news", headline)
+        for headline in ("Eagles pass rusher Jalyx Hunt (leg) unlikely vs. Panthers", "Star RB ruled out Sunday",
+                         "WR questionable for Week 6", "Lineman out with MCL sprain", "Knee injury ends his year"):
+            self.assertEqual(fetch_news.tag_of({"type": "HeadlineNews"}, headline), "Injury", headline)
+
     def test_a_listicle_is_dropped(self):
         self.assertEqual(self.keep(story("Rest-of-season rankings", list(range(90, 130)))), [])
         self.assertEqual(len(self.keep(story("Four names", [101, 1, 2, 3]))), 1)

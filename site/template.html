@@ -2383,7 +2383,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   function rankedNews() {
     const me = myTeam.get();
     const rank = (n) => (me && n.owners.some((o) => o.team_id === me) ? 0 : n.tag === 'Injury' ? 1 : 2);
-    return (hub().news || []).map((n, i) => [n, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map((x) => x[0]);
+    // A borrowed or older payload may not have the current shape; anything off is skipped, never thrown on.
+    const ok = (n) => n && Array.isArray(n.owners) && Array.isArray(n.players) && n.players.length && typeof n.url === 'string';
+    return (hub().news || []).filter(ok).map((n, i) => [n, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map((x) => x[0]);
   }
   const ownerText = (n) => n.owners.map((o) => o.manager).join(' + ');
   const ownedByMe = (n) => !!myTeam.get() && n.owners.some((o) => o.team_id === myTeam.get());
@@ -2395,7 +2397,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const el = document.getElementById('ticker');
     const list = tickerWanted ? rankedNews().slice(0, NEWS_TICKER_MAX) : [];
     el.hidden = !list.length;
-    if (!list.length) { tickerSig = ''; return; }
+    if (!list.length) return;
     const sig = `${myTeam.get()}|${list.map((n) => n.url).join(' ')}`;
     if (sig === tickerSig) return;
     tickerSig = sig;
@@ -2496,7 +2498,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   }
 
   function newsSection() {
-    if (!(hub().news || []).length) return '';
+    if (!rankedNews().length) return '';
     const at = newsAt();
     return `
       <section id="latest-news">
@@ -2535,8 +2537,18 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${tabs.length > 1 ? `<div class="ph-tabs" role="tablist" aria-label="More from this week">${tabs.map(([k, label]) => `
         <button type="button" role="tab" id="ptab-${k}" data-ptab="${k}" aria-controls="ppanel-${k}" aria-selected="${k === on}" tabindex="${k === on ? 0 : -1}">${label}</button>`).join('')}</div>` : ''}
       ${tabs.map(([k, , html]) => `
-        <div class="ph-panel${k === 'news' ? '' : ' ph-only'}${k === on || tabs.length === 1 ? ' on' : ''}" role="tabpanel" id="ppanel-${k}" aria-labelledby="ptab-${k}">${html}</div>`).join('')}`;
+        <div class="ph-panel${k === 'news' ? '' : ' ph-only'}${k === on || tabs.length === 1 ? ' on' : ''}" id="ppanel-${k}" data-tabs="${tabs.length > 1}">${html}</div>`).join('')}`;
   }
+  // The panels are tabpanels only while the tab bar is on screen (phones); above 620px they're plain sections.
+  const phoneMQ = window.matchMedia('(max-width: 620px)');
+  function syncPanelRoles() {
+    document.querySelectorAll('.ph-panel').forEach((p) => {
+      const tabbed = phoneMQ.matches && p.dataset.tabs === 'true';
+      if (tabbed) { p.setAttribute('role', 'tabpanel'); p.setAttribute('aria-labelledby', `ptab-${p.id.slice(7)}`); }
+      else { p.removeAttribute('role'); p.removeAttribute('aria-labelledby'); }
+    });
+  }
+  phoneMQ.addEventListener('change', syncPanelRoles);
   function pickPhoneTab(k, focus) {
     phoneTab = k;
     document.querySelectorAll('[data-ptab]').forEach((t) => {
@@ -2566,7 +2578,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   });
 
   function landingPage(w) {
-    tickerWanted = !!(hub().news || []).length;
+    tickerWanted = !!rankedNews().length;
     const next = leadWithNext();
     const rows = coachRows(next) || [];
     const weekNum = next ? ahead().week : w.week;
@@ -3460,6 +3472,7 @@ __BTS_JS__
     else { html = notFound(); }
     $('#main').innerHTML = html;
     drawTicker();
+    syncPanelRoles();
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
@@ -3541,8 +3554,15 @@ __BTS_JS__
         // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
         const chips = document.querySelector('.hub-chips');
         const left = chips ? chips.scrollLeft : 0;
+        // The news chip row and a focused chip or tab get the same courtesy.
+        const nrow = document.querySelector('.nl-chips');
+        const nleft = nrow ? nrow.scrollLeft : 0;
+        const fa = document.activeElement;
+        const focusSel = fa && fa.dataset && (fa.dataset.nt ? `[data-nt="${fa.dataset.nt}"]` : fa.dataset.ptab ? `[data-ptab="${fa.dataset.ptab}"]` : '');
         route();
         if (left) { const again = document.querySelector('.hub-chips'); if (again) again.scrollLeft = left; }
+        if (nleft) { const again = document.querySelector('.nl-chips'); if (again) again.scrollLeft = nleft; }
+        if (focusSel) { const again = document.querySelector(focusSel); if (again) again.focus({ preventScroll: true }); }
       }
     } catch { /* offline, blocked, or a 503 (ESPN refused): keep the baked numbers */ }
   }
