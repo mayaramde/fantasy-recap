@@ -359,12 +359,17 @@ class HubLineupRowTest(unittest.TestCase):
             self.assertIsNone(p["kickoff"])
             self.assertTrue(p["team"] and p["logo"] and p["player_id"])
 
-    def test_a_finished_week_gains_no_live_fields(self):
+    def test_a_finished_week_gains_no_live_only_fields(self):
+        """A finished week's rows carry player_id, team and the Coach rule's bye (from its own capture),
+        but never the live-only logo, kickoff or game clock."""
         dst = self.dst_id()
         rows = self.week(lambda p: p.update(game_state=None) if p["player_id"] == dst else None, live=False)
         for p in rows.values():
-            for k in ("bye", "playing", "team", "logo", "player_id", "kickoff"):
+            for k in ("playing", "logo", "kickoff"):
                 self.assertNotIn(k, p)
+            self.assertTrue(p["team"] and p["player_id"])
+        self.assertTrue(rows[dst]["bye"])
+        self.assertEqual({k for k, p in rows.items() if p.get("bye")}, {dst})
 
     def test_the_hub_row_and_the_coach_card_agree_on_a_bye(self):
         """Both read is_on_bye: for every player on every roster, the row's flag is the card's."""

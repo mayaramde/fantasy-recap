@@ -3,7 +3,8 @@
 Writes two self-contained single-file sites (pages are hash routes inside one HTML file):
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
-  site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt)
+  site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt
+                          + box-lines/week-NN.json, the box score's scoring lines for each published week)
 
 A "live" page shows the newest captured week that has no recap in that output yet
 (in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
@@ -21,6 +22,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 import urllib.request
 from collections import Counter
@@ -82,24 +84,61 @@ def is_on_bye(p, states_known):
 
 
 def player(p, live, states_known):
-    """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
-    NFL game is on, and absent otherwise, so a finished week carries no live leftovers.
-    The NFL team logo rides along on the live week, which is the only page that shows it,
-    `injury` is ESPN's designation in plain words, absent when he isn't listed, and `bye` is
-    True when his team has no game, absent otherwise (including when the capture has no game
-    states, where it can't be known)."""
+    """One row of a box score. `player_id` (ESPN's *player* id, the one the headshot URLs carry,
+    never a member's) and `team` are read from that week's own capture on every week, so a
+    mid-season trade never puts today's badge on an old box score. `state` is his NFL game
+    ('pre', 'in', 'post') as the capture saw it, and `bye` is True when his team has no game.
+    Each is absent, never guessed, when the capture doesn't carry it: weeks captured before game
+    states existed have no `state` or `bye`.
+    The live week also carries `logo`, `kickoff` and `lines` (ESPN's own scoring for the week,
+    the Coach cards' {label, value, points} rows, absent for a player with no stat line, a D/ST
+    included) on the row. A finished week keeps those two out of the page: its logos are one
+    `team_logos` map (see week_payload) and its lines live in a file beside the site (see
+    week_lines). `playing` is the game clock ("Q3 7:22") while that game is on, so a finished
+    week carries no live leftovers, and `injury` is ESPN's designation in plain words, absent
+    when he isn't listed."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
+    row.update(player_id=p.get("player_id"), team=p.get("team"))
     if live:
-        # player_id is what pairs a row with its Coach card (see player_cards); it is an
-        # ESPN *player* id, the same one the headshot URLs already carry, never a member's.
-        row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"), kickoff=p.get("kickoff"))
-        if is_on_bye(p, states_known):
-            row["bye"] = True
+        row.update(logo=p.get("logo"), kickoff=p.get("kickoff"))
+        if p.get("scoring_lines"):
+            row["lines"] = p["scoring_lines"]
+    if p.get("game_state"):
+        row["state"] = p["game_state"]
+    if is_on_bye(p, states_known):
+        row["bye"] = True
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
         row["injury"] = INJURY_LABEL[p["injury_status"]]
     return row
+
+
+def box_players(facts):
+    return [p for t in facts["teams"] for p in t["starters"] + t["bench"]]
+
+
+def week_lines(facts):
+    """{player_id: [{label, value, points}]} for a finished week's box score, ESPN's own scoring
+    lines as the Coach cards carry them. Written beside the site (see write_box_lines) rather than
+    baked into the page, so the page only pays for them when somebody opens a player."""
+    return {str(p["player_id"]): p["scoring_lines"] for p in box_players(facts) if p.get("scoring_lines")}
+
+
+def box_lines_path(week):
+    return f"box-lines/week-{week:02d}.json"
+
+
+def write_box_lines(out, recap_weeks, preview):
+    """Write each included week's lines file under `out`/box-lines/, and clear what an earlier
+    build left there so a week that is no longer published can't linger on the league site."""
+    folder = out / "box-lines"
+    shutil.rmtree(folder, ignore_errors=True)
+    for facts, w in recap_weeks:
+        lines = week_lines(facts)
+        if lines and (preview or w["status"] == "published"):
+            folder.mkdir(parents=True, exist_ok=True)
+            (out / box_lines_path(w["week"])).write_text(json.dumps({"week": w["week"], "lines": lines}, separators=(",", ":")))
 
 
 def side(t, live, states_known):
@@ -143,8 +182,8 @@ def worst_performances(facts):
 
 def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
-    # Only the live week's rows say who is on a bye; a finished week has no use for the scan
-    states_known = live and game_states_known(p for t in facts["teams"] for p in t["starters"] + t["bench"])
+    # A capture that never heard the scoreboard can't say who is on a bye, so its rows say nothing
+    states_known = game_states_known(box_players(facts))
     games, seen = [], set()
     for t in facts["teams"]:
         key = tuple(sorted((t["team_id"], t["opponent_id"])))
@@ -159,12 +198,19 @@ def week_payload(facts, recap, live=False):
     games.sort(key=lambda g: g["winner"]["points"] + g["loser"]["points"], reverse=True)
 
     lg = facts["league"]
+    extra = {}
+    if not live:
+        # A finished week's rows carry `team` only; the badge for each is looked up here, once.
+        extra["team_logos"] = {p["team"]: p["logo"] for p in box_players(facts) if p.get("team") and p.get("logo")}
+        if week_lines(facts):
+            extra["lines_src"] = box_lines_path(facts["week"])
     return {
         "week": facts["week"],
         "status": recap.get("status", "draft"),
         "complete": facts["complete"],
         "headline": recap.get("headline", ""),
         "dek": recap.get("dek", ""),
+        **extra,
         "games": games,
         **{k: recap.get(k, []) for k in AWARD_KEYS},
         "glossary": recap.get("glossary", []),
@@ -1732,6 +1778,7 @@ def main():
     web.mkdir(exist_ok=True)
     (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_box_lines(web, recap_weeks, preview=False)
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
           + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
@@ -1750,6 +1797,7 @@ def main():
     web_preview.mkdir(exist_ok=True)
     (web_preview / "index.html").write_text(standalone(html, "Draft recap, not published yet."))
     (web_preview / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_box_lines(web_preview, recap_weeks, preview=True)
     print(f"preview.html: weeks {[(w['week'], w['status']) for w in weeks]}")
 
 

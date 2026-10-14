@@ -90,8 +90,17 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   best effort, so a capture without game states has a null `kickoff` and no `bye`, and one without `injury_status`
   has no `injury`. Absent means unknown, never "healthy" or "has a game". `bye` is the Coach cards' own rule
   (`is_on_bye`: game states are known and he has no game), so a bye player has `bye: true` and a null `kickoff`.
-  `playing` is still present only while his game is on. Recapped (finished) weeks keep the plain rows without any of
-  these. The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
+  `playing` is still present only while his game is on. The live week's rows also carry `lines` (ESPN's own
+  scoring for him, `[{label, value, points}]` as on the Coach cards; absent with no stat line, a D/ST has its own).
+  **Recapped (finished) weeks** read the same fields from that week's own capture (a mid-season trade never puts
+  today's badge on an old box score): every row has `player_id` and `team`, plus `state` (`pre`, `in`, `post`; absent,
+  never guessed, when the capture predates game states, as weeks 1 and 2 do) and `bye: true` by the same
+  `is_on_bye` rule. Never `kickoff` or `playing`. To keep the page small, `logo` and `lines` stay off those rows: the
+  week carries one `team_logos` map (`{team: logo}`), and its lines are written beside the site as
+  `box-lines/week-NN.json` (`{week, lines: {player_id: [...]}}`, only weeks that have any; `lines_src` on the week
+  payload points at it). `web/` gets published weeks only, `web-preview/` drafts too, and each build clears the folder
+  first. The artifact builds (`index.html`, `preview.html`) have no file to fetch, so a page reading `lines_src` has to
+  cope with it failing. The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
   badge (a D/ST gets its logo), team and kickoff in the viewer's own time zone, a status sticker (Q, DTD, D, OUT, IR,
   SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to check" flag on
   the side. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".
