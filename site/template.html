@@ -378,12 +378,12 @@
   .rp-hero { position: relative; margin-top: 22px; border: 2px solid var(--edge); border-radius: 28px; background: var(--board); color: var(--on-board); box-shadow: 8px 8px 0 var(--accent); overflow: hidden; padding: 48px 48px 40px; isolation: isolate; }
   .rp-hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; z-index: -2; }
   .rp-hero::after { content: ""; position: absolute; right: -60px; top: -80px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; z-index: -1; }
-  .rp-big { position: absolute; right: 36px; bottom: -70px; font: 900 420px/1 var(--display); color: transparent; -webkit-text-stroke: 3px rgba(244, 246, 255, 0.22); z-index: -1; user-select: none; pointer-events: none; }
+  .rp-big { position: absolute; right: 36px; bottom: -70px; font: 900 clamp(120px, 34vw, 380px)/1 var(--display); color: transparent; -webkit-text-stroke: 3px rgba(244, 246, 255, 0.22); z-index: -1; user-select: none; pointer-events: none; }
   .rp-hero-in { position: relative; max-width: 880px; }
   .rp-hero .kicker { display: inline-flex; align-items: center; gap: 10px; min-height: 34px; padding: 0 14px; background: var(--lime); color: var(--on-pop); font: 600 15px/1 var(--script); transform: rotate(-1.5deg); }
   .rp-hero .kicker i { width: 9px; height: 9px; border-radius: 50%; background: var(--on-pop); display: inline-block; }
-  .rp-hero h1 { margin: 18px 0 16px; font: 900 clamp(40px, 5.4vw, 78px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; color: var(--on-board); }
-  .rp-hero .dek { margin: 0; font-size: 19px; line-height: 1.55; color: var(--on-board-muted); max-width: 64ch; }
+  .rp-hero h1 { margin: 18px 0 16px; font: 900 clamp(26px, 2.2vw + 18px, 46px)/1.02 var(--display); letter-spacing: 0.005em; max-width: 24ch; color: var(--on-board); }
+  .rp-hero .dek { margin: 0; font-size: clamp(15px, 0.4vw + 13.5px, 18px); line-height: 1.5; color: var(--on-board-muted); max-width: 64ch; }
   .rp-hero .pills { gap: 14px; margin-top: 30px; }
   .rp-hero .pill { min-height: 52px; padding: 4px 18px 4px 4px; box-shadow: 3px 3px 0 var(--drop); transition: transform 0.2s; }
   .rp-hero .pill-plain { padding-left: 18px; }
@@ -426,11 +426,13 @@
   .rp .sec-head h2 { font: 900 40px/1 var(--display); text-transform: uppercase; white-space: nowrap; }
   .rp .sec-head .rule { height: 3px; background: var(--edge); border-radius: 3px; min-width: 20px; }
   .rp .sec-sub { margin: 10px 0 0; font-size: 15px; }
-  @media (max-width: 980px) { .rp-hero { padding: 36px 28px; } .rp-big { font-size: 300px; right: 10px; } }
+  @media (max-width: 980px) { .rp-hero { padding: 36px 28px; } .rp-big { right: 10px; } }
   @media (max-width: 640px) {
     .rp-hero { padding: 28px 20px; border-radius: 22px; }
-    .rp-big { font-size: 220px; bottom: -40px; }
-    .rp-hero .dek { font-size: 17px; }
+    .rp-big { bottom: -24px; }
+    .rp-hero h1 { margin: 14px 0 12px; }
+    .rp-hero .pills { gap: 8px; margin-top: 18px; }
+    .rp-hero .pill { min-height: 44px; }
     .rp .sec-head h2 { font-size: 30px; white-space: normal; }
   }
 
@@ -1127,8 +1129,8 @@
   .rp-std .mv.down { background: var(--pink); color: var(--on-pop); }
   .rp-std .mv.flat { color: var(--muted); }
   .rp-std .tm { display: flex; flex-direction: column; min-width: 0; }
-  .rp-std .mg { font: 800 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
-  .rp-std .mg:hover { color: var(--accent); }
+  .rp-std .st-team { font: 800 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
+  .rp-std .st-team:hover { color: var(--accent); }
   .rp-std .tn { max-width: 190px; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rp-std .rec { font: 500 15px/1 var(--mono); }
   .rp-std .sc { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 120px; }
@@ -2481,7 +2483,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <tr class="${i === 0 ? 'top' : ''}">
             <td class="rk">${i + 1}</td>
             <td>${rankMove(t.rank_move)}</td>
-            <td><span class="tm"><a class="mg" href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tn">${esc(t.team_name)}</span></span></td>
+            <td><span class="tm"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tn">${esc(t.team_name)}</span></span></td>
             <td class="r rec">${record(t)}</td>
             <td class="r c5"><span class="sc"><span class="v">${f2(t.points_for)}</span><span class="bar"><i style="width:${(t.points_for / max * 100).toFixed(1)}%;animation-delay:${(0.15 + i * 0.07).toFixed(2)}s"></i></span></span></td>
           </tr>`).join('')}
