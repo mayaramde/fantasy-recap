@@ -107,6 +107,20 @@ for trades) is the point of this skill.
   `trade_finder_disclosure_shown: true` in Step 6's file — check that flag before ever
   showing it again.
 
+## Step 4a: season stats for the matchup page's Key stats tiles
+
+Skip this when Step 4 recorded `reached: false` or Step 3 found no live week; the tiles then simply don't
+show. It is data, not copy: nothing here is written in the site's voice and nothing goes through Step 5c.
+
+For the live week (week `N`), call `get_player_stats` with `range_type="week_range"`, `week_start=1`,
+`week_end=N-1` and the season as `year`, for **every rostered player on all 8 teams, starters and bench,
+except D/ST** (read the names off the worktree's `data/2026/week-NN/facts.json`). The tool looks players up
+by full name, so send them in batches of about 15, spelled exactly as the facts spell them. Save the
+responses, as returned, to one JSON list in the scratch space (not the repo), e.g.
+`/tmp/fantasy-coach-daily-<date>-stats.json`. Don't read anything into the tool's `unresolved_names`: it has
+listed every name in a batch that came back fine, and its `data` can carry a stray D/ST row. Step 6 pairs
+players up by name, team and position and reports the ones that don't pair.
+
 ## Step 5: do the actual roster analysis
 
 If Step 4 recorded `reached: false`, skip this step's FantasyPros-sourced cards and Step 5a's trades
@@ -334,6 +348,19 @@ is the archive):
 it's `false`, add `"error": "<what failed>"` and write no FantasyPros-sourced cards. `scripts/check.py`
 enforces both, and requires the field on every snapshot generated from 2026-10-13 on.
 
+**After writing the file**, if Step 4a ran, add its `player_stats` block (season totals by ESPN player id, what the
+matchup page's Key stats tiles divide by each player's own games):
+
+```
+python3 scripts/fp_player_stats.py --facts data/2026/week-NN/facts.json \
+    --responses /tmp/fantasy-coach-daily-<date>-stats.json --into data/2026/fantasypros/latest.json
+```
+
+It replaces `player_stats` and nothing else, and prints the players it could not pair (no match, a different team,
+ambiguous): list them in the Output summary, never guess at one. A run that skipped Step 4a, or whose lookups all
+failed, writes no `player_stats`, and the page shows no tiles that day; never carry yesterday's totals forward
+(they lag a week and the build drops them anyway). `scripts/check.py` validates the block.
+
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
 `coach_cards` and `summary` come from Step 5b; leave them out for a week the brief didn't cover. `league` (one per
@@ -364,5 +391,5 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 A short summary, opening with "FantasyPros reached" or the reason it wasn't: the PR link and whether auto-merge is on, which teams got a new waiver idea or
 an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
-for failing the voice gate twice, and — only the first time
+for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), and — only the first time
 it comes up — Trade Finder's premium disclosure.

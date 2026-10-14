@@ -100,7 +100,20 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `box-lines/week-NN.json` (`{week, lines: {player_id: [...]}}`, only weeks that have any; `lines_src` on the week
   payload points at it). `web/` gets published weeks only, `web-preview/` drafts too, and each build clears the folder
   first. The artifact builds (`index.html`, `preview.html`) have no file to fetch, so a page reading `lines_src` has to
-  cope with it failing. The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
+  cope with it failing.
+  **Key stats** (live week only): when the FantasyPros snapshot is fresh (the same 36-hour rule as its cards) and
+  its `player_stats` covers at least the weeks already played, each live row for a QB, RB, WR, TE or K also carries
+  `key`, `[{label, value}]` in the player panel's tile order with string values, and `key_games` (his games played).
+  Tiles are season so far, per game he played (his own `games`, so a player on 4 games divides by 4): RB carries,
+  rush yds, targets, catches; WR and TE targets, catches, rec yds and TDs this season (receiving plus rushing);
+  QB pass att, pass yds, rush att and pass TDs; K FGs per game, FG accuracy, extra points ("13 of 14") and games
+  played. Carries per game, not a carry share: a share needs each team's total carries and nothing here has them. A
+  D/ST has none, and a missing, stale, short or unmatched snapshot just leaves `key` off (the panel says "No stats
+  on file yet"). The totals are `player_stats` in `data/<season>/fantasypros/latest.json`, built by
+  `scripts/fp_player_stats.py` from FantasyPros' `get_player_stats` in `coach-daily` Step 4a (no new credentials): keyed
+  by ESPN player id, paired with FantasyPros by name, NFL team and position, with whoever doesn't pair listed in
+  `player_stats.unmatched` and never guessed. About 23 KB more on the live payload, `/api/live` included.
+  The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
   badge (a D/ST gets its logo), team and kickoff in the viewer's own time zone, a status sticker (Q, DTD, D, OUT, IR,
   SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to check" flag on
   the side. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".

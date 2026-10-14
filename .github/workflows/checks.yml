@@ -28,6 +28,7 @@ jobs:
       - run: python -m unittest tests.test_preview_live -v
       - run: python -m unittest tests.test_lowlights -v
       - run: python -m unittest tests.test_box_score_rows -v
+      - run: python -m unittest tests.test_key_stats -v
       - run: python -m unittest tests.test_check_fantasypros -v
       - run: python -m unittest tests.test_bts_page -v
       - run: python -m unittest tests.test_remaining_projection -v
