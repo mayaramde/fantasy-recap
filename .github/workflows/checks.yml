@@ -29,5 +29,6 @@ jobs:
       - run: python -m unittest tests.test_lowlights -v
       - run: python -m unittest tests.test_check_fantasypros -v
       - run: python -m unittest tests.test_bts_page -v
-      - run: node --test tests/coach/*.test.js
+      - run: python -m unittest tests.test_remaining_projection -v
+      - run: node --test tests/coach/*.test.js tests/live/*.test.js
       - run: python scripts/check.py

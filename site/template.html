@@ -1275,6 +1275,7 @@
   @media (max-width: 559px) { .strength thead th:first-child, .strength tbody th { width: 112px; } .strength tbody th { font-size: 18px; } .strength tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
 
 __COACH_CSS__
+__LIVE_CSS__
   /* Coach: two side-by-side cards (stacked on a phone): waiver order and the injury report */
   .coach-duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 34px; }
   @media (min-width: 900px) { .coach-duo { grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); align-items: start; } }
@@ -2476,6 +2477,100 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`;
   }
 
+  /* ---------- the Live scoreboard while games are on: your game, then the rest of the league ----------
+     The logic (who is on the left, the verdicts, the movement between refreshes) is in site/live/live.js;
+     this is the markup. Sides never swap: the payload's winner/loser order is only used for the score. */
+  let liveMove = null; // liveMovement()'s last result; refreshLive() advances it, so a tag lives for one refresh
+  const liveDelta = (id) => { const d = liveMove && liveMove.delta.get(id); return d ? `<span class="lv-delta">+${f2(d)}</span>` : ''; };
+  const livePlaying = (s) => (s.starters || []).filter((p) => p.playing);
+
+  function liveMeter(s, rem, scale, cls) {
+    const w = (n) => `${Math.max(Math.min(n / scale * 100, 100), 0).toFixed(1)}%`;
+    return `<div class="lv-meter-row"><span class="nm">${esc(s.manager)}</span>
+      <div class="lv-meter" role="img" aria-label="${esc(s.manager)}: ${f2(s.points)} scored, ${f1(rem)} projected still to come"><i class="so ${cls}" style="width:${w(s.points)}"></i><i class="to" style="width:${w(rem)}"></i></div>
+      <span class="num">${f2(s.points)} +${f1(rem)}</span></div>`;
+  }
+
+  function liveHeroCard(w) {
+    const me = myTeam.get();
+    const { game, picked } = liveHero(w.games, me);
+    if (!game) return '';
+    const [a, b] = liveSides(game, picked ? me : null);
+    const lead = liveLeader(game), leader = lead === a.team_id ? a : lead === b.team_id ? b : null;
+    const flipped = !!(liveMove && liveMove.flip.has(game.key));
+    const chance = liveChance(a, b);
+    const onField = [...livePlaying(a).map((p) => [p, a]), ...livePlaying(b).map((p) => [p, b])];
+    const ra = liveRemaining(a), rb = liveRemaining(b);
+    const next = onField.length ? null : liveNextKickoff([...(a.starters || []), ...(b.starters || [])], Date.now());
+    const side = (s, cls) => `
+      <div class="lv-side ${cls}">
+        <div class="mgr">${esc(s.manager)}</div><div class="team">${esc(s.team_name)}</div>
+        <div class="lv-score num ${lead === s.team_id ? 'lead' : ''}">${cls === 'r' ? liveDelta(s.team_id) : ''}${f2(s.points)}${cls === 'r' ? '' : liveDelta(s.team_id)}</div>
+      </div>`;
+    return `
+      <section class="lv-hero-wrap" aria-labelledby="lv-hero-h">
+        <div class="sec-head"><span class="marker ball" aria-hidden="true"></span><h2 id="lv-hero-h">${picked ? 'Your game' : 'Closest game'}</h2><div class="rule"></div></div>
+        <div class="lv-hero">
+          <div class="lv-top"><span>${picked ? `Viewing as ${esc(a.manager)}` : 'Closest to a coin flip'}</span><span class="lv-tag ${picked ? '' : 'pick'}">${picked ? (onField.length ? 'Live' : 'Between games') : 'Not your team'}</span></div>
+          <div class="lv-versus" aria-live="polite">${side(a, 'l')}<div class="lv-vs" aria-hidden="true">vs</div>${side(b, 'r')}</div>
+          <div class="lv-leadline">
+            <span>${leader ? `<b>${esc(leader.manager)}</b> leads by <b>${f2(liveGap(game))}</b>` : `Tied at <b>${f2(a.points)}</b>`}</span>
+            ${flipped ? '<span class="lv-sticker">Lead changed</span>' : ''}
+            ${a.live_projection != null && b.live_projection != null ? `<span class="lv-hint">Projected ${esc(a.manager)} ${f1(a.live_projection)}, ${esc(b.manager)} ${f1(b.live_projection)}</span>` : ''}
+          </div>
+          ${chance == null ? '' : `
+          <div class="lv-prob" role="img" aria-label="Chance to win: ${esc(a.manager)} ${Math.round(chance * 100)}%, ${esc(b.manager)} ${Math.round((1 - chance) * 100)}%"><span class="a" style="flex:${chance.toFixed(3)}"></span><span class="b" style="flex:${(1 - chance).toFixed(3)}"></span></div>
+          <div class="lv-prob-lab"><span>${esc(a.manager)} ${Math.round(chance * 100)}% to win</span><span>${esc(b.manager)} ${Math.round((1 - chance) * 100)}%</span></div>`}
+          ${ra == null || rb == null ? '' : `
+          <div class="lv-come">
+            <h3>Still to come</h3>
+            ${(() => { const scale = Math.max(a.points + ra, b.points + rb, 1); return liveMeter(a, ra, scale, '') + liveMeter(b, rb, scale, 'o'); })()}
+            <p class="lv-hint">Solid is points scored. Hatched is ESPN's projection for the starters still to play.</p>
+          </div>`}
+          <div class="lv-field">
+            <h3>${next ? 'Up next' : 'On the field right now'}</h3>
+            ${onField.length
+              ? `<div class="lv-chips">${onField.map(([p, s]) => `<span class="lv-chip"><span class="live-dot" aria-hidden="true"></span>${esc(p.name)} <span class="clk">${esc(p.playing)}</span><span class="own">${esc(s.manager)}</span></span>`).join('')}</div>`
+              : next ? `<div>Next kickoff <b>${esc(kickoffText(next))}</b></div>` : '<div class="lv-nobody">Nobody is on the field right now.</div>'}
+            <p class="lv-hint">${[a, b].map((s) => `${esc(s.manager)}: ${s.playing_now || 0} playing, ${s.yet_to_play || 0} yet to play.`).join(' ')}</p>
+          </div>
+          ${picked ? '' : `<div class="lv-pickbox"><span>Pick your team and your game goes first, every time.</span><button class="lv-btn" type="button" data-ask-team>Pick your team</button></div>`}
+        </div>
+      </section>`;
+  }
+
+  // A game that isn't yours: the verdict on top, the score row, a bar split by points scored.
+  function liveCard(g, w) {
+    const [a, b] = liveSides(g);
+    const lead = liveLeader(g), leader = lead === a.team_id ? a : lead === b.team_id ? b : null;
+    const v = liveVerdict(liveChance(a, b));
+    const total = a.points + b.points, aw = total > 0 ? a.points / total * 100 : 50;
+    const playing = (a.playing_now || 0) + (b.playing_now || 0);
+    const flipped = !!(liveMove && liveMove.flip.has(g.key));
+    return `
+      <a class="lv-card" href="${base(w)}.game-${g.key}" aria-label="${esc(a.manager)} ${f2(a.points)}, ${esc(b.manager)} ${f2(b.points)}. ${leader ? `${esc(leader.manager)} leads by ${f1(liveGap(g))}. ` : 'Tied. '}${v ? `${v.label}, ${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}. ` : ''}${flipped ? 'Lead changed. ' : ''}Open live box score">
+        ${v ? `<div class="lv-card-head"><span class="lv-verdict ${v.tone}">${v.label}</span><span class="lv-pct">${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}</span></div>` : ''}
+        <div class="lv-top2">
+          <div class="lv-s"><div class="m">${esc(a.manager)}</div><div class="lv-sc num ${lead === a.team_id ? 'lead' : ''}">${f1(a.points)}${liveDelta(a.team_id)}</div></div>
+          <div class="lv-s r"><div class="m">${esc(b.manager)}</div><div class="lv-sc num ${lead === b.team_id ? 'lead' : ''}">${liveDelta(b.team_id)}${f1(b.points)}</div></div>
+        </div>
+        <div class="lv-tug" role="img" aria-label="Share of points: ${esc(a.manager)} ${f1(a.points)}, ${esc(b.manager)} ${f1(b.points)}"><i class="l" style="width:${aw.toFixed(1)}%"></i><i class="r" style="width:${(100 - aw).toFixed(1)}%"></i><b class="mid"></b></div>
+        <div class="lv-foot"><span>${leader ? `<b>${esc(leader.manager)}</b> leads by ${f1(liveGap(g))}` : 'Tied'}${flipped ? ' <span class="lv-sticker">Lead changed</span>' : ''}</span><span>${playing ? `<span class="live-dot" aria-hidden="true"></span>${playing} playing now` : 'No one on the field'}</span></div>
+      </a>`;
+  }
+
+  function liveBoard(w) {
+    const hero = liveHero(w.games, myTeam.get()).game;
+    const rest = hero ? liveClosest(w.games.filter((g) => g !== hero)) : [];
+    return `
+      ${liveHeroCard(w)}
+      ${rest.length ? `<section>
+        ${secHead('flag', 'Rest of the league')}
+        <p class="sec-sub">Win chances are ESPN's. The bar is each side's share of the points scored so far. Closest game first, and the sides stay put when the lead changes. Tap a game for the live box score.</p>
+        <div class="lv-games">${rest.map((g) => liveCard(g, w)).join('')}</div>
+      </section>` : ''}`;
+  }
+
   function livePage(w) {
     const fmtDate = (iso) => new Date(iso).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
     return `
@@ -2485,16 +2580,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <h1>${w.complete ? 'Final scores' : 'Live scoreboard'}</h1>
           ${scorePills(w)}
         </div>
-        <p class="dek">${liveLabel(w)} Updated ${updated(w.captured_at)}. ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
+        <p class="dek">${liveLabel(w)} ${!w.complete && liveStale(w.captured_at, Date.now(), window.FANTASY_LIVE_API) ? `<span class="lv-stale">Updated ${updated(w.captured_at)}, a few minutes behind</span>.` : `Updated ${updated(w.captured_at)}.`} ${window.FANTASY_LIVE_API ? `Scores refresh about every minute${w.complete ? '' : ' while games are on'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
       </div>
 
       ${w.advice ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
 
-      <section>
+      ${w.complete ? `<section>
         ${secHead('board', 'Scoreboard')}
-        <p class="sec-sub">${w.complete ? 'Tap a game for the box score.' : 'Projected scores and win chances are ESPN\'s. A pulsing dot counts the starters whose NFL game is on right now; "yet to play" is the ones who haven\'t kicked off. Tap a game for the live box score.'}</p>
+        <p class="sec-sub">Tap a game for the box score.</p>
         <div class="games">${w.games.map((g) => scoreBox(g, w)).join('')}</div>
-      </section>
+      </section>` : liveBoard(w)}
 
       <section>
         <div class="two-col">
@@ -3668,6 +3763,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      into each team's own report. The modules live in site/coach/ (pure insight functions with
      tests, plus landing.js for the markup), inlined below. */
 __COACH_JS__
+__LIVE_JS__
 
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
@@ -4198,6 +4294,9 @@ __BTS_JS__
     if (e.target.closest('button[data-cl-more]')) { clShowAll = !clShowAll; route(); const again = document.querySelector('button[data-cl-more]'); if (again) again.focus({ preventScroll: true }); }
   });
 
+  // "Pick your team" on the Live hero opens the same Who are you? picker as the Viewing as chip.
+  document.addEventListener('click', (e) => { if (e.target.closest && e.target.closest('[data-ask-team]')) viewingAs.ask(); });
+
   // A team name in the League tab or the landing is a role=button; Enter and Space open it like a tap.
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -4227,6 +4326,8 @@ __BTS_JS__
       // A new week may have started since this build was deployed; only ever patch the
       // week this page is actually showing.
       if (fresh.week !== LIVE.week) return;
+      // Movement is a nicety: a malformed game must never stop the numbers refreshing.
+      try { liveMove = liveMovement(liveMove, fresh.games || []); } catch { liveMove = null; }
       Object.assign(LIVE, fresh);
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the

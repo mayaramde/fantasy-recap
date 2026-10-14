@@ -57,6 +57,16 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   a player whose game is on right now a pulsing lime sticker with the game clock ("Q3 7:22", "Halftime").
 - Each matchup card counts, per side, "2 playing now" (a starter whose game is on) and "1 starter yet to play"
   (kickoff still ahead), or "all starters done" when neither is left.
+- While games are on, the scoreboard (`liveBoard` in `site/template.html`, logic in `site/live/live.js`) leads with
+  "Your game" for the Viewing-as team (else the closest game, with a "Pick your team" button), then "Rest of the
+  league" as tug-of-war cards, closest first. Sides never swap: yours on the left, otherwise the lower team id. The
+  verdict sticker is ESPN's win chance for the favorite (0.85 or more "Nearly locked", 0.65 or more "Leaning", else
+  "Coin flip"). A "+X.XX" tag and a "Lead changed" sticker last for one `/api/live` refresh, diffed in the browser
+  against the previous refresh (nothing on first load). The page says it is a few minutes behind when the capture
+  is over five minutes old.
+- The "Still to come" meter uses `remaining_projection` (`scripts/analyze.py`): full projection for starters whose
+  game is ahead, what is left of it for one mid-game, nothing once his game is over. ESPN's own team figure
+  (`live_projection`) is not points plus remaining, so it is shown only as "Projected".
 
 ## Week hub ("This week")
 
