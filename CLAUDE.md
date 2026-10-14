@@ -88,6 +88,10 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 - `recaps/<season>/week-NN.json`: the written recap (awards, callouts, blurbs). Content only, no HTML.
 - `site/`: template + build script → `site/dist/index.html`/`preview.html` (Claude-artifact-shaped, legacy),
   and the standalone Vercel builds `web/` (published site) and `web-preview/` (draft review copy)
+- `site/bts/`: the Behind the scenes page (`#behind-the-scenes`, sections `.big/.data/.api/.harness/.deploy/.safe/.cheat`): `page.html` (markup, copy),
+  `bts.css` and `bts.js` (all `bts-` prefixed), and `sprite.svg` (its illustrated icons, shipped once per document). `site/build.py`
+  stitches them into `template.html`. Its claims about how the site works are audited in `docs/behind-the-scenes-audit.md`;
+  change the copy and that file together.
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
   `site/build.py` and `scripts/coach_brief.py`
 - `site/playoffs.py`: the Standings page's playoff odds and projected bracket (stdlib-only Monte Carlo, read by

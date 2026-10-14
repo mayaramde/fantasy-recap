@@ -1521,6 +1521,13 @@ def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_
     blob = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     title = "Fantasy Football for the Girls (Preview)" if preview else "Fantasy Football for the Girls"
     template = (SITE / "template.html").read_text()
+    # The Behind the scenes page lives in site/bts/ (markup, CSS, JS, one shared icon sprite) and is
+    # stitched in here once, so template.html stays about the pages that carry league data.
+    bts = SITE / "bts"
+    template = (template.replace("__BTS_CSS__", (bts / "bts.css").read_text())
+                .replace("__BTS_JS__", (bts / "bts.js").read_text())
+                .replace("__BTS_SPRITE__", (bts / "sprite.svg").read_text())
+                .replace("__BTS_PAGE__", (bts / "page.html").read_text()))
     return template.replace("__PAGE_TITLE__", title).replace("__RECAP_DATA__", blob), weeks
 
 
