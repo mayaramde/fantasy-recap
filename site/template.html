@@ -3692,7 +3692,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="tp-sub"><span>Ideas for this week</span><small>Ideas, not orders. A trade only shows up if it helps both teams.</small></div>
         ${shown.length
           ? `<div class="tp-cards">${shown.map(adviceCard).join('')}</div>
-             ${rest.length ? `<details class="tp-more"><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}`
+             ${rest.length ? `<details class="tp-more" data-hub-open="tp-more-${id}"${HUB_OPEN.has(`tp-more-${id}`) ? ' open' : ''}><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}`
           : '<p class="sec-sub">No new waiver or trade ideas today.</p>'}
       </section>`;
   }
@@ -3715,11 +3715,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (watch) {
       const total = starters.reduce((n, r) => n + (r.projected || 0), 0);
       const isStarter = starters.includes(watch);
-      const share = total > 0 && isStarter ? Math.round(((watch.projected || 0) / total) * 100) : null;
-      if (watch.injury) {
+      const ratio = total > 0 && isStarter && watch.projected ? watch.projected / total : null;
+      const share = ratio == null ? null : Math.round(ratio * 100);
+      if (watch.injury && isStarter) {
         const desig = String(watch.injury).toLowerCase().replace(/\bir\b/, 'IR');
         why = { cls: 'inj', tag: 'Injury watch', text: `ESPN lists him ${desig}. If he sits, her whole week changes, so check back before kickoff.` };
-      } else if (share != null && share >= 18) {
+      } else if (ratio != null && ratio >= 0.18) {
         why = { cls: 'eng', tag: 'Her engine', text: `${share}% of her ${f1(total)} projected points come from him. Slow him down and she's in trouble.` };
       } else {
         const lead = watch === byProj[0] ? 'Her highest-projected starter this week' : 'One of her key players this week';
