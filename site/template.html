@@ -2502,6 +2502,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const onField = [...livePlaying(a).map((p) => [p, a]), ...livePlaying(b).map((p) => [p, b])];
     const ra = liveRemaining(a), rb = liveRemaining(b);
     const next = onField.length ? null : liveNextKickoff([...(a.starters || []), ...(b.starters || [])], Date.now());
+    const boxHref = `${base(w)}.game-${game.key}`;
     const side = (s, cls) => `
       <div class="lv-side ${cls}">
         <div class="mgr">${esc(s.manager)}</div><div class="team">${esc(s.team_name)}</div>
@@ -2530,9 +2531,13 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <div class="lv-field">
             <h3>${next ? 'Up next' : 'On the field right now'}</h3>
             ${onField.length
-              ? `<div class="lv-chips">${onField.map(([p, s]) => `<span class="lv-chip"><span class="live-dot" aria-hidden="true"></span>${esc(p.name)} <span class="clk">${esc(p.playing)}</span><span class="own">${esc(s.manager)}</span></span>`).join('')}</div>`
+              ? `<div class="lv-chips">${onField.map(([p, s]) => `<a class="lv-chip" href="${boxHref}" title="Open the live box score"><span class="live-dot" aria-hidden="true"></span>${esc(p.name)} <span class="clk">${esc(p.playing)}</span><span class="own">${esc(s.manager)}</span></a>`).join('')}</div>`
               : next ? `<div>Next kickoff <b>${esc(kickoffText(next))}</b></div>` : '<div class="lv-nobody">Nobody is on the field right now.</div>'}
             <p class="lv-hint">${[a, b].map((s) => `${esc(s.manager)}: ${s.playing_now || 0} playing, ${s.yet_to_play || 0} yet to play.`).join(' ')}</p>
+          </div>
+          <div class="lv-actions">
+            <a class="lv-go" href="${boxHref}">Live box score <span aria-hidden="true">→</span></a>
+            ${picked ? `<a class="lv-coach" href="${coachHref()}">Your Coach report <span aria-hidden="true">→</span></a>` : ''}
           </div>
           ${picked ? '' : `<div class="lv-pickbox"><span>Pick your team and your game goes first, every time.</span><button class="lv-btn" type="button" data-ask-team>Pick your team</button></div>`}
         </div>
