@@ -1,6 +1,6 @@
   /* ---------- Live scoreboard: your game, then the rest of the league (site/live/) ---------- */
   .lv-hero-wrap { max-width: 640px; }
-  .lv-hero { background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); overflow: hidden; }
+  .lv-hero { position: relative; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); overflow: hidden; }
   .lv-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; background: var(--accent-soft); border-bottom: 2px solid var(--edge); font: 500 12px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
   .lv-tag { background: var(--accent); color: var(--on-accent); border: 2px solid var(--edge); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
   .lv-tag.pick { background: var(--pink); color: var(--on-pop); }
@@ -65,3 +65,13 @@
     a.lv-card { transition: transform 0.12s ease, box-shadow 0.12s ease; }
     }
   @keyframes lv-pop { from { transform: scale(0.6) rotate(-6deg); } }
+
+  /* The whole hero opens the live box score: .lv-go is a stretched link, and the chips, the Coach link and the Pick button sit above it. */
+  .lv-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 12px 14px; background: var(--accent); border-top: 2px solid var(--edge); }
+  .lv-go { color: var(--on-accent); font: 600 15px/1.2 var(--script); text-decoration: none; }
+  .lv-go::after { content: ''; position: absolute; inset: 0; border-radius: 14px; }
+  .lv-go:focus-visible { outline: none; }
+  .lv-go:focus-visible::after { outline: 3px solid var(--pink); outline-offset: -6px; }
+  .lv-coach { position: relative; z-index: 2; color: var(--on-accent); font: 600 13px/1.2 var(--body); text-decoration: underline; text-underline-offset: 3px; }
+  a.lv-chip { position: relative; z-index: 2; text-decoration: none; }
+  .lv-pickbox .lv-btn { position: relative; z-index: 2; }
