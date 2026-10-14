@@ -122,13 +122,13 @@
 
   /* ---------- site header ---------- */
   .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-inline: -16px; padding-inline: 16px; border-bottom: 2px solid var(--edge); }
-  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 12px; }
+  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 12px; max-width: 1160px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .flag-mark { width: 24px; height: 28px; flex: none; background: var(--pink); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); transform: rotate(-8deg); filter: drop-shadow(2px 2px 0 var(--drop)); }
   .brand-name { font: 800 24px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
   .brand-script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 9px; margin-left: 6px; display: inline-block; transform: rotate(-4deg); vertical-align: 3px; }
-  nav.site-nav { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; margin-left: auto; padding: 2px 4px 4px 2px; }
-  nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 13px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
+  nav.site-nav { display: flex; gap: 2px; overflow-x: auto; max-width: 100%; margin-left: auto; padding: 2px 4px 4px 2px; }
+  nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 11px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
   nav.site-nav a:hover { border-color: var(--edge); }
   nav.site-nav a[aria-current="page"] { background: var(--accent); color: var(--on-accent); border-color: var(--edge); box-shadow: 2px 2px 0 var(--drop); }
 
@@ -974,47 +974,59 @@
   /* ---------- team profile: Overview / Lineup / Season ----------
      One hero on Overview, a slim identity bar on the other two tabs, and a tab bar in
      between. Phones get one column; from 860px up Overview grows a side rail. */
-  .tp-hero { margin-top: 18px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent);
-    padding: 18px 18px 16px; display: grid; gap: 12px 14px; grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "top top" "name rec" "stats stats"; align-items: end; }
-  .tp-hero-top { grid-area: top; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  /* the team strip: every team, in standings order, with who has homework and who is "you" */
+  .tp-strip { display: flex; gap: 8px; overflow-x: auto; padding: 6px 6px 10px; margin: 8px -6px 0; scrollbar-width: none; }
+  .tp-strip::-webkit-scrollbar { display: none; }
+  .tp-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 11px; text-decoration: none; color: var(--ink); background: var(--card);
+    border: 2px solid var(--edge); border-radius: 999px; font: 800 12px/1 var(--body); letter-spacing: 0.03em; text-transform: uppercase; }
+  .tp-chip:hover { background: var(--accent-soft); }
+  .tp-chip[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); }
+  .tp-chip .n, .tp-key .n { min-width: 18px; height: 18px; padding: 0 3px; border-radius: 9px; background: var(--pink); color: var(--on-pop); border: 2px solid var(--edge); font: 800 10px/14px var(--body); text-align: center; }
+  .tp-chip .you, .tp-key .you { width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--orange); border: 2px solid var(--edge); }
+  .tp-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 12px; font: 500 11px/1.4 var(--mono); color: var(--muted); }
+  .tp-key span { display: inline-flex; align-items: center; gap: 5px; }
+  .tp-key .n { min-width: 16px; height: 16px; padding: 0; display: inline-block; }
+  .tp-key .you { display: inline-block; }
+  .crumbs .you-tag { font: 700 11px/1 var(--script); letter-spacing: 0.04em; color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+
+  /* the identity card: the same on Overview, Lineup and Season */
+  .tp-id { margin-top: 4px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent); padding: 18px 18px 16px; }
+  .tp-id-top { display: flex; align-items: center; gap: 10px; }
   .tp-tname { font: 600 12.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--pink); border: 2px solid #f4f6ff; border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); }
-  .tp-you { font: 600 12px/1 var(--script); color: #151a33; background: var(--lime); border-radius: 999px; padding: 5px 11px; }
-  .tp-hero h1 { grid-area: name; margin: 0; font: 900 clamp(48px, 17vw, 68px)/0.9 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
-  .tp-rec { grid-area: rec; text-align: right; }
+  .tp-you { font: 800 11px/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--orange); border: 2px solid #f4f6ff; border-radius: 999px; padding: 4px 10px; }
+  .tp-id-main { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 8px; }
+  .tp-id h1 { margin: 0; font: 900 clamp(48px, 15vw, 68px)/0.92 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  .tp-rec { text-align: right; flex: none; }
   .tp-rec b { display: block; font: 900 clamp(38px, 12vw, 50px)/0.9 var(--display); color: var(--lime); }
-  .tp-rec span { display: block; margin-top: 4px; font: 500 12px/1 var(--mono); color: #a9b2dc; }
-  .tp-stats { grid-area: stats; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1.5px solid #2b3263; padding-top: 12px; }
-  .tp-stats > :nth-child(4) { display: none; }
-  .tp-stats .l { font: 600 10.5px/1 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
-  .tp-stats .v { margin-top: 5px; font: 500 19px/1 var(--mono); font-variant-numeric: tabular-nums; }
-  .tp-stats .v small { font-size: 11px; color: #a9b2dc; }
+  .tp-rec span { display: block; margin-top: 4px; font: 500 11px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin: 14px 0 0; padding-top: 12px; border-top: 1.5px solid #2b3263; }
+  .tp-stats > div { min-width: 0; }
+  .tp-stats dt { font: 500 10px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
+  .tp-stats dd { margin: 3px 0 0; font: 800 24px/1.05 var(--display); }
+  .tp-stats dd small { font: 500 10px/1 var(--mono); color: #a9b2dc; margin-left: 4px; }
+  .tp-stats .po dd { color: var(--lime); }
+  .tp-stats .hs { display: block; margin-top: 2px; font: 500 10px/1.2 var(--mono); color: #a9b2dc; }
   @media (min-width: 860px) {
-    .tp-hero { padding: 26px 30px; box-shadow: 6px 6px 0 var(--accent); gap: 10px 36px; grid-template-columns: auto auto minmax(0, 1fr);
-      grid-template-areas: "top rec stats" "name rec stats"; align-items: center; }
-    .tp-hero h1 { font-size: clamp(72px, 9vw, 104px); }
-    .tp-rec b { font-size: clamp(60px, 7vw, 84px); }
-    .tp-rec span { font-size: 14px; margin-top: 8px; }
-    .tp-stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); gap: 16px 36px; border-top: none; padding-top: 0; justify-self: end; }
-    .tp-stats > :nth-child(4) { display: block; }
-    .tp-stats .v { font-size: 26px; }
+    .tp-id { padding: 24px 30px 22px; box-shadow: 6px 6px 0 var(--accent); }
+    .tp-id h1 { font-size: clamp(72px, 9vw, 96px); }
+    .tp-rec b { font-size: clamp(56px, 7vw, 76px); }
+    .tp-rec span { font-size: 13px; }
+    .tp-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 24px; }
+    .tp-stats dd { font-size: 30px; }
   }
 
-  /* the slim version, for Lineup and Season: it is also the way back to Overview */
-  .tp-bar { margin-top: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 12px 16px; text-decoration: none;
-    background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--accent); }
-  .tp-bar:hover { color: #f4f6ff; }
-  .tp-bar .back { display: block; font: 600 11px/1 var(--script); letter-spacing: 0.06em; text-transform: uppercase; color: #ff82c0; }
-  .tp-bar .nm { display: block; margin-top: 3px; font: 900 34px/0.95 var(--display); }
-  .tp-bar .rec { text-align: right; }
-  .tp-bar .rec b { display: block; font: 900 32px/0.95 var(--display); color: var(--lime); }
-  .tp-bar .rec span { display: block; margin-top: 2px; font: 500 11.5px/1 var(--mono); color: #a9b2dc; }
-
-  .tp-tabs { margin-top: 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 5px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
-  .tp-tabs a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 9px; padding: 13px 0; }
-  .tp-tabs a:hover { background: var(--accent-soft); }
-  .tp-tabs a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
-  @media (min-width: 860px) { .tp-tabs { max-width: 440px; } .tp-tabs a { font-size: 15px; } }
+  /* the sticky tab bar. When the identity card has scrolled away it grows a mini identity on the left. */
+  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 10px -16px 6px; padding: 6px 16px 10px; background: var(--bg); }
+  .tp-tabbar.stuck { border-bottom: 2px solid var(--edge); }
+  .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
+  .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
+  .tp-tabbar.stuck .tp-mini { display: flex; }
+  .tp-seg { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
+  .tp-tabbar.stuck .tp-seg { max-width: 380px; }
+  .tp-seg a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 10px; padding: 11px 0; }
+  .tp-seg a:hover { background: var(--accent-soft); }
+  .tp-seg a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+  @media (max-width: 640px) { .tp-tabbar.stuck .tp-mini { display: none; } .tp-tabbar.stuck .tp-seg { max-width: none; } }
 
   .tp-sec { margin-top: 26px; display: grid; gap: 10px; align-content: start; }
   .tp-head { display: flex; align-items: center; gap: 8px; }
@@ -2486,45 +2498,86 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      is the week's lineup and to-dos, #team-<id>.next is the same tab pointed at next week, and
      #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves. */
   const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season']];
-  const tpTabs = (id, tab) => `<nav class="tp-tabs" aria-label="Profile sections">${TP_TABS.map(([k, label, sfx]) =>
-    `<a href="#team-${id}${sfx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>`;
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
   const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
   const TP_SEEDED = new Set();
 
+  /* Her playoff odds, said so they can't be misread. Before kickoff the Week hub's simulation
+     knows the odds if she loses this week's game and if she wins it, so the header shows that
+     range. Once it has kicked off the range is gone and what is left is today's single number,
+     which the header labels as what it is. */
+  function tpOdds(id) {
+    const st = hub().stakes;
+    if (st && LIVE && st.week === LIVE.week) {
+      const g = st.games.find((x) => x.teams.some((r) => r.team_id === id));
+      const mine = g && g.teams.find((r) => r.team_id === id);
+      const theirs = g && g.teams.find((r) => r.team_id !== id);
+      if (mine && mine.win != null && mine.lose != null) return { lose: mine.lose, win: mine.win, opp: theirs ? nameOf(theirs.team_id) : null };
+    }
+    const po = SEASON.playoffs && SEASON.playoffs.teams.find((x) => x.team_id === id);
+    return po ? { now: po.playoff } : null;
+  }
+  // "81–94%", or one number when the game barely moves it.
+  function oddsRange(o) {
+    if (!o) return null;
+    if (o.now != null) return { text: pct(o.now), sub: 'chance to make the top 4' };
+    const lo = pct(o.lose), hi = pct(o.win);
+    const vs = o.opp ? ` vs ${o.opp}` : '';
+    return lo === hi ? { text: hi, sub: `either way${vs}` } : { text: `${lo.replace('%', '')}–${hi}`, sub: `lose–win${vs}` };
+  }
+
+  function tpStrip(id, sfx, next) {
+    const youId = myTeam.get();
+    return `
+      <nav class="tp-strip" aria-label="Teams, in standings order">${SEASON.standings.map((x) => {
+        const a = coachFor(x.team_id, next);
+        const n = a ? a.counts.now : 0;
+        const bits = [x.manager, n ? `${n} fix${n === 1 ? '' : 'es'} waiting` : '', x.team_id === youId ? 'you' : ''].filter(Boolean).join(', ');
+        return `<a class="tp-chip" href="#team-${x.team_id}${sfx}"${x.team_id === id ? ' aria-current="page"' : ''} aria-label="${esc(bits)}">${esc(x.manager)}${x.team_id === youId ? '<i class="you" aria-hidden="true"></i>' : ''}${n ? `<span class="n" aria-hidden="true">${n}</span>` : ''}</a>`;
+      }).join('')}</nav>
+      <p class="tp-key" aria-hidden="true"><span><i class="n"></i> fixes waiting</span><span><i class="you"></i> you</span><span>sorted by standings</span></p>`;
+  }
+
+  /* The same top on all three tabs: breadcrumb, team strip, identity card, tab bar. The tab bar
+     is sticky; tpSticky keeps its `top` equal to the site header's height and flips `.stuck`
+     (which shows the mini identity) once the identity card has scrolled out from under it. */
+  function tpHeader(id, t, tab, sfx, next) {
+    const rank = SEASON.standings.indexOf(t) + 1;
+    const onCoach = !!coachFor(id, false);
+    const odds = oddsRange(tpOdds(id));
+    const you = myTeam.get() === id;
+    return `
+      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(t.manager)}</span>${you ? '<span class="you-tag">you</span>' : ''}</div>
+      ${tpStrip(id, sfx, next)}
+      <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
+        <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}</div>
+        <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
+        <dl class="tp-stats">
+          ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${odds.text}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
+          <div><dt>Avg score</dt><dd>${f1(t.avg)}</dd></div>
+          <div><dt>Best week</dt><dd>${t.best ? `${f1(t.best.points)}<small>W${t.best.week}</small>` : '–'}</dd></div>
+          <div><dt>Vs. everyone</dt><dd>${t.all_play_w}–${t.all_play_l}</dd></div>
+        </dl>
+      </section>
+      <div class="tp-tabbar" id="tp-tabbar">
+        <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
+        <nav class="tp-seg" aria-label="Profile sections">${TP_TABS.map(([k, label, sx]) =>
+          `<a href="#team-${id}${sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+      </div>`;
+  }
+
   function teamPage(id, tab = 'overview', next = false) {
     const t = TEAMS[id];
     if (!t) return notFound();
     next = !!(next && ahead());                     // no current next-week capture → This week
-    const rank = SEASON.standings.indexOf(t) + 1;
     const p = t.profile || { audit: [], moves: [], weak_spot: null };
-    const onCoach = !!coachFor(id, false);
-    if (tab !== 'overview') {
-      return `
-        <a class="tp-bar" href="#team-${id}" aria-label="${esc(t.manager)}, back to the overview">
-          <span><span class="back">‹ ${esc(t.team_name)}</span><span class="nm">${esc(t.manager)}</span></span>
-          <span class="rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></span>
-        </a>
-        ${coachFor(id, false) ? teamSwitch(id, next) : ''}
-        ${tpTabs(id, tab)}
-        ${tab === 'lineup' ? thisWeekSection(id, next) : tpSeason(id, t, p)}`;
-    }
+    const sfx = next ? '.next' : (TP_TABS.find(([k]) => k === tab) || [])[2] || '';
+    const head = tpHeader(id, t, tab, sfx, next);
+    if (tab === 'lineup') return head + thisWeekSection(id, next);
+    if (tab === 'season') return head + tpSeason(id, t, p);
     return `
-      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span>›</span><span>${esc(t.manager)}</span></div>
-      ${onCoach ? teamSwitch(id, false) : ''}
-      <section class="tp-hero" aria-labelledby="tp-h">
-        <div class="tp-hero-top"><span class="tp-tname">${esc(t.team_name)}</span>${myTeam.get() === id ? '<span class="tp-you">You</span>' : ''}</div>
-        <h1 id="tp-h">${esc(t.manager)}</h1>
-        <div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div>
-        <div class="tp-stats">
-          <div><div class="l">Avg score</div><div class="v">${f1(t.avg)}</div></div>
-          <div><div class="l">Best week</div><div class="v">${t.best ? `${f1(t.best.points)} <small>W${t.best.week}</small>` : '–'}</div></div>
-          <div><div class="l">Vs. everyone</div><div class="v">${t.all_play_w}–${t.all_play_l}</div></div>
-          <div><div class="l">Points benched</div><div class="v">${f1(t.bench_left)}</div></div>
-        </div>
-      </section>
-      ${tpTabs(id, 'overview')}
+      ${head}
       <div class="tp-cols">
         <div>
           ${tpMatchup(id)}
@@ -3257,6 +3310,27 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return { sync, greet, ask };
   })();
 
+  /* ---------- sticky bits ----------
+     The team page's tab bar sticks just under the site header, so its `top` has to be the
+     header's current height. That height changes (fonts load, the phone header collapses, the
+     window resizes), and a stale number once left a gap above the bar, so it is re-measured on
+     every scroll, on resize, whenever the header's own size changes, and after the fonts land. */
+  const tpSticky = (() => {
+    function sync() {
+      const bar = document.getElementById('tp-tabbar'), head = document.getElementById('site-head');
+      if (!bar || !head) return;
+      const edge = Math.round(head.getBoundingClientRect().bottom);
+      bar.style.top = `${edge}px`;
+      const card = document.getElementById('tp-id');
+      bar.classList.toggle('stuck', !!card && card.getBoundingClientRect().bottom <= edge + 4);
+    }
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    if (window.ResizeObserver) new ResizeObserver(sync).observe(document.getElementById('site-head'));
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sync);
+    return { sync };
+  })();
+
 __BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
   let btsSection = '';
@@ -3289,6 +3363,7 @@ __BTS_JS__
     if (advice()) document.getElementById('nav-coach').href = coachHref();
     if (nav === 'behind-the-scenes') btsMount(btsSection);
     viewingAs.sync();
+    tpSticky.sync();
     viewingAs.greet();
   }
 
