@@ -244,6 +244,15 @@
   .story.lime { box-shadow: 4px 4px 0 var(--lime); } .story.lime .tag { background: var(--lime); }
   .story.pink { box-shadow: 4px 4px 0 var(--pink); } .story.pink .tag { background: var(--pink); }
   .story.accent { box-shadow: 4px 4px 0 var(--accent); } .story.accent .tag { background: var(--accent-soft); color: var(--ink); }
+  /* Scoreboard card: the pre-kickoff variant of the sticker. Label, then the number (always the biggest
+     thing) with its unit, then a name, then one small line. No sentences, no jokes. */
+  .story.sc { gap: 0; padding-bottom: 16px; }
+  .story.sc .tag { margin-bottom: 8px; }
+  .story.sc .figure { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; }
+  .story.sc .fig { font-size: 46px; line-height: 1; }
+  .story.sc .unit { font: 700 11px/1 var(--mono); letter-spacing: 0.1em; color: var(--muted); }
+  .story.sc .nm { margin-top: 8px; font: 800 22px/1.15 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .story.sc .sub { margin: 0; font-size: 13px; line-height: 1.3; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   /* ---------- week hub (the landing page before kickoff) ----------
      One column on a phone; from 860px the matchups take the wide column and Coach's desk and the
      ranked projections sit beside them. Side A of every game is cobalt, side B is pink, and nothing
@@ -356,6 +365,9 @@
     .stickers.hub-chips { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: -16px; padding: 2px 20px 8px 16px; scrollbar-width: none; }
     .stickers.hub-chips::-webkit-scrollbar { display: none; }
     .stickers.hub-chips .story { flex: 0 0 68%; scroll-snap-align: start; scroll-margin-left: 16px; }
+    .stickers.hub-chips.scoreboard { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; overflow: visible; margin-inline: 0; padding: 2px 6px 6px 0; }
+    .stickers.hub-chips.scoreboard .story { flex: none; }
+    .story.sc .fig { font-size: 40px; } .story.sc .nm { font-size: 20px; }
     .hub-sides .nm { font-size: 22px; } .hub-score { font-size: 32px; }
     .hub-edges { gap: 4px; padding-inline: 12px; } .hub-edges .mg { font-size: 11.5px; }
     .hub-lineups .cols { grid-template-columns: 1fr; } .hub-lineups .cols > div + div { border-left: none; border-top: 2px solid var(--edge); }
@@ -1888,6 +1900,15 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <p>${esc(x.text)}</p>
     </article>`;
 
+  // The pre-kickoff card: {tone, label, fig, unit, name, sub}. Escaped here, once.
+  const scoreCard = (x) => `
+    <article class="story sc ${x.tone}">
+      <span class="tag">${esc(x.label)}</span>
+      <div class="figure"><span class="fig num">${esc(x.fig)}</span><span class="unit">${esc(x.unit)}</span></div>
+      <div class="nm">${esc(x.name)}</div>
+      <p class="sub">${esc(x.sub)}</p>
+    </article>`;
+
   // Plain words for a position, so a first-season reader isn't handed "RB".
   const POS_WORD = { QB: 'quarterback', RB: 'running back', WR: 'receiver', TE: 'tight end', K: 'kicker', DST: 'defense' };
   // A game this close earns "photo finish" / "anything goes"; past it, the sticker says
@@ -1929,53 +1950,54 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return out;
   }
 
-  // Before kickoff: no scores yet, so every sticker comes from ESPN's projections,
-  // its win odds, or this week's Coach rows. Each one is skipped when that data isn't there.
+  // Before kickoff: no scores yet, so every card comes from ESPN's projections, its win odds,
+  // or this week's Coach rows, and is skipped when that data isn't there. Each is a scoreboard
+  // card (see scoreCard): a number, its unit, a first name and one small line.
   function preKickoffStickers(w, rows) {
     const out = [];
     const proj = (s) => s.live_projection ?? s.projected ?? 0;
+    const odds = (g) => Math.max(g.winner.win_probability ?? 0, g.loser.win_probability ?? 0);
     // ESPN can publish rosters days before projections; all zeros means "not yet".
     const hasProj = w.games.some((g) => proj(g.winner) > 0 || proj(g.loser) > 0);
 
     if (hasProj) {
-      // Closest on paper: the smallest gap between two projected totals
+      // Closest: the smallest gap between two projected totals. A tie goes to the game with the
+      // bigger favorite. The first side of the game gets the name.
       const gap = (g) => Math.abs(proj(g.winner) - proj(g.loser));
-      const close = [...w.games].sort((a, b) => gap(a) - gap(b))[0];
-      if (close) out.push({ tone: 'lime', label: 'Closest on paper', fig: f1(gap(close)),
-        text: `${close.winner.manager} vs ${close.loser.manager}, projected that far apart.${gap(close) < TIGHT ? ' ESPN is shrugging.' : ''}` });
+      const close = [...w.games].sort((a, b) => (Number(f1(gap(a))) - Number(f1(gap(b)))) || (odds(b) - odds(a)))[0];
+      if (close) out.push({ tone: 'lime', label: 'Closest', fig: f1(gap(close)), unit: 'PT GAP',
+        name: close.winner.manager, sub: `vs ${close.loser.manager}` });
     }
 
-    // Heavy favorite: only when ESPN has published win odds, and only when they're lopsided
+    // Favorite: the highest win probability ESPN has published, whoever it is
     const pairs = w.games.flatMap((g) => [[g.winner, g.loser], [g.loser, g.winner]])
-      .filter(([s]) => s.win_probability != null && s.win_probability >= 0.65);
+      .filter(([s]) => s.win_probability != null);
     if (pairs.length) {
       const [fav, opp] = pairs.sort((a, b) => b[0].win_probability - a[0].win_probability)[0];
-      out.push({ tone: 'orange', label: 'Heavy favorite', fig: `${Math.min(99, Math.round(fav.win_probability * 100))}%`,
-        text: `ESPN's odds that ${fav.manager} beats ${opp.manager}. ${opp.manager}, ESPN has been wrong before.` });
+      out.push({ tone: 'orange', label: 'Favorite', fig: `${Math.min(99, Math.round(fav.win_probability * 100))}%`, unit: 'TO WIN',
+        name: fav.manager, sub: `vs ${opp.manager}` });
     }
 
     if (hasProj) {
       // Top projection: the lineup ESPN likes most this week
       const top = w.games.flatMap((g) => [g.winner, g.loser]).sort((a, b) => proj(b) - proj(a))[0];
-      out.push({ tone: 'accent', label: 'Top projection', fig: f1(proj(top)),
-        text: `${top.manager} has ESPN's highest projected lineup. No pressure.` });
+      out.push({ tone: 'accent', label: 'Top projection', fig: f1(proj(top)), unit: 'PTS',
+        name: top.manager, sub: top.team_name });
     }
 
     // Biggest fix: the one lineup swap worth the most projected points, league-wide. Without
-    // one, the busiest to-do list, straight from the Coach rows and framed as help, not homework.
+    // one, the busiest to-do list, straight from the Coach rows.
     const fix = rows.flatMap((r) => r.items.filter((it) => it.kind === 'swap' && it.gain > 0).map((it) => ({ r, it })))
       .sort((a, b) => b.it.gain - a.it.gain)[0];
     const busiest = [...rows].sort((a, b) => b.counts.now - a.counts.now)[0];
     if (fix) {
-      out.push({ tone: 'pink', label: 'Biggest fix', fig: `+${f1(fix.it.gain)}`,
-        text: `One swap is worth that many projected points to ${fix.r.manager}. Coach has it.` });
+      out.push({ tone: 'pink', label: 'Biggest fix', fig: `+${f1(fix.it.gain)}`, unit: 'PTS',
+        name: fix.r.manager, sub: fix.r.team_name });
     } else if (busiest && busiest.counts.now) {
-      const n = busiest.counts.now;
-      out.push({ tone: 'pink', label: 'Busiest to-do list', fig: String(n),
-        text: `${busiest.manager} has ${n} ${n === 1 ? 'thing' : 'things'} on her Coach list before kickoff. Coach has her back.` });
+      out.push({ tone: 'pink', label: 'Busiest list', fig: String(busiest.counts.now), unit: 'TO DO',
+        name: busiest.manager, sub: busiest.team_name });
     } else if (rows.length) {
-      out.push({ tone: 'pink', label: 'All clear', fig: '0',
-        text: 'Nobody has anything urgent on Coach. Enjoy it while it lasts.' });
+      out.push({ tone: 'pink', label: 'All clear', fig: '0', unit: 'TO DO', name: 'Everyone', sub: 'Lineups set' });
     }
 
     return out.slice(0, 4);
@@ -2273,7 +2295,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         ${seasonStrip(w)}
       </div>
 
-      ${stickers.length ? `<div class="stickers hub-chips">${stickers.map(sticker).join('')}</div>` : ''}
+      ${stickers.length ? (w.complete
+        ? `<div class="stickers hub-chips">${stickers.map(sticker).join('')}</div>`
+        : `<div class="stickers hub-chips scoreboard">${stickers.map(scoreCard).join('')}</div>`) : ''}
 
       ${w.complete ? `<div class="recap-when"><span class="d">TUE</span><span>The full recap, game balls and flags included, lands Tuesday. Nobody's safe.</span></div>` : ''}
 
