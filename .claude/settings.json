@@ -12,6 +12,8 @@
       "Bash(find:*)",
       "Bash(grep:*)",
       "Bash(python3 scripts/analyze.py)",
+      "Bash(python3 scripts/analyze.py --week:*)",
+      "Bash(node scripts/capture_node.mjs:*)",
       "Bash(python3 scripts/check.py)",
       "Bash(gh pr view:*)",
       "Bash(gh pr checks:*)",
