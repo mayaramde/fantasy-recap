@@ -122,15 +122,51 @@
 
   /* ---------- site header ---------- */
   .site-head { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); margin-inline: -16px; padding-inline: 16px; border-bottom: 2px solid var(--edge); }
-  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 12px; }
+  .site-head .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding-block: 12px; }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .flag-mark { width: 24px; height: 28px; flex: none; background: var(--pink); clip-path: polygon(0 0, 100% 0, 76% 50%, 100% 100%, 0 100%); transform: rotate(-8deg); filter: drop-shadow(2px 2px 0 var(--drop)); }
   .brand-name { font: 800 24px/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase; }
   .brand-script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 9px; margin-left: 6px; display: inline-block; transform: rotate(-4deg); vertical-align: 3px; }
-  nav.site-nav { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; padding: 2px 4px 4px 2px; }
+  nav.site-nav { display: flex; gap: 6px; overflow-x: auto; max-width: 100%; margin-left: auto; padding: 2px 4px 4px 2px; }
   nav.site-nav a { text-decoration: none; font: 600 14px/1 var(--body); padding: 8px 13px; border-radius: 999px; white-space: nowrap; color: var(--ink); border: 2px solid transparent; }
   nav.site-nav a:hover { border-color: var(--edge); }
   nav.site-nav a[aria-current="page"] { background: var(--accent); color: var(--on-accent); border-color: var(--edge); box-shadow: 2px 2px 0 var(--drop); }
+
+  /* ---------- "Viewing as": whose eyes the site is wearing ----------
+     Orange means "you" everywhere. The chip glows on purpose, all the time, so nobody forgets
+     which view they're in; people who ask for less motion get a steady glow instead. */
+  .va { position: relative; }
+  .va-btn { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; color: var(--ink); background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 999px;
+    padding: 5px 12px 5px 9px; font: 700 13px/1.2 var(--body); white-space: nowrap; box-shadow: 2px 2px 0 var(--drop); animation: glow 2.2s ease-in-out infinite; }
+  @keyframes glow {
+    0%, 100% { box-shadow: 2px 2px 0 var(--drop), 0 0 0 0 rgba(255, 122, 26, 0), 0 0 10px 2px rgba(255, 122, 26, 0.45); }
+    50% { box-shadow: 2px 2px 0 var(--drop), 0 0 0 6px rgba(255, 122, 26, 0.2), 0 0 24px 7px rgba(255, 122, 26, 0.7); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .va-btn { animation: none; box-shadow: 2px 2px 0 var(--drop), 0 0 16px 4px rgba(255, 122, 26, 0.55); }
+  }
+  .va-btn .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); border: 2px solid var(--edge); }
+  .va-btn .ini { display: none; }
+  .va-btn small { font: 500 10px/1 var(--mono); color: var(--muted); }
+  .va-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: 260px; max-width: calc(100vw - 32px); background: var(--card); color: var(--ink);
+    border: 2px solid var(--edge); border-radius: 16px; box-shadow: 4px 4px 0 var(--drop); padding: 8px; }
+  .va-menu[hidden] { display: none; }
+  .va-menu h2 { margin: 4px 8px 6px; font: 500 10px/1.2 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .va-menu .it { display: flex; width: 100%; align-items: center; gap: 8px; padding: 8px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; text-decoration: none; font: 600 14px/1.2 var(--body); }
+  .va-menu .it:hover, .va-menu .it:focus-visible { background: var(--accent-soft); }
+  .va-menu .it .ck { width: 16px; flex: none; color: var(--accent); font-weight: 800; }
+  .va-menu .it .rec { margin-left: auto; font: 500 11px/1 var(--mono); color: var(--muted); }
+  .va-menu hr { border: 0; border-top: 2px dotted var(--rule); margin: 6px 4px; }
+  .va-menu .it.open-team { justify-content: space-between; margin-bottom: 4px; background: var(--lime-soft); border: 2px solid var(--edge); }
+  .va-menu .it.open-team:hover, .va-menu .it.open-team:focus-visible { background: var(--lime); color: var(--on-pop); }
+  .who-dialog .pick-grid button.me { background: var(--orange-soft); }
+  .who-dialog .pick-grid button.me::after { content: "you"; font: 500 10px/1 var(--mono); text-transform: none; letter-spacing: 0; color: var(--muted); }
+  .who-dialog .just-looking { display: block; width: 100%; margin-top: 12px; cursor: pointer; color: var(--ink); font: 700 15px/1 var(--body); background: transparent; border: 2px dashed var(--edge); border-radius: 10px; padding: 12px 10px; }
+  .who-dialog .just-looking:hover, .who-dialog .just-looking:focus-visible { background: var(--card); }
+  .va-toast { position: fixed; z-index: 60; left: 50%; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: calc(100vw - 32px);
+    background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); padding: 8px 8px 8px 16px; font: 600 14px/1.2 var(--body); }
+  .va-toast[hidden] { display: none; }
+  .va-toast button { cursor: pointer; font: 800 13px/1 var(--body); color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; padding: 6px 12px; }
 
   .draft-banner { margin-top: 18px; padding: 10px 14px; background: var(--lime); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop); font-size: 13.5px; font-weight: 700; }
 
@@ -1116,14 +1152,16 @@
 __BTS_CSS__
 </style>
 
-<header class="site-head">
+<header class="site-head" id="site-head">
   <div class="wrap">
     <a class="brand" href="#">
       <span class="flag-mark" aria-hidden="true"></span>
       <span><span class="brand-name">Fantasy Football</span> <span class="brand-script">for the girls</span></span>
     </a>
+    <div class="va" id="va"></div>
     <nav class="site-nav" id="nav" aria-label="Site">
       <a href="#live" data-nav="live" id="nav-live" hidden><span class="live-dot" aria-hidden="true"></span>Live</a>
+      <a href="#" data-nav="mine" id="nav-mine" hidden>My team</a>
       <a href="#coach" data-nav="coach" id="nav-coach" hidden>Coach</a>
       <a href="#" data-nav="week" id="nav-week">Recaps</a>
       <a href="#standings" data-nav="standings">Standings</a>
@@ -1132,6 +1170,8 @@ __BTS_CSS__
     </nav>
   </div>
 </header>
+<dialog class="pick-dialog who-dialog" id="who-dialog" aria-labelledby="who-h"></dialog>
+<div class="va-toast" id="va-toast" role="status" aria-live="polite" hidden></div>
 <div class="wrap">
   <main id="main" tabindex="-1"></main>
   <footer id="footer"></footer>
@@ -1181,14 +1221,20 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const liveShut = () => { const rows = advice(); return !!rows && rows.every((a) => a.can_change === false); };
   // Nothing left to fix in this week, so the tab leads with next week instead.
   const leadWithNext = () => !!(ahead() && (LIVE.complete || liveShut()));
-  // Eight people, one page: remembering the last team someone picked lets the Coach page
-  // open as hers. Private windows throw on localStorage, which costs nothing.
-  // The in-memory copy matters now that Coach's team picker can't be dismissed: with storage
-  // blocked, a pick still has to stick for the visit or the picker would reopen forever.
-  let pickedTeam = null;
+  // Eight people, one page: "Viewing as" remembers which team is hers so her team lights up in
+  // orange everywhere. Private windows throw on localStorage, which costs nothing: the in-memory
+  // copies keep a pick (and the fact that she was asked) for the rest of the visit.
+  let pickedTeam = null, askedMem = false;
+  const KEY_TEAM = 'ffg-coach-team', KEY_ASKED = 'ffg-viewing-asked';
   const myTeam = {
-    get() { try { return Number(localStorage.getItem('ffg-coach-team')) || pickedTeam; } catch { return pickedTeam; } },
-    set(id) { pickedTeam = id; try { localStorage.setItem('ffg-coach-team', String(id)); } catch { /* no memory, no harm */ } },
+    get() {
+      let id = pickedTeam;
+      try { id = Number(localStorage.getItem(KEY_TEAM)) || pickedTeam; } catch { /* storage blocked */ }
+      return id && TEAMS[id] ? id : null;
+    },
+    set(id) { pickedTeam = id; askedMem = true; try { localStorage.setItem(KEY_TEAM, String(id)); localStorage.setItem(KEY_ASKED, '1'); } catch { /* no memory, no harm */ } },
+    clear() { pickedTeam = null; askedMem = true; try { localStorage.removeItem(KEY_TEAM); localStorage.setItem(KEY_ASKED, '1'); } catch { /* no memory, no harm */ } },
+    asked() { try { return localStorage.getItem(KEY_ASKED) === '1' || askedMem; } catch { return askedMem; } },
   };
   // Always the Coach page itself, never her profile: her team shows up there as the hero card.
   const coachHref = () => coachUrl(leadWithNext(), null);
@@ -2735,7 +2781,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   function teamSwitch(active, next) {
     return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
+      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
   /* Her top two items, most urgent first. build.py already sorts items by level, then puts a
@@ -2782,7 +2828,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <span class="you-sticker" aria-hidden="true">You</span>
         <div class="ch-head">
           <div class="ch-who"><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
-          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my full profile →</a>
+          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}">See my full profile →</a>
           ${todoBadge(a, next)}
         </div>
         ${stand.length || po ? `<p class="ch-stand">${stand.map(esc).join(' · ')}${po ? ` <span class="po-label ${PO_LABEL[po.label] || ''}" title="${esc(PO_TIP[po.label] || '')}">${esc(po.label)}</span>` : ''}</p>` : ''}
@@ -2798,19 +2844,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>`;
   }
 
-  function heroPicker(next) {
+  function heroPicker() {
     return `
       <section class="coach-hero ch-pick" aria-labelledby="ch-pick">
         <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Hi, I'm Coach.</h2>
         <p>Tell me your name and this spot becomes yours: your game, your odds, your to-dos.</p>
-        <button type="button" class="profile-btn" data-open-pick>Tell Coach your name</button>
-        <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
-          <h2 id="pick-h">Hi, I'm Coach.</h2>
-          <p>I've read every roster in this league, ESPN's injury report and 8,000 simulated seasons, so yes, I already know what's wrong with your lineup. Pick your name and I'll tell you before kickoff.</p>
-          <div class="pick-grid">${coachRows(next).map((a) => `
-            <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
-          <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
-        </dialog>
+        <button type="button" class="profile-btn" data-open-who>Tell Coach your name</button>
       </section>`;
   }
 
@@ -2822,7 +2861,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const close = pairs.filter(([a]) => a.win_probability != null)
       .sort((x, y) => Math.abs(x[0].win_probability - 0.5) - Math.abs(y[0].win_probability - 0.5))[0];
     const tile = (cls, tag, body, r) => (r
-      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}" data-myteam="${r.team_id}"><span class="rt-tag">${tag}</span>${body}</a>`
+      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}"><span class="rt-tag">${tag}</span>${body}</a>`
       : `<div class="radar-tile ${cls}"><span class="rt-tag">${tag}</span>${body}</div>`);
     return `
       <section class="radar" aria-labelledby="radar-h">
@@ -2949,7 +2988,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           : `Coach read all eight rosters so you don't have to. Your to-do list, the week's biggest swap, and who's strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
       <div class="coach-top">
-        ${mine ? coachHero(mine, rows, next) : heroPicker(next)}
+        ${mine ? coachHero(mine, rows, next) : heroPicker()}
         ${coachRadar(rows, pairs, next)}
       </div>
       <section style="margin-top:34px" aria-labelledby="sg-h">
@@ -3103,6 +3142,121 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   const notFound = () => `<div class="empty"><h1>Fumble</h1><p>That page doesn't exist. <a href="${WEEKS.length ? `#week-${latest().week}` : '#'}" style="color:var(--accent)">Back to the latest recap</a></p></div>`;
 
+  /* ---------- "Viewing as" ----------
+     The chip in the header says whose eyes the site is wearing. It only ever changes highlights
+     (orange = you), never what a page says, and a wrong pick is one tap from undone: every change
+     raises a toast with an Undo button, and "League view" is always at the bottom of the menu. */
+  const viewingAs = (() => {
+    const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), mine = $('#nav-mine');
+    const fixes = (id) => { const a = coachFor(id, false); return a ? a.counts.now : 0; };
+    let isOpen = false, toastTimer = 0;
+
+    function draw(focusMenu) {
+      if (!SEASON.standings.length) { host.hidden = true; return; }
+      const me = myTeam.get(), t = me && TEAMS[me];
+      const label = t ? `Viewing as ${t.manager}` : 'League view';
+      host.innerHTML = `
+        <button type="button" class="va-btn" id="va-btn" aria-haspopup="menu" aria-expanded="${isOpen}" aria-controls="va-menu" aria-label="${esc(label)}. Change who you are viewing as.">
+          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${esc(label)}</span><small aria-hidden="true">▾</small></button>
+        <div class="va-menu" id="va-menu" role="menu" aria-label="Viewing as"${isOpen ? '' : ' hidden'}>
+          <h2>Viewing the site as</h2>
+          ${t ? `<a class="it open-team" role="menuitem" href="#team-${me}"><span>Open ${esc(t.manager)}'s team page</span><span aria-hidden="true">→</span></a>` : ''}
+          ${SEASON.standings.map((x) => `<button type="button" class="it" role="menuitemradio" aria-checked="${x.team_id === me}" data-as="${x.team_id}"><span class="ck" aria-hidden="true">${x.team_id === me ? '✓' : ''}</span>${esc(x.manager)}<span class="rec">${record(x)}</span></button>`).join('')}
+          <hr>
+          <button type="button" class="it" role="menuitemradio" aria-checked="${!me}" data-as="0"><span class="ck" aria-hidden="true">${me ? '' : '✓'}</span>League view<span class="rec">no one</span></button>
+        </div>`;
+      if (focusMenu) {
+        const first = host.querySelector('[aria-checked="true"]') || host.querySelector('.it');
+        if (first) first.focus();
+      }
+    }
+
+    function setOpen(next, { refocus = false } = {}) {
+      if (next === isOpen) return;
+      isOpen = next;
+      draw(next);
+      if (!next && refocus) { const b = $('#va-btn'); if (b) b.focus(); }
+    }
+
+    // The nav's "My team" appears with a pick and goes with it.
+    function sync() {
+      const me = myTeam.get();
+      mine.hidden = !me;
+      if (me) mine.href = `#team-${me}`;
+      draw(false);
+    }
+
+    function say(msg, undo) {
+      clearTimeout(toastTimer);
+      toast.innerHTML = `<span>${esc(msg)}</span><button type="button" data-undo>Undo</button>`;
+      toast.hidden = false;
+      toast.querySelector('[data-undo]').onclick = () => { toast.hidden = true; undo(); };
+      toastTimer = setTimeout(() => { toast.hidden = true; }, 8000);
+    }
+
+    function apply(id) { if (id) myTeam.set(id); else myTeam.clear(); route(); }
+
+    function choose(id) {
+      const prev = myTeam.get() || 0;
+      if (id === prev) { setOpen(false, { refocus: true }); return; }
+      isOpen = false;
+      apply(id);
+      say(id ? `Viewing as ${nameOf(id)}` : 'Back to the league view', () => { apply(prev); });
+      const b = $('#va-btn'); if (b) b.focus({ preventScroll: true });
+    }
+
+    function ask() {
+      if (!SEASON.standings.length || dlg.open || !dlg.showModal) return;
+      const me = myTeam.get();
+      dlg.innerHTML = `
+        <h2 id="who-h">Who are you?</h2>
+        <p>Pick your name and your team lights up in orange all over the site. Nothing gets hidden from anyone, and you can switch from the chip at the top any time.</p>
+        <div class="pick-grid">${SEASON.standings.map((x) => `
+          <button type="button" data-pick="${x.team_id}"${x.team_id === me ? ' class="me"' : ''}${fixes(x.team_id) ? ` aria-label="${esc(x.manager)}, ${fixes(x.team_id)} to fix"` : ''}>${esc(x.manager)}${fixes(x.team_id) ? '<span class="dot" aria-hidden="true">!</span>' : ''}</button>`).join('')}</div>
+        <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
+        <button type="button" class="just-looking" data-pick="0">Just looking</button>`;
+      dlg.showModal();
+    }
+
+    // First visit with nothing saved: ask once, politely.
+    function greet() { if (!myTeam.asked() && !myTeam.get()) ask(); }
+
+    host.addEventListener('click', (e) => {
+      const as = e.target.closest('[data-as]');
+      if (as) { choose(Number(as.dataset.as)); return; }
+      if (e.target.closest('.va-btn')) { setOpen(!isOpen, { refocus: false }); return; }
+      if (e.target.closest('a')) setOpen(false);
+    });
+    host.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+      const items = [...host.querySelectorAll('.va-menu .it')];
+      const at = items.indexOf(document.activeElement);
+      if (e.key === 'Escape') { e.preventDefault(); setOpen(false, { refocus: true }); }
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End') {
+        e.preventDefault();
+        const to = e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1
+          : (at + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items[to].focus();
+      } else if (e.key === 'Tab') setOpen(false);
+    });
+    // composedPath, not contains(): the chip re-renders itself on this very click, so e.target is already detached.
+    document.addEventListener('click', (e) => { if (isOpen && !e.composedPath().includes(host)) setOpen(false); });
+
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) { dlg.close(); return; }
+      const pick = e.target.closest('[data-pick]');
+      if (!pick) return;
+      const id = Number(pick.dataset.pick), prev = myTeam.get() || 0;
+      dlg.close();
+      if (id !== prev) { apply(id); say(id ? `Viewing as ${nameOf(id)}` : 'League view. You can pick a team any time.', () => { apply(prev); }); }
+      else apply(id);
+    });
+    // Escape, the backdrop or "Just looking" all count as an answer, so it never nags.
+    dlg.addEventListener('close', () => { if (!myTeam.asked()) { myTeam.clear(); route(); } });
+
+    return { sync, greet, ask };
+  })();
+
 __BTS_JS__
   /* ---------- router: every page is a #hash inside this one file ---------- */
   let btsSection = '';
@@ -3116,7 +3270,7 @@ __BTS_JS__
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
     else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
-    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
+    else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() ? 'mine' : coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
@@ -3134,15 +3288,9 @@ __BTS_JS__
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();
     if (nav === 'behind-the-scenes') btsMount(btsSection);
-    // Coach's hello is a modal: it opens on its own and only a pick closes it.
-    const pick = document.getElementById('pick-dialog');
-    if (pick && !pick.open && pick.showModal) pick.showModal();
+    viewingAs.sync();
+    viewingAs.greet();
   }
-
-  /* Escape is the one way out of a modal, so it's blocked (`cancel` and `close` don't bubble,
-     hence the capture), and a close that slips through reopens until there's a team. */
-  document.addEventListener('cancel', (e) => { if (e.target.id === 'pick-dialog') e.preventDefault(); }, true);
-  document.addEventListener('close', (e) => { if (e.target.id === 'pick-dialog' && e.target.isConnected) e.target.showModal(); }, true);
 
   /* Opening a player card. #main survives every re-render (only its contents change), so
      one listener here outlives the router and the live refresh. */
@@ -3166,18 +3314,10 @@ __BTS_JS__
     if (e.target.open) HUB_OPEN.add(key); else HUB_OPEN.delete(key);
   }, true);
 
-  /* Picking a team from Coach (a grid card or the team switcher) is what makes it "my team"
-     for the Coach tab. Opening someone's profile from Standings or a matchup link isn't. */
   document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[data-myteam]');
-    if (a) myTeam.set(Number(a.dataset.myteam));
-    // Coach's hello modal: remember the pick and redraw Coach as her team.
-    const pick = e.target.closest('button[data-pick]');
-    if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
     const inj = e.target.closest('button[data-inj]');
     if (inj) { injPick = inj.dataset.inj; route(); const again = document.querySelector(`button[data-inj="${injPick}"]`); if (again) again.focus({ preventScroll: true }); }
-    const reopen = e.target.closest('button[data-open-pick]');
-    if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
+    if (e.target.closest('button[data-open-who]')) viewingAs.ask();
   });
 
   window.addEventListener('hashchange', () => {
@@ -3205,8 +3345,8 @@ __BTS_JS__
       const h = location.hash.replace(/^#/, '');
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
-      // The team picker has nothing live in it; redrawing would reset its focus every minute.
-      const picking = (document.getElementById('pick-dialog') || {}).open;
+      // The "Who are you?" prompt has nothing live in it; redrawing would reset its focus every minute.
+      const picking = (document.getElementById('who-dialog') || {}).open;
       if (!picking && (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '')) {
         // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
         const chips = document.querySelector('.hub-chips');
