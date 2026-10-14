@@ -186,10 +186,17 @@ class Matching(unittest.TestCase):
         self.assertEqual(block["players"], {})
         self.assertEqual(block["unmatched"][0]["why"], "no games played")
 
+    def test_an_integral_float_counts_a_fractional_one_is_dropped_and_a_missing_games_says_so(self):
+        st = {"games": 5.0, "rec_yds": 85.0, "rec_tar": 2.5, "rec_rec": True}
+        block = fps.build([pl(1, "A One", "WR", "DEN"), pl(2, "B Two", "WR", "DEN")],
+                          [resp(("A One", "WR", "DEN", st), ("B Two", "WR", "DEN", {"rec_yds": 10}))], 5)
+        self.assertEqual(block["players"]["1"], {"games": 5, "rec_yds": 85})
+        self.assertEqual(block["unmatched"], [{"name": "B Two", "team": "DEN", "why": "no games count"}])
+
     def test_only_whole_number_totals_the_tiles_read_are_kept(self):
         st = {"games": 5, "rec_tar": 35, "points": 59.5, "rec_att": 35, "fumbles": 0, "rec_yds": 352.0}
         block = fps.build([pl(1, "Parker Washington", "WR", "JAX")], [resp(("Parker Washington", "WR", "JAC", st))], 5)
-        self.assertEqual(block["players"]["1"], {"games": 5, "rec_tar": 35})
+        self.assertEqual(block["players"]["1"], {"games": 5, "rec_tar": 35, "rec_yds": 352})   # 352.0 is whole; points, rec_att, fumbles are not read
         self.assertEqual(block["through_week"], 5)
 
 

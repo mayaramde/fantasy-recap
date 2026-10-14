@@ -44,6 +44,15 @@ def norm_team(team):
     return TEAM_ALIASES.get(team, team)
 
 
+def _whole(v):
+    """A whole-number total as an int: 85 or 85.0 pass, 85.5, strings and bools don't."""
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, float) and v.is_integer():
+        return int(v)
+    return v if isinstance(v, int) else None
+
+
 def _index(responses):
     """{(name, team, pos): stats}, or None for a key two different FantasyPros rows claim."""
     seen = {}
@@ -52,7 +61,7 @@ def _index(responses):
             if not isinstance(row, dict) or not isinstance(row.get("stats"), dict):
                 continue
             key = (norm_name(row.get("player_name")), norm_team(row.get("team_id")), row.get("position_id"))
-            stats = {k: row["stats"][k] for k in STAT_FIELDS if type(row["stats"].get(k)) is int}
+            stats = {k: _whole(row["stats"].get(k)) for k in STAT_FIELDS if _whole(row["stats"].get(k)) is not None}
             if key in seen and seen[key] != stats:
                 seen[key] = None
             else:
@@ -73,7 +82,9 @@ def build(players, responses, through_week):
             unmatched.append({"name": p["name"], "team": p.get("team"), "why": "no match"})
         elif index[key] is None:
             unmatched.append({"name": p["name"], "team": p.get("team"), "why": "ambiguous"})
-        elif not index[key].get("games"):
+        elif "games" not in index[key]:
+            unmatched.append({"name": p["name"], "team": p.get("team"), "why": "no games count"})
+        elif not index[key]["games"]:
             unmatched.append({"name": p["name"], "team": p.get("team"), "why": "no games played"})
         else:
             out[str(p["player_id"])] = index[key]
@@ -98,7 +109,8 @@ def main():
         path = Path(args.into)
         snap = json.loads(path.read_text())
         snap["player_stats"] = block
-        path.write_text(json.dumps(snap, indent=2) + "\n")
+        # Same shape coach-daily writes (indent 2, no trailing newline), so the diff is only player_stats
+        path.write_text(json.dumps(snap, indent=2, ensure_ascii=False))
     else:
         print(json.dumps(block, indent=1))
     print(f"matched {len(block['players'])}, unmatched {len(block['unmatched'])}"

@@ -150,7 +150,7 @@ def _check_player_stats(errors, rel, block):
         errors.append(f"{rel}: player_stats.players must be an object keyed by ESPN player id")
         return
     for pid, st in players.items():
-        if not pid.lstrip("-").isdigit():
+        if not re.fullmatch(r"-?[0-9]+", pid):
             errors.append(f"{rel}: player_stats.players key {pid!r} isn't an ESPN player id")
         elif (not isinstance(st, dict) or not st or not isinstance(st.get("games"), int) or st["games"] < 1
               or not all(k in PLAYER_STAT_FIELDS and type(v) is int for k, v in st.items())):
