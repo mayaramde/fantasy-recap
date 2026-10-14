@@ -154,11 +154,12 @@ def baked_awards(recap, facts):
     for kind in AWARD_KEYS:
         out[kind] = []
         for award in recap.get(kind, []):
-            award = dict(award)
+            award = {k: v for k, v in award.items() if k not in ("player_id", "headshot")}
             p = roster.get(award.get("player"))
             if p and p.get("player_id") is not None:
-                award["player_id"] = p["player_id"]
-                award["headshot"] = p.get("logo") if p.get("pos") == "DST" else HEADSHOT_URL.format(p["player_id"])
+                shot = p.get("logo") if p.get("pos") == "DST" else HEADSHOT_URL.format(p["player_id"])
+                if shot:
+                    award["player_id"], award["headshot"] = p["player_id"], shot
             out[kind].append(award)
     return out
 

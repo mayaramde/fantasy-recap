@@ -219,6 +219,44 @@ def emoji_clusters(text):
     return clusters
 
 
+# Real emoji whose code points aren't category So (‼ ⁉ ℹ 〰 〽)
+EMOJI_EXTRA_BASES = {0x203C, 0x2049, 0x2139, 0x3030, 0x303D}
+
+
+def _emoji_base(ch):
+    return unicodedata.category(ch) == "So" or ord(ch) in EMOJI_EXTRA_BASES
+
+
+def _emoji_part(ch):
+    cp = ord(ch)
+    return cp in (0x200D, 0xFE0F, 0x20E3) or 0x1F3FB <= cp <= 0x1F3FF or 0xE0020 <= cp <= 0xE007F
+
+
+def emoji_only(cluster):
+    """True when every code point of one cluster is emoji: a base symbol first, then only
+    selectors, skin tones, tags or a keycap, and a ZWJ only when another symbol follows it."""
+    if not _emoji_base(cluster[0]):
+        return False
+    for i, ch in enumerate(cluster[1:], 1):
+        if ch == "\u200d":
+            if i + 1 >= len(cluster) or not _emoji_base(cluster[i + 1]):
+                return False
+        elif not (_emoji_part(ch) or _emoji_base(ch)):
+            return False
+        elif _emoji_base(ch) and cluster[i - 1] != "\u200d" and not (
+                0x1F1E6 <= ord(ch) <= 0x1F1FF):
+            return False
+    return True
+
+
+def _words(text):
+    return re.findall(r"[a-z0-9.]+", text.lower())
+
+
+def _contains_run(big, small):
+    return bool(small) and any(big[i:i + len(small)] == small for i in range(len(big) - len(small) + 1))
+
+
 def check_awards(recap, roster_names, problems):
     """Per-award rules: the optional `emoji` and `player` fields, and the title/stat/text limits.
     `roster_names` is None when the week has no facts.json to check a player against."""
@@ -226,7 +264,18 @@ def check_awards(recap, roster_names, problems):
     for section in AWARD_KEYS:
         for i, award in enumerate(recap.get(section, [])):
             at = f"{section}[{i}]"
-            title, stat = award.get("title", ""), award.get("stat", "")
+            if not isinstance(award, dict):
+                problems.append(f"{at} must be an object")
+                continue
+            for field in ("title", "stat", "text"):
+                if field in award and not isinstance(award[field], str):
+                    problems.append(f"{at}.{field} must be text")
+            title, stat = (x if isinstance(x, str) else "" for x in (award.get("title"), award.get("stat")))
+
+            # The photo comes from `player` through site/build.py, never from the recap itself
+            for field in ("player_id", "headshot"):
+                if field in award:
+                    problems.append(f"{at}.{field} is baked in by the build from `player`; remove it")
 
             if "emoji" in award:
                 emoji = award["emoji"]
@@ -234,7 +283,7 @@ def check_awards(recap, roster_names, problems):
                 if not clusters or len(clusters) > EMOJI_MAX:
                     problems.append(f"{at}.emoji {emoji!r} must be 1 or {EMOJI_MAX} visible characters, "
                                     f"one emoji or one emoji sequence")
-                elif not all(unicodedata.category(c[0]) == "So" for c in clusters):
+                elif not all(emoji_only(c) for c in clusters):
                     problems.append(f"{at}.emoji {emoji!r} must be emoji only, no letters, digits or punctuation")
 
             if "player" in award:
@@ -251,11 +300,11 @@ def check_awards(recap, roster_names, problems):
                 problems.append(f"{at}.title is {len(title)} characters, the limit is {TITLE_MAX}")
             if week >= AWARD_RULES_FROM_WEEK and len(stat) > STAT_MAX:
                 problems.append(f"{at}.stat {stat!r} is {len(stat)} characters, the limit is {STAT_MAX}")
-            norm = lambda x: " ".join(re.findall(r"[a-z0-9.]+", x.lower()))
-            if norm(stat) and norm(title) and (norm(stat) in norm(title) or norm(title) in norm(stat)):
+            sw, tw = _words(stat), _words(title)
+            if sw and tw and (_contains_run(tw, sw) or _contains_run(sw, tw)):
                 problems.append(f"{at}.stat {stat!r} repeats the title {title!r}; give the stat different information")
             for field in ("title", "stat", "text"):
-                if EM_DASH in award.get(field, ""):
+                if EM_DASH in (award.get(field) if isinstance(award.get(field), str) else ""):
                     problems.append(f"{at}.{field} has an em dash; use a period or a comma")
 
 
