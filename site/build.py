@@ -69,16 +69,32 @@ SWAP_MIN = 2.0
 LEVELS = ("now", "watch", "info")
 
 
-def player(p, live):
+def game_states_known(players):
+    """Did this capture hear the NFL scoreboard? The scoreboard call is best effort, so a capture
+    can carry no game state for anybody, and then nobody can be called on a bye."""
+    return any(p.get("game_state") for p in players)
+
+
+def is_on_bye(p, states_known):
+    """His NFL team has no game this week, so he cannot score. The one definition of a bye: the
+    Coach cards and the Week hub's lineup rows both read it."""
+    return states_known and p.get("game_state") is None
+
+
+def player(p, live, states_known):
     """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
     NFL game is on, and absent otherwise, so a finished week carries no live leftovers.
     The NFL team logo rides along on the live week, which is the only page that shows it,
-    and `injury` is ESPN's designation in plain words, absent when he isn't listed."""
+    `injury` is ESPN's designation in plain words, absent when he isn't listed, and `bye` is
+    True when his team has no game, absent otherwise (including when the capture has no game
+    states, where it can't be known)."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
     if live:
         # player_id is what pairs a row with its Coach card (see player_cards); it is an
         # ESPN *player* id, the same one the headshot URLs already carry, never a member's.
         row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"), kickoff=p.get("kickoff"))
+        if is_on_bye(p, states_known):
+            row["bye"] = True
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
@@ -86,7 +102,7 @@ def player(p, live):
     return row
 
 
-def side(t, live=False):
+def side(t, live, states_known):
     return {
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
@@ -96,8 +112,8 @@ def side(t, live=False):
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
-        "starters": [player(p, live) for p in t["starters"]],
-        "bench": [player(p, live) for p in t["bench"]],
+        "starters": [player(p, live, states_known) for p in t["starters"]],
+        "bench": [player(p, live, states_known) for p in t["bench"]],
     }
 
 
@@ -126,6 +142,8 @@ def worst_performances(facts):
 
 def week_payload(facts, recap, live=False):
     teams = {t["team_id"]: t for t in facts["teams"]}
+    # Only the live week's rows say who is on a bye; a finished week has no use for the scan
+    states_known = live and game_states_known(p for t in facts["teams"] for p in t["starters"] + t["bench"])
     games, seen = [], set()
     for t in facts["teams"]:
         key = tuple(sorted((t["team_id"], t["opponent_id"])))
@@ -134,7 +152,8 @@ def week_payload(facts, recap, live=False):
         seen.add(key)
         a, b = teams[key[0]], teams[key[1]]
         winner, loser = (a, b) if a["points"] >= b["points"] else (b, a)
-        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner, live), "loser": side(loser, live),
+        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner, live, states_known),
+                      "loser": side(loser, live, states_known),
                       "blurb": recap.get("matchups", {}).get(f"{key[0]}-{key[1]}", "")})
     games.sort(key=lambda g: g["winner"]["points"] + g["loser"]["points"], reverse=True)
 
@@ -713,8 +732,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         return bool(p.get("played"))
 
     def on_bye(p):
-        """His NFL team has no game this week, so he cannot score."""
-        return states_known and p.get("game_state") is None
+        return is_on_bye(p, states_known)
 
     def playable(p):
         """He has a game this week that hasn't kicked off — the only kind of player a
@@ -1034,7 +1052,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
     # Both calls behind these are best effort. With no NFL game states, no player is
     # called locked or on a bye on a guess; with no projections published for the week,
     # no card pretends to compare them.
-    states_known = any(p.get("game_state") for p in rows)
+    states_known = game_states_known(rows)
     projected = any(p.get("projected") for p in rows)
     # Is there any football left this week? Read across the whole league, not one roster,
     # so a manager with nobody in the late game still gets told the truth. With no game
@@ -1170,8 +1188,9 @@ def next_payload(capture, previous, fp=None):
     """
     teams = next_week_teams(capture)
     rows = advice_payload(teams, capture, previous, fp=fp, week=capture["week"])
-    lineups = {t["team_id"]: {"starters": [player(p, True) for p in t["starters"]],
-                              "bench": [player(p, True) for p in t["bench"]]} for t in teams}
+    known = game_states_known(p for t in teams for p in t["starters"] + t["bench"])
+    lineups = {t["team_id"]: {"starters": [player(p, True, known) for p in t["starters"]],
+                              "bench": [player(p, True, known) for p in t["bench"]]} for t in teams}
     by_id = {t["team_id"]: t for t in teams}
     record_by_id = {t["team_id"]: t for t in capture["teams"]}
     for r in rows:
