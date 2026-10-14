@@ -71,7 +71,9 @@
   .lv-go { color: var(--on-accent); font: 600 15px/1.2 var(--script); text-decoration: none; }
   .lv-go::after { content: ''; position: absolute; inset: 0; border-radius: 14px; }
   .lv-go:focus-visible { outline: none; }
-  .lv-go:focus-visible::after { outline: 3px solid var(--pink); outline-offset: -6px; }
+  .lv-go:focus-visible::after { outline: 3px solid var(--edge); outline-offset: -6px; box-shadow: none; }
   .lv-coach { position: relative; z-index: 2; color: var(--on-accent); font: 600 13px/1.2 var(--body); text-decoration: underline; text-underline-offset: 3px; }
   a.lv-chip { position: relative; z-index: 2; text-decoration: none; }
   .lv-pickbox .lv-btn { position: relative; z-index: 2; }
+  .lv-coach:focus-visible { outline: 3px solid var(--on-accent); outline-offset: 3px; }
+  a.lv-chip:focus-visible { border-radius: 999px; }

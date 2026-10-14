@@ -2537,7 +2537,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           </div>
           <div class="lv-actions">
             <a class="lv-go" href="${boxHref}">Live box score <span aria-hidden="true">→</span></a>
-            ${picked ? `<a class="lv-coach" href="${coachHref()}">Your Coach report →</a>` : ''}
+            ${picked ? `<a class="lv-coach" href="${coachHref()}">Your Coach report <span aria-hidden="true">→</span></a>` : ''}
           </div>
           ${picked ? '' : `<div class="lv-pickbox"><span>Pick your team and your game goes first, every time.</span><button class="lv-btn" type="button" data-ask-team>Pick your team</button></div>`}
         </div>
