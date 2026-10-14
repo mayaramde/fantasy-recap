@@ -40,16 +40,18 @@ week folder yet:
 ```
 cd /tmp/fantasy-coach-daily-<YYYY-MM-DD>
 node scripts/capture_node.mjs current   # writes data/2026/week-NN/espn.json
-python3 scripts/analyze.py              # writes that week's facts.json
+python3 scripts/analyze.py --week NN    # NN from `current`'s output; writes that week's facts.json
 node scripts/capture_node.mjs next      # best effort: writes data/2026/next-week/espn.json
 ```
 
 Skip `current` and `analyze.py` when the copied `week-NN/facts.json` already belongs to the live week
-(Step 3's definition), and skip `next` when `next-week/espn.json` already exists. If `current` fails,
+(Step 3's definition), and always re-run `next` (a copied one may be days old; it is best effort anyway). If `current` fails,
 don't fall back to an audit-only run quietly: lead the Output summary with the exact error (an `ESPN 401`
 means the league went private again, the commissioner's setting to fix). A failed `next` just means no
-next-week cards today; say so in the summary and carry on. Neither folder is ever committed
-(`.gitignore`).
+next-week cards today; say so in the summary and carry on. The new `week-NN/` files show up
+as untracked in the worktree and `next-week/` is gitignored; neither is ever committed, because Step 7
+stages only the files it names (never `git add -A`). `analyze.py` may also touch
+`data/player_names.json`; don't stage that either.
 
 ## Step 2: read yesterday's snapshot
 
@@ -326,7 +328,7 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 ## Step 7: build, check, commit, ship the PR
 
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
-   touch any recap file or any `data/2026/week-NN/` file.
+   edit or commit any recap file or any `data/2026/week-NN/` file.
 2. Commit **only** `data/2026/fantasypros/latest.json` on the worktree's `coach-daily-<date>`
    branch. Never `git add -A`.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
@@ -337,7 +339,7 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    would overwrite it) — close it (`gh pr close <n> --delete-branch`) so it can't conflict with
    today's.
 5. Confirm auto-merge is actually on (`gh pr view <n> --json autoMergeRequest`), then remove the
-   worktree: `git worktree remove /tmp/fantasy-coach-daily-<date>`.
+   worktree: `git worktree remove --force /tmp/fantasy-coach-daily-<date>` (--force: the captured week folder is untracked).
 6. Don't deploy the website yourself — the next `live-update.yml` run picks up the merged
    snapshot the next time it builds.
 
