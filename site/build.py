@@ -30,6 +30,9 @@ import team_profile
 
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "site"
+# Coach landing modules, inlined in this order (landing.js calls the ones before it).
+COACH_JS = ("seasonAverage", "vitals", "fixes", "byeDamage", "battles", "pickups", "strengthMap", "callouts",
+            "tradeMatches", "headlines", "take", "landing")
 LEAGUE = json.loads((ROOT / "league.json").read_text())
 
 AWARD_KEYS = ("game_balls", "flags", "tough_breaks")
@@ -636,7 +639,10 @@ def injury_report(starters, bench, on_bye):
             status = INJURY_LABEL.get(p.get("injury_status")) or ("Bye" if on_bye(p) else None)
             if status:
                 out.append({"name": p["name"], "pos": p.get("pos"), "team": p.get("team"),
-                            "logo": p.get("logo"), "status": status, "role": role})
+                            "logo": p.get("logo"), "status": status, "role": role,
+                            # `slot` and `bye` ride along for the Coach landing: a designation hides a
+                            # bye in `status`, and the landing counts byes and names the lineup spot.
+                            "slot": p.get("slot"), "bye": bool(on_bye(p))})
     return out
 
 
@@ -1528,6 +1534,11 @@ def render(recap_weeks, captured, preview, ahead=None, fp=None, news=None, live_
     # The Behind the scenes page lives in site/bts/ (markup, CSS, JS, one shared icon sprite) and is
     # stitched in here once, so template.html stays about the pages that carry league data.
     bts = SITE / "bts"
+    # The Coach landing: pure insight functions (tested with `node --test tests/coach/*.test.js`), the
+    # markup that uses them, and its CSS, in site/coach/. Order matters: landing.js calls the others.
+    coach = SITE / "coach"
+    coach_js = "\n".join(re.sub(r"^if \(typeof module.*\n?", "", (coach / f"{n}.js").read_text(), flags=re.M) for n in COACH_JS)
+    template = template.replace("__COACH_JS__", coach_js).replace("__COACH_CSS__", (coach / "coach.css").read_text())
     template = (template.replace("__BTS_CSS__", (bts / "bts.css").read_text())
                 .replace("__BTS_JS__", (bts / "bts.js").read_text())
                 .replace("__BTS_SPRITE__", (bts / "sprite.svg").read_text())

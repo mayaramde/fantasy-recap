@@ -1,0 +1,873 @@
+{
+ "note": "Week 6 golden values (captured Tue Oct 13, 6:22 PM). Names the golden values don't give are placeholders.",
+ "teams": [
+  {
+   "id": 1,
+   "manager": "Kyra",
+   "record": "5–0",
+   "streak": "W5",
+   "odds": 0.99,
+   "projected": 93.3,
+   "ranks": {
+    "QB": 2,
+    "RB": 1,
+    "WR": 8,
+    "TE": 6,
+    "FLEX": 1,
+    "DST": 8,
+    "K": 5
+   },
+   "swaps": [
+    {
+     "text": "Start Warren over Fannin",
+     "gain": 2.2
+    }
+   ],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "Placeholder Delta",
+     "nfl": "CIN",
+     "text": "Placeholder Delta is on a bye",
+     "spot": "WR"
+    },
+    {
+     "name": "Placeholder Echo",
+     "nfl": "DET",
+     "text": "Placeholder Echo is on a bye",
+     "spot": "DST"
+    }
+   ],
+   "byeBench": [],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 2,
+   "manager": "Maya",
+   "record": "4–1",
+   "streak": "W4",
+   "odds": 0.89,
+   "projected": 133.0,
+   "ranks": {
+    "QB": 4,
+    "RB": 3,
+    "WR": 5,
+    "TE": 4,
+    "FLEX": 3,
+    "DST": 4,
+    "K": 7
+   },
+   "swaps": [],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "CIN D/ST",
+     "nfl": "CIN",
+     "text": "CIN D/ST is on a bye",
+     "spot": "DST"
+    }
+   ],
+   "byeBench": [],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 3,
+   "manager": "Amie",
+   "record": "3–2",
+   "streak": "L1",
+   "odds": 0.89,
+   "projected": 140.3,
+   "ranks": {
+    "QB": 3,
+    "RB": 2,
+    "WR": 1,
+    "TE": 7,
+    "FLEX": 6,
+    "DST": 2,
+    "K": 8
+   },
+   "swaps": [],
+   "empties": [],
+   "byeStarters": [],
+   "byeBench": [],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 4,
+   "manager": "Marlee",
+   "record": "3–2",
+   "streak": "L2",
+   "odds": 0.6,
+   "projected": 117.7,
+   "ranks": {
+    "QB": 5,
+    "RB": 4,
+    "WR": 6,
+    "TE": 3,
+    "FLEX": 7,
+    "DST": 6,
+    "K": 1
+   },
+   "swaps": [],
+   "empties": [
+    {
+     "text": "K spot is empty",
+     "spot": "K"
+    }
+   ],
+   "byeStarters": [],
+   "byeBench": [
+    {
+     "name": "Placeholder Golf",
+     "nfl": "CIN",
+     "text": "Placeholder Golf is on a bye",
+     "spot": null
+    },
+    {
+     "name": "Placeholder Hotel",
+     "nfl": "DET",
+     "text": "Placeholder Hotel is on a bye",
+     "spot": null
+    },
+    {
+     "name": "Placeholder India",
+     "nfl": "MIN",
+     "text": "Placeholder India is on a bye",
+     "spot": null
+    },
+    {
+     "name": "Placeholder Juliet",
+     "nfl": "MIN",
+     "text": "Placeholder Juliet is on a bye",
+     "spot": null
+    }
+   ],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 5,
+   "manager": "Tara",
+   "record": "2–3",
+   "streak": "W1",
+   "odds": 0.28,
+   "projected": 128.4,
+   "ranks": {
+    "QB": 7,
+    "RB": 7,
+    "WR": 2,
+    "TE": 1,
+    "FLEX": 5,
+    "DST": 3,
+    "K": 4
+   },
+   "swaps": [
+    {
+     "text": "Start Stevenson over Barkley",
+     "gain": 2.5
+    }
+   ],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "DET D/ST",
+     "nfl": "DET",
+     "text": "DET D/ST is on a bye",
+     "spot": "DST"
+    }
+   ],
+   "byeBench": [
+    {
+     "name": "Placeholder Mike",
+     "nfl": "MIA",
+     "text": "Placeholder Mike is on a bye",
+     "spot": null
+    }
+   ],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 6,
+   "manager": "Samantha",
+   "record": "2–3",
+   "streak": "W1",
+   "odds": 0.23,
+   "projected": 71.2,
+   "ranks": {
+    "QB": 1,
+    "RB": 8,
+    "WR": 7,
+    "TE": 2,
+    "FLEX": 8,
+    "DST": 1,
+    "K": 3
+   },
+   "swaps": [
+    {
+     "text": "Start Odunze over Allen",
+     "gain": 3.7
+    }
+   ],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "Placeholder Alpha",
+     "nfl": "CIN",
+     "text": "Placeholder Alpha is on a bye",
+     "spot": "WR"
+    },
+    {
+     "name": "Placeholder Bravo",
+     "nfl": "DET",
+     "text": "Placeholder Bravo is on a bye",
+     "spot": "RB"
+    },
+    {
+     "name": "Placeholder Charlie",
+     "nfl": "MIN",
+     "text": "Placeholder Charlie is on a bye",
+     "spot": "FLEX"
+    }
+   ],
+   "byeBench": [],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 7,
+   "manager": "Maddie",
+   "record": "1–4",
+   "streak": "L1",
+   "odds": 0.02,
+   "projected": 106.3,
+   "ranks": {
+    "QB": 8,
+    "RB": 5,
+    "WR": 4,
+    "TE": 8,
+    "FLEX": 4,
+    "DST": 7,
+    "K": 2
+   },
+   "swaps": [],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "Brown Placeholder",
+     "nfl": "MIN",
+     "text": "Start Hubbard over Brown",
+     "spot": "WR"
+    }
+   ],
+   "byeBench": [],
+   "injured": [],
+   "weekly": []
+  },
+  {
+   "id": 8,
+   "manager": "Cambri",
+   "record": "0–5",
+   "streak": "L5",
+   "odds": 0.09,
+   "projected": 114.5,
+   "ranks": {
+    "QB": 6,
+    "RB": 6,
+    "WR": 3,
+    "TE": 5,
+    "FLEX": 2,
+    "DST": 5,
+    "K": 6
+   },
+   "swaps": [],
+   "empties": [],
+   "byeStarters": [
+    {
+     "name": "Placeholder Foxtrot",
+     "nfl": "MIA",
+     "text": "Placeholder Foxtrot is on a bye",
+     "spot": "RB"
+    }
+   ],
+   "byeBench": [
+    {
+     "name": "Placeholder Kilo",
+     "nfl": "CIN",
+     "text": "Placeholder Kilo is on a bye",
+     "spot": null
+    },
+    {
+     "name": "Placeholder Lima",
+     "nfl": "DET",
+     "text": "Placeholder Lima is on a bye",
+     "spot": null
+    }
+   ],
+   "injured": [],
+   "weekly": []
+  }
+ ],
+ "games": [
+  {
+   "a": {
+    "id": 1,
+    "manager": "Kyra",
+    "projected": 93.3,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Kyra QB",
+      "projected": 12.4
+     },
+     {
+      "slot": "RB",
+      "name": "Kyra RB1",
+      "projected": 9.3
+     },
+     {
+      "slot": "RB",
+      "name": "Kyra RB2",
+      "projected": 9.3
+     },
+     {
+      "slot": "WR",
+      "name": "Kyra WR1",
+      "projected": 9.3
+     },
+     {
+      "slot": "WR",
+      "name": "Kyra WR2",
+      "projected": 9.3
+     },
+     {
+      "slot": "TE",
+      "name": "Kyra TE",
+      "projected": 6.2
+     },
+     {
+      "slot": "FLEX",
+      "name": "Kyra FLEX",
+      "projected": 25.2
+     },
+     {
+      "slot": "DST",
+      "name": "Kyra DST",
+      "projected": 6.2
+     },
+     {
+      "slot": "K",
+      "name": "Kyra K",
+      "projected": 6.1
+     }
+    ]
+   },
+   "b": {
+    "id": 8,
+    "manager": "Cambri",
+    "projected": 114.5,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Cambri QB",
+      "projected": 32.6
+     },
+     {
+      "slot": "RB",
+      "name": "Cambri RB1",
+      "projected": 14.8
+     },
+     {
+      "slot": "RB",
+      "name": "Cambri RB2",
+      "projected": 14.8
+     },
+     {
+      "slot": "WR",
+      "name": "Cambri WR1",
+      "projected": 10.8
+     },
+     {
+      "slot": "WR",
+      "name": "Cambri WR2",
+      "projected": 10.8
+     },
+     {
+      "slot": "TE",
+      "name": "Cambri TE",
+      "projected": 8.1
+     },
+     {
+      "slot": "FLEX",
+      "name": "Cambri FLEX",
+      "projected": 10.3
+     },
+     {
+      "slot": "DST",
+      "name": "Cambri DST",
+      "projected": 6.2
+     },
+     {
+      "slot": "K",
+      "name": "Cambri K",
+      "projected": 6.1
+     }
+    ]
+   }
+  },
+  {
+   "a": {
+    "id": 7,
+    "manager": "Maddie",
+    "projected": 106.3,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Maddie QB",
+      "projected": 15.2
+     },
+     {
+      "slot": "RB",
+      "name": "Maddie RB1",
+      "projected": 10.9
+     },
+     {
+      "slot": "RB",
+      "name": "Maddie RB2",
+      "projected": 11.0
+     },
+     {
+      "slot": "WR",
+      "name": "Maddie WR1",
+      "projected": 19.6
+     },
+     {
+      "slot": "WR",
+      "name": "Maddie WR2",
+      "projected": 19.5
+     },
+     {
+      "slot": "TE",
+      "name": "Maddie TE",
+      "projected": 9.5
+     },
+     {
+      "slot": "FLEX",
+      "name": "Maddie FLEX",
+      "projected": 9.4
+     },
+     {
+      "slot": "DST",
+      "name": "Maddie DST",
+      "projected": 5.6
+     },
+     {
+      "slot": "K",
+      "name": "Maddie K",
+      "projected": 5.6
+     }
+    ]
+   },
+   "b": {
+    "id": 6,
+    "manager": "Samantha",
+    "projected": 71.2,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Samantha QB",
+      "projected": 11.2
+     },
+     {
+      "slot": "RB",
+      "name": "Samantha RB1",
+      "projected": 8.4
+     },
+     {
+      "slot": "RB",
+      "name": "Samantha RB2",
+      "projected": 8.5
+     },
+     {
+      "slot": "WR",
+      "name": "Samantha WR1",
+      "projected": 8.4
+     },
+     {
+      "slot": "WR",
+      "name": "Samantha WR2",
+      "projected": 8.5
+     },
+     {
+      "slot": "TE",
+      "name": "Samantha TE",
+      "projected": 5.6
+     },
+     {
+      "slot": "FLEX",
+      "name": "Samantha FLEX",
+      "projected": 9.4
+     },
+     {
+      "slot": "DST",
+      "name": "Samantha DST",
+      "projected": 5.6
+     },
+     {
+      "slot": "K",
+      "name": "Samantha K",
+      "projected": 5.6
+     }
+    ]
+   }
+  },
+  {
+   "a": {
+    "id": 3,
+    "manager": "Amie",
+    "projected": 140.3,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Amie QB",
+      "projected": 23.6
+     },
+     {
+      "slot": "RB",
+      "name": "Amie RB1",
+      "projected": 15.9
+     },
+     {
+      "slot": "RB",
+      "name": "Amie RB2",
+      "projected": 16.0
+     },
+     {
+      "slot": "WR",
+      "name": "Amie WR1",
+      "projected": 18.9
+     },
+     {
+      "slot": "WR",
+      "name": "Amie WR2",
+      "projected": 18.9
+     },
+     {
+      "slot": "TE",
+      "name": "Amie TE",
+      "projected": 13.0
+     },
+     {
+      "slot": "FLEX",
+      "name": "Amie FLEX",
+      "projected": 15.5
+     },
+     {
+      "slot": "DST",
+      "name": "Amie DST",
+      "projected": 9.3
+     },
+     {
+      "slot": "K",
+      "name": "Amie K",
+      "projected": 9.2
+     }
+    ]
+   },
+   "b": {
+    "id": 4,
+    "manager": "Marlee",
+    "projected": 117.7,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Marlee QB",
+      "projected": 18.6
+     },
+     {
+      "slot": "RB",
+      "name": "Marlee RB1",
+      "projected": 13.9
+     },
+     {
+      "slot": "RB",
+      "name": "Marlee RB2",
+      "projected": 14.0
+     },
+     {
+      "slot": "WR",
+      "name": "Marlee WR1",
+      "projected": 13.9
+     },
+     {
+      "slot": "WR",
+      "name": "Marlee WR2",
+      "projected": 14.0
+     },
+     {
+      "slot": "TE",
+      "name": "Marlee TE",
+      "projected": 9.3
+     },
+     {
+      "slot": "FLEX",
+      "name": "Marlee FLEX",
+      "projected": 15.5
+     },
+     {
+      "slot": "DST",
+      "name": "Marlee DST",
+      "projected": 9.3
+     },
+     {
+      "slot": "K",
+      "name": "Marlee K",
+      "projected": 9.2
+     }
+    ]
+   }
+  },
+  {
+   "a": {
+    "id": 5,
+    "manager": "Tara",
+    "projected": 128.4,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Tara QB",
+      "projected": 20.3
+     },
+     {
+      "slot": "RB",
+      "name": "Tara RB1",
+      "projected": 15.2
+     },
+     {
+      "slot": "RB",
+      "name": "Tara RB2",
+      "projected": 15.2
+     },
+     {
+      "slot": "WR",
+      "name": "Tara WR1",
+      "projected": 15.2
+     },
+     {
+      "slot": "WR",
+      "name": "Tara WR2",
+      "projected": 15.2
+     },
+     {
+      "slot": "TE",
+      "name": "Tara TE",
+      "projected": 10.1
+     },
+     {
+      "slot": "FLEX",
+      "name": "Tara FLEX",
+      "projected": 16.9
+     },
+     {
+      "slot": "DST",
+      "name": "Tara DST",
+      "projected": 10.1
+     },
+     {
+      "slot": "K",
+      "name": "Tara K",
+      "projected": 10.2
+     }
+    ]
+   },
+   "b": {
+    "id": 2,
+    "manager": "Maya",
+    "projected": 133.0,
+    "starters": [
+     {
+      "slot": "QB",
+      "name": "Maya QB",
+      "projected": 23.3
+     },
+     {
+      "slot": "RB",
+      "name": "Maya RB1",
+      "projected": 16.0
+     },
+     {
+      "slot": "RB",
+      "name": "Maya RB2",
+      "projected": 16.0
+     },
+     {
+      "slot": "WR",
+      "name": "Maya WR1",
+      "projected": 15.2
+     },
+     {
+      "slot": "WR",
+      "name": "Maya WR2",
+      "projected": 15.2
+     },
+     {
+      "slot": "TE",
+      "name": "Maya TE",
+      "projected": 10.1
+     },
+     {
+      "slot": "FLEX",
+      "name": "Maya FLEX",
+      "projected": 16.9
+     },
+     {
+      "slot": "DST",
+      "name": "Maya DST",
+      "projected": 10.1
+     },
+     {
+      "slot": "K",
+      "name": "Maya K",
+      "projected": 10.2
+     }
+    ]
+   }
+  }
+ ],
+ "wire": [
+  {
+   "kind": "move",
+   "manager": "Cambri",
+   "team_id": 8,
+   "date": "2026-10-08T15:00:00.000Z",
+   "added": [
+    "Cambri Add 1"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Cambri",
+   "team_id": 8,
+   "date": "2026-10-09T15:00:00.000Z",
+   "added": [
+    "Cambri Add 2"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Cambri",
+   "team_id": 8,
+   "date": "2026-10-10T15:00:00.000Z",
+   "added": [
+    "Cambri Add 3"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Marlee",
+   "team_id": 4,
+   "date": "2026-10-11T15:00:00.000Z",
+   "added": [
+    "Marlee Add 1"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Marlee",
+   "team_id": 4,
+   "date": "2026-10-12T15:00:00.000Z",
+   "added": [
+    "Marlee Add 2"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Samantha",
+   "team_id": 6,
+   "date": "2026-10-08T15:00:00.000Z",
+   "added": [
+    "Samantha Add 1"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Samantha",
+   "team_id": 6,
+   "date": "2026-10-09T15:00:00.000Z",
+   "added": [
+    "Samantha Add 2"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Maya",
+   "team_id": 2,
+   "date": "2026-10-10T15:00:00.000Z",
+   "added": [
+    "Maya Add 1"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Maya",
+   "team_id": 2,
+   "date": "2026-10-11T15:00:00.000Z",
+   "added": [
+    "Maya Add 2"
+   ],
+   "dropped": [],
+   "waiver": true
+  },
+  {
+   "kind": "move",
+   "manager": "Amie",
+   "team_id": 3,
+   "date": "2026-10-12T15:00:00.000Z",
+   "added": [
+    "Amie Add 1"
+   ],
+   "dropped": [],
+   "waiver": true
+  }
+ ],
+ "waiver_order": [
+  "Cambri",
+  "Maddie",
+  "Samantha",
+  "Tara",
+  "Marlee",
+  "Amie",
+  "Maya",
+  "Kyra"
+ ],
+ "seasonAvg": 129.1,
+ "closest": [
+  "Tara",
+  "Maya",
+  4.6
+ ],
+ "biggest": [
+  "Maddie",
+  "Samantha",
+  35.1
+ ]
+}

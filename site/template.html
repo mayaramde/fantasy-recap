@@ -870,6 +870,7 @@
   .strength-key .corner { position: static; display: inline-grid; vertical-align: -6px; margin-right: 6px; transform: none; }
   @media (max-width: 559px) { .strength thead th:first-child, .strength tbody th { width: 112px; } .strength tbody th { font-size: 18px; } .strength tbody th .you-tag { display: block; width: max-content; margin: 4px 0 0; } }
 
+__COACH_CSS__
   /* Coach: two side-by-side cards (stacked on a phone): waiver order and the injury report */
   .coach-duo { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 34px; }
   @media (min-width: 900px) { .coach-duo { grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); align-items: start; } }
@@ -2762,205 +2763,29 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <a href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
   }
 
-  /* Her top two items, most urgent first. build.py already sorts items by level, then puts a
-     lookback or opponent-preview card in front of them, so re-sort here (stable) to let a real
-     to-do outrank that "info" card. */
-  const LEVEL_RANK = { now: 0, watch: 1, info: 2 };
-
-  const todoBadge = (a, next) => (a.counts.now ? `<span class="todo now">${a.counts.now} to ${next ? 'sort out' : 'fix'}</span>`
-    : a.counts.watch ? `<span class="todo watch">${a.counts.watch} to watch</span>`
-    : '<span class="todo clear">all clear</span>');
-  // The "nothing to fix" item is left out: the card's summary line already says so.
-  const topItems = (a, n) => a.items.filter((it) => it.kind !== 'clear').sort((x, y) => (LEVEL_RANK[x.level] ?? 3) - (LEVEL_RANK[y.level] ?? 3)).slice(0, n);
-
-  function winBar(a, b) {
-    const p = a.win_probability;
-    if (p == null) return '';
-    return `<div class="fo-bar" role="img" aria-label="Chance to win: ${esc(a.manager)} ${pct(p)}, ${esc(b.manager)} ${pct(1 - p)}">
-      <span class="a" style="flex:${p.toFixed(3)}" aria-hidden="true">${pct(p)}</span><span class="b" style="flex:${(1 - p).toFixed(3)}" aria-hidden="true">${pct(1 - p)}</span></div>`;
-  }
-
-  // Each team's opponent, read off the advice rows; one pair per game, your game first.
-  function coachPairs(rows, me) {
-    const seen = new Set();
-    const pairs = [];
-    for (const a of rows) {
-      if (seen.has(a.team_id)) continue;
-      const b = rows.find((r) => r.team_id === a.opponent_id);
-      if (!b) continue;
-      seen.add(a.team_id); seen.add(b.team_id);
-      pairs.push(b.team_id === me ? [b, a] : [a, b]);
-    }
-    const closeness = ([a]) => (a.win_probability == null ? 1 : Math.abs(a.win_probability - 0.5));
-    return pairs.sort((x, y) => ((y[0].team_id === me) - (x[0].team_id === me)) || (closeness(x) - closeness(y)));
-  }
-
-  function coachHero(a, rows, next) {
-    const opp = rows.find((r) => r.team_id === a.opponent_id);
-    const t = TEAMS[a.team_id];
-    const po = SEASON.playoffs && SEASON.playoffs.teams.find((x) => x.team_id === a.team_id);
-    const stand = [t && t.weekly && t.weekly.length ? record(t) : null, po ? `Seed ${po.proj_seed}` : null].filter(Boolean);
-    const items = topItems(a, 2);
+  /* Coach's hello: opens on its own until somebody picks a name, and only a pick closes it
+     (see route()). It is how "You" gets decided, so it stays; the page behind it is the league. */
+  function pickDialog(next) {
     return `
-      <section class="coach-hero" aria-labelledby="ch-mgr">
-        <span class="you-sticker" aria-hidden="true">You</span>
-        <div class="ch-head">
-          <div class="ch-who"><p class="ch-eyebrow">Your team</p><h2 class="mgr" id="ch-mgr">${esc(a.manager)}</h2><div class="tname">${esc(a.team_name)}</div></div>
-          <a class="profile-btn ch-go" href="${coachUrl(next, a.team_id)}" data-myteam="${a.team_id}">See my full profile →</a>
-          ${todoBadge(a, next)}
-        </div>
-        ${stand.length || po ? `<p class="ch-stand">${stand.map(esc).join(' · ')}${po ? ` <span class="po-label ${PO_LABEL[po.label] || ''}" title="${esc(PO_TIP[po.label] || '')}">${esc(po.label)}</span>` : ''}</p>` : ''}
-        ${opp || a.projected != null ? `
-        <div class="ch-game">
-          <div class="ch-vs">${opp ? `vs <b>${esc(opp.manager)}</b><span>${esc(opp.team_name)}</span>` : 'Opponent TBD'}</div>
-          ${a.projected != null ? `<div class="ch-proj"><span class="n">${f1(a.projected)}</span><span class="l">projected points</span></div>` : '<div></div>'}
-          ${opp ? winBar(a, opp) : ''}
-        </div>` : ''}
-        ${a.summary ? `<p class="ch-sum">${esc(a.summary)}</p>` : ''}
-        ${items.length ? `<ul class="cc-list ch-list">${items.map((it) => `
-          <li><span class="cc-box ${esc(it.level)}" aria-hidden="true"></span><span>${esc(it.title)}<small>${esc(ADVICE_KIND[it.kind] || 'Note')}${it.stat ? ` · ${esc(it.stat)}` : ''}</small></span></li>`).join('')}</ul>` : ''}
-      </section>`;
+      <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
+        <h2 id="pick-h">Hi, I'm Coach.</h2>
+        <p>I've read every roster in this league, ESPN's injury report and 8,000 simulated seasons, so yes, I already know what's wrong with your lineup. Pick your name and I'll tell you before kickoff.</p>
+        <div class="pick-grid">${coachRows(next).map((a) => `
+          <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
+        <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
+      </dialog>`;
   }
 
-  function heroPicker(next) {
-    return `
-      <section class="coach-hero ch-pick" aria-labelledby="ch-pick">
-        <h2 class="mgr" id="ch-pick" style="margin:0;font:900 36px/1 var(--display)">Hi, I'm Coach.</h2>
-        <p>Tell me your name and this spot becomes yours: your game, your odds, your to-dos.</p>
-        <button type="button" class="profile-btn" data-open-pick>Tell Coach your name</button>
-        <dialog class="pick-dialog" id="pick-dialog" aria-labelledby="pick-h">
-          <h2 id="pick-h">Hi, I'm Coach.</h2>
-          <p>I've read every roster in this league, ESPN's injury report and 8,000 simulated seasons, so yes, I already know what's wrong with your lineup. Pick your name and I'll tell you before kickoff.</p>
-          <div class="pick-grid">${coachRows(next).map((a) => `
-            <button type="button" data-pick="${a.team_id}"${a.counts.now ? ` aria-label="${esc(a.manager)}, ${a.counts.now} to fix"` : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" aria-hidden="true">!</span>` : ''}</button>`).join('')}</div>
-          <p class="pick-hint"><span class="dot" aria-hidden="true">!</span> A pink ! means that team has homework.</p>
-        </dialog>
-      </section>`;
-  }
-
-  function coachRadar(rows, pairs, next) {
-    const swap = rows.flatMap((r) => r.items.filter((it) => it.kind === 'swap' && it.gain).map((it) => ({ r, it })))
-      .sort((x, y) => y.it.gain - x.it.gain)[0];
-    const hurt = rows.flatMap((r) => r.items.filter((it) => it.kind === 'out' || it.kind === 'watch').map((it) => ({ r, it })))
-      .sort((x, y) => (LEVEL_RANK[x.it.level] ?? 3) - (LEVEL_RANK[y.it.level] ?? 3))[0];
-    const close = pairs.filter(([a]) => a.win_probability != null)
-      .sort((x, y) => Math.abs(x[0].win_probability - 0.5) - Math.abs(y[0].win_probability - 0.5))[0];
-    const tile = (cls, tag, body, r) => (r
-      ? `<a class="radar-tile ${cls}" href="${lineupUrl(next, r.team_id)}" data-myteam="${r.team_id}"><span class="rt-tag">${tag}</span>${body}</a>`
-      : `<div class="radar-tile ${cls}"><span class="rt-tag">${tag}</span>${body}</div>`);
-    return `
-      <section class="radar" aria-labelledby="radar-h">
-        <h2 id="radar-h">League radar</h2>
-        ${tile('swap', 'Biggest swap on the board', swap
-          ? `<div class="rt-main">${esc(deskTitle(swap.it.title))}</div><div class="rt-sub"><span>${esc(swap.r.manager)}'s bench</span><b>+${f1(swap.it.gain)}</b></div>`
-          : '<p class="rt-empty">Nobody has a better player sitting on the bench. Look at you all.</p>', swap && swap.r)}
-        ${tile('close', 'Closest matchup', close
-          ? `<div class="rt-main">${esc(close[0].manager)} vs ${esc(close[1].manager)}</div><div class="rt-sub"><span>ESPN's win odds</span><span>${pct(close[0].win_probability)} · ${pct(1 - close[0].win_probability)}</span></div>`
-          : '<p class="rt-empty">No win odds from ESPN yet. Check back closer to kickoff.</p>', null)}
-        ${tile('hurt', 'On the injury report', hurt
-          ? `<div class="rt-main">${esc(deskTitle(hurt.it.title))}</div><div class="rt-sub"><span>${esc(hurt.r.manager)}'s team</span><span class="rt-pill">${esc(ADVICE_KIND[hurt.it.kind] || 'Injury')}</span></div>`
-          : '<p class="rt-empty">Every starter is healthy. Knock on wood.</p>', hurt && hurt.r)}
-      </section>`;
-  }
-
-  /* "Where everyone's strong": every team's rank (1 = best of 8) at each lineup spot, from
-     the season's points at that spot (the same ranks behind the profile's Position strength
-     card). Shade is a single cobalt ramp, but the number and the corner sticker carry the
-     meaning, so nothing depends on color alone. */
-  const GRID_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
-  const GRID_NAME = { QB: 'quarterback', RB: 'running back', WR: 'wide receiver', TE: 'tight end', FLEX: 'flex', DST: 'defense', K: 'kicker' };
-  function strengthGrid(next, me) {
-    const teams = SEASON.standings.filter((t) => t.profile && t.profile.pos_ranks);
-    if (!teams.length) return '<p class="sec-sub">Coach needs one finished week before she can rank anybody.</p>';
-    const n = teams.length;
-    const row = (t) => {
-      const ranks = t.profile.pos_ranks;
-      const mine = t.team_id === me;
-      const best = t.profile.best_spot;
-      const weak = t.profile.weak_spot;
-      const spread = best && weak && ranks[best] !== ranks[weak];
-      const avg = GRID_COLS.reduce((a, c) => a + ranks[c], 0) / GRID_COLS.length;
-      // No data-myteam on these links: tapping someone else's name must not make her "You".
-      return `
-        <tr${mine ? ' class="me"' : ''}>
-          <th scope="row"><a href="${coachUrl(next, t.team_id)}">${esc(t.manager)}</a>${mine ? '<span class="you-tag">You</span>' : ''}</th>
-          ${GRID_COLS.map((c) => {
-            const r = ranks[c];
-            const tag = spread && c === best ? ['best', 'Best spot', '▲'] : spread && c === weak ? ['weak', 'Weakest spot', '▼'] : null;
-            return `<td class="h${r}"><span class="rk" aria-hidden="true">${r}</span>${tag ? `<span class="corner ${tag[0]}" aria-hidden="true">${tag[2]}</span>` : ''}<span class="sr">${esc(t.manager)} at ${GRID_NAME[c]}: ${ordinal(r)} of ${n}${tag ? `, ${tag[1].toLowerCase()}` : ''}</span></td>`;
-          }).join('')}
-          <td class="avg"><span class="rk" aria-hidden="true">${avg.toFixed(1)}</span><span class="sr">${esc(t.manager)}, average across all spots: ${avg.toFixed(1)}</span></td>
-        </tr>`;
-    };
-    return `
-      <div class="strength table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
-        <table>
-          <thead><tr><th scope="col">Manager</th>${GRID_COLS.map((c) => `<th scope="col" title="${esc(GRID_NAME[c])}">${c}</th>`).join('')}<th scope="col" title="average rank across all spots">AVG</th></tr></thead>
-          <tbody>${teams.map(row).join('')}</tbody>
-        </table>
-      </div>
-      <p class="strength-key"><span><i class="corner best" aria-hidden="true">▲</i>best spot</span><span><i class="corner weak" aria-hidden="true">▼</i>weakest spot</span><span>AVG is the mean of a team's seven ranks</span><span>1 is the league's best, ${n} the worst</span></p>`;
-  }
-
-  /* "Waiver order this week": ESPN's own order, captured as waiver_rank (SEASON.waiver_order). ESPN
-     resets it each week to worst record first, but with its own tiebreaks, so the standings upside
-     down only stands in for captures that predate the field. */
-  function waiverCard(next, me) {
-    const order = SEASON.waiver_order
-      ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean)
-      : [...SEASON.standings].reverse();
-    return `
-      <section class="panel" aria-labelledby="wo-h">
-        <h2 id="wo-h">Waiver order this week</h2>
-        <p class="sec-sub">Worst record picks first. The order resets every week.</p>
-        <ol class="waiver">${order.map((t, i) => {
-          const mine = t.team_id === me;
-          return `<li${mine ? ' class="me"' : ''}><span class="pos">${i + 1}</span><span class="wname"><a href="${coachUrl(next, t.team_id)}">${esc(t.manager)}</a>${mine ? '<span class="you-tag">You</span>' : ''}</span><span class="rec">${record(t)}</span></li>`;
-        }).join('')}</ol>
-      </section>`;
-  }
-
-  /* "Injuries and byes": everyone on a roster who's hurt or whose NFL team is off, grouped by team.
-     The status is always spelled out in the pill, so its fill is a hint and never the message. */
-  let injPick = null;
-  const INJ_PILL = (status) => (OUTISH.includes(status) ? 'out' : status === 'Bye' ? 'bye' : 'q');
-  function injuryCard(next, me) {
-    const view = ahead() && (injPick || (next ? 'next' : 'this')) === 'next' ? 'next' : 'this';
-    const rows = coachRows(view === 'next') || [];
-    const known = rows.some((r) => Array.isArray(r.report));
-    const groups = rows.filter((r) => (r.report || []).length)
-      .sort((x, y) => (y.team_id === me) - (x.team_id === me));
-    const body = !known
-      ? '<p class="inj-empty">Coach hasn\'t got the injury report for this one yet. Check back soon.</p>'
-      : groups.length
-        ? `<div class="inj-wrap table-scroll"><table class="inj-table">
-            <thead><tr><th scope="col">Manager</th><th scope="col">Player</th><th scope="col">Status</th><th scope="col">Spot</th></tr></thead>
-            ${groups.map((g) => `<tbody>${g.report.map((p, i) => `
-              <tr>${i === 0 ? `<th scope="rowgroup" rowspan="${g.report.length}"><a href="${coachUrl(next, g.team_id)}">${esc(g.manager)}</a>${g.team_id === me ? '<span class="you-tag">You</span>' : ''}</th>` : ''}
-                <td class="pl">${esc(p.name)}${p.pos && p.pos !== 'DST' ? ` <small>${esc(p.pos)}</small>` : ''}${p.team ? ` <span class="nfl">${p.logo ? `<img src="${esc(p.logo)}" alt="" width="16" height="16" loading="lazy" onerror="this.remove()">` : ''}${esc(p.team)}</span>` : ''}</td>
-                <td><span class="spill ${INJ_PILL(p.status)}">${esc(p.status)}</span></td>
-                <td class="role">${esc(p.role)}</td></tr>`).join('')}</tbody>`).join('')}
-          </table></div>`
-        : '<p class="inj-empty">Nobody\'s hurt. Enjoy it while it lasts.</p>';
-    return `
-      <section class="panel" aria-labelledby="ib-h">
-        <div class="panel-head">
-          <h2 id="ib-h">Injuries and byes</h2>
-          ${ahead() ? `<div class="inj-toggle" role="group" aria-label="Choose a week">
-            <button type="button" data-inj="this" aria-pressed="${view === 'this'}">This week <span class="wk-n">W${LIVE.week}</span></button>
-            <button type="button" data-inj="next" aria-pressed="${view === 'next'}">Next week <span class="wk-n">W${ahead().week}</span></button></div>` : ''}
-        </div>
-        <p class="sec-sub">Hurt players and byes across every roster, starters first. A bye means his NFL team doesn't play that week.</p>
-        ${body}
-      </section>`;
-  }
+  /* The Coach landing is the league's view: what Coach thinks of all eight teams, then a way
+     into each team's own report. The modules live in site/coach/ (pure insight functions with
+     tests, plus landing.js for the markup), inlined below. */
+__COACH_JS__
 
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
     const rows = coachRows(next);
     const me = myTeam.get();
     const mine = rows.find((r) => r.team_id === me);
-    const pairs = coachPairs(rows, me);
     return `
       <div class="page-head">
         <div class="kicker-row">
@@ -2969,21 +2794,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         </div>
         <h1>Coach</h1>
         <p class="dek">${next
-          ? `Coach is already on Week ${week}, with your to-do list and everyone's lineup holes. Nothing has kicked off. Fix away.`
-          : `Coach read all eight rosters so you don't have to. Your to-do list, the week's biggest swap, and who's strong where. She has notes.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
+          ? `Coach is already on Week ${week}. Nothing has kicked off, so there's time to fix.`
+          : `Coach read all ${rows.length} rosters so you don't have to. The league first, then tap a team for her full report.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
       </div>
-      <div class="coach-top">
-        ${mine ? coachHero(mine, rows, next) : heroPicker(next)}
-        ${coachRadar(rows, pairs, next)}
-      </div>
-      <section style="margin-top:34px" aria-labelledby="sg-h">
-        ${secHead('board', `<span id="sg-h">Where everyone's strong</span>`)}
-        <p class="sec-sub">Each team's lineup spots, ranked against the league. Darker means stronger.</p>
-        ${strengthGrid(next, me)}
-      </section>
-      <div class="coach-duo">
-        ${waiverCard(next, me)}
-        ${injuryCard(next, me)}
+      ${mine ? '' : pickDialog(next)}
+      <div class="cl-page">
+        ${coachLanding(next, rows, me)}
       </div>
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(LIVE)}</p>`;
   }
@@ -3198,14 +3014,12 @@ __BTS_JS__
     // Coach's hello modal: remember the pick and redraw Coach as her team.
     const pick = e.target.closest('button[data-pick]');
     if (pick) { myTeam.set(Number(pick.dataset.pick)); route(); }
-    const inj = e.target.closest('button[data-inj]');
-    if (inj) { injPick = inj.dataset.inj; route(); const again = document.querySelector(`button[data-inj="${injPick}"]`); if (again) again.focus({ preventScroll: true }); }
+    if (e.target.closest('button[data-cl-more]')) { clShowAll = !clShowAll; route(); const again = document.querySelector('button[data-cl-more]'); if (again) again.focus({ preventScroll: true }); }
     const reopen = e.target.closest('button[data-open-pick]');
     if (reopen) { const d = document.getElementById('pick-dialog'); if (d && !d.open) d.showModal(); }
   });
 
   window.addEventListener('hashchange', () => {
-    injPick = null;
     route();
     window.scrollTo({ top: 0 });
     $('#main').focus({ preventScroll: true });
