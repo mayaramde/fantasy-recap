@@ -216,3 +216,38 @@
   @media (max-width: 420px) { .cl-pair { flex-direction: column; } .cl-swap { justify-content: center; transform: rotate(90deg); } }
   @media (max-width: 600px) { .cl-head h2 { font-size: 28px; } .cl-sec { padding-top: 28px; } }
   .cl-foot { margin: 32px 0 0; padding-top: 20px; border-top: 2px solid var(--rule); font-size: 13px; color: var(--muted); max-width: 760px; }
+
+  /* "Make this page yours": the pick card at the top of the league view. */
+  .cl-pickme { padding-top: 8px; }
+  .cl-pickme h2 { margin: 0; font: 800 34px/1 var(--display); }
+  .cl-pickme .cl-sub { margin-top: 8px; }
+  .cl-pickgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+  @media (min-width: 640px) { .cl-pickgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .cl-pickchip { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; cursor: pointer; color: var(--ink); font: 700 16px/1 var(--display); letter-spacing: 0.05em; text-transform: uppercase;
+    border: 2px solid var(--edge); background: var(--card); padding: 12px 10px; border-radius: 10px; box-shadow: 3px 3px 0 var(--drop); }
+  .cl-pickchip:hover, .cl-pickchip:focus-visible { background: var(--lime); color: var(--on-pop); }
+  .cl-pickchip:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--drop); }
+  .cl-dot { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 15px; height: 15px; border-radius: 50%; background: var(--pink); border: 1.5px solid var(--edge); font: 800 10px/1 var(--display); color: var(--on-pop); }
+  .cl-pickhint { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 13.5px; color: var(--muted); }
+
+  /* A team name that opens that team's profile (League grid, waiver order). */
+  .cl-go { cursor: pointer; border-radius: 4px; }
+  .cl-go:hover { text-decoration: underline; }
+  .cl-order li[data-open-team] { cursor: pointer; }
+  .cl-order li[data-open-team]:hover { box-shadow: 2px 2px 0 var(--drop); }
+
+  /* "Viewing": the team whose profile is open, cobalt-soft beside the orange "you". */
+  .cl-viewing { display: inline-block; vertical-align: middle; font: 500 11px/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; background: var(--accent-soft); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 8px; }
+  .cl-heat tbody tr.view { background: var(--accent-soft); }
+  .cl-order li.view { background: var(--accent-soft); }
+  .cl-nm.view { background: var(--accent-soft); border-radius: 6px; }
+  @media (max-width: 480px) { .cl-heat tbody th .cl-viewing { display: none; } }
+
+  /* Coach's take before coach-daily has written today's: the computed wording on a light card. */
+  .cl-take.light { background: var(--card); color: var(--ink); box-shadow: 4px 4px 0 var(--drop); }
+  .cl-take.light::before, .cl-take.light::after { display: none; }
+  .cl-take.light .cl-take-label { align-self: flex-start; padding: 5px 9px; border: 2px solid var(--edge); border-radius: 999px; background: var(--lime); color: var(--on-pop); }
+  .cl-take.light h2 { color: var(--ink); }
+  .cl-take.light p { color: var(--ink); }
+  .cl-take.light p.cl-unwritten { font: 500 13px/1.4 var(--mono); color: var(--muted); }
+  .cl-take.light .cl-pills li { border-color: var(--edge); }
