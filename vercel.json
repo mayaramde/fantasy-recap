@@ -3,6 +3,11 @@
   "git": { "deploymentEnabled": { "main": false } },
   "buildCommand": "scripts/vercel_build.sh",
   "outputDirectory": "site/dist/out",
+  "functions": {
+    "api/**/*.py": {
+      "excludeFiles": "{.git/**,.github/**,.claude/**}"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
