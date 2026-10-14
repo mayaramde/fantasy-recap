@@ -2642,7 +2642,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <div class="tp-tabbar" id="tp-tabbar">
         <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
         <nav class="tp-seg" aria-label="Profile sections">${TP_TABS.map(([k, label, sx]) =>
-          `<a href="#team-${id}${sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+          `<a href="#team-${id}${k === 'lineup' && next ? '.next' : sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
       </div>`;
   }
 
@@ -2691,6 +2691,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   function face(p, size = '') {
     const w = whoIs(p);
     const fallback = `this.onerror=null;this.src='${NO_HEADSHOT}'`;
+    if (w.id == null && !isDst(w)) return `<span class="pf ${size}"><img class="img" src="${NO_HEADSHOT}" alt=""></span>`;
     if (isDst(w)) return `<span class="pf dst ${size}">${w.logo ? `<img class="img" src="${esc(w.logo)}" alt="" loading="lazy" onerror="${fallback}">` : '<span class="img"></span>'}</span>`;
     return `<span class="pf ${size}"><img class="img" src="${esc(HEADSHOT_URL(w.id))}" alt="" loading="lazy" onerror="${fallback}">${w.logo ? `<img class="nfl" src="${esc(w.logo)}" alt="" title="${esc(w.team)}" loading="lazy" onerror="this.remove()">` : ''}</span>`;
   }
@@ -3220,6 +3221,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
     const src = next ? a.lineup : mine;
+    if (!src) return `<section class="tp-sec">${tpHead('--accent', 'Lineup')}<p class="sec-sub">No lineup on the board for ${esc(TEAMS[id].manager)} this week.</p></section>`;
     const opp = g ? TEAMS[(g.winner.team_id === id ? g.loser : g.winner).team_id] : TEAMS[a.opponent_id];
     const starters = [...src.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
     const bench = [...src.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
@@ -3333,20 +3335,21 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const viewingAs = (() => {
     const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), mine = $('#nav-mine');
     const fixes = (id) => { const a = coachFor(id, false); return a ? a.counts.now : 0; };
-    let isOpen = false, toastTimer = 0;
+    let isOpen = false, toastTimer = 0, drawn = '';
 
     function draw(focusMenu) {
       if (!SEASON.standings.length) { host.hidden = true; return; }
       const me = myTeam.get(), t = me && TEAMS[me];
       const label = t ? `Viewing as ${t.manager}` : 'League view';
+      drawn = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
       host.innerHTML = `
         <button type="button" class="va-btn" id="va-btn" aria-haspopup="menu" aria-expanded="${isOpen}" aria-controls="va-menu" aria-label="${esc(label)}. Change who you are viewing as.">
           <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${t ? `<span class="va-pre">Viewing as </span>${esc(t.manager)}` : 'League view'}</span><small aria-hidden="true">▾</small></button>
         <div class="va-menu" id="va-menu" role="menu" aria-label="Viewing as"${isOpen ? '' : ' hidden'}>
-          <h2>Viewing the site as</h2>
+          <h2 role="presentation">Viewing the site as</h2>
           ${t ? `<a class="it open-team" role="menuitem" href="#team-${me}"><span>Open ${esc(t.manager)}'s team page</span><span aria-hidden="true">→</span></a>` : ''}
           ${SEASON.standings.map((x) => `<button type="button" class="it" role="menuitemradio" aria-checked="${x.team_id === me}" data-as="${x.team_id}"><span class="ck" aria-hidden="true">${x.team_id === me ? '✓' : ''}</span>${esc(x.manager)}<span class="rec">${record(x)}</span></button>`).join('')}
-          <hr>
+          <hr role="separator">
           <button type="button" class="it" role="menuitemradio" aria-checked="${!me}" data-as="0"><span class="ck" aria-hidden="true">${me ? '' : '✓'}</span>League view<span class="rec">no one</span></button>
         </div>`;
       if (focusMenu) {
@@ -3358,8 +3361,14 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     function setOpen(next, { refocus = false } = {}) {
       if (next === isOpen) return;
       isOpen = next;
-      draw(next);
-      if (!next && refocus) { const b = $('#va-btn'); if (b) b.focus(); }
+      if (next) draw(true);
+      else {
+        // Close in place: re-rendering would detach whatever has focus and strand it on <body>.
+        const m = $('#va-menu'), b = $('#va-btn');
+        if (m) m.hidden = true;
+        if (b) { b.setAttribute('aria-expanded', 'false'); if (refocus) b.focus(); }
+        drawn = '';
+      }
     }
 
     // The nav's "My team" appears with a pick and goes with it.
@@ -3367,7 +3376,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       const me = myTeam.get();
       mine.hidden = !me;
       if (me) mine.href = `#team-${me}`;
-      draw(false);
+      // The live refresh re-routes every 20s; rebuilding an untouched chip would drop focus mid-menu.
+      const sig = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
+      if (sig !== drawn || !host.firstChild) draw(false);
     }
 
     function say(msg, undo) {
@@ -3427,7 +3438,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     document.addEventListener('click', (e) => { if (isOpen && !e.composedPath().includes(host)) setOpen(false); });
 
     dlg.addEventListener('click', (e) => {
-      if (e.target === dlg) { dlg.close(); return; }
+      if (e.target === dlg) {
+        // The dialog's own padding is part of the dialog; only a click outside its box is the backdrop.
+        const r = dlg.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dlg.close();
+        return;
+      }
       const pick = e.target.closest('[data-pick]');
       if (!pick) return;
       const id = Number(pick.dataset.pick), prev = myTeam.get() || 0;
@@ -3501,7 +3517,7 @@ __BTS_JS__
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
-    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
+    else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { if (TEAMS[Number(m[2])]) myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
     else if ((m = /^team-(\d+)(?:\.(lineup|season|next))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' ? 'season' : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() ? 'mine' : coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
@@ -3515,7 +3531,12 @@ __BTS_JS__
     else if (h === '' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (h === '') { html = weekPage(latest()); }
     else { html = notFound(); }
+    // A live refresh redraws #main; put keyboard focus back on the row it was on.
+    const focused = document.activeElement && document.activeElement.closest ? document.activeElement.closest('#main .prow[data-key]') : null;
+    const focusKey = focused && document.activeElement.hasAttribute('data-row') ? focused.dataset.key : null;
     $('#main').innerHTML = html;
+    if (focusKey) { const again = [...document.querySelectorAll('#main .prow[data-key]')].find((r) => r.dataset.key === focusKey); if (again) again.querySelector('[data-row]').focus({ preventScroll: true }); }
+    document.querySelectorAll('#main [data-act="all"]').forEach((b) => syncAll(b.closest('section') || $('#main')));
     document.querySelectorAll('#nav a').forEach((a) =>
       a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (advice()) document.getElementById('nav-coach').href = coachHref();

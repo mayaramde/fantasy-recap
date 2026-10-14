@@ -1359,6 +1359,8 @@ def award_players(award, facts, limit=3):
     found = {}
     for t in facts["teams"]:
         for p in t["starters"] + t["bench"]:
+            if not p.get("name"):
+                continue
             at = text.find(p["name"])
             if at >= 0 and p["player_id"] not in found:
                 found[p["player_id"]] = (at, {"id": p["player_id"], "name": p["name"], "pos": p.get("pos")})
