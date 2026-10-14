@@ -27,14 +27,16 @@ WEEKS = sorted(int(d.name.split("-")[1]) for d in SEASON_DIR.glob("week-*") if (
 
 
 class CompletedWeekRows(unittest.TestCase):
-    def test_every_row_has_player_id_team_and_a_logo_for_its_team(self):
+    def test_every_row_has_player_id_and_a_named_team_has_a_logo(self):
+        """ESPN can fail to name a team (a free agent), so a row with no team is allowed and just has no badge."""
         for w in WEEKS:
             p = build.week_payload(load(w), {})
             for r in rows(p):
                 with self.subTest(week=w, player=r["name"]):
+                    self.assertIn("team", r)
                     self.assertIsNotNone(r["player_id"])
-                    self.assertTrue(r["team"])
-                    self.assertTrue(p["team_logos"].get(r["team"]), "no logo for his team")
+                    if r["team"]:
+                        self.assertTrue(p["team_logos"].get(r["team"]), "no logo for his team")
 
     def test_state_is_the_captures_own_and_never_invented(self):
         for w in WEEKS:

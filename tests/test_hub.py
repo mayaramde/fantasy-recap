@@ -296,8 +296,8 @@ class HubLineupRowTest(unittest.TestCase):
         cls.history = [e for _, e in captured]
 
     def week(self, edit=None, states=True, live=True):
-        """The hub's rows for every starter, keyed by player id (by name on a finished week, whose rows
-        carry no id). `edit(p)` may change a captured player."""
+        """The hub's rows for every starter, keyed by player id (finished weeks' rows carry one
+        too). `edit(p)` may change a captured player."""
         nxt = self.hub_preview.upcoming(self.history[-1])
         for m in nxt["matchups"]:
             for s in ("home", "away"):
@@ -311,7 +311,7 @@ class HubLineupRowTest(unittest.TestCase):
                         edit(p)
         facts = self.analyze.analyze(nxt, self.history + [nxt])
         w = build.week_payload(facts, {"status": "live"}, live=live)
-        return {p.get("player_id") or p["name"]: p for g in w["games"] for s in (g["winner"], g["loser"]) for p in s["starters"]}
+        return {p["player_id"]: p for g in w["games"] for s in (g["winner"], g["loser"]) for p in s["starters"]}
 
     def starter(self, rows, pos=None):
         return next(p for p in rows.values() if p["slot"] != "BENCH" and (pos is None or p["pos"] == pos))
