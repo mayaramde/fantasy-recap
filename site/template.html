@@ -1157,7 +1157,8 @@
   .rp .leaders li.me { background: var(--orange-soft); box-shadow: 3px 3px 0 var(--orange); }
   .rp-std tbody tr.me td { background: var(--orange-soft); }
   .rp-std tbody tr.me td:first-child { box-shadow: inset 5px 0 0 var(--orange); }
-  .rp-std .you-tag { vertical-align: 2px; background: var(--orange); }
+  .rp-std .st-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .rp-std .you-tag { margin: 0; vertical-align: baseline; background: var(--orange); }
   .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .gb.mine:not(.sel) { background: var(--orange-soft); }
   .gb-you { display: inline-block; align-self: flex-start; margin-bottom: 8px; padding: 3px 8px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 600 11px/1 var(--script); letter-spacing: 0.04em; }
@@ -2510,7 +2511,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <tr class="${i === 0 ? 'top' : ''}${t.team_id === myTeam.get() ? ' me' : ''}">
             <td class="rk">${i + 1}</td>
             <td>${rankMove(t.rank_move)}</td>
-            <td><span class="tm"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}</a>${t.team_id === myTeam.get() ? '<span class="you-tag" style="align-self:flex-start;margin:2px 0 0">you</span>' : ''}<span class="tn">${esc(t.team_name)}</span></span></td>
+            <td><span class="tm"><span class="st-who"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}</a>${t.team_id === myTeam.get() ? '<span class="you-tag">you</span>' : ''}</span><span class="tn">${esc(t.team_name)}</span></span></td>
             <td class="r rec">${record(t)}</td>
             <td class="r c5"><span class="sc"><span class="v">${f2(t.points_for)}</span><span class="bar"><i style="width:${(t.points_for / max * 100).toFixed(1)}%;animation-delay:${(0.15 + i * 0.07).toFixed(2)}s"></i></span></span></td>
           </tr>`).join('')}
