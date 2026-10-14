@@ -63,7 +63,8 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
 What the Live tab shows when nothing is on the field (`landingPage` in `site/template.html`): before the week's
 first kickoff, and again once every game is final and the recap isn't out yet.
 
-- **Before kickoff**: a season strip, up to four stickers, then one card per matchup beside Coach's desk and
+- **Before kickoff**: a season strip, up to four scoreboard cards (Closest, Favorite, Top projection, Biggest fix: a label, a
+  big number with its unit, a first name and one small line, 2×2 on a phone), then one card per matchup beside Coach's desk and
   the projections ranked. The reader's own game sorts first when the browser remembers her team (picked with the
   "Viewing as" chip in the header); otherwise the game with the most at stake leads.
 - **Where each piece comes from.** Everything a lineup change can move is drawn in the browser from the live
