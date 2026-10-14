@@ -844,36 +844,62 @@
   .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .rp .chip:hover { transform: translateY(-2px); }
   .rp .chip.sel { background: var(--ink); color: var(--bg); }
-  .rp-grp { margin-top: 34px; }
-  .grp-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
-  .grp-head h3 { font: 900 30px/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
-  .grp-head p { margin: 0; max-width: 64ch; color: var(--muted); font-size: 15px; }
-  .rp .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 18px; }
-  .rp .card { display: block; position: relative; padding: 20px 22px 22px; border-radius: 20px; }
-  .rp .card:hover { transform: translate(-3px, -3px) rotate(-0.4deg); }
-  .rp .card.balls:hover { box-shadow: 9px 9px 0 var(--orange); }
-  .rp .card.flags:hover { box-shadow: 9px 9px 0 var(--pink); }
-  .rp .card.breaks:hover { box-shadow: 9px 9px 0 var(--drop); }
-  @media (prefers-reduced-motion: no-preference) { .rp .card { transition: transform 0.2s, box-shadow 0.2s; animation: rp-rise 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; } }
-  .rp .card-top { flex-wrap: wrap; }
-  .aw-lhs { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  .aw-stk { flex: none; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); display: flex; align-items: center; justify-content: center; color: var(--on-pop); transform: rotate(-8deg); }
-  .rp .card:nth-child(even) .aw-stk { transform: rotate(7deg); }
-  .rp .card:hover .aw-stk { transform: rotate(14deg) scale(1.15); }
-  @media (prefers-reduced-motion: no-preference) { .aw-stk { transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); } }
-  .rp .card.balls .aw-stk { background: var(--orange); }
-  .rp .card.flags .aw-stk { background: var(--pink); }
-  .rp .card.breaks .aw-stk { background: var(--lime); }
-  .rp .card .who { font: 900 26px/1 var(--display); letter-spacing: 0.02em; color: var(--ink); }
-  .rp .card .stat { font: 500 13px/1 var(--mono); padding: 7px 10px; border-radius: 999px; border: 2px solid var(--edge); transform: none; }
-  .aw-kind { display: inline-block; margin: 14px 0 0; padding: 4px 10px; border-radius: 999px; border: 2px solid var(--edge); color: var(--ink); font: 600 13px/1.1 var(--script); }
-  .rp .card.balls .aw-kind { background: var(--orange-soft); }
-  .rp .card.flags .aw-kind { background: var(--pink-soft); }
-  .rp .card.breaks .aw-kind { background: var(--lime-soft); }
-  .rp .card h3 { margin: 10px 0 8px; font-size: 24px; }
-  .rp .card p { font-size: 15.5px; line-height: 1.6; }
-  @media (max-width: 980px) { .rp .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  @media (max-width: 640px) { .rp .cards { grid-template-columns: minmax(0, 1fr); } .grp-head h3 { font-size: 26px; } }
+  /* ---------- award cards (v3): a patterned band with a photo sticker, the title label and an
+     emoji sticker pinned to its corner, over a quiet animated background. Everything is awc-
+     prefixed; the kind color rides on --k (fill) and --s (soft chip). ---------- */
+  .awc-list { container-type: inline-size; display: flex; flex-direction: column; gap: 36px; margin-top: 18px; }
+  .awc-grp { display: flex; flex-direction: column; gap: 16px; }
+  .awc-grp[hidden] { display: none; }
+  .awc-gh { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
+  .awc-gb { background: var(--k); color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); border-radius: 10px; padding: 8px 14px 6px; transform: rotate(-2deg); font: 900 28px/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+  .awc-cnt { font: 500 13px/1 var(--mono); color: var(--muted); }
+  .awc-sub { margin: 0; max-width: 64ch; color: var(--muted); font-size: 14.5px; }
+  .awc-grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+  @container (min-width: 560px) { .awc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .awc { background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); overflow: hidden; display: flex; flex-direction: column; }
+  .awc.balls { --k: var(--orange); --s: var(--orange-soft); }
+  .awc.flags { --k: var(--pink); --s: var(--pink-soft); }
+  .awc.breaks { --k: var(--lime); --s: var(--lime-soft); }
+  .awc-grp.balls { --k: var(--orange); }
+  .awc-grp.flags { --k: var(--pink); }
+  .awc-grp.breaks { --k: var(--lime); }
+  .awc-band { position: relative; isolation: isolate; overflow: hidden; border-bottom: 2px solid var(--edge); display: flex; align-items: center; gap: 16px; padding: 20px 18px; min-height: 104px; background-color: var(--k); background-image: repeating-conic-gradient(from 0deg at 16% 110%, rgba(255, 255, 255, 0.3) 0 7deg, transparent 7deg 14deg); color: var(--on-pop); }
+  .awc-stk { z-index: 1; position: relative; flex: none; width: 72px; height: 72px; border-radius: 22px; background: #fff; transform: rotate(-5deg); box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--edge), 6px 7px 0 5px var(--drop); margin: 4px 6px; }
+  .awc-sin { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
+  .awc-sin img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+  .awc-emo { font-size: 42px; line-height: 1; }
+  .awc-ico { color: var(--on-pop); }
+  .awc-ttl { position: relative; z-index: 1; background: #fff; color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); border-radius: 8px; padding: 8px 12px 6px; transform: rotate(-2deg); font: 900 21px/0.98 var(--display); text-transform: uppercase; min-width: 0; overflow-wrap: anywhere; }
+  .awc-tb { position: absolute; right: -12px; bottom: -14px; width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); display: flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1; text-transform: none; }
+  .awc-band.nophoto .awc-tb { display: none; }
+  .awc-body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .awc-body p { margin: 0; font-size: 14px; line-height: 1.5; }
+  .awc-who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .awc-who b { font: 600 19px/1 var(--script); }
+  .awc-who a { text-decoration: none; }
+  .awc-who a:hover { color: var(--accent); }
+  .awc-stat { background: var(--s); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 10px 4px; font: 500 12px/1 var(--mono); }
+  .awc-fl { position: absolute; z-index: 0; line-height: 1; opacity: 0; pointer-events: none; font-size: var(--fs); }
+  .awc-fl.rise { left: var(--sx); bottom: -24px; animation: awc-rise var(--d) linear var(--dl) infinite; }
+  .awc-fl.drift { left: -24px; top: var(--sy); animation: awc-drift var(--d) linear var(--dl) infinite; }
+  .awc-fl.flush { left: 86%; top: 50%; margin: -12px 0 0 -12px; animation: awc-flush var(--d) ease-in var(--dl) infinite; }
+  .awc-fl.bowl { left: 86%; top: 50%; margin: -30px 0 0 -30px; font-size: 60px; opacity: 0.35; animation: awc-bowl 2.4s linear infinite; }
+  @keyframes awc-rise { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: 0.55; } 100% { transform: translateY(-190px) rotate(40deg); opacity: 0; } }
+  @keyframes awc-drift { 0% { transform: translateX(0) rotate(-14deg); opacity: 0; } 15% { opacity: 0.55; } 50% { transform: translateX(170px) rotate(14deg); } 100% { transform: translateX(360px) rotate(-14deg); opacity: 0; } }
+  @keyframes awc-flush { 0% { transform: rotate(0deg) translateX(var(--r)) rotate(0deg) scale(1); opacity: 0; } 12% { opacity: 0.55; } 85% { opacity: 0.55; } 100% { transform: rotate(720deg) translateX(0) rotate(-720deg) scale(0.15); opacity: 0; } }
+  @keyframes awc-bowl { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .awc-fl, .awc-fl.rise, .awc-fl.drift, .awc-fl.flush { animation: none; opacity: 0.3; }
+    .awc-fl.rise, .awc-fl.drift { left: var(--sx); top: var(--sy); bottom: auto; }
+    .awc-fl.flush { transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(var(--a) * -1)); }
+    .awc-fl.bowl { animation: none; opacity: 0.35; }
+  }
+  .awc-empty { display: flex; align-items: center; gap: 24px; background: var(--card); border: 2px dashed var(--edge); border-radius: 18px; padding: 24px; max-width: 760px; margin-top: 18px; }
+  .awc-empty .st { flex: none; width: 84px; height: 84px; border-radius: 22px; background: var(--accent-soft); border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); transform: rotate(-5deg); display: flex; align-items: center; justify-content: center; font-size: 44px; }
+  .awc-empty h3 { font: 900 34px/1 var(--display); text-transform: uppercase; margin: 0 0 6px; }
+  .awc-empty p { margin: 0; color: var(--muted); }
+  @media (max-width: 480px) { .awc-empty { flex-direction: column; align-items: flex-start; gap: 16px; } }
+  @media (max-width: 640px) { .awc-gb { font-size: 24px; } }
 
   /* ---------- tables ---------- */
   .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 16px 32px; }
@@ -1839,16 +1865,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     </div>`;
   }
 
-  function awardCard(c, kind) {
-    const k = KIND[kind];
-    return `
-      <article class="card ${k.cls}">
-        <div class="card-top"><span class="who">${mgrLink(c.manager)}</span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
-        <h3>${esc(c.title)}</h3>
-        <p>${esc(c.text)}</p>
-      </article>`;
-  }
-
   // The Move column: a pill when last week's result shifted the team's overall standing, a dash when
   // it held, nothing to compare to in Week 1. Triangle plus a number, so color is never the only cue.
   function rankMove(m) {
@@ -2397,17 +2413,53 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ],
   };
 
-  function rpAwardCard(c, kind, i) {
-    const k = KIND[kind], icons = AWARD_ICONS[kind];
-    const [d1, d2] = icons[i % icons.length];
+  // Award card: a band with the player's photo sticker, the title label and an emoji sticker
+  // pinned to the label's corner. An award with no photo shows its emoji as the sticker art
+  // (corner sticker dropped); one with neither falls back to the AWARD_ICONS icon. Old weeks
+  // carry none of the optional fields, so every read is guarded.
+  const AWC_ICON = (kind, i) => {
+    const icons = AWARD_ICONS[kind], [d1, d2] = icons[i % icons.length];
+    return `<svg class="awc-ico" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d1}"/><path d="${d2}"/></svg>`;
+  };
+  // The animated background: good awards rise, flags drift sideways, tough breaks get flushed.
+  // `n` is the card's position, which only shifts the (negative) delays so cards don't pulse together.
+  function awcFloaters(kind, n) {
+    const dl = (j) => `${(-(j * 1.7 + n * 0.9)).toFixed(1)}s`;
+    const fl = (cls, icon, vars) => `<span class="awc-fl ${cls}" aria-hidden="true" style="${vars}">${icon}</span>`;
+    if (kind === 'tough_breaks') {
+      const icons = ['🧻', '🥀', '💧'], r = [59, 73, 45], d = [5, 5.8, 4.2], fs = [21, 26, 16];
+      return fl('bowl', '🌀', '') + Array.from({ length: 6 }, (_, j) => fl('flush', icons[j % 3],
+        `--r:${r[j % 3]}px;--d:${d[j % 3]}s;--fs:${fs[j % 3]}px;--dl:${dl(j + 1)};--a:${j * 60}deg`)).join('');
+    }
+    const icons = kind === 'flags' ? ['🚩', '🚩', '💨'] : ['🏈', '⭐', '🎉'], d = [6, 7.6, 9.2], fs = [16, 21, 26];
+    return Array.from({ length: 7 }, (_, j) => fl(kind === 'flags' ? 'drift' : 'rise', icons[j % 3],
+      `--d:${d[j % 3]}s;--fs:${fs[j % 3]}px;--dl:${dl(j)};--sx:${5 + j * 14}%;--sy:${[8, 21, 34, 47, 60, 3, 16][j]}%`)).join('');
+  }
+  function awardCard(c, kind, i = 0) {
+    const k = KIND[kind];
+    const emoji = c.emoji ? esc(c.emoji) : '';
+    const photo = c.headshot || (c.player_id ? HEADSHOT_URL(c.player_id) : '');
+    const art = emoji ? `<span class="awc-emo" aria-hidden="true">${emoji}</span>` : AWC_ICON(kind, i);
+    // A photo that fails to load swaps in the emoji art and drops the corner sticker.
+    const sticker = photo
+      ? `<div class="awc-sin" data-art="${esc(art)}"><img src="${esc(photo)}" alt="" loading="lazy" onerror="var s=this.parentNode;s.innerHTML=s.dataset.art;s.closest('.awc-band').classList.add('nophoto')"></div>`
+      : `<div class="awc-sin">${art}</div>`;
     return `
-      <article class="card ${k.cls}" style="animation-delay:${(i * 0.09).toFixed(2)}s">
-        <div class="card-top"><span class="aw-lhs"><span class="aw-stk" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${d1}"/><path d="${d2}"/></svg></span><span class="who">${mgrLink(c.manager)}</span></span>${c.stat ? `<span class="stat">${esc(c.stat)}</span>` : ''}</div>
-        <span class="aw-kind">${k.label}</span>
-        <h3>${esc(c.title)}</h3>
-        <p>${esc(c.text)}</p>
+      <article class="awc ${k.cls}">
+        <div class="awc-band${photo ? '' : ' nophoto'}">${awcFloaters(kind, i)}<div class="awc-stk">${sticker}</div><div class="awc-ttl">${esc(c.title)}${photo && emoji ? `<span class="awc-tb" aria-hidden="true">${emoji}</span>` : ''}</div></div>
+        <div class="awc-body"><div class="awc-who"><b>${mgrLink(c.manager)}</b>${c.stat ? `<span class="awc-stat">${esc(c.stat)}</span>` : ''}</div><p>${esc(c.text)}</p></div>
       </article>`;
   }
+  const awardGrid = (cards, kind) => `<div class="awc-grid">${cards.map((c, i) => awardCard(c, kind, i)).join('')}</div>`;
+  // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
+  // so its filter chips can hide them.
+  const awardGroups = (w, { rp = false, filter = 'all' } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
+    <section class="awc-grp ${KIND[k].cls}${rp ? ' rp-grp' : ''}"${rp ? ` data-rp-kind="${k}"${filter === 'all' || filter === k ? '' : ' hidden'}` : ''}>
+      <div class="awc-gh"><h3 class="awc-gb">${KIND[k].title}</h3><span class="awc-cnt">${w[k].length} ${w[k].length === 1 ? 'card' : 'cards'}</span></div>
+      <p class="awc-sub">${KIND[k].sub}</p>
+      ${awardGrid(w[k], k)}
+    </section>`).join('')}</div>`;
+  const awardsEmpty = () => `<div class="awc-empty"><div class="st" aria-hidden="true">📭</div><div><h3>No awards yet</h3><p>Game balls, flags and tough breaks land with the Tuesday recap. Nobody has earned a card, or earned a flag, yet.</p></div></div>`;
 
   // The compact standings as a sticker card: rank, move, team, record, and a bar for points scored.
   function rpStandings(rows) {
@@ -2474,11 +2526,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           ${[['all', `All ${nAwards} awards`], ...kinds.map((k) => [k, KIND[k].title])].map(([k, label]) =>
             `<button type="button" class="chip${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}">${label}</button>`).join('')}
         </div>
-        ${kinds.map((k) => `
-        <div class="rp-grp" data-rp-kind="${k}"${filter === 'all' || filter === k ? '' : ' hidden'}>
-          <div class="grp-head"><h3>${KIND[k].title}</h3><p>${KIND[k].sub}</p></div>
-          <div class="cards">${w[k].map((c, i) => rpAwardCard(c, k, i)).join('')}</div>
-        </div>`).join('')}
+        ${awardGroups(w, { rp: true, filter })}
       </section>` : ''}
 
       <section>
@@ -3315,12 +3363,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="kicker">Week ${w.week} awards</div>
         <h1>Game balls, flags and tough breaks</h1>
       </div>
-      ${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
-        <section>
-          ${secHead(KIND[k].marker, KIND[k].title)}
-          <p class="sec-sub">${KIND[k].sub}</p>
-          <div class="cards">${w[k].map((c) => awardCard(c, k)).join('')}</div>
-        </section>`).join('')}
+      ${AWARD_KINDS.some((k) => w[k].length) ? awardGroups(w) : awardsEmpty()}
       ${w.glossary.length ? `
       <section>
         ${secHead('book', 'Rookie glossary', '<a class="more" href="#glossary">Every term →</a>')}
@@ -3347,7 +3390,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         items.push({ tag: 'good', label: 'perfect', text: `${esc(s.manager)} started her best possible lineup.` });
       }
     }
-    const related = AWARD_KINDS.flatMap((k) => w[k].filter((c) => c.manager === W.manager || c.manager === L.manager).map((c) => awardCard(c, k)));
+    const related = AWARD_KINDS.flatMap((k) => w[k].filter((c) => c.manager === W.manager || c.manager === L.manager).map((c, i) => awardCard(c, k, i)));
     const others = w.games.filter((x) => x.key !== key);
     const lead = w.live && !w.complete;
     return `
@@ -3368,7 +3411,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <ul class="decided">${items.map((i) => `<li><span class="tag ${i.tag}">${esc(i.label)}</span><span>${i.text}</span></li>`).join('')}</ul>
       </section>
 
-      ${related.length ? `<section>${secHead('ball', 'Their awards this week')}<div class="cards">${related.join('')}</div></section>` : ''}
+      ${related.length ? `<section>${secHead('ball', 'Their awards this week')}<div class="awc-list"><div class="awc-grid">${related.join('')}</div></div></section>` : ''}
 
       <section>
         ${secHead('board', 'Box score')}
