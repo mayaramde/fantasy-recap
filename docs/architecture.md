@@ -242,11 +242,14 @@ you), the dark identity card (playoff odds as a range from the Week hub's `stake
 has kicked off the range is gone and it shows today's single number, labelled), and a sticky Overview / Lineup / Season / League bar.
 
 - **Overview** `#team-<id>`: the matchup (ESPN's win chance, both projections, starters left, what to fix), the playoff
-  card (seed, top-4 line, the odds if she loses / beats her opponent and what the game is worth), one **Coach's take**
-  and **Who's next** (the week-ahead opponent and the one player of theirs to watch).
+  card (seed, top-4 line, the odds if she loses / beats her opponent and what the game is worth), **Coach's take**
+  (one audit card, then this week's waiver and trade ideas: three up front, the rest behind "N more ideas") and **Who's next**
+  (the week-ahead opponent, the one player of theirs to watch, and a one-line reason: Injury watch, Her engine or Top threat;
+  it only appears once the next-week capture exists).
 - **Lineup** `#team-<id>.lineup`, and `#team-<id>.next` for next week (the week toggle lives here): a To fix card, then one
   expandable row per player (Top scorers' headshot and logo sources, kickoff time from the public scoreboard's `kickoff`,
-  Coach's blurb and scoring lines in the panel), then **Coach's advice** (waiver and trade ideas).
+  Coach's blurb and scoring lines in the panel); the next-week view then ends with **Coach's advice** (waiver and trade
+  ideas), since Overview only shows this week's.
 - **League** `#team-<id>.league`: the league-wide half of the Coach landing, built by `coachLeague` in `site/coach/landing.js`
   from the same pieces as `#coach` (one source of truth): Coach's take, **Where everyone's strong**, **Waiver order this week**
   and **Injuries and byes**, for the week being played. The pick's row is orange ("you"), the open team's cobalt-soft
