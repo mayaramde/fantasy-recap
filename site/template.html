@@ -23,6 +23,8 @@
     --accent-ink: #1a2a9c;
     --on-accent: #ffffff;
     --orange: #ff7a1a;
+    --awc-ball: #2e4bf2;
+    --awc-break: #f0a468;
     --pink: #ff6fb5;
     --lime: #c7f04a;
     --on-pop: #151a33;
@@ -378,12 +380,12 @@
   .rp-hero { position: relative; margin-top: 22px; border: 2px solid var(--edge); border-radius: 28px; background: var(--board); color: var(--on-board); box-shadow: 8px 8px 0 var(--accent); overflow: hidden; padding: 48px 48px 40px; isolation: isolate; }
   .rp-hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; z-index: -2; }
   .rp-hero::after { content: ""; position: absolute; right: -60px; top: -80px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; z-index: -1; }
-  .rp-big { position: absolute; right: 36px; bottom: -70px; font: 900 420px/1 var(--display); color: transparent; -webkit-text-stroke: 3px rgba(244, 246, 255, 0.22); z-index: -1; user-select: none; pointer-events: none; }
+  .rp-big { position: absolute; right: 36px; bottom: -70px; font: 900 clamp(120px, 34vw, 380px)/1 var(--display); color: transparent; -webkit-text-stroke: 3px rgba(244, 246, 255, 0.22); z-index: -1; user-select: none; pointer-events: none; }
   .rp-hero-in { position: relative; max-width: 880px; }
   .rp-hero .kicker { display: inline-flex; align-items: center; gap: 10px; min-height: 34px; padding: 0 14px; background: var(--lime); color: var(--on-pop); font: 600 15px/1 var(--script); transform: rotate(-1.5deg); }
   .rp-hero .kicker i { width: 9px; height: 9px; border-radius: 50%; background: var(--on-pop); display: inline-block; }
-  .rp-hero h1 { margin: 18px 0 16px; font: 900 clamp(40px, 5.4vw, 78px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; color: var(--on-board); }
-  .rp-hero .dek { margin: 0; font-size: 19px; line-height: 1.55; color: var(--on-board-muted); max-width: 64ch; }
+  .rp-hero h1 { margin: 18px 0 16px; font: 900 clamp(26px, 2.2vw + 18px, 46px)/1.02 var(--display); letter-spacing: 0.005em; max-width: 24ch; color: var(--on-board); }
+  .rp-hero .dek { margin: 0; font-size: clamp(15px, 0.4vw + 13.5px, 18px); line-height: 1.5; color: var(--on-board-muted); max-width: 64ch; }
   .rp-hero .pills { gap: 14px; margin-top: 30px; }
   .rp-hero .pill { min-height: 52px; padding: 4px 18px 4px 4px; box-shadow: 3px 3px 0 var(--drop); transition: transform 0.2s; }
   .rp-hero .pill-plain { padding-left: 18px; }
@@ -426,11 +428,13 @@
   .rp .sec-head h2 { font: 900 40px/1 var(--display); text-transform: uppercase; white-space: nowrap; }
   .rp .sec-head .rule { height: 3px; background: var(--edge); border-radius: 3px; min-width: 20px; }
   .rp .sec-sub { margin: 10px 0 0; font-size: 15px; }
-  @media (max-width: 980px) { .rp-hero { padding: 36px 28px; } .rp-big { font-size: 300px; right: 10px; } }
+  @media (max-width: 980px) { .rp-hero { padding: 36px 28px; } .rp-big { right: 10px; } }
   @media (max-width: 640px) {
     .rp-hero { padding: 28px 20px; border-radius: 22px; }
-    .rp-big { font-size: 220px; bottom: -40px; }
-    .rp-hero .dek { font-size: 17px; }
+    .rp-big { bottom: -24px; }
+    .rp-hero h1 { margin: 14px 0 12px; }
+    .rp-hero .pills { gap: 8px; margin-top: 18px; }
+    .rp-hero .pill { min-height: 44px; }
     .rp .sec-head h2 { font-size: 30px; white-space: normal; }
   }
 
@@ -856,20 +860,24 @@
   .awc-sub { margin: 0; max-width: 64ch; color: var(--muted); font-size: 14.5px; }
   .awc-grid { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
   @container (min-width: 560px) { .awc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .awc { background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); overflow: hidden; display: flex; flex-direction: column; }
-  .awc.balls { --k: var(--orange); --s: var(--orange-soft); }
-  .awc.flags { --k: var(--pink); --s: var(--pink-soft); }
-  .awc.breaks { --k: var(--lime); --s: var(--lime-soft); }
+  /* exactly three cards share one row once there is room; they run taller instead of wrapping to a lone fourth-row card */
+  @container (min-width: 760px) { .awc-grid.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .awc-grid .awc-body { flex: 1; }
+  .awc { container-type: inline-size; background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); overflow: hidden; display: flex; flex-direction: column; }
+  /* --band is the card's own band: game balls cobalt, flags pink, tough breaks a muted tangerine (the group badges keep --k) */
+  .awc.balls { --k: var(--orange); --band: var(--awc-ball); --s: var(--orange-soft); }
+  .awc.flags { --k: var(--pink); --band: var(--pink); --s: var(--pink-soft); }
+  .awc.breaks { --k: var(--lime); --band: var(--awc-break); --s: var(--orange-soft); }
   .awc-grp.balls { --k: var(--orange); }
   .awc-grp.flags { --k: var(--pink); }
   .awc-grp.breaks { --k: var(--lime); }
-  .awc-band { position: relative; isolation: isolate; overflow: hidden; border-bottom: 2px solid var(--edge); display: flex; align-items: center; gap: 16px; padding: 20px 18px; min-height: 104px; background-color: var(--k); background-image: repeating-conic-gradient(from 0deg at 16% 110%, rgba(255, 255, 255, 0.3) 0 7deg, transparent 7deg 14deg); color: var(--on-pop); }
-  .awc-stk { z-index: 1; position: relative; flex: none; width: 72px; height: 72px; border-radius: 22px; background: #fff; transform: rotate(-5deg); box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--edge), 6px 7px 0 5px var(--drop); margin: 4px 6px; }
+  .awc-band { position: relative; isolation: isolate; overflow: hidden; border-bottom: 2px solid var(--edge); display: flex; align-items: center; gap: 16px; padding: 22px 18px; min-height: 132px; background-color: var(--band, var(--k)); background-image: repeating-conic-gradient(from 0deg at 16% 110%, rgba(255, 255, 255, 0.3) 0 7deg, transparent 7deg 14deg); color: var(--on-pop); }
+  .awc-stk { z-index: 2; position: relative; flex: none; width: 76px; height: 76px; border-radius: 22px; background: #fff; transform: rotate(-5deg); box-shadow: 0 0 0 4px #fff, 0 0 0 6px var(--edge), 6px 7px 0 5px var(--drop); margin: 4px 6px; }
   .awc-sin { width: 100%; height: 100%; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; }
   .awc-sin img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
-  .awc-emo { font-size: 42px; line-height: 1; }
+  .awc-emo { font-size: 44px; line-height: 1; }
   .awc-ico { color: var(--on-pop); }
-  .awc-ttl { position: relative; z-index: 1; background: #fff; color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); border-radius: 8px; padding: 8px 12px 6px; transform: rotate(-2deg); font: 900 21px/0.98 var(--display); text-transform: uppercase; min-width: 0; overflow-wrap: anywhere; }
+  .awc-ttl { position: relative; z-index: 2; background: #fff; color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); border-radius: 8px; padding: 8px 12px 6px; transform: rotate(-2deg); font: 900 22px/0.98 var(--display); text-transform: uppercase; min-width: 0; overflow-wrap: anywhere; }
   .awc-tb { position: absolute; right: -12px; bottom: -14px; width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 2px solid var(--edge); box-shadow: 2px 2px 0 var(--drop); display: flex; align-items: center; justify-content: center; font-size: 17px; line-height: 1; text-transform: none; }
   .awc-band.nophoto .awc-tb { display: none; }
   .awc-body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 10px; }
@@ -879,20 +887,35 @@
   .awc-who a { text-decoration: none; }
   .awc-who a:hover { color: var(--accent); }
   .awc-stat { background: var(--s); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 10px 4px; font: 500 12px/1 var(--mono); }
-  .awc-fl { position: absolute; z-index: 0; line-height: 1; opacity: 0; pointer-events: none; font-size: var(--fs); }
-  .awc-fl.rise { left: var(--sx); bottom: -24px; animation: awc-rise var(--d) linear var(--dl) infinite; }
-  .awc-fl.drift { left: -24px; top: var(--sy); animation: awc-drift var(--d) linear var(--dl) infinite; }
-  .awc-fl.flush { left: 86%; top: 50%; margin: -12px 0 0 -12px; animation: awc-flush var(--d) ease-in var(--dl) infinite; }
-  .awc-fl.bowl { left: 86%; top: 50%; margin: -30px 0 0 -30px; font-size: 60px; opacity: 0.35; animation: awc-bowl 2.4s linear infinite; }
-  @keyframes awc-rise { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: 0.55; } 100% { transform: translateY(-190px) rotate(40deg); opacity: 0; } }
-  @keyframes awc-drift { 0% { transform: translateX(0) rotate(-14deg); opacity: 0; } 15% { opacity: 0.55; } 50% { transform: translateX(170px) rotate(14deg); } 100% { transform: translateX(360px) rotate(-14deg); opacity: 0; } }
-  @keyframes awc-flush { 0% { transform: rotate(0deg) translateX(var(--r)) rotate(0deg) scale(1); opacity: 0; } 12% { opacity: 0.55; } 85% { opacity: 0.55; } 100% { transform: rotate(720deg) translateX(0) rotate(-720deg) scale(0.15); opacity: 0; } }
-  @keyframes awc-bowl { to { transform: rotate(360deg); } }
+  /* The animated bands (v4): one idea per kind. Game balls: flames rise off the band and fade.
+     Flags: flags and puffs of wind drift across. Tough breaks: a poo circles a bowl and gets flushed. */
+  .awc-ft { position: absolute; bottom: -14px; left: var(--x); font-size: var(--fs); line-height: 1; opacity: 0; z-index: 1; pointer-events: none; transform-origin: 50% 100%; animation: awc-up var(--d) ease-out var(--dl) infinite; }
+  .awc-band.fire .awc-stk { animation: awc-hot 1.6s ease-in-out infinite alternate; }
+  .awc-fl { position: absolute; left: -50px; top: var(--y); font-size: var(--fs); line-height: 1; opacity: 0; z-index: 1; pointer-events: none; animation: awc-drift var(--d) linear var(--dl) infinite; }
+  .awc-band.flush { padding-right: 134px; }
+  .awc-zc { position: absolute; right: 14px; top: 50%; width: 100px; height: 100px; margin-top: -50px; z-index: 1; pointer-events: none; }
+  .awc-zc > * { position: absolute; left: 50%; top: 50%; line-height: 1; transform: translate(-50%, -50%); }
+  .awc-bowl { font-size: 104px; opacity: 0.16; animation: awc-bowl 1.3s linear infinite; }
+  .awc-ring { width: 96px; height: 96px; border-radius: 50%; border: 3px solid #fff; opacity: 0; animation: awc-ring 2.1s ease-out infinite; }
+  .awc-sp { font-size: 42px; --r: 58px; animation: awc-flushin 3.6s ease-in infinite; }
+  .awc-toilet { font-size: 58px; z-index: 3; animation: awc-wob 0.42s ease-in-out infinite alternate; filter: drop-shadow(2px 3px 0 rgba(21, 26, 51, 0.55)); }
+  /* a narrow card (three to a row) can't spare the 134px: the flush sits small in the corner, behind the label */
+  @container (max-width: 460px) {
+    .awc-band.flush { padding-right: 18px; }
+    .awc-zc { right: 4px; top: auto; bottom: 6px; margin-top: 0; width: 84px; height: 84px; transform: scale(0.8); transform-origin: 100% 100%; }
+  }
+  @keyframes awc-up { 0% { transform: translateY(0) scale(0.7); opacity: 0; } 12% { opacity: 1; } 55% { opacity: 0.95; } 100% { transform: translateY(-118px) scale(0.35) rotate(8deg); opacity: 0; } }
+  @keyframes awc-hot { from { transform: rotate(-5deg) scale(1); } to { transform: rotate(-4deg) scale(1.03); } }
+  @keyframes awc-drift { 0% { transform: translateX(0) rotate(-16deg) scale(0.9); opacity: 0; } 12% { opacity: 0.95; } 50% { transform: translateX(200px) rotate(16deg) scale(1.1); } 88% { opacity: 0.95; } 100% { transform: translateX(440px) rotate(-16deg) scale(0.9); opacity: 0; } }
+  @keyframes awc-bowl { to { transform: translate(-50%, -50%) rotate(360deg); } }
+  @keyframes awc-ring { 0% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; } }
+  @keyframes awc-flushin { 0% { transform: translate(-50%, -50%) rotate(0) translateX(var(--r)) rotate(0) scale(1); opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translate(-50%, -50%) rotate(900deg) translateX(0) rotate(-900deg) scale(0.1); opacity: 0; } }
+  @keyframes awc-wob { 0% { transform: translate(-50%, -50%) rotate(-12deg) scale(1); } 100% { transform: translate(-50%, -50%) rotate(10deg) scale(1.1); } }
   @media (prefers-reduced-motion: reduce) {
-    .awc-fl, .awc-fl.rise, .awc-fl.drift, .awc-fl.flush { animation: none; opacity: 0.3; }
-    .awc-fl.rise, .awc-fl.drift { left: var(--sx); top: var(--sy); bottom: auto; }
-    .awc-fl.flush { transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(var(--a) * -1)); }
-    .awc-fl.bowl { animation: none; opacity: 0.35; }
+    .awc-ft, .awc-fl, .awc-sp, .awc-ring, .awc-bowl, .awc-toilet, .awc-band.fire .awc-stk { animation: none; }
+    .awc-ft { opacity: 0.4; bottom: 8px; }
+    .awc-fl { left: 30%; opacity: 0.8; }
+    .awc-sp { opacity: 0.9; }
   }
   .awc-empty { display: flex; align-items: center; gap: 24px; background: var(--card); border: 2px dashed var(--edge); border-radius: 18px; padding: 24px; max-width: 760px; margin-top: 18px; }
   .awc-empty .st { flex: none; width: 84px; height: 84px; border-radius: 22px; background: var(--accent-soft); border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); transform: rotate(-5deg); display: flex; align-items: center; justify-content: center; font-size: 44px; }
@@ -1127,8 +1150,8 @@
   .rp-std .mv.down { background: var(--pink); color: var(--on-pop); }
   .rp-std .mv.flat { color: var(--muted); }
   .rp-std .tm { display: flex; flex-direction: column; min-width: 0; }
-  .rp-std .mg { font: 800 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
-  .rp-std .mg:hover { color: var(--accent); }
+  .rp-std .st-team { font: 800 22px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; text-decoration: none; color: var(--ink); }
+  .rp-std .st-team:hover { color: var(--accent); }
   .rp-std .tn { max-width: 190px; font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rp-std .rec { font: 500 15px/1 var(--mono); }
   .rp-std .sc { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 120px; }
@@ -1148,6 +1171,21 @@
   .rp .leaders .ppos { font: 500 13px/1 var(--mono); letter-spacing: 0; }
   .rp .leaders .meta { font-size: 13.5px; }
   .rp .leaders li:nth-child(2) { animation-delay: 0.08s; } .rp .leaders li:nth-child(3) { animation-delay: 0.16s; } .rp .leaders li:nth-child(4) { animation-delay: 0.24s; } .rp .leaders li:nth-child(5) { animation-delay: 0.32s; }
+  /* the viewer's own players, standings row, game and awards (Viewing as) */
+  .rp .leaders li.me { background: var(--orange-soft); box-shadow: 3px 3px 0 var(--orange); }
+  .rp-std tbody tr.me td { background: var(--orange-soft); }
+  .rp-std tbody tr.me td:first-child { box-shadow: inset 5px 0 0 var(--orange); }
+  .rp-std .st-who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .rp-std .you-tag { margin: 0; vertical-align: baseline; background: var(--orange); }
+  .vh { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .gb.mine:not(.sel) { background: var(--orange-soft); }
+  .gb-you { display: inline-block; align-self: flex-start; margin-bottom: 8px; padding: 3px 8px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 600 11px/1 var(--script); letter-spacing: 0.04em; }
+  .tape .open.mine { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 20px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 800 18px/1 var(--display); letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none; box-shadow: 4px 4px 0 var(--drop); }
+  .tape .open.mine:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--drop); text-decoration: none; }
+  .tape .open.mine:focus-visible { outline: 3px solid var(--edge); outline-offset: 3px; }
+  @media (prefers-reduced-motion: no-preference) { .tape .open.mine { transition: transform 0.15s, box-shadow 0.15s; } }
+  .awc.me { box-shadow: 5px 5px 0 var(--orange); }
+  .awc-you { margin-left: 8px; padding: 2px 7px; border: 2px solid var(--edge); border-radius: 999px; background: var(--orange); color: var(--on-pop); font: 600 11px/1 var(--script); vertical-align: 3px; }
   .rp .leaders .pts { font: 500 28px/1 var(--mono); padding: 6px 10px; border-radius: 12px; background: var(--lime); transform: none; }
   .rp .leaders.low .pts { background: var(--pink); }
   .rp .lows { margin-top: 44px; }
@@ -1803,17 +1841,17 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   // from reading every leader twice.
   const headshot = (p) => `<span class="mug"><img class="shot" src="${esc(p.headshot || NO_HEADSHOT)}" alt="" width="46" height="46" loading="lazy" onerror="this.onerror=null;this.src='${NO_HEADSHOT}'">${
     p.logo ? `<img class="logo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="24" height="24" loading="lazy" onerror="this.remove()">` : ''}</span>`;
-  const leaderList = (players, tone = '') => `<ol class="leaders ${tone}">${players.map((p) => `
-    <li>${headshot(p)}<span class="pname">${esc(p.name)}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
+  const leaderList = (players, tone = '', mark = false) => `<ol class="leaders ${tone}">${players.map((p) => `
+    <li${mark && myTeam.get() && teamIdByManager[p.manager] === myTeam.get() ? ' class="me"' : ''}>${headshot(p)}<span class="pname">${esc(p.name)}${mark && myTeam.get() && teamIdByManager[p.manager] === myTeam.get() ? '<span class="vh"> (your player)</span>' : ''}${posOf(p.pos) ? ` <span class="ppos">(${posOf(p.pos)})</span>` : ''}</span><span class="pts">${f1(p.points)}</span>
     <span class="meta">${mgrLink(p.manager)}${p.slot === 'FLEX' ? ' · in the flex' : ''} · projected <span class="num">${f1(p.projected)}</span>${p.short != null ? `, short by <span class="num">${f1(p.short)}</span>` : ''}</span></li>`).join('')}
   </ol>`;
   /* Worst performances: the top scorers list turned upside down, drawn the same way and
      sitting right under it. Skipped when the week has nothing to put in it. */
-  const lowlights = (w, sub = true) => (w.worst_performances || []).length ? `
+  const lowlights = (w, sub = true, mark = false) => (w.worst_performances || []).length ? `
     <div class="lows">
       ${secHead('flag', w.complete ? 'Worst performances' : 'Worst performances so far')}
       ${sub ? '<p class="sec-sub">Starters who fell furthest short of their projection.</p>' : ''}
-      ${leaderList(w.worst_performances, 'low')}
+      ${leaderList(w.worst_performances, 'low', mark)}
     </div>` : '';
   const record = (t) => `${t.wins}–${t.losses}${t.ties ? `–${t.ties}` : ''}`;
   const ordinal = (n) => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
@@ -2337,7 +2375,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   /* ---------- recap page (#week-N) pieces ---------- */
   // What the page remembers while it's redrawn (the live refresh re-routes now and then):
   // which game is open, which award filter is on, which glossary term is expanded.
-  const RP = { week: null, game: null, filter: 'all', term: null };
+  const RP = { week: null, game: null, filter: 'all', term: null, me: undefined };
   const rpState = (w) => {
     if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: 'all', term: null });
     return RP;
@@ -2372,9 +2410,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   // A collapsed game: winner left, loser right, a tug bar underneath. It's a button that picks
   // which tape card is open below; the box score itself is the link inside the tape.
+  const isMyGame = (g) => { const me = myTeam.get(); return !!me && (g.winner.team_id === me || g.loser.team_id === me); };
   function gameCard(g, w, on) {
+    const mine = isMyGame(g);
     return `
-      <button type="button" class="gb${on ? ' sel' : ''}" data-rp-game="${esc(g.key)}" aria-pressed="${on}" aria-controls="rp-tape-${esc(g.key)}">
+      <button type="button" class="gb${on ? ' sel' : ''}${mine ? ' mine' : ''}" data-rp-game="${esc(g.key)}" aria-pressed="${on}" aria-controls="rp-tape-${esc(g.key)}">
+        ${mine ? '<span class="gb-you">Your game</span>' : ''}
         <span class="gb-split">${[['win', g.winner, 'W'], ['lose', g.loser, 'L']].map(([cls, s, r]) => {
           const badge = w.complete ? `<span class="wl ${r}">${r}</span>` : '';
           return `
@@ -2399,7 +2440,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="tape-bar" role="img" aria-label="${esc(g.winner.manager)} ${f2(g.winner.points)}, ${esc(g.loser.manager)} ${f2(g.loser.points)}"><span class="tw" style="width:${shareOf(g)}%"><span class="tn">${f2(g.winner.points)}</span></span><span class="tl"><span class="tn">${f2(g.loser.points)}</span></span></div>
         <div class="tape-quote">
           ${g.blurb ? `<span class="qm" aria-hidden="true">&ldquo;</span><p class="blurb">${esc(g.blurb)}</p>` : ''}
-          <a class="open" href="${base(w)}.game-${g.key}">${w.live ? 'Live box score →' : 'Box score and lineup calls →'}</a>
+          <a class="open${isMyGame(g) ? ' mine' : ''}" href="${base(w)}.game-${g.key}">${w.live ? (isMyGame(g) ? 'Your live box score →' : 'Live box score →') : (isMyGame(g) ? 'Your box score and lineup calls →' : 'Box score and lineup calls →')}</a>
         </div>
       </article>`;
   }
@@ -2431,21 +2472,22 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const icons = AWARD_ICONS[kind], [d1, d2] = icons[i % icons.length];
     return `<svg class="awc-ico" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d1}"/><path d="${d2}"/></svg>`;
   };
-  // The animated background: good awards rise, flags drift sideways, tough breaks get flushed.
-  // `n` is the card's position, which only shifts the (negative) delays so cards don't pulse together.
+  // The animated background, per kind (CSS above). `n` is the card's position and only shifts the
+  // (negative) delays, so neighbouring cards don't pulse in step. Nothing here is read by a screen reader.
+  const AWC_FLAMES = [[4, 46, 0, 3.6], [13, 34, -1.2, 4.2], [22, 52, -2.4, 3.8], [31, 38, -0.6, 4.6], [40, 48, -3.0, 3.4], [49, 36, -1.8, 4.4],
+    [58, 54, -0.3, 3.9], [67, 40, -2.7, 4.1], [76, 46, -1.4, 3.7], [85, 34, -3.3, 4.5], [93, 44, -0.9, 4.0], [18, 30, -3.6, 4.8],
+    [62, 30, -2.1, 4.7], [36, 56, -1.0, 3.5]];
   function awcFloaters(kind, n) {
-    const dl = (j) => `${(-(j * 1.7 + n * 0.9)).toFixed(1)}s`;
-    const fl = (cls, icon, vars) => `<span class="awc-fl ${cls}" aria-hidden="true" style="${vars}">${icon}</span>`;
-    if (kind === 'tough_breaks') {
-      const icons = ['🧻', '🥀', '💧'], r = [59, 73, 45], d = [5, 5.8, 4.2], fs = [21, 26, 16];
-      return fl('bowl', '🌀', '') + Array.from({ length: 6 }, (_, j) => fl('flush', icons[j % 3],
-        `--r:${r[j % 3]}px;--d:${d[j % 3]}s;--fs:${fs[j % 3]}px;--dl:${dl(j + 1)};--a:${j * 60}deg`)).join('');
+    const off = n * 0.7;
+    if (kind === 'game_balls') {
+      return AWC_FLAMES.map(([x, fs, dl, d]) => `<span class="awc-ft" aria-hidden="true" style="--x:${x}%;--fs:${fs}px;--dl:${(dl - off).toFixed(1)}s;--d:${d}s">🔥</span>`).join('');
     }
-    const icons = kind === 'flags' ? ['🚩', '🚩', '💨'] : ['🏈', '⭐', '🎉'], d = [6, 7.6, 9.2], fs = [16, 21, 26];
-    return Array.from({ length: 7 }, (_, j) => fl(kind === 'flags' ? 'drift' : 'rise', icons[j % 3],
-      `--d:${d[j % 3]}s;--fs:${fs[j % 3]}px;--dl:${dl(j)};--sx:${5 + j * 14}%;--sy:${[8, 21, 34, 47, 60, 3, 16][j]}%`)).join('');
+    if (kind === 'flags') {
+      return Array.from({ length: 9 }, (_, j) => `<span class="awc-fl" aria-hidden="true" style="--y:${(j * 11 + 4) % 68}%;--fs:${34 + (j % 3) * 10}px;--d:${(5.2 + (j % 3) * 1.2).toFixed(1)}s;--dl:${(-(j * 1.3) - off).toFixed(1)}s">${['🚩', '🚩', '💨'][j % 3]}</span>`).join('');
+    }
+    return `<div class="awc-zc" aria-hidden="true"><span class="awc-ring"></span><span class="awc-ring" style="animation-delay:-1s"></span><span class="awc-bowl">🌀</span><span class="awc-sp" style="animation-delay:${(-off).toFixed(1)}s">💩</span><span class="awc-toilet">🚽</span></div>`;
   }
-  function awardCard(c, kind, i = 0) {
+  function awardCard(c, kind, i = 0, mine = false) {
     const k = KIND[kind];
     const emoji = c.emoji ? esc(c.emoji) : '';
     const photo = c.headshot || (c.player_id ? HEADSHOT_URL(c.player_id) : '');
@@ -2455,12 +2497,19 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ? `<div class="awc-sin" data-art="${esc(art)}"><img src="${esc(photo)}" alt="" loading="lazy" onerror="var s=this.parentNode;s.innerHTML=s.dataset.art;s.closest('.awc-band').classList.add('nophoto')"></div>`
       : `<div class="awc-sin">${art}</div>`;
     return `
-      <article class="awc ${k.cls}">
-        <div class="awc-band${photo ? '' : ' nophoto'}">${awcFloaters(kind, i)}<div class="awc-stk">${sticker}</div><div class="awc-ttl">${esc(c.title)}${photo && emoji ? `<span class="awc-tb" aria-hidden="true">${emoji}</span>` : ''}</div></div>
-        <div class="awc-body"><div class="awc-who"><b>${mgrLink(c.manager)}</b>${c.stat ? `<span class="awc-stat">${esc(c.stat)}</span>` : ''}</div><p>${esc(c.text)}</p></div>
+      <article class="awc ${k.cls}${mine ? ' me' : ''}">
+        <div class="awc-band${kind === 'game_balls' ? ' fire' : kind === 'tough_breaks' ? ' flush' : ''}${photo ? '' : ' nophoto'}">${awcFloaters(kind, i)}<div class="awc-stk">${sticker}</div><div class="awc-ttl">${esc(c.title)}${photo && emoji ? `<span class="awc-tb" aria-hidden="true">${emoji}</span>` : ''}</div></div>
+        <div class="awc-body"><div class="awc-who"><b>${mgrLink(c.manager)}</b>${mine ? '<span class="awc-you">you</span>' : ''}${c.stat ? `<span class="awc-stat">${esc(c.stat)}</span>` : ''}</div><p>${esc(c.text)}</p></div>
       </article>`;
   }
-  const awardGrid = (cards, kind) => `<div class="awc-grid">${cards.map((c, i) => awardCard(c, kind, i)).join('')}</div>`;
+  // The viewer's own awards lead each kind (stable, so everyone else keeps the recap's order). The card's
+  // index stays its original one, so its fallback icon and animation don't change when it moves.
+  const awardGrid = (cards, kind) => {
+    const me = myTeam.get();
+    const rows = cards.map((c, i) => [c, i, !!me && teamIdByManager[c.manager] === me]);
+    rows.sort((a, b) => b[2] - a[2] || a[1] - b[1]);
+    return `<div class="awc-grid${cards.length === 3 ? ' n3' : ''}">${rows.map(([c, i, mine]) => awardCard(c, kind, i, mine)).join('')}</div>`;
+  };
   // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
   // so its filter chips can hide them.
   const awardGroups = (w, { rp = false, filter = 'all' } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
@@ -2478,10 +2527,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <div class="rp-std-card"><div class="table-scroll"><table class="rp-std">
         <thead><tr><th></th><th title="Places gained or lost in the standings after the latest week">Move</th><th>Team</th><th class="r">Record</th><th class="r c5" title="Total points scored this season">Scored</th></tr></thead>
         <tbody>${rows.map((t, i) => `
-          <tr class="${i === 0 ? 'top' : ''}">
+          <tr class="${i === 0 ? 'top' : ''}${t.team_id === myTeam.get() ? ' me' : ''}">
             <td class="rk">${i + 1}</td>
             <td>${rankMove(t.rank_move)}</td>
-            <td><span class="tm"><a class="mg" href="#team-${t.team_id}">${esc(t.manager)}</a><span class="tn">${esc(t.team_name)}</span></span></td>
+            <td><span class="tm"><span class="st-who"><a class="st-team" href="#team-${t.team_id}">${esc(t.manager)}</a>${t.team_id === myTeam.get() ? '<span class="you-tag">you</span>' : ''}</span><span class="tn">${esc(t.team_name)}</span></span></td>
             <td class="r rec">${record(t)}</td>
             <td class="r c5"><span class="sc"><span class="v">${f2(t.points_for)}</span><span class="bar"><i style="width:${(t.points_for / max * 100).toFixed(1)}%;animation-delay:${(0.15 + i * 0.07).toFixed(2)}s"></i></span></span></td>
           </tr>`).join('')}
@@ -2501,7 +2550,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const kinds = AWARD_KINDS.filter((k) => w[k].length);
     const nAwards = kinds.reduce((n, k) => n + w[k].length, 0);
     const st = rpState(w);
-    const open = w.games.some((g) => g.key === st.game) ? st.game : (w.games[0] || {}).key;
+    // Picking (or changing) who is viewing resets the open game to theirs; a tap on another game sticks until then.
+    const me = myTeam.get();
+    if (st.me !== me) { st.me = me; st.game = null; }
+    const mineKey = (w.games.find(isMyGame) || {}).key;
+    const open = w.games.some((g) => g.key === st.game) ? st.game : (mineKey || (w.games[0] || {}).key);
     const filter = st.filter === 'all' || kinds.includes(st.filter) ? st.filter : 'all';
     const term = st.term == null ? 0 : st.term;
     return `
@@ -2549,8 +2602,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <div>
             ${secHead('ball', 'Top scorers')}
             <p class="sec-sub">The five best starters in the league in Week ${w.week}.</p>
-            ${leaderList(w.top_performers)}
-            ${lowlights(w)}
+            ${leaderList(w.top_performers, '', true)}
+            ${lowlights(w, true, true)}
           </div>
         </div>
       </section>

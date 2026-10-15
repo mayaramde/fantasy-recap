@@ -233,6 +233,29 @@ def worst_performances(facts):
     return sorted(rows, key=lambda r: r["short"], reverse=True)[:LOWLIGHT_COUNT]
 
 
+def baked_awards(recap, facts):
+    """The recap's awards with each `player` (a full name, as written in the recap) resolved against
+    that week's rosters to the ESPN player_id and headshot the card shows. A name that doesn't
+    resolve bakes no photo, and scripts/check_recaps.py fails the recap, so nothing is typed by hand.
+    A D/ST gets its team logo, like every other headshot here."""
+    roster = {}
+    for t in facts["teams"]:
+        for p in t["starters"] + t["bench"]:
+            roster.setdefault(p.get("name"), p)
+    out = {}
+    for kind in AWARD_KEYS:
+        out[kind] = []
+        for award in recap.get(kind, []):
+            award = {k: v for k, v in award.items() if k not in ("player_id", "headshot")}
+            p = roster.get(award.get("player"))
+            if p and p.get("player_id") is not None:
+                shot = p.get("logo") if p.get("pos") == "DST" else HEADSHOT_URL.format(p["player_id"])
+                if shot:
+                    award["player_id"], award["headshot"] = p["player_id"], shot
+            out[kind].append(award)
+    return out
+
+
 def week_payload(facts, recap, live=False, stats=None):
     teams = {t["team_id"]: t for t in facts["teams"]}
     # A capture that never heard the scoreboard can't say who is on a bye, so its rows say nothing
@@ -265,7 +288,7 @@ def week_payload(facts, recap, live=False, stats=None):
         "dek": recap.get("dek", ""),
         **extra,
         "games": games,
-        **{k: recap.get(k, []) for k in AWARD_KEYS},
+        **baked_awards(recap, facts),
         "glossary": recap.get("glossary", []),
         "standings": facts["standings"],
         "top_performers": lg["top_performers"],

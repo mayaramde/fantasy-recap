@@ -31,7 +31,7 @@ Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draf
   "season": 2026, "week": N, "status": "draft",
   "headline": "...", "dek": "...",
   "matchups": { "<lowTeamId>-<highTeamId>": "blurb", "...": "..." },
-  "game_balls": [{ "manager": "...", "title": "...", "text": "...", "stat": "..." }],
+  "game_balls": [{ "manager": "...", "title": "...", "text": "...", "stat": "...", "emoji": "🥈", "player": "Full Name" }],
   "flags": [ /* same shape as game_balls */ ],
   "tough_breaks": [ /* same shape as game_balls */ ],
   "glossary": [{ "term": "...", "definition": "one friendly sentence" }]
@@ -48,6 +48,12 @@ it should read. `scripts/check_recaps.py` enforces the first three of these in C
 - Matchup keys must be real pairings for that week, written low-team-id first.
 - `glossary` needs 3 to 5 entries, and terms shouldn't repeat ones already defined in an earlier
   week's recap (check `recaps/2026/week-*.json`). CI doesn't check this; the fact-checker does.
+
+- **Awards carry an optional `emoji` and `player`.** Pick an emoji that jokes about the award (1 or 2
+  visible characters), and a `player` (full name exactly as that week's roster spells it) only when one
+  player is the story; `site/build.py` bakes the photo from it, never type an id. Keep `title` to 48
+  characters or fewer, `stat` to 22 or fewer and not an echo of the title, and no em dashes in `title`,
+  `stat` or `text` (`check_recaps.py` enforces all of it).
 
 Run `python3 scripts/check.py` before Step 3 and fix anything it flags. It's cheaper than
 waiting for the fact-checker to find the same thing.
