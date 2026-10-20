@@ -1113,7 +1113,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # Keyed off the computed cards alone, before FantasyPros' join the list, so it matches
     # what coach_brief printed for coach-daily (which runs without a snapshot).
     skey = summary_key(items, can_change)
-    items = items + [it for it in fp_items if it not in items]
+    # Tagged so the team profile can pull exactly these out as the coach's own advice.
+    items = items + [it for it in ({**x, "source": "fantasypros"} for x in fp_items) if it not in items]
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])

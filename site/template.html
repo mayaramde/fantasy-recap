@@ -3786,20 +3786,29 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   // topped up to 3 from whatever is left, the rest behind a closed "N more ideas". The other audit cards
   // are on the Season tab.
   function tpTake(id, p) {
-    const ideas = tpIdeas(id, false);
+    // Once this week's games are final (or the live capture has nothing for her) the coach is talking about
+    // next week, so her quip, the league paragraph, advice cards and ideas all come from that row.
+    const useNext = !!ahead() && !!coachFor(id, true) && (!coachFor(id, false) || (LIVE && LIVE.complete));
+    const a = coachFor(id, useNext);
+    const ideas = tpIdeas(id, useNext);
     const waiver = ideas.filter((it) => !it.trade), trades = ideas.filter((it) => it.trade);
-    const shown = [...waiver.slice(0, 2), ...trades.slice(0, 1)];
+    const advice = ((a && a.items) || []).filter((it) => it.source === 'fantasypros');
+    const shown = [...advice, ...waiver.slice(0, 2), ...trades.slice(0, 1)];
     const rest = [...waiver.slice(2), ...trades.slice(1)];
     while (shown.length < 3 && rest.length) shown.push(rest.shift());
     const it = p.audit.find((x) => x.kind === 'position') || p.audit[0];
     const link = p.audit.length ? `<a class="more" href="#team-${id}.season">Full audit on Season →</a>` : '';
+    const quip = a && a.summary ? `<p class="team-summary">${esc(voice(a.summary))}</p>` : '';
+    const take = a && a.league_take ? `<article class="ov-take computed"><span class="ov-tag og">Around the league</span><p>${esc(voice(a.league_take))}</p></article>` : '';
     return `
       <section class="tp-sec" aria-labelledby="tp-take">
         ${tpHead('--orange', "Coach's take", link).replace('<h2>', '<h2 id="tp-take">')}
+        ${quip}
         ${it
           ? `<article class="ov-take${it.written ? '' : ' computed'}"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p>${esc(voice(it.text))}</p>${it.written ? '' : '<p class="tp-unwritten">Coach hasn\'t written today\'s take yet.</p>'}${refs(it.players)}</article>`
           : '<p class="sec-sub">The coach needs one finished week before she has opinions on the season.</p>'}
-        <div class="tp-sub"><span>Ideas for this week</span><small>Ideas, not orders. A trade only shows up if it helps both teams.</small></div>
+        ${take}
+        <div class="tp-sub"><span>${useNext ? 'Ideas for next week' : 'Ideas for this week'}</span><small>Ideas, not orders. A trade only shows up if it helps both teams.</small></div>
         ${shown.length
           ? `<div class="tp-cards">${shown.map(adviceCard).join('')}</div>
              ${rest.length ? `<details class="tp-more" data-hub-open="tp-more-${id}"${HUB_OPEN.has(`tp-more-${id}`) ? ' open' : ''}><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}`
