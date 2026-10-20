@@ -36,11 +36,33 @@ The snapshots are Claude-written recommendations, not facts, so:
   Coach cards are a separate surface, and Maya's league may never have opened them.
 - Tell the fact-checker (Step 3) which context came from a verified source, not which came from a lead.
 
+## Step 1b: joke pass (before any JSON)
+
+Voice is written at write time, not judged after. A fact-first draft with jokes added later is
+the failure this step prevents.
+
+1. Read CLAUDE.md's **Voice** section, the calibration recaps it names, and the last three
+   *published* recaps (so you know which punchlines are already spent).
+2. Build a throwaway **material sheet** per matchup (scratch notes, never committed): the absurd
+   stat, callbacks to prior weeks (check the Running threads and every player the last two
+   recaps named), ironies (best score lost, bench outscored starter), and team-name or
+   player-name hooks.
+3. For the headline, the dek, every matchup blurb and every award, draft **three candidate
+   lines** and keep the one that passes both the screenshot test and the deletion test. Only the
+   winner goes in the JSON.
+4. **Numbers budget:** lead with the story, at most three numbers in a matchup blurb besides the
+   margin. Detail belongs in awards and stat fields.
+5. **Headline and dek:** one fact plus a turn that points at something named in the fact. No
+   generic closers ("the fantasy gods").
+6. **No reuse:** never reuse a punchline shape or stock phrase from the last three published
+   recaps. Callbacks are welcome; recycled jokes are not.
+7. Real-injury tough breaks skip the joke pass: one warm, plain sentence, sourced (Step 1).
+
 ## Step 2: write the recap
 
-Voice isn't restated or self-checked here. Write to CLAUDE.md's **Voice** section as usual;
-`voice-check` judges the draft after the fact-check, run by `fantasy-orchestrator`, and any
-rewrites it asks for come back to this skill as a revision.
+Write to CLAUDE.md's **Voice** section, using the Step 1b material. `voice-check` still scores the
+draft after the fact-check (run by `fantasy-orchestrator`), but the funny is built here, not
+patched in afterward. Any rewrites it asks for come back to this skill as a revision.
 
 Write (or edit, for a revision) `recaps/2026/week-NN.json` with `"status": "draft"`. Schema:
 
@@ -83,8 +105,9 @@ Hand the draft to the `recap-fact-checker` agent, along with that week's `facts.
 citations, not just numbers — `check.py` already covers the numbers). Don't hand it the coach
 snapshots as support: they were only leads.
 
-- **PASS** → return to `fantasy-orchestrator` for its voice gate. Step 4 runs only once
-  `voice-check` says the draft reads as intended.
+- **PASS** → return to `fantasy-orchestrator` for its voice gate. Step 4 runs once
+  `voice-check` says the draft reads as intended, or the orchestrator's voice cap is spent
+  (then it opens the draft anyway with the voice report attached).
 - **FAIL** → revise the specific claims it flagged and re-check. **Cap this at two
   revise-and-recheck rounds.** If it's still failing after two rounds, stop — hand the
   fact-checker's last report back to whoever invoked this skill (`fantasy-orchestrator`) rather
@@ -98,7 +121,8 @@ draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
 1. Commit **only** `recaps/2026/week-NN.json`, `data/2026/week-NN/`, and
    `data/player_names.json` if it changed. Never `git add -A`: a concurrent live-update run can
    leave the next week's files uncommitted in the same tree.
-2. Push, open a PR titled `Week NN recap draft`, and enable auto-merge (squash). A draft recap
+2. Push, open a PR titled `Week NN recap draft` (if the voice cap was spent, put `voice-check`'s
+   last report in the PR body), and enable auto-merge (squash). A draft recap
    is safe on `main`, since the league site only shows published weeks.
 3. Run `scripts/deploy.sh --preview` from the tree that holds the draft (see `recap-ship` Step 1
    for the on-disk check) and share the preview URL with Maya.
@@ -106,4 +130,4 @@ draft; if the draft PR already merged, branch `recap-week-NN-rev` from `main`):
 ## Output
 
 `recaps/2026/week-NN.json` with `status: "draft"`, `check.py`-clean, fact-checker-PASSed and
-voice-checked, a draft PR, and a preview URL. Or a stop with the judges' specific reports.
+voice-checked (or, if the voice cap was spent, carrying the voice report in the PR body), a draft PR, and a preview URL. Or a stop with the judges' specific reports.

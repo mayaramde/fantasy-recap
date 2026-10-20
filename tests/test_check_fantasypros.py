@@ -98,5 +98,39 @@ class FantasyProsFieldTest(unittest.TestCase):
         self.assertIn("team 2", errors[0])
 
 
+class PlayerStatsTest(unittest.TestCase):
+    FP = {"reached": True, "checked_at": "2026-10-14T06:00:00Z"}
+
+    def with_stats(self, block, fp=None):
+        s = snap(fp or self.FP)
+        s["player_stats"] = block
+        return run(s)
+
+    def test_a_good_block_passes(self):
+        block = {"through_week": 5, "players": {"4432620": {"games": 5, "rec_tar": 35, "rec_rec": 22}, "-16016": {"games": 5}},
+                 "unmatched": [{"name": "Zach Charbonnet", "team": "SEA", "why": "no match"}]}
+        self.assertEqual(self.with_stats(block), [])
+
+    def test_absent_is_fine(self):
+        self.assertEqual(run(snap(self.FP)), [])
+
+    def test_bad_shapes_report(self):
+        good = {"games": 5, "rec_tar": 35}
+        for bad in ("x", [], {"players": {}}, {"through_week": "5", "players": {}}, {"through_week": 0, "players": {}},
+                    {"through_week": 5, "players": []},
+                    {"through_week": 5, "players": {"abc": good}},
+                    {"through_week": 5, "players": {"1": {"rec_tar": 35}}},
+                    {"through_week": 5, "players": {"1": {"games": 0}}},
+                    {"through_week": 5, "players": {"1": {"games": 5, "rec_tar": 3.5}}},
+                    {"through_week": 5, "players": {"1": {"games": 5, "points": 9}}},
+                    {"through_week": 5, "players": {"1": None}},
+                    {"through_week": 5, "players": {}, "unmatched": "x"}):
+            self.assertTrue(self.with_stats(bad), bad)
+
+    def test_cannot_ride_a_run_that_never_reached_fantasypros(self):
+        fp = {"reached": False, "checked_at": "2026-10-14T06:00:00Z", "error": "tool not available"}
+        self.assertTrue(self.with_stats({"through_week": 5, "players": {"1": {"games": 5}}}, fp))
+
+
 if __name__ == "__main__":
     unittest.main()

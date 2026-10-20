@@ -3,7 +3,8 @@
 Writes two self-contained single-file sites (pages are hash routes inside one HTML file):
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
-  site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt)
+  site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt
+                          + box-lines/week-NN.json, the box score's scoring lines for each published week)
 
 A "live" page shows the newest captured week that has no recap in that output yet
 (in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
@@ -21,9 +22,11 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 import urllib.request
 from collections import Counter
+from decimal import ROUND_HALF_UP, Decimal
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -81,20 +84,82 @@ def is_on_bye(p, states_known):
     return states_known and p.get("game_state") is None
 
 
-def player(p, live, states_known):
-    """One row of a box score. `playing` is the game clock ("Q3 7:22") while that player's
-    NFL game is on, and absent otherwise, so a finished week carries no live leftovers.
-    The NFL team logo rides along on the live week, which is the only page that shows it,
-    `injury` is ESPN's designation in plain words, absent when he isn't listed, and `bye` is
-    True when his team has no game, absent otherwise (including when the capture has no game
-    states, where it can't be known)."""
+# The tiles the matchup page's player panel shows before his game is played: season so far, per game
+# played. Totals come from the FantasyPros snapshot's `player_stats` (scripts/fp_player_stats.py). Carries
+# per game, not a carry share: a share needs each team's total carries and nothing here has them.
+KEY_STATS_POS = {"QB", "RB", "WR", "TE", "K"}     # a D/ST has no tiles
+
+
+def _per_game(total, games):
+    """One decimal, halves rounded up ("4.4", "7.0"), so the same totals always print the same."""
+    return str((Decimal(total) / games).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP))
+
+
+def key_stats(pos, st):
+    """([{label, value}], games) in the panel's tile order, values as strings, or None when there is
+    nothing honest to show: no tiles for his position, or no games played to divide by."""
+    games = (st or {}).get("games")
+    if pos not in KEY_STATS_POS or not isinstance(games, int) or games < 1:
+        return None
+    n = lambda k: st.get(k, 0)                      # a stat FantasyPros didn't report is zero
+    pg = lambda k: _per_game(n(k), games)
+    if pos == "RB":
+        tiles = [("Carries / game", pg("rush_att")), ("Rush yds / game", pg("rush_yds")),
+                 ("Targets / game", pg("rec_tar")), ("Catches / game", pg("rec_rec"))]
+    elif pos in ("WR", "TE"):
+        tiles = [("Targets / game", pg("rec_tar")), ("Catches / game", pg("rec_rec")),
+                 ("Rec yds / game", pg("rec_yds")), ("TDs this season", str(n("rec_tds") + n("rush_tds")))]
+    elif pos == "QB":
+        tiles = [("Pass att / game", pg("pass_att")), ("Pass yds / game", pg("pass_yds")),
+                 ("Rush att / game", pg("rush_att")), ("Pass TDs this season", str(n("pass_tds")))]
+    else:
+        accuracy = f"{(Decimal(100 * n('fg')) / n('fga')).quantize(Decimal('1'), rounding=ROUND_HALF_UP)}%" if n("fga") else "-"
+        tiles = [("FGs / game", pg("fg")), ("FG accuracy", accuracy),
+                 ("Extra points", f"{n('xpt')} of {n('xpa')}"), ("Games played", str(games))]
+    return [{"label": label, "value": value} for label, value in tiles], games
+
+
+def fp_player_stats(fp, week):
+    """{player_id: season totals} from the FantasyPros snapshot, for the live week's rows. None when the
+    snapshot is missing, stale (the same 36-hour rule as every other FantasyPros card), malformed, or
+    covers fewer weeks than the ones already played: a tile that quietly lags a week is worse than none."""
+    if not _fp_fresh(fp):
+        return None
+    block = fp.get("player_stats")
+    if (not isinstance(block, dict) or type(block.get("through_week")) is not int
+            or block["through_week"] < week - 1 or not isinstance(block.get("players"), dict)):
+        return None
+    return block["players"]
+
+
+def player(p, live, states_known, stats=None):
+    """One row of a box score. `player_id` (ESPN's *player* id, the one the headshot URLs carry,
+    never a member's) and `team` are read from that week's own capture on every week, so a
+    mid-season trade never puts today's badge on an old box score. `state` is his NFL game
+    ('pre', 'in', 'post') as the capture saw it, and `bye` is True when his team has no game.
+    Each is absent, never guessed, when the capture doesn't carry it: weeks captured before game
+    states existed have no `state` or `bye`.
+    The live week also carries `logo`, `kickoff` and `lines` (ESPN's own scoring for the week,
+    the Coach cards' {label, value, points} rows, absent for a player with no stat line, a D/ST
+    included) on the row, and `key` (his season-so-far tiles, see key_stats) with `key_games` (his
+    games played) when the FantasyPros snapshot is fresh and has him. A finished week keeps those two out of the page: its logos are one
+    `team_logos` map (see week_payload) and its lines live in a file beside the site (see
+    week_lines). `playing` is the game clock ("Q3 7:22") while that game is on, so a finished
+    week carries no live leftovers, and `injury` is ESPN's designation in plain words, absent
+    when he isn't listed."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
+    row.update(player_id=p.get("player_id"), team=p.get("team"))
     if live:
-        # player_id is what pairs a row with its Coach card (see player_cards); it is an
-        # ESPN *player* id, the same one the headshot URLs already carry, never a member's.
-        row.update(logo=p.get("logo"), team=p.get("team"), player_id=p.get("player_id"), kickoff=p.get("kickoff"))
-        if is_on_bye(p, states_known):
-            row["bye"] = True
+        row.update(logo=p.get("logo"), kickoff=p.get("kickoff"))
+        if p.get("scoring_lines"):
+            row["lines"] = p["scoring_lines"]
+        tiles = key_stats(p.get("pos"), (stats or {}).get(str(p.get("player_id"))))
+        if tiles:
+            row["key"], row["key_games"] = tiles
+    if p.get("game_state"):
+        row["state"] = p["game_state"]
+    if is_on_bye(p, states_known):
+        row["bye"] = True
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
@@ -102,7 +167,34 @@ def player(p, live, states_known):
     return row
 
 
-def side(t, live, states_known):
+def box_players(facts):
+    return [p for t in facts["teams"] for p in t["starters"] + t["bench"]]
+
+
+def week_lines(facts):
+    """{player_id: [{label, value, points}]} for a finished week's box score, ESPN's own scoring
+    lines as the Coach cards carry them. Written beside the site (see write_box_lines) rather than
+    baked into the page, so the page only pays for them when somebody opens a player."""
+    return {str(p["player_id"]): p["scoring_lines"] for p in box_players(facts) if p.get("scoring_lines")}
+
+
+def box_lines_path(week):
+    return f"box-lines/week-{week:02d}.json"
+
+
+def write_box_lines(out, recap_weeks, preview):
+    """Write each included week's lines file under `out`/box-lines/, and clear what an earlier
+    build left there so a week that is no longer published can't linger on the league site."""
+    folder = out / "box-lines"
+    shutil.rmtree(folder, ignore_errors=True)
+    for facts, w in recap_weeks:
+        lines = week_lines(facts)
+        if lines and (preview or w["status"] == "published"):
+            folder.mkdir(parents=True, exist_ok=True)
+            (out / box_lines_path(w["week"])).write_text(json.dumps({"week": w["week"], "lines": lines}, separators=(",", ":")))
+
+
+def side(t, live, states_known, stats=None):
     return {
         "team_id": t["team_id"], "manager": t["manager"], "team_name": t["team_name"],
         "points": t["points"], "projected": t["projected"], "optimal": t["optimal_points"],
@@ -113,8 +205,8 @@ def side(t, live, states_known):
         "swaps": [{k: s[k] for k in ("started", "started_points", "started_pos", "benched", "benched_points",
                                      "benched_pos", "slot", "gain")}
                   for s in t["lineup_swaps"]],
-        "starters": [player(p, live, states_known) for p in t["starters"]],
-        "bench": [player(p, live, states_known) for p in t["bench"]],
+        "starters": [player(p, live, states_known, stats) for p in t["starters"]],
+        "bench": [player(p, live, states_known, stats) for p in t["bench"]],
     }
 
 
@@ -164,10 +256,10 @@ def baked_awards(recap, facts):
     return out
 
 
-def week_payload(facts, recap, live=False):
+def week_payload(facts, recap, live=False, stats=None):
     teams = {t["team_id"]: t for t in facts["teams"]}
-    # Only the live week's rows say who is on a bye; a finished week has no use for the scan
-    states_known = live and game_states_known(p for t in facts["teams"] for p in t["starters"] + t["bench"])
+    # A capture that never heard the scoreboard can't say who is on a bye, so its rows say nothing
+    states_known = game_states_known(box_players(facts))
     games, seen = [], set()
     for t in facts["teams"]:
         key = tuple(sorted((t["team_id"], t["opponent_id"])))
@@ -176,18 +268,25 @@ def week_payload(facts, recap, live=False):
         seen.add(key)
         a, b = teams[key[0]], teams[key[1]]
         winner, loser = (a, b) if a["points"] >= b["points"] else (b, a)
-        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner, live, states_known),
-                      "loser": side(loser, live, states_known),
+        games.append({"key": f"{key[0]}-{key[1]}", "winner": side(winner, live, states_known, stats),
+                      "loser": side(loser, live, states_known, stats),
                       "blurb": recap.get("matchups", {}).get(f"{key[0]}-{key[1]}", "")})
     games.sort(key=lambda g: g["winner"]["points"] + g["loser"]["points"], reverse=True)
 
     lg = facts["league"]
+    extra = {}
+    if not live:
+        # A finished week's rows carry `team` only; the badge for each is looked up here, once.
+        extra["team_logos"] = {p["team"]: p["logo"] for p in box_players(facts) if p.get("team") and p.get("logo")}
+        if week_lines(facts):
+            extra["lines_src"] = box_lines_path(facts["week"])
     return {
         "week": facts["week"],
         "status": recap.get("status", "draft"),
         "complete": facts["complete"],
         "headline": recap.get("headline", ""),
         "dek": recap.get("dek", ""),
+        **extra,
         "games": games,
         **baked_awards(recap, facts),
         "glossary": recap.get("glossary", []),
@@ -1014,7 +1113,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # Keyed off the computed cards alone, before FantasyPros' join the list, so it matches
     # what coach_brief printed for coach-daily (which runs without a snapshot).
     skey = summary_key(items, can_change)
-    items = items + [it for it in fp_items if it not in items]
+    # Tagged so the team profile can pull exactly these out as the coach's own advice.
+    items = items + [{**it, "source": "fantasypros"} for it in fp_items if it not in items]
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])
@@ -1410,7 +1510,7 @@ def live_payload(facts, espn, previous=None, fp=None, history=None):
     `history` is every earlier capture, for the league wire (see wire()); without it the
     wire reads this week and `previous`.
     """
-    w = week_payload(facts, {"status": "live"}, live=True)
+    w = week_payload(facts, {"status": "live"}, live=True, stats=fp_player_stats(fp, facts["week"]))
     manager = {t["team_id"]: t["manager"].split(" (")[0] for t in LEAGUE["teams"]}
     moves = []
     for t in espn["transactions"]:
@@ -1510,7 +1610,12 @@ def season_payload(facts_list, weeks):
                                 "result": t["result"], "score_rank": t["score_rank"],
                                 "points_left": t["points_left_on_bench"],
                                 "game_key": "-".join(map(str, sorted((t["team_id"], t["opponent_id"]))))})
-        for rank, row in enumerate(facts["standings"], 1):
+        # Teams with the same record share a rank (1, 1, 3...), as ESPN's table shows them; the
+        # rows themselves stay in tiebreaker order.
+        def record_score(r):
+            return r["wins"] + 0.5 * r["ties"]
+        for row in facts["standings"]:
+            rank = 1 + sum(1 for o in facts["standings"] if record_score(o) > record_score(row))
             teams[row["team_id"]]["rank_history"].append({"week": wk, "rank": rank})
 
     by_manager = {s["manager"]: s for s in teams.values()}
@@ -1755,6 +1860,7 @@ def main():
     web.mkdir(exist_ok=True)
     (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_box_lines(web, recap_weeks, preview=False)
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
           + (f", next week {nxt['week']}" + ("" if nxt["projected"] else " (no projections yet)") if nxt else ""))
@@ -1773,6 +1879,7 @@ def main():
     web_preview.mkdir(exist_ok=True)
     (web_preview / "index.html").write_text(standalone(html, "Draft recap, not published yet."))
     (web_preview / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_box_lines(web_preview, recap_weeks, preview=True)
     print(f"preview.html: weeks {[(w['week'], w['status']) for w in weeks]}")
 
 

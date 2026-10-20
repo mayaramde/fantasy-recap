@@ -119,6 +119,9 @@ def check_trade_deadline(errors):
 # Snapshots generated before this moment predate the `fantasypros` field and are left alone;
 # every one after it must carry it, so a run that never reached FantasyPros can't pass for one that did.
 FANTASYPROS_FIELD_REQUIRED_FROM = datetime(2026, 10, 13, tzinfo=timezone.utc)
+# The totals a player_stats entry may hold (scripts/fp_player_stats.py STAT_FIELDS)
+PLAYER_STAT_FIELDS = {"games", "rush_att", "rush_yds", "rush_tds", "rec_tar", "rec_rec", "rec_yds", "rec_tds",
+                      "pass_att", "pass_yds", "pass_tds", "fg", "fga", "xpt", "xpa"}
 
 
 def _parse_utc(raw):
@@ -132,6 +135,29 @@ def _parse_utc(raw):
     if when.tzinfo is None or when.utcoffset().total_seconds() != 0:
         return None
     return when
+
+
+def _check_player_stats(errors, rel, block):
+    """`player_stats` (scripts/fp_player_stats.py): the season totals behind the matchup page's Key stats
+    tiles. Optional, but when present it has to be something the build can divide: whole-number totals
+    by ESPN player id, for the weeks the snapshot says it covers."""
+    if block is None:
+        return
+    if not isinstance(block, dict) or type(block.get("through_week")) is not int or block["through_week"] < 1:
+        errors.append(f"{rel}: player_stats must be an object with a whole-number through_week")
+        return
+    players = block.get("players")
+    if not isinstance(players, dict):
+        errors.append(f"{rel}: player_stats.players must be an object keyed by ESPN player id")
+        return
+    for pid, st in players.items():
+        if not re.fullmatch(r"-?[0-9]+", pid):
+            errors.append(f"{rel}: player_stats.players key {pid!r} isn't an ESPN player id")
+        elif (not isinstance(st, dict) or not st or not isinstance(st.get("games"), int) or st["games"] < 1
+              or not all(k in PLAYER_STAT_FIELDS and type(v) is int for k, v in st.items())):
+            errors.append(f"{rel}: player_stats.players[{pid}] must be whole-number totals with games >= 1")
+    if not isinstance(block.get("unmatched", []), list):
+        errors.append(f"{rel}: player_stats.unmatched must be a list")
 
 
 def check_fantasypros_snapshot(errors, root=ROOT):
@@ -155,6 +181,7 @@ def check_fantasypros_snapshot(errors, root=ROOT):
         elif path.parent.name == "history" and snapshot_history.local_day(snap["generated_at"]) != path.stem:
             errors.append(f"{rel}: filename date doesn't match generated_at "
                           f"({snapshot_history.local_day(snap['generated_at'])}, Pacific time)")
+        _check_player_stats(errors, rel, snap.get("player_stats"))
         fp = snap.get("fantasypros")
         if fp is None:
             if generated and generated >= FANTASYPROS_FIELD_REQUIRED_FROM:
@@ -169,6 +196,8 @@ def check_fantasypros_snapshot(errors, root=ROOT):
             continue
         if not (isinstance(fp.get("error"), str) and fp["error"].strip()):
             errors.append(f"{rel}: fantasypros.reached is false, so fantasypros.error must say why")
+        if snap.get("player_stats"):
+            errors.append(f"{rel}: has player_stats but fantasypros.reached is false")
         weeks = snap.get("weeks")
         if not isinstance(weeks, dict):
             errors.append(f"{rel}: weeks must be an object")
