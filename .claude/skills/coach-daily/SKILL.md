@@ -164,6 +164,24 @@ never invent an injury/news/ranking claim no tool actually returned. `level` is 
 something worth acting on before this week's games lock; otherwise `"watch"` or `"info"`. A team
 with nothing real to say gets an empty list for that section, not a filler card.
 
+**Voice, concretely** — read `examples/fp_news_calibration.md` before writing these; it's
+worked examples of what passed the voice gate and what didn't, the same way CLAUDE.md's
+calibration recaps are for recap copy. The short version:
+- Every card gets exactly **one** real joke (CLAUDE.md's "pick the best one and cut the
+  rest"), built from a checkable fact in the data you pulled — never zero (a pure fact-then-advice
+  card is under-dialed for this surface, not "safe") and never two stacked in the same card.
+- Don't reuse the same sentence shape across a batch. "[list the healthy backups], so [reassurance
+  clause]" read fine once and flat the third time it appeared in the same day's cards — if you
+  notice you've written that shape twice, change one of them.
+- The strict, zero-joke, one-plain-sentence treatment (CLAUDE.md's serious-moments rule) is
+  **narrow**: it's for an injury that actually changes what she starts this week (a starter,
+  not bench depth), not every injury designation by default. Decide it the way the dial table
+  does — does this change her lineup, or is it a bench-depth footnote that gets the normal
+  one-line-of-personality treatment like everything else?
+- Check the FantasyPros attribution is still there **after** you punch up a line for humor —
+  it's the single easiest thing to lose when reaching for a sharper joke, and it's a hard rule,
+  not a style call.
+
 ## Step 5a: find, evaluate and propose trades
 
 The method is the trade-analyzer plugin's (`trade-finder`, `trade-evaluation`), adapted to a
@@ -279,8 +297,11 @@ against those keys, so managers never read a fill-in-the-blank template.
    live, and `site/build.py` rejects written copy that carries a decimal, a `%`, "percent" or a
    point count ("17 points", "a 12-point edge"). Say "a couple of points better", "the bigger
    projection", "a big fat zero" instead. Week numbers are fine.
-4. Injury cards follow CLAUDE.md's serious-moments rule: plain and warm, no joke, and never a
-   cause or timeline no source gave you.
+4. A card for a genuinely lineup-altering injury (a starter, ruled out or worse) follows
+   CLAUDE.md's serious-moments rule: one plain, warm sentence, no joke, and never a cause or
+   timeline no source gave you. A card for a bench-depth or minor designation still gets the
+   normal Coach-card dial, advice first with one line of personality — see
+   `examples/fp_news_calibration.md` for the same distinction worked out on fp_news cards.
 5. Don't invent a card or a key. The site shows written copy only while its key is still
    computed, so copy for a situation that has since changed (a kickoff, a new injury) simply
    stops showing and the computed wording comes back. That's the intended backup, not an error.
