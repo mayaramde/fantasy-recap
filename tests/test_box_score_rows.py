@@ -105,18 +105,23 @@ class LinesFile(unittest.TestCase):
                 self.assertNotIn("lines_src", build.week_payload(load(w), {}))
 
     def test_files_are_written_for_published_weeks_only_and_stale_ones_are_cleared(self):
-        recap_weeks = [(load(w), {"week": w, "status": "published" if w != 5 else "draft"}) for w in WEEKS]
+        # The newest captured week is the draft under review; every earlier week is published.
+        draft = max(WEEKS)
+        recap_weeks = [(load(w), {"week": w, "status": "published" if w != draft else "draft"}) for w in WEEKS]
+        with_lines = [w for w in WEEKS if build.week_lines(load(w))]
+        published_files = sorted(Path(build.box_lines_path(w)).name for w in with_lines if w != draft)
+        preview_files = sorted(Path(build.box_lines_path(w)).name for w in with_lines)
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             stale = out / "box-lines" / "week-99.json"
             stale.parent.mkdir()
             stale.write_text("{}")
             build.write_box_lines(out, recap_weeks, preview=False)
-            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), ["week-03.json", "week-04.json"])
+            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), published_files)
             build.write_box_lines(out, recap_weeks, preview=True)
-            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), ["week-03.json", "week-04.json", "week-05.json"])
-            got = json.loads((out / build.box_lines_path(5)).read_text())
-            self.assertEqual(got, {"week": 5, "lines": build.week_lines(load(5))})
+            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), preview_files)
+            got = json.loads((out / build.box_lines_path(draft)).read_text())
+            self.assertEqual(got, {"week": draft, "lines": build.week_lines(load(draft))})
 
 
 class LiveWeekRows(unittest.TestCase):
