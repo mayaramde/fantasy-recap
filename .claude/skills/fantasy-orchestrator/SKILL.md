@@ -29,7 +29,7 @@ between `recap-write`'s fact-check and its draft PR (Phase 2).
 | (this session) | — | capture | `recap-capture` | `data/<season>/week-NN/{espn.json,facts.json}` |
 | (this session) | — | write | `recap-write` | `recaps/<season>/week-NN.json` (`status: draft`), draft PR, preview URL |
 | recap-fact-checker | custom agent | fact-check | (invoked by recap-write) | PASS/FAIL + claim table |
-| voice-check | custom agent | voice review | (invoked by this orchestrator, Phase 2, and by coach-daily) | per-field verdict + rewrites |
+| voice-check | custom agent | voice review | (invoked by this orchestrator, Phase 2, and by coach-daily) | per-field verdict (recap mode: 1-5 scores, pass bar, scans) + rewrites |
 | (this session) | — | ship | `recap-ship` | published site + publish PR |
 | code-reviewer | custom agent | code review | (invoked by recap-ship, conditionally) | findings list |
 | (this session) | — | daily snapshot | `coach-daily` | `data/<season>/fantasypros/latest.json` |
@@ -73,23 +73,34 @@ the existing draft. Output: a fact-checked, voice-checked `recaps/<season>/week-
 
 Order: `recap-write` Steps 1-3 (write, `check.py`, fact-check), then the voice gate below, then
 `recap-write` Step 4 (draft PR and preview). If the fact-checker still FAILs after two revise
-rounds, stop and show the user its last report.
+rounds, stop and show the user its last report. Voice rounds are capped separately (below).
 
 **Voice gate.** Once the draft passes the fact-check, spawn the `voice-check` agent on it (the
 `Agent` tool, `subagent_type: voice-check`), passing the draft's path and, for a partial
 revision like one blurb or the glossary, which fields changed so it judges those rather than
 re-litigating the whole recap. It reads CLAUDE.md's Voice section and the calibration recaps
-itself. The fact-checker doesn't judge tone, so this is the only voice check.
+itself and scores recap fields 1-5. The fact-checker doesn't judge tone, so this is the only
+voice check, and `recap-write`'s joke pass (Step 1b) is what it's checking against.
 
 - **reads as intended** → on to `recap-write` Step 4.
-- **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise exactly
-  those fields, then re-run the fact-check (a rewrite can break a number or a citation) and the
-  voice gate. **This shares the fact-check's two-round cap**, counted across both judges. If
-  it still isn't clean, stop and show the user both reports.
+- **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise the
+  fields it scored low (its rewrites, the missed callbacks, the reused phrases), then re-run the
+  fact-check (a rewrite can break a number or a citation) and the voice gate. **Voice rounds have
+  their own cap of two**, separate from the fact-check's two (a rewrite that breaks a fact still
+  spends a fact-check round, not a voice round).
+- **Voice cap spent, still flat** → do not stall the unattended Tuesday run. Open the draft PR
+  and the preview anyway (`recap-write` Step 4), put `voice-check`'s last report in the PR body,
+  and tell Maya "voice: reads flat, report attached". A **breaks a rule** verdict (em dash, joke
+  on a real injury, roast at a person, invented injury or motive) is not waived this way: fix it
+  before opening the PR. If it survives the voice cap, cut the offending field's joke back to
+  plain fact (or drop the field if it's optional), re-run `check.py`, and tell Maya which field
+  was stripped; don't loop. Nothing publishes without Maya's approval, so a flat draft only ever
+  reaches a preview.
+- **Fact-check** still FAILing after its two rounds is unchanged: stop and show both reports.
 
 ### Phase 3: ship — runs `recap-ship`
 
-Input: `recaps/<season>/week-NN.json` (status `draft`, already fact- and voice-checked). **Nothing
+Input: `recaps/<season>/week-NN.json` (status `draft`, fact-checked and voice-checked, or carrying a "reads flat" voice report in its PR body, which `recap-ship` shows Maya with the preview). **Nothing
 publishes without the user's explicit approval of the preview.** Then `recap-ship` flips
 `status` to `"published"` and opens the `Publish week NN recap` PR — CI deploys the live
 site automatically once that PR merges (`live-update.yml`'s `push` trigger), not this skill.
@@ -115,8 +126,10 @@ file (its Step 5b), since that PR merges without a human reading it. Doesn't tou
   fact-check PASS → voice-check "reads as intended" → draft PR open, preview URL shared,
   waiting on approval.
 - **Flat voice:** correct numbers and sourced injuries, but every blurb is a fact with a
-  qualifier stapled on → fact-check PASS → `voice-check` "reads flat" with per-field rewrites →
-  one round back through `recap-write` and both judges → clean → draft PR and preview.
+  qualifier stapled on → fact-check PASS → `voice-check` "reads flat" with scores and rewrites →
+  up to two voice rounds back through `recap-write` and both judges → clean → draft PR and
+  preview. Still flat after two: draft PR and preview anyway, report in the PR body, "voice:
+  reads flat, report attached" to Maya.
 - **Revision:** "tweak the Cambri blurb in this week's recap" → draft already exists → straight
   to `recap-write` with the existing draft, skipping capture → fact-check → updated draft.
 - **Triage:** "what does PPR mean" → answered directly, no skill invoked. "make the standings

@@ -156,22 +156,32 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 ## Voice
 This is the voice for everything Claude writes on the site, not just the weekly recap: recap copy, Coach cards, Live page copy, labels, empty states. Cheeky, a little smug, on everyone's side, like the friend at the watch party who's actually paying attention, dialed by surface (below). The league is "Fantasy Football for the Girls" and for most members this is their first season, so explain jargon in passing ("flex, the wild-card spot") and never talk down. Never a stats recap with a joke sprinkled on top.
 
-**Calibration.** Read `recaps/2026/week-01.json` and `week-02.json` before writing anything — they're what this voice sounds like when it works. Swap in the two most recently *published* recaps once a newer one reads at that same level.
+**Calibration.** Read `recaps/2026/week-01.json`, `week-02.json` and `week-05.json` before writing anything. They're what this voice sounds like when it works. Swap one out only when a newer published recap reads at that same level.
 
-**The formula.** State a real fact, then turn it with a short line: "Amie started the best possible lineup and still lost, which feels illegal but isn't." One joke per section — headline, dek, each matchup blurb, each game ball/flag/tough break. Pick the best one and cut the rest; three jokes stacked on one blurb is worse than one good one. Deletion test: if removing the joke leaves the sentence reading the same, it wasn't a joke, it was a fact with a qualifier stapled on ("no excuse required" doesn't count). Exception: serious moments, below.
+**The formula.** State a real fact, then turn it with a short line. One joke per section: headline, dek, each matchup blurb, each game ball/flag/tough break. Pick the best and cut the rest. Deletion test: if removing the joke leaves the sentence reading the same, it was a fact with a qualifier stapled on ("no excuse required"). Flat (the fact alone) to funny (the turn):
+- "Cambri's 153.96 would have beaten six of the other seven teams." → "She drew the seventh."
+- "Amie started the best possible lineup and still lost." → "...which feels illegal but isn't."
+- "Ja'Marr Chase scored 3.2 against a 19.9 projection." → "Ja'Marr Chase forgot it was game day."
+- "Marlee left George Pickens on her bench for 28 points and lost by 20.98." → "She lost to a man she personally chose to sit."
+- "Maddie's quarterback finished below zero." → "...which takes commitment."
+- "Stafford outscored Burrow by 10.8, and Kyra won by 5.82." → "Her gut basically won this one."
 
-Get the joke from something true and checkable — a team name, a real callback, a stat that's absurd on its own — never from an invented feeling, effort, or motive ("without breaking a sweat," "ever the professional" aren't in the data). Techniques that work here: deadpan hyperbole, a short punchy coda (2-6 words, never re-explains the joke), an accurate pop-culture tie-in, a running callback, personifying luck or instinct ("her gut won this one"), team-name wordplay when a name sets one up, a fourth-wall aside to Maya or the reader.
+Get the joke from something true and checkable: a team name, a real callback, a stat that's absurd on its own. Allowed: playful personification of players, luck, projections and the fantasy gods, and obviously hyperbolic asides to the reader. Not allowed: stating as fact a real person's mood, intent, effort, injury cause, or any off-field event. Other techniques: deadpan hyperbole, a 2-6 word coda that never re-explains the joke, an accurate pop-culture tie-in, team-name wordplay, a fourth-wall aside to Maya.
 
-**Mechanics.** No em dashes in site copy — use a period or comma. Keep it tight: short sentences, one stat line per player, one comparison per blurb (no rule-of-three filler), don't explain or moralize after the joke lands.
+**Mechanics.** No em dashes in site copy; use a period or comma. Short sentences, one stat line per player, one comparison per blurb, and don't explain or moralize after the joke lands. **Numbers budget** (new copy; the calibration recaps predate it): lead with the story, at most three numbers in a matchup blurb besides the margin; detail belongs in awards and stat fields. **No recycled punchlines:** never reuse a punchline shape or stock phrase from the last three published recaps.
 
-**Punch at decisions, hug the person.** Roast lineup decisions, projections, stat lines, the fantasy gods — never a manager's character or competence. Don't stack a second joke on whoever's already taken one this issue; her next mention is a hug. Maya's own team gets roasted too, by name, same as anyone else's.
+**Punch at decisions, hug the person.** Roast lineup decisions, projections, stat lines, the fantasy gods, never a manager's character or competence. Don't stack a second joke on whoever's already taken one this issue; her next mention is a hug. Maya's own team gets roasted too, by name, same as anyone else's.
 
 **Serious moments: play it straight.** A season-ending injury or real bad news gets one warm, plain sentence and nothing else — no joke here or about the other side of the same matchup. Never guess at an injury or its cause; cite a real source (see Recap content) or leave it out.
 
-**Running threads.** Pull on one, maybe two threads from the calibration recaps, not every live thread every week. Update this list as one dies or a new one starts:
-- Mark Andrews: dropped by Maya Week 1, still not producing for Marlee.
-- Maddie's Waddle bet: a Week 2 game ball, a Week 3 flag.
-- Christian Watson on Tara's bench: Weeks 1 and 3.
+**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-5); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
+- Mark Andrews: dropped by Maya, then Marlee's up-and-down tight end (Weeks 1, 2, 3).
+- Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1).
+- Tara's flex: Quinshon Judkins starting while better options sat (Weeks 1, 3).
+- Marlee's Michael Wilson: benched for big games (Weeks 3, 4), started over George Pickens (Week 5).
+- Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5).
+- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5).
+- Retired: the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5).
 
 **Dial by surface:**
 | Surface | Dial |
