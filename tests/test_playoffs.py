@@ -199,6 +199,57 @@ class WhatIfTest(unittest.TestCase):
         self.assertNotIn("what_if", six)
 
 
+class LadderTest(unittest.TestCase):
+    """The consolation ladder: seeds 5 to 8 play 5v8 and 6v7, then winners meet for 5th, losers for 7th."""
+    @classmethod
+    def setUpClass(cls):
+        cls.r = po.build(standings([1, 2, 3]), [1, 2, 3], league(consolation_ladder=True), n_sims=SIMS)
+        cls.l = cls.r["ladder"]
+        cls.w = cls.l["what_if"]
+
+    def test_round_one_is_five_v_eight_and_six_v_seven(self):
+        r1 = self.l["rounds"][0]
+        self.assertEqual((r1["week"], r1["weeks"]), (15, 1))
+        self.assertEqual([[t["seed"] for t in g["teams"]] for g in r1["games"]], [[5, 8], [6, 7]])
+
+    def test_ladder_round_spans_the_championship_weeks_and_places_the_losers_too(self):
+        final = self.l["rounds"][1]
+        self.assertEqual((final["week"], final["weeks"]), (16, 2))
+        self.assertEqual([g["places"] for g in final["games"]], [[5, 6], [7, 8]])
+        top, bottom = final["games"]
+        r1_favs = [g["favorite"] for g in self.l["rounds"][0]["games"]]
+        self.assertEqual({t["team_id"] for t in top["teams"]}, set(r1_favs))
+        self.assertFalse({t["team_id"] for t in bottom["teams"]} & set(r1_favs))
+
+    def test_chalk_places_run_fifth_to_eighth_with_no_repeats(self):
+        self.assertEqual([p["place"] for p in self.l["places"]], [5, 6, 7, 8])
+        self.assertEqual(len({p["team_id"] for p in self.l["places"]}), 4)
+        out = [t["team_id"] for t in sorted(self.r["teams"], key=lambda t: t["proj_seed"])[4:]]
+        self.assertEqual(sorted(p["team_id"] for p in self.l["places"]), sorted(out))
+
+    def test_sixteen_scenarios_cover_every_outcome(self):
+        self.assertEqual(len(self.w["scenarios"]), 16)
+        self.assertEqual(len({(tuple(s["r1"]), s["top"], s["bottom"]) for s in self.w["scenarios"]}), 16)
+        self.assertAlmostEqual(sum(s["p"] for s in self.w["scenarios"]), 1, places=3)
+
+    def test_four_possible_ladder_games_each_sum_to_one(self):
+        self.assertEqual(len(self.w["finals"]), 4)
+        for f in self.w["finals"]:
+            self.assertAlmostEqual(sum(f["p"].values()), 1, places=3)
+
+    def test_chalk_scenario_is_the_product_of_the_chalk_games(self):
+        r1, (top, bottom) = self.l["rounds"][0]["games"], self.l["rounds"][1]["games"]
+        chalk = next(s for s in self.w["scenarios"] if s["r1"] == [g["favorite"] for g in r1]
+                     and s["top"] == top["favorite"] and s["bottom"] == bottom["favorite"])
+        expected = r1[0]["win_prob"] * r1[1]["win_prob"] * top["win_prob"] * bottom["win_prob"]
+        self.assertAlmostEqual(chalk["p"], expected, places=2)
+
+    def test_no_ladder_when_the_league_has_none_or_the_field_is_not_four(self):
+        self.assertIsNone(po.build(standings([1, 2, 3]), [1, 2, 3], LEAGUE, n_sims=SIMS)["ladder"])
+        six = po.build(standings([1, 2, 3]), [1, 2, 3], league(teams=6, consolation_ladder=True), n_sims=SIMS)
+        self.assertIsNone(six["ladder"])
+
+
 class SixTeamBracketTest(unittest.TestCase):
     """A six-team, two-bye field still works, so a format change is a league.json edit."""
     @classmethod

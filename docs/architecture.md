@@ -15,6 +15,10 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   no reseeding; no playoff home-field advantage; everyone else plays a consolation ladder. `site/playoffs.py`
   simulates and draws exactly this bracket. It derives byes from the field size (a power-of-two field has
   none), so the Standings page's Bye column and stickers can't disagree with the bracket.
+  The Playoff picture also draws the consolation ladder behind a toggle (`season.playoffs.ladder`, only when
+  `consolation_ladder` is true and exactly four teams miss the playoffs): Week 15 plays seeds 5v8 and 6v7, then the
+  winners meet for 5th and the losers for 7th, the last round totaled over `championship_weeks` like the final. That
+  is ESPN's ladder as we read it, not something its API reports, so check it against ESPN when Week 15 is set.
 - **Transactions** (`transactions`): lineups lock per player at his game's kickoff (the Coach page's "locked"),
   waivers with no season limit, a 1-day waiver period, waiver order reset each week to inverse standings, and
   eliminated teams are not locked out of moves during the playoffs. The Coach page's waiver order is ESPN's own `waiverRank`
