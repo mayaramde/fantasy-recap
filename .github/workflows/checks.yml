@@ -31,6 +31,7 @@ jobs:
       - run: python -m unittest tests.test_standings_ties -v
       - run: python -m unittest tests.test_key_stats -v
       - run: python -m unittest tests.test_check_fantasypros -v
+      - run: python -m unittest tests.test_snapshot_history -v
       - run: python -m unittest tests.test_bts_page -v
       - run: python -m unittest tests.test_remaining_projection -v
       - run: node --test tests/coach/*.test.js tests/live/*.test.js

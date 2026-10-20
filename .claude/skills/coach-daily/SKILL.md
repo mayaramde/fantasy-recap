@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json, then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json (plus a dated copy under fantasypros/history/), then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
 model: inherit
 ---
 
@@ -338,8 +338,8 @@ FantasyPros attributions are yours to keep exact, as in Step 5.
 
 ## Step 6: write the snapshot file
 
-Overwrite the whole file (it's a rolling daily snapshot, not a per-week archive — git history
-is the archive):
+Overwrite the whole file (it's the rolling daily snapshot; Step 7 archives a dated copy of it
+under `history/`, which is the record a later reflection reads):
 
 ```json
 {
@@ -394,8 +394,18 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
    edit or commit any recap file or any `data/2026/week-NN/` file.
-2. Commit **only** `data/2026/fantasypros/latest.json` on the worktree's `coach-daily-<date>`
-   branch. Never `git add -A`.
+2. Archive today's snapshot: `python3 scripts/snapshot_history.py`. It copies `latest.json` to
+   `data/2026/fantasypros/history/<Pacific date>.json` and rebuilds `history/index.json`. Earlier days are
+   never touched; a second run on the same Pacific-time day (manual reruns included) replaces that day's file. Re-run `python3 scripts/check.py`.
+   Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<Pacific date>.json`
+   and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
+   Never `git add -A`.
+
+   **If archiving fails**, the cards still ship: the live site reads only `latest.json` (and ignores it
+   after 36 hours), so a history problem must not cost the league its day's Coach cards. Delete any
+   half-written file under `history/` (`git status` shows it), commit `latest.json` alone, and say in
+   the Output summary that today's history copy is missing. The next run adds its own day and rebuilds
+   `index.json`; don't hand-edit a history file to make `check.py` pass, re-run the script instead.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
    (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
    No human review is needed — small, derived data whose copy already passed Step 5c. Never
@@ -412,5 +422,5 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 A short summary, opening with "FantasyPros reached" or the reason it wasn't: the PR link and whether auto-merge is on, which teams got a new waiver idea or
 an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
-for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), and — only the first time
+for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), whether Step 7's history copy was written, and — only the first time
 it comes up — Trade Finder's premium disclosure.

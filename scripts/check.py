@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import espn_fetch  # noqa: E402
 import check_recaps  # noqa: E402
+import snapshot_history  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -160,10 +161,12 @@ def _check_player_stats(errors, rel, block):
 
 
 def check_fantasypros_snapshot(errors, root=ROOT):
-    """coach-daily's snapshot says whether the run reached the FantasyPros MCP:
+    """coach-daily's snapshot (and each dated copy in fantasypros/history/) says whether the run reached the FantasyPros MCP:
     `fantasypros: {reached, checked_at, error?}`. A run that didn't can't hold FantasyPros-sourced
     cards, and a failed probe has to say why."""
-    for path in sorted((root / "data").glob("*/fantasypros/latest.json")):
+    paths = sorted((root / "data").glob("*/fantasypros/latest.json")) + \
+        sorted((root / "data").glob("*/fantasypros/history/????-??-??.json"))
+    for path in paths:
         rel = path.relative_to(root)
         try:
             snap = json.loads(path.read_text())
@@ -175,6 +178,9 @@ def check_fantasypros_snapshot(errors, root=ROOT):
         generated = _parse_utc(snap.get("generated_at"))
         if generated is None:
             errors.append(f"{rel}: generated_at must be an ISO 8601 UTC time, e.g. 2026-10-14T06:00:00Z")
+        elif path.parent.name == "history" and snapshot_history.local_day(snap["generated_at"]) != path.stem:
+            errors.append(f"{rel}: filename date doesn't match generated_at "
+                          f"({snapshot_history.local_day(snap['generated_at'])}, Pacific time)")
         _check_player_stats(errors, rel, snap.get("player_stats"))
         fp = snap.get("fantasypros")
         if fp is None:

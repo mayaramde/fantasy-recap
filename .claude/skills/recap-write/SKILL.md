@@ -18,6 +18,24 @@ desk gives a real cause — if it does, cite it; if it doesn't, don't invent one
 CLAUDE.md rule, not a style preference: an invented cause is exactly what `recap-fact-checker`
 will fail the draft on.
 
+### Reuse the coach's snapshots as leads, never as sources
+
+`coach-daily` has already looked at these rosters every day, so don't rescan from scratch. After
+`git fetch origin`, read `data/<season>/fantasypros/history/index.json` on `origin/main` and open the
+dated files for the days whose `weeks` include this recap's week number (skip this quietly if the
+folder or the week isn't there yet). Use them to build a shortlist of where to look: which players it
+flagged as injured, on a bye, or worth adding, which team it saw with an empty or weak slot, and what
+changed day to day. Then spend the injury/news lookups above on that shortlist, plus anything in
+`facts.json` the snapshots missed.
+
+The snapshots are Claude-written recommendations, not facts, so:
+- **Never cite one.** An injury cause, a lineup decision, or a number comes from `facts.json`/`espn.json`
+  (including `injury_status`) or from the FantasyPros injury/news desk, looked up or confirmed now. If a
+  snapshot lead doesn't check out against those, drop it.
+- **Never quote or credit a card in the recap.** No "the coach said" and no card text reused. The page's
+  Coach cards are a separate surface, and Maya's league may never have opened them.
+- Tell the fact-checker (Step 3) which context came from a verified source, not which came from a lead.
+
 ## Step 1b: joke pass (before any JSON)
 
 Voice is written at write time, not judged after. A fact-first draft with jokes added later is
@@ -84,7 +102,8 @@ waiting for the fact-checker to find the same thing.
 
 Hand the draft to the `recap-fact-checker` agent, along with that week's `facts.json`/
 `espn.json` paths and whatever FantasyPros context you used in Step 1 (so it can verify
-citations, not just numbers — `check.py` already covers the numbers).
+citations, not just numbers — `check.py` already covers the numbers). Don't hand it the coach
+snapshots as support: they were only leads.
 
 - **PASS** → return to `fantasy-orchestrator` for its voice gate. Step 4 runs once
   `voice-check` says the draft reads as intended, or the orchestrator's voice cap is spent

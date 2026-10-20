@@ -44,7 +44,7 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   that PR is what triggers the push-deploy above.
 - **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
   (start/sit, waiver ideas, evaluated trades, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
-  and opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
+  and archives a dated copy as `history/<date>.json` (plus a compact `history/index.json`), then opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
   session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
@@ -219,6 +219,32 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   and whether that's new, where his game is up to, what else you have at that spot). The numbers are ESPN's, the
   jokes are ours, and no card reports news no source gave us. A week nobody has played has no stat line, so its
   cards are the blurb and the notes; with no projections published yet, nothing quotes one.
+
+## Coach snapshot history
+
+`coach-daily` overwrites `data/<season>/fantasypros/latest.json` every day. Step 7 also archives it with
+`scripts/snapshot_history.py`, so anything that wants to see how the team shifted over time (a reflection
+harness, `recap-write`'s lookups) has a time series. This is the contract:
+
+- **Layout.** `data/<season>/fantasypros/history/<YYYY-MM-DD>.json` is one day, and
+  `history/index.json` is a one-row-per-day summary. Read the index first, then open a full day only when needed.
+- **A day file** is `latest.json` exactly as that run wrote it, with `"schema_version": 1` added at the top.
+  `check.py` validates it with the same rules as `latest.json` (including `player_stats` when present).
+- **The index** is `{"schema_version": 1, "days": [...]}`, sorted by date. Each row has `date`, `file`,
+  `generated_at`, `fantasypros_reached`, and `weeks`: per week number, the counts `advice_cards`,
+  `roster_ideas`, `trades` (the `kind: "trade"` ideas) and `coach_cards`. It is rebuilt from the day files on
+  every run, so it can't drift from them.
+- **A day is a Pacific-time day** (`America/Los_Angeles`, so daylight time until the clocks change), from the
+  snapshot's `generated_at`. A rerun on the same Pacific day, manual ones included, overwrites that day's file;
+  earlier days are never touched. `check.py` requires the filename date to match `generated_at`.
+- **Days can be missing.** A run that fails to archive still ships `latest.json` (the live site depends on it), and
+  the next run fills in its own day. Nothing before the first file exists: history starts 2026-10-13, with no
+  recoverable days from 2026-10-14 through 2026-10-19.
+- **Advice, not facts.** Every card is Claude-written. `recap-write` may use the history as leads for what to
+  look up and never cites or quotes it, and `recap-fact-checker` treats a claim supported only by a card as
+  unsupported. Outcomes (actual points, whether the advice was followed) are not recorded yet.
+- **Not shipped with the site.** The site build reads only `latest.json`, and `vercel.json` leaves `history/` out
+  of the `/api/live` function bundle. Pushes touching `data/` already trigger a deploy, so history adds none.
 
 ## Standings page
 
