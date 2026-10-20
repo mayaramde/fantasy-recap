@@ -1,0 +1,94 @@
+{
+  "season": 2026,
+  "week": 6,
+  "status": "draft",
+  "headline": "Cambri gets engaged and ends Kyra's perfect season on the same Sunday. Productive weekend.",
+  "dek": "Kyra's unbeaten run ends at five, Maya wins by 1.78 with 28.1 points on her bench, and Samantha wins a case against a projection.",
+  "matchups": {
+    "3-7": "Sam had the third-best score in the league and still lost by 39.34, which is the fantasy version of a participation trophy with a bruise. Maddie hit 152.04 while Jaylen Waddle, the player her team is named after, sat on the bench. Waddle Deez Nutz beat Cloff Campus without its own namesake. Disrespectful.",
+    "1-2": "Marlee played the best lineup her roster could possibly field and lost by 27.84. That’s acing the test and finding out the curve is Amie. Her team is named Amon Raw, Next Question, and Amon Raw himself scored 0 on her bench. Next question, indeed.",
+    "4-5": "Maya benched a 20.5-point DeVonta Smith to start a 6.9-point Davante Adams and still won by 1.78, which isn’t a strategy, it’s a stunt. Tara left Dalton Schultz napping on her bench while a zero held down her flex spot (the wild-card slot). Her quarterback, Brock Purdy, also finished 4.02 under his projection on the night Mike Evans, his receiver and Maya’s flex, left with Achilles soreness (no rupture, per Kyle Shanahan). MARTY SUPREME, or maybe Marty By Accident?",
+    "6-8": "Cambri scored 99.4, only the seventh-best total of the week, and won by 23.22 for her first win of the year. Kyra's 76.18 was the lowest in the league. Cambri also got engaged on Sunday, so the win has two possible explanations: Drake Maye (23.8) and the rock on her finger. The recap is crediting the rock. Congratulations, Cambri."
+  },
+  "game_balls": [
+    {
+      "manager": "Maddie",
+      "title": "Nabers and Likely, carrying the group project",
+      "text": "Malik Nabers (28.5) and Isaiah Likely (23.9) produced 52.4 of Maddie's league-high 152.04. The other 99.64 points are welcome to take credit.",
+      "stat": "152.04 pts",
+      "emoji": "🚀",
+      "player": "Malik Nabers"
+    },
+    {
+      "manager": "Samantha",
+      "title": "The projection loses its case",
+      "text": "Bhayshul Tuten scored 24.7 against a 12.64 projection, the biggest beat of any starter in the league. The projection has been found liable for 12.06 points, and Samantha will not be accepting a settlement.",
+      "stat": "+12.06 vs projection",
+      "emoji": "⚖️",
+      "player": "Bhayshul Tuten"
+    },
+    {
+      "manager": "Cambri",
+      "title": "The drought is over",
+      "text": "Drake Maye, a Week 4 free-agent pickup, scored 23.8 at quarterback and Carnell Tate added 19. Cambri won by 23.22, her first win of the year, one week after five Maye touchdowns bought her a loss. The market corrected.",
+      "stat": "23.8 pts at QB",
+      "emoji": "💍",
+      "player": "Drake Maye"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Maya",
+      "title": "The hobby is now a subscription",
+      "text": "Maya left 28.1 points on her bench, the most in the league. DeVonta Smith scored 20.5 there while Davante Adams, a man she personally chose to start, scored 6.9. This is her fifth flag in six weeks, which makes it less a hobby than a subscription.",
+      "stat": "28.1 pts benched",
+      "emoji": "🪑",
+      "player": "DeVonta Smith"
+    },
+    {
+      "manager": "Maddie",
+      "title": "A second team on the bench",
+      "text": "Tyler Shough scored 26.96 on Maddie's bench, a week after finishing at −0.16 in her lineup. DK Metcalf (20.3) and Colston Loveland (18.5), who scored a zero in Week 1, joined him. Her best possible lineup was 174.36 and she won by 39.34 anyway, so the bench is just showing off.",
+      "stat": "22.32 pts benched",
+      "emoji": "🛋️",
+      "player": "Tyler Shough"
+    },
+    {
+      "manager": "Tara",
+      "title": "The flex that scored zero",
+      "text": "Quinshon Judkins scored 0 in Tara's flex while Dalton Schultz scored 7.3 on her bench, enough to turn a 1.78 loss into a 5.52 win. Judkins has now gone 7, 9.8, 9.9, then 0 in that spot. That's a trend line, and it points at the basement.",
+      "stat": "−7.3 at flex",
+      "emoji": "🥚",
+      "player": "Quinshon Judkins"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Marlee",
+      "title": "Perfectly tailored, still a loss",
+      "text": "Marlee started every best option she had and scored 107.14, the fourth-best total in the league, against Amie's 134.98. Marlee styles Joe Burrow for a living and doesn't have him on her roster, which is the most professional boundary in the league.",
+      "stat": "#4 score, still L"
+    },
+    {
+      "manager": "Kyra",
+      "title": "The unbeaten run ends at five",
+      "text": "Kyren Williams was projected for 21.02 and scored 9.7, and tight end Tyler Warren scored 0. Even Kyra's best possible lineup, 92.68, would have lost to Cambri's 99.4. Five wins, one bad Sunday, and she's still tied for first at 5-1. She's allowed one.",
+      "stat": "76.18 pts",
+      "player": "Kyren Williams"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Starter",
+      "definition": "A player in your lineup instead of on the bench. Only starters' points count, which is why Nabers' 28.5 mattered and Smith's 20.5 didn't."
+    },
+    {
+      "term": "Points left on the bench",
+      "definition": "How many more points your best possible lineup would have scored than the one you actually started. Maya's 28.1 were the most in the league this week, and yes, she wrote the recap."
+    },
+    {
+      "term": "Tiebreaker",
+      "definition": "What decides the standings when two teams have the same record. This league uses total points scored, so Kyra's 798.52 edges Maya's 771.46 for now, even though both are 5-1."
+    }
+  ]
+}
