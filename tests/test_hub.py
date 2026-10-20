@@ -296,8 +296,8 @@ class HubLineupRowTest(unittest.TestCase):
         cls.history = [e for _, e in captured]
 
     def week(self, edit=None, states=True, live=True):
-        """The hub's rows for every starter, keyed by player id (by name on a finished week, whose rows
-        carry no id). `edit(p)` may change a captured player."""
+        """The hub's rows for every starter, keyed by player id (finished weeks' rows carry one
+        too). `edit(p)` may change a captured player."""
         nxt = self.hub_preview.upcoming(self.history[-1])
         for m in nxt["matchups"]:
             for s in ("home", "away"):
@@ -311,7 +311,7 @@ class HubLineupRowTest(unittest.TestCase):
                         edit(p)
         facts = self.analyze.analyze(nxt, self.history + [nxt])
         w = build.week_payload(facts, {"status": "live"}, live=live)
-        return {p.get("player_id") or p["name"]: p for g in w["games"] for s in (g["winner"], g["loser"]) for p in s["starters"]}
+        return {p["player_id"]: p for g in w["games"] for s in (g["winner"], g["loser"]) for p in s["starters"]}
 
     def starter(self, rows, pos=None):
         return next(p for p in rows.values() if p["slot"] != "BENCH" and (pos is None or p["pos"] == pos))
@@ -359,12 +359,17 @@ class HubLineupRowTest(unittest.TestCase):
             self.assertIsNone(p["kickoff"])
             self.assertTrue(p["team"] and p["logo"] and p["player_id"])
 
-    def test_a_finished_week_gains_no_live_fields(self):
+    def test_a_finished_week_gains_no_live_only_fields(self):
+        """A finished week's rows carry player_id, team and the Coach rule's bye (from its own capture),
+        but never the live-only logo, kickoff or game clock."""
         dst = self.dst_id()
         rows = self.week(lambda p: p.update(game_state=None) if p["player_id"] == dst else None, live=False)
         for p in rows.values():
-            for k in ("bye", "playing", "team", "logo", "player_id", "kickoff"):
+            for k in ("playing", "logo", "kickoff"):
                 self.assertNotIn(k, p)
+            self.assertTrue(p["team"] and p["player_id"])
+        self.assertTrue(rows[dst]["bye"])
+        self.assertEqual({k for k, p in rows.items() if p.get("bye")}, {dst})
 
     def test_the_hub_row_and_the_coach_card_agree_on_a_bye(self):
         """Both read is_on_bye: for every player on every roster, the row's flag is the card's."""
