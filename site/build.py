@@ -1609,7 +1609,12 @@ def season_payload(facts_list, weeks):
                                 "result": t["result"], "score_rank": t["score_rank"],
                                 "points_left": t["points_left_on_bench"],
                                 "game_key": "-".join(map(str, sorted((t["team_id"], t["opponent_id"]))))})
-        for rank, row in enumerate(facts["standings"], 1):
+        # Teams with the same record share a rank (1, 1, 3...), as ESPN's table shows them; the
+        # rows themselves stay in tiebreaker order.
+        def record_score(r):
+            return r["wins"] + 0.5 * r["ties"]
+        for row in facts["standings"]:
+            rank = 1 + sum(1 for o in facts["standings"] if record_score(o) > record_score(row))
             teams[row["team_id"]]["rank_history"].append({"week": wk, "rank": rank})
 
     by_manager = {s["manager"]: s for s in teams.values()}
