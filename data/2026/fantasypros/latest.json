@@ -1,315 +1,12 @@
 {
-  "generated_at": "2026-10-14T01:41:07Z",
+  "generated_at": "2026-10-20T20:36:25Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-10-14T01:28:45.641Z"
+    "checked_at": "2026-10-20T20:36:25Z"
   },
   "weeks": {
-    "6": {
-      "teams": {
-        "1": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 1,
-              "kind": "waiver",
-              "pos": "K",
-              "level": "now",
-              "title": "Add Chris Boswell off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Will Reichard's Vikings are on a bye, so you have nobody to start at kicker this week. Nobody in the league owns Chris Boswell, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections rate him a solid starter. It's the cheapest fix in fantasy: one claim, one leg."
-            },
-            {
-              "team_id": 1,
-              "kind": "waiver",
-              "pos": "FLEX",
-              "level": "watch",
-              "title": "Add Woody Marks as Montgomery insurance",
-              "stat": "unowned leaguewide",
-              "text": "David Montgomery is listed doubtful by ESPN and week-to-week by FantasyPros, and nobody in the league owns Woody Marks, per FantasyPros' ownership numbers. FantasyPros' news desk says Marks leads Houston's backfield while Montgomery is out. A handcuff, the backup who inherits a starter's job, is cheap insurance, and he fits your flex spot, your weakest group."
-            }
-          ],
-          "coach_cards": {
-            "matchup:2:4567048:none": {
-              "title": "Up next: Amie",
-              "text": "You're facing Amie, and her offense runs through Kenneth Walker III. Learn the name now so it doesn't ruin your Sunday later."
-            },
-            "empty:K:0:none:none": {
-              "title": "Your kicker spot is empty",
-              "text": "Will Reichard's Vikings are on a bye, and an empty spot scores zero, so grab a kicker off the waiver wire, the pool of players nobody owns. Your kickers lead the league in scoring, which makes a blank here the one place you're leaving points on the table."
-            }
-          },
-          "summary": {
-            "key": "now|empty:K:0:none:none",
-            "text": "Fill the empty kicker slot before kickoff. Your kickers lead the league, so a blank spot is a funny way to thank them."
-          }
-        },
-        "2": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 2,
-              "kind": "trade",
-              "pos": "TE",
-              "level": "watch",
-              "title": "Offer D'Andre Swift to Cambri for Travis Kelce",
-              "stat": "a straight 1-for-1",
-              "text": "Your running back room is deep and your tight end room is Juwan Johnson, alone. Cambri has two good tight ends in Travis Kelce and Tucker Kraft, and her running backs rank sixth in the league, so Swift fills her biggest hole. The pitch: you've got a spare starter at one position and she's got one at the other, so you both clear a logjam. Both sides come out ahead by the numbers, and FantasyPros' projections like both players. A rare trade where the math and the vibes agree.",
-              "trade": {
-                "partner_id": 8,
-                "give": [
-                  {
-                    "id": 4259545,
-                    "name": "D'Andre Swift",
-                    "pos": "RB"
-                  }
-                ],
-                "get": [
-                  {
-                    "id": 15847,
-                    "name": "Travis Kelce",
-                    "pos": "TE"
-                  }
-                ],
-                "you": {
-                  "near": 2.02,
-                  "playoff": [
-                    0.892,
-                    0.9087
-                  ],
-                  "title": [
-                    0.282,
-                    0.3085
-                  ]
-                },
-                "them": {
-                  "near": 1.61,
-                  "playoff": [
-                    0.0875,
-                    0.0845
-                  ],
-                  "title": [
-                    0.0158,
-                    0.0147
-                  ]
-                },
-                "week": 6,
-                "flags": {
-                  "plays_this_week": false,
-                  "rival": null
-                }
-              }
-            }
-          ],
-          "coach_cards": {
-            "matchup:1:4379399:none": {
-              "title": "Up next: Marlee",
-              "text": "You're facing Marlee, and her offense leans on James Cook III. Worth knowing before you start refreshing the scoreboard."
-            },
-            "clear:open": {
-              "title": "Nothing to fix",
-              "text": "Every starter still to play is healthy and has a game this week, and nobody on your bench has a real case to take a spot. Resist the urge to tinker, which is the hardest skill in fantasy."
-            }
-          },
-          "summary": {
-            "key": "clear",
-            "text": "Nothing to fix, and ESPN likes your odds this week. Leave it alone and try to look busy."
-          }
-        },
-        "3": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "matchup:7:3918298:none": {
-              "title": "Up next: Samantha",
-              "text": "Samantha's offense runs on Josh Allen, so he's the name to watch. Root against him with a clear conscience."
-            },
-            "bye:4362238:RB:bye:4241416:none": {
-              "title": "Start Chuba Hubbard over Chase Brown",
-              "text": "Chase Brown's Bengals are on a bye, so he scores nothing this week. Chuba Hubbard is healthy on your bench and ESPN projects a solid game for him, so slide him into the RB spot. Your bench finally gets a call-up."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4362238:RB:bye:4241416:none",
-            "text": "Chase Brown has the week off, so one bench move fixes your lineup. Hubbard gets the call."
-          }
-        },
-        "4": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 4,
-              "kind": "waiver",
-              "pos": "DST",
-              "level": "now",
-              "title": "Add the Seahawks D/ST off waivers",
-              "stat": "unowned leaguewide",
-              "text": "The Vikings defense has the week off and nobody on your bench plays D/ST. Nobody in the league owns the Seattle Seahawks D/ST, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections rank them among the top five defenses. They play Thursday, so claim them early."
-            }
-          ],
-          "coach_cards": {
-            "matchup:5:4430807:none": {
-              "title": "Up next: Maya",
-              "text": "Maya's 4-1 and her offense runs through Bijan Robinson, so he's your problem to solve. Beat her and the group chat will hear about it."
-            },
-            "bye:-16016:DST:bye:none:none": {
-              "title": "Vikings D/ST is on a bye",
-              "text": "The Vikings defense has the week off and nobody on your bench plays D/ST, so the fix is the waiver wire. The Seattle Seahawks D/ST is free, per FantasyPros' ownership numbers, and they play Thursday, so claim them early. Defenses are the only players you can sublet for a week."
-            },
-            "swap:3929630:RB:4569173:none": {
-              "title": "Start Rhamondre Stevenson over Saquon Barkley",
-              "text": "ESPN projects Rhamondre Stevenson a couple of points higher than Saquon Barkley, and FantasyPros reports Barkley missed last week with a hamstring injury. The Eagles are hopeful he's back, but he needs to practice first. Start Stevenson unless Barkley is clearly healthy by the weekend."
-            }
-          },
-          "summary": {
-            "key": "now|bye:-16016:DST:bye:none:none|swap:3929630:RB:4569173:none",
-            "text": "Two fixes: grab a defense, since yours has the week off, and give Stevenson the start over Barkley."
-          }
-        },
-        "5": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 5,
-              "kind": "waiver",
-              "pos": "DST",
-              "level": "now",
-              "title": "Add the Chiefs D/ST off waivers",
-              "stat": "unowned leaguewide",
-              "text": "The Bengals defense is on a bye this week and nobody on your bench plays D/ST, so you'd start a zero. Nobody in the league owns the Kansas City Chiefs D/ST, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections rate them among the league's better defenses. It's a one-week fling, since your Bengals come back for Week 7."
-            },
-            {
-              "team_id": 5,
-              "kind": "waiver",
-              "pos": "K",
-              "level": "watch",
-              "title": "Add Harrison Butker off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Kicker is your weakest group, and nobody in the league owns Harrison Butker, per FantasyPros' ownership numbers. FantasyPros' rest-of-season projections have him a bit ahead of Eddy Pineiro, so it's a small upgrade for one claim. Seventh in an eight-team league is a polite way of saying almost last."
-            },
-            {
-              "team_id": 5,
-              "kind": "waiver",
-              "pos": "TE",
-              "level": "watch",
-              "title": "Add Dallas Goedert off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Brock Bowers is your only rostered tight end, and nobody in the league owns Dallas Goedert, per FantasyPros' ownership numbers, even though he's a top-15 rest-of-season tight end by FantasyPros' own projections. Free insurance that costs a waiver claim, not a trade."
-            }
-          ],
-          "coach_cards": {
-            "matchup:4:3117251:none": {
-              "title": "Up next: Tara",
-              "text": "Tara's offense runs through Christian McCaffrey, so he's the one to game-plan for. You're 4-1 and she's 2-3, but a running back like that doesn't read the standings."
-            },
-            "bye:-16004:DST:bye:none:none": {
-              "title": "Bengals D/ST is on a bye",
-              "text": "The Bengals defense has the week off and nobody on your bench plays D/ST, so you'd be starting a zero. Claim the Kansas City Chiefs D/ST, who nobody in the league owns, per FantasyPros. Your Bengals are back in Week 7."
-            }
-          },
-          "summary": {
-            "key": "now|bye:-16004:DST:bye:none:none",
-            "text": "Your defense has a bye, so rent one. The Chiefs are free and nobody else in the league has noticed."
-          }
-        },
-        "6": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 6,
-              "kind": "waiver",
-              "pos": "WR",
-              "level": "watch",
-              "title": "Add Wan'Dale Robinson off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Wide receiver is your weakest group and Michael Pittman Jr. just went on injured reserve. Nobody in the league owns Wan'Dale Robinson, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the best receivers nobody owns. Your running backs have been carrying you, so give them a teammate."
-            }
-          ],
-          "coach_cards": {
-            "matchup:8:4426515:none": {
-              "title": "Up next: Cambri",
-              "text": "Cambri's still looking for her first win, but her record doesn't tell the story of her roster, and Puka Nacua is the proof. Keep him on your radar."
-            },
-            "bye:3915511:QB:bye:12483:none": {
-              "title": "Start Matthew Stafford over Joe Burrow",
-              "text": "Joe Burrow's Bengals are on a bye, so Matthew Stafford takes the QB spot from your bench. He's healthy and ESPN projects a strong game. Your gut already picked Stafford over Burrow once this season and won, so run it back."
-            },
-            "bye:4429795:RB:bye:4429096:none": {
-              "title": "Start Blake Corum over Jahmyr Gibbs",
-              "text": "Jahmyr Gibbs's Lions are on a bye, so Blake Corum steps in at RB from your bench. He's healthy and the best back you have left. Gibbs is on vacation, so Corum is the plan."
-            },
-            "swap:5083076:TE:4431459:none": {
-              "title": "Start Tyler Warren over Harold Fannin Jr.",
-              "text": "ESPN projects Tyler Warren a couple of points higher than Harold Fannin Jr. at tight end, so swap them. Warren had a big Week 5 on your bench while Fannin barely showed up, and this is the sequel nobody asked for."
-            }
-          },
-          "summary": {
-            "key": "now|bye:3915511:QB:bye:12483:none|bye:4429795:RB:bye:4429096:none|swap:5083076:TE:4431459:none",
-            "text": "Three moves fix your lineup: Stafford for Burrow, Corum for Gibbs and Warren for Fannin. Take the Week 5 lesson and start Warren this time."
-          }
-        },
-        "7": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 7,
-              "kind": "waiver",
-              "pos": "RB",
-              "level": "watch",
-              "title": "Add Emmett Johnson off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Running back is your weakest group, with TreVeyon Henderson out for multiple games per FantasyPros and Breece Hall listed questionable. Nobody in the league owns Emmett Johnson, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the best free-agent backs. One claim and your running back room has a pulse."
-            }
-          ],
-          "coach_cards": {
-            "matchup:3:4242335:none": {
-              "title": "Up next: Maddie",
-              "text": "Maddie's lineup is built around Jonathan Taylor, so expect a big number from him. Her record doesn't show how good he is."
-            },
-            "bye:4711533:RB:bye:4427366:none": {
-              "title": "Start Breece Hall over Ollie Gordon II",
-              "text": "Ollie Gordon II's Dolphins are on a bye, so Breece Hall takes the RB spot from your bench. He's healthy and ESPN projects a decent game for him, so make the move before lineups lock."
-            },
-            "bye:4362628:WR:bye:4428331:none": {
-              "title": "Start Rashee Rice over Ja'Marr Chase",
-              "text": "Ja'Marr Chase's Bengals are on a bye, so Rashee Rice moves into the WR spot from your bench. He's healthy this week, and Week 4's zero is behind him."
-            },
-            "bye:4430027:TE:bye:4385690:none": {
-              "title": "Start Dalton Kincaid over Sam LaPorta",
-              "text": "Sam LaPorta's Lions are on a bye, so Dalton Kincaid takes the TE spot. He's healthy and he's the only other tight end you own, which makes this the easiest decision of your week."
-            },
-            "swap:4685247:FLEX:4431299:none": {
-              "title": "Start Rome Odunze over Braelon Allen",
-              "text": "ESPN projects Rome Odunze a few points higher than Braelon Allen at flex, the wild-card spot, so it's an easy upgrade for one tap. Odunze is the better play this week."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4362628:WR:bye:4428331:none|bye:4430027:TE:bye:4385690:none|bye:4711533:RB:bye:4427366:none|swap:4685247:FLEX:4431299:none",
-            "text": "Three byes and a flex swap: Hall, Rice and Kincaid step in, and Odunze beats Braelon Allen at flex. Four taps and you're done."
-          }
-        },
-        "8": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "matchup:6:4430737:none": {
-              "title": "Up next: Kyra",
-              "text": "Kyra's undefeated and her offense runs through Kyren Williams, so he's the man to stop. Somebody has to hand her the first loss, and this is your shot."
-            },
-            "bye:4262921:FLEX:bye:3916148:none": {
-              "title": "Start Tony Pollard over Justin Jefferson",
-              "text": "Justin Jefferson's Vikings are on a bye, so Tony Pollard slides into FLEX, the wild-card spot, from your bench. He's healthy and ESPN projects a solid game. Even superstars get a week off. Your bench doesn't."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4262921:FLEX:bye:3916148:none",
-            "text": "Justin Jefferson has the week off, so Tony Pollard takes his flex spot. One tap."
-          }
-        }
-      }
-    },
     "7": {
       "teams": {
         "1": {
@@ -319,276 +16,106 @@
               "team_id": 1,
               "kind": "waiver",
               "pos": "DST",
-              "level": "watch",
-              "title": "Add the Lions D/ST off waivers",
+              "level": "now",
+              "title": "Add the Minnesota Vikings D/ST off waivers",
               "stat": "unowned leaguewide",
-              "text": "The Jaguars defense has Week 7 off and nobody on your bench plays D/ST. Nobody in the league owns the Detroit Lions D/ST, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections rate them well above your Jaguars. Claim them for the week."
-            },
-            {
-              "team_id": 1,
-              "kind": "waiver",
-              "pos": "FLEX",
-              "level": "watch",
-              "title": "Add Woody Marks as Montgomery insurance",
-              "stat": "unowned leaguewide",
-              "text": "David Montgomery is listed doubtful by ESPN and week-to-week by FantasyPros, and nobody in the league owns Woody Marks, per FantasyPros' ownership numbers. FantasyPros' news desk says Marks leads Houston's backfield while Montgomery is out. A handcuff, the backup who inherits a starter's job, is cheap insurance, and he fits your flex spot, your weakest group."
+              "text": "Your DST spot is empty. Nobody in the league owns the Minnesota Vikings, FantasyPros' number one defense the rest of the way, so you can have the best unit in the building for the price of a waiver claim. Grab them before somebody else notices the fire sale."
             }
-          ],
-          "coach_cards": {
-            "matchup:8:4426515:ACTIVE": {
-              "title": "Up next: Cambri",
-              "text": "You'll face Cambri, and her offense runs through Puka Nacua. Her record is rough, but her roster isn't, so don't coast."
-            },
-            "bye:4379399:RB:bye:none:none": {
-              "title": "James Cook III is on a bye",
-              "text": "James Cook III's Bills have Week 7 off and nobody else on your bench plays RB, so the waiver wire is the only fix. Woody Marks is free, per FantasyPros' ownership numbers, and he's also a handcuff for David Montgomery, a backup who takes over a starter's job if he's hurt. That's insurance with a jersey."
-            },
-            "bye:3915416:WR:bye:4374302:ACTIVE": {
-              "title": "Start Amon-Ra St. Brown over DJ Moore",
-              "text": "DJ Moore's Bills have Week 7 off, so Amon-Ra St. Brown moves into the WR spot from your bench. He's healthy and ESPN projects a big week. Good thing you had a backup this good."
-            },
-            "bye:-16030:DST:bye:none:none": {
-              "title": "Jaguars D/ST is on a bye",
-              "text": "The Jaguars defense has Week 7 off and nobody on your bench plays D/ST. The Detroit Lions D/ST is free, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections rate them well above yours. Consider it a defensive assist."
-            },
-            "empty:K:0:4567104:ACTIVE": {
-              "title": "Your kicker spot is empty",
-              "text": "Will Reichard is back from his bye, healthy and projected to score, so move him into the empty K slot before lineups lock. Leaving it blank would extend his bye by a week for no reason."
-            },
-            "watch:3916387:QUESTIONABLE:3046779:ACTIVE": {
-              "title": "Lamar Jackson is questionable",
-              "text": "ESPN lists Lamar Jackson as questionable, and FantasyPros' news desk says he's hopeful but his practice status is still being watched. Jared Goff is healthy on your bench, so if Lamar is ruled out you swap and move on."
-            },
-            "news:4612826:QUESTIONABLE:bench:open": {
-              "title": "Ladd McConkey is now listed questionable",
-              "text": "ESPN has Ladd McConkey, on your bench, as questionable, and FantasyPros reports his coach says he's working his way back this week. The Chargers are on a bye in Week 7 anyway, so nothing to do right now."
-            },
-            "news:4035538:DOUBTFUL:bench:open": {
-              "title": "David Montgomery is now listed doubtful",
-              "text": "ESPN has David Montgomery, on your bench, as doubtful, and FantasyPros' news desk calls his groin injury week-to-week. Your lineup doesn't change, but it's a good reason to look at Woody Marks."
-            }
-          },
-          "summary": {
-            "key": "now|bye:-16030:DST:bye:none:none|bye:3915416:WR:bye:4374302:ACTIVE|bye:4379399:RB:bye:none:none|empty:K:0:4567104:ACTIVE",
-            "text": "Next week is bye-heavy: Cook and the Jaguars defense are out, Amon-Ra steps in for DJ Moore, and Reichard fills your kicker slot."
-          }
+          ]
         },
         "2": {
-          "advice_cards": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Jadarian Price and Jacory Croskey-Merritt are now on IR",
+              "stat": "both on IR",
+              "text": "FantasyPros just put two of your running backs on IR in the same breath, which is either brutal luck or proof you built this bench like running backs were going out of stock. Both were buried deep enough that your lineup doesn't blink. Decide if either's worth the roster spot while they heal."
+            },
+            {
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Kyle Monangai is now listed questionable",
+              "stat": "questionable, thumb",
+              "text": "FantasyPros has Kyle Monangai questionable with a thumb injury, the most bench-running-back injury a bench running back has ever had. He's on your bench, so nothing changes, but somewhere a trainer wrote 'thumb' on a clipboard with a completely straight face."
+            }
+          ],
           "roster_ideas": [
             {
               "team_id": 2,
               "kind": "waiver",
               "pos": "K",
               "level": "watch",
-              "title": "Add Chase McLaughlin off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Kicker is your weakest group, and Cameron Dicker's Chargers are on a bye in Week 7. Nobody in the league owns Chase McLaughlin, per FantasyPros' ownership numbers, so one claim covers the week."
-            },
-            {
-              "team_id": 2,
-              "kind": "trade",
-              "pos": "TE",
-              "level": "watch",
-              "title": "Offer D'Andre Swift to Cambri for Travis Kelce",
-              "stat": "a straight 1-for-1",
-              "text": "Your running back room is deep and your tight end room is Juwan Johnson, alone. Cambri has two good tight ends in Travis Kelce and Tucker Kraft, and her running backs rank sixth in the league, so Swift fills her biggest hole. The pitch: you've got a spare starter at one position and she's got one at the other, so you both clear a logjam. Both sides come out ahead by the numbers, and FantasyPros' projections like both players. A rare trade where the math and the vibes agree.",
-              "trade": {
-                "partner_id": 8,
-                "give": [
-                  {
-                    "id": 4259545,
-                    "name": "D'Andre Swift",
-                    "pos": "RB"
-                  }
-                ],
-                "get": [
-                  {
-                    "id": 15847,
-                    "name": "Travis Kelce",
-                    "pos": "TE"
-                  }
-                ],
-                "you": {
-                  "near": 2.02,
-                  "playoff": [
-                    0.892,
-                    0.9087
-                  ],
-                  "title": [
-                    0.282,
-                    0.3085
-                  ]
-                },
-                "them": {
-                  "near": 1.61,
-                  "playoff": [
-                    0.0875,
-                    0.0845
-                  ],
-                  "title": [
-                    0.0158,
-                    0.0147
-                  ]
-                },
-                "week": 6,
-                "flags": {
-                  "plays_this_week": false,
-                  "rival": null
-                }
-              }
+              "title": "Add Chris Boswell off waivers",
+              "stat": "ranks K4 rest of season",
+              "text": "Cameron Dicker fell out of FantasyPros' top 27 kickers. Chris Boswell, unowned leaguewide, ranks fourth the rest of the way, a free upgrade at your worst position and the rarest trade the waiver wire ever makes."
             }
-          ],
-          "coach_cards": {
-            "matchup:7:4362628:ACTIVE": {
-              "title": "Up next: Samantha",
-              "text": "You'll face Samantha, and her offense is built around Ja'Marr Chase. Plan around him, and hope the Bengals' bye week left him rusty."
-            },
-            "bye:4426348:QB:bye:3139477:ACTIVE": {
-              "title": "Start Patrick Mahomes over Jayden Daniels",
-              "text": "Jayden Daniels's Commanders have Week 7 off, so Patrick Mahomes takes the QB spot from your bench. He's healthy and ESPN projects a solid game. Three quarterbacks looked excessive until right now."
-            },
-            "bye:4362081:K:bye:none:none": {
-              "title": "Cameron Dicker is on a bye",
-              "text": "The Chargers have Week 7 off and nobody on your bench plays K, so the waiver wire is the fix. Chase McLaughlin of the Buccaneers is free, per FantasyPros' ownership numbers. A zero at kicker counts just as much as a zero anywhere else."
-            },
-            "watch:4430878:QUESTIONABLE:4567750:ACTIVE": {
-              "title": "Jaxon Smith-Njigba is questionable",
-              "text": "ESPN lists Jaxon Smith-Njigba as questionable, and FantasyPros reports he's been limited in practice but should be good to go. Recheck before lineups lock; if he's out, Emeka Egbuka is your best swap."
-            },
-            "watch:4241389:QUESTIONABLE:4567750:ACTIVE": {
-              "title": "CeeDee Lamb is questionable",
-              "text": "ESPN lists CeeDee Lamb as questionable. FantasyPros reports he hurt his quad on Thursday night and the injury is considered mild, with extra rest helping. If he's out, Emeka Egbuka is your best swap."
-            },
-            "news:4685512:INJURY_RESERVE:bench:open": {
-              "title": "Jadarian Price is now listed on IR",
-              "text": "ESPN has Jadarian Price on injured reserve, and FantasyPros reports Seattle put him there and he'll miss at least four games. He's on your bench, so your lineup doesn't change. Just decide whether he's worth the roster spot while he heals. We hope he heals quickly."
-            },
-            "news:4608686:QUESTIONABLE:bench:open": {
-              "title": "Kyle Monangai is now listed questionable",
-              "text": "ESPN has Kyle Monangai, on your bench, as questionable. FantasyPros' most recent report, from last week, called his toe injury week-to-week, so check back for fresh news. Nothing to do in your lineup."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4362081:K:bye:none:none|bye:4426348:QB:bye:3139477:ACTIVE",
-            "text": "Two byes, two fixes: Mahomes for Daniels at QB, and a kicker off waivers while the Chargers rest."
-          }
+          ]
         },
         "3": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "matchup:4:3117251:ACTIVE": {
-              "title": "Up next: Tara",
-              "text": "Tara's offense runs through Christian McCaffrey, so he's the name to know. Everything else on her roster is a bonus."
-            },
-            "clear:open": {
-              "title": "Nothing to fix",
-              "text": "Every starter is healthy and has a game in Week 7, and nobody on your bench has a real case to take a spot. Look at you."
-            }
-          },
-          "summary": {
-            "key": "clear",
-            "text": "Nothing to fix, and your lineup is exactly what ESPN would draw up. Don't touch it."
-          }
-        },
-        "4": {
-          "advice_cards": [],
-          "roster_ideas": [
+          "advice_cards": [
             {
-              "team_id": 4,
-              "kind": "waiver",
-              "pos": "WR",
-              "level": "watch",
-              "title": "Add Courtland Sutton off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Parker Washington is on a bye in Week 7 and your bench has no healthy receiver who plays. Nobody in the league owns Courtland Sutton, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the better receivers nobody owns. One claim fills the hole."
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Alec Pierce is now on IR",
+              "stat": "IR, foot",
+              "text": "FantasyPros has Alec Pierce on injured reserve, which barely registers in a receiver room this deep. You have more wideouts than attention span. Lineup's fine."
             }
           ],
-          "coach_cards": {
-            "matchup:3:4429615:ACTIVE": {
-              "title": "Up next: Maddie",
-              "text": "Maddie's lineup features Zay Flowers, so he's the name to know. Her record is rough but her receivers aren't."
+          "roster_ideas": []
+        },
+        "4": {
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "title": "Jalen Hurts is now on IR",
+              "stat": "IR, calf",
+              "text": "FantasyPros has Jalen Hurts on injured reserve with a calf injury, so Brock Purdy steps in at QB from your bench while we hope for a quick recovery."
             },
-            "bye:4432620:WR:bye:none:none": {
-              "title": "Parker Washington is on a bye",
-              "text": "Parker Washington's Jaguars have Week 7 off, and no other WR on your bench is healthy and playing. Courtland Sutton is free, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the better receivers nobody owns. Claim him."
-            },
-            "watch:3929630:QUESTIONABLE:4569173:ACTIVE": {
-              "title": "Saquon Barkley is questionable",
-              "text": "ESPN lists Saquon Barkley as questionable. FantasyPros reports the Eagles' coach is hopeful he returns from his hamstring injury, and his practice status will say more. If he's out, Rhamondre Stevenson is healthy on your bench and ready."
-            },
-            "news:4685702:QUESTIONABLE:bench:open": {
-              "title": "Quinshon Judkins is now listed questionable",
-              "text": "ESPN has Quinshon Judkins, on your bench, as questionable. FantasyPros reports his coach called it day to day after an ankle tweak. Your lineup doesn't change, but keep an eye on him."
-            },
-            "news:3126486:OUT:bench:open": {
-              "title": "Deebo Samuel Sr. is now listed out",
-              "text": "ESPN lists Deebo Samuel Sr. as out, and FantasyPros cites a report that his hamstring injury will keep him out several weeks. He's on your bench, so your lineup doesn't change. That's a rough one, and we hope he heals quickly."
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "title": "Terry McLaurin is now listed out",
+              "stat": "out",
+              "text": "FantasyPros has Terry McLaurin listed out this week. Chris Olave, Parker Washington, Brian Thomas Jr. and Deebo Samuel Sr. are all standing by, a receiver room most teams would trade for. Start one of the four in his place."
             }
-          },
-          "summary": {
-            "key": "now|bye:4432620:WR:bye:none:none",
-            "text": "A receiver on a bye means one waiver claim, and Courtland Sutton is free."
-          }
+          ],
+          "roster_ideas": []
         },
         "5": {
-          "advice_cards": [],
-          "roster_ideas": [
+          "advice_cards": [
             {
-              "team_id": 5,
-              "kind": "waiver",
-              "pos": "K",
+              "kind": "fp_news",
               "level": "watch",
-              "title": "Add Harrison Butker off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Kicker is your weakest group, and nobody in the league owns Harrison Butker, per FantasyPros' ownership numbers. FantasyPros' rest-of-season projections have him a bit ahead of Eddy Pineiro, so it's a small upgrade for one claim."
-            },
+              "title": "Davante Adams is listed out",
+              "stat": "out, hamstring",
+              "text": "FantasyPros has Davante Adams out with a hamstring injury, and your receiver room shrugged. DeVonta Smith, Tetairoa McMillan and Mike Evans are all healthy and ready to pretend this never happened."
+            }
+          ],
+          "roster_ideas": [
             {
               "team_id": 5,
               "kind": "waiver",
               "pos": "TE",
               "level": "watch",
               "title": "Add Dallas Goedert off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Brock Bowers is your only rostered tight end, and nobody in the league owns Dallas Goedert, per FantasyPros' ownership numbers, even though he's a top-15 rest-of-season tight end by FantasyPros' own projections. Free insurance that costs a waiver claim, not a trade."
+              "stat": "top-15 ROS",
+              "text": "Brock Bowers is your only tight end, which means one tweak away from a bye week of zeros. Nobody in the league owns Dallas Goedert, a top-15 tight end by FantasyPros' own math. Cheap insurance."
             }
-          ],
-          "coach_cards": {
-            "matchup:6:4429795:ACTIVE": {
-              "title": "Up next: Kyra",
-              "text": "Kyra's undefeated and her offense runs through Jahmyr Gibbs, so he's the name to know. Somebody has to hand her the first loss, and it could be you."
-            },
-            "bye:4360310:QB:bye:2577417:ACTIVE": {
-              "title": "Start Dak Prescott over Trevor Lawrence",
-              "text": "Trevor Lawrence's Jaguars have Week 7 off, so Dak Prescott takes the QB spot from your bench. He's healthy and ESPN projects a solid game. Dak paid off big in Week 2. Time for a sequel."
-            },
-            "news:4241478:QUESTIONABLE:bench:open": {
-              "title": "DeVonta Smith is now listed questionable",
-              "text": "ESPN has DeVonta Smith, on your bench, as questionable. FantasyPros reports the Eagles' coach is hopeful he returns, though he hasn't been able to practice in a while. Your lineup doesn't change, but don't count on him yet."
-            },
-            "news:4695883:QUESTIONABLE:bench:open": {
-              "title": "Jalen Coker is now listed questionable",
-              "text": "ESPN has Jalen Coker, on your bench, as questionable. FantasyPros reports his coach says he's on track to play and that he practiced on Tuesday. Good news, and no action needed."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4360310:QB:bye:2577417:ACTIVE",
-            "text": "Trevor Lawrence has Week 7 off, so Dak steps in. It worked in Week 2, so run it back."
-          }
+          ]
         },
         "6": {
-          "advice_cards": [],
-          "roster_ideas": [
+          "advice_cards": [
             {
-              "team_id": 6,
-              "kind": "waiver",
-              "pos": "K",
+              "kind": "fp_news",
               "level": "watch",
-              "title": "Add Cairo Santos off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Cam Little's Jaguars are on a bye in Week 7 and nobody on your bench plays K. Nobody in the league owns Cairo Santos, per FantasyPros' ownership numbers, so one claim covers the week."
-            },
+              "title": "A.J. Brown is listed questionable",
+              "stat": "questionable, ankle",
+              "text": "FantasyPros has A.J. Brown questionable with an ankle injury after a limited practice, the fantasy equivalent of a 'fine, I'm fine' text. Drake London and Garrett Wilson are healthy insurance if he sits. Check back before lineups lock and try not to doomscroll the injury report."
+            }
+          ],
+          "roster_ideas": [
             {
               "team_id": 6,
               "kind": "waiver",
@@ -596,93 +123,33 @@
               "level": "watch",
               "title": "Add Wan'Dale Robinson off waivers",
               "stat": "unowned leaguewide",
-              "text": "Wide receiver is your weakest group and Michael Pittman Jr. just went on injured reserve. Nobody in the league owns Wan'Dale Robinson, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the best receivers nobody owns. Your running backs have been carrying you, so give them a teammate."
+              "text": "Michael Pittman Jr. is still on IR, and somehow wide receiver is still your worst group despite rostering seven of them. Nobody in the league owns Wan'Dale Robinson, a top-40 receiver by FantasyPros' own numbers."
             }
-          ],
-          "coach_cards": {
-            "matchup:5:4430807:ACTIVE": {
-              "title": "Up next: Maya",
-              "text": "Maya's offense runs through Bijan Robinson, so he's the name to keep an eye on. She's been scoring, so it's a real test."
-            },
-            "bye:4686361:K:bye:none:none": {
-              "title": "Cam Little is on a bye",
-              "text": "Cam Little's Jaguars have Week 7 off and nobody on your bench plays K, so the waiver wire is the fix. Cairo Santos of the Bears is free, per FantasyPros' ownership numbers. It's a one-week kicker swap. Little keeps his job."
-            },
-            "news:4035687:INJURY_RESERVE:bench:open": {
-              "title": "Michael Pittman Jr. is now listed on IR",
-              "text": "ESPN has Michael Pittman Jr. on injured reserve, and FantasyPros reports the Steelers put him there and he'll miss at least four weeks. He's on your bench, so your lineup doesn't change. We hope he heals fast."
-            }
-          },
-          "summary": {
-            "key": "now|bye:4686361:K:bye:none:none",
-            "text": "Your kicker has a bye. One waiver claim fixes it, and Cairo Santos is free."
-          }
+          ]
         },
         "7": {
-          "advice_cards": [],
-          "roster_ideas": [
+          "advice_cards": [
             {
-              "team_id": 7,
-              "kind": "waiver",
-              "pos": "RB",
-              "level": "watch",
-              "title": "Add Emmett Johnson off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Running back is your weakest group, with TreVeyon Henderson out for multiple games per FantasyPros and Breece Hall listed questionable. Nobody in the league owns Emmett Johnson, per FantasyPros' ownership numbers, and FantasyPros' rest-of-season projections have him among the best free-agent backs. One claim and your running back room has a pulse."
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Romeo Doubs and Jonathon Brooks are now on IR",
+              "stat": "both on IR",
+              "text": "FantasyPros has both Romeo Doubs and Jonathon Brooks on injured reserve this week, rough for them and a complete non-event for your lineup, since they were buried behind better options anyway. Bench depth, proving its worth by doing absolutely nothing."
             }
           ],
-          "coach_cards": {
-            "matchup:2:4430878:QUESTIONABLE": {
-              "title": "Up next: Amie",
-              "text": "Amie's top starter, Jaxon Smith-Njigba, is questionable on ESPN, so check back before kickoff to see who she plays. FantasyPros reports he's been limited in practice but should be good to go."
-            },
-            "bye:3918298:QB:bye:4361741:ACTIVE": {
-              "title": "Start Brock Purdy over Josh Allen",
-              "text": "Josh Allen's Bills have Week 7 off, so Brock Purdy takes the QB spot from your bench. He's healthy and ESPN projects a strong game. A backup quarterback who can start this well is a luxury."
-            },
-            "bye:4882093:RB:bye:4427366:QUESTIONABLE": {
-              "title": "Start Breece Hall over Bhayshul Tuten",
-              "text": "Bhayshul Tuten's Jaguars have Week 7 off, so Breece Hall moves into the RB spot. He's listed questionable himself, so check he's playing before lineups lock. Running back is your thinnest group, which is why Emmett Johnson is worth a look on waivers."
-            },
-            "swap:4685247:FLEX:4428331:QUESTIONABLE": {
-              "title": "Start Rashee Rice over Braelon Allen",
-              "text": "ESPN projects Rashee Rice well ahead of Braelon Allen at flex, the wild-card spot, but Rice is listed questionable, so check he's playing before you lock it in. If he's out, Braelon is your fallback. Flex is the right place for a high-upside play."
-            },
-            "news:4432710:DOUBTFUL:bench:open": {
-              "title": "TreVeyon Henderson is now listed doubtful",
-              "text": "ESPN has TreVeyon Henderson, on your bench, as doubtful, and FantasyPros reports a high-ankle sprain that will keep him out multiple games, with no surgery needed. Your lineup doesn't change. We hope he heals quickly."
-            },
-            "news:2976212:QUESTIONABLE:bench:open": {
-              "title": "Stefon Diggs is now listed questionable",
-              "text": "ESPN has Stefon Diggs, on your bench, as questionable. FantasyPros' last report, from last week, had him ruled out, so check back for fresh news. There's no rush since he's benched."
-            }
-          },
-          "summary": {
-            "key": "now|bye:3918298:QB:bye:4361741:ACTIVE|bye:4882093:RB:bye:4427366:QUESTIONABLE|swap:4685247:FLEX:4428331:QUESTIONABLE",
-            "text": "Three moves for next week: Purdy for Josh Allen at QB, Hall for Tuten at RB, and Rice for Braelon Allen at flex. Two of those starters carry an injury tag, so check back before lineups lock."
-          }
+          "roster_ideas": []
         },
         "8": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "matchup:1:3916387:QUESTIONABLE": {
-              "title": "Up next: Marlee",
-              "text": "Marlee's top starter, Lamar Jackson, is questionable on ESPN, so check back before kickoff to see who she plays. FantasyPros says he's hopeful but still being watched in practice."
-            },
-            "swap:4871023:WR:4239993:ACTIVE": {
-              "title": "Start Tee Higgins over Carnell Tate",
-              "text": "ESPN projects Tee Higgins a few points higher than Carnell Tate at WR, so it's a one-tap upgrade. Think of it as the lineup version of a free upgrade."
-            },
-            "news:4426385:OUT:bench:open": {
-              "title": "Zach Charbonnet is now listed out",
-              "text": "ESPN lists Zach Charbonnet as out. FantasyPros reports Seattle's coach doesn't plan to play him Thursday and expects him back in Week 7 against the Chiefs. He's on your bench, so your lineup doesn't change."
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Travis Etienne Jr. is now on IR",
+              "stat": "IR",
+              "text": "FantasyPros has Travis Etienne Jr. on injured reserve, filed neatly behind Derrick Henry, Jeremiyah Love and a running back room that apparently never stops growing."
             }
-          },
-          "summary": {
-            "key": "now|swap:4871023:WR:4239993:ACTIVE",
-            "text": "Start Tee Higgins over Carnell Tate for a free bump at wide receiver. One tap."
-          }
+          ],
+          "roster_ideas": []
         }
       }
     }
