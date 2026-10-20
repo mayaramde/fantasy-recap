@@ -1114,7 +1114,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     # what coach_brief printed for coach-daily (which runs without a snapshot).
     skey = summary_key(items, can_change)
     # Tagged so the team profile can pull exactly these out as the coach's own advice.
-    items = items + [it for it in ({**x, "source": "fantasypros"} for x in fp_items) if it not in items]
+    items = items + [{**it, "source": "fantasypros"} for it in fp_items if it not in items]
 
     rank = {lvl: i for i, lvl in enumerate(LEVELS)}
     items.sort(key=lambda it: rank[it["level"]])

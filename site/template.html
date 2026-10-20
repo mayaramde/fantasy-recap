@@ -3792,14 +3792,17 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const a = coachFor(id, useNext);
     const ideas = tpIdeas(id, useNext);
     const waiver = ideas.filter((it) => !it.trade), trades = ideas.filter((it) => it.trade);
-    const advice = ((a && a.items) || []).filter((it) => it.source === 'fantasypros');
+    // Level 'now' cards already show in the matchup card's "to fix" line and the Lineup tab, so not again here.
+    const advice = ((a && a.items) || []).filter((it) => it.source === 'fantasypros' && it.level !== 'now');
     const shown = [...advice, ...waiver.slice(0, 2), ...trades.slice(0, 1)];
     const rest = [...waiver.slice(2), ...trades.slice(1)];
     while (shown.length < 3 && rest.length) shown.push(rest.shift());
     const it = p.audit.find((x) => x.kind === 'position') || p.audit[0];
     const link = p.audit.length ? `<a class="more" href="#team-${id}.season">Full audit on Season →</a>` : '';
-    const quip = a && a.summary ? `<p class="team-summary">${esc(voice(a.summary))}</p>` : '';
-    const take = a && a.league_take ? `<article class="ov-take computed"><span class="ov-tag og">Around the league</span><p>${esc(voice(a.league_take))}</p></article>` : '';
+    // This week's row's quip is already in the matchup card above; only next week's is new here.
+    const wk = useNext ? ` · Week ${ahead().week}` : '';
+    const quip = useNext && a && a.summary ? `<p class="team-summary">${esc(voice(a.summary))}</p>` : '';
+    const take = a && a.league_take ? `<article class="ov-take computed"><span class="ov-tag og">Around the league${wk}</span><p>${esc(voice(a.league_take))}</p></article>` : '';
     return `
       <section class="tp-sec" aria-labelledby="tp-take">
         ${tpHead('--orange', "Coach's take", link).replace('<h2>', '<h2 id="tp-take">')}
