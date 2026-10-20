@@ -400,6 +400,12 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<Pacific date>.json`
    and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
    Never `git add -A`.
+
+   **If archiving fails**, the cards still ship: the live site reads only `latest.json` (and ignores it
+   after 36 hours), so a history problem must not cost the league its day's Coach cards. Delete any
+   half-written file under `history/` (`git status` shows it), commit `latest.json` alone, and say in
+   the Output summary that today's history copy is missing. The next run adds its own day and rebuilds
+   `index.json`; don't hand-edit a history file to make `check.py` pass, re-run the script instead.
 3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
    (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
    No human review is needed — small, derived data whose copy already passed Step 5c. Never
@@ -416,5 +422,5 @@ tied to one week, so put it in `roster_ideas` under every week you write.
 
 A short summary, opening with "FantasyPros reached" or the reason it wasn't: the PR link and whether auto-merge is on, which teams got a new waiver idea or
 an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
-for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), and — only the first time
+for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), whether Step 7's history copy was written, and — only the first time
 it comes up — Trade Finder's premium disclosure.

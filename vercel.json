@@ -5,7 +5,7 @@
   "outputDirectory": "site/dist/out",
   "functions": {
     "api/**/*.py": {
-      "excludeFiles": "{.git/**,.github/**,.claude/**}"
+      "excludeFiles": "{.git/**,.github/**,.claude/**,data/**/fantasypros/history/**}"
     }
   },
   "headers": [
