@@ -320,6 +320,70 @@ def _what_if(ranked, cfg, mu, sigma):
     return {"semis": semis, "finals": finals, "scenarios": scenarios}
 
 
+def _projected_ladder(ranked, cfg, mu, sigma):
+    """The consolation ladder for the Playoff picture's second view, or None when the league doesn't
+    play one or the teams left out aren't exactly four (the only shape the page can draw).
+
+    The four teams that miss the playoffs play on, seeded where the standings leave them (5 to 8 in this
+    league). Round one pairs the outside seeds and the inside seeds (5v8, 6v7), the same shape as the
+    playoff bracket. Then the ladder: the two winners meet for 5th and 6th, the two losers for 7th and 8th.
+    Like the championship, that last round is the total over `championship_weeks`. The page offers the
+    ladder's what-if beside the winners' one, so it carries the same two things: the chalk path, and
+    `what_if` with every game priced by win_prob() (the same model) and every path's odds, which sum to 1.
+    """
+    n_po = min(cfg["teams"], len(ranked))
+    low = ranked[n_po:]
+    if not cfg["consolation_ladder"] or len(low) != 4:
+        return None
+    seed_of = {t: n_po + k + 1 for k, t in enumerate(low)}
+    weeks = cfg["championship_weeks"]
+
+    def beats(a, b, wk):
+        return win_prob(wk * mu[a], wk * mu[b], sigma * math.sqrt(wk))
+
+    def game(a, b, wk, places):
+        a, b = sorted((a, b), key=seed_of.get)
+        p = beats(a, b, wk)
+        fav, p_fav = (a, p) if p >= 0.5 else (b, 1 - p)
+        return {"teams": [{"seed": seed_of[t], "team_id": t} for t in (a, b)], "favorite": fav,
+                "win_prob": round(p_fav, 3), "places": places}
+
+    first = [(low[0], low[3]), (low[1], low[2])]
+    r1 = [game(a, b, 1, None) for a, b in first]
+    won = [g["favorite"] for g in r1]
+    lost = [next(t for t in pair if t != w) for pair, w in zip(first, won)]
+    top_places, bottom_places = [n_po + 1, n_po + 2], [n_po + 3, n_po + 4]
+    top, bottom = game(won[0], won[1], weeks, top_places), game(lost[0], lost[1], weeks, bottom_places)
+    standings = [top["favorite"], next(t["team_id"] for t in top["teams"] if t["team_id"] != top["favorite"]),
+                 bottom["favorite"], next(t["team_id"] for t in bottom["teams"] if t["team_id"] != bottom["favorite"])]
+    rounds = [{"week": cfg["first_round_week"], "weeks": 1, "games": r1},
+              {"week": cfg["first_round_week"] + 1, "weeks": weeks, "games": [top, bottom]}]
+
+    semis = [{"teams": [{"team_id": a, "seed": seed_of[a], "p": round(beats(a, b, 1), 4)},
+                        {"team_id": b, "seed": seed_of[b], "p": round(1 - beats(a, b, 1), 4)}]}
+             for a, b in first]
+    p_r1 = {t["team_id"]: t["p"] for g in semis for t in g["teams"]}
+    finals, scenarios = [], []
+    for x in first[0]:
+        for y in first[1]:
+            a, b = sorted((x, y), key=seed_of.get)
+            pa = beats(a, b, weeks)
+            finals.append({"teams": [a, b], "p": {str(a): round(pa, 4), str(b): round(1 - pa, 4)}})
+    for w0 in first[0]:
+        for w1 in first[1]:
+            l0, l1 = (next(t for t in pair if t != w) for pair, w in zip(first, (w0, w1)))
+            reach = p_r1[w0] * p_r1[w1]
+            top_a, top_b = sorted((w0, w1), key=seed_of.get)
+            bot_a, bot_b = sorted((l0, l1), key=seed_of.get)
+            p_top, p_bot = beats(top_a, top_b, weeks), beats(bot_a, bot_b, weeks)
+            for tw, p_t in ((top_a, p_top), (top_b, 1 - p_top)):
+                for bw, p_b in ((bot_a, p_bot), (bot_b, 1 - p_bot)):
+                    scenarios.append({"r1": [w0, w1], "top": tw, "bottom": bw, "reach": round(reach, 4),
+                                      "p": round(reach * p_t * p_b, 6)})
+    return {"rounds": rounds, "places": [{"place": n_po + k + 1, "team_id": t} for k, t in enumerate(standings)],
+            "what_if": {"semis": semis, "finals": finals, "scenarios": scenarios}}
+
+
 def build(standings, weeks_played, league, schedule=None, n_sims=8000):
     """Playoff odds for every team, or None before any week has been played."""
     cfg = _config(league)
@@ -367,7 +431,8 @@ def _build(teams, weeks_played, cfg, sched, n_sims, key):
 
     return {"config": cfg, "sims": n_sims, "sigma": round(now["sigma"], 2), "games_left": games_left,
             "real_schedule": all(w in sched for w in now["remaining"]),
-            "weeks_played": weeks_played, "now_cut": now_cut, "bracket": bracket, "teams": rows}
+            "weeks_played": weeks_played, "now_cut": now_cut, "bracket": bracket,
+            "ladder": _projected_ladder(ranked, cfg, now["mu"], now["sigma"]), "teams": rows}
 
 
 # ---------- trade_odds: what a trade does to both teams' odds ----------

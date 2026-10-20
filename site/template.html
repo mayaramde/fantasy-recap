@@ -1083,6 +1083,24 @@
   .pb-legend .l2::before { background: var(--accent); }
   .pb-foot { margin: 6px 0 0; max-width: 62ch; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
 
+  /* the playoff bracket / consolation ladder toggle: two stickers, the chosen one inked in */
+  .pb-toggle { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 16px; }
+  .pb-tab { background: var(--card); color: var(--ink); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); padding: 9px 16px; font: 700 15px/1 var(--body); cursor: pointer; }
+  .pb-tab:hover { background: var(--accent-soft); }
+  .pb-tab[aria-pressed="true"] { background: var(--board); color: var(--on-board); box-shadow: 3px 3px 0 var(--lime); }
+  /* the ladder's last stop: final places 5th to 8th */
+  .pb-place { position: relative; background: var(--card); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--drop); padding: 22px 14px 14px; }
+  .pb-col.champ .pb-place { margin-top: 56px; }
+  .pb-place ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .pb-place li { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px; border-radius: 10px; font: 700 16px/1 var(--body); min-width: 0; }
+  .pb-place li:first-child { background: var(--lime); color: var(--on-pop); }
+  .pb-place li b { flex: none; width: 34px; font: 800 17px/1 var(--display); }
+  .pb-place li a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: inherit; text-decoration: none; }
+  .pb-place li a:hover { text-decoration: underline; }
+  .pb-place .q { color: var(--muted); font-weight: 500; font-style: italic; }
+  .pb-place.pulse { animation: none; }
+  @media (prefers-reduced-motion: no-preference) { .pb-place.pulse { animation: pb-pop 0.35s ease; } }
+
   /* what-if: focus mode, one round per screen, panned sideways */
   .pb-root.whatif .pb-scroll { overflow-x: hidden; padding: 8px 0 28px; margin: 0; }
   .pb-root.whatif .pb-bracket { min-width: 0; }
@@ -1091,7 +1109,7 @@
   .pb-root.whatif .pb-col.active { opacity: 1; pointer-events: auto; }
   .pb-root.whatif .pb-col > * { width: min(420px, 100%); }
   .pb-root.whatif .pb-col h3 { text-align: center; }
-  .pb-root.whatif .pb-col.final .pb-card, .pb-root.whatif .pb-col.champ .pb-champ-card { margin-top: 0; }
+  .pb-root.whatif .pb-col.final .pb-card, .pb-root.whatif .pb-col.champ .pb-champ-card, .pb-root.whatif .pb-col.champ .pb-place { margin-top: 0; }
   .pb-root.whatif .pb-card { height: 140px; }
   .pb-root.whatif .pb-stack { gap: 28px; }
   @media (max-width: 600px) {
@@ -2029,6 +2047,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      only the bracket and the control panel, so the scroller (and its scroll position) outlives every pick.
      Odds come from SEASON.playoffs.bracket.what_if (site/playoffs.py), never from numbers in this file. */
   const WI = { on: false, step: 1, pick: { sf1: null, sf2: null, fin: null }, timer: 0, model: null };
+  /* The Playoff picture has two brackets behind a toggle: PV.view is 'win' (the playoffs, above) or 'con'
+     (the consolation ladder, LI). They share the one what-if switch (WI.on, WI.step) and the one panel, so
+     only one view is ever in what-if at a time, and changing view starts the what-if over. */
+  const PV = { view: 'win' };
+  const LI = { pick: { a: null, b: null, top: null, bot: null }, model: null };
+  const pbClear = () => { WI.pick = { sf1: null, sf2: null, fin: null }; LI.pick = { a: null, b: null, top: null, bot: null }; };
   const noMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function wiModel(B) {
@@ -2052,8 +2076,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   /* One team row. Static: a link to her profile, lime for the favorite. What-if: a real button, lime for
      the pick. `slot` is the pick it belongs to (sf1, sf2 or fin). */
-  function pbRow(slot, id, p, est, k) {
-    const M = WI.model, on = WI.on;
+  function pbRow(slot, id, p, est, k, M = WI.model) {
+    const on = WI.on;
     const lit = k[slot] === id, out = on && k[slot] && !lit;
     const pctTxt = p == null ? '' : `<span class="pb-pct">${est ? '~' : ''}${pct(p)}</span>`;
     const inner = `<span class="pb-seed" aria-hidden="true">${M.seed[id]}</span><span class="sr">Seed ${M.seed[id]}</span>${on
@@ -2062,12 +2086,14 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return on ? `<button type="button" class="${cls}" data-m="${slot}" data-t="${id}" aria-pressed="${lit}">${inner}</button>` : `<div class="${cls}">${inner}</div>`;
   }
 
-  function pbSemi(k, slot) {
-    const teams = WI.model.semis[slot === 'sf1' ? 0 : 1];
+  /* One two-team game card for the model M. `tag` is an optional sticker, `sticker` an odds sticker. */
+  function pbCard(k, slot, teams, M, tag, sticker) {
     const top = Math.max(...teams.map((t) => t.p));
-    return `<div class="pb-card${WI.on && k[slot] ? ' pulse' : ''}">${teams.map((t) => pbRow(slot, t.team_id, t.p, false, k)).join('')}
-      <div class="pb-bar"><i style="width:${(top * 100).toFixed(1)}%"></i></div></div>`;
+    return `<div class="pb-card${WI.on && k[slot] ? ' pulse' : ''}">${tag ? `<span class="pb-tag">${tag}</span>` : ''}${teams.map((t) => pbRow(slot, t.team_id, t.p, false, k, M)).join('')}
+      <div class="pb-bar"><i style="width:${(top * 100).toFixed(1)}%"></i></div>${sticker || ''}</div>`;
   }
+
+  const pbSemi = (k, slot) => pbCard(k, slot, WI.model.semis[slot === 'sf1' ? 0 : 1], WI.model);
 
   function pbFinal(k) {
     const M = WI.model;
@@ -2100,6 +2126,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   }
 
   function pbBracketHTML() {
+    if (PV.view === 'con') return liBracketHTML();
     const M = WI.model, k = wiPicks(), B = M.B;
     const byId = Object.fromEntries(SEASON.playoffs.teams.map((t) => [t.team_id, t]));
     const act = (n) => (WI.on && WI.step === n ? ' active' : '');
@@ -2112,6 +2139,108 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${pbConn('b', k)}
       <div class="pb-col champ${act(3)}" data-step="3"${inert(3)}><h3>${WI.on ? 'Champion' : 'Projected champ'}</h3>${pbChamp(k, byId)}</div>`;
   }
+
+  /* ---------- consolation ladder ----------
+     Round one is 5v8 and 6v7 (picks `a` and `b`); then the two winners meet for 5th (`top`) and the two
+     losers for 7th (`bot`). Odds come from SEASON.playoffs.ladder.what_if (site/playoffs.py). */
+  function liModel(L) {
+    const W = L && L.what_if;
+    if (!W || !L.rounds || L.rounds.length !== 2 || L.rounds[0].games.length !== 2 || L.rounds[1].games.length !== 2) return null;
+    const seed = {};
+    W.semis.forEach((g) => g.teams.forEach((t) => { seed[t.team_id] = t.seed; }));
+    const [g1, g2] = L.rounds[0].games, [top, bot] = L.rounds[1].games;
+    return {
+      L, W, seed, semis: W.semis.map((g) => g.teams), r1: [g1, g2].map((g) => g.teams.map((t) => t.team_id)),
+      chalk: { a: g1.favorite, b: g2.favorite, top: top.favorite, bot: bot.favorite },
+      places: [...top.places, ...bot.places],
+      pairOf: (x, y) => W.finals.find((f) => f.teams.includes(x) && f.teams.includes(y)),
+      scenario: (k) => W.scenarios.find((s) => s.r1[0] === k.a && s.r1[1] === k.b && s.top === k.top && s.bottom === k.bot),
+    };
+  }
+
+  const liPicks = () => (WI.on ? LI.pick : LI.model.chalk);
+  const liBoth = () => !!(LI.pick.a && LI.pick.b);
+  const liDone = () => !!(LI.pick.top && LI.pick.bot);
+  const liLoser = (k, slot, i) => (k[slot] ? LI.model.r1[i].find((t) => t !== k[slot]) : null);
+  const liLosers = (k) => [liLoser(k, 'a', 0), liLoser(k, 'b', 1)];
+  const liScenario = (k) => (k.a && k.b && k.top && k.bot ? LI.model.scenario(k) : null);
+  const liReach = (k) => { const sc = k.a && k.b ? LI.model.W.scenarios.find((x) => x.r1[0] === k.a && x.r1[1] === k.b) : null; return sc ? sc.reach : null; };
+
+  /* The game for 5th (slot top, between the round-one winners) or 7th (slot bot, between the losers). */
+  function liGame(k, slot) {
+    const M = LI.model, top = slot === 'top';
+    const place = M.places[top ? 0 : 2];
+    const tag = `${top ? '🪜' : '🛟'} Fight for ${ordinal(place)}`;
+    const parts = top ? [k.a, k.b] : liLosers(k);
+    if (parts.some((x) => !x)) return `<div class="pb-card"><span class="pb-tag">${tag}</span><div class="pb-row tbd">Waiting on Week ${M.L.rounds[0].week} picks…</div></div>`;
+    const [x, y] = [...parts].sort((p, q) => M.seed[p] - M.seed[q]);
+    const f = M.pairOf(x, y);
+    return pbCard(k, slot, [x, y].map((t) => ({ team_id: t, p: f.p[t] })), M, tag);
+  }
+
+  /* The ladder's last stop: 5th to 8th, filled in as the picks come in. */
+  function liPlaces(k) {
+    const M = LI.model;
+    const topLoser = k.top ? [k.a, k.b].find((x) => x !== k.top) : null;
+    const botLoser = k.bot ? liLosers(k).find((x) => x !== k.bot) : null;
+    const order = [k.top, topLoser, k.bot, botLoser];
+    const sc = liScenario(k);
+    const chalk = ['a', 'b', 'top', 'bot'].every((x) => k[x] === M.chalk[x]);
+    const sticker = sc ? `<span class="pb-tag odds">🎯 <b>${pct(sc.p)}</b> scenario odds</span>` : '';
+    return `<div class="pb-place${WI.on ? ' pulse' : ''}"><span class="pb-tag">🪜 ${chalk ? 'Projected finish' : 'Your finish'}</span>
+      <ol>${M.places.map((n, i) => `<li><b>${ordinal(n)}</b>${order[i] ? `<a href="#team-${order[i]}">${esc(nameOf(order[i]))}</a>` : '<span class="q">?</span>'}</li>`).join('')}</ol>${sticker}</div>`;
+  }
+
+  function liConn(k) {
+    const attrs = 'width="52" height="304" viewBox="0 0 52 304" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+    const on = (s) => (k[s] ? 'on' : '');
+    return `<div class="pb-conn"><svg ${attrs}><path class="${on('a')}" d="M0 66 H52"/><path class="${on('a')}" d="M0 66 C26 66 26 238 52 238"/><path class="${on('b')}" d="M0 238 H52"/><path class="${on('b')}" d="M0 238 C26 238 26 66 52 66"/></svg></div>`;
+  }
+
+  function liBracketHTML() {
+    const M = LI.model, k = liPicks(), [r0, r1] = M.L.rounds;
+    const act = (n) => (WI.on && WI.step === n ? ' active' : '');
+    const inert = (n) => (WI.on && WI.step !== n ? ' inert aria-hidden="true"' : '');
+    return `
+      <div class="pb-col semis${act(1)}" data-step="1"${inert(1)}><h3>Round 1 · ${weeksLabel(r0)}</h3><div class="pb-stack">${pbCard(k, 'a', M.semis[0], M)}${pbCard(k, 'b', M.semis[1], M)}</div></div>
+      ${liConn(k)}
+      <div class="pb-col semis${act(2)}" data-step="2"${inert(2)}><h3>The ladder · ${weeksLabel(r1)}</h3><div class="pb-stack">${liGame(k, 'top')}${liGame(k, 'bot')}</div></div>
+      ${pbConn('a', { sf1: k.top, sf2: k.bot })}
+      <div class="pb-col champ${act(3)}" data-step="3"${inert(3)}><h3>${WI.on ? 'Your finish' : 'Projected finish'}</h3>${liPlaces(k)}</div>`;
+  }
+
+  function liPanelHTML() {
+    const k = LI.pick, M = LI.model, both = liBoth(), done = liDone();
+    const reach = { 1: true, 2: both, 3: done };
+    const names = { 1: `Week ${M.L.rounds[0].week}`, 2: 'The ladder', 3: 'Final order' };
+    const steps = [1, 2, 3].map((n) => {
+      const fin = (n === 1 && both) || (n >= 2 && done);
+      const mark = fin && WI.step !== n;
+      return `${n > 1 ? '<i class="pb-sep"></i>' : ''}<button type="button" class="pb-dot${WI.step === n ? ' cur' : ''}${mark ? ' done' : ''}" data-wi="go" data-go="${n}"${WI.step === n ? ' aria-current="step"' : ''}${reach[n] ? '' : ' disabled'}><b>${mark ? '✓' : n}</b>${names[n]}</button>`;
+    }).join('');
+    const sc = liScenario(k), reachP = liReach(k);
+    const m = {
+      1: [`Pick your Week ${M.L.rounds[0].week} winners (${['a', 'b'].filter((x) => k[x]).length}/2)`, 'Tap a team in each matchup. Winners climb to the fight for 5th, losers drop to the fight for 7th.'],
+      2: [`Pick both ladder winners (${['top', 'bot'].filter((x) => k[x]).length}/2)`, both ? `This ladder happens in ${pct(reachP)} of scenarios. Who climbs?` : 'Who climbs?'],
+      3: [done ? 'Here is how it ends' : 'Pick the ladder winners', sc ? `This exact scenario: ${pct(sc.p)} likely` : 'Change any round with Back or the step tabs.'],
+    }[WI.step];
+    return { steps, msg: `${m[0]}<span>${m[1]}</span>`, tools: `<button type="button" class="pb-ghost" data-wi="back"${WI.step === 1 ? ' disabled' : ''}>← Back</button><button type="button" class="pb-ghost" data-wi="reset">Reset</button><button type="button" class="pb-ghost" data-wi="exit">Exit</button>` };
+  }
+
+  /* Picking a Week-15 result changes who plays on, so a later pick whose team is no longer in that game goes. */
+  function liPick(slot, id) {
+    const k = LI.pick;
+    k[slot] = id;
+    if (slot === 'a' || slot === 'b') {
+      if (k.top && ![k.a, k.b].includes(k.top)) k.top = null;
+      if (k.bot && !liLosers(k).includes(k.bot)) k.bot = null;
+    }
+    pbDraw();
+    const again = document.querySelector(`.pb-row[data-m="${slot}"][data-t="${id}"]`); if (again) again.focus({ preventScroll: true });
+    if (slot === 'a' || slot === 'b') { if (liBoth()) pbAdvance(2); } else if (liDone()) pbAdvance(3);
+  }
+
+  const pbPanel = () => (PV.view === 'con' ? liPanelHTML() : pbPanelHTML());
 
   function pbPanelHTML() {
     const k = WI.pick, both = wiBoth();
@@ -2138,7 +2267,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     root.classList.toggle('whatif', WI.on);
     document.getElementById('pb-bracket').innerHTML = pbBracketHTML();
     if (WI.on) {
-      const P = pbPanelHTML();
+      const P = pbPanel();
       document.getElementById('pb-steps').innerHTML = P.steps;
       document.getElementById('pb-msg').innerHTML = P.msg;
       document.getElementById('pb-tools').innerHTML = P.tools;
@@ -2161,7 +2290,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   function pbAdvance(to) {
     clearTimeout(WI.timer);
     WI.timer = setTimeout(() => {
-      const ready = to === 2 ? wiBoth() && WI.step === 1 : !!WI.pick.fin && WI.step === 2;
+      const con = PV.view === 'con';
+      const ready = to === 2 ? (con ? liBoth() : wiBoth()) && WI.step === 1 : (con ? liDone() : !!WI.pick.fin) && WI.step === 2;
       if (WI.on && ready) pbGo(to, false, true);
     }, 500);
   }
@@ -2170,16 +2300,16 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const a = btn.dataset.wi;
     clearTimeout(WI.timer);
     if (a === 'enter') {
-      WI.on = true; WI.pick = { sf1: null, sf2: null, fin: null };
+      WI.on = true; pbClear();
       pbGo(1, true, true);
       const top = document.getElementById('pb-root');
       if (top) top.scrollIntoView({ behavior: noMotion() ? 'auto' : 'smooth', block: 'start' });
     } else if (a === 'exit') {
-      WI.on = false; WI.step = 1; WI.pick = { sf1: null, sf2: null, fin: null };
+      WI.on = false; WI.step = 1; pbClear();
       pbDraw(); pbAlign(true);
       const again = document.querySelector('[data-wi="enter"]'); if (again) again.focus({ preventScroll: true });
     } else if (a === 'reset') {
-      WI.pick = { sf1: null, sf2: null, fin: null }; pbGo(1, false, true);
+      pbClear(); pbGo(1, false, true);
     } else if (a === 'back') {
       if (WI.step > 1) pbGo(WI.step - 1, false, true);
     } else if (a === 'go') {
@@ -2189,6 +2319,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   function pbPick(btn) {
     const slot = btn.dataset.m, id = Number(btn.dataset.t), k = WI.pick;
+    if (PV.view === 'con') return liPick(slot, id);
     k[slot] = id;
     if (slot !== 'fin' && k.fin && ![k.sf1, k.sf2].includes(k.fin)) k.fin = null;
     pbDraw();
@@ -2196,7 +2327,18 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (slot === 'fin') pbAdvance(3); else if (wiBoth()) pbAdvance(2);
   }
 
+  /* Switch between the playoff bracket and the consolation ladder. Starts the what-if over. */
+  function pbView(v) {
+    if (v === PV.view || !LI.model || !document.getElementById('pb-root')) return;
+    clearTimeout(WI.timer);
+    PV.view = v; WI.on = false; WI.step = 1; pbClear();
+    document.getElementById('pb-root').outerHTML = pbRootHTML();
+    const again = document.querySelector(`[data-pv="${v}"]`); if (again) again.focus({ preventScroll: true });
+  }
+
   $('#main').addEventListener('click', (e) => {
+    const tab = e.target.closest('button[data-pv]');
+    if (tab) return pbView(tab.dataset.pv);
     if (!WI.on && !e.target.closest('[data-wi="enter"]')) return;
     const act = e.target.closest('button[data-wi]');
     if (act && !act.disabled) return pbAction(act);
@@ -2204,6 +2346,35 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (row && WI.on) pbPick(row);
   });
   window.addEventListener('resize', () => { if (WI.on) pbAlign(true); });
+
+  /* Everything inside the Playoff picture's #pb-root for the current view: the toggle, intro, promo,
+     what-if panel, bracket, legend and footnote. Redrawn whole when the view changes. */
+  function pbRootHTML() {
+    const con = PV.view === 'con' && !!LI.model;
+    const toggle = LI.model ? `<div class="pb-toggle" role="group" aria-label="Which bracket to show">${[['win', '🏆 Playoff bracket'], ['con', '🪜 Consolation ladder']].map(([v, t]) => `<button type="button" class="pb-tab" data-pv="${v}" aria-pressed="${(v === 'con') === con}">${t}</button>`).join('')}</div>` : '';
+    const last = con ? LI.model.L.rounds[1] : null;
+    const intro = con
+      ? `The chalk ladder, meaning every favorite wins. The ${LI.model.places.length} teams that miss the playoffs play on: Week ${LI.model.L.rounds[0].week} sorts them, winners climb to the fight for ${ordinal(LI.model.places[0])}, losers drop to the fight for ${ordinal(LI.model.places[2])}, and that last round is ${last.weeks > 1 ? `both teams' points added up over ${weeksLabel(last)}` : weeksLabel(last)}. The percent is how often the favorite wins that one game.`
+      : 'The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.';
+    const promo = con
+      ? ['INTERACTIVE', 'Who dodges last place?', 'Pick the winner of every ladder game and see how likely your finish is.', 'Play the ladder']
+      : ['NEW · INTERACTIVE', 'What if your team pulls off the upset?', 'Pick the winner of every game and see how likely your scenario is.', 'Play what-if'];
+    const foot = con
+      ? '🎯 = chance this exact path plays out (round-one odds × round-one odds × the two ladder games, treated as independent). Seeds 5 to 8 are projected from the standings, so the ladder can still reshuffle until the regular season ends.'
+      : `🎯 = chance this exact path plays out (semifinal odds × semifinal odds × final odds, treated as independent). It runs lower than the title odds above because those count every way a team can win it, including from a different seed.${WI.model.estimated ? ' <b>~</b> = estimated: that final matchup isn\'t simulated directly, so it is inferred from the odds shown.' : ''}`;
+    return `<div class="pb-root" id="pb-root" data-view="${con ? 'con' : 'win'}">
+          ${toggle}
+          <p class="sec-sub pb-intro">${intro}</p>
+          <div class="pb-promo">
+            <div class="pb-promo-txt"><span class="pb-eyebrow">${promo[0]}</span><b>${promo[1]}</b><span class="pb-promo-sub">${promo[2]}</span></div>
+            <button type="button" class="pb-cta" data-wi="enter">⚡ ${promo[3]} <i aria-hidden="true">→</i></button>
+          </div>
+          <div class="pb-panel" id="pb-panel"><div class="pb-steps" id="pb-steps" role="group" aria-label="What-if steps"></div><div class="pb-msg" id="pb-msg" role="status" aria-live="polite"></div><div class="pb-tools" id="pb-tools"></div></div>
+          <div class="pb-scroll" id="pb-scroll" tabindex="0" role="group" aria-label="${con ? 'Projected consolation ladder' : 'Projected playoff bracket'}"><div class="pb-bracket" id="pb-bracket">${pbBracketHTML()}</div></div>
+          <div class="pb-legend"><span class="l1">Projected winner</span><span class="l2">Win probability</span></div>
+          <p class="pb-foot">${foot}</p>
+        </div>`;
+  }
 
   function playoffPicture() {
     const P = SEASON.playoffs;
@@ -2217,7 +2388,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const champ = B ? byId[B.champion] : null;
     // Drawing the page starts the bracket over: what-if is a visit, not a saved setting.
     clearTimeout(WI.timer);
-    Object.assign(WI, { on: false, step: 1, pick: { sf1: null, sf2: null, fin: null }, model: wiModel(B) });
+    Object.assign(WI, { on: false, step: 1, model: wiModel(B) });
+    pbClear();
+    LI.model = liModel(P.ladder);
+    if (!LI.model || !WI.model) PV.view = 'win';
     const shade = (p) => (p > 0 ? `background: color-mix(in srgb, var(--heat-hi) ${(6 + p * 50).toFixed(0)}%, var(--card))` : '');
     const seeds = Array.from({ length: n }, (_, k) => k + 1);
     const sims = Number(P.sims).toLocaleString('en-US');
@@ -2228,18 +2402,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       <section>
         ${secHead('ball', 'Playoff picture')}
         <p class="sec-sub full">Top ${cfg.teams} make the playoffs${cfg.byes ? `, top ${cfg.byes} get a bye (a week off)` : ', no byes (a bye is a week off)'}, starting Week ${cfg.first_round_week}.${B ? ` The championship is ${B.rounds[B.rounds.length - 1].weeks > 1 ? `both teams' points added up over ${weeksLabel(B.rounds[B.rounds.length - 1])}` : weeksLabel(B.rounds[B.rounds.length - 1])}.` : ''} ${cfg.reseed ? 'The bracket reseeds after each round.' : 'The bracket stays put.'}${cfg.consolation_ladder ? ' Everyone else plays a consolation ladder to settle final placing.' : ''}</p>
-        ${WI.model ? `
-        <div class="pb-root" id="pb-root">
-          <p class="sec-sub pb-intro">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
-          <div class="pb-promo">
-            <div class="pb-promo-txt"><span class="pb-eyebrow">NEW · INTERACTIVE</span><b>What if your team pulls off the upset?</b><span class="pb-promo-sub">Pick the winner of every game and see how likely your scenario is.</span></div>
-            <button type="button" class="pb-cta" data-wi="enter">⚡ Play what-if <i aria-hidden="true">→</i></button>
-          </div>
-          <div class="pb-panel" id="pb-panel"><div class="pb-steps" id="pb-steps" role="group" aria-label="What-if steps"></div><div class="pb-msg" id="pb-msg" role="status" aria-live="polite"></div><div class="pb-tools" id="pb-tools"></div></div>
-          <div class="pb-scroll" id="pb-scroll" tabindex="0" role="group" aria-label="Projected playoff bracket"><div class="pb-bracket" id="pb-bracket">${pbBracketHTML()}</div></div>
-          <div class="pb-legend"><span class="l1">Projected winner</span><span class="l2">Win probability</span></div>
-          <p class="pb-foot">🎯 = chance this exact path plays out (semifinal odds × semifinal odds × final odds, treated as independent). It runs lower than the title odds above because those count every way a team can win it, including from a different seed.${WI.model.estimated ? ' <b>~</b> = estimated: that final matchup isn\'t simulated directly, so it is inferred from the odds shown.' : ''}</p>
-        </div>` : `
+        ${WI.model ? pbRootHTML() : `
         <p class="sec-sub pb-intro">The chalk bracket, meaning every favorite wins. Teams slot in by projected seed, their spot in the final standings. The percent is how often the favorite wins that one game.</p>
         <div class="bracket" role="group" aria-label="Projected playoff bracket" style="--br-cols: ${B.rounds.length}">${B.rounds.slice(0, -1).map((r, k, early) => `
           <div class="br-col"><h3>${k === early.length - 1 ? 'Semifinals' : `Round ${k + 1}`} · ${weeksLabel(r)}</h3>${r.games.map(bracketGame).join('')}</div>`).join('')}
