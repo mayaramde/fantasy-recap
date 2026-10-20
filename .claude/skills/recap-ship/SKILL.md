@@ -21,7 +21,8 @@ draft PR merges, and on `main` after. Checking out a branch without it removes i
 and a preview built then deploys *successfully* while silently missing the week. **If the file
 isn't there, stop. Do not run `scripts/deploy.sh --preview` anyway.** Tell Maya what's missing.
 
-Share the printed preview URL with Maya. **Wait for her explicit approval**; nothing below
+Share the printed preview URL with Maya, and if the draft PR body carries a `voice-check`
+"reads flat" report, show her that report with it. **Wait for her explicit approval**; nothing below
 runs until she says go. If she asks for a change instead, that's `recap-write` again,
 fact-check and voice gate included, then a fresh preview.
 
@@ -34,20 +35,24 @@ fact-check and voice gate included, then a fresh preview.
    deploy can't pull one off the live site. If checkout fails on uncommitted changes, stop and
    tell Maya; don't stash or discard them.
 3. Set `"status": "published"` in `recaps/2026/week-NN.json`.
-4. Run `python3 scripts/check.py` and fix anything it flags. A published recap's problems
+4. **Update CLAUDE.md's Running threads** from the recap being published, in this same PR: add
+   threads this recap started or kept alive, retire ones that died or paid off, and cite the
+   weeks (verify every cite against the recap JSONs). Edit only the threads list in the Voice
+   section. This runs from the next publish onward; it never rewrites old weeks.
+5. Run `python3 scripts/check.py` and fix anything it flags. A published recap's problems
    always block, where a draft's may only have warned, so this must pass **before** the PR
    can merge.
 
 ## Step 3: publish PR
 
-1. Commit **only** `recaps/2026/week-NN.json`, plus `data/2026/week-NN/`,
+1. Commit **only** `recaps/2026/week-NN.json`, the Running threads edit in `CLAUDE.md`, plus `data/2026/week-NN/`,
    `data/player_names.json`, or already-committed weeks' `facts.json` if they changed. Never
    `git add -A`, and never sweep in another week's uncommitted data.
 2. Push and open a PR titled `Publish week NN recap`. Enable auto-merge (squash); it merges
    once `checks` passes. Don't merge it yourself. Until it merges, `site_guard.py` keeps the cloud live update from deploying over
    the published recap.
 
-**If the diff includes anything beyond `recaps/`/`data/`** (a change to `scripts/`, `site/`, or
+**If the diff includes anything beyond `recaps/`/`data/` and the threads list** (a change to `scripts/`, `site/`, or
 `.github/`), call the `code-reviewer` agent on that part of the diff before opening the PR and
 surface its findings to Maya. Don't proceed silently if it flags something.
 
