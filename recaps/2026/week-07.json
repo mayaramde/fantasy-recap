@@ -1,0 +1,92 @@
+{
+  "season": 2026,
+  "week": 7,
+  "status": "draft",
+  "headline": "Marlee's league-best 143.02 survives the week's closest game, 12.58 over Cambri, whose bench had the better matchup",
+  "dek": "The week's biggest gap, 42.46 points, belonged to Amie over Samantha. Maddie found a third cursed quarterback: Bryce Young's 5.42 makes it three strikes. And Kyra beat Maya by 18.68, a scoreline that won't make the league's highlight reel.",
+  "matchups": {
+    "2-7": "Amie's 42.46-point win over Samantha was built on one guy; the game ball below has the receipts. Samantha's lineup never found a second option.",
+    "3-4": "Tara won by 32.3, with Trey McBride and Quinshon Judkins, the flex she refused to bench back in September no matter how loud everyone got about it, both delivering. Maddie's Colston Loveland outscored her starting tight end by 16.7 points from the bench.",
+    "1-8": "Marlee's 143.02 topped Cambri's 130.44 by the week's closest margin, 12.58. Cambri gets the full autopsy below.",
+    "5-6": "Kyra won by 18.68 after missing her own projection by 26 points, the kind of win you take and don't review the tape on. Maya's 92.22 was the week's low score."
+  },
+  "game_balls": [
+    {
+      "manager": "Marlee",
+      "title": "Same stat sheet, different positions",
+      "text": "Javonte Williams ran for 155 yards and a score. Amon-Ra St. Brown caught his way to 153 more. Two different jobs, one scoreboard, and the league's best score doesn't ask how it got there.",
+      "stat": "143.02 pts",
+      "emoji": "👑",
+      "player": "Javonte Williams"
+    },
+    {
+      "manager": "Amie",
+      "title": "Didn't need the rest of the roster",
+      "text": "Jaxon Smith-Njigba caught nine of twelve targets for 150 yards and a touchdown, good for 31.3 points on his own, more than enough to cover the rest of Amie's roster for the week.",
+      "stat": "31.3 pts",
+      "emoji": "🚀",
+      "player": "Jaxon Smith-Njigba"
+    },
+    {
+      "manager": "Tara",
+      "title": "The flex finally pays rent",
+      "text": "Quinshon Judkins ran for 96 yards and two touchdowns, 23.4 points. Add Trey McBride's 27.1 and Tara's 128.32 was never really in danger.",
+      "stat": "23.4 pts, 2 TD",
+      "emoji": "🏈",
+      "player": "Quinshon Judkins"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Cambri",
+      "title": "One swap away from winning",
+      "text": "Cambri started Derrick Henry, who managed 5.9, while Tony Pollard sat on her bench and put up 36.5. Make that one swap and she beats Marlee by 18.02 instead of losing by 12.58. She started Henry.",
+      "stat": "36.5 pts benched",
+      "emoji": "🪑",
+      "player": "Tony Pollard"
+    },
+    {
+      "manager": "Maya",
+      "title": "A hearing has been scheduled",
+      "text": "Maya started Jalen Coker for 1.9 points. Luther Burden III put up 130 yards and a touchdown, 23.7 points, and sat the whole game on her bench by her own call. She's welcome to explain herself at the hearing.",
+      "stat": "23.7 pts benched",
+      "emoji": "🤦‍♀️",
+      "player": "Luther Burden III"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Samantha",
+      "title": "Nothing left to give",
+      "text": "Samantha's best possible lineup was the lineup she played; nothing on her bench would have scored her more. Her 42.46-point loss to Amie wasn't bad luck, it was just arithmetic.",
+      "stat": "0 pts left on bench",
+      "emoji": "😮‍💨"
+    },
+    {
+      "manager": "Maddie",
+      "title": "The curse has a third victim",
+      "text": "Bryce Young threw for 163 yards with a touchdown, two interceptions and a lost fumble: 5.42 points. He joins Jaxson Dart's 0.8 in Week 2 and Tyler Shough's −0.16 in Week 5 on Maddie's quarterback wall of shame.",
+      "stat": "5.42 pts",
+      "emoji": "👻",
+      "player": "Bryce Young"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "IR (Injured Reserve)",
+      "definition": "A roster spot for a player hurt badly enough to need real recovery time. He sits there without counting against your bench limit, but he also can't score you a single point, just ask whoever is parking Travis Etienne Jr. there this week."
+    },
+    {
+      "term": "Sack",
+      "definition": "When a quarterback gets tackled before he can throw the ball. Bad for his stat line, great for whoever owns the defense that did it. The Vikings D/ST notched four of them for Marlee this week."
+    },
+    {
+      "term": "Interception",
+      "definition": "A pass caught by the other team's defense instead of yours, which costs the quarterback two points. Bryce Young threw two of them on his way to a 5.42-point week."
+    },
+    {
+      "term": "Field goal",
+      "definition": "A kick through the uprights, worth more the farther out it comes from. Brandon Aubrey made three of them for Cambri this week, including one from way downtown, worth 11 points on their own; three extra points pushed his night to 14."
+    }
+  ]
+}
