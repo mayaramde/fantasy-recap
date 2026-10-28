@@ -2,53 +2,53 @@
   "season": 2026,
   "week": 7,
   "status": "draft",
-  "headline": "Marlee's league-best 143.02 survives the week's closest game, 12.58 over Cambri, whose bench had the better matchup",
-  "dek": "The week's biggest gap, 42.46 points, belonged to Amie over Samantha. Maddie found a third cursed quarterback: Bryce Young's 5.42 makes it three strikes. And Kyra beat Maya by 18.68, a scoreline that won't make the league's highlight reel.",
+  "headline": "Quinshon Judkins scores twice, and Tara would like a word with everyone who told her to bench him",
+  "dek": "Jaxon Smith-Njigba beat Samantha more or less by himself. Maddie's quarterback situation remains under investigation. And Kyra won a game she would prefer we didn't recap. We're recapping it.",
   "matchups": {
-    "2-7": "Amie's 42.46-point win over Samantha was built on one guy; the game ball below has the receipts. Samantha's lineup never found a second option.",
-    "3-4": "Tara won by 32.3, with Trey McBride and Quinshon Judkins, the flex she refused to bench back in September no matter how loud everyone got about it, both delivering. Maddie's Colston Loveland outscored her starting tight end by 16.7 points from the bench.",
-    "1-8": "Marlee's 143.02 topped Cambri's 130.44 by the week's closest margin, 12.58. Cambri gets the full autopsy below.",
-    "5-6": "Kyra won by 18.68 after missing her own projection by 26 points, the kind of win you take and don't review the tape on. Maya's 92.22 was the week's low score."
+    "2-7": "Jaxon Smith-Njigba scored 31.3 and Amie won by 42.46. Samantha started the best lineup on her entire roster, which turns out to be a great way to lose with dignity.",
+    "3-4": "Tara spent September refusing to bench Quinshon Judkins while the whole league yelled at her. She will now be accepting apologies in the group chat. Maddie's best tight end watched the whole thing from her bench.",
+    "1-8": "Marlee scored the most points in the league, which turned out to be exactly enough to beat Cambri. By 12.58. Barely.",
+    "5-6": "Kyra missed her own projection by 26 points and won anyway, the fantasy equivalent of showing up to work in pajamas and getting promoted. Maya scored the fewest points in the league."
   },
   "game_balls": [
     {
       "manager": "Marlee",
-      "title": "Same stat sheet, different positions",
-      "text": "Javonte Williams ran for 155 yards and a score. Amon-Ra St. Brown caught his way to 153 more. Two different jobs, one scoreboard, and the league's best score doesn't ask how it got there.",
+      "title": "Ground and air, both covered",
+      "text": "Javonte Williams handled the ground, Amon-Ra St. Brown handled the air, and Marlee handled clicking the button that started them. League high score.",
       "stat": "143.02 pts",
       "emoji": "👑",
       "player": "Javonte Williams"
     },
     {
       "manager": "Amie",
-      "title": "Didn't need the rest of the roster",
-      "text": "Jaxon Smith-Njigba caught nine of twelve targets for 150 yards and a touchdown, good for 31.3 points on his own, more than enough to cover the rest of Amie's roster for the week.",
+      "title": "A one-man group project",
+      "text": "Jaxon Smith-Njigba caught nine passes for 150 yards and a touchdown. The rest of Amie's roster was also technically there.",
       "stat": "31.3 pts",
       "emoji": "🚀",
       "player": "Jaxon Smith-Njigba"
     },
     {
       "manager": "Tara",
-      "title": "The flex finally pays rent",
-      "text": "Quinshon Judkins ran for 96 yards and two touchdowns, 23.4 points. Add Trey McBride's 27.1 and Tara's 128.32 was never really in danger.",
-      "stat": "23.4 pts, 2 TD",
+      "title": "Tight end, loose definition",
+      "text": "Trey McBride caught ten passes and a touchdown, which is a lot of receiving for a position that's supposed to spend half its day blocking.",
+      "stat": "27.1 pts",
       "emoji": "🏈",
-      "player": "Quinshon Judkins"
+      "player": "Trey McBride"
     }
   ],
   "flags": [
     {
       "manager": "Cambri",
       "title": "One swap away from winning",
-      "text": "Cambri started Derrick Henry, who managed 5.9, while Tony Pollard sat on her bench and put up 36.5. Make that one swap and she beats Marlee by 18.02 instead of losing by 12.58. She started Henry.",
+      "text": "Cambri started Derrick Henry, who scored 5.9. Tony Pollard scored three touchdowns on her bench. One swap and she wins. She started Henry.",
       "stat": "36.5 pts benched",
       "emoji": "🪑",
       "player": "Tony Pollard"
     },
     {
       "manager": "Maya",
-      "title": "A hearing has been scheduled",
-      "text": "Maya started Jalen Coker for 1.9 points. Luther Burden III put up 130 yards and a touchdown, 23.7 points, and sat the whole game on her bench by her own call. She's welcome to explain herself at the hearing.",
+      "title": "Exhibit A",
+      "text": "Maya benched Luther Burden III for Jalen Coker, who caught one pass. Burden caught a touchdown and a 130-yard afternoon. The recap would like the record to show it was written by the defendant.",
       "stat": "23.7 pts benched",
       "emoji": "🤦‍♀️",
       "player": "Luther Burden III"
@@ -58,14 +58,14 @@
     {
       "manager": "Samantha",
       "title": "Nothing left to give",
-      "text": "Samantha's best possible lineup was the lineup she played; nothing on her bench would have scored her more. Her 42.46-point loss to Amie wasn't bad luck, it was just arithmetic.",
+      "text": "Samantha started the best possible lineup from her roster and still lost. There was nothing to fix and nothing to learn. Sometimes the other team just has Jaxon Smith-Njigba.",
       "stat": "0 pts left on bench",
       "emoji": "😮‍💨"
     },
     {
       "manager": "Maddie",
       "title": "The curse has a third victim",
-      "text": "Bryce Young threw for 163 yards with a touchdown, two interceptions and a lost fumble: 5.42 points. He joins Jaxson Dart's 0.8 in Week 2 and Tyler Shough's −0.16 in Week 5 on Maddie's quarterback wall of shame.",
+      "text": "Bryce Young threw two interceptions and lost a fumble. He joins Jaxson Dart and Tyler Shough in the special wing of the building where Maddie's quarterbacks go to rest.",
       "stat": "5.42 pts",
       "emoji": "👻",
       "player": "Bryce Young"
