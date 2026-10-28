@@ -181,11 +181,12 @@ Get the joke from something true and checkable: a team name, a real callback, a 
 **Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-5); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
 - Mark Andrews: dropped by Maya, then Marlee's up-and-down tight end (Weeks 1, 2, 3).
 - Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1).
-- Tara's flex: Quinshon Judkins starting while better options sat (Weeks 1, 3).
 - Marlee's Michael Wilson: benched for big games (Weeks 3, 4), started over George Pickens (Week 5).
-- Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5).
-- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5).
-- Retired: the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5).
+- Marlee's namesake, Amon-Ra St. Brown: zero on her bench (Week 6), back in the lineup earning the name (Week 7).
+- Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5), Bryce Young 5.42 (Week 7), "the curse".
+- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while.
+- Resting: the recap-author-as-defendant bit about Maya (Weeks 4, 5, 6). Skip it for a few weeks.
+- Retired: the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5), Tara's Quinshon Judkins flex (Weeks 1, 3; paid off, and the recap formally retracted, Week 7).
 
 **Dial by surface:**
 | Surface | Dial |
