@@ -1106,6 +1106,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -1795,6 +1796,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -2488,6 +2490,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [
     "49ers D/ST"
    ],
@@ -3231,6 +3234,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": [
     {
@@ -3977,6 +3981,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": []
   },
@@ -4672,6 +4677,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": [
     {
@@ -5391,6 +5397,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": [
     {
@@ -6110,6 +6117,7 @@
    ],
    "playing_now": 0,
    "yet_to_play": 0,
+   "remaining_projection": 0.0,
    "zero_point_starters": [],
    "pickups_started": [
     {

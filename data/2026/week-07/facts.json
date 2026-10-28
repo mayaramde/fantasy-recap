@@ -1,0 +1,6474 @@
+{
+ "season": 2026,
+ "week": 7,
+ "complete": true,
+ "captured_at": "2026-10-27T15:16:00.324Z",
+ "league": {
+  "high_score": {
+   "manager": "Marlee",
+   "points": 143.02,
+   "score_rank": 1
+  },
+  "low_score": {
+   "manager": "Maya",
+   "points": 92.22,
+   "score_rank": 8
+  },
+  "median_score": 119.61,
+  "mid_pack": {
+   "teams": [
+    {
+     "manager": "Tara",
+     "points": 128.32,
+     "score_rank": 4
+    },
+    {
+     "manager": "Kyra",
+     "points": 110.9,
+     "score_rank": 5
+    }
+   ],
+   "points": 119.61
+  },
+  "closest_game": {
+   "winner": "Marlee",
+   "loser": "Cambri",
+   "margin": 12.58
+  },
+  "biggest_blowout": {
+   "winner": "Amie",
+   "loser": "Samantha",
+   "margin": 42.46
+  },
+  "bad_luck_losses": [
+   {
+    "manager": "Cambri",
+    "points": 130.44,
+    "score_rank": 3
+   }
+  ],
+  "lucky_wins": [
+   {
+    "manager": "Kyra",
+    "points": 110.9,
+    "score_rank": 5
+   }
+  ],
+  "top_performers": [
+   {
+    "name": "Jaxon Smith-Njigba",
+    "manager": "Amie",
+    "pos": "WR",
+    "slot": "WR",
+    "points": 31.3,
+    "projected": 20.03,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4430878.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+    "team": "SEA"
+   },
+   {
+    "name": "Zay Flowers",
+    "manager": "Maddie",
+    "pos": "WR",
+    "slot": "FLEX",
+    "points": 27.7,
+    "projected": 15.23,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4429615.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+    "team": "BAL"
+   },
+   {
+    "name": "Drake Maye",
+    "manager": "Cambri",
+    "pos": "QB",
+    "slot": "QB",
+    "points": 27.44,
+    "projected": 20.59,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4431452.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+    "team": "NE"
+   },
+   {
+    "name": "Trey McBride",
+    "manager": "Tara",
+    "pos": "TE",
+    "slot": "TE",
+    "points": 27.1,
+    "projected": 15.85,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4361307.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+    "team": "ARI"
+   },
+   {
+    "name": "Tee Higgins",
+    "manager": "Cambri",
+    "pos": "WR",
+    "slot": "WR",
+    "points": 26.8,
+    "projected": 14.19,
+    "headshot": "https://a.espncdn.com/i/headshots/nfl/players/full/4239993.png",
+    "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+    "team": "CIN"
+   }
+  ],
+  "biggest_busts": [
+   {
+    "name": "Nico Collins",
+    "manager": "Maddie",
+    "slot": "WR",
+    "points": 2.6,
+    "projected": 16.68,
+    "beat_projection": -14.08
+   },
+   {
+    "name": "Jalen Coker",
+    "manager": "Maya",
+    "slot": "WR",
+    "points": 1.9,
+    "projected": 15.42,
+    "beat_projection": -13.52
+   },
+   {
+    "name": "Bryce Young",
+    "manager": "Maddie",
+    "slot": "QB",
+    "points": 5.42,
+    "projected": 17.66,
+    "beat_projection": -12.24
+   },
+   {
+    "name": "Derrick Henry",
+    "manager": "Cambri",
+    "slot": "RB",
+    "points": 5.9,
+    "projected": 18.03,
+    "beat_projection": -12.13
+   },
+   {
+    "name": "Isaiah Likely",
+    "manager": "Maddie",
+    "slot": "TE",
+    "points": 3.2,
+    "projected": 14.25,
+    "beat_projection": -11.05
+   }
+  ],
+  "biggest_surprises": [
+   {
+    "name": "Tee Higgins",
+    "manager": "Cambri",
+    "slot": "WR",
+    "points": 26.8,
+    "projected": 14.19,
+    "beat_projection": 12.61
+   },
+   {
+    "name": "Zay Flowers",
+    "manager": "Maddie",
+    "slot": "FLEX",
+    "points": 27.7,
+    "projected": 15.23,
+    "beat_projection": 12.47
+   },
+   {
+    "name": "Jaxon Smith-Njigba",
+    "manager": "Amie",
+    "slot": "WR",
+    "points": 31.3,
+    "projected": 20.03,
+    "beat_projection": 11.27
+   },
+   {
+    "name": "Trey McBride",
+    "manager": "Tara",
+    "slot": "TE",
+    "points": 27.1,
+    "projected": 15.85,
+    "beat_projection": 11.25
+   },
+   {
+    "name": "Quinshon Judkins",
+    "manager": "Tara",
+    "slot": "FLEX",
+    "points": 23.4,
+    "projected": 13.24,
+    "beat_projection": 10.16
+   }
+  ],
+  "most_points_left_on_bench": [
+   {
+    "manager": "Cambri",
+    "points_left": 48.3,
+    "would_have_won": true
+   },
+   {
+    "manager": "Maya",
+    "points_left": 38.26,
+    "would_have_won": true
+   },
+   {
+    "manager": "Maddie",
+    "points_left": 32.3,
+    "would_have_won": false
+   },
+   {
+    "manager": "Kyra",
+    "points_left": 32.28,
+    "would_have_won": false
+   },
+   {
+    "manager": "Amie",
+    "points_left": 18.5,
+    "would_have_won": false
+   },
+   {
+    "manager": "Marlee",
+    "points_left": 18.4,
+    "would_have_won": false
+   },
+   {
+    "manager": "Tara",
+    "points_left": 11.4,
+    "would_have_won": false
+   },
+   {
+    "manager": "Samantha",
+    "points_left": 0.0,
+    "would_have_won": false
+   }
+  ],
+  "best_pickups": [
+   {
+    "name": "Drake Maye",
+    "points": 27.44,
+    "slot": "QB",
+    "week_added": 4,
+    "type": "FREEAGENT",
+    "date": "2026-10-01T17:54:04.967Z",
+    "bid": 0,
+    "manager": "Cambri"
+   },
+   {
+    "name": "Josh Jacobs",
+    "points": 20.1,
+    "slot": "RB",
+    "week_added": 6,
+    "type": "FREEAGENT",
+    "date": "2026-10-16T20:01:43.452Z",
+    "bid": 0,
+    "manager": "Marlee"
+   },
+   {
+    "name": "Braelon Allen",
+    "points": 19.4,
+    "slot": "RB",
+    "week_added": 4,
+    "type": "FREEAGENT",
+    "date": "2026-09-30T16:50:54.515Z",
+    "bid": 0,
+    "manager": "Samantha"
+   },
+   {
+    "name": "Ollie Gordon II",
+    "points": 17.3,
+    "slot": "RB",
+    "week_added": 4,
+    "type": "WAIVER",
+    "date": "2026-09-30T07:43:17.144Z",
+    "bid": 0,
+    "manager": "Samantha"
+   },
+   {
+    "name": "C.J. Stroud",
+    "points": 16.52,
+    "slot": "QB",
+    "week_added": 7,
+    "type": "WAIVER",
+    "date": "2026-10-21T07:37:42.966Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Tucker Kraft",
+    "points": 14.8,
+    "slot": "TE",
+    "week_added": 5,
+    "type": "FREEAGENT",
+    "date": "2026-10-09T00:30:36.703Z",
+    "bid": 0,
+    "manager": "Cambri"
+   },
+   {
+    "name": "Will Reichard",
+    "points": 12,
+    "slot": "K",
+    "week_added": 4,
+    "type": "FREEAGENT",
+    "date": "2026-10-01T01:31:12.954Z",
+    "bid": 0,
+    "manager": "Marlee"
+   },
+   {
+    "name": "Chris Boswell",
+    "points": 11,
+    "slot": "K",
+    "week_added": 7,
+    "type": "WAIVER",
+    "date": "2026-10-21T07:37:42.966Z",
+    "bid": 0,
+    "manager": "Amie"
+   },
+   {
+    "name": "Vikings D/ST",
+    "points": 11,
+    "slot": "DST",
+    "week_added": 7,
+    "type": "WAIVER",
+    "date": "2026-10-21T07:37:42.965Z",
+    "bid": 0,
+    "manager": "Marlee"
+   },
+   {
+    "name": "Tyler Loop",
+    "points": 7,
+    "slot": "K",
+    "week_added": 6,
+    "type": "FREEAGENT",
+    "date": "2026-10-16T21:18:14.275Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Germie Bernard",
+    "points": 5.7,
+    "slot": "WR",
+    "week_added": 7,
+    "type": "WAIVER",
+    "date": "2026-10-21T07:37:42.966Z",
+    "bid": 0,
+    "manager": "Marlee"
+   },
+   {
+    "name": "Bryce Young",
+    "points": 5.42,
+    "slot": "QB",
+    "week_added": 3,
+    "type": "FREEAGENT",
+    "date": "2026-09-23T07:23:13.417Z",
+    "bid": 0,
+    "manager": "Maddie"
+   },
+   {
+    "name": "Browns D/ST",
+    "points": 5,
+    "slot": "DST",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-22T15:50:39.919Z",
+    "bid": 0,
+    "manager": "Tara"
+   },
+   {
+    "name": "Jordan Addison",
+    "points": 4.3,
+    "slot": "FLEX",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-24T20:05:34.773Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Xavier Worthy",
+    "points": 4.1,
+    "slot": "WR",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-22T15:49:04.585Z",
+    "bid": 0,
+    "manager": "Tara"
+   },
+   {
+    "name": "Spencer Shrader",
+    "points": 3,
+    "slot": "K",
+    "week_added": 6,
+    "type": "WAIVER",
+    "date": "2026-10-14T07:15:15.269Z",
+    "bid": 0,
+    "manager": "Samantha"
+   },
+   {
+    "name": "Broncos D/ST",
+    "points": 3,
+    "slot": "DST",
+    "week_added": 5,
+    "type": "FREEAGENT",
+    "date": "2026-10-10T19:24:51.891Z",
+    "bid": 0,
+    "manager": "Cambri"
+   },
+   {
+    "name": "Harrison Butker",
+    "points": 3,
+    "slot": "K",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-21T18:36:44.938Z",
+    "bid": 0,
+    "manager": "Kyra"
+   },
+   {
+    "name": "Jalen Coker",
+    "points": 1.9,
+    "slot": "WR",
+    "week_added": 2,
+    "type": "FREEAGENT",
+    "date": "2026-09-18T03:41:54.912Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Juwan Johnson",
+    "points": 1.7,
+    "slot": "TE",
+    "week_added": 4,
+    "type": "WAIVER",
+    "date": "2026-09-30T07:43:17.145Z",
+    "bid": 0,
+    "manager": "Amie"
+   },
+   {
+    "name": "Titans D/ST",
+    "points": 0,
+    "slot": "DST",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-22T17:12:18.099Z",
+    "bid": 0,
+    "manager": "Samantha"
+   },
+   {
+    "name": "Jets D/ST",
+    "points": 0,
+    "slot": "DST",
+    "week_added": 7,
+    "type": "FREEAGENT",
+    "date": "2026-10-21T07:45:13.437Z",
+    "bid": 0,
+    "manager": "Maya"
+   },
+   {
+    "name": "Patriots D/ST",
+    "points": -1,
+    "slot": "DST",
+    "week_added": 6,
+    "type": "FREEAGENT",
+    "date": "2026-10-15T15:52:18.458Z",
+    "bid": 0,
+    "manager": "Maddie"
+   }
+  ],
+  "best_lineup_calls": [
+   {
+    "date": "2026-10-25T13:47:57.897Z",
+    "started": "Braelon Allen",
+    "started_points": 19.4,
+    "started_pos": "RB",
+    "benched": "Breece Hall",
+    "benched_points": 0,
+    "benched_pos": "RB",
+    "slot": "RB",
+    "gain": 19.4,
+    "manager": "Samantha"
+   },
+   {
+    "date": "2026-10-22T06:25:15.349Z",
+    "started": "Jordan Love",
+    "started_points": 16.96,
+    "started_pos": "QB",
+    "benched": "Josh Allen",
+    "benched_points": 0,
+    "benched_pos": "QB",
+    "slot": "QB",
+    "gain": 16.96,
+    "manager": "Samantha"
+   },
+   {
+    "date": "2026-10-21T04:38:49.194Z",
+    "started": "Caleb Williams",
+    "started_points": 22.12,
+    "started_pos": "QB",
+    "benched": "Patrick Mahomes",
+    "benched_points": 6,
+    "benched_pos": "QB",
+    "slot": "QB",
+    "gain": 16.12,
+    "manager": "Amie"
+   },
+   {
+    "date": "2026-10-21T18:36:48.007Z",
+    "started": "Harrison Butker",
+    "started_points": 3,
+    "started_pos": "K",
+    "benched": "Cam Little",
+    "benched_points": 0,
+    "benched_pos": "K",
+    "slot": "K",
+    "gain": 3,
+    "manager": "Kyra"
+   },
+   {
+    "date": "2026-10-20T19:53:58.461Z",
+    "started": "Jalen Coker",
+    "started_points": 1.9,
+    "started_pos": "WR",
+    "benched": "Mike Evans",
+    "benched_points": 0,
+    "benched_pos": "WR",
+    "slot": "FLEX",
+    "gain": 1.9,
+    "manager": "Maya"
+   }
+  ],
+  "worst_lineup_calls": [
+   {
+    "date": "2026-10-24T20:05:43.531Z",
+    "started": "Jordan Addison",
+    "started_points": 4.3,
+    "started_pos": "WR",
+    "benched": "RJ Harvey",
+    "benched_points": 14,
+    "benched_pos": "RB",
+    "slot": "FLEX",
+    "gain": -9.7,
+    "manager": "Maya"
+   },
+   {
+    "date": "2026-10-21T07:44:52.622Z",
+    "started": "C.J. Stroud",
+    "started_points": 16.52,
+    "started_pos": "QB",
+    "benched": "Dak Prescott",
+    "benched_points": 23.28,
+    "benched_pos": "QB",
+    "slot": "QB",
+    "gain": -6.76,
+    "manager": "Maya"
+   },
+   {
+    "date": "2026-10-21T20:02:33.802Z",
+    "started": "Germie Bernard",
+    "started_points": 5.7,
+    "started_pos": "WR",
+    "benched": "Michael Wilson",
+    "benched_points": 10.6,
+    "benched_pos": "WR",
+    "slot": "WR",
+    "gain": -4.9,
+    "manager": "Marlee"
+   },
+   {
+    "date": "2026-10-22T15:50:50.910Z",
+    "started": "Browns D/ST",
+    "started_points": 5,
+    "started_pos": "DST",
+    "benched": "Seahawks D/ST",
+    "benched_points": 9,
+    "benched_pos": "DST",
+    "slot": "DST",
+    "gain": -4,
+    "manager": "Tara"
+   }
+  ],
+  "dropped_and_regretted": [
+   {
+    "name": "Drake Maye",
+    "points": 27.44,
+    "dropped_by": "Maddie",
+    "week_dropped": 4,
+    "now_with": "Cambri"
+   },
+   {
+    "name": "Josh Jacobs",
+    "points": 20.1,
+    "dropped_by": "Maya",
+    "week_dropped": 4,
+    "now_with": "Marlee"
+   },
+   {
+    "name": "Jordan Love",
+    "points": 16.96,
+    "dropped_by": "Cambri",
+    "week_dropped": 4,
+    "now_with": "Samantha"
+   },
+   {
+    "name": "Tucker Kraft",
+    "points": 14.8,
+    "dropped_by": "Maddie",
+    "week_dropped": 4,
+    "now_with": "Cambri"
+   },
+   {
+    "name": "Vikings D/ST",
+    "points": 11,
+    "dropped_by": "Tara",
+    "week_dropped": 6,
+    "now_with": "Marlee"
+   },
+   {
+    "name": "Tyler Loop",
+    "points": 7,
+    "dropped_by": "Samantha",
+    "week_dropped": 6,
+    "now_with": "Maya"
+   },
+   {
+    "name": "Jordan Addison",
+    "points": 4.3,
+    "dropped_by": "Marlee",
+    "week_dropped": 6,
+    "now_with": "Maya"
+   },
+   {
+    "name": "Broncos D/ST",
+    "points": 3,
+    "dropped_by": "Maddie",
+    "week_dropped": 4,
+    "now_with": "Cambri"
+   },
+   {
+    "name": "Jets D/ST",
+    "points": 0,
+    "dropped_by": "Cambri",
+    "week_dropped": 5,
+    "now_with": "Maya"
+   }
+  ]
+ },
+ "teams": [
+  {
+   "team_id": 2,
+   "points": 140.72,
+   "projected": 135.58,
+   "opponent_id": 7,
+   "opponent_points": 98.26,
+   "result": "W",
+   "margin": 42.46,
+   "live_projection": 135.6,
+   "win_probability": null,
+   "score_rank": 2,
+   "manager": "Amie",
+   "team_name": "JSN Derulo",
+   "optimal_points": 159.22,
+   "points_left_on_bench": 18.5,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Cam Skattebo",
+    "benched_points": 19.1,
+    "benched_projected": 7.81,
+    "started": "Kenneth Walker III",
+    "started_points": 9.7,
+    "started_projected": 19.1,
+    "slot": "RB",
+    "gap": 9.4
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-10-21T04:38:49.194Z",
+     "started": "Caleb Williams",
+     "started_points": 22.12,
+     "started_pos": "QB",
+     "benched": "Patrick Mahomes",
+     "benched_points": 6,
+     "benched_pos": "QB",
+     "slot": "QB",
+     "gain": 16.12
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4430878,
+     "name": "Jaxon Smith-Njigba",
+     "pos": "WR",
+     "pro_team_id": 26,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 31.3,
+     "projected": 20.03,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "150",
+       "points": 15
+      },
+      {
+       "label": "Catches",
+       "value": "9",
+       "points": 9
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "13",
+       "points": 1.3
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "12",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 11.27,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    },
+    {
+     "player_id": 4241389,
+     "name": "CeeDee Lamb",
+     "pos": "WR",
+     "pro_team_id": 6,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 24.4,
+     "projected": 18.53,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "2",
+       "points": 12
+      },
+      {
+       "label": "Receiving yards",
+       "value": "74",
+       "points": 7.4
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "12",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": 5.87,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
+    },
+    {
+     "player_id": 4890973,
+     "name": "Ashton Jeanty",
+     "pos": "RB",
+     "pro_team_id": 13,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 21.6,
+     "projected": 16.99,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "8",
+       "points": 8
+      },
+      {
+       "label": "Receiving yards",
+       "value": "61",
+       "points": 6.1
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "15",
+       "points": 1.5
+      },
+      {
+       "label": "Carries",
+       "value": "8",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 4.61,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+     "team": "LV"
+    },
+    {
+     "player_id": 4567048,
+     "name": "Kenneth Walker III",
+     "pos": "RB",
+     "pro_team_id": 12,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 9.7,
+     "projected": 19.1,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "36",
+       "points": 3.6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "21",
+       "points": 2.1
+      },
+      {
+       "label": "Carries",
+       "value": "14",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -9.4,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    },
+    {
+     "player_id": 4431611,
+     "name": "Caleb Williams",
+     "pos": "QB",
+     "pro_team_id": 3,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 22.12,
+     "projected": 17.59,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "308",
+       "points": 12.32
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "2",
+       "points": 8
+      },
+      {
+       "label": "Rushing yards",
+       "value": "18",
+       "points": 1.8
+      },
+      {
+       "label": "Pass attempts",
+       "value": "33",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "22",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "5",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": 4.53,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 4701936,
+     "name": "Matthew Golden",
+     "pos": "WR",
+     "pro_team_id": 9,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 9.9,
+     "projected": 16.89,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "39",
+       "points": 3.9
+      },
+      {
+       "label": "Targets",
+       "value": "12",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -6.99,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
+    },
+    {
+     "player_id": -16023,
+     "name": "Steelers D/ST",
+     "pos": "DST",
+     "pro_team_id": 23,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 9,
+     "projected": 6.44,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Held them to 7–13 points",
+       "value": "",
+       "points": 3
+      },
+      {
+       "label": "Interceptions",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Sacks",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Held them to 200–299 yards",
+       "value": "",
+       "points": 2
+      },
+      {
+       "label": "Points allowed",
+       "value": "10",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "281",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 2.56,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
+    },
+    {
+     "player_id": 3929645,
+     "name": "Juwan Johnson",
+     "pos": "TE",
+     "pro_team_id": 18,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 1.7,
+     "projected": 8.65,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "7",
+       "points": 0.7
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -6.95,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
+    },
+    {
+     "player_id": 17372,
+     "name": "Chris Boswell",
+     "pos": "K",
+     "pro_team_id": 23,
+     "slot": "K",
+     "injury_status": null,
+     "points": 11,
+     "projected": 11.36,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals inside 40",
+       "value": "2",
+       "points": 6
+      },
+      {
+       "label": "Field goals from 40–49",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Extra points",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -0.36,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4567750,
+     "name": "Emeka Egbuka",
+     "pos": "WR",
+     "pro_team_id": 27,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
+    },
+    {
+     "player_id": 4259545,
+     "name": "D'Andre Swift",
+     "pos": "RB",
+     "pro_team_id": 3,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 19,
+     "projected": 16.28,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "78",
+       "points": 7.8
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Receiving yards",
+       "value": "12",
+       "points": 1.2
+      },
+      {
+       "label": "Carries",
+       "value": "22",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "4",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 4696981,
+     "name": "Cam Skattebo",
+     "pos": "RB",
+     "pro_team_id": 19,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 19.1,
+     "projected": 7.81,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "124",
+       "points": 12.4
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "-3",
+       "points": -0.3
+      },
+      {
+       "label": "Carries",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
+    },
+    {
+     "player_id": 4685512,
+     "name": "Jadarian Price",
+     "pos": "RB",
+     "pro_team_id": 26,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    },
+    {
+     "player_id": 4575131,
+     "name": "Jacory Croskey-Merritt",
+     "pos": "RB",
+     "pro_team_id": 28,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
+    },
+    {
+     "player_id": 4608686,
+     "name": "Kyle Monangai",
+     "pos": "RB",
+     "pro_team_id": 3,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 3139477,
+     "name": "Patrick Mahomes",
+     "pos": "QB",
+     "pro_team_id": 12,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 6,
+     "projected": 15.61,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "165",
+       "points": 6.6
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "14",
+       "points": 1.4
+      },
+      {
+       "label": "Pass attempts",
+       "value": "33",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "19",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    },
+    {
+     "player_id": 4635008,
+     "name": "Keon Coleman",
+     "pos": "WR",
+     "pro_team_id": 2,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Juwan Johnson",
+     "points": 1.7,
+     "slot": "TE",
+     "week_added": 4,
+     "type": "WAIVER",
+     "date": "2026-09-30T07:43:17.145Z",
+     "bid": 0
+    },
+    {
+     "name": "Chris Boswell",
+     "points": 11,
+     "slot": "K",
+     "week_added": 7,
+     "type": "WAIVER",
+     "date": "2026-10-21T07:37:42.966Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 7,
+   "points": 98.26,
+   "projected": 124.3,
+   "opponent_id": 2,
+   "opponent_points": 140.72,
+   "result": "L",
+   "margin": -42.46,
+   "live_projection": 124.29,
+   "win_probability": null,
+   "score_rank": 6,
+   "manager": "Samantha",
+   "team_name": "Cloff Campus",
+   "optimal_points": 98.26,
+   "points_left_on_bench": 0.0,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": null,
+   "lineup_swaps": [
+    {
+     "date": "2026-10-22T06:25:15.349Z",
+     "started": "Jordan Love",
+     "started_points": 16.96,
+     "started_pos": "QB",
+     "benched": "Josh Allen",
+     "benched_points": 0,
+     "benched_pos": "QB",
+     "slot": "QB",
+     "gain": 16.96
+    },
+    {
+     "date": "2026-10-25T13:47:57.897Z",
+     "started": "Braelon Allen",
+     "started_points": 19.4,
+     "started_pos": "RB",
+     "benched": "Breece Hall",
+     "benched_points": 0,
+     "benched_pos": "RB",
+     "slot": "RB",
+     "gain": 19.4
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4362628,
+     "name": "Ja'Marr Chase",
+     "pos": "WR",
+     "pro_team_id": 4,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 17.2,
+     "projected": 21.79,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "62",
+       "points": 6.2
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -4.59,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
+    },
+    {
+     "player_id": 4431299,
+     "name": "Rome Odunze",
+     "pos": "WR",
+     "pro_team_id": 3,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 10.9,
+     "projected": 10.22,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "69",
+       "points": 6.9
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 0.68,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 4430027,
+     "name": "Sam LaPorta",
+     "pos": "TE",
+     "pro_team_id": 8,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 2.8,
+     "projected": 12.66,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "18",
+       "points": 1.8
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -9.86,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
+    },
+    {
+     "player_id": 4711533,
+     "name": "Ollie Gordon II",
+     "pos": "RB",
+     "pro_team_id": 15,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 17.3,
+     "projected": 11.81,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "103",
+       "points": 10.3
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Carries",
+       "value": "25",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 5.49,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+     "team": "MIA"
+    },
+    {
+     "player_id": 4685247,
+     "name": "Braelon Allen",
+     "pos": "RB",
+     "pro_team_id": 20,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 19.4,
+     "projected": 14.64,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "104",
+       "points": 10.4
+      },
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "30",
+       "points": 3
+      },
+      {
+       "label": "Carries",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 4.76,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
+    },
+    {
+     "player_id": 4571557,
+     "name": "Spencer Shrader",
+     "pos": "K",
+     "pro_team_id": 11,
+     "slot": "K",
+     "injury_status": null,
+     "points": 3,
+     "projected": 9.67,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals from 40–49",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Missed field goals",
+       "value": "2",
+       "points": -2
+      },
+      {
+       "label": "Extra points",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -6.67,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
+    },
+    {
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "pos": "WR",
+     "pro_team_id": 9,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 10.7,
+     "projected": 16.69,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "57",
+       "points": 5.7
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -5.99,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
+    },
+    {
+     "player_id": 4036378,
+     "name": "Jordan Love",
+     "pos": "QB",
+     "pro_team_id": 9,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 16.96,
+     "projected": 19.62,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "274",
+       "points": 10.96
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "2",
+       "points": 8
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Pass attempts",
+       "value": "45",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "27",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": -2.66,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
+    },
+    {
+     "player_id": -16010,
+     "name": "Titans D/ST",
+     "pos": "DST",
+     "pro_team_id": 10,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 0,
+     "projected": 7.2,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Gave up 450–499 yards",
+       "value": "",
+       "points": -5
+      },
+      {
+       "label": "Interceptions",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Fumbles recovered",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Sacks",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Points allowed",
+       "value": "27",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "491",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -7.2,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+     "team": "TEN"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 3918298,
+     "name": "Josh Allen",
+     "pos": "QB",
+     "pro_team_id": 2,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
+    },
+    {
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "pos": "WR",
+     "pro_team_id": 12,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    },
+    {
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "pos": "RB",
+     "pro_team_id": 20,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
+    },
+    {
+     "player_id": 4882093,
+     "name": "Bhayshul Tuten",
+     "pos": "RB",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 4432710,
+     "name": "TreVeyon Henderson",
+     "pos": "RB",
+     "pro_team_id": 17,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 4.3,
+     "projected": 7.12,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Receiving yards",
+       "value": "14",
+       "points": 1.4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "9",
+       "points": 0.9
+      },
+      {
+       "label": "Carries",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4678008,
+     "name": "Jonathon Brooks",
+     "pos": "RB",
+     "pro_team_id": 29,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
+    },
+    {
+     "player_id": 2976212,
+     "name": "Stefon Diggs",
+     "pos": "WR",
+     "pro_team_id": 28,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png",
+     "team": "WSH"
+    },
+    {
+     "player_id": 4385690,
+     "name": "Dalton Kincaid",
+     "pos": "TE",
+     "pro_team_id": 2,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [
+    "Titans D/ST"
+   ],
+   "pickups_started": [
+    {
+     "name": "Ollie Gordon II",
+     "points": 17.3,
+     "slot": "RB",
+     "week_added": 4,
+     "type": "WAIVER",
+     "date": "2026-09-30T07:43:17.144Z",
+     "bid": 0
+    },
+    {
+     "name": "Braelon Allen",
+     "points": 19.4,
+     "slot": "RB",
+     "week_added": 4,
+     "type": "FREEAGENT",
+     "date": "2026-09-30T16:50:54.515Z",
+     "bid": 0
+    },
+    {
+     "name": "Spencer Shrader",
+     "points": 3,
+     "slot": "K",
+     "week_added": 6,
+     "type": "WAIVER",
+     "date": "2026-10-14T07:15:15.269Z",
+     "bid": 0
+    },
+    {
+     "name": "Titans D/ST",
+     "points": 0,
+     "slot": "DST",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-22T17:12:18.099Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 3,
+   "points": 96.02,
+   "projected": 126.79,
+   "opponent_id": 4,
+   "opponent_points": 128.32,
+   "result": "L",
+   "margin": -32.3,
+   "live_projection": 126.8,
+   "win_probability": null,
+   "score_rank": 7,
+   "manager": "Maddie",
+   "team_name": "Waddle Deez Nutz",
+   "optimal_points": 128.32,
+   "points_left_on_bench": 32.3,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Colston Loveland",
+    "benched_points": 19.9,
+    "benched_projected": 11.53,
+    "started": "Isaiah Likely",
+    "started_points": 3.2,
+    "started_projected": 14.25,
+    "slot": "TE",
+    "gap": 16.7
+   },
+   "lineup_swaps": [],
+   "starters": [
+    {
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "pos": "RB",
+     "pro_team_id": 11,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 19,
+     "projected": 15.23,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "95",
+       "points": 9.5
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Receiving yards",
+       "value": "15",
+       "points": 1.5
+      },
+      {
+       "label": "Carries",
+       "value": "18",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 3.77,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
+    },
+    {
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "pos": "WR",
+     "pro_team_id": 34,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 2.6,
+     "projected": 16.68,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Receiving yards",
+       "value": "6",
+       "points": 0.6
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -14.08,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    },
+    {
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "pos": "WR",
+     "pro_team_id": 19,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 18.1,
+     "projected": 17.69,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "111",
+       "points": 11.1
+      },
+      {
+       "label": "Catches",
+       "value": "7",
+       "points": 7
+      },
+      {
+       "label": "Targets",
+       "value": "9",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 0.41,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
+    },
+    {
+     "player_id": 4241416,
+     "name": "Chuba Hubbard",
+     "pos": "RB",
+     "pro_team_id": 29,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 10,
+     "projected": 14.78,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "33",
+       "points": 3.3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "27",
+       "points": 2.7
+      },
+      {
+       "label": "Carries",
+       "value": "7",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -4.78,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
+    },
+    {
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "pos": "K",
+     "pro_team_id": 34,
+     "slot": "K",
+     "injury_status": null,
+     "points": 11,
+     "projected": 11.26,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Extra points",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Other scoring",
+       "value": "",
+       "points": 10.0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -0.26,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    },
+    {
+     "player_id": 4685720,
+     "name": "Bryce Young",
+     "pos": "QB",
+     "pro_team_id": 29,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 5.42,
+     "projected": 17.66,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "163",
+       "points": 6.52
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "2",
+       "points": -4
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "9",
+       "points": 0.9
+      },
+      {
+       "label": "Pass attempts",
+       "value": "27",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "14",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -12.24,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
+    },
+    {
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "pos": "WR",
+     "pro_team_id": 33,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 27.7,
+     "projected": 15.23,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "137",
+       "points": 13.7
+      },
+      {
+       "label": "Catches",
+       "value": "8",
+       "points": 8
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "11",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 12.47,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
+    },
+    {
+     "player_id": -16017,
+     "name": "Patriots D/ST",
+     "pos": "DST",
+     "pro_team_id": 17,
+     "slot": "DST",
+     "injury_status": null,
+     "points": -1,
+     "projected": 4.01,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Sacks",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Gave up 400–449 yards",
+       "value": "",
+       "points": -3
+      },
+      {
+       "label": "Gave up 28–34 points",
+       "value": "",
+       "points": -1
+      },
+      {
+       "label": "Points allowed",
+       "value": "30",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "405",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -5.01,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "pos": "TE",
+     "pro_team_id": 19,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 3.2,
+     "projected": 14.25,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Receiving yards",
+       "value": "12",
+       "points": 1.2
+      },
+      {
+       "label": "Targets",
+       "value": "4",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -11.05,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png",
+     "team": "NYG"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "pos": "RB",
+     "pro_team_id": 4,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 9.8,
+     "projected": 14.74,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "39",
+       "points": 3.9
+      },
+      {
+       "label": "Receiving yards",
+       "value": "19",
+       "points": 1.9
+      },
+      {
+       "label": "Carries",
+       "value": "11",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
+    },
+    {
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "pos": "TE",
+     "pro_team_id": 3,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 19.9,
+     "projected": 11.53,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "7",
+       "points": 7
+      },
+      {
+       "label": "Receiving yards",
+       "value": "69",
+       "points": 6.9
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "12",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 4372016,
+     "name": "Jaylen Waddle",
+     "pos": "WR",
+     "pro_team_id": 7,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 8.8,
+     "projected": 11.15,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "48",
+       "points": 4.8
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
+    },
+    {
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "pos": "WR",
+     "pro_team_id": 23,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 7.6,
+     "projected": 14.83,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "56",
+       "points": 5.6
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
+    },
+    {
+     "player_id": 4360078,
+     "name": "Alec Pierce",
+     "pos": "WR",
+     "pro_team_id": 11,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
+    },
+    {
+     "player_id": 4832800,
+     "name": "Denzel Boston",
+     "pos": "WR",
+     "pro_team_id": 5,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 5.7,
+     "projected": 11.98,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "27",
+       "points": 2.7
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
+    },
+    {
+     "player_id": 4360689,
+     "name": "Tyler Shough",
+     "pos": "QB",
+     "pro_team_id": 18,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 13.82,
+     "projected": 15.3,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "278",
+       "points": 11.12
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "7",
+       "points": 0.7
+      },
+      {
+       "label": "Pass attempts",
+       "value": "38",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "30",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
+    },
+    {
+     "player_id": 2973405,
+     "name": "Kalif Raymond",
+     "pos": "WR",
+     "pro_team_id": 3,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 5.3,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Bryce Young",
+     "points": 5.42,
+     "slot": "QB",
+     "week_added": 3,
+     "type": "FREEAGENT",
+     "date": "2026-09-23T07:23:13.417Z",
+     "bid": 0
+    },
+    {
+     "name": "Patriots D/ST",
+     "points": -1,
+     "slot": "DST",
+     "week_added": 6,
+     "type": "FREEAGENT",
+     "date": "2026-10-15T15:52:18.458Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 4,
+   "points": 128.32,
+   "projected": 130.54,
+   "opponent_id": 3,
+   "opponent_points": 96.02,
+   "result": "W",
+   "margin": 32.3,
+   "live_projection": 130.53,
+   "win_probability": null,
+   "score_rank": 4,
+   "manager": "Tara",
+   "team_name": "Tara's Turf",
+   "optimal_points": 139.72,
+   "points_left_on_bench": 11.4,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Rhamondre Stevenson",
+    "benched_points": 22.5,
+    "benched_projected": 11.55,
+    "started": "Saquon Barkley",
+    "started_points": 15.1,
+    "started_projected": 15.2,
+    "slot": "RB",
+    "gap": 7.4
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-10-22T15:50:50.910Z",
+     "started": "Browns D/ST",
+     "started_points": 5,
+     "started_pos": "DST",
+     "benched": "Seahawks D/ST",
+     "benched_points": 9,
+     "benched_pos": "DST",
+     "slot": "DST",
+     "gain": -4
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "pos": "RB",
+     "pro_team_id": 25,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 22,
+     "projected": 21.92,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "61",
+       "points": 6.1
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "39",
+       "points": 3.9
+      },
+      {
+       "label": "Carries",
+       "value": "7",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 0.08,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
+    },
+    {
+     "player_id": 3929630,
+     "name": "Saquon Barkley",
+     "pos": "RB",
+     "pro_team_id": 21,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 15.1,
+     "projected": 15.2,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "62",
+       "points": 6.2
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Receiving yards",
+       "value": "9",
+       "points": 0.9
+      },
+      {
+       "label": "Carries",
+       "value": "7",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -0.1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
+    },
+    {
+     "player_id": 4361307,
+     "name": "Trey McBride",
+     "pos": "TE",
+     "pro_team_id": 22,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 27.1,
+     "projected": 15.85,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "111",
+       "points": 11.1
+      },
+      {
+       "label": "Catches",
+       "value": "10",
+       "points": 10
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "13",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 11.25,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
+    },
+    {
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "pos": "WR",
+     "pro_team_id": 18,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 11.6,
+     "projected": 15.71,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "56",
+       "points": 5.6
+      },
+      {
+       "label": "Targets",
+       "value": "10",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -4.11,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
+    },
+    {
+     "player_id": 4685702,
+     "name": "Quinshon Judkins",
+     "pos": "RB",
+     "pro_team_id": 5,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 23.4,
+     "projected": 13.24,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing touchdowns",
+       "value": "2",
+       "points": 12
+      },
+      {
+       "label": "Rushing yards",
+       "value": "96",
+       "points": 9.6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "8",
+       "points": 0.8
+      },
+      {
+       "label": "Carries",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": 10.16,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
+    },
+    {
+     "player_id": 2473037,
+     "name": "Jason Myers",
+     "pos": "K",
+     "pro_team_id": 26,
+     "slot": "K",
+     "injury_status": null,
+     "points": 8,
+     "projected": 9.47,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals inside 40",
+       "value": "2",
+       "points": 6
+      },
+      {
+       "label": "Extra points",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -1.47,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    },
+    {
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "pos": "QB",
+     "pro_team_id": 25,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 12.02,
+     "projected": 20.43,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "288",
+       "points": 11.52
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "2",
+       "points": -4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "5",
+       "points": 0.5
+      },
+      {
+       "label": "Pass attempts",
+       "value": "40",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "27",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -8.41,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
+    },
+    {
+     "player_id": 4683062,
+     "name": "Xavier Worthy",
+     "pos": "WR",
+     "pro_team_id": 12,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 4.1,
+     "projected": 12.41,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "11",
+       "points": 1.1
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -8.31,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    },
+    {
+     "player_id": -16005,
+     "name": "Browns D/ST",
+     "pos": "DST",
+     "pro_team_id": 5,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 5,
+     "projected": 6.31,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Interceptions",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Fumbles recovered",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Sacks",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Points allowed",
+       "value": "24",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "322",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -1.31,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "pos": "RB",
+     "pro_team_id": 17,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 22.5,
+     "projected": 11.55,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "93",
+       "points": 9.3
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Rushing yards",
+       "value": "22",
+       "points": 2.2
+      },
+      {
+       "label": "Carries",
+       "value": "6",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4432620,
+     "name": "Parker Washington",
+     "pos": "WR",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 4432773,
+     "name": "Brian Thomas Jr.",
+     "pos": "WR",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 3126486,
+     "name": "Deebo Samuel Sr.",
+     "pos": "WR",
+     "pro_team_id": 25,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
+    },
+    {
+     "player_id": 3042519,
+     "name": "Aaron Jones Sr.",
+     "pos": "RB",
+     "pro_team_id": 16,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 3.6,
+     "projected": 12.27,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "26",
+       "points": 2.6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Carries",
+       "value": "8",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
+    },
+    {
+     "player_id": 3117256,
+     "name": "Dalton Schultz",
+     "pos": "TE",
+     "pro_team_id": 34,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 9.5,
+     "projected": 8.54,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Receiving yards",
+       "value": "45",
+       "points": 4.5
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    },
+    {
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "pos": "DST",
+     "pro_team_id": 26,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 9,
+     "projected": 4.76,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Held them to 1–6 points",
+       "value": "",
+       "points": 4
+      },
+      {
+       "label": "Interceptions",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Held them to 200–299 yards",
+       "value": "",
+       "points": 2
+      },
+      {
+       "label": "Sacks",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Points allowed",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "213",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    },
+    {
+     "player_id": 4429059,
+     "name": "Woody Marks",
+     "pos": "RB",
+     "pro_team_id": 34,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 9.1,
+     "projected": 14,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "66",
+       "points": 6.6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "15",
+       "points": 1.5
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Carries",
+       "value": "19",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Xavier Worthy",
+     "points": 4.1,
+     "slot": "WR",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-22T15:49:04.585Z",
+     "bid": 0
+    },
+    {
+     "name": "Browns D/ST",
+     "points": 5,
+     "slot": "DST",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-22T15:50:39.919Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 1,
+   "points": 143.02,
+   "projected": 130.39,
+   "opponent_id": 8,
+   "opponent_points": 130.44,
+   "result": "W",
+   "margin": 12.58,
+   "live_projection": 130.38,
+   "win_probability": null,
+   "score_rank": 1,
+   "manager": "Marlee",
+   "team_name": "Amon Raw, Next Question",
+   "optimal_points": 161.42,
+   "points_left_on_bench": 18.4,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Tre Tucker",
+    "benched_points": 21.3,
+    "benched_projected": 10.46,
+    "started": "Germie Bernard",
+    "started_points": 5.7,
+    "started_projected": 13.4,
+    "slot": "WR",
+    "gap": 15.6
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-10-21T20:02:33.802Z",
+     "started": "Germie Bernard",
+     "started_points": 5.7,
+     "started_pos": "WR",
+     "benched": "Michael Wilson",
+     "benched_points": 10.6,
+     "benched_pos": "WR",
+     "slot": "WR",
+     "gain": -4.9
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4374302,
+     "name": "Amon-Ra St. Brown",
+     "pos": "WR",
+     "pro_team_id": 8,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 24.2,
+     "projected": 19.5,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "153",
+       "points": 15.3
+      },
+      {
+       "label": "Catches",
+       "value": "9",
+       "points": 9
+      },
+      {
+       "label": "Rushing yards",
+       "value": "-1",
+       "points": -0.1
+      },
+      {
+       "label": "Carries",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "11",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 4.7,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
+    },
+    {
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "pos": "WR",
+     "pro_team_id": 6,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 15.7,
+     "projected": 13.2,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "57",
+       "points": 5.7
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 2.5,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
+    },
+    {
+     "player_id": 4361579,
+     "name": "Javonte Williams",
+     "pos": "RB",
+     "pro_team_id": 6,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 21.5,
+     "projected": 16.83,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "155",
+       "points": 15.5
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Carries",
+       "value": "25",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 4.67,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
+    },
+    {
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "pos": "TE",
+     "pro_team_id": 25,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 14.8,
+     "projected": 16.66,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "88",
+       "points": 8.8
+      },
+      {
+       "label": "Catches",
+       "value": "8",
+       "points": 8
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Targets",
+       "value": "10",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -1.86,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
+    },
+    {
+     "player_id": 3046779,
+     "name": "Jared Goff",
+     "pos": "QB",
+     "pro_team_id": 8,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 18.02,
+     "projected": 18.48,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "303",
+       "points": 12.12
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "2",
+       "points": 8
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "-1",
+       "points": -0.1
+      },
+      {
+       "label": "Pass attempts",
+       "value": "32",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "22",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": -0.46,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
+    },
+    {
+     "player_id": 4567104,
+     "name": "Will Reichard",
+     "pos": "K",
+     "pro_team_id": 16,
+     "slot": "K",
+     "injury_status": null,
+     "points": 12,
+     "projected": 11.55,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals from 40–49",
+       "value": "1",
+       "points": 4
+      },
+      {
+       "label": "Field goals inside 40",
+       "value": "1",
+       "points": 3
+      },
+      {
+       "label": "Missed field goals",
+       "value": "1",
+       "points": -1
+      },
+      {
+       "label": "Extra points",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "4",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Other scoring",
+       "value": "",
+       "points": 5.0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 0.45,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
+    },
+    {
+     "player_id": 4047365,
+     "name": "Josh Jacobs",
+     "pos": "RB",
+     "pro_team_id": 9,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 20.1,
+     "projected": 12.64,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "55",
+       "points": 5.5
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Rushing yards",
+       "value": "36",
+       "points": 3.6
+      },
+      {
+       "label": "Carries",
+       "value": "11",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 7.46,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
+    },
+    {
+     "player_id": -16016,
+     "name": "Vikings D/ST",
+     "pos": "DST",
+     "pro_team_id": 16,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 11,
+     "projected": 8.13,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Sacks",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Held them to 7–13 points",
+       "value": "",
+       "points": 3
+      },
+      {
+       "label": "Interceptions",
+       "value": "1",
+       "points": 2
+      },
+      {
+       "label": "Held them to 200–299 yards",
+       "value": "",
+       "points": 2
+      },
+      {
+       "label": "Points allowed",
+       "value": "10",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "218",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 2.87,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
+    },
+    {
+     "player_id": 4685261,
+     "name": "Germie Bernard",
+     "pos": "WR",
+     "pro_team_id": 23,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 5.7,
+     "projected": 13.4,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "27",
+       "points": 2.7
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -7.7,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4379399,
+     "name": "James Cook III",
+     "pos": "RB",
+     "pro_team_id": 2,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
+    },
+    {
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "pos": "QB",
+     "pro_team_id": 33,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
+    },
+    {
+     "player_id": 4035538,
+     "name": "David Montgomery",
+     "pos": "RB",
+     "pro_team_id": 34,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    },
+    {
+     "player_id": 3915416,
+     "name": "DJ Moore",
+     "pos": "WR",
+     "pro_team_id": 2,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+     "team": "BUF"
+    },
+    {
+     "player_id": 4360761,
+     "name": "Michael Wilson",
+     "pos": "WR",
+     "pro_team_id": 22,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 10.6,
+     "projected": 12.33,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "55",
+       "points": 5.5
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "11",
+       "points": 1.1
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
+    },
+    {
+     "player_id": 4887558,
+     "name": "Emanuel Wilson",
+     "pos": "RB",
+     "pro_team_id": 26,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 18.5,
+     "projected": 10.68,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "100",
+       "points": 10
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "15",
+       "points": 1.5
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Carries",
+       "value": "24",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    },
+    {
+     "player_id": 4361432,
+     "name": "Romeo Doubs",
+     "pos": "WR",
+     "pro_team_id": 17,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4428718,
+     "name": "Tre Tucker",
+     "pos": "WR",
+     "pro_team_id": 13,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 21.3,
+     "projected": 10.46,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "103",
+       "points": 10.3
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "12",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+     "team": "LV"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Will Reichard",
+     "points": 12,
+     "slot": "K",
+     "week_added": 4,
+     "type": "FREEAGENT",
+     "date": "2026-10-01T01:31:12.954Z",
+     "bid": 0
+    },
+    {
+     "name": "Josh Jacobs",
+     "points": 20.1,
+     "slot": "RB",
+     "week_added": 6,
+     "type": "FREEAGENT",
+     "date": "2026-10-16T20:01:43.452Z",
+     "bid": 0
+    },
+    {
+     "name": "Vikings D/ST",
+     "points": 11,
+     "slot": "DST",
+     "week_added": 7,
+     "type": "WAIVER",
+     "date": "2026-10-21T07:37:42.965Z",
+     "bid": 0
+    },
+    {
+     "name": "Germie Bernard",
+     "points": 5.7,
+     "slot": "WR",
+     "week_added": 7,
+     "type": "WAIVER",
+     "date": "2026-10-21T07:37:42.966Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 8,
+   "points": 130.44,
+   "projected": 133.98,
+   "opponent_id": 1,
+   "opponent_points": 143.02,
+   "result": "L",
+   "margin": -12.58,
+   "live_projection": 133.98,
+   "win_probability": null,
+   "score_rank": 3,
+   "manager": "Cambri",
+   "team_name": "Cleated Rivalry",
+   "optimal_points": 178.74,
+   "points_left_on_bench": 48.3,
+   "would_have_won_with_optimal": true,
+   "worst_bench_call": {
+    "benched": "Tony Pollard",
+    "benched_points": 36.5,
+    "benched_projected": 13.81,
+    "started": "Derrick Henry",
+    "started_points": 5.9,
+    "started_projected": 18.03,
+    "slot": "RB",
+    "gap": 30.6
+   },
+   "lineup_swaps": [],
+   "starters": [
+    {
+     "player_id": 4426515,
+     "name": "Puka Nacua",
+     "pos": "WR",
+     "pro_team_id": 14,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 21.8,
+     "projected": 22.55,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "8",
+       "points": 8
+      },
+      {
+       "label": "Receiving yards",
+       "value": "68",
+       "points": 6.8
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "10",
+       "points": 1
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "10",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -0.75,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": 4262921,
+     "name": "Justin Jefferson",
+     "pos": "WR",
+     "pro_team_id": 16,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 8.4,
+     "projected": 18.51,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "44",
+       "points": 4.4
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -10.11,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
+    },
+    {
+     "player_id": 3043078,
+     "name": "Derrick Henry",
+     "pos": "RB",
+     "pro_team_id": 33,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 5.9,
+     "projected": 18.03,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "45",
+       "points": 4.5
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "4",
+       "points": 0.4
+      },
+      {
+       "label": "Carries",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -12.13,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
+    },
+    {
+     "player_id": 4239993,
+     "name": "Tee Higgins",
+     "pos": "WR",
+     "pro_team_id": 4,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 26.8,
+     "projected": 14.19,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "148",
+       "points": 14.8
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 12.61,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
+    },
+    {
+     "player_id": 3953687,
+     "name": "Brandon Aubrey",
+     "pos": "K",
+     "pro_team_id": 6,
+     "slot": "K",
+     "injury_status": null,
+     "points": 14,
+     "projected": 8.15,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals inside 40",
+       "value": "2",
+       "points": 6
+      },
+      {
+       "label": "Extra points",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Other scoring",
+       "value": "",
+       "points": 5.0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 5.85,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
+    },
+    {
+     "player_id": 4241985,
+     "name": "J.K. Dobbins",
+     "pos": "RB",
+     "pro_team_id": 7,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 8.3,
+     "projected": 13.45,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "23",
+       "points": 2.3
+      },
+      {
+       "label": "Carries",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -5.15,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
+    },
+    {
+     "player_id": 4431452,
+     "name": "Drake Maye",
+     "pos": "QB",
+     "pro_team_id": 17,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 27.44,
+     "projected": 20.59,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Passing yards",
+       "value": "321",
+       "points": 12.84
+      },
+      {
+       "label": "Passing touchdowns",
+       "value": "2",
+       "points": 8
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Rushing yards",
+       "value": "26",
+       "points": 2.6
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Pass attempts",
+       "value": "31",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "24",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "4",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 3,
+     "beat_projection": 6.85,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4572680,
+     "name": "Tucker Kraft",
+     "pos": "TE",
+     "pro_team_id": 9,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 14.8,
+     "projected": 12.15,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "48",
+       "points": 4.8
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 2.65,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+     "team": "GB"
+    },
+    {
+     "player_id": -16007,
+     "name": "Broncos D/ST",
+     "pos": "DST",
+     "pro_team_id": 7,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 3,
+     "projected": 6.36,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Sacks",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Held them to 14–17 points",
+       "value": "",
+       "points": 1
+      },
+      {
+       "label": "Held them to 350–399 yards",
+       "value": "",
+       "points": -1
+      },
+      {
+       "label": "Points allowed",
+       "value": "16",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "353",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -3.36,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4870808,
+     "name": "Jeremiyah Love",
+     "pos": "RB",
+     "pro_team_id": 22,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+     "team": "ARI"
+    },
+    {
+     "player_id": 4239996,
+     "name": "Travis Etienne Jr.",
+     "pos": "RB",
+     "pro_team_id": 18,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/no.png",
+     "team": "NO"
+    },
+    {
+     "player_id": 4426388,
+     "name": "Jameson Williams",
+     "pos": "WR",
+     "pro_team_id": 8,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 26.1,
+     "projected": 10.77,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "2",
+       "points": 12
+      },
+      {
+       "label": "Receiving yards",
+       "value": "91",
+       "points": 9.1
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "9",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
+    },
+    {
+     "player_id": 4871023,
+     "name": "Carnell Tate",
+     "pos": "WR",
+     "pro_team_id": 10,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 9.9,
+     "projected": 11.09,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "69",
+       "points": 6.9
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Targets",
+       "value": "7",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+     "team": "TEN"
+    },
+    {
+     "player_id": 15847,
+     "name": "Travis Kelce",
+     "pos": "TE",
+     "pro_team_id": 12,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 8.4,
+     "projected": 10.08,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "44",
+       "points": 4.4
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    },
+    {
+     "player_id": 3916433,
+     "name": "Jakobi Meyers",
+     "pos": "WR",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 3916148,
+     "name": "Tony Pollard",
+     "pos": "RB",
+     "pro_team_id": 10,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 36.5,
+     "projected": 13.81,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing touchdowns",
+       "value": "3",
+       "points": 18
+      },
+      {
+       "label": "Rushing yards",
+       "value": "129",
+       "points": 12.9
+      },
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "26",
+       "points": 2.6
+      },
+      {
+       "label": "Carries",
+       "value": "25",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 3,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png",
+     "team": "TEN"
+    },
+    {
+     "player_id": 4426385,
+     "name": "Zach Charbonnet",
+     "pos": "RB",
+     "pro_team_id": 26,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png",
+     "team": "SEA"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Drake Maye",
+     "points": 27.44,
+     "slot": "QB",
+     "week_added": 4,
+     "type": "FREEAGENT",
+     "date": "2026-10-01T17:54:04.967Z",
+     "bid": 0
+    },
+    {
+     "name": "Tucker Kraft",
+     "points": 14.8,
+     "slot": "TE",
+     "week_added": 5,
+     "type": "FREEAGENT",
+     "date": "2026-10-09T00:30:36.703Z",
+     "bid": 0
+    },
+    {
+     "name": "Broncos D/ST",
+     "points": 3,
+     "slot": "DST",
+     "week_added": 5,
+     "type": "FREEAGENT",
+     "date": "2026-10-10T19:24:51.891Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 5,
+   "points": 92.22,
+   "projected": 131.01,
+   "opponent_id": 6,
+   "opponent_points": 110.9,
+   "result": "L",
+   "margin": -18.68,
+   "live_projection": 131.01,
+   "win_probability": null,
+   "score_rank": 8,
+   "manager": "Maya",
+   "team_name": "MARTY SUPREME",
+   "optimal_points": 130.48,
+   "points_left_on_bench": 38.26,
+   "would_have_won_with_optimal": true,
+   "worst_bench_call": {
+    "benched": "Luther Burden III",
+    "benched_points": 23.7,
+    "benched_projected": 12.66,
+    "started": "Jalen Coker",
+    "started_points": 1.9,
+    "started_projected": 15.42,
+    "slot": "WR",
+    "gap": 21.8
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-10-20T19:53:58.461Z",
+     "started": "Jalen Coker",
+     "started_points": 1.9,
+     "started_pos": "WR",
+     "benched": "Mike Evans",
+     "benched_points": 0,
+     "benched_pos": "WR",
+     "slot": "FLEX",
+     "gain": 1.9
+    },
+    {
+     "date": "2026-10-21T07:44:52.622Z",
+     "started": "C.J. Stroud",
+     "started_points": 16.52,
+     "started_pos": "QB",
+     "benched": "Dak Prescott",
+     "benched_points": 23.28,
+     "benched_pos": "QB",
+     "slot": "QB",
+     "gain": -6.76
+    },
+    {
+     "date": "2026-10-24T20:05:43.531Z",
+     "started": "Jordan Addison",
+     "started_points": 4.3,
+     "started_pos": "WR",
+     "benched": "RJ Harvey",
+     "benched_points": 14,
+     "benched_pos": "RB",
+     "slot": "FLEX",
+     "gain": -9.7
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4430807,
+     "name": "Bijan Robinson",
+     "pos": "RB",
+     "pro_team_id": 1,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 17.2,
+     "projected": 21.11,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "63",
+       "points": 6.3
+      },
+      {
+       "label": "Receiving yards",
+       "value": "59",
+       "points": 5.9
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Carries",
+       "value": "20",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -3.91,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+     "team": "ATL"
+    },
+    {
+     "player_id": 4432665,
+     "name": "Brock Bowers",
+     "pos": "TE",
+     "pro_team_id": 13,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 13.3,
+     "projected": 18.46,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "73",
+       "points": 7.3
+      },
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -5.16,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+     "team": "LV"
+    },
+    {
+     "player_id": 4685472,
+     "name": "Tetairoa McMillan",
+     "pos": "WR",
+     "pro_team_id": 29,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 8,
+     "projected": 15.81,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "40",
+       "points": 4
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -7.81,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
+    },
+    {
+     "player_id": 4596448,
+     "name": "Bucky Irving",
+     "pos": "RB",
+     "pro_team_id": 27,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 24,
+     "projected": 14.11,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing touchdowns",
+       "value": "2",
+       "points": 12
+      },
+      {
+       "label": "Rushing yards",
+       "value": "106",
+       "points": 10.6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "4",
+       "points": 0.4
+      },
+      {
+       "label": "Carries",
+       "value": "24",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": 9.89,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png",
+     "team": "TB"
+    },
+    {
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "pos": "WR",
+     "pro_team_id": 29,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 1.9,
+     "projected": 15.42,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "9",
+       "points": 0.9
+      },
+      {
+       "label": "Targets",
+       "value": "4",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -13.52,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+     "team": "CAR"
+    },
+    {
+     "player_id": 4697745,
+     "name": "Tyler Loop",
+     "pos": "K",
+     "pro_team_id": 33,
+     "slot": "K",
+     "injury_status": null,
+     "points": 7,
+     "projected": 8.56,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Field goals inside 40",
+       "value": "2",
+       "points": 6
+      },
+      {
+       "label": "Extra points",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Extra point attempts",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -1.56,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+     "team": "BAL"
+    },
+    {
+     "player_id": 4432577,
+     "name": "C.J. Stroud",
+     "pos": "QB",
+     "pro_team_id": 34,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 16.52,
+     "projected": 19.5,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Passing touchdowns",
+       "value": "2",
+       "points": 8
+      },
+      {
+       "label": "Passing yards",
+       "value": "153",
+       "points": 6.12
+      },
+      {
+       "label": "Two-point pass",
+       "value": "",
+       "points": 2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "4",
+       "points": 0.4
+      },
+      {
+       "label": "Pass attempts",
+       "value": "28",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 2,
+     "beat_projection": -2.98,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png",
+     "team": "HOU"
+    },
+    {
+     "player_id": -16020,
+     "name": "Jets D/ST",
+     "pos": "DST",
+     "pro_team_id": 20,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 0,
+     "projected": 7.16,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Sacks",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Gave up 28–34 points",
+       "value": "",
+       "points": -1
+      },
+      {
+       "label": "Held them to 350–399 yards",
+       "value": "",
+       "points": -1
+      },
+      {
+       "label": "Points allowed",
+       "value": "28",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "360",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -7.16,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
+    },
+    {
+     "player_id": 4429205,
+     "name": "Jordan Addison",
+     "pos": "WR",
+     "pro_team_id": 16,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 4.3,
+     "projected": 10.88,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "20",
+       "points": 2
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "3",
+       "points": 0.3
+      },
+      {
+       "label": "Carries",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -6.58,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/min.png",
+     "team": "MIN"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4685382,
+     "name": "Omarion Hampton",
+     "pos": "RB",
+     "pro_team_id": 24,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png",
+     "team": "LAC"
+    },
+    {
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "pos": "WR",
+     "pro_team_id": 21,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
+    },
+    {
+     "player_id": 16800,
+     "name": "Davante Adams",
+     "pos": "WR",
+     "pro_team_id": 14,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "pos": "WR",
+     "pro_team_id": 3,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 23.7,
+     "projected": 12.66,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "130",
+       "points": 13
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "4",
+       "points": 4
+      },
+      {
+       "label": "Rushing yards",
+       "value": "7",
+       "points": 0.7
+      },
+      {
+       "label": "Carries",
+       "value": "1",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "4",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+     "team": "CHI"
+    },
+    {
+     "player_id": 16737,
+     "name": "Mike Evans",
+     "pos": "WR",
+     "pro_team_id": 25,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+     "team": "SF"
+    },
+    {
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "pos": "QB",
+     "pro_team_id": 6,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 23.28,
+     "projected": 16.72,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Passing touchdowns",
+       "value": "3",
+       "points": 12
+      },
+      {
+       "label": "Passing yards",
+       "value": "212",
+       "points": 8.48
+      },
+      {
+       "label": "Two-point run",
+       "value": "",
+       "points": 2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "8",
+       "points": 0.8
+      },
+      {
+       "label": "Pass attempts",
+       "value": "27",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "15",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 3,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png",
+     "team": "DAL"
+    },
+    {
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "pos": "QB",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 4568490,
+     "name": "RJ Harvey",
+     "pos": "RB",
+     "pro_team_id": 7,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 14,
+     "projected": 11.43,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:05Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "54",
+       "points": 5.4
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "6",
+       "points": 0.6
+      },
+      {
+       "label": "Carries",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/den.png",
+     "team": "DEN"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [
+    "Jets D/ST"
+   ],
+   "pickups_started": [
+    {
+     "name": "Jalen Coker",
+     "points": 1.9,
+     "slot": "WR",
+     "week_added": 2,
+     "type": "FREEAGENT",
+     "date": "2026-09-18T03:41:54.912Z",
+     "bid": 0
+    },
+    {
+     "name": "Tyler Loop",
+     "points": 7,
+     "slot": "K",
+     "week_added": 6,
+     "type": "FREEAGENT",
+     "date": "2026-10-16T21:18:14.275Z",
+     "bid": 0
+    },
+    {
+     "name": "C.J. Stroud",
+     "points": 16.52,
+     "slot": "QB",
+     "week_added": 7,
+     "type": "WAIVER",
+     "date": "2026-10-21T07:37:42.966Z",
+     "bid": 0
+    },
+    {
+     "name": "Jets D/ST",
+     "points": 0,
+     "slot": "DST",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-21T07:45:13.437Z",
+     "bid": 0
+    },
+    {
+     "name": "Jordan Addison",
+     "points": 4.3,
+     "slot": "FLEX",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-24T20:05:34.773Z",
+     "bid": 0
+    }
+   ]
+  },
+  {
+   "team_id": 6,
+   "points": 110.9,
+   "projected": 136.9,
+   "opponent_id": 5,
+   "opponent_points": 92.22,
+   "result": "W",
+   "margin": 18.68,
+   "live_projection": 136.91,
+   "win_probability": null,
+   "score_rank": 5,
+   "manager": "Kyra",
+   "team_name": "(Foot)Balls Deep",
+   "optimal_points": 143.18,
+   "points_left_on_bench": 32.28,
+   "would_have_won_with_optimal": false,
+   "worst_bench_call": {
+    "benched": "Omar Cooper Jr.",
+    "benched_points": 22.5,
+    "benched_projected": 8.04,
+    "started": "Garrett Wilson",
+    "started_points": 4.6,
+    "started_projected": 15.14,
+    "slot": "WR",
+    "gap": 17.9
+   },
+   "lineup_swaps": [
+    {
+     "date": "2026-10-21T18:36:48.007Z",
+     "started": "Harrison Butker",
+     "started_points": 3,
+     "started_pos": "K",
+     "benched": "Cam Little",
+     "benched_points": 0,
+     "benched_pos": "K",
+     "slot": "K",
+     "gain": 3
+    }
+   ],
+   "starters": [
+    {
+     "player_id": 4429795,
+     "name": "Jahmyr Gibbs",
+     "pos": "RB",
+     "pro_team_id": 8,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 17.3,
+     "projected": 26,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "116",
+       "points": 11.6
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Receiving yards",
+       "value": "27",
+       "points": 2.7
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Carries",
+       "value": "29",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -8.7,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+     "team": "DET"
+    },
+    {
+     "player_id": 4426502,
+     "name": "Drake London",
+     "pos": "WR",
+     "pro_team_id": 1,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 19.6,
+     "projected": 17.06,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "7",
+       "points": 7
+      },
+      {
+       "label": "Receiving yards",
+       "value": "66",
+       "points": 6.6
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "10",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": 2.54,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png",
+     "team": "ATL"
+    },
+    {
+     "player_id": 4430737,
+     "name": "Kyren Williams",
+     "pos": "RB",
+     "pro_team_id": 14,
+     "slot": "RB",
+     "injury_status": null,
+     "points": 18.1,
+     "projected": 19.68,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "99",
+       "points": 9.9
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Receiving yards",
+       "value": "22",
+       "points": 2.2
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Carries",
+       "value": "16",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "2",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "beat_projection": -1.58,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": 4569618,
+     "name": "Garrett Wilson",
+     "pos": "WR",
+     "pro_team_id": 20,
+     "slot": "WR",
+     "injury_status": null,
+     "points": 4.6,
+     "projected": 15.14,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "26",
+       "points": 2.6
+      },
+      {
+       "label": "Catches",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -10.54,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
+    },
+    {
+     "player_id": 4569987,
+     "name": "Jaylen Warren",
+     "pos": "RB",
+     "pro_team_id": 23,
+     "slot": "FLEX",
+     "injury_status": null,
+     "points": 16.7,
+     "projected": 17.65,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T13:30Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "101",
+       "points": 10.1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "36",
+       "points": 3.6
+      },
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Carries",
+       "value": "18",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "4",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -0.95,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png",
+     "team": "PIT"
+    },
+    {
+     "player_id": 5083076,
+     "name": "Harold Fannin Jr.",
+     "pos": "TE",
+     "pro_team_id": 5,
+     "slot": "TE",
+     "injury_status": null,
+     "points": 13.1,
+     "projected": 8.21,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "91",
+       "points": 9.1
+      },
+      {
+       "label": "Catches",
+       "value": "6",
+       "points": 6
+      },
+      {
+       "label": "Fumbles lost",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Targets",
+       "value": "9",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": 4.89,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+     "team": "CLE"
+    },
+    {
+     "player_id": 12483,
+     "name": "Matthew Stafford",
+     "pos": "QB",
+     "pro_team_id": 14,
+     "slot": "QB",
+     "injury_status": null,
+     "points": 17.5,
+     "projected": 18.58,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Passing touchdowns",
+       "value": "3",
+       "points": 12
+      },
+      {
+       "label": "Passing yards",
+       "value": "195",
+       "points": 7.8
+      },
+      {
+       "label": "Interceptions thrown",
+       "value": "1",
+       "points": -2
+      },
+      {
+       "label": "Rushing yards",
+       "value": "-3",
+       "points": -0.3
+      },
+      {
+       "label": "Pass attempts",
+       "value": "29",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "23",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 3,
+     "beat_projection": -1.08,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": -16014,
+     "name": "Rams D/ST",
+     "pos": "DST",
+     "pro_team_id": 14,
+     "slot": "DST",
+     "injury_status": null,
+     "points": 1,
+     "projected": 4.27,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Sacks",
+       "value": "2",
+       "points": 2
+      },
+      {
+       "label": "Held them to 350–399 yards",
+       "value": "",
+       "points": -1
+      },
+      {
+       "label": "Points allowed",
+       "value": "21",
+       "points": 0
+      },
+      {
+       "label": "Yards allowed",
+       "value": "350",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -3.27,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": 3055899,
+     "name": "Harrison Butker",
+     "pos": "K",
+     "pro_team_id": 12,
+     "slot": "K",
+     "injury_status": null,
+     "points": 3,
+     "projected": 10.31,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-26T00:20Z",
+     "scoring_lines": [
+      {
+       "label": "Missed field goals",
+       "value": "2",
+       "points": -2
+      },
+      {
+       "label": "Field goal attempts",
+       "value": "3",
+       "points": 0
+      },
+      {
+       "label": "Other scoring",
+       "value": "",
+       "points": 5.0
+      }
+     ],
+     "touchdowns": 0,
+     "beat_projection": -7.31,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png",
+     "team": "KC"
+    }
+   ],
+   "bench": [
+    {
+     "player_id": 4047646,
+     "name": "A.J. Brown",
+     "pos": "WR",
+     "pro_team_id": 17,
+     "slot": "IR",
+     "injury_status": null,
+     "points": 7.8,
+     "projected": 15.95,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-23T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "48",
+       "points": 4.8
+      },
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Targets",
+       "value": "6",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+     "team": "NE"
+    },
+    {
+     "player_id": 4431459,
+     "name": "Tyler Warren",
+     "pos": "TE",
+     "pro_team_id": 11,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
+    },
+    {
+     "player_id": 3915511,
+     "name": "Joe Burrow",
+     "pos": "QB",
+     "pro_team_id": 4,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 28.88,
+     "projected": 19.31,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Passing touchdowns",
+       "value": "4",
+       "points": 16
+      },
+      {
+       "label": "Passing yards",
+       "value": "292",
+       "points": 11.68
+      },
+      {
+       "label": "Rushing yards",
+       "value": "12",
+       "points": 1.2
+      },
+      {
+       "label": "Pass attempts",
+       "value": "30",
+       "points": 0
+      },
+      {
+       "label": "Completions",
+       "value": "22",
+       "points": 0
+      },
+      {
+       "label": "Carries",
+       "value": "2",
+       "points": 0
+      },
+      {
+       "label": "Sacked",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 4,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png",
+     "team": "CIN"
+    },
+    {
+     "player_id": 4870795,
+     "name": "Makai Lemon",
+     "pos": "WR",
+     "pro_team_id": 21,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 19.7,
+     "projected": 8.6,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-27T00:15Z",
+     "scoring_lines": [
+      {
+       "label": "Catches",
+       "value": "7",
+       "points": 7
+      },
+      {
+       "label": "Receiving yards",
+       "value": "67",
+       "points": 6.7
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Targets",
+       "value": "8",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+     "team": "PHI"
+    },
+    {
+     "player_id": 4429096,
+     "name": "Blake Corum",
+     "pos": "RB",
+     "pro_team_id": 14,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 17.1,
+     "projected": 10.02,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T20:25Z",
+     "scoring_lines": [
+      {
+       "label": "Rushing yards",
+       "value": "93",
+       "points": 9.3
+      },
+      {
+       "label": "Rushing touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "1",
+       "points": 1
+      },
+      {
+       "label": "Receiving yards",
+       "value": "8",
+       "points": 0.8
+      },
+      {
+       "label": "Carries",
+       "value": "17",
+       "points": 0
+      },
+      {
+       "label": "Targets",
+       "value": "1",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png",
+     "team": "LAR"
+    },
+    {
+     "player_id": 4686361,
+     "name": "Cam Little",
+     "pos": "K",
+     "pro_team_id": 30,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 0,
+     "projected": 0,
+     "played": false,
+     "game_state": null,
+     "game_clock": null,
+     "kickoff": null,
+     "scoring_lines": [],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png",
+     "team": "JAX"
+    },
+    {
+     "player_id": 15818,
+     "name": "Keenan Allen",
+     "pos": "WR",
+     "pro_team_id": 11,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 6.1,
+     "projected": 8.95,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "31",
+       "points": 3.1
+      },
+      {
+       "label": "Catches",
+       "value": "3",
+       "points": 3
+      },
+      {
+       "label": "Targets",
+       "value": "3",
+       "points": 0
+      }
+     ],
+     "touchdowns": 0,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png",
+     "team": "IND"
+    },
+    {
+     "player_id": 4723820,
+     "name": "Omar Cooper Jr.",
+     "pos": "WR",
+     "pro_team_id": 20,
+     "slot": "BENCH",
+     "injury_status": null,
+     "points": 22.5,
+     "projected": 8.04,
+     "played": true,
+     "game_state": "post",
+     "game_clock": null,
+     "kickoff": "2026-10-25T17:00Z",
+     "scoring_lines": [
+      {
+       "label": "Receiving yards",
+       "value": "115",
+       "points": 11.5
+      },
+      {
+       "label": "Receiving touchdowns",
+       "value": "1",
+       "points": 6
+      },
+      {
+       "label": "Catches",
+       "value": "5",
+       "points": 5
+      },
+      {
+       "label": "Targets",
+       "value": "5",
+       "points": 0
+      }
+     ],
+     "touchdowns": 1,
+     "logo": "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+     "team": "NYJ"
+    }
+   ],
+   "playing_now": 0,
+   "yet_to_play": 0,
+   "remaining_projection": 0.0,
+   "zero_point_starters": [],
+   "pickups_started": [
+    {
+     "name": "Harrison Butker",
+     "points": 3,
+     "slot": "K",
+     "week_added": 7,
+     "type": "FREEAGENT",
+     "date": "2026-10-21T18:36:44.938Z",
+     "bid": 0
+    }
+   ]
+  }
+ ],
+ "standings": [
+  {
+   "team_id": 6,
+   "manager": "Kyra",
+   "team_name": "(Foot)Balls Deep",
+   "wins": 6,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 909.42,
+   "points_against": 746.3
+  },
+  {
+   "team_id": 2,
+   "manager": "Amie",
+   "team_name": "JSN Derulo",
+   "wins": 5,
+   "losses": 2,
+   "ties": 0,
+   "points_for": 992.84,
+   "points_against": 856.88
+  },
+  {
+   "team_id": 5,
+   "manager": "Maya",
+   "team_name": "MARTY SUPREME",
+   "wins": 5,
+   "losses": 2,
+   "ties": 0,
+   "points_for": 863.68,
+   "points_against": 793.88
+  },
+  {
+   "team_id": 1,
+   "manager": "Marlee",
+   "team_name": "Amon Raw, Next Question",
+   "wins": 4,
+   "losses": 3,
+   "ties": 0,
+   "points_for": 886.56,
+   "points_against": 868.76
+  },
+  {
+   "team_id": 4,
+   "manager": "Tara",
+   "team_name": "Tara's Turf",
+   "wins": 3,
+   "losses": 4,
+   "ties": 0,
+   "points_for": 851.7,
+   "points_against": 893.9
+  },
+  {
+   "team_id": 7,
+   "manager": "Samantha",
+   "team_name": "Cloff Campus",
+   "wins": 2,
+   "losses": 5,
+   "ties": 0,
+   "points_for": 820.32,
+   "points_against": 964.0
+  },
+  {
+   "team_id": 3,
+   "manager": "Maddie",
+   "team_name": "Waddle Deez Nutz",
+   "wins": 2,
+   "losses": 5,
+   "ties": 0,
+   "points_for": 789.02,
+   "points_against": 865.68
+  },
+  {
+   "team_id": 8,
+   "manager": "Cambri",
+   "team_name": "Cleated Rivalry",
+   "wins": 1,
+   "losses": 6,
+   "ties": 0,
+   "points_for": 876.34,
+   "points_against": 1000.48
+  }
+ ]
+}

@@ -272,6 +272,15 @@ class HubPayloadTest(unittest.TestCase):
         _, captured, _, _, _ = build.load_inputs(build.LEAGUE["season"])
         history = [e for _, e in captured]
         nxt = hub_preview.upcoming(history[-1])
+        # Whether the newest real week happens to offer a swap is up to ESPN's projections, so make
+        # sure one exists: lift a healthy bench back's projection well above a starting back's.
+        lineup = next(m[s]["lineup"] for m in nxt["matchups"] for s in ("home", "away")
+                      if any(p["slot"] == "RB" for p in m[s]["lineup"])
+                      and any(p["slot"] == "BENCH" and p["pos"] == "RB" for p in m[s]["lineup"]))
+        starter = next(p for p in lineup if p["slot"] == "RB")
+        bench = next(p for p in lineup if p["slot"] == "BENCH" and p["pos"] == "RB")
+        starter["injury_status"] = bench["injury_status"] = None
+        bench["projected"] = (starter.get("projected") or 0) + 10
         live = build.live_payload(analyze.analyze(nxt, history + [nxt]), nxt, history[-1], history=history)
         swaps = [it for row in live["advice"] for it in row["items"] if it["kind"] == "swap"]
         self.assertTrue(swaps)
