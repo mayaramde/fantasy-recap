@@ -2,27 +2,27 @@
   "season": 2026,
   "week": 7,
   "status": "draft",
-  "headline": "Quinshon Judkins scores twice, and Tara would like a word with everyone who told her to bench him",
-  "dek": "Jaxon Smith-Njigba beat Samantha more or less by himself. Maddie's quarterback situation remains under investigation. And Kyra won a game she would prefer we didn't recap. We're recapping it.",
+  "headline": "Quinshon Judkins scores twice. This recap owes Tara an apology.",
+  "dek": "Marlee posts the league high, Amie wins by 42.46, and the curse on Maddie's quarterbacks finds a new host.",
   "matchups": {
-    "2-7": "Jaxon Smith-Njigba scored 31.3 and Amie won by 42.46. Samantha started the best lineup on her entire roster, which turns out to be a great way to lose with dignity.",
-    "3-4": "Tara spent September refusing to bench Quinshon Judkins while the whole league yelled at her. She will now be accepting apologies in the group chat. Maddie's best tight end watched the whole thing from her bench.",
-    "1-8": "Marlee scored the most points in the league, which turned out to be exactly enough to beat Cambri. By 12.58. Barely.",
-    "5-6": "Kyra missed her own projection by 26 points and won anyway, the fantasy equivalent of showing up to work in pajamas and getting promoted. Maya scored the fewest points in the league."
+    "2-7": "Samantha started the best lineup her roster could possibly field and lost by 42.46. The fantasy gods reviewed the tape and found no errors, only Jaxon Smith-Njigba.",
+    "3-4": "Tara kept starting Quinshon Judkins through weeks of this recap telling her not to. He paid her back this week, and the recap has been humbled. Maddie deserved better from her quarterback, and she gets her due below.",
+    "1-8": "Marlee posted the league's high score and beat Cambri by 12.58. A week after Amon-Ra St. Brown scored zero on her bench, her team's namesake was back in the lineup, earning the name.",
+    "5-6": "Kyra missed her own projection by 26 points and won anyway, the fantasy equivalent of showing up to work in pajamas and getting promoted. Maya had the league's low score; more on that in the flags."
   },
   "game_balls": [
     {
       "manager": "Marlee",
       "title": "Ground and air, both covered",
-      "text": "Javonte Williams handled the ground, Amon-Ra St. Brown handled the air, and Marlee handled clicking the button that started them. League high score.",
+      "text": "Javonte Williams handled the ground, Amon-Ra St. Brown handled the air, and the Vikings D/ST handled the quarterback. League high score.",
       "stat": "143.02 pts",
       "emoji": "👑",
       "player": "Javonte Williams"
     },
     {
       "manager": "Amie",
-      "title": "A one-man group project",
-      "text": "Jaxon Smith-Njigba caught nine passes for 150 yards and a touchdown. The rest of Amie's roster was also technically there.",
+      "title": "The refund",
+      "text": "Jaxon Smith-Njigba caught nine passes for 150 yards and a touchdown. In Week 2 he had an even bigger day for Amie and she lost anyway. Consider this one the refund.",
       "stat": "31.3 pts",
       "emoji": "🚀",
       "player": "Jaxon Smith-Njigba"
@@ -39,7 +39,7 @@
   "flags": [
     {
       "manager": "Cambri",
-      "title": "One swap away from winning",
+      "title": "Benched the answer",
       "text": "Cambri started Derrick Henry, who scored 5.9. Tony Pollard scored three touchdowns on her bench. One swap and she wins. She started Henry.",
       "stat": "36.5 pts benched",
       "emoji": "🪑",
@@ -47,8 +47,8 @@
     },
     {
       "manager": "Maya",
-      "title": "Exhibit A",
-      "text": "Maya benched Luther Burden III for Jalen Coker, who caught one pass. Burden caught a touchdown and a 130-yard afternoon. The recap would like the record to show it was written by the defendant.",
+      "title": "One (1) catch",
+      "text": "Maya benched Luther Burden III for Jalen Coker. Burden went for 130 yards and a touchdown. Coker caught one pass. It was a very nice pass.",
       "stat": "23.7 pts benched",
       "emoji": "🤦‍♀️",
       "player": "Luther Burden III"
@@ -57,15 +57,15 @@
   "tough_breaks": [
     {
       "manager": "Samantha",
-      "title": "Nothing left to give",
-      "text": "Samantha started the best possible lineup from her roster and still lost. There was nothing to fix and nothing to learn. Sometimes the other team just has Jaxon Smith-Njigba.",
+      "title": "Clean sheet",
+      "text": "Zero points left on her bench and nothing to fix. That's what a well-managed week looks like, even when the scoreboard disagrees.",
       "stat": "0 pts left on bench",
       "emoji": "😮‍💨"
     },
     {
       "manager": "Maddie",
       "title": "The curse has a third victim",
-      "text": "Bryce Young threw two interceptions and lost a fumble. He joins Jaxson Dart and Tyler Shough in the special wing of the building where Maddie's quarterbacks go to rest.",
+      "text": "Bryce Young threw two interceptions and lost a fumble. He joins Jaxson Dart and Tyler Shough in the haunted wing reserved for Maddie's quarterbacks.",
       "stat": "5.42 pts",
       "emoji": "👻",
       "player": "Bryce Young"
