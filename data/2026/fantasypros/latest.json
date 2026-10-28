@@ -1,270 +1,95 @@
 {
-  "generated_at": "2026-10-20T20:36:25Z",
+  "generated_at": "2026-10-28T13:44:49Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-10-20T20:36:25Z"
+    "checked_at": "2026-10-28T13:44:49Z"
   },
-  "weeks": {
-    "7": {
-      "teams": {
-        "1": {
-          "advice_cards": [],
-          "roster_ideas": [
-            {
-              "team_id": 1,
-              "kind": "waiver",
-              "pos": "DST",
-              "level": "now",
-              "title": "Add the Minnesota Vikings D/ST off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Your DST spot is empty. Nobody in the league owns the Minnesota Vikings, FantasyPros' number one defense the rest of the way, so you can have the best unit in the building for the price of a waiver claim. Grab them before somebody else notices the fire sale."
-            }
-          ]
-        },
-        "2": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "title": "Jadarian Price and Jacory Croskey-Merritt are now on IR",
-              "stat": "both on IR",
-              "text": "FantasyPros just put two of your running backs on IR in the same breath, which is either brutal luck or proof you built this bench like running backs were going out of stock. Both were buried deep enough that your lineup doesn't blink. Decide if either's worth the roster spot while they heal."
-            },
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "title": "Kyle Monangai is now listed questionable",
-              "stat": "questionable, thumb",
-              "text": "FantasyPros has Kyle Monangai questionable with a thumb injury, the most bench-running-back injury a bench running back has ever had. He's on your bench, so nothing changes, but somewhere a trainer wrote 'thumb' on a clipboard with a completely straight face."
-            }
-          ],
-          "roster_ideas": [
-            {
-              "team_id": 2,
-              "kind": "waiver",
-              "pos": "K",
-              "level": "watch",
-              "title": "Add Chris Boswell off waivers",
-              "stat": "ranks K4 rest of season",
-              "text": "Cameron Dicker fell out of FantasyPros' top 27 kickers. Chris Boswell, unowned leaguewide, ranks fourth the rest of the way, a free upgrade at your worst position and the rarest trade the waiver wire ever makes."
-            }
-          ]
-        },
-        "3": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "title": "Alec Pierce is now on IR",
-              "stat": "IR, foot",
-              "text": "FantasyPros has Alec Pierce on injured reserve, which barely registers in a receiver room this deep. You have more wideouts than attention span. Lineup's fine."
-            }
-          ],
-          "roster_ideas": []
-        },
-        "4": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "now",
-              "title": "Jalen Hurts is now on IR",
-              "stat": "IR, calf",
-              "text": "FantasyPros has Jalen Hurts on injured reserve with a calf injury, so Brock Purdy steps in at QB from your bench while we hope for a quick recovery."
-            },
-            {
-              "kind": "fp_news",
-              "level": "now",
-              "title": "Terry McLaurin is now listed out",
-              "stat": "out",
-              "text": "FantasyPros has Terry McLaurin listed out this week. Chris Olave, Parker Washington, Brian Thomas Jr. and Deebo Samuel Sr. are all standing by, a receiver room most teams would trade for. Start one of the four in his place."
-            }
-          ],
-          "roster_ideas": []
-        },
-        "5": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "watch",
-              "title": "Davante Adams is listed out",
-              "stat": "out, hamstring",
-              "text": "FantasyPros has Davante Adams out with a hamstring injury, and your receiver room shrugged. DeVonta Smith, Tetairoa McMillan and Mike Evans are all healthy and ready to pretend this never happened."
-            }
-          ],
-          "roster_ideas": [
-            {
-              "team_id": 5,
-              "kind": "waiver",
-              "pos": "TE",
-              "level": "watch",
-              "title": "Add Dallas Goedert off waivers",
-              "stat": "top-15 ROS",
-              "text": "Brock Bowers is your only tight end, which means one tweak away from a bye week of zeros. Nobody in the league owns Dallas Goedert, a top-15 tight end by FantasyPros' own math. Cheap insurance."
-            }
-          ]
-        },
-        "6": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "watch",
-              "title": "A.J. Brown is listed questionable",
-              "stat": "questionable, ankle",
-              "text": "FantasyPros has A.J. Brown questionable with an ankle injury after a limited practice, the fantasy equivalent of a 'fine, I'm fine' text. Drake London and Garrett Wilson are healthy insurance if he sits. Check back before lineups lock and try not to doomscroll the injury report."
-            }
-          ],
-          "roster_ideas": [
-            {
-              "team_id": 6,
-              "kind": "waiver",
-              "pos": "WR",
-              "level": "watch",
-              "title": "Add Wan'Dale Robinson off waivers",
-              "stat": "unowned leaguewide",
-              "text": "Michael Pittman Jr. is still on IR, and somehow wide receiver is still your worst group despite rostering seven of them. Nobody in the league owns Wan'Dale Robinson, a top-40 receiver by FantasyPros' own numbers."
-            }
-          ]
-        },
-        "7": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "title": "Romeo Doubs and Jonathon Brooks are now on IR",
-              "stat": "both on IR",
-              "text": "FantasyPros has both Romeo Doubs and Jonathon Brooks on injured reserve this week, rough for them and a complete non-event for your lineup, since they were buried behind better options anyway. Bench depth, proving its worth by doing absolutely nothing."
-            }
-          ],
-          "roster_ideas": []
-        },
-        "8": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "title": "Travis Etienne Jr. is now on IR",
-              "stat": "IR",
-              "text": "FantasyPros has Travis Etienne Jr. on injured reserve, filed neatly behind Derrick Henry, Jeremiyah Love and a running back room that apparently never stops growing."
-            }
-          ],
-          "roster_ideas": []
-        }
-      }
-    }
-  },
+  "weeks": {},
   "audit": {
-    "6": {
-      "lineup:B:4431459:w5": {
-        "title": "Mostly the right calls, a few bench regrets",
-        "text": "Your Week 5 miss was Harold Fannin Jr. at tight end while Tyler Warren had the big game on your bench. It's the one real stain on a sharp record. Warren's big week arrived on the bench, which is the loneliest place to score."
+    "1": {
+      "pos:TE2:DST7": {
+        "title": "Spend the next roster move on defense",
+        "text": "Target a defense off the wire before the next bye hits. Yours ranks seventh of eight teams while your tight ends sit second, so that's the gap actually costing you points. Your tight ends didn't sign up to carry the defense too."
       },
-      "pos:RB1:WR8": {
-        "title": "Running back is carrying this team",
-        "text": "Your running backs rank first in the league and your wide receivers rank last, so a receiver pickup helps most. Wan'Dale Robinson is free, per FantasyPros. Your running backs have the whole team on their backs. Send reinforcements."
-      },
-      "proj:over:4569987:4870795": {
-        "title": "Your starters are beating ESPN's guesses",
-        "text": "Jaylen Warren keeps beating his projection while Makai Lemon keeps falling short of his. Keep Warren locked in and give Lemon time. ESPN's number for Warren is more of a first draft."
-      }
-    },
-    "5": {
-      "lineup:C:4432665:w3": {
-        "title": "The bench keeps getting the good weeks",
-        "text": "Your Week 3 miss was Dalton Schultz at tight end while Brock Bowers had the big game on your bench. The scoreboard never heard about it."
-      },
-      "pos:RB3:K7": {
-        "title": "Running back is carrying this team",
-        "text": "Your running backs rank third and your kicker ranks seventh, the weakest spot. Harrison Butker is a free agent whom FantasyPros projects a bit better than Eddy Pineiro the rest of the way. A kicker upgrade is the cheapest one on the board."
-      },
-      "proj:over:4685472:4685382": {
-        "title": "Your starters are beating ESPN's guesses",
-        "text": "Tetairoa McMillan keeps beating his projection while Omarion Hampton keeps falling short of his. Keep both in the lineup. McMillan is outplaying the spreadsheet and Hampton still has time to catch up with it."
+      "proj:under:4567104:4360761": {
+        "title": "Your kicker is outperforming your receiver",
+        "text": "Fix the receiver spot before you fix your faith in projections. Will Reichard keeps beating his; Michael Wilson keeps missing his. ESPN's model trusts Wilson more than your own eyes should."
       }
     },
     "2": {
       "lineup:B:4259545:w1": {
-        "title": "Mostly the right calls, a few bench regrets",
-        "text": "Your Week 1 miss was Emeka Egbuka at flex while D'Andre Swift had the big game on your bench. It's the only real blemish on a sharp season. Swift's biggest week happened on your bench, and now he's the star of your trade idea."
-      },
-      "pos:WR1:K8": {
-        "title": "Wide receiver is carrying this team",
-        "text": "Your wide receivers rank first in the league and your kicker ranks last, so a free-agent kicker is the cheapest upgrade you have. You'll need one in Week 7 anyway, with the Chargers on a bye. Elite receivers and a bottom-of-the-league kicker is the most fixable imbalance in fantasy."
+        "title": "One bad call, way back in Week 1",
+        "text": "Keep trusting your gut here, it's worked. Your only real lineup regret all season came in Week 1, when Emeka Egbuka got the flex over D'Andre Swift, who torched everyone from your bench instead. Consider it long forgiven."
       },
       "proj:over:4567048:4360248": {
-        "title": "Your starters are beating ESPN's guesses",
-        "text": "Kenneth Walker III keeps beating his projection while Kyle Pitts Sr. keeps falling short of his. Keep riding Walker. He's the rare player who reads ESPN's number and says cute."
-      }
-    },
-    "1": {
-      "lineup:C:4426354:w5": {
-        "title": "The bench keeps getting the good weeks",
-        "text": "Your Week 5 miss was Michael Wilson in the lineup while George Pickens had the big game on your bench. Check your depth chart twice before locking in. Pickens put on a show for an audience of bench."
-      },
-      "pos:K1:FLEX7": {
-        "title": "Kicker is carrying this team",
-        "text": "Your kickers rank first in the league and your flex spot, the wild-card slot, ranks seventh. Woody Marks is a free agent who fits flex and doubles as insurance for David Montgomery, per FantasyPros. When your kicker is your MVP, the flex spot deserves a raise."
-      },
-      "proj:under:4567104:4035538": {
-        "title": "ESPN keeps overrating your starters",
-        "text": "Will Reichard keeps beating his projection while David Montgomery keeps falling short of his, so treat Montgomery's number with suspicion until his injury clears. Reichard doing the heavy lifting is not a sentence anyone expects."
-      }
-    },
-    "4": {
-      "lineup:D:4248528:w1": {
-        "title": "Your bench deserves a promotion",
-        "text": "Your Week 1 miss was Quinshon Judkins at flex while Christian Watson had the big game on your bench. Yes, Watson again. Big numbers, wrong seat."
-      },
-      "pos:TE1:RB7": {
-        "title": "Tight end is carrying this team",
-        "text": "Tight end is your best position and running back ranks seventh, so depth there matters most, especially with Saquon Barkley questionable. Trey McBride is quietly running a one-man tight end empire."
-      },
-      "proj:under:4248528:3929630": {
-        "title": "ESPN keeps overrating your starters",
-        "text": "Christian Watson keeps beating his projection while Saquon Barkley keeps coming up short of his. Trust the production, not the spreadsheet. ESPN will catch up eventually. Watson won't wait."
-      }
-    },
-    "7": {
-      "lineup:C:4431299:w4": {
-        "title": "The bench keeps getting the good weeks",
-        "text": "Your Week 4 miss was Rashee Rice in the lineup while Rome Odunze had a real game on your bench. Rice's zero counted. Odunze's real game sat."
-      },
-      "pos:QB1:RB8": {
-        "title": "Quarterback is carrying this team",
-        "text": "Your quarterbacks rank first in the league and your running backs rank last, so a running back pickup helps most. Emmett Johnson is free, per FantasyPros. Josh Allen is carrying this team on his back, and your running backs are along for the ride."
-      },
-      "proj:under:3918298:4429160": {
-        "title": "ESPN keeps overrating your starters",
-        "text": "Josh Allen keeps beating his projection while De'Von Achane fell well short of his. Trust the weekly production over the spreadsheet. ESPN's projection for Allen is basically a warm-up lap."
+        "title": "Kenneth Walker keeps making ESPN look silly",
+        "text": "The tight end problem has a name, and it isn't Walker. Kenneth Walker III has outrun his projection all season; Kyle Pitts Sr. hasn't come close to his in weeks."
       }
     },
     "3": {
       "lineup:C:4241416:w1": {
-        "title": "The bench keeps getting the good weeks",
-        "text": "Your Week 1 miss was Jaylen Waddle at flex while Chuba Hubbard had the big game on your bench. Waddle is in your team name. The scoreboard didn't care."
+        "title": "Chuba Hubbard made the bench the better lineup",
+        "text": "Trust the bench over the flex call next time it's this close. Week 1 is the only real bruise on an otherwise clean season: Jaylen Waddle got the flex nod while Chuba Hubbard went off from the bench instead."
       },
-      "pos:K2:QB8": {
-        "title": "Kicker is carrying this team",
-        "text": "Your kickers rank second in the league and your quarterbacks rank last. FantasyPros' rest-of-season projections have Bryce Young as a top-three quarterback the rest of the way, so be patient. When your kicker is the star, the quarterback has some catching up to do."
+      "pos:K1:QB8": {
+        "title": "The upgrade isn't at kicker, it's the other position",
+        "text": "Your quarterbacks are the thinnest position on this roster, while your kicker leads the league, and given this season's quarterback history, nobody's shocked."
       },
-      "proj:under:4429615:4572680": {
-        "title": "ESPN keeps overrating your starters",
-        "text": "Zay Flowers keeps beating his projection while Tucker Kraft kept falling short of his. Trust Flowers and the production over the spreadsheet. Flowers is blooming ahead of schedule."
+      "proj:under:4595348:4572680": {
+        "title": "Malik Nabers is outplaying his own hype",
+        "text": "Nabers earned his spot; Kraft is still auditioning for his. Malik Nabers keeps clearing his projection like it's a layup. Tucker Kraft can't say the same."
+      }
+    },
+    "4": {
+      "pos:TE1:RB8": {
+        "title": "Fix running back first, before anything else",
+        "text": "It's the worst group in the league, while your tight ends are the best, which tracks given how often the flex has gone to the wrong back."
+      },
+      "proj:under:4248528:3929630": {
+        "title": "Christian Watson keeps making the bench call look worse",
+        "text": "The flex spot keeps betting on the wrong back. Christian Watson has outplayed his projection for weeks; Saquon Barkley keeps coming up empty against his."
+      }
+    },
+    "5": {
+      "lineup:C:4432665:w3": {
+        "title": "Brock Bowers earned a permanent apology",
+        "text": "Owe Brock Bowers an apology and start him next time. Week 3's miss: Dalton Schultz got the tight end start while Bowers had a big day from the bench instead."
+      },
+      "pos:QB2:K7": {
+        "title": "The kicker is the only bill left to pay",
+        "text": "The cheapest fix on this roster is at kicker. It's the one position actually dragging the team down, while quarterback carries it, second in the league."
+      },
+      "proj:under:4685472:4685382": {
+        "title": "McMillan is having the better season and ESPN missed it",
+        "text": "If the flex spot's been a coin flip, the coin already told you which way to land. McMillan keeps topping his projection, week after week; Hampton keeps undershooting his."
+      }
+    },
+    "6": {
+      "lineup:B:4431459:w5": {
+        "title": "Your one bench regret, and it's a small one",
+        "text": "Keep the bench this honest and the dings stay rare. Week 5's only real miss: Harold Fannin Jr. got the tight end nod while Tyler Warren outproduced him from the bench, the lone smudge on an otherwise clean record."
+      },
+      "proj:over:4429795:4870795": {
+        "title": "Jahmyr Gibbs doesn't read his own projection",
+        "text": "If there's a running back problem on this roster, it isn't Gibbs. He keeps beating what ESPN expects of him, start to finish, while Makai Lemon has missed his more often than not."
+      }
+    },
+    "7": {
+      "lineup:C:4431299:w4": {
+        "title": "Rashee Rice gave you nothing, literally",
+        "text": "Don't make the same read twice. Week 4: Rashee Rice started at receiver and gave you a complete blank, while Rome Odunze produced from the bench instead."
+      },
+      "pos:QB1:WR8": {
+        "title": "Your quarterback is covering for your receivers",
+        "text": "Make the next roster move at receiver, before quarterback ends up carrying this team alone. It's the best room you've got; receiver is the worst."
       }
     },
     "8": {
       "lineup:C:15847:w2": {
-        "title": "The bench keeps getting the good weeks",
-        "text": "Your Week 2 miss was Dallas Goedert at tight end while Travis Kelce had the big game on your bench. The Swifties are still talking about it."
-      },
-      "pos:FLEX2:RB6": {
-        "title": "Flex is carrying this team",
-        "text": "Your flex spot, the wild-card slot, ranks second in the league and your running backs rank sixth, so that's where an upgrade helps most. Your wild-card spot is pulling more weight than your actual running backs."
-      },
-      "proj:over:4426515:4870808": {
-        "title": "Your starters are beating ESPN's guesses",
-        "text": "Puka Nacua keeps beating his projection while Jeremiyah Love keeps falling short of his. Lean on Puka and stay patient with Love. Puka is making ESPN's projection look like a suggestion."
+        "title": "Travis Kelce had a day, and you missed it",
+        "text": "The Swifties still haven't forgiven this one, so don't repeat it. Week 2: Dallas Goedert got the tight end start while Travis Kelce had one of his better games from the bench instead."
       }
     }
   }
