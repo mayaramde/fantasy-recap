@@ -1,17 +1,21 @@
 {
-  "generated_at": "2026-10-28T13:44:49Z",
+  "generated_at": "2026-10-29T19:30:47Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-10-28T13:44:49Z"
+    "checked_at": "2026-10-29T19:30:47Z"
   },
   "weeks": {},
   "audit": {
     "1": {
-      "pos:TE2:DST7": {
-        "title": "Spend the next roster move on defense",
-        "text": "Target a defense off the wire before the next bye hits. Yours ranks seventh of eight teams while your tight ends sit second, so that's the gap actually costing you points. Your tight ends didn't sign up to carry the defense too."
+      "lineup:C:4426354:w5": {
+        "title": "Wilson over Pickens, the sequel nobody asked for",
+        "text": "Week 5 again: Michael Wilson started at receiver while George Pickens went off from the bench. At this point Pickens should just mail in his own start/sit advice."
+      },
+      "pos:K1:FLEX7": {
+        "title": "Kicker is pulling more weight than the flex spot",
+        "text": "Your kicker ranks first in the league while flex, the wild-card spot, lags near the bottom. Nobody drafts a kicker to carry the offense, yet here we are."
       },
       "proj:under:4567104:4360761": {
         "title": "Your kicker is outperforming your receiver",
@@ -20,12 +24,16 @@
     },
     "2": {
       "lineup:B:4259545:w1": {
-        "title": "One bad call, way back in Week 1",
-        "text": "Keep trusting your gut here, it's worked. Your only real lineup regret all season came in Week 1, when Emeka Egbuka got the flex over D'Andre Swift, who torched everyone from your bench instead. Consider it long forgiven."
+        "title": "Mostly the right calls, a few bench regrets",
+        "text": "Biggest miss: Week 1, starting Emeka Egbuka (11.3) at flex, the wild-card spot, while D'Andre Swift put up 32.4 on your bench, where points don't count."
       },
-      "proj:over:4567048:4360248": {
-        "title": "Kenneth Walker keeps making ESPN look silly",
-        "text": "The tight end problem has a name, and it isn't Walker. Kenneth Walker III has outrun his projection all season; Kyle Pitts Sr. hasn't come close to his in weeks."
+      "pos:WR1:TE8": {
+        "title": "Receivers are carrying this roster solo",
+        "text": "Your receivers lead the league while your tight ends anchor the bottom. Spend the next add on a tight end before your receivers file for workers' comp."
+      },
+      "proj:over:4430878:4360248": {
+        "title": "Smith-Njigba is making the projections look conservative",
+        "text": "Jaxon Smith-Njigba treats his projection like a floor, not a ceiling. Kyle Pitts Sr. can't say the same about his."
       }
     },
     "3": {
@@ -33,19 +41,23 @@
         "title": "Chuba Hubbard made the bench the better lineup",
         "text": "Trust the bench over the flex call next time it's this close. Week 1 is the only real bruise on an otherwise clean season: Jaylen Waddle got the flex nod while Chuba Hubbard went off from the bench instead."
       },
-      "pos:K1:QB8": {
-        "title": "The upgrade isn't at kicker, it's the other position",
-        "text": "Your quarterbacks are the thinnest position on this roster, while your kicker leads the league, and given this season's quarterback history, nobody's shocked."
+      "pos:FLEX2:QB8": {
+        "title": "The quarterback curse, now with a league rank to prove it",
+        "text": "Flex, the wild-card spot, ranks near the top for you. Quarterback ranks dead last, which at this point is less a stat and more a diagnosis."
       },
-      "proj:under:4595348:4572680": {
-        "title": "Malik Nabers is outplaying his own hype",
-        "text": "Nabers earned his spot; Kraft is still auditioning for his. Malik Nabers keeps clearing his projection like it's a layup. Tucker Kraft can't say the same."
+      "proj:under:4429615:4572680": {
+        "title": "Zay Flowers is quietly having a great season",
+        "text": "Zay Flowers blew past his projection again. Tucker Kraft is still waiting to clear his."
       }
     },
     "4": {
-      "pos:TE1:RB8": {
-        "title": "Fix running back first, before anything else",
-        "text": "It's the worst group in the league, while your tight ends are the best, which tracks given how often the flex has gone to the wrong back."
+      "lineup:C:4248528:w1": {
+        "title": "The season's oldest bench miss",
+        "text": "Quinshon Judkins got the flex nod over Christian Watson in Week 1, and Watson went off from the bench. It's the only miss from that week still on the books."
+      },
+      "pos:TE1:RB7": {
+        "title": "Tight end carries this roster, running back drags it",
+        "text": "Your tight ends rank first in the league, your running backs near the bottom. The next waiver claim has one obvious lane to run in."
       },
       "proj:under:4248528:3929630": {
         "title": "Christian Watson keeps making the bench call look worse",
@@ -53,17 +65,13 @@
       }
     },
     "5": {
-      "lineup:C:4432665:w3": {
-        "title": "Brock Bowers earned a permanent apology",
-        "text": "Owe Brock Bowers an apology and start him next time. Week 3's miss: Dalton Schultz got the tight end start while Bowers had a big day from the bench instead."
+      "lineup:C:4685278:w7": {
+        "title": "The bench outplayed the starting lineup",
+        "text": "Week 7's regret: Jalen Coker got the start at receiver while Luther Burden III had himself a day from the bench. The bench earned a seat at the big-kid table that week."
       },
-      "pos:QB2:K7": {
-        "title": "The kicker is the only bill left to pay",
-        "text": "The cheapest fix on this roster is at kicker. It's the one position actually dragging the team down, while quarterback carries it, second in the league."
-      },
-      "proj:under:4685472:4685382": {
-        "title": "McMillan is having the better season and ESPN missed it",
-        "text": "If the flex spot's been a coin flip, the coin already told you which way to land. McMillan keeps topping his projection, week after week; Hampton keeps undershooting his."
+      "pos:RB3:K8": {
+        "title": "The kicker is the only thing holding this back",
+        "text": "Running back is a strength, kicker is dead last. It's the cheapest fix on the roster, and the waiver wire is practically begging to help."
       }
     },
     "6": {
@@ -71,9 +79,13 @@
         "title": "Your one bench regret, and it's a small one",
         "text": "Keep the bench this honest and the dings stay rare. Week 5's only real miss: Harold Fannin Jr. got the tight end nod while Tyler Warren outproduced him from the bench, the lone smudge on an otherwise clean record."
       },
-      "proj:over:4429795:4870795": {
-        "title": "Jahmyr Gibbs doesn't read his own projection",
-        "text": "If there's a running back problem on this roster, it isn't Gibbs. He keeps beating what ESPN expects of him, start to finish, while Makai Lemon has missed his more often than not."
+      "pos:RB1:WR8": {
+        "title": "Running back is doing the heavy lifting",
+        "text": "Your running backs rank at the top of the league while your receivers sit at the bottom. The next wire move should be a receiver, not another running back you don't need."
+      },
+      "proj:over:4430737:4870795": {
+        "title": "Kyren Williams keeps beating the spreadsheet",
+        "text": "Kyren Williams has spent the whole season outrunning his own projection. Makai Lemon hasn't been able to say the same about his. ESPN's model might want to double check its math."
       }
     },
     "7": {
@@ -81,15 +93,27 @@
         "title": "Rashee Rice gave you nothing, literally",
         "text": "Don't make the same read twice. Week 4: Rashee Rice started at receiver and gave you a complete blank, while Rome Odunze produced from the bench instead."
       },
-      "pos:QB1:WR8": {
-        "title": "Your quarterback is covering for your receivers",
-        "text": "Make the next roster move at receiver, before quarterback ends up carrying this team alone. It's the best room you've got; receiver is the worst."
+      "pos:QB1:FLEX8": {
+        "title": "Quarterback is the strength, flex is the sinkhole",
+        "text": "Your quarterback ranks first in the league while flex, the wild-card spot, ranks dead last. Whatever's starting there now should not still be starting there."
+      },
+      "proj:under:3918298:4429160": {
+        "title": "Josh Allen is outrunning his own projection",
+        "text": "Josh Allen has basically stopped checking his own projection, he's so far past it. De'Von Achane wishes he could say the same about his."
       }
     },
     "8": {
-      "lineup:C:15847:w2": {
-        "title": "Travis Kelce had a day, and you missed it",
-        "text": "The Swifties still haven't forgiven this one, so don't repeat it. Week 2: Dallas Goedert got the tight end start while Travis Kelce had one of his better games from the bench instead."
+      "lineup:C:3916148:w7": {
+        "title": "Tony Pollard had the game Henry was supposed to have",
+        "text": "Week 7: Derrick Henry got the start at running back while Tony Pollard erupted from the bench instead. Not every bench decision needs forgiveness, just this one."
+      },
+      "pos:WR2:RB8": {
+        "title": "Receivers are fine, running back is the fire",
+        "text": "Your receivers rank near the top of the league while running back sits dead last. That's not a tweak, that's the whole waiver budget."
+      },
+      "proj:under:4431452:4870808": {
+        "title": "Drake Maye is outplaying the rookie hype around him",
+        "text": "Drake Maye keeps making his own projection look conservative. Jeremiyah Love hasn't managed the same against his. The arm is covering for the legs here."
       }
     }
   }
