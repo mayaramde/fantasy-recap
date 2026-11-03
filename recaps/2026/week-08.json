@@ -5,10 +5,10 @@
   "headline": "Three Bengals, three different fantasy teams, three wins. Cincinnati runs this league now.",
   "dek": "The closest game of Week 8 was a 48.08-point blowout, which is a sentence that should not exist.",
   "matchups": {
-    "4-7": "Ja'Marr Chase scored 3.2 for Samantha in Week 1. This week he caught 11 passes for 31.1 points, and Week 1 Ja'Marr would not recognize him. Sam won by 66.18, the biggest margin of the week. Trey McBride was the only Tara starter to beat his projection.",
-    "2-8": "One week after Tony Pollard scored three touchdowns on her bench, Cambri started him, and he gave her 28.7. Tee Higgins added 37.5 and Cambri won by 48.08, which this week counts as a nail-biter. Even Amie's best possible lineup would have come up short.",
-    "3-6": "Kyra's gut picked Matthew Stafford over Joe Burrow in Week 2 and was right. This week it went with Burrow, who outscored Stafford by 31.2, and Kyra won by 65.02. The gut is now taking appointments. Chuba Hubbard's 24.9 was the best thing that happened to Maddie all day.",
-    "1-5": "Maya won by 60.8 behind two Brock Bowers touchdowns and 21 points from her Jaguars D/ST (the team-defense slot), which returned an interception for a touchdown. Marlee lost Lamar Jackson to a thumb injury on his only pass of the day, and he is headed for surgery and injured reserve. Here's to a quick recovery, Lamar."
+    "4-7": "In Week 1, Ja'Marr Chase forgot it was game day and scored 3.2 for Samantha. This week he remembered: 11 catches, 31.1 points. Sam won by 66.18, the biggest margin of the week.",
+    "2-8": "Last week Cambri started Derrick Henry while Tony Pollard scored three touchdowns on her bench. This week she started Pollard. He gave her 28.7, Tee Higgins added 37.5, and she won by 48.08.",
+    "3-6": "Kyra's gut picked Matthew Stafford over Joe Burrow in Week 2 and was right. This week it went with Burrow, who outscored Stafford by 31.2, and Kyra won by 65.02. The gut is now taking appointments. Maddie got 24.9 from Chuba Hubbard, who spent Week 1 scoring on her bench.",
+    "1-5": "Maya won by 60.8 behind two Brock Bowers touchdowns and 21 points from her Jaguars D/ST (the team-defense slot), which returned an interception for a touchdown. Marlee lost Lamar Jackson to a thumb injury early in the game, and he is headed for surgery and injured reserve."
   },
   "game_balls": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "manager": "Samantha",
-      "title": "Repeat offender",
-      "text": "Bhayshul Tuten scored 29.9 against a 14.56 projection, two weeks after beating it by 12.06. The projection has now lost to him twice and should start considering a plea deal.",
+      "title": "The projection, repeat offender",
+      "text": "Bhayshul Tuten scored 29.9 against a 14.56 projection, two weeks after beating it by 12.06. That's the fourth time this season the projection has lowballed him, and it should start considering a plea deal.",
       "stat": "+15.34 vs projection",
       "emoji": "🚔",
       "player": "Bhayshul Tuten"
@@ -40,7 +40,7 @@
     {
       "manager": "Maddie",
       "title": "The team name is not a suggestion",
-      "text": "Maddie started DK Metcalf, who caught one pass for 1.4 points, and benched Jaylen Waddle, who scored 14.9. That makes five straight weeks Waddle Deez Nutz has kept its own Waddle on the bench. The name is right there on the jersey.",
+      "text": "Maddie started DK Metcalf, who caught one pass for 1.4 points, and benched Jaylen Waddle, who scored 14.9. That makes five straight weeks Waddle Deez Nutz has kept its own Waddle on the bench. In Week 2 she started Waddle over this same Metcalf, and loyalty paid. It's paying from the bench now.",
       "stat": "−13.5 at WR",
       "emoji": "🪑",
       "player": "Jaylen Waddle"
@@ -48,7 +48,7 @@
     {
       "manager": "Amie",
       "title": "The bench had the better backfield",
-      "text": "D'Andre Swift scored 27.9 on Amie's bench while Ashton Jeanty scored 10.3 in her lineup, and Patrick Mahomes outscored her starting quarterback from there too. Her best possible lineup still loses to Cambri's 172.26, so consider this flag a strongly worded note, not a penalty.",
+      "text": "D'Andre Swift scored 27.9 on Amie's bench while Ashton Jeanty scored 10.3 in her lineup. Swap them and she still loses to Cambri's 172.26. The bench won the argument and lost the game anyway.",
       "stat": "29.06 pts benched",
       "emoji": "📝",
       "player": "D'Andre Swift"
