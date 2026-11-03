@@ -1,0 +1,88 @@
+{
+  "season": 2026,
+  "week": 8,
+  "status": "draft",
+  "headline": "Three Bengals, three different fantasy teams, three wins. Cincinnati runs this league now.",
+  "dek": "The closest game of Week 8 was a 48.08-point blowout, which is a sentence that should not exist.",
+  "matchups": {
+    "4-7": "In Week 1, Ja'Marr Chase forgot it was game day and scored 3.2 for Samantha. This week he remembered: 11 catches, 31.1 points. Sam won by 66.18, the biggest margin of the week.",
+    "2-8": "Last week Cambri started Derrick Henry while Tony Pollard scored three touchdowns on her bench. This week she started Pollard. He gave her 28.7, Tee Higgins added 37.5, and she won by 48.08.",
+    "3-6": "Maddie got 24.9 from Chuba Hubbard, who spent Week 1 scoring on her bench. Kyra's gut picked Matthew Stafford over Joe Burrow in Week 2 and was right. This week it went with Burrow, who outscored Stafford by 31.2, and Kyra won by 65.02. The gut is now taking appointments.",
+    "1-5": "Maya won by 60.8 behind two Brock Bowers touchdowns and 21 points from her Jaguars D/ST (the team-defense slot), which returned an interception for a touchdown. Marlee lost Lamar Jackson to a thumb injury early in the game; more on that below."
+  },
+  "game_balls": [
+    {
+      "manager": "Kyra",
+      "title": "Five touchdowns and a few gifts",
+      "text": "Joe Burrow scored 39.48, the most by any player this week, and Kyra is 7-1. He threw for 462 yards and five touchdowns, ran in another, and threw three interceptions so the other team could feel included.",
+      "stat": "39.48 pts at QB",
+      "emoji": "🎁",
+      "player": "Joe Burrow"
+    },
+    {
+      "manager": "Samantha",
+      "title": "The projection, repeat offender",
+      "text": "Bhayshul Tuten scored 29.9 against a 14.56 projection, two weeks after beating it by 12.06. That's the fourth time this season the projection has lowballed him, and it should start considering a plea deal.",
+      "stat": "+15.34 vs projection",
+      "emoji": "🚔",
+      "player": "Bhayshul Tuten"
+    },
+    {
+      "manager": "Cambri",
+      "title": "Best receiver in the building",
+      "text": "Tee Higgins caught 10 of 11 targets for 155 yards and two touchdowns, beating his projection by 22.01, the biggest beat in the league. On the same afternoon, he outscored the more famous receiver in his own locker room.",
+      "stat": "37.5 pts",
+      "emoji": "🐅",
+      "player": "Tee Higgins"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Maddie",
+      "title": "The team name is not a suggestion",
+      "text": "Maddie started DK Metcalf, who caught one pass for 1.4 points, and benched Jaylen Waddle, who scored 14.9. That makes five straight weeks Waddle Deez Nutz has kept its own Waddle on the bench. In Week 2 she started Waddle over this same Metcalf, and loyalty paid. It's paying from the bench now.",
+      "stat": "−13.5 at WR",
+      "emoji": "🪑",
+      "player": "Jaylen Waddle"
+    },
+    {
+      "manager": "Amie",
+      "title": "The bench had the better backfield",
+      "text": "D'Andre Swift scored 27.9 on Amie's bench while Ashton Jeanty scored 10.3 in her lineup. Swap them and she still loses to Cambri's 172.26. The bench won the argument and lost the game anyway.",
+      "stat": "29.06 pts benched",
+      "emoji": "📝",
+      "player": "D'Andre Swift"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Marlee",
+      "title": "Lamar Jackson, headed to IR",
+      "text": "Lamar Jackson hurt his thumb on his only pass of the day, in his first game back from an ankle injury, and is headed for surgery and injured reserve; here's hoping for a smooth recovery.",
+      "stat": "Thumb surgery, IR",
+      "player": "Lamar Jackson"
+    },
+    {
+      "manager": "Tara",
+      "title": "From an apology to a hug",
+      "text": "Tara was projected for 121.36 and scored 78.38, the low of the week, with Parker Washington alone coming in 12.35 under his number. Last week this recap apologized to her. This week it's just sending a hug.",
+      "stat": "78.38 pts",
+      "emoji": "🫂",
+      "player": "Parker Washington"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Touchdown",
+      "definition": "Getting the ball into the end zone, worth 6 fantasy points to the player who scores it and 4 to a quarterback who throws it, like the two Tee Higgins caught for Cambri this week."
+    },
+    {
+      "term": "Yards",
+      "definition": "How far a player moves the ball, and in this league every 10 rushing or receiving yards or 25 passing yards is worth a point, which is how Joe Burrow's 462 turned into 18.48 points before a single touchdown."
+    },
+    {
+      "term": "Pick-six",
+      "definition": "An interception the defense returns all the way for a touchdown, worth 8 points to whoever starts that D/ST (2 for the pick, 6 for the score), like the one the Jaguars D/ST had for Maya this week."
+    }
+  ]
+}
