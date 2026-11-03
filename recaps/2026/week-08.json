@@ -8,7 +8,7 @@
     "4-7": "Ja'Marr Chase scored 3.2 for Samantha in Week 1. This week he caught 11 passes for 31.1 points, and Week 1 Ja'Marr would not recognize him. Sam won by 66.18, the biggest margin of the week. Trey McBride was the only Tara starter to beat his projection.",
     "2-8": "One week after Tony Pollard scored three touchdowns on her bench, Cambri started him, and he gave her 28.7. Tee Higgins added 37.5 and Cambri won by 48.08, which this week counts as a nail-biter. Even Amie's best possible lineup would have come up short.",
     "3-6": "Kyra's gut picked Matthew Stafford over Joe Burrow in Week 2 and was right. This week it went with Burrow, who outscored Stafford by 31.2, and Kyra won by 65.02. The gut is now taking appointments. Chuba Hubbard's 24.9 was the best thing that happened to Maddie all day.",
-    "1-5": "Maya won by 60.8 behind two Brock Bowers touchdowns and 21 points from a Jaguars D/ST that returned an interception for a touchdown. Marlee lost Lamar Jackson to a thumb injury on his only pass of the day, and he is headed for surgery and injured reserve. Here's to a quick recovery, Lamar."
+    "1-5": "Maya won by 60.8 behind two Brock Bowers touchdowns and 21 points from her Jaguars D/ST (the team-defense slot), which returned an interception for a touchdown. Marlee lost Lamar Jackson to a thumb injury on his only pass of the day, and he is headed for surgery and injured reserve. Here's to a quick recovery, Lamar."
   },
   "game_balls": [
     {
@@ -40,7 +40,7 @@
     {
       "manager": "Maddie",
       "title": "The team name is not a suggestion",
-      "text": "Maddie started DK Metcalf, who caught one pass for 1.4 points, and benched Jaylen Waddle, who scored 14.9. Waddle Deez Nutz has now left its own Waddle on the bench in Week 6 and Week 8. The name is right there on the jersey.",
+      "text": "Maddie started DK Metcalf, who caught one pass for 1.4 points, and benched Jaylen Waddle, who scored 14.9. That makes five straight weeks Waddle Deez Nutz has kept its own Waddle on the bench. The name is right there on the jersey.",
       "stat": "−13.5 at WR",
       "emoji": "🪑",
       "player": "Jaylen Waddle"
@@ -74,7 +74,7 @@
   "glossary": [
     {
       "term": "Touchdown",
-      "definition": "Getting the ball into the end zone, worth 6 fantasy points to the player who scores it and 4 to a quarterback who throws it. Tee Higgins caught two of them for Cambri this week."
+      "definition": "Getting the ball into the end zone, worth 6 fantasy points to the player who scores it and 4 to a quarterback who throws it, like the two Tee Higgins caught for Cambri this week."
     },
     {
       "term": "Yards",
@@ -82,7 +82,7 @@
     },
     {
       "term": "Pick-six",
-      "definition": "An interception that the defense returns all the way for a touchdown, worth 6 points to whoever starts that D/ST. The Jaguars D/ST had one for Maya this week."
+      "definition": "An interception the defense returns all the way for a touchdown, worth 8 points to whoever starts that D/ST (2 for the pick, 6 for the score), like the one the Jaguars D/ST had for Maya this week."
     }
   ]
 }
