@@ -1,0 +1,6890 @@
+{
+ "season": 2026,
+ "week": 8,
+ "captured_at": "2026-11-03T16:32:14.738Z",
+ "espn_status": {
+  "current_matchup_period": 9,
+  "latest_scoring_period": 9
+ },
+ "complete": true,
+ "matchups": [
+  {
+   "id": 29,
+   "winner": "HOME",
+   "home": {
+    "team_id": 7,
+    "points": 144.56,
+    "projected": 133.18,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4362628,
+      "name": "Ja'Marr Chase",
+      "pos": "WR",
+      "pro_team_id": 4,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 31.1,
+      "projected": 21.9,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 141,
+        "points": 14.1
+       },
+       {
+        "stat": 53,
+        "value": 11,
+        "points": 11
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 16,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3918298,
+      "name": "Josh Allen",
+      "pos": "QB",
+      "pro_team_id": 2,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 26.56,
+      "projected": 23.7,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 289,
+        "points": 11.56
+       },
+       {
+        "stat": 4,
+        "value": 2,
+        "points": 8
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 30,
+        "points": 3
+       },
+       {
+        "stat": 20,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 0,
+        "value": 34,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 7,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4428331,
+      "name": "Rashee Rice",
+      "pos": "WR",
+      "pro_team_id": 12,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 18.3,
+      "projected": 12.65,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 53,
+        "points": 5.3
+       },
+       {
+        "stat": 58,
+        "value": 8,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4427366,
+      "name": "Breece Hall",
+      "pos": "RB",
+      "pro_team_id": 20,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4882093,
+      "name": "Bhayshul Tuten",
+      "pos": "RB",
+      "pro_team_id": 30,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 29.9,
+      "projected": 14.56,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 104,
+        "points": 10.4
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 55,
+        "points": 5.5
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 23,
+        "value": 16,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4431299,
+      "name": "Rome Odunze",
+      "pos": "WR",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 12.7,
+      "projected": 9.27,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 87,
+        "points": 8.7
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4432710,
+      "name": "TreVeyon Henderson",
+      "pos": "RB",
+      "pro_team_id": 17,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4430027,
+      "name": "Sam LaPorta",
+      "pos": "TE",
+      "pro_team_id": 8,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 6.5,
+      "projected": 10.74,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 33,
+        "points": 3.3
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 24,
+        "value": 2,
+        "points": 0.2
+       },
+       {
+        "stat": 23,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4678008,
+      "name": "Jonathon Brooks",
+      "pos": "RB",
+      "pro_team_id": 29,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 2976212,
+      "name": "Stefon Diggs",
+      "pos": "WR",
+      "pro_team_id": 28,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 12.8,
+      "projected": 12.56,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 38,
+        "points": 3.8
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4385690,
+      "name": "Dalton Kincaid",
+      "pos": "TE",
+      "pro_team_id": 2,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 18.6,
+      "projected": 8.89,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 86,
+        "points": 8.6
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4711533,
+      "name": "Ollie Gordon II",
+      "pos": "RB",
+      "pro_team_id": 15,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 6.9,
+      "projected": 14.19,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 69,
+        "points": 6.9
+       },
+       {
+        "stat": 23,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4685247,
+      "name": "Braelon Allen",
+      "pos": "RB",
+      "pro_team_id": 20,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 23.3,
+      "projected": 17.39,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 147,
+        "points": 14.7
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 6,
+        "points": 0.6
+       },
+       {
+        "stat": 23,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4571557,
+      "name": "Spencer Shrader",
+      "pos": "K",
+      "pro_team_id": 11,
+      "slot": "K",
+      "injury_status": null,
+      "points": 1,
+      "projected": 10.16,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 86,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 87,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4248528,
+      "name": "Christian Watson",
+      "pos": "WR",
+      "pro_team_id": 9,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 17.3,
+      "projected": 14.56,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 113,
+        "points": 11.3
+       },
+       {
+        "stat": 53,
+        "value": 8,
+        "points": 8
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 58,
+        "value": 10,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 4036378,
+      "name": "Jordan Love",
+      "pos": "QB",
+      "pro_team_id": 9,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 21.52,
+      "projected": 17.07,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 4,
+        "value": 3,
+        "points": 12
+       },
+       {
+        "stat": 3,
+        "value": 288,
+        "points": 11.52
+       },
+       {
+        "stat": 20,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 0,
+        "value": 41,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 30,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": -16004,
+      "name": "Bengals D/ST",
+      "pos": "DST",
+      "pro_team_id": 4,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 2,
+      "projected": 5.99,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 96,
+        "value": 2,
+        "points": 4
+       },
+       {
+        "stat": 124,
+        "value": 1,
+        "points": -3
+       },
+       {
+        "stat": 133,
+        "value": 1,
+        "points": -3
+       },
+       {
+        "stat": 98,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 99,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 120,
+        "value": 36,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 440,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     }
+    ]
+   },
+   "away": {
+    "team_id": 4,
+    "points": 78.38,
+    "projected": 121.36,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 3117251,
+      "name": "Christian McCaffrey",
+      "pos": "RB",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 3929630,
+      "name": "Saquon Barkley",
+      "pos": "RB",
+      "pro_team_id": 21,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 12.4,
+      "projected": 14.03,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 30,
+        "points": 3
+       },
+       {
+        "stat": 42,
+        "value": 24,
+        "points": 2.4
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 23,
+        "value": 13,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4361307,
+      "name": "Trey McBride",
+      "pos": "TE",
+      "pro_team_id": 22,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 20.2,
+      "projected": 17.67,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 72,
+        "points": 7.2
+       },
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 8,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4361370,
+      "name": "Chris Olave",
+      "pos": "WR",
+      "pro_team_id": 18,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4685702,
+      "name": "Quinshon Judkins",
+      "pos": "RB",
+      "pro_team_id": 5,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 6.9,
+      "projected": 11.23,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 25,
+        "points": 2.5
+       },
+       {
+        "stat": 42,
+        "value": 24,
+        "points": 2.4
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 23,
+        "value": 11,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4569173,
+      "name": "Rhamondre Stevenson",
+      "pos": "RB",
+      "pro_team_id": 17,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 12,
+      "projected": 15.72,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 82,
+        "points": 8.2
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 42,
+        "value": 8,
+        "points": 0.8
+       },
+       {
+        "stat": 23,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4432620,
+      "name": "Parker Washington",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 3.6,
+      "projected": 15.95,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 16,
+        "points": 1.6
+       },
+       {
+        "stat": 24,
+        "value": 10,
+        "points": 1
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 23,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4432773,
+      "name": "Brian Thomas Jr.",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 8.2,
+      "projected": 5.32,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 12,
+        "points": 1.2
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 2473037,
+      "name": "Jason Myers",
+      "pos": "K",
+      "pro_team_id": 26,
+      "slot": "K",
+      "injury_status": null,
+      "points": 2,
+      "projected": 9.55,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 80,
+        "value": 1,
+        "points": 3
+       },
+       {
+        "stat": 85,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 84,
+        "value": 2,
+        "points": 0
+       },
+       {
+        "stat": 87,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 3126486,
+      "name": "Deebo Samuel Sr.",
+      "pos": "WR",
+      "pro_team_id": 25,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 3042519,
+      "name": "Aaron Jones Sr.",
+      "pos": "RB",
+      "pro_team_id": 16,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 6,
+      "projected": 10.48,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 22,
+        "points": 2.2
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 18,
+        "points": 1.8
+       },
+       {
+        "stat": 23,
+        "value": 5,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4361741,
+      "name": "Brock Purdy",
+      "pos": "QB",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": -16026,
+      "name": "Seahawks D/ST",
+      "pos": "DST",
+      "pro_team_id": 26,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 1,
+      "projected": 5.8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 96,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 99,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 123,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 132,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 120,
+        "value": 34,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 363,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4429059,
+      "name": "Woody Marks",
+      "pos": "RB",
+      "pro_team_id": 34,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4683062,
+      "name": "Xavier Worthy",
+      "pos": "WR",
+      "pro_team_id": 12,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 4.3,
+      "projected": 8.16,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 42,
+        "value": 13,
+        "points": 1.3
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": -16005,
+      "name": "Browns D/ST",
+      "pos": "DST",
+      "pro_team_id": 5,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 2,
+      "projected": 6.25,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 95,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 99,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 132,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 120,
+        "value": 27,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 361,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4426348,
+      "name": "Jayden Daniels",
+      "pos": "QB",
+      "pro_team_id": 28,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 14.98,
+      "projected": 22.8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 217,
+        "points": 8.68
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 24,
+        "value": 23,
+        "points": 2.3
+       },
+       {
+        "stat": 0,
+        "value": 29,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 16,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 2,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     }
+    ]
+   }
+  },
+  {
+   "id": 30,
+   "winner": "HOME",
+   "home": {
+    "team_id": 8,
+    "points": 172.26,
+    "projected": 137.85,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4426515,
+      "name": "Puka Nacua",
+      "pos": "WR",
+      "pro_team_id": 14,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 25,
+      "projected": 22.8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 11,
+        "points": 11
+       },
+       {
+        "stat": 42,
+        "value": 80,
+        "points": 8
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 12,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": 4262921,
+      "name": "Justin Jefferson",
+      "pos": "WR",
+      "pro_team_id": 16,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 14.3,
+      "projected": 17.88,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 42,
+        "value": 33,
+        "points": 3.3
+       },
+       {
+        "stat": 58,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3043078,
+      "name": "Derrick Henry",
+      "pos": "RB",
+      "pro_team_id": 33,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 14,
+      "projected": 18.8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 53,
+        "points": 5.3
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 7,
+        "points": 0.7
+       },
+       {
+        "stat": 23,
+        "value": 11,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4870808,
+      "name": "Jeremiyah Love",
+      "pos": "RB",
+      "pro_team_id": 22,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 2.3,
+      "projected": 11.56,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 23,
+        "points": 2.3
+       },
+       {
+        "stat": 23,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4239996,
+      "name": "Travis Etienne Jr.",
+      "pos": "RB",
+      "pro_team_id": 18,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4239993,
+      "name": "Tee Higgins",
+      "pos": "WR",
+      "pro_team_id": 4,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 37.5,
+      "projected": 15.49,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 155,
+        "points": 15.5
+       },
+       {
+        "stat": 43,
+        "value": 2,
+        "points": 12
+       },
+       {
+        "stat": 53,
+        "value": 10,
+        "points": 10
+       },
+       {
+        "stat": 58,
+        "value": 11,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4426388,
+      "name": "Jameson Williams",
+      "pos": "WR",
+      "pro_team_id": 8,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 17,
+      "projected": 11.1,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 70,
+        "points": 7
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4871023,
+      "name": "Carnell Tate",
+      "pos": "WR",
+      "pro_team_id": 10,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3953687,
+      "name": "Brandon Aubrey",
+      "pos": "K",
+      "pro_team_id": 6,
+      "slot": "K",
+      "injury_status": null,
+      "points": 12,
+      "projected": 10,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 80,
+        "value": 2,
+        "points": 6
+       },
+       {
+        "stat": 77,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 86,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 85,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 84,
+        "value": 4,
+        "points": 0
+       },
+       {
+        "stat": 87,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 15847,
+      "name": "Travis Kelce",
+      "pos": "TE",
+      "pro_team_id": 12,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 11.7,
+      "projected": 9.3,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 67,
+        "points": 6.7
+       },
+       {
+        "stat": 53,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 58,
+        "value": 7,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4241985,
+      "name": "J.K. Dobbins",
+      "pos": "RB",
+      "pro_team_id": 7,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 1.3,
+      "projected": 9.03,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 13,
+        "points": 1.3
+       },
+       {
+        "stat": 23,
+        "value": 7,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 3916433,
+      "name": "Jakobi Meyers",
+      "pos": "WR",
+      "pro_team_id": 30,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 4.4,
+      "projected": 10.63,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 24,
+        "points": 2.4
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4431452,
+      "name": "Drake Maye",
+      "pos": "QB",
+      "pro_team_id": 17,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 22.46,
+      "projected": 22.07,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 4,
+        "value": 2,
+        "points": 8
+       },
+       {
+        "stat": 3,
+        "value": 199,
+        "points": 7.96
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 5,
+        "points": 0.5
+       },
+       {
+        "stat": 0,
+        "value": 20,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 16,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 8,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 3916148,
+      "name": "Tony Pollard",
+      "pos": "RB",
+      "pro_team_id": 10,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 28.7,
+      "projected": 15.02,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 2,
+        "points": 12
+       },
+       {
+        "stat": 24,
+        "value": 117,
+        "points": 11.7
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 42,
+        "value": 20,
+        "points": 2
+       },
+       {
+        "stat": 23,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4426385,
+      "name": "Zach Charbonnet",
+      "pos": "RB",
+      "pro_team_id": 26,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 5.9,
+      "projected": 10.4,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 24,
+        "value": 23,
+        "points": 2.3
+       },
+       {
+        "stat": 42,
+        "value": 6,
+        "points": 0.6
+       },
+       {
+        "stat": 23,
+        "value": 6,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4572680,
+      "name": "Tucker Kraft",
+      "pos": "TE",
+      "pro_team_id": 9,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 17.3,
+      "projected": 10.79,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 53,
+        "points": 5.3
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": -16007,
+      "name": "Broncos D/ST",
+      "pos": "DST",
+      "pro_team_id": 7,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 1,
+      "projected": 4.98,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 99,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 132,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 120,
+        "value": 24,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 399,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     }
+    ]
+   },
+   "away": {
+    "team_id": 2,
+    "points": 124.18,
+    "projected": 138.15,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4430878,
+      "name": "Jaxon Smith-Njigba",
+      "pos": "WR",
+      "pro_team_id": 26,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 23.8,
+      "projected": 22.06,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 118,
+        "points": 11.8
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 11,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4241389,
+      "name": "CeeDee Lamb",
+      "pos": "WR",
+      "pro_team_id": 6,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 12.8,
+      "projected": 20.07,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 42,
+        "value": 58,
+        "points": 5.8
+       },
+       {
+        "stat": 58,
+        "value": 11,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4890973,
+      "name": "Ashton Jeanty",
+      "pos": "RB",
+      "pro_team_id": 13,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 10.3,
+      "projected": 16.84,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 64,
+        "points": 6.4
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 24,
+        "value": 9,
+        "points": 0.9
+       },
+       {
+        "stat": 23,
+        "value": 2,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4567048,
+      "name": "Kenneth Walker III",
+      "pos": "RB",
+      "pro_team_id": 12,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 12.4,
+      "projected": 19.85,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 69,
+        "points": 6.9
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 42,
+        "value": 15,
+        "points": 1.5
+       },
+       {
+        "stat": 23,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4567750,
+      "name": "Emeka Egbuka",
+      "pos": "WR",
+      "pro_team_id": 27,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4259545,
+      "name": "D'Andre Swift",
+      "pos": "RB",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 27.9,
+      "projected": 14.67,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 3,
+        "points": 18
+       },
+       {
+        "stat": 24,
+        "value": 69,
+        "points": 6.9
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 10,
+        "points": 1
+       },
+       {
+        "stat": 23,
+        "value": 27,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4696981,
+      "name": "Cam Skattebo",
+      "pos": "RB",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4685512,
+      "name": "Jadarian Price",
+      "pos": "RB",
+      "pro_team_id": 26,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 5.7,
+      "projected": 7.75,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 29,
+        "points": 2.9
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 8,
+        "points": 0.8
+       },
+       {
+        "stat": 23,
+        "value": 10,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4431611,
+      "name": "Caleb Williams",
+      "pos": "QB",
+      "pro_team_id": 3,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 13.98,
+      "projected": 15.48,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 247,
+        "points": 9.88
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 24,
+        "value": 1,
+        "points": 0.1
+       },
+       {
+        "stat": 0,
+        "value": 34,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 24,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 2,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4701936,
+      "name": "Matthew Golden",
+      "pos": "WR",
+      "pro_team_id": 9,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 20.9,
+      "projected": 15.09,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 79,
+        "points": 7.9
+       },
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 13,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": -16023,
+      "name": "Steelers D/ST",
+      "pos": "DST",
+      "pro_team_id": 23,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 16,
+      "projected": 8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 99,
+        "value": 8,
+        "points": 8
+       },
+       {
+        "stat": 90,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 96,
+        "value": 2,
+        "points": 4
+       },
+       {
+        "stat": 120,
+        "value": 6,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 319,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4575131,
+      "name": "Jacory Croskey-Merritt",
+      "pos": "RB",
+      "pro_team_id": 28,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4608686,
+      "name": "Kyle Monangai",
+      "pos": "RB",
+      "pro_team_id": 3,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 3139477,
+      "name": "Patrick Mahomes",
+      "pos": "QB",
+      "pro_team_id": 12,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 25.44,
+      "projected": 14.23,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 321,
+        "points": 12.84
+       },
+       {
+        "stat": 4,
+        "value": 3,
+        "points": 12
+       },
+       {
+        "stat": 24,
+        "value": 6,
+        "points": 0.6
+       },
+       {
+        "stat": 0,
+        "value": 41,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 30,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 2,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 3929645,
+      "name": "Juwan Johnson",
+      "pos": "TE",
+      "pro_team_id": 18,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 17372,
+      "name": "Chris Boswell",
+      "pos": "K",
+      "pro_team_id": 23,
+      "slot": "K",
+      "injury_status": null,
+      "points": 8,
+      "projected": 10.43,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 80,
+        "value": 2,
+        "points": 6
+       },
+       {
+        "stat": 86,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 85,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 84,
+        "value": 3,
+        "points": 0
+       },
+       {
+        "stat": 87,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3046439,
+      "name": "Hunter Henry",
+      "pos": "TE",
+      "pro_team_id": 17,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 6,
+      "projected": 10.34,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 30,
+        "points": 3
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     }
+    ]
+   }
+  },
+  {
+   "id": 31,
+   "winner": "HOME",
+   "home": {
+    "team_id": 6,
+    "points": 154.98,
+    "projected": 139.04,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4429795,
+      "name": "Jahmyr Gibbs",
+      "pos": "RB",
+      "pro_team_id": 8,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 24.8,
+      "projected": 24.59,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 153,
+        "points": 15.3
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 15,
+        "points": 1.5
+       },
+       {
+        "stat": 23,
+        "value": 23,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4426502,
+      "name": "Drake London",
+      "pos": "WR",
+      "pro_team_id": 1,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 1.8,
+      "projected": 17.93,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 42,
+        "value": 8,
+        "points": 0.8
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4047646,
+      "name": "A.J. Brown",
+      "pos": "WR",
+      "pro_team_id": 17,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4430737,
+      "name": "Kyren Williams",
+      "pos": "RB",
+      "pro_team_id": 14,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 12.9,
+      "projected": 18.02,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 56,
+        "points": 5.6
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 42,
+        "value": 3,
+        "points": 0.3
+       },
+       {
+        "stat": 23,
+        "value": 16,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": 4569618,
+      "name": "Garrett Wilson",
+      "pos": "WR",
+      "pro_team_id": 20,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 14.3,
+      "projected": 14.13,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 83,
+        "points": 8.3
+       },
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 58,
+        "value": 12,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4431459,
+      "name": "Tyler Warren",
+      "pos": "TE",
+      "pro_team_id": 11,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 5.8,
+      "projected": 11.34,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 42,
+        "value": 18,
+        "points": 1.8
+       },
+       {
+        "stat": 58,
+        "value": 10,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3915511,
+      "name": "Joe Burrow",
+      "pos": "QB",
+      "pro_team_id": 4,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 39.48,
+      "projected": 22.88,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 4,
+        "value": 5,
+        "points": 20
+       },
+       {
+        "stat": 3,
+        "value": 462,
+        "points": 18.48
+       },
+       {
+        "stat": 20,
+        "value": 3,
+        "points": -6
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 10,
+        "points": 1
+       },
+       {
+        "stat": 0,
+        "value": 48,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 38,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 3,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4569987,
+      "name": "Jaylen Warren",
+      "pos": "RB",
+      "pro_team_id": 23,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 21.3,
+      "projected": 15.95,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 143,
+        "points": 14.3
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 23,
+        "value": 17,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 5083076,
+      "name": "Harold Fannin Jr.",
+      "pos": "TE",
+      "pro_team_id": 5,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 23.4,
+      "projected": 8.88,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 154,
+        "points": 15.4
+       },
+       {
+        "stat": 53,
+        "value": 10,
+        "points": 10
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 58,
+        "value": 12,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 12483,
+      "name": "Matthew Stafford",
+      "pos": "QB",
+      "pro_team_id": 14,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 8.28,
+      "projected": 16.95,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 157,
+        "points": 6.28
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 20,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 0,
+        "value": 25,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 17,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": 4870795,
+      "name": "Makai Lemon",
+      "pos": "WR",
+      "pro_team_id": 21,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 11.7,
+      "projected": 10.18,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 57,
+        "points": 5.7
+       },
+       {
+        "stat": 58,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4429096,
+      "name": "Blake Corum",
+      "pos": "RB",
+      "pro_team_id": 14,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 13.3,
+      "projected": 11.51,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 73,
+        "points": 7.3
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 23,
+        "value": 11,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": -16014,
+      "name": "Rams D/ST",
+      "pos": "DST",
+      "pro_team_id": 14,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 11,
+      "projected": 7.64,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 95,
+        "value": 2,
+        "points": 4
+       },
+       {
+        "stat": 91,
+        "value": 1,
+        "points": 3
+       },
+       {
+        "stat": 99,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 130,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 120,
+        "value": 9,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 295,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": 4686361,
+      "name": "Cam Little",
+      "pos": "K",
+      "pro_team_id": 30,
+      "slot": "K",
+      "injury_status": null,
+      "points": 6,
+      "projected": 9.01,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 86,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 87,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 15818,
+      "name": "Keenan Allen",
+      "pos": "WR",
+      "pro_team_id": 11,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 13.7,
+      "projected": 9.11,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 42,
+        "value": 67,
+        "points": 6.7
+       },
+       {
+        "stat": 58,
+        "value": 7,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4723820,
+      "name": "Omar Cooper Jr.",
+      "pos": "WR",
+      "pro_team_id": 20,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 10.6,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     }
+    ]
+   },
+   "away": {
+    "team_id": 3,
+    "points": 89.96,
+    "projected": 124.75,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4242335,
+      "name": "Jonathan Taylor",
+      "pos": "RB",
+      "pro_team_id": 11,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 6.7,
+      "projected": 15.63,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 42,
+        "value": 24,
+        "points": 2.4
+       },
+       {
+        "stat": 24,
+        "value": 23,
+        "points": 2.3
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 23,
+        "value": 8,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4362238,
+      "name": "Chase Brown",
+      "pos": "RB",
+      "pro_team_id": 4,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 16.1,
+      "projected": 16.94,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 8,
+        "points": 8
+       },
+       {
+        "stat": 24,
+        "value": 55,
+        "points": 5.5
+       },
+       {
+        "stat": 42,
+        "value": 46,
+        "points": 4.6
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 23,
+        "value": 12,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4258173,
+      "name": "Nico Collins",
+      "pos": "WR",
+      "pro_team_id": 34,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4595348,
+      "name": "Malik Nabers",
+      "pos": "WR",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4723086,
+      "name": "Colston Loveland",
+      "pos": "TE",
+      "pro_team_id": 3,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 11.5,
+      "projected": 11.75,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 42,
+        "value": 65,
+        "points": 6.5
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 58,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4372016,
+      "name": "Jaylen Waddle",
+      "pos": "WR",
+      "pro_team_id": 7,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 14.9,
+      "projected": 10.85,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 39,
+        "points": 3.9
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 44,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4047650,
+      "name": "DK Metcalf",
+      "pos": "WR",
+      "pro_team_id": 23,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 1.4,
+      "projected": 12.2,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 42,
+        "value": 4,
+        "points": 0.4
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4241416,
+      "name": "Chuba Hubbard",
+      "pos": "RB",
+      "pro_team_id": 29,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 24.9,
+      "projected": 15.26,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 81,
+        "points": 8.1
+       },
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 38,
+        "points": 3.8
+       },
+       {
+        "stat": 23,
+        "value": 22,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 8,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 2971573,
+      "name": "Ka'imi Fairbairn",
+      "pos": "K",
+      "pro_team_id": 34,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4360078,
+      "name": "Alec Pierce",
+      "pos": "WR",
+      "pro_team_id": 11,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4685720,
+      "name": "Bryce Young",
+      "pos": "QB",
+      "pro_team_id": 29,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 10.36,
+      "projected": 16.91,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 209,
+        "points": 8.36
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 20,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 0,
+        "value": 41,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 23,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 4832800,
+      "name": "Denzel Boston",
+      "pos": "WR",
+      "pro_team_id": 5,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 9.7,
+      "projected": 11.41,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 37,
+        "points": 3.7
+       },
+       {
+        "stat": 58,
+        "value": 11,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4360689,
+      "name": "Tyler Shough",
+      "pos": "QB",
+      "pro_team_id": 18,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4429615,
+      "name": "Zay Flowers",
+      "pos": "WR",
+      "pro_team_id": 33,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 20.14,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": -16017,
+      "name": "Patriots D/ST",
+      "pos": "DST",
+      "pro_team_id": 17,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 9,
+      "projected": 5.81,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 99,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 95,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 130,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 120,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 269,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:25Z"
+     },
+     {
+      "player_id": 4361050,
+      "name": "Isaiah Likely",
+      "pos": "TE",
+      "pro_team_id": 19,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4249087,
+      "name": "Matt Gay",
+      "pos": "K",
+      "pro_team_id": 13,
+      "slot": "K",
+      "injury_status": null,
+      "points": 10,
+      "projected": 10.12,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 86,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 198,
+        "value": 1,
+        "points": 5
+       },
+       {
+        "stat": 84,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 87,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     }
+    ]
+   }
+  },
+  {
+   "id": 32,
+   "winner": "HOME",
+   "home": {
+    "team_id": 5,
+    "points": 142.2,
+    "projected": 132.95,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4430807,
+      "name": "Bijan Robinson",
+      "pos": "RB",
+      "pro_team_id": 1,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 7.6,
+      "projected": 20.06,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 76,
+        "points": 7.6
+       },
+       {
+        "stat": 23,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4432665,
+      "name": "Brock Bowers",
+      "pos": "TE",
+      "pro_team_id": 13,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 28.2,
+      "projected": 16.16,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 2,
+        "points": 12
+       },
+       {
+        "stat": 42,
+        "value": 92,
+        "points": 9.2
+       },
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 58,
+        "value": 10,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4241478,
+      "name": "DeVonta Smith",
+      "pos": "WR",
+      "pro_team_id": 21,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4685472,
+      "name": "Tetairoa McMillan",
+      "pos": "WR",
+      "pro_team_id": 29,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 11.8,
+      "projected": 15.64,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 58,
+        "points": 5.8
+       },
+       {
+        "stat": 58,
+        "value": 11,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 4596448,
+      "name": "Bucky Irving",
+      "pos": "RB",
+      "pro_team_id": 27,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 21,
+      "projected": 17.04,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 170,
+        "points": 17
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 23,
+        "value": 27,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 16800,
+      "name": "Davante Adams",
+      "pos": "WR",
+      "pro_team_id": 14,
+      "slot": "IR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T21:05Z"
+     },
+     {
+      "player_id": 4685278,
+      "name": "Luther Burden III",
+      "pos": "WR",
+      "pro_team_id": 3,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 18.6,
+      "projected": 13.4,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 56,
+        "points": 5.6
+       },
+       {
+        "stat": 58,
+        "value": 9,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 16737,
+      "name": "Mike Evans",
+      "pos": "WR",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 2577417,
+      "name": "Dak Prescott",
+      "pos": "QB",
+      "pro_team_id": 6,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 19.8,
+      "projected": 19.53,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 195,
+        "points": 7.8
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 24,
+        "value": 20,
+        "points": 2
+       },
+       {
+        "stat": 0,
+        "value": 29,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 7,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4360310,
+      "name": "Trevor Lawrence",
+      "pos": "QB",
+      "pro_team_id": 30,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 19.4,
+      "projected": 20.33,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 4,
+        "value": 3,
+        "points": 12
+       },
+       {
+        "stat": 3,
+        "value": 210,
+        "points": 8.4
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 24,
+        "value": 10,
+        "points": 1
+       },
+       {
+        "stat": 0,
+        "value": 14,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 10,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 3,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4695883,
+      "name": "Jalen Coker",
+      "pos": "WR",
+      "pro_team_id": 29,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 9.6,
+      "projected": 14.53,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 36,
+        "points": 3.6
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": 4432577,
+      "name": "C.J. Stroud",
+      "pos": "QB",
+      "pro_team_id": 34,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": -16030,
+      "name": "Jaguars D/ST",
+      "pos": "DST",
+      "pro_team_id": 30,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 21,
+      "projected": 7.41,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 103,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 95,
+        "value": 2,
+        "points": 4
+       },
+       {
+        "stat": 99,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 91,
+        "value": 1,
+        "points": 3
+       },
+       {
+        "stat": 96,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 130,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 120,
+        "value": 7,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 243,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4697815,
+      "name": "Rachaad White",
+      "pos": "RB",
+      "pro_team_id": 28,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 14,
+      "projected": 12.43,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 55,
+        "points": 5.5
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 42,
+        "value": 5,
+        "points": 0.5
+       },
+       {
+        "stat": 23,
+        "value": 11,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-02T01:20Z"
+     },
+     {
+      "player_id": 4360569,
+      "name": "Jordan Mason",
+      "pos": "RB",
+      "pro_team_id": 16,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 2,
+      "projected": 9.49,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 20,
+        "points": 2
+       },
+       {
+        "stat": 23,
+        "value": 8,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4870653,
+      "name": "KC Concepcion",
+      "pos": "WR",
+      "pro_team_id": 5,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 6.7,
+      "projected": 10.2,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 37,
+        "points": 3.7
+       },
+       {
+        "stat": 53,
+        "value": 3,
+        "points": 3
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4360234,
+      "name": "Evan McPherson",
+      "pos": "K",
+      "pro_team_id": 4,
+      "slot": "K",
+      "injury_status": null,
+      "points": 5,
+      "projected": 8.38,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 86,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 87,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     }
+    ]
+   },
+   "away": {
+    "team_id": 1,
+    "points": 81.4,
+    "projected": 131.84,
+    "win_probability": null,
+    "lineup": [
+     {
+      "player_id": 4374302,
+      "name": "Amon-Ra St. Brown",
+      "pos": "WR",
+      "pro_team_id": 8,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 12.6,
+      "projected": 17.8,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 7,
+        "points": 7
+       },
+       {
+        "stat": 42,
+        "value": 46,
+        "points": 4.6
+       },
+       {
+        "stat": 24,
+        "value": 10,
+        "points": 1
+       },
+       {
+        "stat": 23,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 8,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4379399,
+      "name": "James Cook III",
+      "pos": "RB",
+      "pro_team_id": 2,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 18.1,
+      "projected": 18.81,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 80,
+        "points": 8
+       },
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 21,
+        "points": 2.1
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 23,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 3,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4426354,
+      "name": "George Pickens",
+      "pos": "WR",
+      "pro_team_id": 6,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 6.8,
+      "projected": 13.96,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 48,
+        "points": 4.8
+       },
+       {
+        "stat": 53,
+        "value": 2,
+        "points": 2
+       },
+       {
+        "stat": 58,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4361579,
+      "name": "Javonte Williams",
+      "pos": "RB",
+      "pro_team_id": 6,
+      "slot": "RB",
+      "injury_status": null,
+      "points": 6.7,
+      "projected": 20.11,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 24,
+        "value": 56,
+        "points": 5.6
+       },
+       {
+        "stat": 53,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 42,
+        "value": 1,
+        "points": 0.1
+       },
+       {
+        "stat": 23,
+        "value": 24,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 2,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3916387,
+      "name": "Lamar Jackson",
+      "pos": "QB",
+      "pro_team_id": 33,
+      "slot": "QB",
+      "injury_status": null,
+      "points": 0,
+      "projected": 22.17,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 0,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3915416,
+      "name": "DJ Moore",
+      "pos": "WR",
+      "pro_team_id": 2,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 16.6,
+      "projected": 13.61,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 82,
+        "points": 8.2
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 72,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 24,
+        "value": 4,
+        "points": 0.4
+       },
+       {
+        "stat": 23,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 7,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3040151,
+      "name": "George Kittle",
+      "pos": "TE",
+      "pro_team_id": 25,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 0,
+      "played": false,
+      "scoring": [],
+      "game_state": null,
+      "game_clock": null,
+      "kickoff": null
+     },
+     {
+      "player_id": 4360761,
+      "name": "Michael Wilson",
+      "pos": "WR",
+      "pro_team_id": 22,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 26.8,
+      "projected": 12.66,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 42,
+        "value": 111,
+        "points": 11.1
+       },
+       {
+        "stat": 53,
+        "value": 8,
+        "points": 8
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 17,
+        "points": 1.7
+       },
+       {
+        "stat": 23,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 15,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 3046779,
+      "name": "Jared Goff",
+      "pos": "QB",
+      "pro_team_id": 8,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 9.04,
+      "projected": 16.09,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 3,
+        "value": 176,
+        "points": 7.04
+       },
+       {
+        "stat": 4,
+        "value": 1,
+        "points": 4
+       },
+       {
+        "stat": 20,
+        "value": 1,
+        "points": -2
+       },
+       {
+        "stat": 0,
+        "value": 25,
+        "points": 0
+       },
+       {
+        "stat": 1,
+        "value": 18,
+        "points": 0
+       },
+       {
+        "stat": 23,
+        "value": 3,
+        "points": 0
+       },
+       {
+        "stat": 64,
+        "value": 4,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4567104,
+      "name": "Will Reichard",
+      "pos": "K",
+      "pro_team_id": 16,
+      "slot": "K",
+      "injury_status": null,
+      "points": 0,
+      "projected": 11.25,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 85,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 86,
+        "value": 1,
+        "points": 1
+       },
+       {
+        "stat": 84,
+        "value": 1,
+        "points": 0
+       },
+       {
+        "stat": 87,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4887558,
+      "name": "Emanuel Wilson",
+      "pos": "RB",
+      "pro_team_id": 26,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 0,
+      "projected": 6.94,
+      "played": true,
+      "scoring": [],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-03T01:15Z"
+     },
+     {
+      "player_id": 4047365,
+      "name": "Josh Jacobs",
+      "pos": "RB",
+      "pro_team_id": 9,
+      "slot": "FLEX",
+      "injury_status": null,
+      "points": 23.2,
+      "projected": 15.11,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 25,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 53,
+        "value": 6,
+        "points": 6
+       },
+       {
+        "stat": 24,
+        "value": 39,
+        "points": 3.9
+       },
+       {
+        "stat": 42,
+        "value": 13,
+        "points": 1.3
+       },
+       {
+        "stat": 23,
+        "value": 21,
+        "points": 0
+       },
+       {
+        "stat": 58,
+        "value": 6,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-10-30T00:15Z"
+     },
+     {
+      "player_id": -16016,
+      "name": "Vikings D/ST",
+      "pos": "DST",
+      "pro_team_id": 16,
+      "slot": "DST",
+      "injury_status": null,
+      "points": 5,
+      "projected": 4.46,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 99,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 95,
+        "value": 1,
+        "points": 2
+       },
+       {
+        "stat": 132,
+        "value": 1,
+        "points": -1
+       },
+       {
+        "stat": 120,
+        "value": 19,
+        "points": 0
+       },
+       {
+        "stat": 127,
+        "value": 384,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4685261,
+      "name": "Germie Bernard",
+      "pos": "WR",
+      "pro_team_id": 23,
+      "slot": "BENCH",
+      "injury_status": null,
+      "points": 8,
+      "projected": 10.77,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 53,
+        "value": 5,
+        "points": 5
+       },
+       {
+        "stat": 42,
+        "value": 30,
+        "points": 3
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4428718,
+      "name": "Tre Tucker",
+      "pos": "WR",
+      "pro_team_id": 13,
+      "slot": "WR",
+      "injury_status": null,
+      "points": 0,
+      "projected": 10.91,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 58,
+        "value": 1,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     },
+     {
+      "player_id": 4036133,
+      "name": "T.J. Hockenson",
+      "pos": "TE",
+      "pro_team_id": 16,
+      "slot": "TE",
+      "injury_status": null,
+      "points": 15.8,
+      "projected": 11.23,
+      "played": true,
+      "scoring": [
+       {
+        "stat": 43,
+        "value": 1,
+        "points": 6
+       },
+       {
+        "stat": 42,
+        "value": 58,
+        "points": 5.8
+       },
+       {
+        "stat": 53,
+        "value": 4,
+        "points": 4
+       },
+       {
+        "stat": 58,
+        "value": 5,
+        "points": 0
+       }
+      ],
+      "game_state": "post",
+      "game_clock": null,
+      "kickoff": "2026-11-01T18:00Z"
+     }
+    ]
+   }
+  }
+ ],
+ "teams": [
+  {
+   "team_id": 1,
+   "wins": 4,
+   "losses": 4,
+   "ties": 0,
+   "points_for": 967.96,
+   "points_against": 1010.96,
+   "waiver_rank": 5
+  },
+  {
+   "team_id": 2,
+   "wins": 5,
+   "losses": 3,
+   "ties": 0,
+   "points_for": 1117.02,
+   "points_against": 1029.14,
+   "waiver_rank": 6
+  },
+  {
+   "team_id": 3,
+   "wins": 2,
+   "losses": 6,
+   "ties": 0,
+   "points_for": 878.98,
+   "points_against": 1020.66,
+   "waiver_rank": 1
+  },
+  {
+   "team_id": 4,
+   "wins": 3,
+   "losses": 5,
+   "ties": 0,
+   "points_for": 930.08,
+   "points_against": 1038.46,
+   "waiver_rank": 3
+  },
+  {
+   "team_id": 5,
+   "wins": 6,
+   "losses": 2,
+   "ties": 0,
+   "points_for": 1005.88,
+   "points_against": 875.28,
+   "waiver_rank": 7
+  },
+  {
+   "team_id": 6,
+   "wins": 7,
+   "losses": 1,
+   "ties": 0,
+   "points_for": 1064.4,
+   "points_against": 836.26,
+   "waiver_rank": 8
+  },
+  {
+   "team_id": 7,
+   "wins": 3,
+   "losses": 5,
+   "ties": 0,
+   "points_for": 964.88,
+   "points_against": 1042.38,
+   "waiver_rank": 4
+  },
+  {
+   "team_id": 8,
+   "wins": 2,
+   "losses": 6,
+   "ties": 0,
+   "points_for": 1048.6,
+   "points_against": 1124.66,
+   "waiver_rank": 2
+  }
+ ],
+ "transactions": [
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-27T14:53:48.635Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DROP",
+     "player_id": 4361432,
+     "name": "Romeo Doubs",
+     "from_team_id": 1,
+     "to_team_id": 0,
+     "from_slot": "IR",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-27T14:54:46.623Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-27T14:55:07.334Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4047365,
+     "name": "Josh Jacobs",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-27T14:56:03.668Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DROP",
+     "player_id": 4035538,
+     "name": "David Montgomery",
+     "from_team_id": 1,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-27T14:56:09.845Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "WAIVER",
+   "team_id": 1,
+   "date": "2026-10-28T07:22:33.921Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4036133,
+     "name": "T.J. Hockenson",
+     "from_team_id": 0,
+     "to_team_id": 1,
+     "from_slot": null,
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 2,
+   "date": "2026-10-28T16:38:26.923Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 3046439,
+     "name": "Hunter Henry",
+     "from_team_id": 0,
+     "to_team_id": 2,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4635008,
+     "name": "Keon Coleman",
+     "from_team_id": 2,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 2,
+   "date": "2026-10-28T16:38:32.234Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4430878,
+     "name": "Jaxon Smith-Njigba",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4701936,
+     "name": "Matthew Golden",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3929645,
+     "name": "Juwan Johnson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3046439,
+     "name": "Hunter Henry",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T19:53:10.523Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4432577,
+     "name": "C.J. Stroud",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T19:53:44.620Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T19:54:05.816Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4429205,
+     "name": "Jordan Addison",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T19:54:10.213Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4429205,
+     "name": "Jordan Addison",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T19:55:51.482Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": -16030,
+     "name": "Jaguars D/ST",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "DST"
+    },
+    {
+     "type": "DROP",
+     "player_id": -16020,
+     "name": "Jets D/ST",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T19:59:13.304Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T20:05:11.567Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 3917232,
+     "name": "Tyler Bass",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "K"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4697745,
+     "name": "Tyler Loop",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T20:16:51.922Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T20:33:05.006Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T20:52:29.699Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4697815,
+     "name": "Rachaad White",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4685382,
+     "name": "Omarion Hampton",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T21:00:37.378Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4360569,
+     "name": "Jordan Mason",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4568490,
+     "name": "RJ Harvey",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T21:03:00.269Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4695883,
+     "name": "Jalen Coker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T21:05:31.885Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4685278,
+     "name": "Luther Burden III",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4241478,
+     "name": "DeVonta Smith",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T21:16:00.423Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4870653,
+     "name": "KC Concepcion",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "DROP",
+     "player_id": 4429205,
+     "name": "Jordan Addison",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 5,
+   "date": "2026-10-28T21:24:25.481Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4360234,
+     "name": "Evan McPherson",
+     "from_team_id": 0,
+     "to_team_id": 5,
+     "from_slot": null,
+     "to_slot": "K"
+    },
+    {
+     "type": "DROP",
+     "player_id": 3917232,
+     "name": "Tyler Bass",
+     "from_team_id": 5,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T21:26:41.740Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 5,
+   "date": "2026-10-28T21:32:57.326Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360310,
+     "name": "Trevor Lawrence",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2577417,
+     "name": "Dak Prescott",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 7,
+   "date": "2026-10-28T23:44:00.297Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": -16004,
+     "name": "Bengals D/ST",
+     "from_team_id": 0,
+     "to_team_id": 7,
+     "from_slot": null,
+     "to_slot": "DST"
+    },
+    {
+     "type": "DROP",
+     "player_id": -16010,
+     "name": "Titans D/ST",
+     "from_team_id": 7,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 7,
+   "date": "2026-10-29T00:27:45.117Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2976212,
+     "name": "Stefon Diggs",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-10-29T03:45:26.021Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360761,
+     "name": "Michael Wilson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4428718,
+     "name": "Tre Tucker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:45:59.427Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": -16005,
+     "name": "Browns D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:46:03.827Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4432620,
+     "name": "Parker Washington",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:46:10.459Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:46:47.479Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DROP",
+     "player_id": 3117256,
+     "name": "Dalton Schultz",
+     "from_team_id": 4,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 4,
+   "date": "2026-10-29T03:47:23.056Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 4,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:47:44.913Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-10-29T03:47:50.844Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": -16005,
+     "name": "Browns D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 8,
+   "date": "2026-10-29T03:49:53.913Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4241985,
+     "name": "J.K. Dobbins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3916148,
+     "name": "Tony Pollard",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 7,
+   "date": "2026-10-29T03:49:59.892Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2976212,
+     "name": "Stefon Diggs",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 7,
+   "date": "2026-10-29T03:50:07.724Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4711533,
+     "name": "Ollie Gordon II",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2976212,
+     "name": "Stefon Diggs",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:51:28.425Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:51:39.269Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:51:42.391Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:51:46.261Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4372016,
+     "name": "Jaylen Waddle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:52:09.124Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DROP",
+     "player_id": 2973405,
+     "name": "Kalif Raymond",
+     "from_team_id": 3,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "FREEAGENT",
+   "team_id": 3,
+   "date": "2026-10-29T03:52:40.354Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "ADD",
+     "player_id": 4249087,
+     "name": "Matt Gay",
+     "from_team_id": 0,
+     "to_team_id": 3,
+     "from_slot": null,
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:52:54.603Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4249087,
+     "name": "Matt Gay",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "K"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-10-29T03:53:01.461Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4372016,
+     "name": "Jaylen Waddle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 6,
+   "date": "2026-10-29T20:08:38.616Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "DROP",
+     "player_id": 3055899,
+     "name": "Harrison Butker",
+     "from_team_id": 6,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": null
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 6,
+   "date": "2026-10-29T20:08:41.763Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4686361,
+     "name": "Cam Little",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 6,
+   "date": "2026-10-29T20:08:58.573Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 12483,
+     "name": "Matthew Stafford",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3915511,
+     "name": "Joe Burrow",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:34:33.454Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:34:36.490Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4683062,
+     "name": "Xavier Worthy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:34:39.351Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:34:42.641Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": -16005,
+     "name": "Browns D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "DST"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:35:01.477Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3929630,
+     "name": "Saquon Barkley",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:35:22.950Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:35:25.442Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3929630,
+     "name": "Saquon Barkley",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:35:30.614Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4685702,
+     "name": "Quinshon Judkins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3042519,
+     "name": "Aaron Jones Sr.",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 4,
+   "date": "2026-10-30T01:35:43.913Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3042519,
+     "name": "Aaron Jones Sr.",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4685702,
+     "name": "Quinshon Judkins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:36:23.874Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:36:27.472Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:36:39.727Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4249087,
+     "name": "Matt Gay",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "K"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:37:49.564Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:37:53.241Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:37:56.754Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:38:07.918Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:38:13.284Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4242335,
+     "name": "Jonathan Taylor",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:38:17.789Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4429615,
+     "name": "Zay Flowers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:38:26.854Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 3,
+   "date": "2026-10-30T01:38:39.646Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4258173,
+     "name": "Nico Collins",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4362238,
+     "name": "Chase Brown",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 7,
+   "date": "2026-10-30T01:39:28.387Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 7,
+   "date": "2026-10-30T01:39:52.011Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4711533,
+     "name": "Ollie Gordon II",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "RB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 7,
+   "date": "2026-10-30T01:39:55.422Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 7,
+   "date": "2026-10-30T01:40:05.533Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4428331,
+     "name": "Rashee Rice",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4248528,
+     "name": "Christian Watson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 1,
+   "date": "2026-10-30T04:11:57.860Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "FLEX",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4047365,
+     "name": "Josh Jacobs",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "FLEX"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 1,
+   "date": "2026-10-30T04:12:09.629Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4360761,
+     "name": "Michael Wilson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 1,
+   "date": "2026-10-30T04:12:56.266Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3046779,
+     "name": "Jared Goff",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "FUTURE_ROSTER",
+   "team_id": 1,
+   "date": "2026-10-30T04:13:09.465Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3046779,
+     "name": "Jared Goff",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 7,
+   "date": "2026-11-01T16:55:43.808Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4685247,
+     "name": "Braelon Allen",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4427366,
+     "name": "Breece Hall",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 4,
+   "date": "2026-11-03T08:30:45.050Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3117251,
+     "name": "Christian McCaffrey",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361370,
+     "name": "Chris Olave",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4569173,
+     "name": "Rhamondre Stevenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361741,
+     "name": "Brock Purdy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": -16026,
+     "name": "Seahawks D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "DST"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4683062,
+     "name": "Xavier Worthy",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": -16005,
+     "name": "Browns D/ST",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "DST",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4426348,
+     "name": "Jayden Daniels",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 1,
+   "date": "2026-11-03T08:30:45.050Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4426354,
+     "name": "George Pickens",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3916387,
+     "name": "Lamar Jackson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "QB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3040151,
+     "name": "George Kittle",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 3046779,
+     "name": "Jared Goff",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "QB"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4428718,
+     "name": "Tre Tucker",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4036133,
+     "name": "T.J. Hockenson",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 3,
+   "date": "2026-11-03T08:30:45.050Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 4595348,
+     "name": "Malik Nabers",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "WR"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4723086,
+     "name": "Colston Loveland",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "TE",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4047650,
+     "name": "DK Metcalf",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "WR",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 2971573,
+     "name": "Ka'imi Fairbairn",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "K"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4361050,
+     "name": "Isaiah Likely",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "TE"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4249087,
+     "name": "Matt Gay",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "K",
+     "to_slot": "BENCH"
+    }
+   ]
+  },
+  {
+   "type": "ROSTER",
+   "team_id": 8,
+   "date": "2026-11-03T08:30:45.050Z",
+   "bid": 0,
+   "items": [
+    {
+     "type": "LINEUP",
+     "player_id": 3916148,
+     "name": "Tony Pollard",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "RB",
+     "to_slot": "BENCH"
+    },
+    {
+     "type": "LINEUP",
+     "player_id": 4426385,
+     "name": "Zach Charbonnet",
+     "from_team_id": 0,
+     "to_team_id": 0,
+     "from_slot": "BENCH",
+     "to_slot": "RB"
+    }
+   ]
+  }
+ ]
+}
