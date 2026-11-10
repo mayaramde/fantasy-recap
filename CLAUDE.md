@@ -178,18 +178,23 @@ Get the joke from something true and checkable: a team name, a real callback, a 
 
 **Serious moments: play it straight.** A season-ending injury or real bad news gets one warm, plain sentence and nothing else — no joke here or about the other side of the same matchup. Never guess at an injury or its cause; cite a real source (see Recap content) or leave it out.
 
-**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-8); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
+**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-9); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
 - Mark Andrews: dropped by Maya, then Marlee's up-and-down tight end (Weeks 1, 2, 3).
 - Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1).
 - Marlee's Michael Wilson: benched for big games (Weeks 3, 4), started over George Pickens (Week 5). Parked in Week 8 out of respect for Lamar Jackson's injury, so it's still live.
 - Marlee's namesake, Amon-Ra St. Brown: zero on her bench (Week 6), back in the lineup earning the name (Week 7).
 - Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5), Bryce Young 5.42 (Week 7), "the curse".
-- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while (kept out Weeks 7, 8). In Week 8 she started Pollard and won ("This week she started Pollard").
+- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while (kept out Weeks 7, 8, 9). In Week 8 she started Pollard and won ("This week she started Pollard").
 - Kyra's gut at quarterback: Stafford over Burrow and right (Week 2), Burrow over Stafford and right again (Week 8), "the gut is now taking appointments".
 - The projection vs. Bhayshul Tuten, as a court case: "the projection loses its case" (Week 6), "repeat offender" weighing a plea deal (Week 8).
-- Waddle Deez Nutz benching its own Waddle: "Loyalty pays" when she started him (Week 2), namesake on the bench (Week 6), five straight weeks benched, "the team name is not a suggestion" (Week 8).
+- Waddle Deez Nutz benching its own Waddle: "Loyalty pays" when she started him (Week 2), namesake on the bench (Week 6), five straight weeks benched, "the team name is not a suggestion" (Week 8), a sixth straight week and right this time, "Correctly, this time" (Week 9).
+- Cambri benching Travis Kelce: he outscored her starter from the bench (Weeks 2, 9). Week 9 used Taylor Swift's "The Man": "Cambri had the man, and she sat him."
+- Maya's pickup habit: 32 pickups, the most in the league, "Add to cart, 32 times" (Week 9).
+- Maya vs. Amie: Amie's big weeks keep running into Maya's league high (Weeks 2, 9), "Maya owes her a fruit basket" (Week 9).
+- Samantha's courtroom: she's in law school (per Maya), "No further questions" with Exhibits A and B (Week 9). Pairs with the Tuten court case.
 - Resting: the recap-author-as-defendant bit about Maya (Weeks 4, 5, 6). Skip it for a few weeks.
 - Serious: Lamar Jackson, thumb surgery and IR (Week 8). No jokes about it, and go easy on Marlee's matchup while he's out.
+- Serious: Josh Jacobs, broken finger and surgery, up to three weeks (Week 9). Maya asked for one light touch, the KATSEYE "Pinky Up" choreography line; otherwise keep it plain.
 - Retired: Ja'Marr Chase "forgot it was game day" (Week 1; he remembered, Week 8), the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5), Tara's Quinshon Judkins flex (Weeks 1, 3; paid off, and the recap formally retracted, Week 7).
 
 **Dial by surface:**
