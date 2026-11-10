@@ -44,3 +44,22 @@ class LivePageHead(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LiveLineupsTest(unittest.TestCase):
+    """The expandable lineups on the Live page, and "-" instead of 0.0 for players yet to play."""
+
+    TEMPLATE = SRC
+
+    def test_card_has_no_details_inside_the_link(self):
+        card = self.TEMPLATE.split("function liveCard", 1)[1].split("function liveLineups", 1)[0]
+        self.assertIn('<div class="lv-card">', card)
+        self.assertLess(card.index("</a>"), card.index("liveLineups("))
+
+    def test_open_state_is_kept_outside_the_dom_under_a_live_key(self):
+        self.assertIn("data-hub-open=\"${key}\"", self.TEMPLATE)
+        self.assertIn("const key = `live-${g.key}`", self.TEMPLATE)
+
+    def test_lineup_points_go_through_ptsText(self):
+        self.assertIn("ptsText(p, 2)", self.TEMPLATE)  # box score rows
+        self.assertIn("${ptsText(p)}", self.TEMPLATE)  # hub and live rows
