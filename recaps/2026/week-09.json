@@ -1,0 +1,80 @@
+{
+  "season": 2026,
+  "week": 9,
+  "status": "published",
+  "headline": "The league's two best quarterbacks this week both played from the bench. Both their managers won anyway, so nobody learns a thing.",
+  "dek": "Waddle Deez Nutz benches its Waddle for a sixth straight week. Correctly, this time.",
+  "matchups": {
+    "2-5": "Amie scored 159.38, her best week since Week 1 and enough to beat every other team in the league. The schedule handed her the one it couldn't: Maya, on the best week of her season. Amie would have taken literally anyone else.",
+    "4-6": "Brock Purdy accounted for three touchdowns for Tara. Joe Burrow accounted for four for Kyra. The closest game of the week was settled like a playground argument: mine has one more.",
+    "1-3": "Marlee lost Josh Jacobs to a broken finger in the first quarter and won by 14.7 anyway. Maddie's Patriots D/ST (the team-defense slot) allowed 45 points to the Packers and finished below zero.",
+    "7-8": "Puka Nacua caught 14 passes for Cambri. Justin Jefferson and Derrick Henry combined for less than half his points. Samantha won the week's biggest blowout against what was basically a one-man band."
+  },
+  "game_balls": [
+    {
+      "manager": "Maya",
+      "title": "Add to cart, 32 times",
+      "text": "Maya has made 32 pickups this season, the most in the league, including seven different defenses. This week the shopping spree paid off big. Jonah Coleman scored in his first start for her, and her new kicker, Ka'imi Fairbairn, put up 17. She even had a spare quarterback she picked up in October.",
+      "stat": "175.08 pts",
+      "emoji": "🛒",
+      "player": "Jonah Coleman"
+    },
+    {
+      "manager": "Marlee",
+      "title": "The best things in life are free agents",
+      "text": "Marlee grabbed the Bears D/ST off free agency on Wednesday. Nobody had wanted it for almost three weeks. Then it sacked the quarterback four times and returned an interception for a touchdown.",
+      "stat": "13 pts at D/ST",
+      "emoji": "🐻",
+      "player": "Bears D/ST"
+    },
+    {
+      "manager": "Samantha",
+      "title": "No further questions",
+      "text": "Samantha is in law school, and it showed. Exhibit A: Ja'Marr Chase. Exhibit B: Christian Watson. Both topped 30, and the jury returned a blowout. Her star witness, Jordan Love, scored 36.18 from the bench and was never called to testify.",
+      "stat": "30.1 pts",
+      "emoji": "👩‍⚖️",
+      "player": "Christian Watson"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Cambri",
+      "title": "Kelce, benched again",
+      "text": "Cambri started Tucker Kraft at tight end. He caught one pass for one yard. Travis Kelce ran in a touchdown from her bench. Taylor Swift wrote a whole song about wanting to be “The Man.” Cambri had the man, and she sat him.",
+      "stat": "−15.4 at TE",
+      "emoji": "🪑",
+      "player": "Travis Kelce"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Marlee",
+      "title": "Josh Jacobs, broken finger",
+      "text": "Josh Jacobs broke a finger in the first quarter and is having surgery this week. He could be out up to three weeks, which is just enough time to learn the choreography to KATSEYE's “Pinky Up.” Get well soon, Josh.",
+      "stat": "Finger surgery",
+      "player": "Josh Jacobs"
+    },
+    {
+      "manager": "Amie",
+      "title": "Three 30-point games, one loss",
+      "text": "Three of Amie's players topped 30, including a Kenneth Walker III hat trick. Maya owes her a fruit basket.",
+      "stat": "159.38 pts, still L",
+      "emoji": "😩",
+      "player": "Kenneth Walker III"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Kicker",
+      "definition": "The player who kicks field goals and extra points, scoring more for longer kicks, like Maya's new one, Ka'imi Fairbairn, who put up 17 this week."
+    },
+    {
+      "term": "Points allowed",
+      "definition": "How much the other team scores and gains against your D/ST (your whole team defense, counted as one player), and in this league giving up a lot of either costs you, as the Patriots D/ST found out for Maddie: 45 points and 478 yards allowed, −5 total."
+    },
+    {
+      "term": "Hat trick",
+      "definition": "Three touchdowns by one player in one game, like Kenneth Walker III's two receiving and one rushing for Amie this week."
+    }
+  ]
+}
