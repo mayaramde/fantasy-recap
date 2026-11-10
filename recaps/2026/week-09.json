@@ -5,16 +5,16 @@
   "headline": "The league's two best quarterbacks this week both played from the bench. Both their managers won anyway, so nobody learns a thing.",
   "dek": "Waddle Deez Nutz benches its Waddle for a sixth straight week. Correctly, this time.",
   "matchups": {
-    "2-5": "Amie got 30-plus from Kenneth Walker III, CeeDee Lamb and Matthew Golden and still lost by 15.7, to a team that left five C.J. Stroud touchdowns on its bench. She never even saw the scariest part of that roster.",
-    "4-6": "The closest game of the week, decided by 8.66. Brock Purdy threw two touchdowns and ran in a third for Tara, which is usually plenty. Kyra's kicker, Cam Little, scored 17, more than any of her three running backs. At 8-1, even the kicker gets a turn.",
-    "1-3": "Marlee won by 14.7 after losing Josh Jacobs to a broken finger in the first quarter. Maddie's Patriots D/ST (the team-defense slot) allowed 45 points and finished at −5.",
-    "7-8": "Samantha won by 21.52, the biggest margin of the week, and the headline already covered where her quarterback was. Cambri got 14 catches and 35 points from Puka Nacua, a performance that deserved a better Sunday than this one."
+    "2-5": "Amie lost by 15.7 to a team that didn't even play its top scorer. Maya's spare tire was C.J. Stroud, and he threw five touchdowns from the trunk.",
+    "4-6": "Brock Purdy gave Tara three touchdowns, and she still lost the closest game of the week. Kyra's kicker, Cam Little, outscored every running back she started. At 8-1, she wins even when the kicker does the heavy lifting.",
+    "1-3": "Marlee lost Josh Jacobs to a broken finger in the first quarter and won by 14.7 anyway. Maddie's Patriots D/ST (the team-defense slot) allowed 45 points to the Packers and finished below zero.",
+    "7-8": "Samantha won the week's biggest blowout. Puka Nacua caught 14 passes for Cambri. Her running back, Derrick Henry, threw one. It lost three yards."
   },
   "game_balls": [
     {
       "manager": "Maya",
       "title": "Fresh off the wire",
-      "text": "Maya picked up Jonah Coleman and Ka'imi Fairbairn this week and started both. Coleman scored 18.8 in the flex (the wild-card spot), Fairbairn scored 17, and Maya posted the league high. The new guys didn't even need orientation.",
+      "text": "Maya picked up Jonah Coleman and Ka'imi Fairbairn this week and started them right away. Coleman ran in a touchdown from the flex (the wild-card spot). Fairbairn kicked his way to 17. The new guys didn't even need orientation.",
       "stat": "175.08 pts",
       "emoji": "🛒",
       "player": "Jonah Coleman"
@@ -22,7 +22,7 @@
     {
       "manager": "Kyra",
       "title": "The gut has a waitlist",
-      "text": "Kyra started Joe Burrow over Matthew Stafford again. Burrow threw three touchdowns and ran in a fourth, Stafford scored 11.22 on her bench, and she won the closest game of the week by 8.66. Start Stafford and she loses.",
+      "text": "Kyra went with Joe Burrow over Matthew Stafford again. Burrow threw three touchdowns and ran in a fourth. Stafford watched from her bench. Start him instead and she loses.",
       "stat": "29.54 pts at QB",
       "emoji": "🔮",
       "player": "Joe Burrow"
@@ -30,7 +30,7 @@
     {
       "manager": "Samantha",
       "title": "The receivers covered the spread",
-      "text": "Ja'Marr Chase scored 31.5, Christian Watson caught seven passes for 171 yards and a touchdown, and Samantha won by 21.52. Spread covered.",
+      "text": "Samantha's best quarterback was on her bench, so her receivers took over. Ja'Marr Chase and Christian Watson both topped 30 points. Watson needed only seven catches to get there. Spread covered.",
       "stat": "30.1 pts",
       "emoji": "🎯",
       "player": "Christian Watson"
@@ -40,7 +40,7 @@
     {
       "manager": "Cambri",
       "title": "Kelce, benched again",
-      "text": "Travis Kelce scored 17.3 on Cambri's bench, with a rushing touchdown, while Tucker Kraft caught one pass for one yard as her starting tight end. In Week 2 she benched Kelce and he scored 25.1. He has now made his point twice.",
+      "text": "Cambri started Tucker Kraft at tight end. He caught one pass for one yard. Travis Kelce sat on her bench and ran in a touchdown. He outscored her starter from the bench in Week 2 too.",
       "stat": "−15.4 at TE",
       "emoji": "🪑",
       "player": "Travis Kelce"
@@ -57,7 +57,7 @@
     {
       "manager": "Amie",
       "title": "Three 30-point games, one loss",
-      "text": "Kenneth Walker III scored a hat trick, and Amie still lost. Even her best possible lineup, 163.28, loses to Maya's 175.08. In Week 2 she lost to Maya's league high too. Some rivalries are just the schedule's fault.",
+      "text": "Three of Amie's players topped 30, including a Kenneth Walker III hat trick. It's the second time this season a huge week of hers ran into Maya's league high. Some rivalries are just the schedule's fault.",
       "stat": "159.38 pts, still L",
       "emoji": "😩",
       "player": "Kenneth Walker III"
