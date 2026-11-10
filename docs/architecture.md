@@ -121,6 +121,16 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   badge (a D/ST gets its logo), team and kickoff in the viewer's own time zone, a status sticker (Q, DTD, D, OUT, IR,
   SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to check" flag on
   the side. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".
+- **Player outlook** (each Coach lineup card, `player_cards()` in `site/build.py`; refreshed by `/api/live` like the rest of
+  the card): `verdict` `{label, level, reason}` and `chips` `[{label, value}]` ride on every card beside `blurb`/`notes`.
+  The verdict exists only while his game is ahead (`None` after kickoff, on IR): Start (`go`), Consider swap or Watch
+  (`watch`), Fix now (`now`, an injured, suspended or bye-week starter), Hold or Stay benched (`info`). A swap needs a
+  projection gap of `SWAP_MIN` (2.0), the same bar as the swap cards, and a player projected 0.0 or a week with no
+  projections gets no comparison. Chips are his average and last three games (`player_form()`, from earlier captures,
+  played games only, at least `FORM_MIN` = 3), ESPN's projection against that average, and two Key stats tiles
+  (`CHIP_TILES`). The pre-kickoff blurb sets the projection against his own average (`form_blurb()`); with fewer than
+  three games it keeps the older stock lines. Nothing is written by Claude: it is all arithmetic on the capture, so
+  `tests/test_player_outlook.py` pins it.
 - **League wire** (`wire()` in `site/build.py`, part of `live_payload`, so `/api/live` refreshes it too): the
   last seven days of ESPN's transaction log from the live capture and the ones before it. Pickups and drops,
   lineup changes (with the players promoted off the bench, counted once each per day) and trades. ESPN records that a trade went
