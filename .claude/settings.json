@@ -40,6 +40,7 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push origin:*)",
+      "Bash(git push -u origin:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr merge:*)",
       "Bash(gh pr close:*)",
@@ -59,7 +60,13 @@
       "Read(./.vercel/**)"
     ],
     "ask": [
-      "Bash(git push:*)",
+      "Bash(git push origin main:*)",
+      "Bash(git push -u origin main:*)",
+      "Bash(git push origin HEAD:*)",
+      "Bash(git push -u origin HEAD:*)",
+      "Bash(git push origin @:*)",
+      "Bash(git push origin)",
+      "Bash(git push -u origin)",
       "Bash(git merge:*)",
       "Bash(git rebase:*)",
       "Bash(npm install:*)",
@@ -67,7 +74,8 @@
       "Bash(gh secret:*)",
       "Bash(gh variable:*)",
       "Bash(vercel:*)",
-      "Bash(scripts/deploy.sh:*)"
+      "Bash(scripts/deploy.sh)",
+      "Bash(./scripts/deploy.sh)"
     ]
   },
   "hooks": {

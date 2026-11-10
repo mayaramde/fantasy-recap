@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """PreToolUse hook (matcher: Bash). Reads the tool call as JSON on stdin and
-exits non-zero with a message on stderr to block it. Exit 0 to allow.
+exits 2 (BLOCK_EXIT) with a message on stderr to block it. Exit 0 to allow.
 
 This is a hard guardrail, separate from settings.json's permission lists:
 permissions gate whether the user is prompted, this gates whether the
@@ -25,15 +25,21 @@ The command is parsed with `shlex` (not a substring grep) so a pipe or a
 `git` invocation's subcommand and flags are inspected structurally rather
 than by pattern-matching the whole line.
 
-Known limitation: `git -C <path> push ...` (a global git flag that takes a
-value) will confuse the "first non-flag token is the subcommand" heuristic
-below. Nothing in this repo's workflow uses `-C`, so this is left as a
-documented gap rather than a general git command-line parser.
+Pushes made while `main` is checked out are blocked outright: with main out,
+`git push`, `git push origin HEAD` and friends all push main. The branch is
+looked up where the command runs: the payload's `cwd`, a `cd` earlier in the
+same command, or `git -C <path>`.
 """
 import json
+import os
 import re
 import shlex
+import subprocess
 import sys
+
+# Claude Code blocks a tool call only when a PreToolUse hook exits with 2;
+# any other non-zero code is reported as a hook error and the command runs.
+BLOCK_EXIT = 2
 
 SHELL_OPERATORS = {";", "&&", "||", "|", "&", "(", ")"}
 
@@ -43,12 +49,13 @@ SHELL_OPERATORS = {";", "&&", "||", "|", "&", "(", ")"}
 ENV_RE = re.compile(r"^\.env(\.[\w.-]+)?$")
 
 
-def read_command():
+def read_payload():
+    """The command to check and the directory Claude Code runs it in."""
     try:
         payload = json.load(sys.stdin)
     except (json.JSONDecodeError, ValueError):
-        return None
-    return (payload.get("tool_input") or {}).get("command")
+        return None, None
+    return (payload.get("tool_input") or {}).get("command"), payload.get("cwd")
 
 
 def tokenize(command):
@@ -109,15 +116,76 @@ def secret_path_hit(tokens):
 
 FORCE_FLAG_RE = re.compile(r"^-[a-zA-Z]*f[a-zA-Z]*$")
 
+# Push modes that send every local branch, main included (--mirror also
+# force-overwrites and deletes remote branches), whatever else is on the line.
+ALL_BRANCH_PUSH_FLAGS = {"--mirror", "--all", "--branches"}
 
-def dangerous_git_reason(segment):
-    if "git" not in segment:
+
+def current_branch(directory=None):
+    """The branch checked out in `directory` (default: the hook's own cwd), or
+    None when git can't say (not a repo, git missing). A detached HEAD reports
+    "HEAD"."""
+    cmd = ["git"] + (["-C", directory] if directory else []) + ["rev-parse", "--abbrev-ref", "HEAD"]
+    try:
+        out = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+    except (OSError, subprocess.SubprocessError):
         return None
-    rest = segment[segment.index("git") + 1:]
-    subcommand = next((t for t in rest if not t.startswith("-")), None)
+    return out.stdout.strip() or None
+
+
+def implicit_main_push_reason(rest, branch):
+    """Block any push made while main is checked out.
+
+    `rest` is the tokens after `git`, e.g. ["push", "-u", "origin", "HEAD"];
+    `branch` is the checked-out branch (see current_branch()). With main
+    checked out, a push that names no branch, or HEAD/@, or a flag-with-value
+    that shifts the words around, all push main, and telling them apart from a
+    safe push is fragile. Every shipped change goes out from its own branch, so
+    the rule is simply: switch off main before pushing. When git can't say
+    which branch is out, allow; settings.json still asks before the bare forms.
+    """
+    if branch == "main":
+        return "git push while main is checked out (switch to a branch first)"
+    return None
+
+
+# git's own global options that take a value: `git -C <path> push` must not
+# read <path> as the subcommand.
+GIT_GLOBAL_VALUE_OPTS = {"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"}
+
+
+def parse_git(segment):
+    """(subcommand, args after it, the -C directory or None) for a segment
+    that runs git, else (None, [], None)."""
+    # Only a segment that *runs* git (after any VAR=value prefixes), so
+    # `grep git push.md` or `echo git push` isn't read as a push.
+    words = list(segment)
+    while words and re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", words[0]):
+        words = words[1:]
+    if not words or words[0] != "git":
+        return None, [], None
+    toks = words[1:]
+    directory, i = None, 0
+    while i < len(toks) and toks[i].startswith("-"):
+        if toks[i] in GIT_GLOBAL_VALUE_OPTS:
+            if toks[i] == "-C" and i + 1 < len(toks):
+                directory = toks[i + 1]
+            i += 2
+        else:
+            i += 1
+    if i >= len(toks):
+        return None, [], directory
+    return toks[i], toks[i + 1:], directory
+
+
+def dangerous_git_reason(segment, branch=None, cwd=None):
+    """Why this segment's git command must not run, or None. `cwd` is where
+    the command runs (the payload's cwd, or a `cd` earlier in the command);
+    `branch` overrides the lookup, for tests."""
+    subcommand, args, git_dir = parse_git(segment)
 
     if subcommand == "push":
-        for tok in rest:
+        for tok in args:
             if tok.startswith("--force"):
                 return f"git push uses {tok}"
             if FORCE_FLAG_RE.match(tok):
@@ -126,10 +194,19 @@ def dangerous_git_reason(segment):
                 return f"git push uses a force refspec ({tok})"
             if tok == "main" or tok.endswith(":main") or tok.endswith("/main"):
                 return f"git push targets main directly ({tok})"
-        return None
+            if tok in ALL_BRANCH_PUSH_FLAGS:
+                return f"git push uses {tok}, which pushes main along with every other branch"
+            if tok == ":" or "*" in tok:
+                return f"git push uses a matching refspec ({tok}), which can push main"
+        if branch is None:
+            directory = git_dir
+            if directory and cwd and not os.path.isabs(directory):
+                directory = os.path.join(cwd, directory)
+            branch = current_branch(directory or cwd)
+        return implicit_main_push_reason(["push"] + args, branch)
 
     if subcommand == "add":
-        if any(tok.startswith("--force") or FORCE_FLAG_RE.match(tok) for tok in rest):
+        if any(tok.startswith("--force") or FORCE_FLAG_RE.match(tok) for tok in args):
             return "git add uses -f/--force, the only way to force a gitignored file into a commit"
         return None
 
@@ -146,30 +223,35 @@ def is_fork_bomb(command):
 
 
 def main():
-    command = read_command()
+    command, cwd = read_payload()
     if not command:
         return 0
 
     if is_fork_bomb(command):
         print("Blocked by guard_bash.py: fork bomb pattern.", file=sys.stderr)
-        return 1
+        return BLOCK_EXIT
 
     tokens = tokenize(command)
     for segment in split_commands(tokens):
         if rm_rf_root(segment):
             print("Blocked by guard_bash.py: rm -rf on /.", file=sys.stderr)
-            return 1
+            return BLOCK_EXIT
 
         hit = secret_path_hit(segment)
         if hit:
             print(f"Blocked by guard_bash.py: command references a denied secret path ({hit!r}).",
                   file=sys.stderr)
-            return 1
+            return BLOCK_EXIT
 
-        reason = dangerous_git_reason(segment)
+        if segment[0] == "cd" and len(segment) > 1:
+            target = os.path.expanduser(segment[1])
+            cwd = target if os.path.isabs(target) or not cwd else os.path.join(cwd, target)
+            continue
+
+        reason = dangerous_git_reason(segment, cwd=cwd)
         if reason:
             print(f"Blocked by guard_bash.py: {reason}.", file=sys.stderr)
-            return 1
+            return BLOCK_EXIT
 
     return 0
 
