@@ -103,7 +103,8 @@ class ReviewRegressions(unittest.TestCase):
         self.assertEqual(build.player_verdict(rb1, True, ctx)["label"], "Consider swap")
         v = build.player_verdict(b, False, ctx)
         self.assertEqual(v["label"], "Consider swap")
-        self.assertIn("RB One", v["reason"])
+        self.assertIn("6.0 higher than RB Two", v["reason"])
+        self.assertNotIn("worth a move", v["reason"])
 
     def test_questionable_starter_is_not_a_swap_target(self):
         a, b = pl(1, "Maybe", st="QUESTIONABLE", proj=8.0), pl(2, "Bench", slot="BN", proj=14.0)
