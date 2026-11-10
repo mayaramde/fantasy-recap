@@ -779,11 +779,12 @@
   /* On a live box score each player carries his NFL team logo (the slot column already
      names the position), and a player whose game is on right now wears a pulsing sticker. */
   .lineup td .tlogo { width: 19px; height: 19px; margin-left: 6px; vertical-align: -4px; object-fit: contain; }
-  .lineup td .playing { display: inline-flex; align-items: center; white-space: nowrap; margin-left: 5px;
+  .lineup td .playing, .hub-lineups td .playing { display: inline-flex; align-items: center; white-space: nowrap; margin-left: 5px;
     font: 500 10.5px/1 var(--script); color: var(--on-pop); background: var(--lime);
     border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px 3px 5px; vertical-align: 1px; }
   /* The sticker is lime in both themes, so the dot keeps the one red that reads on it. */
-  .lineup td .playing .live-dot { width: 7px; height: 7px; margin-right: 4px; vertical-align: 0; background: #c0392b; }
+  .lineup td .playing .live-dot, .hub-lineups td .playing .live-dot { width: 7px; height: 7px; margin-right: 4px; vertical-align: 0; background: #c0392b; }
+  .lineup td.nopts { color: var(--muted); }
   .lineup .opt { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
   .lineup .opt b { color: var(--ink); }
 
@@ -1818,6 +1819,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const f2 = (n) => (n == null ? '–' : (Math.round(n * 100) / 100).toFixed(2));
   const f1 = (n) => (n == null ? '–' : (Math.round(n * 10) / 10).toFixed(1));
+  // A player's points on a lineup card: "-" until his game has kicked off (site/live/live.js liveHasScore),
+  // never 0.0, because nothing has been scored yet. A real zero still reads 0.0.
+  const ptsText = (p, digits = 1) => (liveHasScore(p) ? (digits === 2 ? f2 : f1)(p.points) : '-');
+  const noPts = (p) => (liveHasScore(p) ? '' : ' nopts');
   // "Joe Burrow (QB)". A defense already says what it is in its name ("Seahawks D/ST"),
   // and a player's lineup slot can be FLEX, which is a spot on the roster, not a position.
   const posOf = (pos) => (pos && pos !== 'DST' ? esc(pos) : '');
@@ -2513,7 +2518,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const row = (p, cls, slot) => {
       const card = cards && p.player_id != null ? cards[p.player_id] : null;
       const id = peekId(side.team_id, p);
-      return `<tr class="${cls}${card && PEEK.has(p.player_id) ? ' peek-open' : ''}"><td class="slot">${esc(slot)}</td><td>${peekName(p, card, id, live)}</td><td class="r">${f2(p.points)}</td><td class="r proj">${f1(p.projected)}</td></tr>`
+      return `<tr class="${cls}${card && PEEK.has(p.player_id) ? ' peek-open' : ''}"><td class="slot">${esc(slot)}</td><td>${peekName(p, card, id, live)}</td><td class="r${noPts(p)}">${ptsText(p, 2)}</td><td class="r proj">${f1(p.projected)}</td></tr>`
         + peekRow(p, card, id, 4);
     };
     return `
@@ -2868,6 +2873,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
               : next ? `<div>Next kickoff <b>${esc(kickoffText(next))}</b></div>` : '<div class="lv-nobody">Nobody is on the field right now.</div>'}
             <p class="lv-hint">${[a, b].map((s) => `${esc(s.manager)}: ${s.playing_now || 0} playing, ${s.yet_to_play || 0} yet to play.`).join(' ')}</p>
           </div>
+          ${liveLineups(game, a, b)}
           <div class="lv-actions">
             <a class="lv-go" href="${boxHref}">Live box score <span aria-hidden="true">→</span></a>
             ${picked ? `<a class="lv-coach" href="${coachHref()}">Your Coach report <span aria-hidden="true">→</span></a>` : ''}
@@ -2885,8 +2891,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const total = a.points + b.points, aw = total > 0 ? a.points / total * 100 : 50;
     const playing = (a.playing_now || 0) + (b.playing_now || 0);
     const flipped = !!(liveMove && liveMove.flip.has(g.key));
+    // The card is a div so the lineups <details> can sit beside the link, never inside it.
     return `
-      <a class="lv-card" href="${base(w)}.game-${g.key}" aria-label="${esc(a.manager)} ${f2(a.points)}, ${esc(b.manager)} ${f2(b.points)}. ${leader ? `${esc(leader.manager)} leads by ${f1(liveGap(g))}. ` : 'Tied. '}${v ? `${v.label}, ${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}. ` : ''}${flipped ? 'Lead changed. ' : ''}Open live box score">
+      <div class="lv-card">
+      <a class="lv-link" href="${base(w)}.game-${g.key}" aria-label="${esc(a.manager)} ${f2(a.points)}, ${esc(b.manager)} ${f2(b.points)}. ${leader ? `${esc(leader.manager)} leads by ${f1(liveGap(g))}. ` : 'Tied. '}${v ? `${v.label}, ${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}. ` : ''}${flipped ? 'Lead changed. ' : ''}Open live box score">
         ${v ? `<div class="lv-card-head"><span class="lv-verdict ${v.tone}">${v.label}</span><span class="lv-pct">${v.percent}% ${esc((v.favorite === 'left' ? a : b).manager)}</span></div>` : ''}
         <div class="lv-top2">
           <div class="lv-s"><div class="m">${esc(a.manager)}</div><div class="lv-sc num ${lead === a.team_id ? 'lead' : ''}">${f1(a.points)}${liveDelta(a.team_id)}</div></div>
@@ -2894,7 +2902,20 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         </div>
         <div class="lv-tug" role="img" aria-label="Share of points: ${esc(a.manager)} ${f1(a.points)}, ${esc(b.manager)} ${f1(b.points)}"><i class="l" style="width:${aw.toFixed(1)}%"></i><i class="r" style="width:${(100 - aw).toFixed(1)}%"></i><b class="mid"></b></div>
         <div class="lv-foot"><span>${leader ? `<b>${esc(leader.manager)}</b> leads by ${f1(liveGap(g))}` : 'Tied'}${flipped ? ' <span class="lv-sticker">Lead changed</span>' : ''}</span><span>${playing ? `<span class="live-dot" aria-hidden="true"></span>${playing} playing now` : 'No one on the field'}</span></div>
-      </a>`;
+      </a>
+      ${liveLineups(g, a, b)}
+      </div>`;
+  }
+
+  // "Full lineups" under a live game: every starter's points so far, "-" before kickoff. The open state
+  // is kept in HUB_OPEN (the refresh re-renders the page), under a live- key so it never opens the
+  // Week hub's copy of the same game.
+  function liveLineups(g, a, b) {
+    const key = `live-${g.key}`;
+    return `<details class="hub-lineups lv-lineups" data-hub-open="${key}"${HUB_OPEN.has(key) ? ' open' : ''}>
+        <summary>Full lineups</summary>
+        <div class="body">${lineupCols(a, b, false, true)}</div>
+      </details>`;
   }
 
   function liveBoard(w) {
@@ -3152,17 +3173,36 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (p.injury) { const [abbr, tone] = HUB_STATUS[p.injury] || [p.injury, OUTISH.includes(p.injury) ? 'out' : 'iffy']; return { label: p.injury, abbr, tone }; }
     return p.bye ? { label: 'Bye', abbr: 'BYE', tone: 'bye' } : null;
   }
-  function hubRow(p, hasProj) {
+  // `live` swaps the right-hand number from his projection (the Week hub, before kickoff) to the points
+  // he has scored (the Live page), and adds the pulsing "on now" sticker while his game is on.
+  function hubRow(p, hasProj, live) {
     const st = hubStatus(p);
     const bits = [p.team ? `<b>${esc(p.team)}</b>` : '', p.bye ? '' : esc(kickoffText(p.kickoff))].filter(Boolean).join(' · ');
     const sticker = st ? `<span class="st ${st.tone}" title="${esc(st.label)}"><span aria-hidden="true">${esc(st.abbr)}</span><span class="sr">${esc(st.label)}</span></span>` : '';
+    const onNow = live && p.playing ? `<span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '';
+    const num = live ? `<td class="r${noPts(p)}">${ptsText(p)}</td>`
+      : `<td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td>`;
     return `
         <tr${st ? ` class="k-${st.tone}"` : ''}>
           <td class="slot"><span class="slotpill">${esc(p.slot)}</span></td>
           <td class="av">${face(p, 'sm')}</td>
-          <td class="pl"><div class="nm">${esc(p.name)}</div><div class="sub">${bits ? `<span>${bits}</span>` : ''}${sticker}</div></td>
-          <td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td>
+          <td class="pl"><div class="nm">${esc(p.name)}</div><div class="sub">${bits ? `<span>${bits}</span>` : ''}${onNow}${sticker}</div></td>
+          ${num}
         </tr>`;
+  }
+
+  // The two-column "Full lineups" body, shared by the Week hub and the Live page's game cards.
+  function lineupCols(a, b, hasProj, live) {
+    const table = (s) => {
+      const rows = [...(s.starters || [])].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
+      if (!rows.length) {
+        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. This fills in once ESPN has a lineup.</div></div>`;
+      }
+      const toFix = rows.filter((p) => hubStatus(p)).length;
+      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to check</span>` : ''}</div></caption><tbody>${
+        rows.map((p) => hubRow(p, hasProj, live)).join('')}</tbody></table></div>`;
+    };
+    return `<div class="cols">${table(a)}${table(b)}</div>`;
   }
 
   function hubGame(w, g, { mine, swing }) {
@@ -3175,15 +3215,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     // No advice rows at all says nothing about the injury report, so only a capture that has them and none known gets the note.
     const adv = advice() || [];
     const known = !adv.length || adv.some((r) => r.injuries_known);
-    const table = (s) => {
-      const rows = [...s.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
-      if (!rows.length) {
-        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. This fills in once ESPN has a lineup.</div></div>`;
-      }
-      const toFix = rows.filter((p) => hubStatus(p)).length;
-      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to check</span>` : ''}</div></caption><tbody>${
-        rows.map((p) => hubRow(p, hasProj)).join('')}</tbody></table></div>`;
-    };
     return `
       <article class="hub-game" aria-label="${esc(a.manager)} vs ${esc(b.manager)}">
         <div class="hub-tag${mine ? ' mine' : swing ? ' swing' : ''}">
@@ -3208,7 +3239,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <details class="hub-lineups" data-hub-open="${g.key}"${HUB_OPEN.has(g.key) ? ' open' : ''}>
           <summary>Full lineups</summary>
           <div class="body">
-            <div class="cols">${table(a)}${table(b)}</div>
+            ${lineupCols(a, b, hasProj, false)}
             ${known ? `<p class="legend"><b>Q</b> questionable (might play) · <b>DTD</b> day to day · <b>D</b> doubtful (probably not) · <b>OUT</b> · <b>IR</b> injured reserve · <b>SUSP</b> suspended · <b>BYE</b> no game this week. Tags come from ESPN's injury report. Out, IR and bye starters score zero until swapped.</p>`
               : `<p class="strip"><b>No injury report for this week.</b> Blank here doesn't mean healthy.</p>`}
           </div>

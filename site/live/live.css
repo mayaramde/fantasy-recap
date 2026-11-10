@@ -39,7 +39,13 @@
   .lv-pickbox { padding: 14px; border-top: 2px solid var(--rule); background: var(--pink-soft); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; font-size: 13.5px; }
   .lv-btn { font: 600 13px/1.2 var(--script); background: var(--card); color: var(--ink); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 12px; box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .lv-games { display: grid; gap: 14px; grid-template-columns: 1fr; }
-  a.lv-card { background: var(--card); overflow: hidden; display: block; text-decoration: none; color: inherit; border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px; }
+  .lv-card { background: var(--card); overflow: hidden; border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--drop); border-radius: 14px; }
+  a.lv-link { display: block; text-decoration: none; color: inherit; }
+  a.lv-link:focus-visible { outline: 3px solid var(--edge); outline-offset: -6px; }
+  /* Full lineups under a live game. In the hero it sits above the stretched .lv-go link. */
+  .lv-lineups { position: relative; z-index: 2; background: var(--card); }
+  .lv-lineups .body .cols { border-top: 2px solid var(--edge); }
+  .hub-lineups td.nopts { color: var(--muted); }
   .lv-card-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px 4px; }
   .lv-verdict { display: inline-block; font: 600 18px/1.2 var(--script); color: var(--on-pop); border: 2px solid var(--edge); border-radius: 8px; padding: 3px 12px; transform: rotate(-2deg); box-shadow: 2px 2px 0 var(--drop); }
   .lv-verdict.lime { background: var(--lime); } .lv-verdict.cobalt { background: var(--accent-soft); color: var(--ink); } .lv-verdict.pink { background: var(--pink); }
@@ -64,7 +70,7 @@
   }
   @media (prefers-reduced-motion: no-preference) {
     .lv-delta, .lv-sticker { animation: lv-pop 0.5s ease-out; }
-    a.lv-card { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+    .lv-card { transition: transform 0.12s ease, box-shadow 0.12s ease; }
     }
   @keyframes lv-pop { from { transform: scale(0.6) rotate(-6deg); } }
 

@@ -105,3 +105,14 @@ test('stale means API on and more than five minutes old', () => {
   assert.equal(L.liveStale('2026-10-18T15:56:00Z', now, '/api/live'), false);
   assert.equal(L.liveStale('2026-10-18T15:00:00Z', now, undefined), false);
 });
+
+test('liveHasScore: "-" before kickoff and on a bye, a real zero once the game is on or over', () => {
+  assert.equal(L.liveHasScore({ state: 'pre', points: 0 }), false);
+  assert.equal(L.liveHasScore({ state: 'pre', points: null }), false);
+  assert.equal(L.liveHasScore({ bye: true, points: 0 }), false);
+  assert.equal(L.liveHasScore({ state: 'in', points: 0 }), true);
+  assert.equal(L.liveHasScore({ state: 'post', points: 0 }), true);
+  assert.equal(L.liveHasScore({ state: 'in', playing: 'Q1 3:00', points: 0 }), true);
+  assert.equal(L.liveHasScore({ state: 'post', points: -0.16 }), true);
+  assert.equal(L.liveHasScore({ points: 0 }), true); // no game state captured: taken at face value
+});

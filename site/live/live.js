@@ -78,4 +78,13 @@ function liveNextKickoff(starters, now) {
 const LIVE_STALE_MS = 5 * 60 * 1000;
 const liveStale = (capturedAt, now, apiOn) => !!apiOn && !!capturedAt && now - Date.parse(capturedAt) > LIVE_STALE_MS;
 
-if (typeof module !== 'undefined') module.exports = { liveSides, liveChance, liveGap, liveClosest, liveHero, liveVerdict, liveRemaining, liveLeader, liveMovement, liveNextKickoff, liveStale };
+// Has this player a score yet? A starter whose game hasn't kicked off (or who has no game, a bye)
+// has none, and a lineup shows "-" for him, never 0.0. A real zero still counts: once his game is on
+// or over, 0.0 is a score. A row with no game state (weeks captured before states existed) is taken
+// at face value, never guessed.
+function liveHasScore(p) {
+  if (p.playing || (typeof p.points === 'number' && p.points !== 0)) return true;
+  return !(p.bye || p.state === 'pre');
+}
+
+if (typeof module !== 'undefined') module.exports = { liveHasScore, liveSides, liveChance, liveGap, liveClosest, liveHero, liveVerdict, liveRemaining, liveLeader, liveMovement, liveNextKickoff, liveStale };
