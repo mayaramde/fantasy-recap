@@ -822,6 +822,18 @@
   .peek-lines tfoot th, .peek-lines tfoot td { font-weight: 700; border-top: 2px solid var(--edge); }
   .peek-notes { margin: 0; padding-left: 16px; font-size: 12.5px; color: var(--muted); display: grid; gap: 3px; }
   .peek-notes li::marker { color: var(--accent); }
+  /* Verdict + chips at the top of a player card (site/build.py player_verdict / player_chips) */
+  .vd-line { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; }
+  .vd { display: inline-block; padding: 1px 10px; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 999px;
+    font: 800 10.5px/1.6 var(--body); letter-spacing: 0.07em; text-transform: uppercase; background: var(--logo-chip); }
+  .vd-line .vr { color: var(--ink); }
+  .vd-go { background: var(--lime); }
+  .vd-watch { background: var(--orange); }
+  .vd-now { background: var(--pink); }
+  .pchips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pchips li { display: grid; gap: 1px; padding: 3px 9px; background: var(--card); border: 1.5px solid var(--rule); border-radius: 10px; }
+  .pchips .cl { font: 600 9.5px/1.2 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .pchips .cv { font: 500 13px/1.2 var(--mono); font-variant-numeric: tabular-nums; }
   .peek-none { margin: 0; font-size: 12.5px; color: var(--muted); }
 
   .other-games { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -2486,7 +2498,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   // Where the points came from and what else is worth knowing; the blurb is drawn by the caller.
   function peekDetail(p, card) {
     const lines = card.lines || [];
+    const vd = card.verdict;
+    const chips = card.chips || [];
     return `
+        ${vd ? `<div class="vd-line"><span class="vd vd-${esc(vd.level)}">${esc(vd.label)}</span>${vd.reason ? `<span class="vr">${esc(voice(vd.reason))}</span>` : ''}</div>` : ''}
+        ${chips.length ? `<ul class="pchips">${chips.map((c) => `<li><span class="cl">${esc(c.label)}</span><span class="cv">${esc(c.value)}</span></li>`).join('')}</ul>` : ''}
         ${lines.length ? `
         <table class="peek-lines">
           <caption>Where the points came from</caption>

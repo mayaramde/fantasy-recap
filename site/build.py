@@ -624,6 +624,164 @@ def _td_line(p):
     return f" {COUNT_WORD.get(td, td)} touchdowns. Screenshot it."
 
 
+# ---------- per-player outlook: form, role and a start/swap verdict ----------
+# Built only from numbers already on the page: his own earlier weeks, the FantasyPros season totals
+# behind the Key stats tiles, ESPN's projections and injury report. No reasons are invented.
+FORM_MIN = 3        # games before an average means anything
+PROJ_GAP = 4.0      # how far a projection sits from his average before the card says so
+# Which two Key stats tiles ride along as chips (indexes into key_stats' tile order).
+CHIP_TILES = {"QB": (1, 3), "RB": (0, 2), "WR": (0, 2), "TE": (0, 2), "K": (0, 1)}
+
+
+def player_form(history):
+    """{player_id: [points in each game he played, oldest week first]} from the captured weeks.
+
+    A game counts when he played and wasn't on IR. A 0.0 from the bench or from a player ESPN had
+    out is left out: it's as likely an inactive as a donut, and an average shouldn't guess."""
+    out = {}
+    # A capture still in progress has half-played games in it, so it adds nothing yet.
+    for cap in sorted((c for c in history or [] if c.get("complete") is not False), key=lambda c: c.get("week", 0)):
+        for m in cap.get("matchups", []):
+            for side in (m.get("home"), m.get("away")):
+                for p in (side or {}).get("lineup", []):
+                    pts = p.get("points") or 0
+                    if p.get("player_id") is None or not p.get("played") or p.get("slot") == "IR":
+                        continue
+                    if abs(pts) < 0.005 and (p.get("slot") == "BENCH" or p.get("injury_status") in SIDELINED):
+                        continue
+                    out.setdefault(p["player_id"], []).append(pts)
+    return out
+
+
+def _form_summary(p, ctx):
+    """{n, avg, last3} once he has FORM_MIN games, else None. `avg` is the one-decimal number the
+    card prints, so every comparison made from it matches what a reader can check by hand."""
+    pts = (ctx.get("form") or {}).get(p["player_id"]) or []
+    if len(pts) < FORM_MIN:
+        return None
+    # Half-up, like the Key stats tiles, so an average ending in .x5 reads the same on both.
+    avg = (Decimal(str(round(sum(pts), 2))) / len(pts)).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return {"n": len(pts), "avg": float(avg), "last3": pts[-3:]}
+
+
+def _proj_gap(p, form):
+    """His projection minus his average, both as printed (one decimal)."""
+    return round(float(_f1(_proj(p))) - form["avg"], 1)
+
+
+def player_chips(p, ctx):
+    """[{label, value}]: his form (average and last three games), what ESPN projects him against it
+    while his game is still ahead, and two role tiles from his season totals. Empty when there's
+    nothing honest to show."""
+    chips = []
+    form = _form_summary(p, ctx)
+    if form:
+        chips.append({"label": f"Avg, {form['n']} games", "value": _f1(form["avg"])})
+        chips.append({"label": "Last 3", "value": ", ".join(_f1(x) for x in form["last3"])})
+        if ctx["projected"] and _proj(p) > 0.005 and not ctx["locked"](p) and not ctx["on_bye"](p):
+            chips.append({"label": "Proj vs avg", "value": f"{_proj_gap(p, form):+.1f}"})
+    tiles = key_stats(p.get("pos"), (ctx.get("stats") or {}).get(str(p["player_id"])) or
+                      (ctx.get("stats") or {}).get(p["player_id"]))
+    if tiles and p.get("pos") in CHIP_TILES:
+        chips += [tiles[0][i] for i in CHIP_TILES[p["pos"]]]
+    return chips
+
+
+def _lead(a, b):
+    """How far a's projection is ahead of b's, both as printed (one decimal), so the number on the
+    card, the swap bar and the sentence can never disagree by a rounding step."""
+    return round(float(_f1(_proj(a))) - float(_f1(_proj(b))), 1)
+
+
+def player_verdict(p, starting, ctx):
+    """{label, level, reason} for a player whose game hasn't kicked off, else None.
+
+    Levels: "go" (leave him), "watch" (look again or consider a move), "now" (fix it before
+    kickoff), "info" (no action). A swap needs a projection gap of SWAP_MIN, the same bar
+    team_advice's swap cards use, so the two never disagree. With no projections published,
+    only injuries and byes get a verdict: nothing here compares two zeros."""
+    if p["slot"] == "IR" or ctx["locked"](p):
+        return None
+    st = p.get("injury_status")
+    guess = ctx["projected"]
+    him, his = ("it", "its") if p.get("pos") == "DST" else ("him", "his")
+    if ctx["on_bye"](p):
+        return ({"label": "Fix now", "level": "now", "reason": f"{his.capitalize()} NFL team is on a bye, so this spot scores nothing."}
+                if starting else
+                {"label": "Stay benched", "level": "info", "reason": f"{his.capitalize()} NFL team is on a bye this week."})
+    if st in SIDELINED:
+        if starting:
+            return {"label": "Fix now", "level": "now", "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}."}
+        return {"label": "Stay benched", "level": "info", "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}."}
+    if starting:
+        alt = ctx["bench_best"](p["slot"]) if ctx["can_change"] else None
+        if st in IFFY:
+            return {"label": "Watch", "level": "watch",
+                    "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}. Check again closer to kickoff."}
+        if not guess or _proj(p) <= 0.005:
+            return None
+        if not alt:
+            return {"label": "Start", "level": "go", "reason": "Nobody on your bench is a better option here."}
+        d = _lead(alt, p)
+        if d >= SWAP_MIN:
+            return {"label": "Consider swap", "level": "watch",
+                    "reason": f"{alt['name']} is projected {_f1(d)} higher ({_f1(_proj(alt))} to {_f1(_proj(p))})."}
+        if d > 0:
+            why = f"{alt['name']} on your bench is projected only {_f1(d)} higher, which isn't worth a move."
+        elif d == 0:
+            why = f"{alt['name']} on your bench is projected level with {him}."
+        else:
+            why = f"Your best bench option, {alt['name']}, is projected {_f1(-d)} behind {him}."
+        return {"label": "Start", "level": "go", "reason": why}
+    # On the bench: every open starting spot he could fill. A swap needs him to be the best bench
+    # option for that spot, so this agrees with that starter's own card.
+    if not guess or _proj(p) <= 0.005:
+        return None
+    if not ctx["can_change"]:
+        return {"label": "Hold", "level": "info", "reason": None}
+    spots = [s for s in ctx["starters"] if not ctx["locked"](s) and p["pos"] in SLOT_OK.get(s["slot"], ())]
+    if not spots:
+        return {"label": "Hold", "level": "info", "reason": "No open starting spot fits his position."}
+    wins = [s for s in spots
+            if s.get("injury_status") not in IFFY and _lead(p, s) >= SWAP_MIN
+            and (ctx["bench_best"](s["slot"]) or {}).get("player_id") == p["player_id"]]
+    if wins:
+        t = max(wins, key=lambda s: _lead(p, s))
+        return {"label": "Consider swap", "level": "watch",
+                "reason": f"Projected {_f1(_lead(p, t))} higher than {t['name']} at {t['slot']} "
+                          f"({_f1(_proj(p))} to {_f1(_proj(t))})."}
+    t = min(spots, key=_proj)
+    ahead = _lead(t, p)
+    if ahead > 0:
+        why = f"{t['name']} at {t['slot']} is projected {_f1(ahead)} ahead of him."
+    else:
+        better = ctx["bench_best"](t["slot"])
+        if better and better["player_id"] != p["player_id"] and _lead(better, p) > 0:
+            why = f"{better['name']} is the better bench option for {t['name']}'s spot."
+        else:
+            why = f"Projected within {SWAP_MIN:.0f} of {t['name']} at {t['slot']}, which isn't worth a move."
+    return {"label": "Hold", "level": "info", "reason": why}
+
+
+def form_blurb(p, form, gap, seed, dst=False):
+    """The pre-kickoff line when we know his form: the projection set against his own average."""
+    proj, avg, n = _f1(_proj(p)), _f1(form["avg"]), form["n"]
+    him, his = ("it", "its") if dst else ("him", "his")
+    if gap >= PROJ_GAP:
+        opts = [f"ESPN has {him} at {proj}, {_f1(gap)} above {his} {avg} average. The projection is feeling generous.",
+                f"{proj} projected against a {avg} average over {n} games. ESPN is dreaming big."]
+    elif gap <= -PROJ_GAP:
+        opts = [f"ESPN has {him} at {proj}, {_f1(-gap)} under {his} {avg} average. The projection is playing it safe.",
+                f"{proj} projected against a {avg} average over {n} games. ESPN is being shy."]
+    else:
+        opts = [f"ESPN has {him} at {proj}, right in line with {his} {avg} average. No surprises on the menu.",
+                f"{proj} projected, {avg} a game so far. The projection and {his} season agree.",
+                f"ESPN's {proj} sits close to {his} {avg} average over {n} games. Boring in the best way.",
+                f"Projected {proj}, averaging {avg}. Nobody's reinventing anything."]
+    return opts[seed % len(opts)]
+
+
+
 def player_blurb(p, starting, ctx):
     """One cheeky line about a player's week, built only from his own numbers.
 
@@ -675,6 +833,9 @@ def player_blurb(p, starting, ctx):
                 "No projection from ESPN for that week yet. It's early, so check back closer to "
                 "kickoff.",
             ])
+        form = _form_summary(p, ctx)
+        if form and _proj(p) > 0.005:
+            return form_blurb(p, form, _proj_gap(p, form), p["player_id"], dst=p["pos"] == "DST")
         return _voice(p, [
             f"Hasn't kicked off yet. ESPN pencils him in for {_f1(proj)}, which is a guess in a nice suit.",
             f"The {_f1(proj)} next to {his} name is a projection, not a promise.",
@@ -758,15 +919,10 @@ def player_notes(p, starting, ctx):
         notes.append(f"That game is on right now ({p.get('game_clock') or 'in progress'}).")
     elif state == "post":
         notes.append("That game is final, so the number is the number.")
-    elif state == "pre":
-        notes.append("Kickoff is still ahead, so you can still make a change here.")
 
-    if starting and not started and ctx["can_change"]:
-        alt = ctx["bench_best"](p["slot"])
-        if alt:
-            notes.append(f"Best option behind him on your bench: {alt['name']}"
-                         + (f" ({_f1(_proj(alt))} projected)." if ctx["projected"] else "."))
-    elif not starting and p["slot"] != "IR" and st not in SIDELINED and not ctx["on_bye"](p):
+    # Before kickoff the verdict line (see player_verdict) says what to do about him, so this list
+    # doesn't repeat the kickoff time or name a bench option without a call on it.
+    if not starting and p["slot"] != "IR" and st not in SIDELINED and not ctx["on_bye"](p):
         rival = ctx["starter_for"](p)
         # Only worth saying once there are points to compare: on a week nobody has played,
         # both sides of it are 0.0.
@@ -797,6 +953,10 @@ def player_cards(starters, bench, ctx):
             "blurb": player_blurb(p, starting, ctx),
             "lines": p.get("scoring_lines") or [],
             "notes": player_notes(p, starting, ctx),
+            # What to do about him before kickoff (None once his game has started) and his form and
+            # role as chips; see player_verdict and player_chips.
+            "verdict": player_verdict(p, starting, ctx),
+            "chips": player_chips(p, ctx),
             # His NFL game: 'pre', 'in', 'post', or None; bye is "no game this week", which the
             # lineup rows draw as BYE rather than as a projection of nothing.
             "state": p.get("game_state"),
@@ -825,7 +985,7 @@ def injury_report(starters, bench, on_bye):
 
 
 def team_advice(team, before, before_week, states_known, projected=True, week_open=True,
-                fp_items=(), fp_ideas=(), written=None, written_summary=None):
+                fp_items=(), fp_ideas=(), written=None, written_summary=None, form=None, stats=None):
     """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
@@ -842,6 +1002,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     and week (see fantasypros_cards) — never generated here, only merged in. `written` and
     `written_summary` are coach-daily's copy for the computed cards themselves, keyed by
     situation (see written_cards); a card with no written copy keeps its computed wording.
+    `form` ({player_id: points per game played}, see player_form) and `stats` (season totals, see
+    fp_player_stats) feed the per-player outlook; without them the cards just skip that part.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -1104,6 +1266,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "top_starter": best_id(starters), "top_bench": best_id(team["bench"]),
         "bench_best": bench_best, "starter_for": starter_for,
         "pickups": {a["name"]: a for a in team.get("pickups_started", [])},
+        "starters": starters, "form": form or {}, "stats": stats or {},
     }
 
     # FantasyPros-sourced cards join the to-do list as if they'd always been part of it —
@@ -1162,7 +1325,7 @@ def summary_key(items, can_change):
     return "clear"
 
 
-def advice_payload(teams, espn, previous, fp=None, week=None):
+def advice_payload(teams, espn, previous, fp=None, week=None, history=None):
     """The Coach page's data: one entry per team, in league order.
 
     `teams` are facts.json-shaped (starters, bench, opponent_id), either from a played
@@ -1171,6 +1334,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
     `fp` is today's FantasyPros snapshot (see load_fantasypros), best effort like everything
     else here: with no snapshot, or nothing for this `week`, every team just gets its
     ESPN-only cards, same as before this existed.
+    `history` is the earlier captures, which give each player card his form (see player_form).
     """
     rows = [p for m in espn["matchups"] for s in (m["home"], m["away"]) if s for p in s["lineup"]]
     # Both calls behind these are best effort. With no NFL game states, no player is
@@ -1184,6 +1348,8 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
     # than silencing every card.
     week_open = not states_known or any(p.get("game_state") == "pre" for p in rows)
     before = injury_map(previous) if previous else {}
+    form = player_form(history)
+    stats = fp_player_stats(fp, week) if fp and week else None
     by_id = {t["team_id"]: t for t in teams}
     rows_out = []
     for t in LEAGUE["teams"]:
@@ -1193,7 +1359,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None):
         written, written_summary = written_cards(t["team_id"], fp, week)
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
                                     states_known, projected, week_open, fp_items, fp_ideas,
-                                    written, written_summary))
+                                    written, written_summary, form=form, stats=stats))
     # Did this capture record injury designations at all? Without them a roster with nobody listed is
     # "we don't know", never "healthy", so the Coach landing hides what it would say about injuries.
     injuries_known = bool(injury_map(espn))
@@ -1301,7 +1467,7 @@ def next_week_teams(capture):
     return teams
 
 
-def next_payload(capture, previous, fp=None):
+def next_payload(capture, previous, fp=None, history=None):
     """The Coach page's "next week" tab: the same advice, a week early.
 
     Baked at build time and never refreshed by /api/live, because next week's numbers
@@ -1311,7 +1477,7 @@ def next_payload(capture, previous, fp=None):
     fantasy-coach-daily actually wrote cards for the week ahead, not just the live one.
     """
     teams = next_week_teams(capture)
-    rows = advice_payload(teams, capture, previous, fp=fp, week=capture["week"])
+    rows = advice_payload(teams, capture, previous, fp=fp, week=capture["week"], history=history)
     known = game_states_known(p for t in teams for p in t["starters"] + t["bench"])
     lineups = {t["team_id"]: {"starters": [player(p, True, known) for p in t["starters"]],
                               "bench": [player(p, True, known) for p in t["bench"]]} for t in teams}
@@ -1526,7 +1692,8 @@ def live_payload(facts, espn, previous=None, fp=None, history=None):
     # This is what tells a genuinely live week apart from the dead stretch between Monday
     # night and Thursday's kickoff, on either side of that week's own recap shipping.
     kicked_off = any(t["yet_to_play"] < len(t["starters"]) for t in facts["teams"])
-    advice = advice_payload(facts["teams"], espn, previous, fp=fp, week=facts["week"])
+    advice = advice_payload(facts["teams"], espn, previous, fp=fp, week=facts["week"],
+                            history=history if history is not None else [previous] if previous else [])
     by_id = {t["team_id"]: t for t in facts["teams"]}
     record_by_id = {t["team_id"]: t for t in espn["teams"]}
     for row in advice:
@@ -1728,7 +1895,7 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, li
         # The week-ahead capture is only good for the week after the live one. A stale
         # one (captured before this week started) is dropped rather than shown as next.
         if ahead and ahead["week"] == facts["week"] + 1:
-            live["next"] = next_payload(ahead, previous, fp=fp)
+            live["next"] = next_payload(ahead, previous, fp=fp, history=[e for _, e in captured])
     elif live_from and preview and live_from["week"] > last:
         live = live_from                    # already carries its hub and next week
 
