@@ -91,6 +91,53 @@ class Verdicts(unittest.TestCase):
         self.assertIsNone(build.player_verdict(b, False, ctx))
 
 
+class ReviewRegressions(unittest.TestCase):
+    def test_bench_player_is_checked_against_every_open_spot(self):
+        rb1 = pl(1, "RB One", "RB", "RB", 8.0)
+        rb2 = pl(2, "RB Two", "RB", "RB", 7.0)
+        flex = pl(3, "Flex WR", "WR", "FLEX", 5.0)
+        b = pl(4, "RB B", "RB", "BN", 13.0)
+        c = pl(5, "WR C", "WR", "BN", 14.0)
+        ctx = ctx_for([rb1, rb2, flex], [b, c])
+        # RB1's own card says swap in B, so B's card has to say the same, not "isn't worth a move".
+        self.assertEqual(build.player_verdict(rb1, True, ctx)["label"], "Consider swap")
+        v = build.player_verdict(b, False, ctx)
+        self.assertEqual(v["label"], "Consider swap")
+        self.assertIn("RB One", v["reason"])
+
+    def test_questionable_starter_is_not_a_swap_target(self):
+        a, b = pl(1, "Maybe", st="QUESTIONABLE", proj=8.0), pl(2, "Bench", slot="BN", proj=14.0)
+        v = build.player_verdict(b, False, ctx_for([a], [b]))
+        self.assertEqual(v["label"], "Hold")
+
+    def test_swap_bar_uses_the_printed_numbers(self):
+        # 10.04 and 11.99 print as 10.0 and 12.0: a printed gap of 2.0 clears the bar.
+        a, b = pl(1, "Starter", proj=10.04), pl(2, "Bench", slot="BN", proj=11.99)
+        v = build.player_verdict(a, True, ctx_for([a], [b]))
+        self.assertEqual(v["label"], "Consider swap")
+        self.assertIn("2.0 higher (12.0 to 10.0)", v["reason"])
+        # and a tiny lead never prints as "only 0.0 higher"
+        c, d = pl(3, "Starter", proj=10.04), pl(4, "Bench", slot="BN", proj=10.01)
+        self.assertNotIn("0.0 higher", build.player_verdict(c, True, ctx_for([c], [d]))["reason"])
+
+    def test_defense_verdicts_say_it(self):
+        d = pl(1, "Jaguars D/ST", "DST", "DST")
+        v = build.player_verdict(d, True, ctx_for([d], [], bye={1}))
+        self.assertTrue(v["reason"].startswith("Its NFL team"))
+
+    def test_form_skips_unfinished_captures_and_rows_without_ids(self):
+        done = cap(1, [dict(pl(1, "A"), played=True, points=10.0), {"slot": "WR", "played": True, "points": 3}])
+        mid = dict(cap(2, [dict(pl(1, "A"), played=True, points=4.0)]), complete=False)
+        self.assertEqual(build.player_form([done, mid]), {1: [10.0]})
+
+    def test_average_rounds_half_up(self):
+        p = pl(1, "A")
+        form = build._form_summary(p, {"form": {1: [10.0, 10.05, 10.05]}})
+        self.assertEqual(form["avg"], 10.0)
+        form = build._form_summary(p, {"form": {1: [0.25, 0.0, 0.0]}})   # 0.0833 -> 0.1
+        self.assertEqual(form["avg"], 0.1)
+
+
 class Chips(unittest.TestCase):
     def test_form_projection_and_role_chips(self):
         p = pl(7, "Wide Out", proj=21.5)

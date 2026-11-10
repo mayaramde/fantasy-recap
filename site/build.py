@@ -639,12 +639,13 @@ def player_form(history):
     A game counts when he played and wasn't on IR. A 0.0 from the bench or from a player ESPN had
     out is left out: it's as likely an inactive as a donut, and an average shouldn't guess."""
     out = {}
-    for cap in sorted(history or [], key=lambda c: c["week"]):
+    # A capture still in progress has half-played games in it, so it adds nothing yet.
+    for cap in sorted((c for c in history or [] if c.get("complete") is not False), key=lambda c: c.get("week", 0)):
         for m in cap.get("matchups", []):
             for side in (m.get("home"), m.get("away")):
                 for p in (side or {}).get("lineup", []):
                     pts = p.get("points") or 0
-                    if not p.get("played") or p.get("slot") == "IR":
+                    if p.get("player_id") is None or not p.get("played") or p.get("slot") == "IR":
                         continue
                     if abs(pts) < 0.005 and (p.get("slot") == "BENCH" or p.get("injury_status") in SIDELINED):
                         continue
@@ -658,7 +659,9 @@ def _form_summary(p, ctx):
     pts = (ctx.get("form") or {}).get(p["player_id"]) or []
     if len(pts) < FORM_MIN:
         return None
-    return {"n": len(pts), "avg": float(_f1(sum(pts) / len(pts))), "last3": pts[-3:]}
+    # Half-up, like the Key stats tiles, so an average ending in .x5 reads the same on both.
+    avg = (Decimal(str(round(sum(pts), 2))) / len(pts)).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return {"n": len(pts), "avg": float(avg), "last3": pts[-3:]}
 
 
 def _proj_gap(p, form):
@@ -684,6 +687,12 @@ def player_chips(p, ctx):
     return chips
 
 
+def _lead(a, b):
+    """How far a's projection is ahead of b's, both as printed (one decimal), so the number on the
+    card, the swap bar and the sentence can never disagree by a rounding step."""
+    return round(float(_f1(_proj(a))) - float(_f1(_proj(b))), 1)
+
+
 def player_verdict(p, starting, ctx):
     """{label, level, reason} for a player whose game hasn't kicked off, else None.
 
@@ -695,49 +704,62 @@ def player_verdict(p, starting, ctx):
         return None
     st = p.get("injury_status")
     guess = ctx["projected"]
+    him, his = ("it", "its") if p.get("pos") == "DST" else ("him", "his")
     if ctx["on_bye"](p):
-        return ({"label": "Fix now", "level": "now", "reason": "His NFL team is on a bye, so this spot scores nothing."}
+        return ({"label": "Fix now", "level": "now", "reason": f"{his.capitalize()} NFL team is on a bye, so this spot scores nothing."}
                 if starting else
-                {"label": "Stay benched", "level": "info", "reason": "His NFL team is on a bye this week."})
+                {"label": "Stay benched", "level": "info", "reason": f"{his.capitalize()} NFL team is on a bye this week."})
     if st in SIDELINED:
         if starting:
-            return {"label": "Fix now", "level": "now", "reason": f"ESPN lists him {INJURY_PHRASE[st]}."}
-        return {"label": "Stay benched", "level": "info", "reason": f"ESPN lists him {INJURY_PHRASE[st]}."}
+            return {"label": "Fix now", "level": "now", "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}."}
+        return {"label": "Stay benched", "level": "info", "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}."}
     if starting:
         alt = ctx["bench_best"](p["slot"]) if ctx["can_change"] else None
         if st in IFFY:
             return {"label": "Watch", "level": "watch",
-                    "reason": f"ESPN lists him {INJURY_PHRASE[st]}. Check again closer to kickoff."}
+                    "reason": f"ESPN lists {him} {INJURY_PHRASE[st]}. Check again closer to kickoff."}
         if not guess or _proj(p) <= 0.005:
             return None
         if not alt:
             return {"label": "Start", "level": "go", "reason": "Nobody on your bench is a better option here."}
-        d = round(_proj(alt) - _proj(p), 2)
+        d = _lead(alt, p)
         if d >= SWAP_MIN:
             return {"label": "Consider swap", "level": "watch",
                     "reason": f"{alt['name']} is projected {_f1(d)} higher ({_f1(_proj(alt))} to {_f1(_proj(p))})."}
         if d > 0:
             why = f"{alt['name']} on your bench is projected only {_f1(d)} higher, which isn't worth a move."
+        elif d == 0:
+            why = f"{alt['name']} on your bench is projected level with {him}."
         else:
-            why = (f"{alt['name']} on your bench is projected level with him." if _f1(-d) == "0.0" else
-                   f"Your best bench option, {alt['name']}, is projected {_f1(-d)} behind him.")
+            why = f"Your best bench option, {alt['name']}, is projected {_f1(-d)} behind {him}."
         return {"label": "Start", "level": "go", "reason": why}
-    # On the bench: who he would replace.
+    # On the bench: every open starting spot he could fill. A swap needs him to be the best bench
+    # option for that spot, so this agrees with that starter's own card.
     if not guess or _proj(p) <= 0.005:
         return None
-    rivals = [s for s in ctx["starters"] if not ctx["locked"](s) and p["pos"] in SLOT_OK.get(s["slot"], ())]
-    target = min(rivals, key=_proj, default=None)
-    if not target or not ctx["can_change"]:
+    if not ctx["can_change"]:
         return {"label": "Hold", "level": "info", "reason": None}
-    d = round(_proj(p) - _proj(target), 2)
-    best = ctx["bench_best"](target["slot"])
-    if d >= SWAP_MIN and best and best["player_id"] == p["player_id"]:
+    spots = [s for s in ctx["starters"] if not ctx["locked"](s) and p["pos"] in SLOT_OK.get(s["slot"], ())]
+    if not spots:
+        return {"label": "Hold", "level": "info", "reason": "No open starting spot fits his position."}
+    wins = [s for s in spots
+            if s.get("injury_status") not in IFFY and _lead(p, s) >= SWAP_MIN
+            and (ctx["bench_best"](s["slot"]) or {}).get("player_id") == p["player_id"]]
+    if wins:
+        t = max(wins, key=lambda s: _lead(p, s))
         return {"label": "Consider swap", "level": "watch",
-                "reason": f"Projected {_f1(d)} higher than {target['name']} at {target['slot']} "
-                          f"({_f1(_proj(p))} to {_f1(_proj(target))})."}
-    ahead = round(_proj(target) - _proj(p), 2)
-    why = (f"{target['name']} at {target['slot']} is projected {_f1(ahead)} ahead of him." if ahead > 0 and _f1(ahead) != "0.0"
-           else f"Projected within {SWAP_MIN:.0f} of {target['name']} at {target['slot']}, which isn't worth a move.")
+                "reason": f"Projected {_f1(_lead(p, t))} higher than {t['name']} at {t['slot']} "
+                          f"({_f1(_proj(p))} to {_f1(_proj(t))})."}
+    t = min(spots, key=_proj)
+    ahead = _lead(t, p)
+    if ahead > 0:
+        why = f"{t['name']} at {t['slot']} is projected {_f1(ahead)} ahead of him."
+    else:
+        better = ctx["bench_best"](t["slot"])
+        if better and better["player_id"] != p["player_id"] and _lead(better, p) > 0:
+            why = f"{better['name']} is the better bench option for {t['name']}'s spot."
+        else:
+            why = f"Projected within {SWAP_MIN:.0f} of {t['name']} at {t['slot']}, which isn't worth a move."
     return {"label": "Hold", "level": "info", "reason": why}
 
 
