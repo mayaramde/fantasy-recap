@@ -3997,7 +3997,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ] : [
       odds ? `<span class="tp-ch po">Playoffs <b>${esc(odds.text)}</b><span class="vh">, ${esc(odds.sub)}</span></span>` : '',
       `<span class="tp-ch">Seed <b>${rank}</b> of ${SEASON.standings.length}</span>`,
-      wv ? `<span class="tp-ch">Picks <b>${ordinal(wv)}</b> on waivers</span>` : '',
+      wv ? `<span class="tp-ch"><b>${ordinal(wv)}</b> pick<span class="vh"> on waivers</span></span>` : '',
     ]).join('');
     return `
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">

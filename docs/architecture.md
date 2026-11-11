@@ -309,7 +309,7 @@ equal to the header's measured height (scroll, resize, header resize, fonts).
 
 Both tabs open with the same header: one compact hero (team-name sticker and a **Switch team** pill on its top edge,
 manager, record, place, and three chips: playoff odds as a range from the Week hub's `stakes`, "lose → win vs <opponent>",
-or today's single number once the week has kicked off; seed, "Seed N of 8"; and her spot in the waiver order), then a sticky
+or today's single number once the week has kicked off; seed, "Seed N of 8"; and her spot in the waiver order, "Nth pick"), then a sticky
 **Game day** / **Season** pill bar. Switch team opens a bottom sheet (a modal `<dialog>`: Escape, a tap outside, Close or a
 team closes it) listing all eight in standings order, each with the pink count of fixes for the week its Game day shows, and
 the viewer marked "you". A live redraw waits while the sheet is open, and puts keyboard focus back on the control it was on. The chips wrap to a second row when they don't fit,

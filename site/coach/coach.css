@@ -181,10 +181,10 @@
   .cl-hc.h6 { background: #b7c2f9; } .cl-hc.h7 { background: #d3d9fb; } .cl-hc.h8 { background: #eef1fc; }
   .cl-corner { position: absolute; top: -7px; right: -5px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--edge); border-radius: 5px; color: #151a33; }
   .cl-corner svg { width: 8px; height: 8px; } .cl-corner.best { background: var(--lime); } .cl-corner.weak { background: var(--pink); }
-  .cl-heat tfoot th { font: 500 12px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; height: 40px; }
+  .cl-heat tfoot th { color: var(--muted); font: 500 12px/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; height: 40px; }
   .cl-heat tfoot td { font: 800 14px/1 var(--body); height: 40px; padding: 0; overflow: hidden; text-overflow: ellipsis; }
-  .cl-heat tfoot tr.best { background: var(--lime-soft); color: #151a33; border-top: 2px solid var(--edge); }
-  .cl-heat tfoot tr.worst { background: var(--pink-soft); color: #151a33; border-top: 2px solid var(--rule); }
+  .cl-heat tfoot tr.best { background: var(--lime-soft); color: var(--ink); border-top: 2px solid var(--edge); }
+  .cl-heat tfoot tr.worst { background: var(--pink-soft); color: var(--ink); border-top: 2px solid var(--rule); }
   .cl-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin: 12px 0 0; font-size: 13px; color: var(--muted); }
   .cl-key .cl-corner { position: static; display: inline-flex; margin-right: 6px; vertical-align: middle; }
   @media (max-width: 480px) {
