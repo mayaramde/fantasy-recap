@@ -1700,7 +1700,7 @@ __LIVE_CSS__
   .lu-card { margin-top: 8px; overflow: hidden; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
   .gd-lu .lu-card .prow { border-top: 1px solid var(--rule); border-bottom: 0; }
   .lu-card > .prow:first-child { border-top: 0; }
-  .lu-row { display: grid; grid-template-columns: 40px 36px minmax(0, 1fr) auto; align-items: center; gap: 9px; min-height: 56px; padding: 8px 12px 8px 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .lu-row { display: grid; grid-template-columns: 40px 36px minmax(0, 1fr) auto 20px; align-items: center; gap: 9px; min-height: 56px; padding: 8px 12px 8px 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .lu-row:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
   .prow.fix > .lu-row { background: var(--pink-soft); box-shadow: inset 4px 0 0 var(--pink); }
   .lu-row.dim .lu-who, .lu-row.dim .lu-pp, .lu-row.dim .pf { opacity: 0.55; }
@@ -1723,6 +1723,9 @@ __LIVE_CSS__
   .lu-pp { min-width: 42px; text-align: right; font: 800 20px/1 var(--display); }
   .lu-pp small { display: block; margin-top: 2px; font: 500 9.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
   .lu-pp.on { color: var(--accent-ink); }
+  /* the tap hint: the accordion's round chevron (.acc .chev), a size down for these rows; it flips and turns lime when open */
+  .lu-row .chev { width: 20px; height: 20px; font-size: 9px; }
+  .lu-row:hover .chev { background: var(--accent-soft); }
   .gd-lu .coach .cb { margin: 0 12px 12px; }
   .gd-bench { margin: 0; border-top: 2px solid var(--edge); }
   .gd-bench > summary { justify-content: space-between; padding: 0 12px; color: var(--ink); background: var(--bg); font: 700 13px/1.2 var(--body); }
@@ -4502,7 +4505,7 @@ __LIVE_JS__
           <span class="lu-slot${bench ? ' bn' : ''}${p.slot === 'FLEX' ? ' flex' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
           ${face(p, 'lu')}
           <span class="lu-who"><span class="lu-nm">${esc(w.name)}${sticker}</span><span class="lu-sb">${sub}</span>${swapLine}</span>
-          <span class="lu-pp${started ? ' on' : ''}">${num}<small>${small}</small></span>
+          <span class="lu-pp${started ? ' on' : ''}">${num}<small>${small}</small></span><span class="chev" aria-hidden="true">▾</span>
         </div>
         <div class="coach" id="${rid}"><div class="cin"><div class="cb">
           <span class="ctag">Coach says</span>
