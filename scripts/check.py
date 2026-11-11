@@ -124,6 +124,10 @@ PLAYER_STAT_FIELDS = {"games", "rush_att", "rush_yds", "rush_tds", "rec_tar", "r
                       "pass_att", "pass_yds", "pass_tds", "fg", "fga", "xpt", "xpa"}
 
 
+# Positions FantasyPros rates a matchup for (scripts/fp_matchups.py POSITIONS)
+MATCHUP_POSITIONS = {"QB", "RB", "WR", "TE", "K", "DST"}
+
+
 def _parse_utc(raw):
     """An ISO 8601 time that is explicitly UTC (a trailing Z or a zero offset), else None."""
     if not isinstance(raw, str):
@@ -160,6 +164,31 @@ def _check_player_stats(errors, rel, block):
         errors.append(f"{rel}: player_stats.unmatched must be a list")
 
 
+def _check_matchups(errors, rel, block):
+    """`matchups` (scripts/fp_matchups.py): FantasyPros' rating of each team's matchup at each position
+    for one week, which the Coach lineup cards quote. Optional, but when present every rank has to be a
+    whole number from 1 to 32 and every star rating a number from 0 to 5."""
+    if block is None:
+        return
+    if not isinstance(block, dict) or type(block.get("week")) is not int or block["week"] < 1:
+        errors.append(f"{rel}: matchups must be an object with a whole-number week")
+        return
+    teams = block.get("teams")
+    if not isinstance(teams, dict):
+        errors.append(f"{rel}: matchups.teams must be an object keyed by NFL team abbreviation")
+        return
+    for team, rows in teams.items():
+        if not re.fullmatch(r"[A-Z]{2,3}", team) or not isinstance(rows, dict) or not rows:
+            errors.append(f"{rel}: matchups.teams[{team!r}] must be a team abbreviation with ratings")
+            continue
+        for pos, r in rows.items():
+            if (pos not in MATCHUP_POSITIONS or not isinstance(r, dict) or set(r) != {"rank", "stars"}
+                    or type(r["rank"]) is not int or not 1 <= r["rank"] <= 32
+                    or isinstance(r["stars"], bool) or not isinstance(r["stars"], (int, float))
+                    or not 0 <= r["stars"] <= 5):
+                errors.append(f"{rel}: matchups.teams[{team}][{pos!r}] must be {{rank: 1-32, stars: 0-5}}")
+
+
 def check_fantasypros_snapshot(errors, root=ROOT):
     """coach-daily's snapshot (and each dated copy in fantasypros/history/) says whether the run reached the FantasyPros MCP:
     `fantasypros: {reached, checked_at, error?}`. A run that didn't can't hold FantasyPros-sourced
@@ -182,6 +211,7 @@ def check_fantasypros_snapshot(errors, root=ROOT):
             errors.append(f"{rel}: filename date doesn't match generated_at "
                           f"({snapshot_history.local_day(snap['generated_at'])}, Pacific time)")
         _check_player_stats(errors, rel, snap.get("player_stats"))
+        _check_matchups(errors, rel, snap.get("matchups"))
         fp = snap.get("fantasypros")
         if fp is None:
             if generated and generated >= FANTASYPROS_FIELD_REQUIRED_FROM:
@@ -198,6 +228,8 @@ def check_fantasypros_snapshot(errors, root=ROOT):
             errors.append(f"{rel}: fantasypros.reached is false, so fantasypros.error must say why")
         if snap.get("player_stats"):
             errors.append(f"{rel}: has player_stats but fantasypros.reached is false")
+        if snap.get("matchups"):
+            errors.append(f"{rel}: has matchups but fantasypros.reached is false")
         weeks = snap.get("weeks")
         if not isinstance(weeks, dict):
             errors.append(f"{rel}: weeks must be an object")

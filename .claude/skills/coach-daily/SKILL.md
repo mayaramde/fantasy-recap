@@ -121,6 +121,18 @@ responses, as returned, to one JSON list in the scratch space (not the repo), e.
 listed every name in a batch that came back fine, and its `data` can carry a stray D/ST row. Step 6 pairs
 players up by name, team and position and reports the ones that don't pair.
 
+## Step 4b: this week's matchup ratings for the lineup cards
+
+Skip this when Step 4 recorded `reached: false` or Step 3 found no live week; the cards then simply show no
+matchup line. Like Step 4a it is data, not copy: nothing here goes through Step 5c.
+
+For the live week (week `N`), call `get_schedule_and_strength` once for each position in `QB`, `RB`, `WR`,
+`TE`, `K` and `DST`, with `week_start=N`, `week_end=N` and **all 32 team codes** in `team_codes`. Without the
+codes the tool returns only the five easiest teams. Use FantasyPros' own codes (`JAC`, `WAS`, not ESPN's);
+Step 6 converts them. Save the six responses, as returned, to one JSON list in the scratch space (not the
+repo), e.g. `/tmp/fantasy-coach-daily-<date>-matchups.json`. A team on a bye comes back with
+`"ratings": null`, which is expected. The response says nothing about who the opponent is, so don't add one.
+
 ## Step 5: do the actual roster analysis
 
 If Step 4 recorded `reached: false`, skip this step's FantasyPros-sourced cards and Step 5a's trades
@@ -381,6 +393,20 @@ It replaces `player_stats` and nothing else, and prints the players it could not
 ambiguous): list them in the Output summary, never guess at one. A run that skipped Step 4a, or whose lookups all
 failed, writes no `player_stats`, and the page shows no tiles that day; never carry yesterday's totals forward
 (they lag a week and the build drops them anyway). `scripts/check.py` validates the block.
+
+If Step 4b ran, add its `matchups` block the same way (a rank out of 32 and a star rating out of 5 per team and
+position, 1 = the easiest matchup, for the live week only):
+
+```
+python3 scripts/fp_matchups.py --week N \
+    --responses /tmp/fantasy-coach-daily-<date>-matchups.json --into data/2026/fantasypros/latest.json
+```
+
+It replaces `matchups` and nothing else. It skips, and reports, any response whose window isn't exactly week
+`N`, any team code it doesn't recognise, and any position that rated fewer teams than another: list everything it
+reports in the Output summary. A run that skipped Step 4b writes no `matchups`; never carry yesterday's
+forward, since a rating belongs to one week and the build ignores a block for any other week. `scripts/check.py`
+validates the block.
 
 One top-level entry under `weeks` for each week you wrote cards for (Step 3), each with one
 team entry for every `team_id` in `league.json` (all 8), even when both lists are empty.
