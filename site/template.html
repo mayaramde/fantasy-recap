@@ -1506,9 +1506,8 @@ __LIVE_CSS__
   .tp-rec { text-align: right; flex: none; }
   .tp-rec b { display: block; font: 900 clamp(28px, 8vw, 40px)/0.9 var(--display); color: var(--lime); }
   .tp-rec span { display: block; margin-top: 3px; font: 500 10.5px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-board-muted); }
-  .tp-chips { display: flex; flex-wrap: wrap; gap: 5px 6px; margin-top: 8px; }
-  /* On a phone the chips are one line you can swipe, so the hero is the same height for every team. */
-  @media (max-width: 640px) { .tp-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -14px; padding-right: 14px; } .tp-chips::-webkit-scrollbar { display: none; } .tp-ch { flex: none; } }
+  /* Chips wrap to a second row when they don't fit; a chip is never clipped or cut short. */
+  .tp-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .tp-ch { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 8px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; font: 600 11.5px/1.25 var(--body); white-space: nowrap; }
   .tp-ch b { font: 800 13.5px/1 var(--display); letter-spacing: 0.02em; }
   .tp-ch.po { color: var(--on-pop); background: var(--lime); }
@@ -1531,12 +1530,12 @@ __LIVE_CSS__
 
   /* the sticky tab bar, the same pill bar as the matchup page's .ph-tabs. Once the hero has scrolled away
      it grows a mini identity on the left (desktop only). */
-  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 4px -16px 0; padding: 3px 16px 4px; background: var(--bg); border-bottom: 2px solid transparent; }
+  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 2px -16px 0; padding: 3px 16px 2px; background: var(--bg); border-bottom: 2px solid transparent; }
   .tp-tabbar.stuck { border-bottom-color: var(--edge); }
   .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
   .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
   .tp-tabbar.stuck .tp-mini { display: flex; }
-  .tp-seg { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); }
+  .tp-seg { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 2px; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); }
   .tp-tabbar.stuck .tp-seg { max-width: 380px; }
   .tp-seg a { display: grid; place-items: center; min-height: 44px; padding: 0 6px; text-align: center; text-decoration: none; color: var(--ink); border-radius: 999px; font: 700 14px/1.1 var(--body); }
   .tp-seg a:hover { background: var(--accent-soft); }
@@ -1623,7 +1622,9 @@ __LIVE_CSS__
   .tp-more[open] > summary { margin-bottom: 12px; }
 
   /* Game day */
-  .gd { display: grid; gap: 10px; margin-top: 4px; }
+  .gd { display: grid; gap: 10px; margin-top: 2px; }
+  /* phone: the Week row sits close to its homework card, so the card clears the fold's 330px line */
+  @media (max-width: 859px) { .gd-wk { margin-bottom: -4px; } }
   @media (min-width: 860px) { .gd { gap: 14px; margin-top: 14px; } .gd-wk b { font-size: 22px; } .gd-hw { padding: 18px 22px 20px; } .gd-hw h2 { font-size: 32px; } }
   .gd > section { margin-top: 0; }
   .gd > .tp-sec { margin-top: 14px; }
@@ -1637,7 +1638,7 @@ __LIVE_CSS__
   .gd-hw.ok { color: var(--on-pop); background: var(--lime); }
   .gd-hw.ok .ic { display: grid; place-items: center; flex: none; width: 28px; height: 28px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 50%; }
   .gd-hw.none { background: var(--accent-soft); }
-  .gd-fine { margin: -4px 0 0; font-size: 12px; color: var(--muted); }
+  .gd-hw > .gd-fine { margin: 10px 0 0; font: 500 11.5px/1.4 var(--mono); color: var(--muted); }
   .gd-swap { margin-top: 10px; padding: 10px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
   .gd-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; }
   .gd-p { display: flex; align-items: center; gap: 8px; min-width: 0; }
@@ -1786,7 +1787,6 @@ __LIVE_CSS__
   }
 
   /* ---------- Season tab ---------- */
-  .tp-chips.wrap { flex-wrap: wrap; overflow: visible; margin-right: 0; padding-right: 0; }
   .sn { gap: 18px; }
   .sn-sec { margin: 0; }
   .sn .gd-sh { margin-top: 0; }
@@ -4005,7 +4005,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}
           <button type="button" class="tp-switch" data-tp-sheet aria-haspopup="dialog" aria-controls="tp-sheet">Switch team</button></div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
-        ${chips ? `<div class="tp-chips${tab === 'season' ? ' wrap' : ''}">${chips}</div>` : ''}
+        ${chips ? `<div class="tp-chips">${chips}</div>` : ''}
       </section>
       <div class="tp-tabbar" id="tp-tabbar">
         <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
@@ -4147,16 +4147,18 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
 
   function gdHomework(a, next, you) {
     const fixes = a.items.filter((it) => it.level === 'now');
+    // Only when there's a move to make, as the card's last line.
     const fine = `<p class="gd-fine">Make the moves in the ESPN app. Nothing here changes ${you ? 'your' : 'her'} lineup.</p>`;
     if (!fixes.length) {
-      return `<section class="gd-hw ok" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h"><span class="ic" aria-hidden="true">${TP_CHECK}</span>Lineup's clean</h2>${a.summary ? `<p>${esc(voice(a.summary))}</p>` : ''}</section>${fine}`;
+      return `<section class="gd-hw ok" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h"><span class="ic" aria-hidden="true">${TP_CHECK}</span>Lineup's clean</h2>${a.summary ? `<p>${esc(voice(a.summary))}</p>` : ''}</section>`;
     }
     // "Before Sunday" until this week has kicked off; after that the fix is simply due.
     const soon = next || !(LIVE && LIVE.kicked_off) ? ' before Sunday' : '';
     return `
       <section class="gd-hw" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h">${fixes.length} to fix${soon}</h2>
         ${fixes.map((it) => (it.swap ? gdSwap(it) : gdLine(it))).join('')}
-      </section>${fine}`;
+        ${fine}
+      </section>`;
   }
 
   /* While this week is still being played: next week's starters ESPN already lists as out, doubtful,

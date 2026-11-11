@@ -312,8 +312,8 @@ manager, record, place, and three chips: playoff odds as a range from the Week h
 or today's single number once the week has kicked off; seed, "Seed N of 8"; and her spot in the waiver order), then a sticky
 **Game day** / **Season** pill bar. Switch team opens a bottom sheet (a modal `<dialog>`: Escape, a tap outside, Close or a
 team closes it) listing all eight in standings order, each with the pink count of fixes for the week its Game day shows, and
-the viewer marked "you". A live redraw waits while the sheet is open, and puts keyboard focus back on the control it was on. On a phone the chips are one swipeable line, so the
-hero is the same height for every team and the homework card starts within the first 330px.
+the viewer marked "you". A live redraw waits while the sheet is open, and puts keyboard focus back on the control it was on. The chips wrap to a second row when they don't fit,
+never clipped; with one chip row the homework card starts within the first 330px at 390px.
 
 - **Game day** `#team-<id>` (`.lineup`, `.next` and `.league` redirect here): one week, picked by `gdNext`, with no switch:
   next week once the live week is final and the week-ahead capture exists (or when the live week has nothing for her), else
@@ -322,8 +322,8 @@ hero is the same height for every team and the homework card starts within the f
     bubblegum-soft) with one swap
     card per fix built from the item's `swap` field (who sits, who starts, the slot and a short reason, a lime gain sticker
     only for a positive gain, the card's own words behind a closed "Coach's full note"; "Nobody on the bench · waiver wire"
-    when `swap.in` is null). Fixes without `swap` (empty, hole) render as plain lines. Always drawn, with one fine line under
-    it. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing for her next week ("Week N is in the books").
+    when `swap.in` is null). Fixes without `swap` (empty, hole) render as plain lines. Always drawn. With at least one fix, its last line
+    says to make the moves in the ESPN app; a clean card has no such line. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing for her next week ("Week N is in the books").
   - **Heads up** (only while the live week is still in play): next week's starters the week-ahead capture lists out,
     doubtful, suspended or on IR. Questionable never triggers it.
   - From 1040px the tab is two columns: the homework, heads-up and lineup on the left, the matchup, who's next, ideas,
@@ -343,8 +343,7 @@ hero is the same height for every team and the homework card starts within the f
     this week**, **Injuries and byes**, for the week being played), with the pick's row orange and the team you came from
     cobalt-soft.
   - **Where this comes from**: a closed details with the capture's source line.
-- **Season** `#team-<id>.season`: the hero's chips switch to the season (Avg, Best with its week, Vs. everyone) and wrap
-  instead of scrolling. Then, each drawn only when it has something to say:
+- **Season** `#team-<id>.season`: the hero's chips switch to the season (Avg, Best with its week, Vs. everyone). Then, each drawn only when it has something to say:
   - **Report card**: her row of the strength grid, from the same `profile.pos_ranks` as the grid on `#league-<id>`, one
     tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
   - **Coach's audit**: the audit cards (kind tag, title, stat sticker, text, players) as a scroll-snap row with dots on a
