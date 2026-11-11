@@ -1078,6 +1078,28 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
             return f"The one {slot} on your bench is hurt, on a bye or already playing"
         return f"Every {slot} on your bench is hurt, on a bye or already playing"
 
+    def swap_field(s, r, status):
+        """Who sits, who starts and the gain, as data, so the page never has to parse a card's
+        text: {out, in, gain}. `projected` is the capture's number, unrounded (the page rounds it
+        with the same f1 as the Lineup row), read the way every card here reads it: a player ESPN
+        gave no number counts as 0.0 (_proj, which the swap card's own `gain` uses too), and the
+        whole week is None while ESPN hasn't projected it. `status` is only what the capture says
+        (ESPN's injury designation, "bye" for a starter whose team has no game, else None). `in`
+        is None when there's nobody on the bench to send in, and `gain` is None whenever there's
+        no projection to compare.
+        `gain` is in.projected - out.projected and nothing more. On an "out" card ESPN may still
+        project a ruled-out starter, so it can be negative there although the fix is still right:
+        it compares the projections, it doesn't value the fix."""
+        def side(p):
+            return {"player_id": p["player_id"], "name": p["name"],
+                    "projected": _proj(p) if projected else None}
+        out = {**side(s), "slot": s["slot"], "status": status}
+        inn = {**side(r), "status": r.get("injury_status")} if r else None
+        # `+ 0.0` turns a -0.0 (a gap under 0.05 the wrong way) into 0.0 before it reaches the JSON.
+        gain = (round(round(inn["projected"] - out["projected"], 2), 1) + 0.0
+                if inn and inn["projected"] is not None and out["projected"] is not None else None)
+        return {"out": out, "in": inn, "gain": gain}
+
     def ir_note(p):
         if p.get("injury_status") != "INJURY_RESERVE" or said_ir:
             return ""
@@ -1117,7 +1139,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
                       "key": _key(kind, s["player_id"], s["slot"], s.get("injury_status") if hurt else "bye",
                                   r["player_id"] if r else None, r.get("injury_status") if r else None),
                       "stat": "Bye" if bye and not hurt else INJURY_LABEL.get(s.get("injury_status"), "Out"),
-                      "text": text})
+                      "text": text,
+                      "swap": swap_field(s, r, s.get("injury_status") if hurt else "bye")})
 
     # 2. Game-time decisions get their own card further down. Claim them now so no swap
     #    card is written about a starter whose own status is still in the air.
@@ -1154,7 +1177,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
                                + (f", though {b['name']} is {INJURY_PHRASE[b['injury_status']]}, so check he's "
                                   f"playing first" if b.get("injury_status") in IFFY else "")
                                + ". A projection is an estimate, not a promise, but a gap this size is "
-                               "usually worth taking.")})
+                               "usually worth taking."),
+                      "swap": swap_field(s, b, s.get("injury_status"))})
 
     # 4. A starting slot with nobody in it scores exactly zero.
     filled = Counter(s["slot"] for s in starters) if can_change else Counter(LINEUP)
