@@ -1514,7 +1514,7 @@ __LIVE_CSS__
   .tp-stats dt { font: 500 10px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
   .tp-stats dd { margin: 3px 0 0; font: 800 24px/1.05 var(--display); }
   .tp-stats dd small { font: 500 10px/1 var(--mono); color: #a9b2dc; margin-left: 4px; }
-  .tp-stats .po dd { color: var(--lime); }
+  .tp-stats .po dd { color: var(--lime); white-space: nowrap; }
   .tp-stats .hs { display: block; margin-top: 2px; font: 500 10px/1.2 var(--mono); color: #a9b2dc; }
   @media (min-width: 860px) {
     .tp-id { padding: 24px 30px 22px; box-shadow: 6px 6px 0 var(--accent); }
@@ -3820,13 +3820,14 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const po = SEASON.playoffs && SEASON.playoffs.teams.find((x) => x.team_id === id);
     return po ? { now: po.playoff } : null;
   }
-  // "81–94%", or one number when the game barely moves it.
+  // "81% → 94%" (lose → win), each end with its own %, so ">99%" and "<1%" read cleanly;
+  // one number when the game barely moves it. Text, not HTML: the caller escapes it.
   function oddsRange(o) {
     if (!o) return null;
     if (o.now != null) return { text: pct(o.now), sub: 'chance to make the top 4' };
     const lo = pct(o.lose), hi = pct(o.win);
     const vs = o.opp ? ` vs ${o.opp}` : '';
-    return lo === hi ? { text: hi, sub: `either way${vs}` } : { text: `${lo.replace('%', '')}–${hi}`, sub: `lose–win${vs}` };
+    return lo === hi ? { text: hi, sub: `either way${vs}` } : { text: `${lo} → ${hi}`, sub: `lose → win${vs}` };
   }
 
   function tpStrip(id, sfx, next) {
@@ -3857,7 +3858,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
         ${you ? '' : (me ? `<a class="tp-back" href="#team-${me}">Back to my team (${esc(TEAMS[me].manager)})</a>` : `<a class="tp-back" href="${advice() ? '#coach' : '#standings'}">Back to the league</a>`)}
         <dl class="tp-stats">
-          ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${odds.text}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
+          ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${esc(odds.text)}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
           <div><dt>Avg score</dt><dd>${f1(t.avg)}</dd></div>
           <div><dt>Best week</dt><dd>${t.best ? `${f1(t.best.points)}<small>W${t.best.week}</small>` : '–'}</dd></div>
           <div><dt>Vs. everyone</dt><dd>${t.all_play_w}–${t.all_play_l}</dd></div>
