@@ -403,7 +403,8 @@ python3 scripts/fp_matchups.py --week N \
 ```
 
 It replaces `matchups` and nothing else. It skips, and reports, any response whose window isn't exactly week
-`N`: list those in the Output summary. A run that skipped Step 4b writes no `matchups`; never carry yesterday's
+`N`, any team code it doesn't recognise, and any position that rated fewer teams than another: list everything it
+reports in the Output summary. A run that skipped Step 4b writes no `matchups`; never carry yesterday's
 forward, since a rating belongs to one week and the build ignores a block for any other week. `scripts/check.py`
 validates the block.
 

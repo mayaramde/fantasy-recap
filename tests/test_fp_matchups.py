@@ -30,9 +30,9 @@ def resp(pos, rows, start=10, end=10, key="team schedule"):
 class Build(unittest.TestCase):
     def test_ratings_by_team_and_position(self):
         block, notes = fp_matchups.build([resp("WR", [("DET", 1, 5.0), ("LV", 28, 0.9)]),
-                                          resp("DST", [("DET", 11, 3.6)])], 10)
+                                          resp("DST", [("DET", 11, 3.6), ("LV", 30, 0.4)])], 10)
         self.assertEqual(block, {"week": 10, "teams": {"DET": {"WR": {"rank": 1, "stars": 5.0}, "DST": {"rank": 11, "stars": 3.6}},
-                                                       "LV": {"WR": {"rank": 28, "stars": 0.9}}}})
+                                                       "LV": {"WR": {"rank": 28, "stars": 0.9}, "DST": {"rank": 30, "stars": 0.4}}}})
         self.assertEqual(notes, [])
 
     def test_fantasypros_codes_become_espn_codes(self):
@@ -48,6 +48,18 @@ class Build(unittest.TestCase):
         self.assertEqual(block["teams"], {})
         self.assertEqual(len(notes), 1)
         self.assertIn("Weeks 10-12", notes[0])
+
+    def test_unknown_team_codes_and_missing_rows_are_reported_not_stored(self):
+        block, notes = fp_matchups.build([resp("WR", [("ARZ", 3, 5.0), ("DET", 1, 5.0)]),
+                                          {**resp("QB", [("DET", 2, 4.0)]), "team schedule": {"position": "QB", "schedules": [
+                                              {"Strength of Schedule": {"qb_rank_out_of_32": 4, "qb_stars_out_of_5": 4.0}}]}}], 10)
+        self.assertEqual(list(block["teams"]), ["DET"])
+        self.assertTrue(any("ARZ" in n for n in notes))
+        self.assertTrue(any("''" in n or "None" in n for n in notes))
+
+    def test_a_position_that_rated_fewer_teams_is_reported(self):
+        _, notes = fp_matchups.build([resp("WR", [("DET", 1, 5.0), ("LV", 28, 0.9)]), resp("QB", [("DET", 2, 4.0)])], 10)
+        self.assertTrue(any("QB rated 1 teams where another position rated 2" in n for n in notes))
 
     def test_the_five_team_view_is_read_too(self):
         block, _ = fp_matchups.build([resp("WR", [("DET", 1, 5.0)], key="easiest schedules")], 10)
@@ -134,6 +146,9 @@ class Cards(unittest.TestCase):
         self.assertIsNone(build.player_matchup(self.wr(), self.ctx(locked=lambda p: True)))
         self.assertIsNone(build.player_matchup(self.wr(), self.ctx(on_bye=lambda p: True)))
         self.assertIsNone(build.player_matchup(self.wr(team="MIA"), self.ctx()))
+        self.assertIsNone(build.player_matchup(self.wr(slot="IR"), self.ctx()))
+        self.assertIsNone(build.player_matchup(self.wr(injury_status="OUT"), self.ctx()))
+        self.assertIsNotNone(build.player_matchup(self.wr(injury_status="QUESTIONABLE"), self.ctx()))
         self.assertIsNone(build.player_matchup(self.wr(slot="BENCH", pos="LB"), self.ctx()))
 
     def test_stale_or_other_week_ratings_are_never_read(self):

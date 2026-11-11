@@ -25,7 +25,12 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import analyze  # noqa: E402
 from fp_player_stats import _whole, norm_team  # noqa: E402
+
+# Every NFL team as the live rows write it (ESPN's abbreviations, upper-case). A rating under any other
+# code could never match a player, so it is reported instead of stored.
+KNOWN_TEAMS = {abbr.upper() for abbr in analyze.PRO_TEAM_ABBR.values()}
 
 POSITIONS = ("QB", "RB", "WR", "TE", "K", "DST")
 TEAMS = 32
@@ -66,7 +71,17 @@ def build(responses, week):
             rank, stars = _whole(sos.get(f"{pos.lower()}_rank_out_of_{TEAMS}")), _stars(sos.get(f"{pos.lower()}_stars_out_of_5"))
             if rank is None or not 1 <= rank <= TEAMS or stars is None:
                 continue                # a bye week (ratings: null), or a row we can't trust
-            teams.setdefault(norm_team(row.get("team")), {})[pos] = {"rank": rank, "stars": stars}
+            code = norm_team(row.get("team"))
+            if code not in KNOWN_TEAMS:
+                note = f"skipped a {pos} rating for unrecognised team code {row.get('team')!r}"
+                if note not in notes:
+                    notes.append(note)
+                continue
+            teams.setdefault(code, {})[pos] = {"rank": rank, "stars": stars}
+    # Every position should rate the same teams (the ones not on a bye); one that rates fewer lost some.
+    counts = {pos: sum(1 for r in teams.values() if pos in r) for pos in POSITIONS}
+    most = max(counts.values(), default=0)
+    notes += [f"{pos} rated {n} teams where another position rated {most}" for pos, n in counts.items() if 0 < n < most]
     return {"week": week, "teams": teams}, notes
 
 

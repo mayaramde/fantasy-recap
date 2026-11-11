@@ -688,8 +688,10 @@ def _ordinal(n):
 def player_matchup(p, ctx):
     """{label, phrase, rank, stars} for the week's FantasyPros matchup rating at his position, else
     None. Only while his game is ahead: once it has started the score is the story, and a bye week
-    has no rating at all (FantasyPros sends null)."""
-    if ctx["locked"](p) or ctx["on_bye"](p) or p.get("pos") not in ("QB", "RB", "WR", "TE", "K", "DST"):
+    has no rating at all (FantasyPros sends null). Nor for a player on IR or ruled out: the card's
+    verdict already says to move him, and a matchup line beside that is noise."""
+    if (ctx["locked"](p) or ctx["on_bye"](p) or p.get("slot") == "IR" or p.get("injury_status") in SIDELINED
+            or p.get("pos") not in ("QB", "RB", "WR", "TE", "K", "DST")):
         return None
     rating = ((ctx.get("matchups") or {}).get(p.get("team")) or {}).get(p["pos"])
     if not rating:
