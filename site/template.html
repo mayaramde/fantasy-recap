@@ -1488,6 +1488,9 @@ __LIVE_CSS__
   .tp-bg::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; }
   .tp-bg::after { content: ""; position: absolute; right: -70px; top: -110px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; }
   .tp-big { position: absolute; right: 96px; bottom: -42px; font: 900 150px/1 var(--display); color: transparent; -webkit-text-stroke: 2.5px rgba(244, 246, 255, 0.2); user-select: none; }
+  /* It bobs like the recap banner's week number (the same rp-bob), and holds still for anyone who asks for less
+     motion. Its inline negative delay keeps the bob in step across live redraws. */
+  @media (prefers-reduced-motion: no-preference) { .tp-big { animation: rp-bob 6s ease-in-out infinite; } }
   /* the team name and the Switch team pill sit on the hero's top edge like stickers, so the hero needs no row of its own for them */
   .tp-id-top { position: absolute; top: -13px; left: 12px; right: 12px; display: flex; align-items: center; gap: 6px; pointer-events: none; }
   .tp-id-top > * { pointer-events: auto; }
@@ -3955,7 +3958,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ].join('');
     return `
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
-        <span class="tp-bg" aria-hidden="true"><span class="tp-big">${rank}</span></span>
+        <span class="tp-bg" aria-hidden="true"><span class="tp-big" style="animation-delay:-${Date.now() % 6000}ms">${rank}</span></span>
         <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}
           <button type="button" class="tp-switch" data-tp-sheet aria-haspopup="dialog" aria-controls="tp-sheet">Switch team</button></div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
