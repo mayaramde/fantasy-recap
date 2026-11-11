@@ -118,6 +118,9 @@ jobs:
           node-version: "22"
       - name: Live week has cards
         continue-on-error: true
+        # continue-on-error doesn't cover a hang: a stalled ESPN call would otherwise run
+        # into the job timeout before the PR step and cancel the whole run.
+        timeout-minutes: 2
         run: |
           node scripts/capture_node.mjs current > "$RUNNER_TEMP/capture.json"
           python3 - <<'PY'
@@ -223,6 +226,8 @@ jobs:
 
       - name: Flag a snapshot with no live-week cards
         if: env.NO_WEEK != ''
+        # Non-blocking: a failed issue call must not fail the job and turn auto-merge off.
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -240,6 +245,7 @@ jobs:
       # Not a failure (the cards still merge), so it can't go through the alert below.
       - name: Flag a missing history copy
         if: env.HISTORY == 'missing' || env.KEPT != ''
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

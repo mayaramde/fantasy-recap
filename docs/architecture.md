@@ -53,7 +53,7 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   branch changes only those snapshot files, re-runs `check.py`, opens the PR with auto-merge, and closes older
   coach-daily PRs. A branch with no history copy still ships its cards, but gets a `coach-daily history copy
   missing` issue so the archive can't silently stop again. Likewise it asks ESPN which week is live and opens a
-  `coach-daily wrote no live-week cards` issue when the snapshot has nothing for it (Nov 9-11 2026 shipped none). It uses the `COACH_DAILY_PR_TOKEN` secret, not the built-in token, so `checks` runs on the PR and
+  `coach-daily wrote no live-week cards` issue when that week has no published recap and the snapshot has nothing for it (Nov 9-11 2026 shipped none). It uses the `COACH_DAILY_PR_TOKEN` secret, not the built-in token, so `checks` runs on the PR and
   the merge fires the push deploy. On failure it opens (or comments on) a `coach-daily-pr failing` issue. Needs "Allow auto-merge"
   and "Automatically delete head branches" on in the repo settings. It runs the copy of itself on the pushed branch, so its
   file check keeps coach-daily honest but isn't a security boundary: anything that can push a `coach-daily-*` branch
