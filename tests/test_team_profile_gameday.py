@@ -101,5 +101,36 @@ class HeadsUp(unittest.TestCase):
         self.assertEqual(self.line(hurt, next_=True), "")
 
 
+@unittest.skipUnless(shutil.which("node"), "node not installed")
+class FineLine(unittest.TestCase):
+    """"Make the moves in the ESPN app" only shows when there's a move to make, as the homework card's last line."""
+    def card(self, items, you=False):
+        js = f"""
+          const LIVE = {{ kicked_off: false }};
+          const esc = (s) => String(s);
+          const voice = (s) => s;
+          const TP_CHECK = '';
+          const gdSwap = () => '<article class="gd-swap"></article>';
+          const gdLine = () => '<div class="gd-line"></div>';
+          {fn("  function gdHomework(")}
+          process.stdout.write(JSON.stringify(gdHomework({{ items: {json.dumps(items)}, summary: 'All set.' }}, false, {json.dumps(you)})));"""
+        return run(js)
+
+    def test_clean_lineup_has_no_espn_line(self):
+        html = self.card([{"level": "soon"}])
+        self.assertIn("Lineup's clean", html)
+        self.assertNotIn("gd-fine", html)
+        self.assertNotIn("ESPN app", html)
+
+    def test_fixes_put_the_espn_line_last_inside_the_card(self):
+        html = self.card([{"level": "now", "swap": {}}, {"level": "now"}])
+        self.assertIn("2 to fix before Sunday", html)
+        self.assertEqual(html.count("gd-fine"), 1)
+        inside = re.sub(r"\s+", " ", html).strip()
+        self.assertTrue(inside.endswith("lineup.</p> </section>"), inside[-80:])
+        self.assertIn("Nothing here changes her lineup.", html)
+        self.assertIn("Nothing here changes your lineup.", self.card([{"level": "now"}], you=True))
+
+
 if __name__ == "__main__":
     unittest.main()
