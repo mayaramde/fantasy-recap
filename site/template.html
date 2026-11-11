@@ -1823,11 +1823,6 @@ __LIVE_CSS__
   .sn-chart { position: relative; padding-top: 22px; }
   .sn-bars { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; align-items: end; }
   .sn-bars li { display: grid; justify-items: stretch; min-width: 0; }
-  .sn-mk { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-end; gap: 2px; min-height: 18px; padding-bottom: 3px; }
-  .sn-ic { display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; color: var(--on-pop); border: 1.5px solid var(--edge); border-radius: 50%; vertical-align: -3px; }
-  .sn-ic svg { width: 10px; height: 10px; }
-  .sn-ic.sn-gb { background: var(--lime); } .sn-ic.sn-fl { background: var(--pink); } .sn-ic.sn-tb { color: var(--ink); background: var(--accent-soft); }
-  .sn-aw .sn-ic { width: 22px; height: 22px; } .sn-aw .sn-ic svg { width: 13px; height: 13px; }
   .sn-bar { position: relative; display: flex; align-items: flex-end; height: 140px; min-height: 44px; padding: 0; cursor: pointer; background: none; border: 0; border-radius: 8px; }
   .sn-bar .fill { display: block; width: 100%; min-height: 6px; background: var(--accent); border: 2px solid var(--edge); border-radius: 7px 7px 3px 3px; transition: transform 0.15s; }
   .sn-bar.L .fill { background: var(--pink); }
@@ -4341,10 +4336,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      A block with nothing to say isn't drawn; before Week 1 is final there's one card and nothing else. */
   const SN_WEEK = new Map();   // the week picked in each team's season story, so a live redraw keeps it
   const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
-  // A game ball or a flag as a tiny sticker: the site's own football and flag drawings (AWARD_ICONS), not emoji, which
-  // render at different sizes on every phone and crowd over a narrow bar.
-  const SN_PATH = { game_balls: ['M4 20C4 11 11 4 20 4c0 9-7 16-16 16z', 'M9 15l6-6M10.5 10.5l1.5 1.5M12.5 12.5l1.5 1.5'], flags: ['M5 21V4', 'M5 4h12l-2 4 2 4H5'] };
-  const snIcon = (kind) => `<i class="sn-ic ${kind === 'flags' ? 'sn-fl' : kind === 'game_balls' ? 'sn-gb' : 'sn-tb'}" aria-hidden="true">${SN_PATH[kind] ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${SN_PATH[kind].map((d) => `<path d="${d}"/>`).join('')}</svg>` : ''}</i>`;
 
   // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from.
   function snReport(t) {
@@ -4387,12 +4378,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const weeks = [...t.weekly].sort((a, b) => a.week - b.week);
     const pick = weeks.some((g) => g.week === SN_WEEK.get(id)) ? SN_WEEK.get(id) : weeks[weeks.length - 1].week;
     const max = Math.max(...weeks.map((g) => g.points), t.avg || 0, 1) * 1.08;
-    const of = (wk, kind) => t.awards.filter((a) => a.week === wk && a.kind === kind).length;
     const said = (r) => (r === 'W' ? 'won' : r === 'L' ? 'lost' : 'tied');
     const bars = weeks.map((g) => {
       const on = g.week === pick;
-      const marks = snIcon('game_balls').repeat(of(g.week, 'game_balls')) + snIcon('flags').repeat(of(g.week, 'flags'));
-      return `<li><span class="sn-mk" aria-hidden="true">${marks}</span>
+      return `<li>
         <button type="button" class="sn-bar ${g.result}" data-snw="${g.week}" data-sn-team="${id}" aria-pressed="${on}" aria-label="Week ${g.week}, ${said(g.result)}, ${f2(g.points)}"${on ? '' : ' tabindex="-1"'}>
           <span class="fill" style="height:${((g.points / max) * 100).toFixed(1)}%"></span></button>
         <span class="sn-x" aria-hidden="true">W${g.week}</span></li>`;
@@ -4413,12 +4402,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
             <div class="sn-ph"><h3>Week ${g.week} vs ${esc(g.opponent)}</h3><span class="sn-res ${g.result}">${result}</span></div>
             <a class="sn-score" href="#week-${g.week}.game-${esc(g.game_key)}">${f2(g.points)} – ${f2(g.opponent_points)}</a>
             <div class="sn-pills"><span>${g.score_rank} of ${SEASON.standings.length} that week</span><span>${f2(g.points_left)} benched</span></div>
-            ${aw.length ? `<ul class="sn-aw">${aw.map((a) => `<li class="${KIND[a.kind] ? KIND[a.kind].cls : ''}">${snIcon(a.kind)}<span><small>${esc(KIND[a.kind] ? KIND[a.kind].label : 'Award')}</small>${esc(a.title)}</span></li>`).join('')}</ul>`
+            ${aw.length ? `<ul class="sn-aw">${aw.map((a) => `<li class="${KIND[a.kind] ? KIND[a.kind].cls : ''}"><span><small>${esc(KIND[a.kind] ? KIND[a.kind].label : 'Award')}</small>${esc(a.title)}</span></li>`).join('')}</ul>`
               : '<p class="sn-none">No game balls or flags this week.</p>'}
             <a class="sn-go" href="#week-${g.week}.awards">Week ${g.week} recap →</a>
           </div>
         </div>
-        <p class="sn-tot">${snIcon('game_balls')} ${balls} game ball${balls === 1 ? '' : 's'} · ${snIcon('flags')} ${flags} flag${flags === 1 ? '' : 's'}</p>
+        <p class="sn-tot">${balls} game ball${balls === 1 ? '' : 's'} · ${flags} flag${flags === 1 ? '' : 's'} this season</p>
       </section>`;
   }
 

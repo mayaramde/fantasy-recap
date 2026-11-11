@@ -47,8 +47,6 @@ def run(expr, picked=None):
     js = f"""{STUBS}
       {fn("  const SN_WEEK = new Map();")}
       {fn("  const SN_COLS = ")}
-      {fn("  const SN_PATH = ")}
-      {fn("  const snIcon = ")}
       {fn("  function snReport(")}
       {fn("  function snStory(")}
       {fn("  function snBench(")}
@@ -85,8 +83,7 @@ class Season(unittest.TestCase):
         for bit in ("Week 7 vs Kyra", "Lost", "92.22 – 110.90", "8 of 8 that week", "38.26 benched", "One (1) catch",
                     "Week 7 recap"):
             self.assertIn(bit, panel)
-        self.assertIn("1 game ball · 2 flags", panel)
-        self.assertNotIn("🏈", panel)                                   # drawn stickers, not emoji
+        self.assertIn("1 game ball · 2 flags this season", panel)
 
     def test_week_without_awards(self):
         bare = {**TEAM, "awards": []}

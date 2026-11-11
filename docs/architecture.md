@@ -349,12 +349,11 @@ hero is the same height for every team and the homework card starts within the f
     tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
   - **Coach's audit**: the audit cards (kind tag, title, stat sticker, text, players) as a scroll-snap row with dots on a
     phone, stacked from 860px.
-  - **Season story**: one bar per week (cobalt win, bubblegum loss, tangerine tie) with a dashed average line and a 🏈 per game ball and
-    🚩 per flag above each bar. The bars are buttons (`aria-pressed`, arrow keys, Home and End move between weeks); the
+  - **Season story**: one bar per week (cobalt win, bubblegum loss, tangerine tie) with a dashed average line. The bars are buttons (`aria-pressed`, arrow keys, Home and End move between weeks); the
     picked week (the latest by default, kept per team in `SN_WEEK` across live redraws) shows below in an
     `aria-live` panel: opponent, result, score (linking to that game), her rank that week, points benched, that week's
-    awards and a link to its recap. A tap swaps only the bars and the panel's contents, so the live region announces it;
-    a live redraw also keeps the audit row's scroll position. Under it, the season's game ball and flag totals.
+    awards (game ball rows lime-soft, flags tangerine-soft) and a link to its recap. A tap swaps only the bars and the panel's contents, so the live region announces it;
+    a live redraw also keeps the audit row's scroll position. Under it, the season's game ball and flag totals, in plain text.
   - **Bench math**: the share of her best possible lineup she started (`points_for / (points_for + bench_left)`) with a
     meter, and the points left on the bench.
   - **Roster moves**: one closed details, "Roster moves · N · latest W<week>", holding the week-grouped moves.
