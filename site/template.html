@@ -348,9 +348,6 @@
   .page-head h1 { font: 800 clamp(36px, 6.2vw, 62px)/0.98 var(--display); letter-spacing: 0.005em; max-width: 20ch; }
   .dek { font-size: 17.5px; color: var(--muted); max-width: 62ch; margin: 0; }
   .dek a { color: var(--accent); font-weight: 700; }
-  .team-summary { margin: 8px 0 0; padding: 10px 14px; background: var(--lime); color: var(--on-pop);
-    border: 2px solid var(--edge); border-radius: 12px; box-shadow: 3px 3px 0 var(--drop);
-    font-size: 14.5px; font-weight: 700; max-width: 62ch; }
   .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
   /* Live page: the headline and the three score stickers share one line, and the stickers
      drop under it once there isn't room for both. */
@@ -1478,66 +1475,77 @@ __LIVE_CSS__
 
   footer { margin-top: 56px; padding-top: 14px; border-top: 2px solid var(--edge); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   footer .script { font: 600 13px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 4px 10px; display: inline-block; transform: rotate(-2deg); }
-  /* ---------- team profile: Overview / Lineup / Season ----------
-     One hero on Overview, a slim identity bar on the other two tabs, and a tab bar in
-     between. Phones get one column; from 860px up Overview grows a side rail. */
-  /* the team strip: every team, in standings order, with who has homework and who is "you" */
-  .tp-strip { display: flex; gap: 8px; overflow-x: auto; padding: 6px 6px 10px; margin: 8px -6px 0; scrollbar-width: none; }
-  .tp-strip::-webkit-scrollbar { display: none; }
-  .tp-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 11px; text-decoration: none; color: var(--ink); background: var(--card);
-    border: 2px solid var(--edge); border-radius: 999px; font: 800 12px/1 var(--body); letter-spacing: 0.03em; text-transform: uppercase; }
-  .tp-chip:hover { background: var(--accent-soft); }
-  .tp-chip[aria-current="page"] { background: var(--lime); color: var(--on-pop); box-shadow: 2px 2px 0 var(--drop); }
-  .tp-chip .n, .tp-key .n { min-width: 18px; height: 18px; padding: 0 3px; border-radius: 9px; background: var(--pink); color: var(--on-pop); border: 2px solid var(--edge); font: 800 10px/14px var(--body); text-align: center; }
-  .tp-chip .you, .tp-key .you { width: 9px; height: 9px; flex: none; border-radius: 50%; background: var(--orange); border: 2px solid var(--edge); }
-  .tp-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 12px; font: 500 11px/1.4 var(--mono); color: var(--muted); }
-  .tp-key span { display: inline-flex; align-items: center; gap: 5px; }
-  .tp-key .n { min-width: 16px; height: 16px; padding: 0; display: inline-block; }
-  .tp-key .you { display: inline-block; }
+  /* ---------- team profile: Game day / Season ----------
+     One compact hero (so Game day's homework card starts high on a phone), a sticky two-tab pill bar,
+     and the Switch team bottom sheet. */
   .crumbs .you-tag { font: 700 11px/1 var(--script); letter-spacing: 0.04em; color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
 
-  /* the identity card: the same on Overview, Lineup and Season */
-  .tp-id { margin-top: 4px; background: #151a33; color: #f4f6ff; border: 2px solid var(--edge); border-radius: 18px; box-shadow: 5px 5px 0 var(--accent); padding: 18px 18px 16px; }
-  .tp-id-top { display: flex; align-items: center; gap: 10px; }
-  .tp-tname { font: 600 12.5px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--pink); border: 2px solid #f4f6ff; border-radius: 999px; padding: 5px 11px; transform: rotate(-2deg); }
-  .tp-you { font: 800 11px/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: #151a33; background: var(--orange); border: 2px solid #f4f6ff; border-radius: 999px; padding: 4px 10px; }
-  .tp-id-main { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 8px; }
-  .tp-id h1 { margin: 0; font: 900 clamp(48px, 15vw, 68px)/0.92 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
+  /* the hero: the same on both tabs */
+  .tp-id { position: relative; margin-top: 16px; background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 4px 4px 0 var(--accent); padding: 14px 14px 10px; }
+  /* the team name and the Switch team pill sit on the hero's top edge like stickers, so the hero needs no row of its own for them */
+  .tp-id-top { position: absolute; top: -13px; left: 12px; right: 12px; display: flex; align-items: center; gap: 6px; pointer-events: none; }
+  .tp-id-top > * { pointer-events: auto; }
+  .tp-tname { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 12px/1 var(--script); letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 5px 10px; transform: rotate(-2deg); }
+  .tp-you { flex: none; font: 800 11px/1 var(--body); letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-pop); background: var(--orange); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 9px; }
+  /* 30px to the eye, 44px to a thumb: the ::before stretches the hit area */
+  .tp-switch { position: relative; flex: none; margin-left: auto; min-height: 30px; padding: 0 12px; cursor: pointer; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 2px 2px 0 var(--drop); font: 700 13px/1 var(--body); }
+  .tp-switch::before { content: ""; position: absolute; inset: -9px -4px; }
+  .tp-switch:hover { background: var(--lime); color: var(--on-pop); }
+  .tp-switch:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+  .tp-id-main { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .tp-id h1 { margin: 0; min-width: 0; font: 900 clamp(32px, 9vw, 52px)/0.95 var(--display); letter-spacing: 0.01em; overflow-wrap: anywhere; }
   .tp-rec { text-align: right; flex: none; }
-  .tp-rec b { display: block; font: 900 clamp(38px, 12vw, 50px)/0.9 var(--display); color: var(--lime); }
-  .tp-rec span { display: block; margin-top: 4px; font: 500 11px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: #a9b2dc; }
-  .tp-back { display: inline-flex; align-items: center; min-height: 32px; margin-top: 12px; padding: 5px 12px; text-decoration: none; font: 700 13px/1.2 var(--body); color: #151a33; background: var(--card); border: 2px solid #f4f6ff; border-radius: 999px; }
-  .tp-back:hover { background: var(--lime); }
-  .tp-back:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
-  .tp-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 14px; margin: 14px 0 0; padding-top: 12px; border-top: 1.5px solid #2b3263; }
-  .tp-stats > div { min-width: 0; }
-  .tp-stats dt { font: 500 10px/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #a9b2dc; }
-  .tp-stats dd { margin: 3px 0 0; font: 800 24px/1.05 var(--display); }
-  .tp-stats dd small { font: 500 10px/1 var(--mono); color: #a9b2dc; margin-left: 4px; }
-  .tp-stats .po dd { color: var(--lime); white-space: nowrap; }
-  .tp-stats .hs { display: block; margin-top: 2px; font: 500 10px/1.2 var(--mono); color: #a9b2dc; }
+  .tp-rec b { display: block; font: 900 clamp(28px, 8vw, 40px)/0.9 var(--display); color: var(--lime); }
+  .tp-rec span { display: block; margin-top: 3px; font: 500 10.5px/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-board-muted); }
+  .tp-chips { display: flex; flex-wrap: wrap; gap: 5px 6px; margin-top: 8px; }
+  /* On a phone the chips are one line you can swipe, so the hero is the same height for every team. */
+  @media (max-width: 640px) { .tp-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -14px; padding-right: 14px; } .tp-chips::-webkit-scrollbar { display: none; } .tp-ch { flex: none; } }
+  .tp-ch { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 8px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; font: 600 11.5px/1.25 var(--body); white-space: nowrap; }
+  .tp-ch b { font: 800 13.5px/1 var(--display); letter-spacing: 0.02em; }
+  .tp-ch.po { color: var(--on-pop); background: var(--lime); }
   @media (min-width: 860px) {
-    .tp-id { padding: 24px 30px 22px; box-shadow: 6px 6px 0 var(--accent); }
-    .tp-id h1 { font-size: clamp(72px, 9vw, 96px); }
-    .tp-rec b { font-size: clamp(56px, 7vw, 76px); }
-    .tp-rec span { font-size: 13px; }
-    .tp-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 24px; }
-    .tp-stats dd { font-size: 30px; }
+    .tp-id { padding: 20px 24px 16px; box-shadow: 6px 6px 0 var(--accent); }
+    .tp-id-top { left: 20px; right: 20px; }
+    .tp-id h1 { font-size: clamp(56px, 7vw, 76px); }
+    .tp-rec b { font-size: clamp(44px, 5vw, 58px); }
+    .tp-rec span { font-size: 12px; }
+    .tp-ch { font-size: 13px; padding: 5px 12px; }
+    .tp-ch b { font-size: 16px; }
   }
 
-  /* the sticky tab bar. When the identity card has scrolled away it grows a mini identity on the left. */
-  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 10px -16px 6px; padding: 6px 16px 10px; background: var(--bg); }
-  .tp-tabbar { border-bottom: 2px solid transparent; }
+  /* the sticky tab bar, the same pill bar as the matchup page's .ph-tabs. Once the hero has scrolled away
+     it grows a mini identity on the left (desktop only). */
+  .tp-tabbar { position: sticky; top: 56px; z-index: 4; display: flex; align-items: center; gap: 12px; margin: 4px -16px 0; padding: 3px 16px 4px; background: var(--bg); border-bottom: 2px solid transparent; }
   .tp-tabbar.stuck { border-bottom-color: var(--edge); }
   .tp-mini { display: none; align-items: center; gap: 8px; white-space: nowrap; font: 900 20px/1 var(--display); }
   .tp-mini em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--lime); background: var(--board); border-radius: 999px; padding: 4px 8px; }
   .tp-tabbar.stuck .tp-mini { display: flex; }
-  .tp-seg { flex: 1; display: grid; grid-template-columns: repeat(4, minmax(max-content, 1fr)); overflow-x: auto; scrollbar-width: none; gap: 3px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
+  .tp-seg { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 3px; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 3px 3px 0 var(--drop); }
   .tp-tabbar.stuck .tp-seg { max-width: 380px; }
-  .tp-seg a { text-align: center; text-decoration: none; color: var(--ink); font: 600 14px/1 var(--script); border-radius: 10px; padding: 11px 0; }
+  .tp-seg a { display: grid; place-items: center; min-height: 44px; padding: 0 6px; text-align: center; text-decoration: none; color: var(--ink); border-radius: 999px; font: 700 14px/1.1 var(--body); }
   .tp-seg a:hover { background: var(--accent-soft); }
-  .tp-seg a[aria-current="page"] { background: var(--accent); color: var(--on-accent); }
+  .tp-seg a[aria-current="page"] { background: var(--ink); color: var(--bg); }
   @media (max-width: 640px) { .tp-tabbar.stuck .tp-mini { display: none; } .tp-tabbar.stuck .tp-seg { max-width: none; } }
+
+  /* Switch team: a bottom sheet on a phone, a centered card from 640px up */
+  .tp-sheet { width: 100%; max-width: 100%; max-height: 85vh; margin: auto 0 0; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); color: var(--ink); background: var(--bg); border: 2px solid var(--edge); border-bottom: 0; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 0 var(--drop); }
+  .tp-sheet::backdrop { background: rgba(10, 20, 50, 0.6); }
+  .tp-sheet[open] { animation: tp-up 0.22s ease-out; }
+  @keyframes tp-up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .tp-sheet[open] { animation: none; } }
+  @media (min-width: 640px) { .tp-sheet { width: min(460px, calc(100% - 32px)); margin: auto; border-bottom: 2px solid var(--edge); border-radius: 20px; box-shadow: 5px 5px 0 var(--drop); } }
+  .tp-sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .tp-sheet h2 { margin: 0; font: 800 26px/1 var(--display); }
+  .tp-sheet-x { min-height: 44px; padding: 0 14px; cursor: pointer; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; font: 700 13px/1 var(--body); }
+  .tp-sheet-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+  .tp-sheet-list a { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto 26px; align-items: center; gap: 10px; min-height: 48px; padding: 0 12px; text-decoration: none; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 14px; }
+  .tp-sheet-list a:hover { background: var(--accent-soft); }
+  .tp-sheet-list a[aria-current="page"] { background: var(--lime-soft); box-shadow: 2px 2px 0 var(--drop); }
+  .tp-sheet-list .rk { font: 500 12px/1 var(--mono); color: var(--muted); text-align: center; }
+  .tp-sheet-list .nm { font: 800 20px/1 var(--display); display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .tp-sheet-list .you { font: 700 10px/1 var(--script); font-style: normal; text-transform: uppercase; letter-spacing: 0.04em; color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px; }
+  .tp-sheet-list .rec { font: 500 12px/1 var(--mono); color: var(--muted); }
+  .tp-sheet-list .n { grid-column: 4; justify-self: end; min-width: 24px; height: 24px; padding: 0 5px; display: grid; place-items: center; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 12px; font: 800 12px/1 var(--body); }
 
   .tp-sec { margin-top: 26px; display: grid; gap: 10px; align-content: start; }
   .tp-head { display: flex; align-items: center; gap: 8px; }
@@ -1546,8 +1554,6 @@ __LIVE_CSS__
   .tp-head .more { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; text-align: right; }
   .tp-head .more:hover { text-decoration: underline; }
   .tp-sec > .sec-sub { margin: -4px 0 0; }
-  .tp-sub { margin-top: 4px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 10px; font: 600 12px/1.2 var(--script); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .tp-sub small { font: 400 12px/1.2 var(--body); letter-spacing: 0; text-transform: none; }
 
   /* faces: a headshot with a small NFL badge, from the same source as Recaps' Top scorers */
   .pf { --s: 48px; position: relative; display: block; flex: none; width: var(--s); height: var(--s); }
@@ -1564,8 +1570,6 @@ __LIVE_CSS__
   .refs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 
   /* Overview */
-  .ov-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 8px; }
-  @media (max-width: 760px) { .ov-grid { grid-template-columns: minmax(0, 1fr); } }
   .ov-card { min-width: 0; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); padding: 14px 16px; }
   .ov-lab { font: 700 11px/1.2 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .ov-vs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 12px; }
@@ -1573,38 +1577,18 @@ __LIVE_CSS__
   .ov-vs b a { color: inherit; text-decoration: none; }
   .ov-vs b a:hover { text-decoration: underline; }
   .ov-vs i { font: 500 12px/1 var(--mono); font-style: normal; text-transform: uppercase; color: var(--muted); }
-  .mg { display: grid; place-items: center; flex: none; width: 30px; height: 30px; border: 2px solid var(--edge); border-radius: 50%; background: var(--accent-soft); font: 900 15px/1 var(--display); }
-  .mg.t { background: var(--pink-soft); }
   .ov-wc { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
   .ov-wc b { display: block; font: 900 42px/1 var(--display); }
   .ov-wc span { font: 600 12px/1.2 var(--body); color: var(--muted); }
   .ov-wc .r { text-align: right; }
   .ov-bar { height: 14px; margin: 8px 0 4px; overflow: hidden; background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; }
   .ov-bar i { display: block; height: 100%; background: var(--accent); border-right: 2px solid var(--edge); }
-  .ov-legend { display: flex; justify-content: space-between; gap: 6px; font: 500 11px/1.3 var(--mono); color: var(--muted); }
-  .ov-legend .sq { display: inline-block; width: 10px; height: 10px; margin: 0 5px -1px; border: 2px solid var(--edge); border-radius: 3px; }
   .ov-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
   .ov-stats dt { order: 2; font: 500 10px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .ov-stats dd { order: 1; margin: 0; font: 800 22px/1 var(--display); }
   .ov-stats > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .ov-fix { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 8px 10px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 12px; font-size: 13.5px; }
-  .ov-fix.ok { background: var(--lime-soft); }
-  .ov-fix > div { min-width: 0; flex: 1; }
-  .ov-fix .refs { margin-top: 6px; }
-  .ov-fix a.go { flex: none; align-self: flex-start; color: var(--ink); text-decoration: none; white-space: nowrap; background: var(--card); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 11px; font: 700 12px/1.2 var(--body); box-shadow: 2px 2px 0 var(--drop); }
-  .ov-seed { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; }
-  .ov-seed b { font: 900 40px/1 var(--display); }
   .ov-tag { display: inline-block; padding: 3px 10px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.2 var(--body); }
   .ov-tag.og { background: var(--orange); }
-  .ov-p { margin: 8px 0 10px; color: var(--muted); font-size: 13.5px; }
-  .ov-odds { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 10px; align-items: center; }
-  .ov-odds > div { padding: 8px 10px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 12px; }
-  .ov-odds > div.w { background: var(--lime); color: var(--on-pop); }
-  .ov-odds > div.n { grid-column: 1 / -1; background: var(--lime-soft); }
-  .ov-odds .ar { padding: 0; background: none; border: 0; font: 900 22px/1 var(--display); }
-  .ov-odds span { display: block; font: 600 12px/1.25 var(--body); }
-  .ov-odds b { font: 900 34px/1 var(--display); }
-  .ov-worth { margin: 12px 0 0; font-size: 13.5px; }
   .ov-take { padding: 14px 16px; background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
   .ov-take h3 { margin: 8px 0 4px; font: 800 18px/1.15 var(--display); letter-spacing: 0.01em; }
   .ov-take p { margin: 0; font-size: 14px; }
@@ -1623,22 +1607,83 @@ __LIVE_CSS__
   .tp-cards .card-top { flex-wrap: wrap; }
   .tp-more > summary { cursor: pointer; font: 700 13.5px/1.2 var(--body); color: var(--accent); padding: 6px 0; }
   .tp-more[open] > summary { margin-bottom: 12px; }
-  .tp-ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
-  .tp-ideas > div { display: grid; gap: 12px; align-content: start; }
+
+  /* Game day */
+  .gd { display: grid; gap: 10px; margin-top: 4px; }
+  .gd > section { margin-top: 0; }
+  .gd > .tp-sec { margin-top: 14px; }
+  .gd-wk { display: flex; align-items: baseline; gap: 10px; }
+  .gd-wk b { font: 800 19px/1 var(--display); letter-spacing: 0.01em; }
+  .gd-wk span { font: 500 11px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  /* the homework card: lime when the lineup is clean, bubblegum-soft with a swap card per fix otherwise */
+  .gd-hw { padding: 12px 14px 14px; color: var(--ink); background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .gd-hw h2 { display: flex; align-items: center; gap: 8px; margin: 0; font: 800 26px/1.05 var(--display); letter-spacing: 0.01em; }
+  .gd-hw > p { margin: 6px 0 0; font-size: 14px; }
+  .gd-hw.ok { color: var(--on-pop); background: var(--lime); }
+  .gd-hw.ok .ic { display: grid; place-items: center; flex: none; width: 28px; height: 28px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 50%; }
+  .gd-hw.none { background: var(--accent-soft); }
+  .gd-fine { margin: -4px 0 0; font-size: 12px; color: var(--muted); }
+  .gd-swap { margin-top: 10px; padding: 10px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
+  .gd-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; }
+  .gd-p { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .gd-face { position: relative; flex: none; }
+  .gd-face .pf { --s: 40px; }
+  .gd-st { position: absolute; left: -6px; top: -6px; padding: 2px 6px; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; font: 700 10px/1 var(--script); letter-spacing: 0.04em; transform: rotate(-6deg); }
+  .gd-p.start .gd-st { background: var(--orange); }
+  .gd-pn { display: grid; gap: 2px; min-width: 0; }
+  .gd-pn b { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; font: 700 14px/1.15 var(--body); }
+  .gd-pn > span { font: 500 11.5px/1.2 var(--mono); color: var(--muted); }
+  .gd-p.start .gd-pn > span { color: var(--ink); }
+  .gd-p.none .gd-pn b { white-space: normal; }
+  .gd-arrow { font: 900 22px/1 var(--display); }
+  .gd-why { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 10px 0 0; font-size: 13px; }
+  .gd-slot { padding: 2px 7px; font: 500 11px/1.2 var(--mono); background: var(--bg); border: 2px solid var(--edge); border-radius: 8px; }
+  .gd-gain { display: inline-block; padding: 2px 8px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 13px/1.2 var(--display); letter-spacing: 0.02em; transform: rotate(-2deg); white-space: nowrap; }
+  .gd-why .gd-gain { margin-left: auto; }
+  .gd-note { margin-top: 6px; }
+  .gd-note > summary, .gd-src > summary, .gd-bench > summary { display: flex; align-items: center; gap: 6px; min-height: 44px; cursor: pointer; list-style: none; font: 700 13.5px/1.2 var(--body); color: var(--accent-ink, var(--accent)); }
+  .gd-note > summary::-webkit-details-marker, .gd-src > summary::-webkit-details-marker, .gd-bench > summary::-webkit-details-marker { display: none; }
+  .gd-note > summary::after, .gd-bench > summary::after { content: "▾"; font-size: 11px; transition: transform 0.2s; }
+  .gd-note[open] > summary::after, .gd-bench[open] > summary::after { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .gd-note > summary::after, .gd-bench > summary::after { transition: none; } }
+  .gd-note p { margin: 0 0 4px; font-size: 13.5px; }
+  .gd-line { display: flex; gap: 12px; align-items: flex-start; margin-top: 10px; }
+  .gd-line > div { flex: 1; min-width: 0; }
+  .gd-line p { margin: 0; font-size: 13.5px; }
+  .gd-heads { display: flex; align-items: center; gap: 10px; margin: 0; padding: 8px 12px; background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 14px; font-size: 13.5px; }
+  .gd-hf { display: flex; flex: none; }
+  .gd-hf .pf + .pf { margin-left: -8px; }
+  .gd-nowp { margin: 4px 0 0; font-size: 14px; }
+  .gd-mu .ov-vs { margin: 6px 0 10px; }
+  .gd-ride { margin-top: 14px; padding-top: 12px; border-top: 2px dotted var(--rule); }
+  .gd-ride-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 8px; }
+  .gd-tog { display: inline-grid; grid-auto-flow: column; gap: 4px; padding: 4px; background: var(--bg); border: 2px solid var(--edge); border-radius: 999px; }
+  .gd-tog button { min-height: 44px; padding: 0 14px; cursor: pointer; color: var(--ink); background: none; border: 0; border-radius: 999px; font: 700 14px/1 var(--body); }
+  .gd-tog button[aria-pressed="true"] { color: var(--bg); background: var(--ink); }
+  .gd-ride-n { display: flex; align-items: baseline; gap: 8px; }
+  .gd-ride-n b { font: 900 44px/1 var(--display); }
+  .gd-ride-n span { font: 500 11px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .gd-ride-f { margin: 8px 0 0; font-size: 12.5px; color: var(--muted); }
+  .gd-league { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 10px 14px; text-decoration: none; color: var(--ink); background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .gd-league > span { display: grid; gap: 2px; }
+  .gd-league b { font: 800 20px/1.1 var(--display); }
+  .gd-league > span > span { font-size: 13px; }
+  .gd-league i { font: 900 24px/1 var(--display); font-style: normal; }
+  .gd-league:hover { background: var(--lime-soft); }
+  .gd-src p { margin: 0; font-size: 12.5px; color: var(--muted); }
+  .gd-src > summary { color: var(--muted); font-weight: 600; }
+  /* the lineup: a starter with a swap fix is tinted, bye and IR rows step back */
+  .gd-lu .prow.fix > .row { padding-left: 6px; padding-right: 4px; background: var(--pink-soft); border-radius: 12px; box-shadow: inset 4px 0 0 var(--pink); }
+  .gd-lu .swapln { margin-top: 4px; font-size: 12.5px; }
+  .gd-lu .swapln .gd-gain { font-size: 12px; padding: 1px 6px; }
+  .gd-lu .row.bye .pwho, .gd-lu .row.bye .pill, .gd-lu .row.ir .pwho, .gd-lu .row.ir .pill, .gd-lu .row.ir .av { opacity: 0.55; }
+  .gd-bench { margin-top: 4px; border-top: 2px solid var(--edge); }
+  .gd-bench > summary { color: var(--ink); font: 500 12px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  @media (max-width: 640px) { .gd-lu .prow.fix > .row { padding-left: 4px; } .gd-lu .prow.fix .slot { left: -2px; } }
 
   /* Lineup tab, and the accordion rows Season reuses. Everything sits under .acc so none of it
      can reach the box-score tables. The panel animates grid-template-rows 0fr to 1fr, so opening
      is a class toggle and the height is whatever the text needs. */
-  .lu-sum { margin: 0; font-size: 14px; }
-  .lu-fix { padding: 12px 14px; background: var(--pink-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
-  .lu-fix.ok { background: var(--lime-soft); }
-  .lu-fix p { margin: 2px 0 0; font-size: 13.5px; }
-  .lu-fix .it { display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; }
-  .lu-fix .it > div { flex: 1; min-width: 0; }
-  .lhint { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .lu-all { flex: none; cursor: pointer; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; padding: 4px 12px; font: 700 12px/1.2 var(--body); box-shadow: 2px 2px 0 var(--drop); }
-  .lu-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 26px; }
-  @media (min-width: 860px) { .lu-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .acc .divider { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font: 500 11px/1 var(--mono); letter-spacing: 0.12em; color: var(--muted); }
   .acc .divider::after { content: ""; flex: 1; border-top: 2px solid var(--edge); }
   .acc .prow { border-bottom: 2px dotted var(--rule); }
@@ -1791,10 +1836,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const coachRows = (next) => (next ? (ahead() || {}).teams : advice()) || null;
   const coachFor = (id, next) => (coachRows(next) || []).find((a) => a.team_id === id);
   const adviceFor = (id) => coachFor(id, false);
-  // A team's coach page is now a section of her profile; the league-wide grid keeps #coach.
-  // Where a to-do lives: the Lineup tab (this week) or the next-week tab.
-  const lineupUrl = (next, id) => `#team-${id}${next ? '.next' : '.lineup'}`;
-  const coachUrl = (next, id) => (id ? `#team-${id}${next ? '.next' : ''}` : `#coach${next ? '-next' : ''}`);
+  // A team's coach page is her profile's Game day, which picks its own week; the league-wide grid keeps #coach.
+  const lineupUrl = (next, id) => `#team-${id}`;
+  const coachUrl = (next, id) => (id ? `#team-${id}` : `#coach${next ? '-next' : ''}`);
   // Every game of the week played, so no lineup change can score another point. It
   // happens hours before ESPN calls the week final, and it's the moment this week's
   // advice stops being advice.
@@ -3794,13 +3838,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>` : ''}` : ''}`;
   }
 
-  /* ---------- team profile: four tabs ----------
-     #team-<id> is Overview (the hero, this week, Coach's take and advice), #team-<id>.lineup
-     is the week's lineup and to-dos, #team-<id>.next is the same tab pointed at next week, and
-     #team-<id>.season is the whole season: the chart, the audit, every game, awards and moves, and
-     #team-<id>.league is the league-wide half of the old Coach landing (take, strength grid, waiver order,
-     injuries and byes) with the viewed team and the viewer's own team marked. */
-  const TP_TABS = [['overview', 'Overview', ''], ['lineup', 'Lineup', '.lineup'], ['season', 'Season', '.season'], ['league', 'League', '.league']];
+  /* ---------- team profile: two tabs ----------
+     #team-<id> is Game day: one week's homework, the matchup and what's riding on it, the lineup and
+     what's next, for the week worth looking at (see gdNext; there's no week switch). #team-<id>.season
+     is the whole season: the chart, the audit, every game, awards and moves. The old .lineup, .next and
+     .league routes land on Game day, and the league-wide view (once the League tab) is #league-<id>. */
+  const TP_TABS = [['gameday', 'Game day', ''], ['season', 'Season', '.season']];
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
   const TP_CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
@@ -3830,70 +3873,88 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return lo === hi ? { text: hi, sub: `either way${vs}` } : { text: `${lo} → ${hi}`, sub: `lose → win${vs}` };
   }
 
-  function tpStrip(id, sfx, next) {
-    const youId = myTeam.get();
-    return `
-      <nav class="tp-strip" aria-label="Teams, in standings order">${SEASON.standings.map((x) => {
-        const a = coachFor(x.team_id, next);
-        const n = a ? a.counts.now : 0;
-        const bits = [x.manager, n ? `${n} fix${n === 1 ? '' : 'es'} waiting` : '', x.team_id === youId ? 'you' : ''].filter(Boolean).join(', ');
-        return `<a class="tp-chip" href="#team-${x.team_id}${sfx}"${x.team_id === id ? ' aria-current="page"' : ''} aria-label="${esc(bits)}">${esc(x.manager)}${x.team_id === youId ? '<i class="you" aria-hidden="true"></i>' : ''}${n ? `<span class="n" aria-hidden="true">${n}</span>` : ''}</a>`;
-      }).join('')}</nav>
-      <p class="tp-key" aria-hidden="true"><span><i class="n"></i> fixes waiting</span><span><i class="you"></i> you</span><span>sorted by standings</span></p>`;
+  // The week Game day is about: next week once this one is final and ESPN has posted the week ahead (or
+  // when this week has nothing for her), else this week. The page picks; there's no switch.
+  const gdNext = (id) => !!ahead() && !!coachFor(id, true) && (!coachFor(id, false) || !!(LIVE && LIVE.complete));
+  // Where she picks on waivers: the league's real order when the build has it, else worst record first
+  // (the same order the Coach landing's waiver card uses).
+  function waiverSpot(id) {
+    const order = SEASON.waiver_order || [...SEASON.standings].reverse().map((t) => t.team_id);
+    const i = order.indexOf(id);
+    return i < 0 ? null : i + 1;
   }
 
-  /* The same top on all three tabs: breadcrumb, team strip, identity card, tab bar. The tab bar
-     is sticky; tpSticky keeps its `top` equal to the site header's height and flips `.stuck`
-     (which shows the mini identity) once the identity card has scrolled out from under it. */
-  function tpHeader(id, t, tab, sfx, next) {
+  /* The same top on both tabs: one compact hero (team name, manager, record, three chips and the Switch
+     team pill), then the sticky tab bar. tpSticky keeps the bar's `top` equal to the site header's
+     height and flips `.stuck` (which shows the mini identity) once the hero has scrolled away. */
+  function tpHeader(id, t, tab) {
     const rank = standRank(t);
-    const onCoach = !!coachFor(id, false);
     const odds = oddsRange(tpOdds(id));
-    const me = myTeam.get(), you = me === id;
+    const you = myTeam.get() === id;
+    const wv = waiverSpot(id);
+    const chips = [
+      odds ? `<span class="tp-ch po">Playoffs <b>${esc(odds.text)}</b><span class="vh">, ${esc(odds.sub)}</span></span>` : '',
+      `<span class="tp-ch">Seed <b>${rank}</b> of ${SEASON.standings.length}</span>`,
+      wv ? `<span class="tp-ch">Picks <b>${ordinal(wv)}</b> on waivers</span>` : '',
+    ].join('');
     return `
-      <div class="crumbs"><a href="${onCoach ? coachUrl(false, null) : '#standings'}">${onCoach ? 'Coach' : 'Standings'}</a><span aria-hidden="true">›</span><span aria-current="page">${esc(t.manager)}</span>${you ? '<span class="you-tag">you</span>' : ''}</div>
-      ${tpStrip(id, sfx, next)}
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
-        <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}</div>
+        <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}
+          <button type="button" class="tp-switch" data-tp-sheet aria-haspopup="dialog" aria-controls="tp-sheet">Switch team</button></div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
-        ${you ? '' : (me ? `<a class="tp-back" href="#team-${me}">Back to my team (${esc(TEAMS[me].manager)})</a>` : `<a class="tp-back" href="${advice() ? '#coach' : '#standings'}">Back to the league</a>`)}
-        <dl class="tp-stats">
-          ${odds ? `<div class="po"><dt>Playoff odds</dt><dd>${esc(odds.text)}</dd><span class="hs">${esc(odds.sub)}</span></div>` : ''}
-          <div><dt>Avg score</dt><dd>${f1(t.avg)}</dd></div>
-          <div><dt>Best week</dt><dd>${t.best ? `${f1(t.best.points)}<small>W${t.best.week}</small>` : '–'}</dd></div>
-          <div><dt>Vs. everyone</dt><dd>${t.all_play_w}–${t.all_play_l}</dd></div>
-        </dl>
+        <div class="tp-chips">${chips}</div>
       </section>
       <div class="tp-tabbar" id="tp-tabbar">
         <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
         <nav class="tp-seg" aria-label="Profile sections">${TP_TABS.map(([k, label, sx]) =>
-          `<a href="#team-${id}${k === 'lineup' && next ? '.next' : sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
-      </div>`;
+          `<a href="#team-${id}${sx}"${k === tab ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+      </div>
+      ${tpSheet(id, tab)}`;
   }
 
-  /* League tab: the same pieces as the Coach landing (site/coach/landing.js), for this week. */
-  function tpLeague(id) {
-    return `<div class="cl-page cl-intab">${coachLeague(coachRows(false) || [], myTeam.get(), id)}</div>
-      <p class="tp-foot">${voice(LIVE ? coachSource(LIVE) : '')}</p>`;
+  /* Switch team: a bottom sheet with all eight in standings order, each with the pink count of fixes for
+     the week its Game day shows, and the viewer marked. A <dialog>, so Escape closes it; a tap outside
+     the sheet closes it too (see the listeners by the router). */
+  function tpSheet(id, tab) {
+    const me = myTeam.get();
+    const sfx = tab === 'season' ? '.season' : '';
+    return `
+      <dialog class="tp-sheet" id="tp-sheet" aria-labelledby="tp-sheet-h">
+        <div class="tp-sheet-top"><h2 id="tp-sheet-h">Switch team</h2><button type="button" class="tp-sheet-x" data-sheet-close>Close</button></div>
+        <ol class="tp-sheet-list">${SEASON.standings.map((x) => {
+          const a = coachFor(x.team_id, gdNext(x.team_id));
+          const n = a ? a.counts.now : 0;
+          const label = [x.manager, record(x), n ? `${n} to fix` : '', x.team_id === me ? 'you' : ''].filter(Boolean).join(', ');
+          return `<li><a href="#team-${x.team_id}${sfx}"${x.team_id === id ? ' aria-current="page"' : ''} aria-label="${esc(label)}">
+            <span class="rk" aria-hidden="true">${standRank(x)}</span><span class="nm" aria-hidden="true">${esc(x.manager)}${x.team_id === me ? '<i class="you">you</i>' : ''}</span>
+            <span class="rec" aria-hidden="true">${record(x)}</span>${n ? `<span class="n" aria-hidden="true">${n}</span>` : ''}</a></li>`;
+        }).join('')}</ol>
+      </dialog>`;
   }
 
-  function teamPage(id, tab = 'overview', next = false) {
+  /* The league-wide view, reached from a team's Game day: the same pieces as the Coach landing (Coach's
+     take, the strength grid, the waiver order, injuries and byes; site/coach/landing.js), for this week,
+     with the team you came from marked. */
+  function leaguePage(view) {
+    const t = TEAMS[view];
+    const back = !t ? '' : view === myTeam.get() ? 'Back to your Game day' : `Back to ${esc(t.manager)}'s Game day`;
+    return `
+      <div class="page-head">
+        <div class="kicker">${LIVE ? `Week ${LIVE.week} · ` : ''}the whole league</div>
+        <h1>How the league looks</h1>
+        ${t ? `<p class="dek"><a href="#team-${view}">${back}</a></p>` : ''}
+      </div>
+      <div class="cl-page cl-intab">${coachLeague(coachRows(false) || [], myTeam.get(), t ? view : null)}</div>
+      ${LIVE ? `<p class="cl-foot">${esc(coachSource(LIVE))}</p>` : ''}`;
+  }
+
+  function teamPage(id, tab = 'gameday') {
     const t = TEAMS[id];
     if (!t) return notFound();
     otherTeam = id !== myTeam.get(); viewName = t.manager;
-    next = !!(next && ahead() && tab === 'lineup');   // no current next-week capture → This week; only the Lineup tab has the toggle
     const p = t.profile || { audit: [], moves: [], weak_spot: null };
-    const sfx = next ? '.next' : (TP_TABS.find(([k]) => k === tab) || [])[2] || '';
-    const head = tpHeader(id, t, tab, sfx, next);
-    if (tab === 'lineup') return head + tpLineup(id, next);
-    if (tab === 'season') return head + tpSeason(id, t, p);
-    if (tab === 'league') return head + tpLeague(id);
-    return `
-      ${head}
-      <div class="ov-grid">${tpMatchup(id)}${tpPlayoffs(id, t)}</div>
-      ${tpTake(id, p)}
-      ${tpNext(id)}
-      <p class="tp-foot">${voice("Everything here comes from ESPN's projections and injury report. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.")}</p>`;
+    const head = tpHeader(id, t, tab);
+    return head + (tab === 'season' ? tpSeason(id, t, p) : gameDay(id));
   }
 
   /* ---------- faces ----------
@@ -3943,74 +4004,126 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return out.slice(0, limit);
   }
 
-  /* ---------- Overview: one snapshot ---------- */
-  function tpMatchup(id) {
-    const a = coachFor(id, false);
-    const t = TEAMS[id];
-    if (!a) {
-      const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
-      return `<div class="ov-card"><div class="ov-lab">This week</div><p class="ov-p" style="margin-bottom:0">Nothing to fix until Week ${wk}'s rosters land.</p></div>`;
+  /* ---------- Game day ----------
+     One week, picked for her (gdNext), top to bottom: the homework, a heads-up about next week while this
+     one is still being played, the matchup and what's riding on it, the lineup, who's next, ideas, a way
+     into the league view and where it all comes from. A block with nothing to say isn't drawn at all; the
+     homework card is the only one that always is. */
+  const GD_STICKER = { OUT: 'OUT', INJURY_RESERVE: 'IR', SUSPENSION: 'SUSP', DOUBTFUL: 'DOUBT', QUESTIONABLE: 'Q', DAY_TO_DAY: 'DTD', bye: 'BYE' };
+  // A gain worth printing: the swap field's gain is ESPN's projections as they are, so on an out card it can
+  // be zero or below (ESPN still projecting a starter it lists as out). Only a real gain gets the sticker.
+  const gdGain = (g) => (g != null && g >= 0.05 ? `+${f1(g)}` : '');
+  const gdEmpty = (title, text) => `<section class="gd-hw none" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h">${esc(title)}</h2><p>${esc(text)}</p></section>`;
+
+  // One lineup fix, from its structured `swap` field: who sits, who starts, the slot, the gain, and the
+  // card's own words behind a closed "Coach's full note".
+  function gdSwap(it) {
+    const s = it.swap, out = s.out, inn = s.in;
+    const sticker = GD_STICKER[out.status];
+    const side = (p, verb, tag) => `
+      <div class="gd-p ${verb}">
+        <span class="gd-face">${face({ player_id: p.player_id, name: p.name })}${tag ? `<span class="gd-st">${tag}</span>` : ''}</span>
+        <span class="gd-pn"><b>${esc(p.name)}</b><span>${p.projected == null ? '' : `<span class="num">${f1(p.projected)}</span> proj · `}${verb}</span></span>
+      </div>`;
+    const why = it.kind === 'bye' ? 'Bye week' : it.kind === 'out' ? it.stat : 'Projected higher';
+    const gain = gdGain(s.gain);
+    const key = `gd-note-${it.key}`;
+    return `
+      <article class="gd-swap">
+        <div class="gd-pair">
+          ${side(out, 'sit', sticker)}
+          <span class="gd-arrow" aria-hidden="true">→</span>
+          ${inn ? side(inn, 'start', GD_STICKER[inn.status]) : '<div class="gd-p none"><span class="gd-pn"><b>Nobody on the bench</b><span>waiver wire</span></span></div>'}
+        </div>
+        <p class="gd-why"><span class="gd-slot">${esc(out.slot === 'DST' ? 'D/ST' : out.slot)}</span><span>${esc(why)}</span>${gain ? `<span class="gd-gain">${gain} proj</span>` : ''}</p>
+        <details class="gd-note" data-hub-open="${esc(key)}"${HUB_OPEN.has(key) ? ' open' : ''}><summary>Coach's full note</summary><p><b>${esc(voice(it.title))}.</b> ${esc(voice(it.text))}</p></details>
+      </article>`;
+  }
+  // A fix with no swap to show (an empty slot, a starter projected zero): the card's own line, as before.
+  const gdLine = (it) => `<div class="gd-line"><div><p><b>${esc(voice(it.title))}.</b> ${esc(voice(it.text))}</p>${refs(itemFaces(it))}</div>${it.stat ? `<span class="ov-tag pk">${esc(it.stat)}</span>` : ''}</div>`;
+
+  function gdHomework(a, next, you) {
+    const fixes = a.items.filter((it) => it.level === 'now');
+    const fine = `<p class="gd-fine">Make the moves in the ESPN app. Nothing here changes ${you ? 'your' : 'her'} lineup.</p>`;
+    if (!fixes.length) {
+      return `<section class="gd-hw ok" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h"><span class="ic" aria-hidden="true">${TP_CHECK}</span>Lineup's clean</h2>${a.summary ? `<p>${esc(voice(a.summary))}</p>` : ''}</section>${fine}`;
     }
-    const g = LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
+    // "Before Sunday" until this week has kicked off; after that the fix is simply due.
+    const soon = next || !(LIVE && LIVE.kicked_off) ? ' before Sunday' : '';
+    return `
+      <section class="gd-hw" aria-labelledby="gd-hw-h"><h2 id="gd-hw-h">${fixes.length} to fix${soon}</h2>
+        ${fixes.map((it) => (it.swap ? gdSwap(it) : gdLine(it))).join('')}
+      </section>${fine}`;
+  }
+
+  /* While this week is still being played: next week's starters ESPN already lists as out, doubtful,
+     suspended or on IR. Only what the week-ahead capture says. Q and DTD never trigger it. */
+  function gdHeadsUp(id, next) {
+    if (next || !LIVE || LIVE.complete || !ahead()) return '';
+    const row = coachFor(id, true);
+    const hurt = (row && row.lineup ? row.lineup.starters : []).filter((p) => OUTISH.includes(p.injury));
+    if (!hurt.length) return '';
+    const said = (p) => (p.injury === 'On IR' ? 'on IR' : p.injury.toLowerCase());
+    const and = (xs) => (xs.length < 3 ? xs.join(' and ') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`);
+    const text = hurt.every((p) => p.injury === hurt[0].injury)
+      ? `${and(hurt.map((p) => p.name))} ${hurt.length > 1 ? 'are' : 'is'} listed ${said(hurt[0])}.`
+      : `${and(hurt.map((p) => `${p.name} is listed ${said(p)}`))}.`;
+    return `<p class="gd-heads"><span class="gd-hf">${hurt.slice(0, 3).map((p) => face(p, 'xs')).join('')}</span><span><b>Heads up for Week ${ahead().week}:</b> ${esc(text)}</span></p>`;
+  }
+
+  /* The matchup: ESPN's win chances, both projections, starters left, and what's riding on it, the playoff
+     odds with a win and with a loss from the Week hub's stakes. The She wins / She loses choice is kept per
+     team in MU_SIDE and flipped in place, so a live redraw doesn't undo it. */
+  const MU_SIDE = new Map();
+  function gdMatchup(id, a, next) {
+    const t = TEAMS[id], you = id === myTeam.get();
+    const week = next ? ahead().week : LIVE.week;
+    const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
     const theirs = g && (g.winner.team_id === id ? g.loser : g.winner);
     const opp = theirs ? TEAMS[theirs.team_id] : TEAMS[a.opponent_id];
-    const oppRow = opp && coachFor(opp.team_id, false);
-    const wp = a.win_probability;
-    const state = LIVE.complete ? 'final' : LIVE.kicked_off ? 'in progress' : 'not started';
-    const fixes = a.items.filter((it) => it.level === 'now');
-    const first = fixes[0];
+    const oppRow = opp && coachFor(opp.team_id, next);
     const oppName = opp ? opp.manager : 'Opponent TBD';
-    const lastName = (s) => esc(s.manager);
-    return `
-      <div class="ov-card" aria-labelledby="ov-wk">
-        <div class="ov-lab" id="ov-wk">Week ${LIVE.week} · ${state}</div>
-        <div class="ov-vs"><span class="mg" aria-hidden="true">${esc(t.manager[0])}</span><b>${esc(t.manager)}</b><i>vs</i>${opp ? `<span class="mg t" aria-hidden="true">${esc(opp.manager[0])}</span><b><a href="#team-${opp.team_id}">${esc(oppName)}</a></b>` : `<b>${esc(oppName)}</b>`}</div>
-        ${wp == null ? '' : `
-        <div class="ov-wc"><div><b style="color:var(--accent)">${Math.round(wp * 100)}%</b><span>${lastName(t)}'s chance to win</span></div><div class="r"><b>${Math.round((1 - wp) * 100)}%</b><span>${esc(oppName)}'s chance to win</span></div></div>
-        <div class="ov-bar" role="img" aria-label="ESPN's win chance: ${esc(t.manager)} ${Math.round(wp * 100)} percent, ${esc(oppName)} ${Math.round((1 - wp) * 100)} percent"><i style="width:${(wp * 100).toFixed(1)}%"></i></div>
-        <div class="ov-legend" aria-hidden="true"><span><i class="sq" style="background:var(--accent)"></i>${esc(t.manager)}</span><span>ESPN's win chance</span><span>${esc(oppName)}<i class="sq" style="background:var(--pink)"></i></span></div>`}
-        <dl class="ov-stats">
-          <div><dt>${esc(t.manager)} proj</dt><dd>${f1(mine ? projOf(mine) : a.projected)}</dd></div>
-          <div><dt>${esc(oppName)} proj</dt><dd>${theirs ? f1(projOf(theirs)) : oppRow ? f1(oppRow.projected) : '–'}</dd></div>
-          <div><dt>Starters left</dt><dd>${a.yet_to_play}</dd></div>
-        </dl>
-        ${first
-          ? `<div class="ov-fix"><span aria-hidden="true">⚠</span><div><b>${fixes.length} to fix.</b> ${esc(voice(first.title))}.${refs(itemFaces(first))}</div><a class="go" href="#team-${id}.lineup">See it →</a></div>`
-          : `<div class="ov-fix ok"><span aria-hidden="true">${TP_CHECK}</span><div>${esc(voice(a.summary))}</div></div>`}
-      </div>`;
-  }
-
-  // Playoffs, in words. The odds are the chance to finish in the top 4 of 8; the two numbers are what
-  // they become if she loses this week's game and if she wins it, from the same simulation as Standings.
-  function tpPlayoffs(id, t) {
-    const po = SEASON.playoffs;
-    const rank = SEASON.standings.indexOf(t) + 1;
-    const cfg = po && po.config;
-    const o = tpOdds(id);
-    const n = cfg ? cfg.teams : 4;
-    let body;
-    if (o && o.lose != null) {
-      const lo = Math.round(o.lose * 100), hi = Math.round(o.win * 100);
-      const vs = o.opp ? ` ${esc(o.opp)}` : ' this week';
-      body = lo === hi || pct(o.lose) === pct(o.win)
-        ? `<div class="ov-odds"><div class="n"><span>Either way${o.opp ? ` against ${esc(o.opp)}` : ''}</span><b>${pct(o.win)}</b></div></div>
-           <p class="ov-worth">This week's game barely moves ${esc(t.manager)}'s odds.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''}</p>`
-        : `<div class="ov-odds"><div><span>If ${esc(t.manager)} loses to${vs}</span><b>${pct(o.lose)}</b></div><div class="ar" aria-hidden="true">→</div><div class="w"><span>If ${esc(t.manager)} beats${vs}</span><b>${pct(o.win)}</b></div></div>
-           <p class="ov-worth">So this week's game is worth <b>${hi - lo} points</b> of playoff odds.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''} Same math as Standings.</p>`;
-    } else if (o && o.now != null) {
-      body = `<div class="ov-odds"><div class="n"><span>${esc(t.manager)}'s chance of a playoff spot right now</span><b>${pct(o.now)}</b></div></div>
-        <p class="ov-worth">Once this week's games are in, Coach shows what a win or a loss does to it.${cfg ? ` Playoffs start Week ${cfg.first_round_week}.` : ''} Same math as Standings.</p>`;
-    } else {
-      body = '<p class="ov-worth">Playoff odds show up once there is a finished week to simulate from.</p>';
+    const theirProj = theirs ? projOf(theirs) : oppRow ? oppRow.projected : null;
+    const wp = a.win_probability;
+    const chances = wp == null
+      ? `<p class="gd-nowp">ESPN hasn't posted Week ${week} win chances yet.</p>`
+      : `<div class="ov-wc"><div><b style="color:var(--accent)">${Math.round(wp * 100)}%</b><span>${esc(t.manager)}'s chance to win</span></div><div class="r"><b>${Math.round((1 - wp) * 100)}%</b><span>${esc(oppName)}'s chance to win</span></div></div>
+         <div class="ov-bar" role="img" aria-label="ESPN's win chance: ${esc(t.manager)} ${Math.round(wp * 100)} percent, ${esc(oppName)} ${Math.round((1 - wp) * 100)} percent"><i style="width:${(wp * 100).toFixed(1)}%"></i></div>`;
+    const o = next ? null : tpOdds(id);
+    let ride = '';
+    if (o && o.lose != null && o.win != null) {
+      const side = MU_SIDE.get(id) || 'win';
+      const who = you ? 'You' : 'She', s = you ? '' : 's';
+      const cfg = SEASON.playoffs && SEASON.playoffs.config;
+      const sims = (hub().stakes || {}).sims;
+      const foot = [cfg ? `Top ${cfg.teams} of ${SEASON.standings.length} make it. Playoffs start Week ${cfg.first_round_week}.` : '',
+        sims ? `Same ${sims.toLocaleString('en-US')} seasons as Standings.` : ''].filter(Boolean).join(' ');
+      ride = `
+        <div class="gd-ride">
+          <div class="ov-lab">What's riding on it</div>
+          <div class="gd-ride-row">
+            <div class="gd-tog" role="group" aria-label="Playoff odds after this game">
+              <button type="button" data-mu="${id}" data-side="win" aria-pressed="${side === 'win'}">${who} win${s}</button>
+              <button type="button" data-mu="${id}" data-side="lose" aria-pressed="${side === 'lose'}">${who} lose${s}</button>
+            </div>
+            <div class="gd-ride-n" aria-live="polite"><b data-mu-n data-win="${esc(pct(o.win))}" data-lose="${esc(pct(o.lose))}">${esc(pct(o[side]))}</b><span>playoff odds</span></div>
+          </div>
+          ${foot ? `<p class="gd-ride-f">${foot}</p>` : ''}
+        </div>`;
     }
     return `
-      <div class="ov-card" aria-labelledby="ov-po">
-        <div class="ov-lab" id="ov-po">Playoff picture</div>
-        <div class="ov-seed"><b>${ordinal(rank)} seed</b><span class="ov-tag">Top ${n} advance</span></div>
-        <p class="ov-p">Playoff odds are ${esc(t.manager)}'s chance to finish in the top ${n} of ${SEASON.standings.length} and make the playoffs.</p>
-        ${body}
-      </div>`;
+      <section class="ov-card gd-mu" aria-labelledby="gd-mu-h">
+        <div class="ov-lab" id="gd-mu-h">The matchup</div>
+        <div class="ov-vs"><b>${esc(t.manager)}</b><i>vs</i>${opp ? `<b><a href="#team-${opp.team_id}">${esc(oppName)}</a></b>` : `<b>${esc(oppName)}</b>`}</div>
+        ${chances}
+        <dl class="ov-stats">
+          <div><dt>${esc(t.manager)} proj</dt><dd>${f1(mine ? projOf(mine) : a.projected)}</dd></div>
+          ${theirProj == null ? '' : `<div><dt>${esc(oppName)} proj</dt><dd>${f1(theirProj)}</dd></div>`}
+          <div><dt>Starters left</dt><dd>${a.yet_to_play}</dd></div>
+        </dl>
+        ${ride}
+      </section>`;
   }
 
   // This week's waiver and trade ideas for a team, with the weak-spot tag matched here, not trusted from the
@@ -4022,40 +4135,22 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return ((a && a.roster_ideas) || []).map((it) => ({ ...it, fills_weak_spot: !!it.pos && it.pos === weak }));
   }
 
-  // One audit card, as the orange take, then this week's ideas: up to 2 waiver and 1 trade up front,
-  // topped up to 3 from whatever is left, the rest behind a closed "N more ideas". The other audit cards
-  // are on the Season tab.
-  function tpTake(id, p) {
-    // Once this week's games are final (or the live capture has nothing for her) the coach is talking about
-    // next week, so her quip, the league paragraph, advice cards and ideas all come from that row.
-    const useNext = !!ahead() && !!coachFor(id, true) && (!coachFor(id, false) || (LIVE && LIVE.complete));
-    const a = coachFor(id, useNext);
-    const ideas = tpIdeas(id, useNext);
+  // FantasyPros' own cards for the week, then up to 2 waiver ideas and 1 trade, then the rest; three shown,
+  // the others behind a closed details. Nothing at all when there's nothing to suggest.
+  function gdIdeas(id, a, next) {
+    const ideas = tpIdeas(id, next);
     const waiver = ideas.filter((it) => !it.trade), trades = ideas.filter((it) => it.trade);
-    // Level 'now' cards already show in the matchup card's "to fix" line and the Lineup tab, so not again here.
-    const advice = ((a && a.items) || []).filter((it) => it.source === 'fantasypros' && it.level !== 'now');
-    const shown = [...advice, ...waiver.slice(0, 2), ...trades.slice(0, 1)];
-    const rest = [...waiver.slice(2), ...trades.slice(1)];
-    while (shown.length < 3 && rest.length) shown.push(rest.shift());
-    const it = p.audit.find((x) => x.kind === 'position') || p.audit[0];
-    const link = p.audit.length ? `<a class="more" href="#team-${id}.season">Full audit on Season →</a>` : '';
-    // This week's row's quip is already in the matchup card above; only next week's is new here.
-    const wk = useNext ? ` · Week ${ahead().week}` : '';
-    const quip = useNext && a && a.summary ? `<p class="team-summary">${esc(voice(a.summary))}</p>` : '';
-    const take = a && a.league_take ? `<article class="ov-take computed"><span class="ov-tag og">Around the league${wk}</span><p>${esc(voice(a.league_take))}</p></article>` : '';
+    const fp = a.items.filter((it) => it.source === 'fantasypros' && it.level !== 'now');
+    const all = [...fp, ...waiver.slice(0, 2), ...trades.slice(0, 1), ...waiver.slice(2), ...trades.slice(1)];
+    if (!all.length) return '';
+    const shown = all.slice(0, 3), rest = all.slice(3);
+    const key = `tp-more-${id}`;
     return `
-      <section class="tp-sec" aria-labelledby="tp-take">
-        ${tpHead('--orange', "Coach's take", link).replace('<h2>', '<h2 id="tp-take">')}
-        ${quip}
-        ${it
-          ? `<article class="ov-take${it.written ? '' : ' computed'}"><span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p>${esc(voice(it.text))}</p>${it.written ? '' : '<p class="tp-unwritten">Coach hasn\'t written today\'s take yet.</p>'}${refs(it.players)}</article>`
-          : '<p class="sec-sub">The coach needs one finished week before she has opinions on the season.</p>'}
-        ${take}
-        <div class="tp-sub"><span>${useNext ? 'Ideas for next week' : 'Ideas for this week'}</span><small>Ideas, not orders. A trade only shows up if it helps both teams.</small></div>
-        ${shown.length
-          ? `<div class="tp-cards">${shown.map(adviceCard).join('')}</div>
-             ${rest.length ? `<details class="tp-more" data-hub-open="tp-more-${id}"${HUB_OPEN.has(`tp-more-${id}`) ? ' open' : ''}><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}`
-          : '<p class="sec-sub">No new waiver or trade ideas today.</p>'}
+      <section class="tp-sec" aria-labelledby="gd-id-h">
+        ${tpHead('--lime', next ? 'Ideas for next week' : 'Ideas for this week').replace('<h2>', '<h2 id="gd-id-h">')}
+        <p class="sec-sub">Ideas, not orders. A trade only shows up if it helps both teams.</p>
+        <div class="tp-cards">${shown.map(adviceCard).join('')}</div>
+        ${rest.length ? `<details class="tp-more" data-hub-open="${key}"${HUB_OPEN.has(key) ? ' open' : ''}><summary>${rest.length} more idea${rest.length === 1 ? '' : 's'}</summary><div class="tp-cards">${rest.map(adviceCard).join('')}</div></details>` : ''}
       </section>`;
   }
 
@@ -4096,6 +4191,44 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           ${watch ? `<div class="sub">Keep an eye on ${ref(watch, watch.projected ? `${f1(watch.projected)} proj` : '')}</div>
           <div class="why"><span class="ov-tag${why.cls === 'inj' ? ' pk' : why.cls === 'eng' ? ' og' : ''}">${why.tag}</span><span>${esc(why.text)}</span></div>` : ''}</div></div>
       </section>`;
+  }
+
+  // The way into the league-wide view, with her spot in this week's waiver order.
+  function gdLeague(id, you) {
+    if (!advice()) return '';
+    const wv = waiverSpot(id);
+    const who = you ? 'You pick' : `${esc(TEAMS[id].manager)} picks`;
+    return `<a class="gd-league" href="#league-${id}"><span><b>How the league looks</b><span>Strength grid, waiver order, byes.${wv ? ` ${who} ${ordinal(wv)}.` : ''}</span></span><i aria-hidden="true">→</i></a>`;
+  }
+
+  const gdSource = (next) => `<details class="gd-src" data-hub-open="gd-src"${HUB_OPEN.has('gd-src') ? ' open' : ''}><summary><span aria-hidden="true">ⓘ</span> Where this comes from</summary><p>${esc(voice(next ? nextSource() : coachSource(LIVE)))}</p></details>`;
+
+  function gameDay(id) {
+    const next = gdNext(id);
+    const a = coachFor(id, next);
+    if (!a) {
+      const wk = LIVE ? LIVE.week : (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
+      return `<div class="gd"><div class="gd-wk"><b>Week ${wk}</b></div>${gdEmpty("Rosters aren't in yet", `Nothing to fix until Week ${wk}'s rosters land.`)}</div>`;
+    }
+    const you = id === myTeam.get();
+    const week = next ? ahead().week : LIVE.week;
+    const state = next ? 'coming up' : LIVE.complete ? 'final' : LIVE.kicked_off ? 'in progress' : 'not started';
+    // Final, and ESPN hasn't posted the week ahead: nothing can change, so no homework either.
+    const hw = !next && LIVE.complete
+      ? gdEmpty(`Week ${week} is in the books`, `Nothing left to change. Week ${week + 1} shows up here once ESPN posts it.`)
+      : gdHomework(a, next, you);
+    return `
+      <div class="gd">
+        <div class="gd-wk"><b>Week ${week}</b><span>${state}</span></div>
+        ${hw}
+        ${gdHeadsUp(id, next)}
+        ${gdMatchup(id, a, next)}
+        ${gdLineup(id, a, next)}
+        ${next ? '' : tpNext(id)}
+        ${gdIdeas(id, a, next)}
+        ${gdLeague(id, you)}
+        ${gdSource(next)}
+      </div>`;
   }
 
   /* Season tab: the scores, Coach's audit, every game, then awards and roster moves as accordions. */
@@ -4283,7 +4416,9 @@ __LIVE_JS__
   const LU_OPEN = new Set();
   const kickoffText = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' }) : '');
 
-  function lineupRow(p, card, next, tid, bench) {
+  // `fix` is the lineup fix (with its `swap` field) that sits this starter, if there is one: the row is
+  // tinted and says who goes in.
+  function lineupRow(p, card, next, tid, bench, fix = null) {
     const w = whoIs(p);
     const dst = isDst(w);
     const open = LU_OPEN.has(`${tid}-${next ? 'n' : 't'}-${w.id}`);
@@ -4298,12 +4433,17 @@ __LIVE_JS__
     const pill = bye ? '<div class="pill byep">BYE</div>'
       : started ? `<div class="pill">${f1(p.points)}<small>PROJ ${f1(p.projected)}</small></div>`
       : `<div class="pill proj">${f1(p.projected)}<small>PROJ</small></div>`;
+    const sw = fix && fix.swap;
+    const gain = sw ? gdGain(sw.gain) : '';
+    const swapLine = !sw ? '' : sw.in
+      ? `<div class="swapln">Swap in <b>${esc(sw.in.name)}</b>${gain ? ` <span class="gd-gain">${gain}</span>` : ''}</div>`
+      : '<div class="swapln">Nobody on the bench · waiver wire</div>';
     return `
-      <div class="prow${open ? ' open' : ''}" data-key="${esc(key)}">
-        <div class="row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye ? ' bye' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
+      <div class="prow${open ? ' open' : ''}${sw ? ' fix' : ''}" data-key="${esc(key)}">
+        <div class="row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye ? ' bye' : ''}${p.slot === 'IR' ? ' ir' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
           <span class="slot${p.slot === 'FLEX' ? ' flex' : ''}${bench ? ' bn' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
           <div class="av">${face(p)}</div>
-          <div class="pwho"><div class="nm">${esc(w.name)}${posOf(w.pos) ? ` <span class="pos">(${posOf(w.pos)})</span>` : ''}</div><div class="sub">${sub}</div></div>
+          <div class="pwho"><div class="nm">${esc(w.name)}${posOf(w.pos) ? ` <span class="pos">(${posOf(w.pos)})</span>` : ''}</div><div class="sub">${sub}</div>${swapLine}</div>
           ${pill}<span class="chev" aria-hidden="true">▾</span>
         </div>
         <div class="coach" id="${rid}"><div class="cin"><div class="cb">
@@ -4313,63 +4453,35 @@ __LIVE_JS__
       </div>`;
   }
 
-  function tpLineup(id, next) {
-    const a = coachFor(id, next);
-    if (!a) {
-      const wk = (WEEKS.length ? WEEKS[WEEKS.length - 1].week : 0) + 1;
-      return `<section class="tp-sec">${tpHead('--accent', 'Lineup')}<p class="sec-sub">Nothing to fix until Week ${wk}'s rosters land.</p></section>`;
-    }
-    const week = next ? ahead().week : LIVE.week;
+  /* Game day's lineup: the starters always, a starter with a swap fix tinted pink; the bench behind a
+     details that is closed on a phone and open on a desktop until somebody says otherwise (BENCH_OPEN,
+     so a live redraw keeps the choice). */
+  const BENCH_OPEN = new Map();
+  const WIDE = window.matchMedia('(min-width: 860px)');
+  function gdLineup(id, a, next) {
     const g = next ? null : LIVE.games.find((x) => x.winner.team_id === id || x.loser.team_id === id);
     const mine = g && (g.winner.team_id === id ? g.winner : g.loser);
     const src = next ? a.lineup : mine;
-    if (!src) return `<section class="tp-sec">${tpHead('--accent', 'Lineup')}<p class="sec-sub">No lineup on the board for ${esc(TEAMS[id].manager)} this week.</p></section>`;
-    const opp = g ? TEAMS[(g.winner.team_id === id ? g.loser : g.winner).team_id] : TEAMS[a.opponent_id];
+    if (!src) return '';
+    const fixBy = new Map(a.items.filter((it) => it.level === 'now' && it.swap).map((it) => [it.swap.out.player_id, it]));
+    const cardOf = (p) => (a.players && p.player_id != null ? a.players[p.player_id] : null);
     const starters = [...src.starters].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
     const bench = [...src.bench].sort((x, y) => (y.projected || 0) - (x.projected || 0));
-    const row = (p, b) => lineupRow(p, a.players && p.player_id != null ? a.players[p.player_id] : null, next, id, b);
-    const fixes = a.items.filter((it) => it.level === 'now');
-    const wp = a.win_probability;
-    const sum = [`<b>${f1(mine ? projOf(mine) : a.projected)}</b> projected`, `<b>${a.yet_to_play}</b> starters left`,
-      wp == null ? '' : `<b>${Math.round(wp * 100)}%</b> to win${opp ? ` vs ${esc(opp.manager)}` : ''}`].filter(Boolean).join(' · ');
-    const cols = (cls) => `<div class="${cls}"><div class="divider" style="margin-top:0">STARTERS</div>${starters.map((p) => row(p, false)).join('')}</div>
-      <div class="${cls}"><div class="divider" style="margin-top:0">BENCH</div>${bench.map((p) => row(p, true)).join('')}</div>`;
+    const onBye = (p) => !!((cardOf(p) || {}).bye || p.bye);
+    const byes = bench.filter(onBye).length;
+    const best = bench.find((p) => p.slot !== 'IR' && !onBye(p) && !OUTISH.includes(p.injury) && p.projected);
+    const label = [`Bench · ${bench.length}`, byes ? `${byes} on bye` : '', best ? `best ${whoIs(best).name}` : ''].filter(Boolean).join(' · ');
+    const key = `gd-bench-${id}`;
+    const open = BENCH_OPEN.has(key) ? BENCH_OPEN.get(key) : WIDE.matches;
     return `
-      <section class="tp-sec" aria-labelledby="lu-h">
-        <div class="kicker-row">${tpHead('--accent', next ? `Week ${week}, coming up` : `Week ${week}, right now`).replace('<h2>', '<h2 id="lu-h">')}${weekToggle(next, id)}</div>
-        <p class="lu-sum">${sum}</p>
-        <div class="lu-fix${fixes.length ? '' : ' ok'}">
-          <div class="ov-lab" style="color:var(--ink)">${fixes.length ? `To fix ${next ? 'before Sunday' : 'now'} · ${fixes.length}` : 'Nothing to fix'}</div>
-          ${fixes.length ? fixes.map((it) => `<div class="it"><div><p><b>${esc(voice(it.title))}.</b> ${esc(voice(it.text))}</p>${refs(itemFaces(it))}</div>${it.stat ? `<span class="ov-tag" style="background:var(--pink)">${esc(it.stat)}</span>` : ''}</div>`).join('')
-            : `<p>${esc(voice(a.summary))}</p>`}
-        </div>
-      </section>
-      <section class="tp-sec" aria-labelledby="lu-lh">
-        ${tpHead('--pink', 'Lineup').replace('<h2>', '<h2 id="lu-lh">')}
-        <div class="lhint"><p class="sec-sub" style="margin:0">Tap a player for Coach's read on how he's doing.</p><button type="button" class="lu-all" data-act="all">Expand all</button></div>
-        <div class="lu-cols acc">${cols('lu-col')}</div>
-      </section>
-      ${next ? tpAdvice(id, next) : ''}
-      <p class="tp-foot">${voice(next ? nextSource() : coachSource(LIVE))}</p>`;
-  }
-
-  function tpAdvice(id, next) {
-    const a = coachFor(id, next);
-    if (!a) return '';
-    const ideas = tpIdeas(id, next);
-    const waiver = ideas.filter((it) => !it.trade);
-    const trades = ideas.filter((it) => it.trade);
-    const col = (label, note, items) => (items.length ? `<div><div class="tp-sub"><span>${label}</span><small>${note}</small></div>${items.map(adviceCard).join('')}</div>` : '');
-    return `
-      <section class="tp-sec" aria-labelledby="tp-adv">
-        ${tpHead('--lime', "Coach's advice").replace('<h2>', '<h2 id="tp-adv">')}
-        ${ideas.length
-          ? `<p class="sec-sub">Ideas, not orders. A trade only shows up here if it helps both teams.</p>
-             <div class="tp-ideas">${col('Waiver wire', 'From FantasyPros and everyone\'s rosters', waiver)}${col('Trade idea', 'Checked against both lineups', trades)}</div>`
-          : '<p class="sec-sub">No new ideas today.</p>'}
+      <section class="tp-sec acc gd-lu" aria-labelledby="gd-lu-h">
+        ${tpHead('--pink', 'Lineup').replace('<h2>', '<h2 id="gd-lu-h">')}
+        <p class="sec-sub">Tap a player for Coach's read on how he's doing.</p>
+        <div class="lu-col">${starters.map((p) => lineupRow(p, cardOf(p), next, id, false, fixBy.get(p.player_id))).join('')}</div>
+        ${bench.length ? `<details class="gd-bench" data-bench="${key}"${open ? ' open' : ''}><summary>${esc(label)}</summary>
+          <div class="lu-col">${bench.map((p) => lineupRow(p, cardOf(p), next, id, true)).join('')}</div></details>` : ''}
       </section>`;
   }
-
 
   function auditSection(p) {
     return `
@@ -4633,12 +4745,15 @@ __BTS_JS__
     else if ((m = /^behind-the-scenes(?:\.(big|data|api|harness|deploy|safe|cheat))?$/.exec(h))) { html = btsPage(); nav = 'behind-the-scenes'; btsSection = m[1] || ''; }
     else if (h === 'live' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
-    // With a pick, Coach is her team: the league landing becomes her League tab.
-    else if ((h === 'coach' || h === 'coach-next') && myTeam.get()) { location.replace(`#team-${myTeam.get()}.league`); return; }
+    // With a pick, Coach is her team's Game day; the league view is a link from there (#league-<id>).
+    else if ((h === 'coach' || h === 'coach-next') && myTeam.get()) { location.replace(`#team-${myTeam.get()}`); return; }
+    else if ((m = /^league-(\d+)$/.exec(h)) && TEAMS[Number(m[1])]) { html = leaguePage(Number(m[1])); nav = 'coach'; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
     else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { if (TEAMS[Number(m[2])]) myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
-    else if ((m = /^team-(\d+)(?:\.(lineup|season|next|league))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] === 'season' || m[2] === 'league' ? m[2] : m[2] ? 'lineup' : 'overview', m[2] === 'next'); nav = Number(m[1]) === myTeam.get() || coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
+    // The old Lineup, Next week and League tabs all land on Game day, so no older link dead-ends.
+    else if ((m = /^team-(\d+)\.(lineup|next|league)$/.exec(h))) { location.replace(`#team-${m[1]}`); return; }
+    else if ((m = /^team-(\d+)(?:\.(season))?$/.exec(h))) { html = teamPage(Number(m[1]), m[2] ? 'season' : 'gameday'); nav = Number(m[1]) === myTeam.get() || coachFor(Number(m[1]), false) ? 'coach' : 'standings'; }
     else if (!WEEKS.length && LIVE && h === '') { html = liveOrLanding(LIVE); nav = 'live'; }
     else if (!WEEKS.length) { html = `<div class="empty"><h1>First recap coming soon</h1><p>Check back Tuesday. We will have opinions.</p></div>`; }
     else if (h === 'standings') { html = standingsPage(); nav = 'standings'; }
@@ -4760,10 +4875,37 @@ __BTS_JS__
 
   /* `toggle` doesn't bubble, so it's caught on the way down. */
   $('#main').addEventListener('toggle', (e) => {
-    const key = e.target.dataset && e.target.dataset.hubOpen;
+    const d = e.target.dataset || {};
+    if (d.bench) { BENCH_OPEN.set(d.bench, e.target.open); return; }
+    const key = d.hubOpen;
     if (!key) return;
     if (e.target.open) HUB_OPEN.add(key); else HUB_OPEN.delete(key);
   }, true);
+
+  /* Game day: the Switch team sheet and the matchup's She wins / She loses toggle. The sheet is a modal
+     <dialog> (Escape closes it natively); a tap on the backdrop, the Close button or a team closes it. The
+     toggle swaps one number in place and remembers the side in MU_SIDE for the next redraw. */
+  $('#main').addEventListener('click', (e) => {
+    const sheet = document.getElementById('tp-sheet');
+    if (e.target.closest('[data-tp-sheet]') && sheet && sheet.showModal) { sheet.showModal(); return; }
+    if (sheet && sheet.open) {
+      if (e.target === sheet) {
+        const r = sheet.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) sheet.close();
+        return;
+      }
+      if (e.target.closest('[data-sheet-close]') || e.target.closest('#tp-sheet a')) { sheet.close(); return; }
+    }
+    const mu = e.target.closest('button[data-mu]');
+    if (mu) {
+      const side = mu.dataset.side;
+      MU_SIDE.set(Number(mu.dataset.mu), side);
+      const box = mu.closest('.gd-ride');
+      box.querySelectorAll('button[data-mu]').forEach((b) => b.setAttribute('aria-pressed', String(b === mu)));
+      const n = box.querySelector('[data-mu-n]');
+      n.textContent = n.dataset[side];
+    }
+  });
 
   document.addEventListener('click', (e) => {
     if (e.target.closest('button[data-open-who]')) viewingAs.ask();
@@ -4813,7 +4955,8 @@ __BTS_JS__
       // Home page ('') also renders live while games are on (see route()), including the
       // moment a refresh lands the final score that flips it over to the recap.
       // The "Who are you?" prompt has nothing live in it; redrawing would reset its focus every minute.
-      const picking = (document.getElementById('who-dialog') || {}).open;
+      // Nor does an open Switch team sheet: a redraw would close it under her thumb.
+      const picking = (document.getElementById('who-dialog') || {}).open || (document.getElementById('tp-sheet') || {}).open;
       if (!picking && (h.startsWith('live') || h.startsWith('coach') || h.startsWith('team-') || h === '')) {
         // A re-render rebuilds the swipe row of stickers; put it back where her thumb left it.
         const chips = document.querySelector('.hub-chips');

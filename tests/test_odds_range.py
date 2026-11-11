@@ -9,7 +9,8 @@ from pathlib import Path
 
 SRC = (Path(__file__).resolve().parent.parent / "site" / "template.html").read_text()
 PCT = SRC[SRC.index("  const pct = (p, exact = false) => {"):SRC.index("  const PO_TIP")]
-ODDS = SRC[SRC.index("  function oddsRange(o) {"):SRC.index("  function tpStrip(")]
+_O = SRC.index("  function oddsRange(o) {")
+ODDS = SRC[_O:SRC.index("\n  }\n", _O) + 4]   # through the function's own closing brace
 
 
 def odds_range(o):
@@ -45,7 +46,7 @@ class OddsRange(unittest.TestCase):
                 self.assertNotIn(bad, text)
 
     def test_chip_escapes_the_text(self):
-        self.assertIn("<dd>${esc(odds.text)}</dd>", SRC)
+        self.assertIn("<b>${esc(odds.text)}</b>", SRC)
 
 
 if __name__ == "__main__":

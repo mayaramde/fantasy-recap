@@ -75,7 +75,7 @@ function clGames(next, rows) {
 
 const clYou = (on) => (on ? '<span class="cl-you">You</span>' : '');
 /* "You" is the Viewing-as pick (orange); "viewing" is whichever team's profile is open (cobalt-soft).
-   Only the League tab passes a `view`; the landing has nobody open, so it only ever lights "you". */
+   Only the league view (#league-<id>) passes a `view`; the landing has nobody open, so it only ever lights "you". */
 const clTone = (id, me, view) => (id === me ? ' me' : view != null && id === view ? ' view' : '');
 const clTag = (id, me, view) => (id === me ? clYou(true) : view != null && id === view ? '<span class="cl-viewing">Viewing</span>' : '');
 /* A name that opens that team's profile. role=button, not a link: the router handles the tap
@@ -279,7 +279,7 @@ function clModel(next, rows) {
 }
 
 /* "Make this page yours": the way into a team's profile for someone who hasn't picked a name.
-   The pink ! is the same homework signal the profile's team strip shows (this week's fixes waiting). */
+   The pink ! is the same homework signal as the profile's Switch team sheet (fixes waiting). */
 function clPickCard(teams, rows) {
   const homework = (id) => ((rows.find((r) => r.team_id === id) || {}).counts || {}).now || 0;
   return `
@@ -324,9 +324,9 @@ function coachLanding(next, rows, me) {
   return body;
 }
 
-/* The League tab on a team's profile: the league-wide half of the landing (Coach's take, the strength
+/* The league view (#league-<id>, linked from a team's Game day): the league-wide half of the landing (Coach's take, the strength
    grid, the waiver order, injuries and byes) built from the same pieces, minus the pick card and the
-   team strip, which the profile already has. `me` is the Viewing-as pick (orange), `view` the team
+   team strip, which have no place on a league-wide page. `me` is the Viewing-as pick (orange), `view` the team
    whose profile is open (cobalt-soft). Each module that has nothing to show says so instead of
    drawing an empty table. */
 function coachLeague(rows, me, view) {
