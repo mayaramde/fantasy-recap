@@ -37,5 +37,6 @@ jobs:
       - run: python -m unittest tests.test_odds_range -v
       - run: python -m unittest tests.test_swap_field -v
       - run: python -m unittest tests.test_team_profile_gameday -v
+      - run: python -m unittest tests.test_team_profile_season -v
       - run: node --test tests/coach/*.test.js tests/live/*.test.js
       - run: python scripts/check.py

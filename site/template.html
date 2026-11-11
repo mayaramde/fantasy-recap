@@ -1606,9 +1606,6 @@ __LIVE_CSS__
   .ov-stats > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
   .ov-tag { display: inline-block; padding: 3px 10px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.2 var(--body); }
   .ov-tag.og { background: var(--orange); }
-  .ov-take { padding: 14px 16px; background: var(--orange-soft); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
-  .ov-take h3 { margin: 8px 0 4px; font: 800 18px/1.15 var(--display); letter-spacing: 0.01em; }
-  .ov-take p { margin: 0; font-size: 14px; }
   .ov-next { display: flex; align-items: center; gap: 12px; }
   .ov-next .mon { display: grid; place-items: center; flex: none; width: 46px; height: 46px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 50%; font: 900 20px/1 var(--display); }
   .ov-next .nm { font-weight: 800; font-size: 16px; }
@@ -1789,45 +1786,86 @@ __LIVE_CSS__
   }
 
   /* Season tab */
-  .sc-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
-  @media (max-width: 760px) { .sc-grid { grid-template-columns: minmax(0, 1fr); } }
-  .sc-chart { padding: 14px 16px 10px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
-  .sc-chart svg { display: block; width: 100%; height: auto; }
-  .ch-w { fill: var(--lime); stroke: var(--edge); stroke-width: 2.5; }
-  .ch-l { fill: var(--pink-soft); stroke: var(--edge); stroke-width: 2.5; }
-  .ch-v { fill: var(--ink); font: 800 16px var(--display); text-anchor: middle; }
-  .ch-x { fill: var(--muted); font: 500 11px var(--mono); text-anchor: middle; }
-  .ch-avg { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
-  .ch-al { fill: var(--accent-ink); font: 500 10.5px var(--mono); text-anchor: end; }
-  .sc-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
-  @media (max-width: 760px) { .sc-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } }
-  @media (max-width: 520px) { .sc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-  .sc-tile { padding: 10px 12px; background: var(--card); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 2px 2px 0 var(--drop); }
-  .sc-tile b { display: block; font: 900 28px/1 var(--display); }
-  .sc-tile b em { margin-left: 4px; font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); }
-  .sc-tile span { font: 500 10px/1.2 var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
-  .sc-tile.l { background: var(--lime-soft); } .sc-tile.p { background: var(--pink-soft); } .sc-tile.o { background: var(--orange-soft); } .sc-tile.b { background: var(--accent-soft); }
-  .sc-audit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-  @media (max-width: 860px) { .sc-audit { grid-template-columns: minmax(0, 1fr); } }
-  .ov-take.computed { background: var(--card); } .ov-take .tp-unwritten { margin-top: 8px; font: 500 12px/1.4 var(--mono); color: var(--muted); }
-  .ov-take.l { background: var(--lime-soft); } .ov-take.b { background: var(--accent-soft); }
   .ov-tag.w { background: var(--card); }
-  .sc-wk { padding: 4px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
-  .sc-wl { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--ink); text-decoration: none; border-bottom: 2px dotted var(--rule); }
-  .sc-wl:last-child { border-bottom: 0; }
-  .sc-wl:hover .t b { text-decoration: underline; }
-  .sc-wl .r { display: grid; place-items: center; flex: none; width: 26px; height: 26px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 8px; font: 800 12px/1 var(--body); }
-  .sc-wl .r.L { background: var(--pink-soft); color: var(--ink); }
-  .sc-wl .t { flex: 1; min-width: 0; }
-  .sc-wl .t b { font-weight: 700; }
-  .sc-wl .t small { display: block; font-size: 12px; color: var(--muted); }
-  .sc-wl .s { text-align: right; font: 500 13px/1.2 var(--mono); }
-  .sc-aw { padding: 2px 16px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
-  .acc .arow { display: grid; grid-template-columns: auto minmax(0, 1fr) 24px; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .aw-tag { min-width: 84px; padding: 2px 10px; text-align: center; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 800 11px/1.5 var(--body); }
-  .aw-tag.flags { background: var(--pink); } .aw-tag.breaks { background: var(--accent-soft); color: var(--ink); } .aw-tag.moves { background: var(--card); color: var(--ink); }
-  .acc .at small { display: block; font: 500 11px/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
   .acc .at b { font: 700 15px/1.2 var(--body); }
+  /* ---------- Season tab ---------- */
+  .tp-chips.wrap { flex-wrap: wrap; overflow: visible; margin-right: 0; padding-right: 0; }
+  .sn { gap: 18px; }
+  .sn-sec { margin: 0; }
+  .sn .gd-sh { margin-top: 0; }
+  /* the report card: her rank at each spot, the league's top 2 in lime and bottom 3 in pink */
+  .sn-rc { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+  .sn-cell { padding: 7px 0 6px; text-align: center; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; box-shadow: 2px 2px 0 var(--drop); transform: rotate(-2deg); }
+  .sn-cell.tl { transform: rotate(1.5deg); }
+  .sn-cell small { display: block; font: 600 10px/1 var(--script); }
+  .sn-cell b { display: block; margin-top: 3px; font: 900 22px/1 var(--display); }
+  .sn-cell.top { color: var(--on-pop); background: var(--lime); }
+  .sn-cell.low { color: var(--on-pop); background: var(--pink); }
+  .sn-key { display: flex; gap: 14px; margin: 10px 0 0; font: 500 11px/1 var(--mono); color: var(--muted); }
+  .sn-key i { display: inline-block; width: 10px; height: 10px; margin-right: 5px; vertical-align: -1px; border: 1.5px solid var(--edge); border-radius: 3px; }
+  .sn-key i.top { background: var(--lime); } .sn-key i.low { background: var(--pink); }
+  /* Coach's audit: a scroll-snap row on a phone, stacked from 860px */
+  .sn-aud { display: grid; grid-auto-flow: column; grid-auto-columns: 86%; gap: 12px; margin: 8px -16px 0; padding: 4px 16px 10px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; }
+  .sn-aud::-webkit-scrollbar { display: none; }
+  .sn-aud:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .sn-take { scroll-snap-align: start; min-width: 0; padding: 12px 14px 14px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sn-take.o { background: var(--orange-soft); } .sn-take.b { background: var(--accent-soft); } .sn-take.l { background: var(--lime-soft); }
+  .sn-take h3 { margin: 8px 0 0; font: 800 20px/1.08 var(--display); letter-spacing: 0.01em; }
+  .sn-stat { display: inline-block; margin-top: 8px; padding: 3px 9px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; font: 600 12px/1.2 var(--script); transform: rotate(2deg); }
+  .sn-take p { margin: 8px 0 0; font-size: 13.5px; }
+  .sn-dots { display: flex; justify-content: center; gap: 6px; }
+  .sn-dots i { width: 8px; height: 8px; background: var(--card); border: 1.5px solid var(--edge); border-radius: 50%; transition: width 0.2s; }
+  .sn-dots i.on { width: 20px; background: var(--ink); border-radius: 9px; }
+  @media (prefers-reduced-motion: reduce) { .sn-dots i { transition: none; } }
+  @media (min-width: 860px) {
+    .sn-aud { grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin: 8px 0 0; padding: 0; overflow: visible; }
+    .sn-dots { display: none; }
+  }
+  /* the season story: a bar per week (cobalt win, bubblegum loss), each a button at least 44px tall */
+  .sn-card { margin-top: 8px; padding: 12px 12px 14px; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .sn-chart { position: relative; padding-top: 22px; }
+  .sn-bars { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 4px; align-items: end; }
+  .sn-bars li { display: grid; justify-items: stretch; min-width: 0; }
+  .sn-mk { min-height: 16px; text-align: center; font-size: 11px; line-height: 1.1; letter-spacing: -2px; overflow-wrap: anywhere; }
+  .sn-bar { position: relative; display: flex; align-items: flex-end; height: 140px; min-height: 44px; padding: 0; cursor: pointer; background: none; border: 0; border-radius: 8px; }
+  .sn-bar .fill { display: block; width: 100%; min-height: 6px; background: var(--accent); border: 2px solid var(--edge); border-radius: 7px 7px 3px 3px; transition: transform 0.15s; }
+  .sn-bar.L .fill { background: var(--pink); }
+  .sn-bar.T .fill { background: var(--orange); }
+  .sn-bar[aria-pressed="true"] .fill { box-shadow: 3px 3px 0 var(--drop); transform: translate(-2px, -2px); outline: 3px solid var(--orange); outline-offset: 2px; }
+  .sn-bar:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { .sn-bar .fill { transition: none; } }
+  .sn-x { height: 12px; margin-top: 4px; text-align: center; font: 500 10px/12px var(--mono); color: var(--muted); }
+  /* the bars are 140px tall over a 16px week label, so the average sits at 16px + avg% of 140px */
+  .sn-avg { position: absolute; left: 0; right: 0; bottom: calc(16px + var(--a) * 1.4px); z-index: 1; border-top: 2px dashed var(--muted); pointer-events: none; }
+  .sn-avg em { position: absolute; right: 0; top: -18px; padding: 0 4px; font: 500 10px/1.4 var(--mono); font-style: normal; color: var(--ink); background: var(--card); }
+  .sn-panel { margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
+  .sn-ph { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .sn-ph h3 { margin: 0; font: 800 22px/1.05 var(--display); }
+  .sn-res { flex: none; padding: 3px 9px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 999px; font: 600 11px/1.2 var(--script); transform: rotate(-3deg); }
+  .sn-res.L { background: var(--pink); } .sn-res.T { background: var(--orange); }
+  .sn-score { display: inline-block; margin-top: 6px; color: var(--ink); text-decoration: none; font: 900 28px/1 var(--display); }
+  .sn-score:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .sn-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .sn-pills span { padding: 4px 9px; color: var(--ink); background: var(--bg); border: 2px solid var(--edge); border-radius: 999px; font: 600 11.5px/1.2 var(--script); }
+  .sn-aw { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+  .sn-aw li { display: flex; align-items: center; gap: 8px; padding: 8px 10px; color: var(--ink); background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 12px; font: 700 13px/1.25 var(--body); }
+  .sn-aw li.balls { background: var(--lime-soft); } .sn-aw li.flags { background: var(--orange-soft); }
+  .sn-aw small { display: block; font: 500 10.5px/1.2 var(--mono); color: var(--muted); }
+  .sn-none { margin: 10px 0 0; font-size: 13px; }
+  .sn-go { display: inline-flex; align-items: center; min-height: 44px; margin-top: 2px; color: var(--accent-ink); font: 700 13.5px/1 var(--body); }
+  .sn-tot { margin: 8px 0 0; font: 500 12px/1.3 var(--mono); color: var(--muted); }
+  /* bench math */
+  .sn-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+  .sn-tile { padding: 10px 12px; color: var(--ink); border: 2px solid var(--edge); border-radius: 14px; box-shadow: 3px 3px 0 var(--drop); }
+  .sn-tile.o { background: var(--orange-soft); } .sn-tile.p { background: var(--pink-soft); }
+  .sn-tile b { display: block; font: 900 30px/1 var(--display); }
+  .sn-tile > span:not(.sn-meter) { display: block; margin-top: 3px; font: 500 11px/1.25 var(--mono); }
+  .sn-meter { display: block; height: 10px; margin-top: 8px; overflow: hidden; background: var(--card); border: 2px solid var(--edge); border-radius: 99px; }
+  .sn-meter i { display: block; height: 100%; background: var(--orange); border-right: 2px solid var(--edge); }
+  /* roster moves: closed, like Game day's bench bar */
+  .sn-moves { border: 2px solid var(--edge); border-radius: 14px; overflow: hidden; background: var(--card); }
+  .sn-moves > summary { min-height: 48px; background: var(--card); }
+  .sn-moves > .cb { margin: 0; padding: 4px 12px 12px; border: 0; border-radius: 0; box-shadow: none; }
   .acc .cb.mvs { background: var(--card); }
   .acc .mv { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0; }
   .acc .mv i { padding: 1px 6px; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 6px; font: 800 10px/1.5 var(--body); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -3954,18 +3992,23 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     const odds = oddsRange(tpOdds(id));
     const you = myTeam.get() === id;
     const wv = waiverSpot(id);
-    const chips = [
+    // Game day's chips are about this week (odds, seed, waiver spot); Season's are about the season so far.
+    const chips = (tab === 'season' ? [
+      t.weekly.length ? `<span class="tp-ch po">Avg <b>${f1(t.avg)}</b></span>` : '',
+      t.best ? `<span class="tp-ch">Best <b>${f1(t.best.points)}</b> W${t.best.week}</span>` : '',
+      t.weekly.length ? `<span class="tp-ch">Vs. everyone <b>${t.all_play_w}–${t.all_play_l}</b></span>` : '',
+    ] : [
       odds ? `<span class="tp-ch po">Playoffs <b>${esc(odds.text)}</b><span class="vh">, ${esc(odds.sub)}</span></span>` : '',
       `<span class="tp-ch">Seed <b>${rank}</b> of ${SEASON.standings.length}</span>`,
       wv ? `<span class="tp-ch">Picks <b>${ordinal(wv)}</b> on waivers</span>` : '',
-    ].join('');
+    ]).join('');
     return `
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
         <span class="tp-bg" aria-hidden="true"><span class="tp-big" style="animation-delay:-${Date.now() % 6000}ms">${rank}</span></span>
         <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}
           <button type="button" class="tp-switch" data-tp-sheet aria-haspopup="dialog" aria-controls="tp-sheet">Switch team</button></div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
-        <div class="tp-chips">${chips}</div>
+        ${chips ? `<div class="tp-chips${tab === 'season' ? ' wrap' : ''}">${chips}</div>` : ''}
       </section>
       <div class="tp-tabbar" id="tp-tabbar">
         <span class="tp-mini" aria-hidden="true">${esc(t.manager)} <em>${record(t)} · ${ordinal(rank)}</em></span>
@@ -4290,87 +4333,136 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`;
   }
 
-  /* Season tab: the scores, Coach's audit, every game, then awards and roster moves as accordions. */
-  function seasonChart(t) {
-    const W = 560, H = 160, pad = 8, base = H - 26, top = 24;
-    const n = t.weekly.length;
-    const maxv = Math.max(...t.weekly.map((g) => g.points), t.avg || 0, 1) * 1.04;
-    const slot = (W - pad * 2) / n, bw = Math.min(58, slot * 0.74);
-    const yOf = (v) => base - (base - top) * (v / maxv);
-    const bars = t.weekly.map((g, i) => {
-      const x = pad + i * slot + (slot - bw) / 2, y = yOf(g.points);
-      return `<rect class="${g.result === 'L' ? 'ch-l' : 'ch-w'}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${(base - y).toFixed(1)}" rx="7"/>
-        <text class="ch-v" x="${(x + bw / 2).toFixed(1)}" y="${(y - 6).toFixed(1)}">${f1(g.points)}</text>
-        <text class="ch-x" x="${(x + bw / 2).toFixed(1)}" y="${H - 8}">W${g.week} · ${g.result}</text>`;
-    }).join('');
-    const ay = yOf(t.avg).toFixed(1);
-    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Weekly scores: ${t.weekly.map((g) => `week ${g.week} ${f1(g.points)}`).join(', ')}. Average ${f1(t.avg)}.">${bars}<line class="ch-avg" x1="0" x2="${W}" y1="${ay}" y2="${ay}"/><text class="ch-al" x="${W - 2}" y="${(ay - 5).toFixed(1)}">avg ${f1(t.avg)}</text></svg>`;
+  /* ---------- Season tab ----------
+     A report card (her row of the league's strength grid), Coach's audit as a swipeable row, the season story
+     (a tappable bar per week with that week's result and awards under it), the bench math and her roster moves.
+     A block with nothing to say isn't drawn; before Week 1 is final there's one card and nothing else. */
+  const SN_WEEK = new Map();   // the week picked in each team's season story, so a live redraw keeps it
+  const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
+  const SN_ICON = { game_balls: '🏈', flags: '🚩' };
+
+  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from.
+  function snReport(t) {
+    const ranks = t.profile && t.profile.pos_ranks;
+    if (!ranks) return '';
+    const n = SEASON.standings.length;
+    const cols = SN_COLS.filter((c) => ranks[c] != null);
+    if (!cols.length) return '';
+    return `
+      <section class="sn-sec" aria-labelledby="sn-rc-h">
+        <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>rank of ${n} at each spot</span></div>
+        <ol class="sn-rc">${cols.map((c, i) => {
+          const r = ranks[c], tone = r <= 2 ? ' top' : r > n - 3 ? ' low' : '';
+          return `<li class="sn-cell${tone}${i % 2 ? ' tl' : ''}" aria-label="${CL_NAME[c] || c}: ${ordinal(r)} of ${n}"><small aria-hidden="true">${c === 'DST' ? 'D/ST' : c}</small><b aria-hidden="true">#${r}</b></li>`;
+        }).join('')}</ol>
+        <p class="sn-key" aria-hidden="true"><span><i class="top"></i>top 2</span><span><i class="low"></i>bottom 3, homework</span></p>
+      </section>`;
   }
 
-  function tpSeason(id, t, p) {
-    const who = id === myTeam.get() ? 'Your' : `${esc(t.manager)}'s`;
-    const weeks = [...t.weekly].sort((x, y) => y.week - x.week);
-    const optimal = t.points_for + t.bench_left;
-    const awards = [...t.awards].map((a, i) => ({ ...a, i })).sort((x, y) => y.week - x.week || x.i - y.i);
-    const kinds = AWARD_KINDS.map((k) => [k, awards.filter((a) => a.kind === k).length]).filter(([, n]) => n);
+  // Coach's audit cards, one swipe row on a phone (with dots), stacked from 860px.
+  function snAudit(p) {
+    if (!p.audit.length) return '';
+    const card = (it, i) => `
+      <article class="sn-take ${['o', 'b', 'l'][i % 3]}">
+        <span class="ov-tag og">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span>
+        <h3>${esc(voice(it.title))}</h3>
+        ${it.stat ? `<span class="sn-stat">${esc(it.stat)}</span>` : ''}
+        <p>${esc(voice(it.text))}</p>${refs(it.players)}
+      </article>`;
+    return `
+      <section class="sn-sec" aria-labelledby="sn-au-h">
+        <div class="gd-sh"><h2 id="sn-au-h">Coach's audit</h2><span>${p.audit.length} card${p.audit.length === 1 ? '' : 's'}</span></div>
+        <div class="sn-aud" tabindex="0" role="region" aria-label="Coach's audit, scrolls sideways">${p.audit.map(card).join('')}</div>
+        ${p.audit.length > 1 ? `<div class="sn-dots" aria-hidden="true">${p.audit.map((_, i) => `<i${i ? '' : ' class="on"'}></i>`).join('')}</div>` : ''}
+      </section>`;
+  }
+
+  // The season story: one bar per week, the picked week's game and awards under it.
+  function snStory(id, t) {
+    const weeks = [...t.weekly].sort((a, b) => a.week - b.week);
+    const pick = weeks.some((g) => g.week === SN_WEEK.get(id)) ? SN_WEEK.get(id) : weeks[weeks.length - 1].week;
+    const max = Math.max(...weeks.map((g) => g.points), t.avg || 0, 1) * 1.08;
+    const of = (wk, kind) => t.awards.filter((a) => a.week === wk && a.kind === kind).length;
+    const said = (r) => (r === 'W' ? 'won' : r === 'L' ? 'lost' : 'tied');
+    const bars = weeks.map((g) => {
+      const on = g.week === pick;
+      const marks = `${SN_ICON.game_balls.repeat(of(g.week, 'game_balls'))}${SN_ICON.flags.repeat(of(g.week, 'flags'))}`;
+      return `<li><span class="sn-mk" aria-hidden="true">${marks}</span>
+        <button type="button" class="sn-bar ${g.result}" data-snw="${g.week}" data-sn-team="${id}" aria-pressed="${on}" aria-label="Week ${g.week}, ${said(g.result)}, ${f2(g.points)}"${on ? '' : ' tabindex="-1"'}>
+          <span class="fill" style="height:${((g.points / max) * 100).toFixed(1)}%"></span></button>
+        <span class="sn-x" aria-hidden="true">W${g.week}</span></li>`;
+    }).join('');
+    const g = weeks.find((x) => x.week === pick);
+    const aw = t.awards.filter((a) => a.week === pick);
+    const result = g.result === 'W' ? 'Won' : g.result === 'L' ? 'Lost' : 'Tied';
+    const balls = t.awards.filter((a) => a.kind === 'game_balls').length, flags = t.awards.filter((a) => a.kind === 'flags').length;
+    return `
+      <section class="sn-sec sn-story" aria-labelledby="sn-st-h" data-sn-story="${id}">
+        <div class="gd-sh"><h2 id="sn-st-h">Season story</h2><span>tap a week</span></div>
+        <div class="sn-card">
+          <div class="sn-chart">
+            <span class="sn-avg" style="--a:${((t.avg / max) * 100).toFixed(1)}" aria-hidden="true"><em>avg ${f1(t.avg)}</em></span>
+            <ol class="sn-bars" role="group" aria-label="Weeks, arrow keys move between them">${bars}</ol>
+          </div>
+          <div class="sn-panel" aria-live="polite">
+            <div class="sn-ph"><h3>Week ${g.week} vs ${esc(g.opponent)}</h3><span class="sn-res ${g.result}">${result}</span></div>
+            <a class="sn-score" href="#week-${g.week}.game-${esc(g.game_key)}">${f2(g.points)} – ${f2(g.opponent_points)}</a>
+            <div class="sn-pills"><span>${g.score_rank} of ${SEASON.standings.length} that week</span><span>${f2(g.points_left)} benched</span></div>
+            ${aw.length ? `<ul class="sn-aw">${aw.map((a) => `<li class="${KIND[a.kind] ? KIND[a.kind].cls : ''}"><span aria-hidden="true">${SN_ICON[a.kind] || '•'}</span><span><small>${esc(KIND[a.kind] ? KIND[a.kind].label : 'Award')}</small>${esc(a.title)}</span></li>`).join('')}</ul>`
+              : '<p class="sn-none">No game balls or flags this week.</p>'}
+            <a class="sn-go" href="#week-${g.week}.awards">Week ${g.week} recap →</a>
+          </div>
+        </div>
+        <p class="sn-tot">🏈 ${balls} game ball${balls === 1 ? '' : 's'} · 🚩 ${flags} flag${flags === 1 ? '' : 's'}</p>
+      </section>`;
+  }
+
+  // Bench math: how much of her best possible lineup she started, and what sat.
+  function snBench(id, t) {
+    const best = t.points_for + t.bench_left;
+    if (!(best > 0)) return '';
+    const share = Math.round((t.points_for / best) * 100);
+    return `
+      <section class="sn-sec" aria-labelledby="sn-bm-h">
+        <div class="gd-sh"><h2 id="sn-bm-h">Bench math</h2></div>
+        <div class="sn-tiles">
+          <div class="sn-tile o"><b>${share}%</b><span>of ${id === myTeam.get() ? 'your' : 'her'} best possible lineup</span>
+            <span class="sn-meter" role="img" aria-label="${share} percent"><i style="width:${share}%"></i></span></div>
+          <div class="sn-tile p"><b>${f1(t.bench_left)}</b><span>points left on the bench</span></div>
+        </div>
+      </section>`;
+  }
+
+  // Roster moves, closed, grouped by week as before.
+  function snMoves(id, p) {
+    if (!p.moves.length) return '';
     const byWeek = [];
     for (const m of p.moves) {
       const last = byWeek[byWeek.length - 1];
       if (last && last.week === m.week) last.moves.push(m); else byWeek.push({ week: m.week, moves: [m] });
     }
-    const awardRow = (a, n) => {
-      const key = `aw-${id}-${a.week}-${a.i}`, rid = `${key}-p`, open = LU_OPEN.has(key);
-      const k = KIND[a.kind];
-      return `
-        <div class="prow${open ? ' open' : ''}" data-key="${key}">
-          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag ${k.cls}">${esc(k.label)}</span><div class="at"><small>Week ${a.week}</small><b>${esc(a.title)}</b></div><span class="chev" aria-hidden="true">▾</span></div>
-          <div class="coach" id="${rid}"><div class="cin"><div class="cb${a.kind === 'flags' ? ' fl' : ''}"><p>${esc(a.text || a.stat || a.title)}</p>${a.stat && a.text ? `<p style="margin-top:6px;font:500 11.5px var(--mono);color:var(--muted)">${esc(a.stat)}</p>` : ''}${refs(a.players)}<p style="margin-top:8px"><a href="#week-${a.week}.awards" style="color:var(--accent);font-weight:700;font-size:13px">Week ${a.week}'s awards →</a></p></div></div></div>
-        </div>`;
-    };
     const mvRef = (m, side) => (m[side].map((name, i) => ref({ id: m[`${side}_ids`] ? m[`${side}_ids`][i] : null, name })).join(''));
-    const movesRow = () => {
-      const key = `mv-${id}`, rid = `${key}-p`, open = LU_OPEN.has(key), latest = byWeek[0];
-      return `
-        <div class="prow${open ? ' open' : ''}" data-key="${key}">
-          <div class="arow" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row><span class="aw-tag moves">Roster moves</span><div class="at"><small>${p.moves.length} this season</small><b>Latest: Week ${latest.week}, ${latest.moves.length} move${latest.moves.length === 1 ? '' : 's'}</b></div><span class="chev" aria-hidden="true">▾</span></div>
-          <div class="coach" id="${rid}"><div class="cin"><div class="cb mvs">${byWeek.map((w) => `<p class="mvw">Week ${w.week} · ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</p>${w.moves.map((m) => `
-            <div class="mv">${m.type === 'trade' ? '<i>Trade</i>' : ''}${m.added.length ? `<i>${m.type === 'trade' ? 'Got' : 'Added'}</i>${mvRef(m, 'added')}` : ''}${m.dropped.length ? `<i class="d">${m.type === 'trade' ? 'Sent' : 'Dropped'}</i>${mvRef(m, 'dropped')}` : ''}</div>`).join('')}`).join('')}</div></div></div>
-        </div>`;
-    };
-    const takeCard = (it, i) => `<article class="ov-take ${['l', '', 'b'][i % 3]}"><span class="ov-tag${i % 3 === 1 ? ' og' : i % 3 === 2 ? ' w' : ''}">${esc(ADVICE_KIND[it.kind] || 'Coach')}</span><h3>${esc(voice(it.title))}</h3><p><b>${esc(it.stat || '')}</b>${it.stat ? ' · ' : ''}${esc(voice(it.text))}</p>${refs(it.players)}</article>`;
+    const key = `sn-moves-${id}`;
     return `
-      ${t.weekly.length ? `
-      <section class="tp-sec" aria-labelledby="tp-sc">
-        ${tpHead('--accent', 'Score by week').replace('<h2>', '<h2 id="tp-sc">')}
-        <div class="sc-grid"><div class="sc-chart">${seasonChart(t)}</div>
-          <div class="sc-tiles">
-            <div class="sc-tile b"><b>${f1(t.avg)}</b><span>Avg score</span></div>
-            <div class="sc-tile l"><b>${t.best ? `${f1(t.best.points)}<em>W${t.best.week}</em>` : '–'}</b><span>Best week</span></div>
-            <div class="sc-tile o"><b>${optimal > 0 ? Math.round((t.points_for / optimal) * 100) : 100}%</b><span>Of optimal lineup</span></div>
-            <div class="sc-tile p"><b>${f1(t.bench_left)}</b><span>Points benched</span></div>
-          </div></div>
-      </section>` : ''}
+      <details class="gd-bench sn-moves acc" data-hub-open="${key}"${HUB_OPEN.has(key) ? ' open' : ''}>
+        <summary><span>Roster moves <em>· ${p.moves.length} · latest W${byWeek[0].week}</em></span></summary>
+        <div class="cb mvs">${byWeek.map((w) => `<p class="mvw">Week ${w.week} · ${w.moves.length} move${w.moves.length === 1 ? '' : 's'}</p>${w.moves.map((m) => `
+          <div class="mv">${m.type === 'trade' ? '<i>Trade</i>' : ''}${m.added.length ? `<i>${m.type === 'trade' ? 'Got' : 'Added'}</i>${mvRef(m, 'added')}` : ''}${m.dropped.length ? `<i class="d">${m.type === 'trade' ? 'Sent' : 'Dropped'}</i>${mvRef(m, 'dropped')}` : ''}</div>`).join('')}`).join('')}</div>
+      </details>`;
+  }
 
-      <section class="tp-sec" aria-labelledby="tp-au">
-        ${tpHead('--orange', "Coach's audit").replace('<h2>', '<h2 id="tp-au">')}
-        ${p.audit.length
-          ? `<p class="sec-sub">${who} season so far, graded on every week with a recap.</p><div class="sc-audit">${p.audit.map(takeCard).join('')}</div>`
-          : '<p class="sec-sub">The coach needs one finished week before she has opinions.</p>'}
-      </section>
-
-      ${weeks.length ? `
-      <section class="tp-sec" aria-labelledby="tp-ww">
-        ${tpHead('--lime', 'Week by week').replace('<h2>', '<h2 id="tp-ww">')}
-        <div class="sc-wk">${weeks.map((g) => `
-          <a class="sc-wl" href="#week-${g.week}.game-${g.game_key}"><span class="r ${g.result}" aria-label="${g.result === 'W' ? 'Won' : g.result === 'L' ? 'Lost' : 'Tied'}">${g.result}</span>
-            <span class="t"><b>Week ${g.week} · ${esc(g.opponent)}</b><small>${g.score_rank} of 8 · ${f2(g.points_left)} benched</small></span><span class="s">${f2(g.points)} – ${f2(g.opponent_points)}</span></a>`).join('')}</div>
-      </section>` : ''}
-
-      <section class="tp-sec" aria-labelledby="tp-aw">
-        <div class="tp-head"><span class="mark" style="--c:var(--orange)" aria-hidden="true"></span><h2 id="tp-aw">Awards and moves</h2>${awards.length || byWeek.length ? '<a class="more" href="#" data-act="all">Expand all</a>' : ''}</div>
-        <p class="sec-sub">${kinds.length ? `${kinds.map(([k, n]) => `${n} ${KIND[k].label.toLowerCase()}${n === 1 ? '' : 's'}`).join(', ')}. ` : 'No awards yet. Give it time. '}Tap one for the story.</p>
-        <div class="sc-aw acc">${awards.map(awardRow).join('')}${byWeek.length ? movesRow() : ''}${byWeek.length ? '' : '<p class="sec-sub" style="padding:10px 0">No adds, drops or trades yet. Still riding with the draft-day roster.</p>'}</div>
-      </section>`;
+  function tpSeason(id, t, p) {
+    if (!t.weekly.length) {
+      return `<div class="gd sn">${gdEmpty('Season starts after Week 1', 'Grades, the chart and the awards show up once Week 1 is final. Coach needs one finished week before she has opinions.')}</div>`;
+    }
+    return `
+      <div class="gd sn">
+        ${snReport(t)}
+        ${snAudit(p)}
+        ${snStory(id, t)}
+        ${snBench(id, t)}
+        ${snMoves(id, p)}
+      </div>`;
   }
 
   /* ---------- coach: this week's to-do list, per team ----------
@@ -4949,6 +5041,43 @@ __BTS_JS__
     if (e.target.open) HUB_OPEN.add(key); else HUB_OPEN.delete(key);
   }, true);
 
+  /* Season: picking a week in the season story redraws just that section (no route, no scroll jump), keeps the
+     pick in SN_WEEK for the next live redraw, and puts focus back on the picked bar. Arrow keys, Home and End move
+     between weeks, like a set of tabs. The audit row's dots follow the swipe. */
+  function snPick(team, week, focus) {
+    SN_WEEK.set(team, week);
+    const box = document.querySelector(`[data-sn-story="${team}"]`);
+    const t = TEAMS[team];
+    if (!box || !t) return;
+    box.outerHTML = snStory(team, t);
+    // The page's entrance animation runs on every new section; a tap should feel instant, not replay it.
+    const fresh = document.querySelector(`[data-sn-story="${team}"]`);
+    if (fresh) fresh.style.animation = 'none';
+    if (focus) { const b = document.querySelector(`[data-sn-story="${team}"] [data-snw="${week}"]`); if (b) b.focus({ preventScroll: true }); }
+  }
+  $('#main').addEventListener('click', (e) => {
+    const bar = e.target.closest('button[data-snw]');
+    if (bar) snPick(Number(bar.dataset.snTeam), Number(bar.dataset.snw), true);
+  });
+  $('#main').addEventListener('keydown', (e) => {
+    const bar = e.target.closest && e.target.closest('button[data-snw]');
+    if (!bar || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+    const all = [...bar.closest('.sn-bars').querySelectorAll('button[data-snw]')];
+    const at = all.indexOf(bar);
+    const to = e.key === 'Home' ? 0 : e.key === 'End' ? all.length - 1 : Math.max(0, Math.min(all.length - 1, at + (e.key === 'ArrowRight' ? 1 : -1)));
+    e.preventDefault();
+    if (to !== at || e.key === 'Home' || e.key === 'End') snPick(Number(bar.dataset.snTeam), Number(all[to].dataset.snw), true);
+  });
+  $('#main').addEventListener('scroll', (e) => {
+    const row = e.target.classList && e.target.classList.contains('sn-aud') ? e.target : null;
+    if (!row) return;
+    const dots = row.parentElement.querySelectorAll('.sn-dots i');
+    const card = row.firstElementChild;
+    if (!dots.length || !card) return;
+    const i = Math.round(row.scrollLeft / (card.getBoundingClientRect().width + 12));
+    dots.forEach((d, k) => d.classList.toggle('on', k === Math.min(i, dots.length - 1)));
+  }, true);
+
   /* Game day: the Switch team sheet and the matchup's She wins / She loses toggle. The sheet is a modal
      <dialog> (Escape closes it natively); a tap on the backdrop, the Close button or a team closes it. The
      toggle swaps one number in place and remembers the side in MU_SIDE for the next redraw. */
@@ -5013,6 +5142,7 @@ __BTS_JS__
     if (d.nt) return `[data-nt="${d.nt}"]`;
     if (d.ptab) return `[data-ptab="${d.ptab}"]`;
     if (d.mu) return `button[data-mu="${d.mu}"][data-side="${d.side}"]`;
+    if (d.snw) return `button[data-snw="${d.snw}"][data-sn-team="${d.snTeam}"]`;
     if (el.matches('[data-tp-sheet]')) return '[data-tp-sheet]';
     if (el.matches('.tp-seg a')) return `.tp-seg a[href="${el.getAttribute('href')}"]`;
     const det = el.tagName === 'SUMMARY' && el.parentElement;
