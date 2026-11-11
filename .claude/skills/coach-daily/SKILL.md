@@ -28,7 +28,10 @@ git worktree add -B coach-daily-<YYYY-MM-DD> .claude/worktrees/coach-daily-<YYYY
 
 The worktree lives under the project's own `.claude/worktrees/` (gitignored), not `/tmp`, so it stays
 inside the session's working directory: every path this skill names resolves the same way for the
-file tools and the shell, and nothing has to reach outside the project.
+file tools and the shell, and nothing has to reach outside the project. Your scratch files (the saved
+FantasyPros responses in Steps 4-6) go next to it, in `.claude/worktrees/coach-daily-<YYYY-MM-DD>.scratch/`,
+which is `../coach-daily-<YYYY-MM-DD>.scratch/` from inside the worktree. Create it now, and never inside the
+worktree itself, so nothing there can be committed by accident.
 
 (If that path or branch already exists from an earlier run today, remove it first:
 `git worktree remove --force` / `git branch -D`.) Every edit, build, check, and commit below
@@ -103,7 +106,7 @@ league), `get_leaders` (recent weeks, for real recent form over preseason rank),
 `get_roster(all_teams=true)` to see all 8 rosters at once. For trades (Step 5a), also
 `get_projections(projection_type="ros")` for each of QB, RB, WR, TE, K and DST with a `limit` big
 enough to cover every rostered player (200 does it): save the six responses, as returned, to one
-JSON list in the worktree's scratch space (not the repo), e.g. `/tmp/fantasy-coach-daily-<date>-ros.json`.
+JSON list in the worktree's scratch space (not the repo), e.g. `../coach-daily-<date>.scratch/ros.json`.
 
 If `waiver_finder`/`trade_finder`/`trade_analyzer` return `status: "premium_required"`, don't
 retry them — building the idea yourself from the free tools above (and `scripts/trade_eval.py`
@@ -124,7 +127,7 @@ For the live week (week `N`), call `get_player_stats` with `range_type="week_ran
 except D/ST** (read the names off the worktree's `data/2026/week-NN/facts.json`). The tool looks players up
 by full name, so send them in batches of about 15, spelled exactly as the facts spell them. Save the
 responses, as returned, to one JSON list in the scratch space (not the repo), e.g.
-`/tmp/fantasy-coach-daily-<date>-stats.json`. Don't read anything into the tool's `unresolved_names`: it has
+`../coach-daily-<date>.scratch/stats.json`. Don't read anything into the tool's `unresolved_names`: it has
 listed every name in a batch that came back fine, and its `data` can carry a stray D/ST row. Step 6 pairs
 players up by name, team and position and reports the ones that don't pair.
 
@@ -137,7 +140,7 @@ For the live week (week `N`), call `get_schedule_and_strength` once for each pos
 `TE`, `K` and `DST`, with `week_start=N`, `week_end=N` and **all 32 team codes** in `team_codes`. Without the
 codes the tool returns only the five easiest teams. Use FantasyPros' own codes (`JAC`, `WAS`, not ESPN's);
 Step 6 converts them. Save the six responses, as returned, to one JSON list in the scratch space (not the
-repo), e.g. `/tmp/fantasy-coach-daily-<date>-matchups.json`. A team on a bye comes back with
+repo), e.g. `../coach-daily-<date>.scratch/matchups.json`. A team on a bye comes back with
 `"ratings": null`, which is expected. The response says nothing about who the opponent is, so don't add one.
 
 ## Step 5: do the actual roster analysis
@@ -393,7 +396,7 @@ matchup page's Key stats tiles divide by each player's own games):
 
 ```
 python3 scripts/fp_player_stats.py --facts data/2026/week-NN/facts.json \
-    --responses /tmp/fantasy-coach-daily-<date>-stats.json --into data/2026/fantasypros/latest.json
+    --responses ../coach-daily-<date>.scratch/stats.json --into data/2026/fantasypros/latest.json
 ```
 
 It replaces `player_stats` and nothing else, and prints the players it could not pair (no match, a different team,
@@ -406,7 +409,7 @@ position, 1 = the easiest matchup, for the live week only):
 
 ```
 python3 scripts/fp_matchups.py --week N \
-    --responses /tmp/fantasy-coach-daily-<date>-matchups.json --into data/2026/fantasypros/latest.json
+    --responses ../coach-daily-<date>.scratch/matchups.json --into data/2026/fantasypros/latest.json
 ```
 
 It replaces `matchups` and nothing else. It skips, and reports, any response whose window isn't exactly week
@@ -429,9 +432,13 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    edit or commit any recap file or any `data/2026/week-NN/` file.
 2. Archive today's snapshot: `python3 scripts/snapshot_history.py`. It copies `latest.json` to
    `data/2026/fantasypros/history/<Pacific date>.json` and rebuilds `history/index.json`. Earlier days are
-   never touched; a second run on the same Pacific-time day (manual reruns included) replaces that day's file. Re-run `python3 scripts/check.py`.
+   never touched; a second run on the same Pacific-time day (manual reruns included) replaces that day's file.
+   **Before** running it, if Step 2 found an older coach-daily branch still unmerged, copy its day file(s)
+   into the worktree (`git checkout origin/coach-daily-<that date> -- data/2026/fantasypros/history/<its day>.json`)
+   for any day not already there: `coach-daily-pr.yml` closes that branch's PR as superseded by today's,
+   and its day would otherwise vanish with it. The script then lists them in `index.json`. Re-run `python3 scripts/check.py`.
    Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<Pacific date>.json`
-   and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
+   (plus any day carried forward just above) and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
    Never `git add -A`. All three, every run: the history copy is part of the snapshot, not an
    extra. If a prompt that invoked you says to commit only `latest.json`, it predates the archive;
    commit all three anyway. `coach-daily-pr.yml` opens a `coach-daily history copy missing` issue
@@ -447,11 +454,14 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    `.github/workflows/coach-daily-pr.yml` runs on that push: it refuses a branch that changes
    anything but the three snapshot files above, re-runs `check.py`, opens the
    `Coach: daily FantasyPros cards (<date>)` PR, turns on auto-merge, and closes the older
-   coach-daily PRs today's supersedes. No human review is needed — small, derived data whose
+   coach-daily PRs today's supersedes. It refuses (and turns auto-merge off on) a branch that
+   changes any other file or rewrites an earlier day's history file, and flags a branch whose
+   PR conflicts with `main`. No human review is needed — small, derived data whose
    copy already passed Step 5c. Never push to `main` directly. If the push itself fails, say
    so in the Output summary and keep the worktree, so the commit isn't lost.
-4. Remove the worktree, from the project folder: `git worktree remove --force
-   .claude/worktrees/coach-daily-<date>` (--force: the captured week folder is untracked).
+4. Remove the worktree and its scratch folder, from the project folder: `git worktree remove --force
+   .claude/worktrees/coach-daily-<date>` (--force: the captured week folder is untracked), then
+   `rm -r .claude/worktrees/coach-daily-<date>.scratch`.
 5. Don't deploy the website yourself — merging the PR fires `live-update.yml`'s push deploy.
 
 ## Output

@@ -12,25 +12,37 @@ name: coach-daily-pr
 # Why not the built-in GITHUB_TOKEN: GitHub doesn't start other workflows from events that
 # token causes. A PR it opened would never run `checks`, and its merge into main would never
 # fire live-update.yml's push deploy, so the cards would merge and then sit undeployed.
-# Also needs "Allow auto-merge" on (Settings → General), which coach-daily already relied on.
+# Also needs "Allow auto-merge" on (Settings → General), which coach-daily already relied on,
+# and "Automatically delete head branches", so merged coach-daily branches don't pile up.
+#
+# Limit: on a push, GitHub runs this file as it is on the pushed branch, so the file check
+# below keeps coach-daily honest but is not a security boundary against a branch that edits
+# this workflow. Anything that can push a coach-daily-* branch can get it auto-merged.
 
 on:
   push:
     branches: ["coach-daily-*"]
 
-# One at a time, so two quick pushes can't race to open two PRs or close each other's.
-concurrency:
-  group: coach-daily-pr
-  cancel-in-progress: false
-
 permissions:
   contents: read
   issues: write
 
+defaults:
+  run:
+    # bash -eo pipefail: a failed `gh pr list` in a pipe fails the step instead of
+    # quietly looping over nothing.
+    shell: bash
+
 jobs:
   pr:
-    # A push that deletes the branch (the merge's --delete-branch) has nothing to open.
+    # A push that deletes the branch (a merge or a close with --delete-branch) has nothing
+    # to open.
     if: ${{ !github.event.deleted }}
+    # Job level, not workflow level, so the skipped deletion runs above never join the
+    # group and can't cancel a real push waiting in it.
+    concurrency:
+      group: coach-daily-pr
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -52,28 +64,30 @@ jobs:
             exit 1
           fi
 
-      # This PR merges with nobody reading it, so it may only carry the snapshot. Anything
-      # else on the branch (a recap, a week's data, code) stops the run before a PR exists.
+      # This PR merges with nobody reading it, so it may only carry the snapshot: latest.json,
+      # index.json, and new day files. An earlier day's file is never rewritten
+      # (scripts/snapshot_history.py), so a modified or deleted one stops the run too.
       - name: Only the snapshot files changed
         run: |
           git fetch --quiet origin main
-          changed=$(git diff --name-only origin/main...HEAD)
-          if [ -z "$changed" ]; then
+          changes=$(git diff --name-status --no-renames origin/main...HEAD)
+          if [ -z "$changes" ]; then
             echo "::error::$BRANCH has no changes against main."
             exit 1
           fi
-          echo "$changed"
-          bad=$(echo "$changed" | grep -vE '^data/[0-9]{4}/fantasypros/(latest\.json|history/index\.json|history/[0-9]{4}-[0-9]{2}-[0-9]{2}\.json)$' || true)
+          echo "$changes"
+          bad=$(echo "$changes" | grep -vE $'^M\tdata/[0-9]{4}/fantasypros/(latest|history/index)\\.json$' \
+                                | grep -vE $'^A\tdata/[0-9]{4}/fantasypros/(latest|history/index|history/[0-9]{4}-[0-9]{2}-[0-9]{2})\\.json$' || true)
           if [ -n "$bad" ]; then
-            echo "::error::$BRANCH changes files outside the coach-daily snapshot:"
+            echo "::error::$BRANCH changes files outside the coach-daily snapshot, or rewrites an earlier day's history:"
             echo "$bad"
             exit 1
           fi
           # The dated history copy rides along with every snapshot (coach-daily Step 7). A
           # missing one doesn't block the cards, the site reads only latest.json, but it must
           # not go unnoticed again: Nov 9-11 2026 shipped latest.json alone and nobody saw.
-          if echo "$changed" | grep -qE '^data/[0-9]{4}/fantasypros/history/[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$' \
-             && echo "$changed" | grep -qE '^data/[0-9]{4}/fantasypros/history/index\.json$'; then
+          if echo "$changes" | grep -qE $'^A\tdata/[0-9]{4}/fantasypros/history/[0-9]{4}-[0-9]{2}-[0-9]{2}\\.json$' \
+             && echo "$changes" | grep -qE $'\tdata/[0-9]{4}/fantasypros/history/index\\.json$'; then
             echo "HISTORY=ok" >> "$GITHUB_ENV"
           else
             echo "::warning::$BRANCH has no history copy (history/<date>.json + index.json); the archive skips this day."
@@ -92,52 +106,90 @@ jobs:
             exit 1
           fi
           day="${BRANCH#coach-daily-}"
+          # Built with if, not inside the body's own $( ): an assignment takes the exit status
+          # of its last command substitution, and under bash -e a false test there ends the step.
+          note=""
+          if [ "$HISTORY" = missing ]; then
+            note="**No history copy on this branch**, so \`fantasypros/history/\` skips this day. The cards still ship."
+          fi
           n=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
           if [ -z "$n" ]; then
             body="The daily Coach snapshot from \`coach-daily\`: \`data/<season>/fantasypros/latest.json\` and its dated copy under \`history/\`. Its copy already passed coach-daily's voice gate, \`check.py\` passed on this branch, and it merges on its own once \`checks\` is green.
 
-          $( [ "$HISTORY" = missing ] && echo "**No history copy on this branch**, so \`fantasypros/history/\` skips this day. The cards still ship." )
+          $note
 
           Opened by [coach-daily-pr](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
             url=$(gh pr create --base main --head "$BRANCH" --title "Coach: daily FantasyPros cards ($day)" --body "$body")
             n="${url##*/}"
             echo "Opened $url"
           else
-            echo "PR #$n is already open for $BRANCH (a rerun pushed again); reusing it."
+            echo "PR #$n is already open for $BRANCH (pushed again); reusing it."
           fi
+          echo "PR=$n" >> "$GITHUB_ENV"
           gh pr merge "$n" --auto --squash --delete-branch
-          state=$(gh pr view "$n" --json state,autoMergeRequest --jq 'if .state == "MERGED" then "merged" elif .autoMergeRequest then "auto" else "off" end')
-          if [ "$state" = "off" ]; then
+          # Auto-merge on is not enough: a branch cut from a main that has since moved (an
+          # older coach-daily PR merged mid-run) conflicts on latest.json and would wait forever.
+          # GitHub works out mergeability lazily, so ask a few times.
+          for i in 1 2 3 4 5 6; do
+            read -r state auto mergeable < <(gh pr view "$n" --json state,autoMergeRequest,mergeable \
+              --jq '"\(.state) \(if .autoMergeRequest then "on" else "off" end) \(.mergeable)"')
+            [ "$mergeable" != UNKNOWN ] && break
+            sleep 5
+          done
+          echo "PR #$n: state=$state auto-merge=$auto mergeable=$mergeable"
+          if [ "$state" != MERGED ] && [ "$auto" != on ]; then
             echo "::error::Auto-merge didn't turn on for PR #$n."
             exit 1
           fi
-          echo "PR #$n: $state"
-          echo "PR=$n" >> "$GITHUB_ENV"
+          if [ "$mergeable" = CONFLICTING ]; then
+            echo "::error::PR #$n conflicts with main (its branch was cut before main moved); it can't merge until coach-daily reruns."
+            exit 1
+          fi
 
       # The snapshot is rolling, so an older day's PR would only overwrite this one or
-      # conflict with it. Only older dates: a late rerun of an earlier day never closes
-      # a newer day's PR.
+      # conflict with it. Only older dates: a late rerun of an earlier day never closes a
+      # newer day's PR. And never at the cost of a day's history copy: an older PR whose
+      # day file isn't on this branch stays open and gets flagged instead of closed.
       - name: Close older coach-daily PRs
         env:
           GH_TOKEN: ${{ secrets.COACH_DAILY_PR_TOKEN }}
         run: |
-          gh pr list --base main --state open --limit 100 --json number,headRefName \
-            --jq '.[] | select(.headRefName | test("^coach-daily-[0-9]{4}-[0-9]{2}-[0-9]{2}$")) | "\(.number) \(.headRefName)"' |
+          older=$(gh pr list --base main --state open --limit 100 --json number,headRefName \
+            --jq '.[] | select(.headRefName | test("^coach-daily-[0-9]{4}-[0-9]{2}-[0-9]{2}$")) | "\(.number) \(.headRefName)"')
+          kept=""
           while read -r num head; do
-            if [[ "$head" < "$BRANCH" ]]; then
+            [ -n "$num" ] || continue
+            [[ "$head" < "$BRANCH" ]] || continue
+            lost=""
+            files=$(gh pr diff "$num" --name-only)   # its own line, so a failure stops the step
+            for f in $(echo "$files" | grep -E '^data/[0-9]{4}/fantasypros/history/[0-9]{4}-[0-9]{2}-[0-9]{2}\.json$' || true); do
+              git cat-file -e "HEAD:$f" 2>/dev/null || lost="$lost $f"
+            done
+            if [ -n "$lost" ]; then
+              echo "::warning::Not closing #$num ($head): closing it would lose$lost"
+              kept="$kept #$num"
+            else
               echo "Closing #$num ($head), superseded by #$PR"
               gh pr close "$num" --delete-branch --comment "Superseded by #$PR ($BRANCH)."
             fi
-          done
+          done <<< "$older"
+          if [ -n "$kept" ]; then
+            echo "KEPT=$kept" >> "$GITHUB_ENV"
+          fi
 
       # Not a failure (the cards still merge), so it can't go through the alert below.
       - name: Flag a missing history copy
-        if: env.HISTORY == 'missing'
+        if: env.HISTORY == 'missing' || env.KEPT != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           title="coach-daily history copy missing"
-          body="\`$BRANCH\` committed \`latest.json\` without \`history/<date>.json\` and \`history/index.json\`, so the snapshot archive skips this day. coach-daily Step 7 commits all three; check that run's Output summary (archiving failed?) and the routine's prompt (does it still say to commit only latest.json?). A missed day can be rebuilt from the merged commit's \`latest.json\` with \`scripts/snapshot_history.py\`.
+          if [ "$HISTORY" = missing ]; then
+            what="\`$BRANCH\` committed \`latest.json\` without \`history/<date>.json\` and \`history/index.json\`, so the snapshot archive skips this day. coach-daily Step 7 commits all three; check that run's Output summary (archiving failed?) and the routine's prompt (does it still say to commit only latest.json?)."
+          else
+            what="Older coach-daily PR(s)$KEPT carry a history day file that \`$BRANCH\` doesn't, so they were left open instead of closed as superseded. Merge or rebuild that day before closing them (coach-daily Step 7 carries an open branch's day files forward; this run's didn't)."
+          fi
+          body="$what A missed day can be rebuilt from that day's \`latest.json\` with \`scripts/snapshot_history.py\`.
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           existing=$(gh issue list --repo "${{ github.repository }}" --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')
@@ -145,6 +197,21 @@ jobs:
             gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
           else
             gh issue create --repo "${{ github.repository }}" --title "$title" --assignee "${{ github.repository_owner }}" --body "$body"
+          fi
+
+      # A bad push to a branch whose PR already has auto-merge on (a rerun the same day)
+      # must not merge just because `checks` goes green: this run isn't one of the PR's checks.
+      - name: Stop auto-merge on a failed run
+        if: failure()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.COACH_DAILY_PR_TOKEN }}
+        run: |
+          [ -n "$GH_TOKEN" ] || exit 0
+          n=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          if [ -n "$n" ]; then
+            gh pr merge "$n" --disable-auto || true
+            gh pr comment "$n" --body "Auto-merge turned off: coach-daily-pr failed on this branch's latest push (${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
           fi
 
       # Same pattern as live-update.yml: one open issue per failure kind, commented on
@@ -155,7 +222,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           title="coach-daily-pr failing"
-          body="coach-daily pushed \`$BRANCH\`, but its PR couldn't be opened or set to auto-merge, so today's Coach cards won't reach the site until it's fixed. The run log says which step stopped it.
+          body="coach-daily pushed \`$BRANCH\`, but its PR couldn't be opened, set to auto-merge, or merged cleanly, so today's Coach cards won't reach the site until it's fixed. The run log says which step stopped it.
 
           Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           existing=$(gh issue list --repo "${{ github.repository }}" --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')
