@@ -326,10 +326,13 @@ hero is the same height for every team and the homework card starts within the f
     it. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing for her next week ("Week N is in the books").
   - **Heads up** (only while the live week is still in play): next week's starters the week-ahead capture lists out,
     doubtful, suspended or on IR. Questionable never triggers it.
+  - From 1040px the tab is two columns: the homework, heads-up and lineup on the left, the matchup, who's next, ideas,
+    league link and source on the right. Below that it's one column, with the matchup before the lineup.
   - **The matchup**: ESPN's win chances and tug bar (or "ESPN hasn't posted Week N win chances yet"), both projections,
     starters left, and "What's riding on it": a She wins / She loses (You win / You lose) toggle over the playoff odds
     from `stakes`, remembered per team in `MU_SIDE` across redraws. No stakes pair, no toggle.
-  - **Lineup**: the starters as accordion rows (headshot and logo, kickoff, Coach's blurb and scoring lines in the panel);
+  - **Lineup** ("Starters", with the projected total): one card of compact rows (slot, headshot and logo, the name with
+    its ESPN status sticker, team and kickoff, the projection as a plain number), each opening to Coach's blurb and scoring lines;
     a starter with a swap fix is tinted pink with "Swap in <name>". The bench sits behind "Bench · N · K on bye · best
     <name>", closed on a phone and open from 860px; a change from that default is remembered in `BENCH_OPEN`; bye and IR rows are dimmed.
   - **Who's next** (live week only, once the week-ahead capture exists): the next opponent, the one player of theirs to

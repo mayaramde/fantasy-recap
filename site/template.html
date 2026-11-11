@@ -1687,14 +1687,55 @@ __LIVE_CSS__
   .gd-league:hover { background: var(--lime-soft); }
   .gd-src p { margin: 0; font-size: 12.5px; color: var(--muted); }
   .gd-src > summary { color: var(--muted); font-weight: 600; }
-  /* the lineup: a starter with a swap fix is tinted, bye and IR rows step back */
-  .gd-lu .prow.fix > .row { padding-left: 6px; padding-right: 4px; background: var(--pink-soft); border-radius: 12px; box-shadow: inset 4px 0 0 var(--pink); }
-  .gd-lu .swapln { margin-top: 4px; font-size: 12.5px; }
-  .gd-lu .swapln .gd-gain { font-size: 12px; padding: 1px 6px; }
-  .gd-lu .row.bye .pwho, .gd-lu .row.bye .pill, .gd-lu .row.ir .pwho, .gd-lu .row.ir .pill, .gd-lu .row.ir .av { opacity: 0.55; }
-  .gd-bench { margin-top: 4px; border-top: 2px solid var(--edge); }
-  .gd-bench > summary { color: var(--ink); font: 500 12px/1.2 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
-  @media (max-width: 640px) { .gd-lu .prow.fix > .row { padding-left: 4px; } .gd-lu .prow.fix .slot { left: -2px; } }
+  /* the lineup, as the mockup draws it: one card of compact rows (slot, face, name with its sticker, kickoff, the
+     projection as a plain number), a starter with a swap fix tinted pink, bye and IR rows stepped back, and the
+     bench as a bar at the foot of the same card. */
+  .gd-sh { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-top: 18px; }
+  .gd-sh h2 { display: flex; align-items: center; gap: 8px; margin: 0; font: 800 22px/1 var(--display); }
+  .gd-sh h2::before { content: ""; width: 12px; height: 12px; background: var(--pink); border: 2px solid var(--edge); border-radius: 3px; }
+  .gd-sh span { font: 500 11.5px/1 var(--mono); color: var(--muted); }
+  .lu-card { margin-top: 8px; overflow: hidden; background: var(--card); border: 2px solid var(--edge); border-radius: 16px; box-shadow: 3px 3px 0 var(--drop); }
+  .gd-lu .lu-card .prow { border-top: 1px solid var(--rule); border-bottom: 0; }
+  .lu-card > .prow:first-child { border-top: 0; }
+  .lu-row { display: grid; grid-template-columns: 40px 36px minmax(0, 1fr) auto; align-items: center; gap: 9px; min-height: 56px; padding: 8px 12px 8px 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .lu-row:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+  .prow.fix > .lu-row { background: var(--pink-soft); box-shadow: inset 4px 0 0 var(--pink); }
+  .lu-row.dim .lu-who, .lu-row.dim .lu-pp, .lu-row.dim .pf { opacity: 0.55; }
+  .lu-slot { padding: 3px 0; text-align: center; color: var(--ink); background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 6px; font: 600 10px/1 var(--script); letter-spacing: 0.02em; }
+  .lu-slot.flex { background: var(--lime-soft); }
+  .lu-slot.bn { background: var(--card); }
+  .pf.lu { --s: 36px; }
+  .pf.lu .nfl { right: -4px; bottom: -3px; border-width: 1.5px; }
+  .lu-who { display: grid; gap: 2px; min-width: 0; }
+  .lu-nm { font: 700 13.5px/1.2 var(--body); }
+  .lu-sb { font: 500 11px/1.25 var(--mono); color: var(--muted); }
+  .lu-sb .live-dot { display: inline-block; vertical-align: 1px; }
+  .lu-sw { margin-top: 1px; font: 600 11.5px/1.25 var(--body); }
+  .lu-sw b { font: 800 13px/1 var(--display); letter-spacing: 0.02em; }
+  .lu-st { display: inline-block; margin-left: 4px; padding: 2px 5px; color: var(--on-pop); border: 2px solid var(--edge); border-radius: 6px; font: 600 10px/1 var(--script); transform: rotate(-4deg); vertical-align: 1px; white-space: nowrap; }
+  .lu-st.out { background: var(--pink); }
+  .lu-st.iffy { background: var(--orange); }
+  .lu-st.ir { color: var(--on-board); background: var(--board); }
+  .lu-st.bye { color: var(--ink); background: var(--rule); }
+  .lu-pp { min-width: 42px; text-align: right; font: 800 20px/1 var(--display); }
+  .lu-pp small { display: block; margin-top: 2px; font: 500 9.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+  .lu-pp.on { color: var(--accent-ink); }
+  .gd-lu .coach .cb { margin: 0 12px 12px; }
+  .gd-bench { margin: 0; border-top: 2px solid var(--edge); }
+  .gd-bench > summary { justify-content: space-between; padding: 0 12px; color: var(--ink); background: var(--bg); font: 700 13px/1.2 var(--body); }
+  .gd-bench > summary em { font: 500 11px/1 var(--mono); font-style: normal; color: var(--muted); }
+  .gd-bench > .prow:first-of-type { border-top: 2px solid var(--edge); }
+  .gd-tap { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+  /* one column on a phone, in the mockup's order; from 1040px the doing on the left and the context on the right */
+  .gd-cols, .gd-main, .gd-side { display: contents; }
+  .gd-main > *, .gd-side > * { margin-top: 0; }
+  .gd-lu { order: 2; } .gd-side > * { order: 3; } .gd-side > .gd-mu { order: 1; }
+  @media (min-width: 1040px) { .gd-lu, .gd-side > *, .gd-side > .gd-mu { order: 0; } }
+  @media (min-width: 1040px) {
+    .gd-cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+    .gd-main, .gd-side { display: grid; gap: 14px; align-content: start; min-width: 0; }
+    .gd-side .tp-cards { grid-template-columns: minmax(0, 1fr); }
+  }
 
   /* Lineup tab, and the accordion rows Season reuses. Everything sits under .acc so none of it
      can reach the box-score tables. The panel animates grid-template-rows 0fr to 1fr, so opening
@@ -4236,14 +4277,10 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     return `
       <div class="gd">
         <div class="gd-wk"><b>Week ${week}</b><span>${state}</span></div>
-        ${hw}
-        ${gdHeadsUp(id, next)}
-        ${gdMatchup(id, a, next)}
-        ${gdLineup(id, a, next)}
-        ${next ? '' : tpNext(id)}
-        ${gdIdeas(id, a, next)}
-        ${gdLeague(id, you)}
-        ${gdSource(next)}
+        <div class="gd-cols">
+          <div class="gd-main">${hw}${gdHeadsUp(id, next)}${gdLineup(id, a, next)}</div>
+          <div class="gd-side">${gdMatchup(id, a, next)}${next ? '' : tpNext(id)}${gdIdeas(id, a, next)}${gdLeague(id, you)}${gdSource(next)}</div>
+        </div>
       </div>`;
   }
 
@@ -4436,30 +4473,33 @@ __LIVE_JS__
   function lineupRow(p, card, next, tid, bench, fix = null) {
     const w = whoIs(p);
     const dst = isDst(w);
-    const open = LU_OPEN.has(`${tid}-${next ? 'n' : 't'}-${w.id}`);
-    const rid = `lu-${tid}-${next ? 'n' : 't'}-${String(w.id).replace('-', 'm')}`;
     const key = `${tid}-${next ? 'n' : 't'}-${w.id}`;
+    const open = LU_OPEN.has(key);
+    const rid = `lu-${tid}-${next ? 'n' : 't'}-${String(w.id).replace('-', 'm')}`;
     const bye = !!(card && card.bye);
+    const ir = p.slot === 'IR';
     const started = !bye && !next && (p.playing || (card && (card.state === 'in' || card.state === 'post')) || p.points > 0.005);
-    const slot = p.slot === 'IR' ? 'IR' : bench ? 'BN' : p.slot;
-    const inj = p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '';
-    const when = bye ? 'Bye week · nothing to start' : p.playing ? `<span class="live-dot" aria-hidden="true"></span> on now, ${esc(p.playing)}` : kickoffText(p.kickoff);
-    const sub = `<b>${esc(w.team || (dst ? '' : '–'))}</b>${when ? ` · ${when}` : ''}${inj}`;
-    const pill = bye ? '<div class="pill byep">BYE</div>'
-      : started ? `<div class="pill">${f1(p.points)}<small>PROJ ${f1(p.projected)}</small></div>`
-      : `<div class="pill proj">${f1(p.projected)}<small>PROJ</small></div>`;
+    const slot = ir ? 'IR' : bench ? 'BN' : p.slot;
+    // One sticker after the name: ESPN's designation first, else IR or a bye. Never a guess.
+    const [abbr, tone] = p.injury ? (HUB_STATUS[p.injury] || [p.injury, OUTISH.includes(p.injury) ? 'out' : 'iffy'])
+      : ir ? ['IR', 'ir'] : bye ? ['BYE', 'bye'] : [null, null];
+    const sticker = abbr ? ` <span class="lu-st ${tone}"${p.injury ? ` title="ESPN's injury report: ${esc(p.injury)}"` : ''}>${esc(abbr)}</span>` : '';
+    const when = bye ? 'Bye week' : p.playing ? `<span class="live-dot" aria-hidden="true"></span> on now, ${esc(p.playing)}` : esc(kickoffText(p.kickoff));
+    const sub = [esc(w.team || ''), when].filter(Boolean).join(' · ');
+    const num = bye ? '–' : started ? f1(p.points) : f1(p.projected);
+    const small = started ? `PROJ ${f1(p.projected)}` : 'PROJ';
     const sw = fix && fix.swap;
     const gain = sw ? gdGain(sw.gain) : '';
     const swapLine = !sw ? '' : sw.in
-      ? `<div class="swapln">Swap in <b>${esc(sw.in.name)}</b>${gain ? ` <span class="gd-gain">${gain}</span>` : ''}</div>`
-      : '<div class="swapln">Nobody on the bench · waiver wire</div>';
+      ? `<span class="lu-sw">Swap in ${esc(sw.in.name)}${gain ? ` <b>${gain}</b>` : ''}</span>`
+      : '<span class="lu-sw">Nobody on the bench · waiver wire</span>';
     return `
       <div class="prow${open ? ' open' : ''}${sw ? ' fix' : ''}" data-key="${esc(key)}">
-        <div class="row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye ? ' bye' : ''}${p.slot === 'IR' ? ' ir' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
-          <span class="slot${p.slot === 'FLEX' ? ' flex' : ''}${bench ? ' bn' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
-          <div class="av">${face(p)}</div>
-          <div class="pwho"><div class="nm">${esc(w.name)}${posOf(w.pos) ? ` <span class="pos">(${posOf(w.pos)})</span>` : ''}</div><div class="sub">${sub}</div>${swapLine}</div>
-          ${pill}<span class="chev" aria-hidden="true">▾</span>
+        <div class="lu-row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye || ir ? ' dim' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
+          <span class="lu-slot${bench ? ' bn' : ''}${p.slot === 'FLEX' ? ' flex' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
+          ${face(p, 'lu')}
+          <span class="lu-who"><span class="lu-nm">${esc(w.name)}${sticker}</span><span class="lu-sb">${sub}</span>${swapLine}</span>
+          <span class="lu-pp${started ? ' on' : ''}">${num}<small>${small}</small></span>
         </div>
         <div class="coach" id="${rid}"><div class="cin"><div class="cb">
           <span class="ctag">Coach says</span>
@@ -4488,13 +4528,17 @@ __LIVE_JS__
     const label = [`Bench · ${bench.length}`, byes ? `${byes} on bye` : '', best ? `best ${whoIs(best).name}` : ''].filter(Boolean).join(' · ');
     const key = `gd-bench-${id}`;
     const open = BENCH_OPEN.has(key) ? BENCH_OPEN.get(key) : WIDE.matches;
+    const total = next ? a.projected : (mine ? projOf(mine) : a.projected);
+    const [lead, ...rest] = label.split(' · ');
     return `
-      <section class="tp-sec acc gd-lu" aria-labelledby="gd-lu-h">
-        ${tpHead('--pink', 'Lineup').replace('<h2>', '<h2 id="gd-lu-h">')}
-        <p class="sec-sub">Tap a player for Coach's read on how he's doing.</p>
-        <div class="lu-col">${starters.map((p) => lineupRow(p, cardOf(p), next, id, false, fixBy.get(p.player_id))).join('')}</div>
-        ${bench.length ? `<details class="gd-bench" data-bench="${key}"${open ? ' open' : ''}><summary>${esc(label)}</summary>
-          <div class="lu-col">${bench.map((p) => lineupRow(p, cardOf(p), next, id, true)).join('')}</div></details>` : ''}
+      <section class="acc gd-lu" aria-labelledby="gd-lu-h">
+        <div class="gd-sh"><h2 id="gd-lu-h">Starters</h2>${total != null ? `<span>${f1(total)} proj</span>` : ''}</div>
+        <div class="lu-card">
+          ${starters.map((p) => lineupRow(p, cardOf(p), next, id, false, fixBy.get(p.player_id))).join('')}
+          ${bench.length ? `<details class="gd-bench" data-bench="${key}"${open ? ' open' : ''}><summary><span>${esc(lead)}${rest.length ? ` <em>· ${esc(rest.join(' · '))}</em>` : ''}</span></summary>
+            ${bench.map((p) => lineupRow(p, cardOf(p), next, id, true)).join('')}</details>` : ''}
+        </div>
+        <p class="gd-tap">Tap a player for Coach's read on how he's doing.</p>
       </section>`;
   }
 
