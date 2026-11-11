@@ -1785,9 +1785,6 @@ __LIVE_CSS__
     .acc .bench .av { margin-left: 9px; }
   }
 
-  /* Season tab */
-  .ov-tag.w { background: var(--card); }
-  .acc .at b { font: 700 15px/1.2 var(--body); }
   /* ---------- Season tab ---------- */
   .tp-chips.wrap { flex-wrap: wrap; overflow: visible; margin-right: 0; padding-right: 0; }
   .sn { gap: 18px; }
@@ -1837,7 +1834,8 @@ __LIVE_CSS__
   .sn-x { height: 12px; margin-top: 4px; text-align: center; font: 500 10px/12px var(--mono); color: var(--muted); }
   /* the bars are 140px tall over a 16px week label, so the average sits at 16px + avg% of 140px */
   .sn-avg { position: absolute; left: 0; right: 0; bottom: calc(16px + var(--a) * 1.4px); z-index: 1; border-top: 2px dashed var(--muted); pointer-events: none; }
-  .sn-avg em { position: absolute; right: 0; top: -18px; padding: 0 4px; font: 500 10px/1.4 var(--mono); font-style: normal; color: var(--ink); background: var(--card); }
+  /* left, over Week 1: the latest week, picked by default, sits on the right */
+  .sn-avg em { position: absolute; left: 0; top: -18px; padding: 0 4px; font: 500 10px/1.4 var(--mono); font-style: normal; color: var(--ink); background: var(--card); }
   .sn-panel { margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--rule); }
   .sn-ph { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
   .sn-ph h3 { margin: 0; font: 800 22px/1.05 var(--display); }
@@ -4353,7 +4351,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>rank of ${n} at each spot</span></div>
         <ol class="sn-rc">${cols.map((c, i) => {
           const r = ranks[c], tone = r <= 2 ? ' top' : r > n - 3 ? ' low' : '';
-          return `<li class="sn-cell${tone}${i % 2 ? ' tl' : ''}" aria-label="${CL_NAME[c] || c}: ${ordinal(r)} of ${n}"><small aria-hidden="true">${c === 'DST' ? 'D/ST' : c}</small><b aria-hidden="true">#${r}</b></li>`;
+          return `<li class="sn-cell${tone}${i % 2 ? ' tl' : ''}"><small aria-hidden="true">${c === 'DST' ? 'D/ST' : c}</small><b aria-hidden="true">#${r}</b><span class="vh">${CL_NAME[c] || c}: ${ordinal(r)} of ${n}</span></li>`;
         }).join('')}</ol>
         <p class="sn-key" aria-hidden="true"><span><i class="top"></i>top 2</span><span><i class="low"></i>bottom 3, homework</span></p>
       </section>`;
@@ -5049,11 +5047,21 @@ __BTS_JS__
     const box = document.querySelector(`[data-sn-story="${team}"]`);
     const t = TEAMS[team];
     if (!box || !t) return;
-    box.outerHTML = snStory(team, t);
-    // The page's entrance animation runs on every new section; a tap should feel instant, not replay it.
-    const fresh = document.querySelector(`[data-sn-story="${team}"]`);
-    if (fresh) fresh.style.animation = 'none';
-    if (focus) { const b = document.querySelector(`[data-sn-story="${team}"] [data-snw="${week}"]`); if (b) b.focus({ preventScroll: true }); }
+    // Swap only the bars and the panel's contents, never the panel itself: a live region only announces changes
+    // to a node that was already on the page. It also keeps the page's entrance animation from replaying.
+    const tmp = document.createElement('div');
+    tmp.innerHTML = snStory(team, t);
+    box.querySelector('.sn-bars').innerHTML = tmp.querySelector('.sn-bars').innerHTML;
+    box.querySelector('.sn-panel').innerHTML = tmp.querySelector('.sn-panel').innerHTML;
+    if (focus) { const b = box.querySelector(`[data-snw="${week}"]`); if (b) b.focus({ preventScroll: true }); }
+  }
+  // The audit row's dots follow its scroll position.
+  function snDots(row) {
+    const dots = row.parentElement.querySelectorAll('.sn-dots i');
+    const card = row.firstElementChild;
+    if (!dots.length || !card) return;
+    const i = Math.round(row.scrollLeft / (card.getBoundingClientRect().width + 12));
+    dots.forEach((d, k) => d.classList.toggle('on', k === Math.min(i, dots.length - 1)));
   }
   $('#main').addEventListener('click', (e) => {
     const bar = e.target.closest('button[data-snw]');
@@ -5069,13 +5077,7 @@ __BTS_JS__
     if (to !== at || e.key === 'Home' || e.key === 'End') snPick(Number(bar.dataset.snTeam), Number(all[to].dataset.snw), true);
   });
   $('#main').addEventListener('scroll', (e) => {
-    const row = e.target.classList && e.target.classList.contains('sn-aud') ? e.target : null;
-    if (!row) return;
-    const dots = row.parentElement.querySelectorAll('.sn-dots i');
-    const card = row.firstElementChild;
-    if (!dots.length || !card) return;
-    const i = Math.round(row.scrollLeft / (card.getBoundingClientRect().width + 12));
-    dots.forEach((d, k) => d.classList.toggle('on', k === Math.min(i, dots.length - 1)));
+    if (e.target.classList && e.target.classList.contains('sn-aud')) snDots(e.target);
   }, true);
 
   /* Game day: the Switch team sheet and the matchup's She wins / She loses toggle. The sheet is a modal
@@ -5176,11 +5178,14 @@ __BTS_JS__
         // The news chip row and a focused chip or tab get the same courtesy.
         const nrow = document.querySelector('.nl-chips');
         const nleft = nrow ? nrow.scrollLeft : 0;
+        const arow = document.querySelector('.sn-aud');
+        const aleft = arow ? arow.scrollLeft : 0;
         const fa = document.activeElement;
         const focusSel = fa && fa.dataset ? focusKey(fa) : '';
         route();
         if (left) { const again = document.querySelector('.hub-chips'); if (again) again.scrollLeft = left; }
         if (nleft) { const again = document.querySelector('.nl-chips'); if (again) again.scrollLeft = nleft; }
+        if (aleft) { const again = document.querySelector('.sn-aud'); if (again) { again.scrollLeft = aleft; snDots(again); } }
         if (focusSel) { const again = document.querySelector(focusSel); if (again) again.focus({ preventScroll: true }); }
       }
     } catch { /* offline, blocked, or a 503 (ESPN refused): keep the baked numbers */ }

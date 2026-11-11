@@ -66,7 +66,7 @@ class Season(unittest.TestCase):
     def test_report_card_tones(self):
         html = run("snReport(t)")
         self.assertIn('class="sn-cell top tl"', html)                  # TE #2, the 4th cell
-        self.assertIn('aria-label="K: 7th of 8"', html)
+        self.assertIn('<span class="vh">K: 7th of 8</span>', html)
         self.assertEqual(re.findall(r"#(\d)", text(html)), ["4", "3", "5", "2", "4", "3", "7"])
         self.assertEqual(html.count(" low"), 1)
 
@@ -98,9 +98,18 @@ class Season(unittest.TestCase):
 
 class Removed(unittest.TestCase):
     def test_old_season_blocks_are_gone(self):
-        body = fn("  function tpSeason(")
-        for gone in ("Week by week", "Expand all", "data-act=\"all\"", "tp-unwritten", "sc-wl", "awardRow"):
-            self.assertNotIn(gone, body)
+        # Anywhere in the template: these only ever belonged to the old Season tab.
+        for gone in ("Week by week", "tp-unwritten", "sc-wl", "awardRow", "function seasonChart"):
+            self.assertNotIn(gone, SRC)
+        season = "".join(fn(f"  function {f}(") for f in ("tpSeason", "snReport", "snAudit", "snStory", "snBench", "snMoves"))
+        for gone in ("Expand all", 'data-act="all"', "hasn't written"):
+            self.assertNotIn(gone, season)
+
+    def test_story_updates_in_place(self):
+        # The aria-live panel only announces when the node itself stays on the page.
+        pick = fn("  function snPick(")
+        self.assertNotIn("outerHTML", pick)
+        self.assertIn(".sn-panel').innerHTML", pick)
 
     def test_bars_are_buttons_and_the_panel_is_live(self):
         story = fn("  function snStory(")
