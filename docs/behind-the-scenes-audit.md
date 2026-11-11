@@ -16,7 +16,7 @@ checked against the code, workflows and docs. Each item is labelled **Fixed**, *
    "The site doesn't take live questions, so these are example replies that show how my rules work." Keep as is,
    rename ("How Coach's rules would answer"), or drop?
 3. **Layer 5, "a human is in charge".** True for recaps (Maya approves a preview, then a publish PR). It is **not**
-   true for Coach's daily cards: `coach-daily` opens a PR and turns on auto-merge with no human review
+   true for Coach's daily cards: `coach-daily` pushes a branch and `coach-daily-pr.yml` opens its PR with auto-merge, no human review
    (`.claude/skills/coach-daily/SKILL.md`, step 7). The copy now says exactly that. Is that the message you want on a page
    the league reads?
 4. **Existing copy that disagrees with the code.** The Live page says "Scores refresh about every minute"
@@ -54,7 +54,7 @@ checked against the code, workflows and docs. Each item is labelled **Fixed**, *
 | Coach "looks things up live" | The Coach page's computed cards refresh with each capture; the written cards are authored once a day | "Pulls fresh numbers every day" |
 | "Reads every roster in it" | `coach-daily` writes for all 8 rosters | Kept, with "all eight" |
 | "Checks its work, loops back if unsure" | The recap path has `recap-fact-checker` and `voice-check`; `coach-daily` has a mandatory `voice-check` gate (step 5c) and runs `check.py` (step 7). A literal "loops back" isn't documented | "Gets its work checked before it ships" |
-| Coach tools are read-only | Coach *reads* ESPN and FantasyPros, but also writes its own snapshot file and opens an auto-merging PR (never pushes to `main`; a Bash guard hook blocks that and any secret read) | Layer 1 reworded: reads only, never changes ESPN, her one write is a PR |
+| Coach tools are read-only | Coach *reads* ESPN and FantasyPros, but also writes its own snapshot file and pushes a branch that a workflow turns into an auto-merging PR (never pushes to `main`; a Bash guard hook blocks that and any secret read) | Layer 1 reworded: reads only, never changes ESPN, her one write is a PR |
 | "Passwords and API keys live in a locked vault, never in the public code" | The one real secret is `VERCEL_TOKEN` (GitHub Actions secret); org/project ids are repo variables. `CLAUDE.md` forbids reading or printing tokens | Reworded; "public code" dropped (see unverified) |
 | "Ask Coach", "Answers your questions", "start or sit question" | No chat on the site | Reworded to "Coach's notes", "Writes the daily notes"; the stepper's prompt is now "Is anybody on the bench better than who's starting?" |
 | "Win odds" | The site calls them playoff odds | Renamed |

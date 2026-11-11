@@ -72,7 +72,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   characters at most), the week's league-wide "Coach's take" paragraph (`weeks.<n>.league`, keyed by the league's
   situation) and, top level, each team's written season-audit copy (`audit`, keyed by audit key). Yesterday's
   entries are reused while their key is unchanged; the build shows written copy only while its key still matches
-  and falls back to the computed wording otherwise. Committed through its own auto-merging PR (small,
+  and falls back to the computed wording otherwise. Committed through its own auto-merging PR, opened by `coach-daily-pr.yml` from the branch `coach-daily` pushes (small,
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards (written season-audit copy still
   applies while its key matches, since it describes finished weeks).
@@ -126,7 +126,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
   `fetch_news.py` (ESPN headlines for the Week hub, best effort),
   `snapshot_history.py` (archives `fantasypros/latest.json` into `history/`)
-- `.github/workflows/`: `checks.yml` and `live-update.yml` (capture + deploy); the scheduled Claude routines run locally, see `docs/architecture.md`
+- `.github/workflows/`: `checks.yml`, `live-update.yml` (capture + deploy) and `coach-daily-pr.yml` (opens coach-daily's auto-merging PR from its pushed branch); the scheduled Claude routines run locally, see `docs/architecture.md`
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
   profile and its playoff odds chip, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
   `hub_preview.py` renders the Week hub's two states for a look in a browser

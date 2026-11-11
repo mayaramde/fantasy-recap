@@ -108,8 +108,9 @@ site automatically once that PR merges (`live-update.yml`'s `push` trigger), not
 ### Phase 4: coach-daily (independent of the recap pipeline)
 
 Input: none beyond the target date. Output: `data/<season>/fantasypros/latest.json` and its dated
-copy `fantasypros/history/<Pacific date>.json` (plus `history/index.json`), in its own
-PR with auto-merge. `coach-daily` runs its own `voice-check` gate on the cards before writing the
+copy `fantasypros/history/<Pacific date>.json` (plus `history/index.json`), committed and
+pushed on its own `coach-daily-<date>` branch; `.github/workflows/coach-daily-pr.yml` opens the PR
+with auto-merge. `coach-daily` runs its own `voice-check` gate on the cards before writing the
 file (its Step 5b), since that PR merges without a human reading it. Doesn't touch any recap or any `data/<season>/week-NN/` file — see
 `coach-daily`'s own SKILL.md.
 

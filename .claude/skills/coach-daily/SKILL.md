@@ -1,6 +1,6 @@
 ---
 name: coach-daily
-description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json (plus a dated copy under fantasypros/history/), then opens its own auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
+description: Writes the day's Coach cards for all 8 rosters, voice-checked: this week's advice for every computed card on the Coach page (swaps, injuries, byes, empty slots) plus FantasyPros-sourced start/sit and waiver ideas, trades evaluated for both teams by scripts/trade_eval.py, and injury/news deltas, and writes data/<season>/fantasypros/latest.json (plus a dated copy under fantasypros/history/), then commits it and pushes its coach-daily-<date> branch; the coach-daily-pr workflow opens the auto-merging PR. Invoked by fantasy-orchestrator for "run/update/refresh coach cards", "waiver ideas", "trade ideas", "what changed in the injury report". Independent of recap production — never touches a recap or commits any data/<season>/week-NN/ file (it captures the live week into its worktree when missing, uncommitted).
 model: inherit
 ---
 
@@ -19,10 +19,16 @@ this merges.
 Other sessions (the weekly recap, an interactive one) switch branches in the project's own
 checkout while this runs — working there would pull the rug out from under them.
 
+From the project folder (its root, where `.claude/` lives):
+
 ```
 git fetch origin
-git worktree add -B coach-daily-<YYYY-MM-DD> /tmp/fantasy-coach-daily-<YYYY-MM-DD> origin/main
+git worktree add -B coach-daily-<YYYY-MM-DD> .claude/worktrees/coach-daily-<YYYY-MM-DD> origin/main
 ```
+
+The worktree lives under the project's own `.claude/worktrees/` (gitignored), not `/tmp`, so it stays
+inside the session's working directory: every path this skill names resolves the same way for the
+file tools and the shell, and nothing has to reach outside the project.
 
 (If that path or branch already exists from an earlier run today, remove it first:
 `git worktree remove --force` / `git branch -D`.) Every edit, build, check, and commit below
@@ -38,7 +44,7 @@ cloud `live-update` captures on a runner that is thrown away, so on most morning
 week folder yet:
 
 ```
-cd /tmp/fantasy-coach-daily-<YYYY-MM-DD>
+cd .claude/worktrees/coach-daily-<YYYY-MM-DD>
 node scripts/capture_node.mjs current   # writes data/2026/week-NN/espn.json
 python3 scripts/analyze.py --week NN    # NN from `current`'s output; writes that week's facts.json
 node scripts/capture_node.mjs next      # best effort: writes data/2026/next-week/espn.json
@@ -57,7 +63,8 @@ stages only the files it names (never `git add -A`). `analyze.py` may also touch
 
 Read `data/2026/fantasypros/latest.json` from the worktree (`origin/main`) before touching
 anything else — it's your only source for "what changed since yesterday." If yesterday's
-coach-daily PR is still open (`gh pr list --state open --head coach-daily-`), its branch has a
+coach-daily PR is still open (`gh pr list --state open --head coach-daily-`), or yesterday's branch
+was pushed but its PR never opened (`git ls-remote --heads origin 'coach-daily-*'`), that branch has a
 newer snapshot than `main`; read that one instead. A missing snapshot is fine — say so in your
 notes rather than inventing a comparison.
 
@@ -416,7 +423,7 @@ week, not per team) comes from Step 5b too; a missing or stale one just means th
 `roster_ideas` carry `pos` (Step 5), and trade cards their `trade` block (Step 5a). A trade isn't
 tied to one week, so put it in `roster_ideas` under every week you write.
 
-## Step 7: build, check, commit, ship the PR
+## Step 7: build, check, commit, push the branch
 
 1. `python3 site/build.py` then `python3 scripts/check.py`. Fix anything either flags. Don't
    edit or commit any recap file or any `data/2026/week-NN/` file.
@@ -425,28 +432,31 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    never touched; a second run on the same Pacific-time day (manual reruns included) replaces that day's file. Re-run `python3 scripts/check.py`.
    Then commit **only** `data/2026/fantasypros/latest.json`, `data/2026/fantasypros/history/<Pacific date>.json`
    and `data/2026/fantasypros/history/index.json` on the worktree's `coach-daily-<date>` branch.
-   Never `git add -A`.
+   Never `git add -A`. All three, every run: the history copy is part of the snapshot, not an
+   extra. If a prompt that invoked you says to commit only `latest.json`, it predates the archive;
+   commit all three anyway. `coach-daily-pr.yml` opens a `coach-daily history copy missing` issue
+   for any branch without them (Nov 9-11 2026 shipped without, and nobody noticed).
 
    **If archiving fails**, the cards still ship: the live site reads only `latest.json` (and ignores it
    after 36 hours), so a history problem must not cost the league its day's Coach cards. Delete any
    half-written file under `history/` (`git status` shows it), commit `latest.json` alone, and say in
    the Output summary that today's history copy is missing. The next run adds its own day and rebuilds
    `index.json`; don't hand-edit a history file to make `check.py` pass, re-run the script instead.
-3. Push, open a PR against `main` (`gh pr create --title "Coach: daily FantasyPros cards
-   (<date>)"`), and turn on auto-merge: `gh pr merge <number> --auto --squash --delete-branch`.
-   No human review is needed — small, derived data whose copy already passed Step 5c. Never
-   push to `main` directly and never merge with `--admin`.
-4. Any older coach-daily PR still open is superseded (the file is a rolling snapshot; both PRs
-   would overwrite it) — close it (`gh pr close <n> --delete-branch`) so it can't conflict with
-   today's.
-5. Confirm auto-merge is actually on (`gh pr view <n> --json autoMergeRequest`), then remove the
-   worktree: `git worktree remove --force /tmp/fantasy-coach-daily-<date>` (--force: the captured week folder is untracked).
-6. Don't deploy the website yourself — the next `live-update.yml` run picks up the merged
-   snapshot the next time it builds.
+3. Push the branch, and that's your last step on GitHub:
+   `git push -u origin coach-daily-<date>`. Don't open, merge, or close any PR yourself.
+   `.github/workflows/coach-daily-pr.yml` runs on that push: it refuses a branch that changes
+   anything but the three snapshot files above, re-runs `check.py`, opens the
+   `Coach: daily FantasyPros cards (<date>)` PR, turns on auto-merge, and closes the older
+   coach-daily PRs today's supersedes. No human review is needed — small, derived data whose
+   copy already passed Step 5c. Never push to `main` directly. If the push itself fails, say
+   so in the Output summary and keep the worktree, so the commit isn't lost.
+4. Remove the worktree, from the project folder: `git worktree remove --force
+   .claude/worktrees/coach-daily-<date>` (--force: the captured week folder is untracked).
+5. Don't deploy the website yourself — merging the PR fires `live-update.yml`'s push deploy.
 
 ## Output
 
-A short summary, opening with "FantasyPros reached" or the reason it wasn't: the PR link and whether auto-merge is on, which teams got a new waiver idea or
+A short summary, opening with "FantasyPros reached" or the reason it wasn't: the branch you pushed (the `coach-daily-pr` workflow opens its PR; if it fails it opens a `coach-daily-pr failing` issue), which teams got a new waiver idea or
 an evaluated trade today (and how many trades the scan passed league-wide), any FantasyPros injury/news changes worth knowing about, any card Step 5c dropped
 for failing the voice gate twice, any rostered player Step 6's stats script could not pair (or that Step 4a was skipped), whether Step 7's history copy was written, and — only the first time
 it comes up — Trade Finder's premium disclosure.

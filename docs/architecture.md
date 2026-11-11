@@ -48,7 +48,12 @@ ESPN's league settings, mirrored in `league.json` (the source of truth; edit it,
   that PR is what triggers the push-deploy above.
 - **`fantasy-coach-daily`** runs once a day: invokes `coach-daily`, which writes FantasyPros-sourced Coach cards
   (start/sit, waiver ideas, evaluated trades, injury/news changes since yesterday) to `data/2026/fantasypros/latest.json`
-  and archives a dated copy as `history/<date>.json` (plus a compact `history/index.json`), then opens its own auto-merging PR. It works in its own git worktree so it never switches branches under another
+  and archives a dated copy as `history/<date>.json` (plus a compact `history/index.json`), then commits and pushes a
+  `coach-daily-<date>` branch. That push is all it does on GitHub: **`coach-daily-pr.yml`** (GitHub Actions) checks the
+  branch changes only those snapshot files, re-runs `check.py`, opens the PR with auto-merge, and closes older
+  coach-daily PRs. A branch with no history copy still ships its cards, but gets a `coach-daily history copy
+  missing` issue so the archive can't silently stop again. It uses the `COACH_DAILY_PR_TOKEN` secret, not the built-in token, so `checks` runs on the PR and
+  the merge fires the push deploy. On failure it opens (or comments on) a `coach-daily-pr failing` issue. It works in its own git worktree so it never switches branches under another
   session, and it never deploys itself — merging its PR triggers the push-deploy above, same as a recap.
 - Every scheduled job works from `main`, so anything it depends on must be merged first.
 
