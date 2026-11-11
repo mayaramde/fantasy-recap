@@ -124,7 +124,7 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `snapshot_history.py` (archives `fantasypros/latest.json` into `history/`)
 - `.github/workflows/`: `checks.yml` and `live-update.yml` (capture + deploy); the scheduled Claude routines run locally, see `docs/architecture.md`
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
-  profile, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
+  profile and its playoff odds chip, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);
   `hub_preview.py` renders the Week hub's two states for a look in a browser
 - `data/player_names.json`: cache of names resolved via ESPN's public athlete API
 
