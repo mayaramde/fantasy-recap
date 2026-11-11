@@ -65,8 +65,9 @@ jobs:
           fi
 
       # This PR merges with nobody reading it, so it may only carry the snapshot: latest.json,
-      # index.json, and new day files. An earlier day's file is never rewritten
-      # (scripts/snapshot_history.py), so a modified or deleted one stops the run too.
+      # index.json, new day files, and the snapshot's own day file (a same-day rerun replaces
+      # it, scripts/snapshot_history.py). Any other earlier day is never rewritten, so a
+      # modified or deleted one stops the run too.
       - name: Only the snapshot files changed
         run: |
           git fetch --quiet origin main
@@ -76,8 +77,19 @@ jobs:
             exit 1
           fi
           echo "$changes"
+          # The snapshot's own day, the Pacific date of its generated_at, worked out by the same
+          # function that names the file.
+          latest=$(echo "$changes" | grep -oE $'\tdata/[0-9]{4}/fantasypros/latest\.json$' | tr -d '\t' || true)
+          today_file=""
+          if [ -n "$latest" ]; then
+            day=$(python3 -c 'import json,sys; sys.path.insert(0, "scripts"); from snapshot_history import local_day; print(local_day(json.load(open(sys.argv[1]))["generated_at"]))' "$latest")
+            today_file="$(dirname "$latest")/history/$day.json"
+            echo "SNAPSHOT=$latest" >> "$GITHUB_ENV"
+            echo "Snapshot day: $day ($today_file)"
+          fi
           bad=$(echo "$changes" | grep -vE $'^M\tdata/[0-9]{4}/fantasypros/(latest|history/index)\\.json$' \
-                                | grep -vE $'^A\tdata/[0-9]{4}/fantasypros/(latest|history/index|history/[0-9]{4}-[0-9]{2}-[0-9]{2})\\.json$' || true)
+                                | grep -vE $'^A\tdata/[0-9]{4}/fantasypros/(latest|history/index|history/[0-9]{4}-[0-9]{2}-[0-9]{2})\\.json$' \
+                                | grep -vxF "M	$today_file" || true)
           if [ -n "$bad" ]; then
             echo "::error::$BRANCH changes files outside the coach-daily snapshot, or rewrites an earlier day's history:"
             echo "$bad"
@@ -86,16 +98,43 @@ jobs:
           # The dated history copy rides along with every snapshot (coach-daily Step 7). A
           # missing one doesn't block the cards, the site reads only latest.json, but it must
           # not go unnoticed again: Nov 9-11 2026 shipped latest.json alone and nobody saw.
-          if echo "$changes" | grep -qE $'^A\tdata/[0-9]{4}/fantasypros/history/[0-9]{4}-[0-9]{2}-[0-9]{2}\\.json$' \
+          if [ -n "$today_file" ] && echo "$changes" | grep -qE "^[AM]	$today_file\$" \
              && echo "$changes" | grep -qE $'\tdata/[0-9]{4}/fantasypros/history/index\\.json$'; then
             echo "HISTORY=ok" >> "$GITHUB_ENV"
           else
-            echo "::warning::$BRANCH has no history copy (history/<date>.json + index.json); the archive skips this day."
+            echo "::warning::$BRANCH has no history copy for its day (${today_file:-history/<date>.json} + index.json); the archive skips this day."
             echo "HISTORY=missing" >> "$GITHUB_ENV"
           fi
 
       - name: Data checks
         run: python3 scripts/check.py
+
+      # Nov 9-11 2026 shipped snapshots with no week cards at all while Week 10 was live,
+      # because the runs skipped coach-daily Step 1's capture. Ask ESPN which week is live
+      # (anonymous, like live-update.yml) and flag a snapshot that has nothing for it. Best
+      # effort and non-blocking: the audit copy is still worth merging.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Live week has cards
+        continue-on-error: true
+        run: |
+          node scripts/capture_node.mjs current > "$RUNNER_TEMP/capture.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          week = json.load(open(os.path.join(os.environ["RUNNER_TEMP"], "capture.json")))[0]["week"]
+          snap = json.loads(Path(os.environ["SNAPSHOT"]).read_text())
+          season = Path(os.environ["SNAPSHOT"]).parts[1]
+          recap = Path(f"recaps/{season}/week-{week:02d}.json")
+          published = recap.exists() and json.loads(recap.read_text()).get("status") == "published"
+          weeks = sorted(snap.get("weeks") or {}, key=int)
+          print(f"ESPN live week {week}, recap {'published' if published else 'not published'}; snapshot weeks: {weeks or 'none'}")
+          if not published and str(week) not in weeks:
+              print(f"::warning::The snapshot has no cards for Week {week}, the live week.")
+              with open(os.environ["GITHUB_ENV"], "a") as f:
+                  f.write(f"NO_WEEK={week}\n")
+          PY
 
       - name: Open the PR and turn on auto-merge
         env:
@@ -111,6 +150,11 @@ jobs:
           note=""
           if [ "$HISTORY" = missing ]; then
             note="**No history copy on this branch**, so \`fantasypros/history/\` skips this day. The cards still ship."
+          fi
+          if [ -n "$NO_WEEK" ]; then
+            note="$note
+
+          **No Week $NO_WEEK cards**: ESPN's live week isn't in this snapshot, so the Coach page shows only computed cards for it."
           fi
           n=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
           if [ -z "$n" ]; then
@@ -175,6 +219,22 @@ jobs:
           done <<< "$older"
           if [ -n "$kept" ]; then
             echo "KEPT=$kept" >> "$GITHUB_ENV"
+          fi
+
+      - name: Flag a snapshot with no live-week cards
+        if: env.NO_WEEK != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="coach-daily wrote no live-week cards"
+          body="\`$BRANCH\`'s snapshot has nothing under \`weeks\` for Week $NO_WEEK, which ESPN says is live and has no published recap. coach-daily Step 1 captures the live week itself (\`capture_node.mjs current\`) when the project folder has none; check that run's Output summary for whether the capture ran or failed.
+
+          Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          existing=$(gh issue list --repo "${{ github.repository }}" --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
+          else
+            gh issue create --repo "${{ github.repository }}" --title "$title" --assignee "${{ github.repository_owner }}" --body "$body"
           fi
 
       # Not a failure (the cards still merge), so it can't go through the alert below.
