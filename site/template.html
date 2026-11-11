@@ -1481,7 +1481,13 @@ __LIVE_CSS__
   .crumbs .you-tag { font: 700 11px/1 var(--script); letter-spacing: 0.04em; color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
 
   /* the hero: the same on both tabs */
-  .tp-id { position: relative; margin-top: 16px; background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 4px 4px 0 var(--accent); padding: 14px 14px 10px; }
+  .tp-id { position: relative; isolation: isolate; margin-top: 16px; background: var(--board); color: var(--on-board); border: 2px solid var(--edge); border-radius: 18px; box-shadow: 4px 4px 0 var(--accent); padding: 21px 14px 10px; }
+  /* the recap banner's backdrop: a dot grid, a cobalt glow top right and her seed as a giant outlined numeral.
+     It has its own clipping layer, so the stickers on the hero's top edge can still poke out above it. */
+  .tp-bg { position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: inherit; pointer-events: none; }
+  .tp-bg::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.09) 1.5px, transparent 0); background-size: 22px 22px; }
+  .tp-bg::after { content: ""; position: absolute; right: -70px; top: -110px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0, transparent 68%); opacity: 0.55; }
+  .tp-big { position: absolute; right: 96px; bottom: -42px; font: 900 150px/1 var(--display); color: transparent; -webkit-text-stroke: 2.5px rgba(244, 246, 255, 0.2); user-select: none; }
   /* the team name and the Switch team pill sit on the hero's top edge like stickers, so the hero needs no row of its own for them */
   .tp-id-top { position: absolute; top: -13px; left: 12px; right: 12px; display: flex; align-items: center; gap: 6px; pointer-events: none; }
   .tp-id-top > * { pointer-events: auto; }
@@ -1503,9 +1509,16 @@ __LIVE_CSS__
   .tp-ch { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 8px; color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 999px; font: 600 11.5px/1.25 var(--body); white-space: nowrap; }
   .tp-ch b { font: 800 13.5px/1 var(--display); letter-spacing: 0.02em; }
   .tp-ch.po { color: var(--on-pop); background: var(--lime); }
+  /* From 860px the banner has room to be the recap's: the stickers and Switch team move inside it, the padding
+     opens up, and the name and record sit over the glow and the numeral. */
   @media (min-width: 860px) {
-    .tp-id { padding: 20px 24px 16px; box-shadow: 6px 6px 0 var(--accent); }
-    .tp-id-top { left: 20px; right: 20px; }
+    .tp-id { margin-top: 22px; padding: 28px 40px 30px; border-radius: 24px; box-shadow: 8px 8px 0 var(--accent); }
+    .tp-id-top { position: static; margin-bottom: 14px; }
+    .tp-switch { min-height: 36px; padding: 0 16px; box-shadow: 2px 2px 0 var(--accent); }
+    .tp-id-main { align-items: flex-end; }
+    .tp-chips { margin-top: 16px; gap: 8px; }
+    .tp-bg::after { right: -60px; top: -90px; width: 420px; height: 420px; }
+    .tp-big { right: 30%; bottom: -78px; font-size: 300px; -webkit-text-stroke-width: 3px; }
     .tp-id h1 { font-size: clamp(56px, 7vw, 76px); }
     .tp-rec b { font-size: clamp(44px, 5vw, 58px); }
     .tp-rec span { font-size: 12px; }
@@ -1526,6 +1539,7 @@ __LIVE_CSS__
   .tp-seg a:hover { background: var(--accent-soft); }
   .tp-seg a[aria-current="page"] { background: var(--ink); color: var(--bg); }
   @media (max-width: 640px) { .tp-tabbar.stuck .tp-mini { display: none; } .tp-tabbar.stuck .tp-seg { max-width: none; } }
+  @media (min-width: 860px) { .tp-tabbar { margin-top: 14px; padding: 6px 16px 8px; } .tp-seg { flex: 0 1 420px; } .tp-tabbar.stuck .tp-seg { margin-left: auto; } }
 
   /* Switch team: a bottom sheet on a phone, a centered card from 640px up */
   .tp-sheet { width: 100%; max-width: 100%; max-height: 85vh; margin: auto 0 0; padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); color: var(--ink); background: var(--bg); border: 2px solid var(--edge); border-bottom: 0; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 0 var(--drop); }
@@ -1610,6 +1624,7 @@ __LIVE_CSS__
 
   /* Game day */
   .gd { display: grid; gap: 10px; margin-top: 4px; }
+  @media (min-width: 860px) { .gd { gap: 14px; margin-top: 14px; } .gd-wk b { font-size: 22px; } .gd-hw { padding: 18px 22px 20px; } .gd-hw h2 { font-size: 32px; } }
   .gd > section { margin-top: 0; }
   .gd > .tp-sec { margin-top: 14px; }
   .gd-wk { display: flex; align-items: baseline; gap: 10px; }
@@ -3899,6 +3914,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ].join('');
     return `
       <section class="tp-id" id="tp-id" aria-labelledby="tp-h">
+        <span class="tp-bg" aria-hidden="true"><span class="tp-big">${rank}</span></span>
         <div class="tp-id-top"><span class="tp-tname">${esc(t.team_name)}</span>${you ? '<span class="tp-you">You</span>' : ''}
           <button type="button" class="tp-switch" data-tp-sheet aria-haspopup="dialog" aria-controls="tp-sheet">Switch team</button></div>
         <div class="tp-id-main"><h1 id="tp-h">${esc(t.manager)}</h1><div class="tp-rec"><b>${record(t)}</b><span>${ordinal(rank)} place</span></div></div>
