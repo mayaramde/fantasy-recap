@@ -131,6 +131,15 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   (`CHIP_TILES`). The pre-kickoff blurb sets the projection against his own average (`form_blurb()`); with fewer than
   three games it keeps the older stock lines. Nothing is written by Claude: it is all arithmetic on the capture, so
   `tests/test_player_outlook.py` pins it.
+  **Matchup rating** (the Player outlook's third piece; live week only): when the FantasyPros snapshot is fresh and its
+  `matchups` block is for exactly this week (`fp_matchups()`), a card whose game is still ahead carries a chip
+  ("WR matchup: 2nd easiest") and a note ("FantasyPros ranks this week's WR matchup 2nd easiest of 32 teams (4.9 of 5
+  stars, where 5 is the easiest)."). FantasyPros ranks 1 (easiest) to 32 (hardest); a rank past 16 is worded from the
+  hard end ("13th hardest" for rank 20). Built by `scripts/fp_matchups.py` from `get_schedule_and_strength` in
+  `coach-daily` Step 4b, keyed by ESPN team abbreviation (FantasyPros' JAC and WAS become JAX and WSH), one rating per
+  position. A team on a bye has none (FantasyPros sends null), and neither the opponent nor home/away is stored: the tool
+  doesn't return them when asked for all 32 teams. The Next tab never shows one (a block for another week is ignored),
+  and a stale snapshot shows none.
 - **League wire** (`wire()` in `site/build.py`, part of `live_payload`, so `/api/live` refreshes it too): the
   last seven days of ESPN's transaction log from the live capture and the ones before it. Pickups and drops,
   lineup changes (with the players promoted off the bench, counted once each per day) and trades. ESPN records that a trade went

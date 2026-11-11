@@ -132,6 +132,18 @@ def fp_player_stats(fp, week):
     return block["players"]
 
 
+def fp_matchups(fp, week):
+    """{ESPN team abbr: {pos: {rank, stars}}}: FantasyPros' matchup ratings for the live week. None
+    when the snapshot is missing, stale, malformed, or rated a different week: a rating for last
+    week's game on this week's card is worse than none, so the Next tab never shows one either."""
+    if not _fp_fresh(fp):
+        return None
+    block = fp.get("matchups")
+    if not isinstance(block, dict) or block.get("week") != week or not isinstance(block.get("teams"), dict):
+        return None
+    return block["teams"]
+
+
 def player(p, live, states_known, stats=None):
     """One row of a box score. `player_id` (ESPN's *player* id, the one the headshot URLs carry,
     never a member's) and `team` are read from that week's own capture on every week, so a
@@ -669,6 +681,26 @@ def _proj_gap(p, form):
     return round(float(_f1(_proj(p))) - form["avg"], 1)
 
 
+def _ordinal(n):
+    return f"{n}{'th' if 10 <= n % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')}"
+
+
+def player_matchup(p, ctx):
+    """{label, phrase, rank, stars} for the week's FantasyPros matchup rating at his position, else
+    None. Only while his game is ahead: once it has started the score is the story, and a bye week
+    has no rating at all (FantasyPros sends null)."""
+    if ctx["locked"](p) or ctx["on_bye"](p) or p.get("pos") not in ("QB", "RB", "WR", "TE", "K", "DST"):
+        return None
+    rating = ((ctx.get("matchups") or {}).get(p.get("team")) or {}).get(p["pos"])
+    if not rating:
+        return None
+    rank = rating["rank"]
+    # 1 is the easiest and 32 the hardest, so the back half reads as hardest from the other end.
+    phrase = f"{_ordinal(rank)} easiest" if rank <= 16 else f"{_ordinal(33 - rank)} hardest"
+    return {"label": "D/ST" if p["pos"] == "DST" else p["pos"], "phrase": phrase, "rank": rank,
+            "stars": rating["stars"]}
+
+
 def player_chips(p, ctx):
     """[{label, value}]: his form (average and last three games), what ESPN projects him against it
     while his game is still ahead, and two role tiles from his season totals. Empty when there's
@@ -680,6 +712,9 @@ def player_chips(p, ctx):
         chips.append({"label": "Last 3", "value": ", ".join(_f1(x) for x in form["last3"])})
         if ctx["projected"] and _proj(p) > 0.005 and not ctx["locked"](p) and not ctx["on_bye"](p):
             chips.append({"label": "Proj vs avg", "value": f"{_proj_gap(p, form):+.1f}"})
+    m = player_matchup(p, ctx)
+    if m:
+        chips.append({"label": f"{m['label']} matchup", "value": m["phrase"]})
     tiles = key_stats(p.get("pos"), (ctx.get("stats") or {}).get(str(p["player_id"])) or
                       (ctx.get("stats") or {}).get(p["player_id"]))
     if tiles and p.get("pos") in CHIP_TILES:
@@ -934,6 +969,11 @@ def player_notes(p, starting, ctx):
                 notes.append(f"Would have gone in for {rival['name']} at {rival['slot']}, who is on "
                              f"{_pts(rival['points'])}.")
 
+    m = player_matchup(p, ctx)
+    if m:
+        notes.append(f"FantasyPros ranks this week's {m['label']} matchup {m['phrase']} of 32 teams "
+                     f"({m['stars']:.1f} of 5 stars, where 5 is the easiest).")
+
     add = ctx["pickups"].get(p["name"])
     if add:
         how = "off waivers" if add["type"] == "WAIVER" else "off the free-agent pile"
@@ -985,7 +1025,8 @@ def injury_report(starters, bench, on_bye):
 
 
 def team_advice(team, before, before_week, states_known, projected=True, week_open=True,
-                fp_items=(), fp_ideas=(), written=None, written_summary=None, form=None, stats=None):
+                fp_items=(), fp_ideas=(), written=None, written_summary=None, form=None, stats=None,
+                matchups=None):
     """One team's to-do list for a week.
 
     `before` maps player id to that player's injury designation in the previous captured
@@ -1003,7 +1044,8 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
     `written_summary` are coach-daily's copy for the computed cards themselves, keyed by
     situation (see written_cards); a card with no written copy keeps its computed wording.
     `form` ({player_id: points per game played}, see player_form) and `stats` (season totals, see
-    fp_player_stats) feed the per-player outlook; without them the cards just skip that part.
+    fp_player_stats) and `matchups` (see fp_matchups) feed the per-player outlook; without them the
+    cards just skip that part.
     """
     order = {slot: i for i, slot in enumerate(SLOT_ORDER)}
     starters = sorted(team["starters"], key=lambda p: order.get(p["slot"], len(order)))
@@ -1266,7 +1308,7 @@ def team_advice(team, before, before_week, states_known, projected=True, week_op
         "top_starter": best_id(starters), "top_bench": best_id(team["bench"]),
         "bench_best": bench_best, "starter_for": starter_for,
         "pickups": {a["name"]: a for a in team.get("pickups_started", [])},
-        "starters": starters, "form": form or {}, "stats": stats or {},
+        "starters": starters, "form": form or {}, "stats": stats or {}, "matchups": matchups or {},
     }
 
     # FantasyPros-sourced cards join the to-do list as if they'd always been part of it —
@@ -1350,6 +1392,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None, history=None):
     before = injury_map(previous) if previous else {}
     form = player_form(history)
     stats = fp_player_stats(fp, week) if fp and week else None
+    matchups = fp_matchups(fp, week) if fp and week else None
     by_id = {t["team_id"]: t for t in teams}
     rows_out = []
     for t in LEAGUE["teams"]:
@@ -1359,7 +1402,7 @@ def advice_payload(teams, espn, previous, fp=None, week=None, history=None):
         written, written_summary = written_cards(t["team_id"], fp, week)
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
                                     states_known, projected, week_open, fp_items, fp_ideas,
-                                    written, written_summary, form=form, stats=stats))
+                                    written, written_summary, form=form, stats=stats, matchups=matchups))
     # Did this capture record injury designations at all? Without them a roster with nobody listed is
     # "we don't know", never "healthy", so the Coach landing hides what it would say about injuries.
     injuries_known = bool(injury_map(espn))

@@ -76,6 +76,10 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   factual, derived data, like `data/player_names.json`, so no review). `site/build.py` treats it as best effort: a
   missing, malformed, or stale (>36h old) file just means ESPN-only Coach cards (written season-audit copy still
   applies while its key matches, since it describes finished weeks).
+  The same file carries two data blocks that are not written advice: `player_stats` (season totals behind the Key stats
+  tiles and the lineup cards' role chips) and `matchups` (`scripts/fp_matchups.py`: FantasyPros' rank out of 32 and star
+  rating of each NFL team's matchup at each position for the live week, behind the lineup cards' "WR matchup" chip; it
+  has no opponent or home/away, and a block for any other week is ignored).
 
 ## Privacy
 - The raw ESPN payload includes members' last names, ESPN IDs and notification settings. **Do not commit it.**
