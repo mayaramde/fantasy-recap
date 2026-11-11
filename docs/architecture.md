@@ -343,9 +343,22 @@ hero is the same height for every team and the homework card starts within the f
     this week**, **Injuries and byes**, for the week being played), with the pick's row orange and the team you came from
     cobalt-soft.
   - **Where this comes from**: a closed details with the capture's source line.
-- **Season** `#team-<id>.season`: score-by-week chart with the season average, stat tiles, the full audit, week by week, and
-  every award and the roster moves as accordion rows. Awards carry their story text and the players they name
-  (`build.award_players`); audit cards carry `players`; moves carry `added_ids` / `dropped_ids`.
+- **Season** `#team-<id>.season`: the hero's chips switch to the season (Avg, Best with its week, Vs. everyone) and wrap
+  instead of scrolling. Then, each drawn only when it has something to say:
+  - **Report card**: her row of the strength grid, from the same `profile.pos_ranks` as the grid on `#league-<id>`, one
+    tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
+  - **Coach's audit**: the audit cards (kind tag, title, stat sticker, text, players) as a scroll-snap row with dots on a
+    phone, stacked from 860px.
+  - **Season story**: one bar per week (cobalt win, bubblegum loss, tangerine tie) with a dashed average line. The bars are buttons (`aria-pressed`, arrow keys, Home and End move between weeks); the
+    picked week (the latest by default, kept per team in `SN_WEEK` across live redraws) shows below in an
+    `aria-live` panel: opponent, result, score (linking to that game), her rank that week, points benched, that week's
+    awards (game ball rows lime-soft, flags tangerine-soft) and a link to its recap. A tap swaps only the bars and the panel's contents, so the live region announces it;
+    a live redraw also keeps the audit row's scroll position. Under it, the season's game ball and flag totals, in plain text.
+  - **Bench math**: the share of her best possible lineup she started (`points_for / (points_for + bench_left)`) with a
+    meter, and the points left on the bench.
+  - **Roster moves**: one closed details, "Roster moves · N · latest W<week>", holding the week-grouped moves.
+  Before Week 1 is final the tab is one card, "Season starts after Week 1". Audit cards carry `players`; moves carry
+  `added_ids` / `dropped_ids`.
 
 - **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
   Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
