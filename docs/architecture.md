@@ -180,7 +180,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
 
 ## Coach page
 
-- (With a pick, `#coach` and `#coach-next` redirect to her **League** tab, `#team-<id>.league`; the landing below is what
+- (With a pick, `#coach` and `#coach-next` redirect to her team's **Game day**, `#team-<id>`; the landing below is what
   the league view, with no pick, sees, opening with a "Make this page yours" name picker.)
 - A league-wide grid at `#coach` (the week being played) and `#coach-next` (the week after it, from the
   `next-week` capture; no tab when that capture is missing or stale): the viewer's team and a league radar on
@@ -192,8 +192,8 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
   `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
   the card). Each team's own week lives
-  on her **team profile** (`#team-<id>`, `.lineup`, `.next` for next week, `.season`); the old `#coach-<id>` and
-  `#coach-next-<id>` links redirect there. Once the live week is final the page leads with next week. The browser
+  on her **team profile** (`#team-<id>` Game day, `.season`); the old `#coach-<id>`, `#coach-next-<id>`, `.lineup`,
+  `.next` and `.league` links redirect to Game day. Once the live week is final the page leads with next week. The browser
   remembers the team picked with the "Viewing as" chip, never the last one opened. The grid and the profile's week sections disappear once the live week's recap is
   published; the rest of the profile stays all season.
 - Next week's tab is baked at build time and never refreshed by `/api/live`: those numbers move about once a day,
@@ -298,35 +298,51 @@ site is wearing. First visit with nothing saved asks "Who are you?" (8 teams or 
 teams, "Open <name>'s team page" and "League view"; every change raises an Undo toast. The pick lives in
 `localStorage` (`ffg-coach-team`, and `ffg-viewing-asked` so it never nags), with in-memory fallbacks when storage is
 blocked. The pick is "who I am", and it decides where Coach goes: the single **Coach** nav item opens `#team-<me>` (the league
-landing `#coach` with no pick), and `#coach` / `#coach-next` redirect to `#team-<me>.league` once someone is picked. It also
+landing `#coach` with no pick), and `#coach` / `#coach-next` redirect to `#team-<me>` once someone is picked. It also
 lights the pick's team orange (the "You" badge). Which team is on screen is the URL's, not the pick's, so `#team-<other>`
 still shows that team with the same layout, written about as "her" (`herCopy` in `site/coach/pronouns.js` swaps the
-second person in the computed and written copy), with a "Back to my team (<name>)" chip, or "Back to the league" with no
-pick. Letting go of the pick (League view) while on that team's pages returns to `#coach`. Every change, including the
+second person in the computed and written copy); the hero's **Switch team** sheet is the way to another team. Letting go of the pick (League view) while on that team's pages returns to `#coach`. Every change, including the
 landing's "Make this page yours" chips, raises the Undo toast, since a wrong pick now changes what opens.
 Browsing a team never makes it "you". On phones the header collapses to a 48px bar past 70px of scroll (and reopens
 below 20px); `siteHead` adds the height it gave up back as a margin, and `tpSticky` keeps the team tab bar's sticky `top`
 equal to the header's measured height (scroll, resize, header resize, fonts).
 
-Every tab opens with the same header: breadcrumb, the team strip (standings order, pink badge = fixes waiting, orange dot =
-you), the dark identity card (playoff odds as a range from the Week hub's `stakes`, "lose–win vs <opponent>"; once the week
-has kicked off the range is gone and it shows today's single number, labelled), and a sticky Overview / Lineup / Season / League bar.
+Both tabs open with the same header: one compact hero (team-name sticker and a **Switch team** pill on its top edge,
+manager, record, place, and three chips: playoff odds as a range from the Week hub's `stakes`, "lose → win vs <opponent>",
+or today's single number once the week has kicked off; seed, "Seed N of 8"; and her spot in the waiver order), then a sticky
+**Game day** / **Season** pill bar. Switch team opens a bottom sheet (a modal `<dialog>`: Escape, a tap outside, Close or a
+team closes it) listing all eight in standings order, each with the pink count of fixes for the week its Game day shows, and
+the viewer marked "you". A live redraw waits while the sheet is open, and puts keyboard focus back on the control it was on. On a phone the chips are one swipeable line, so the
+hero is the same height for every team and the homework card starts within the first 330px.
 
-- **Overview** `#team-<id>`: the matchup (ESPN's win chance, both projections, starters left, what to fix), the playoff
-  card (seed, top-4 line, the odds if she loses / beats her opponent and what the game is worth), **Coach's take**
-  (one audit card, then this week's waiver and trade ideas: three up front, the rest behind "N more ideas") and **Who's next**
-  (the week-ahead opponent, the one player of theirs to watch, and a one-line reason: Injury watch, Her engine or Top threat;
-  it only appears once the next-week capture exists).
-- **Lineup** `#team-<id>.lineup`, and `#team-<id>.next` for next week (the week toggle lives here): a To fix card, then one
-  expandable row per player (Top scorers' headshot and logo sources, kickoff time from the public scoreboard's `kickoff`,
-  Coach's blurb and scoring lines in the panel); the next-week view then ends with **Coach's advice** (waiver and trade
-  ideas), since Overview only shows this week's.
-- **League** `#team-<id>.league`: the league-wide half of the Coach landing, built by `coachLeague` in `site/coach/landing.js`
-  from the same pieces as `#coach` (one source of truth): Coach's take, **Where everyone's strong**, **Waiver order this week**
-  and **Injuries and byes**, for the week being played. The pick's row is orange ("you"), the open team's cobalt-soft
-  ("viewing"), and names in the grid and waiver order open that team's profile. Empty states: no recapped week shows "No
-  grid yet"; a take coach-daily hasn't written (no `league_take`, or an unwritten audit card on Overview) shows the computed
-  wording on a light card with a one-line note. The This week / Next week toggle stays on Lineup only.
+- **Game day** `#team-<id>` (`.lineup`, `.next` and `.league` redirect here): one week, picked by `gdNext`, with no switch:
+  next week once the live week is final and the week-ahead capture exists (or when the live week has nothing for her), else
+  the live week. A "Week N" row with its state, then, each drawn only when it has something to say:
+  - **Homework**: "Lineup's clean" (lime, with her `summary` quip) or "N to fix" ("before Sunday" until the week kicks off;
+    bubblegum-soft) with one swap
+    card per fix built from the item's `swap` field (who sits, who starts, the slot and a short reason, a lime gain sticker
+    only for a positive gain, the card's own words behind a closed "Coach's full note"; "Nobody on the bench · waiver wire"
+    when `swap.in` is null). Fixes without `swap` (empty, hole) render as plain lines. Always drawn, with one fine line under
+    it. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing for her next week ("Week N is in the books").
+  - **Heads up** (only while the live week is still in play): next week's starters the week-ahead capture lists out,
+    doubtful, suspended or on IR. Questionable never triggers it.
+  - From 1040px the tab is two columns: the homework, heads-up and lineup on the left, the matchup, who's next, ideas,
+    league link and source on the right. Below that it's one column, with the matchup before the lineup.
+  - **The matchup**: ESPN's win chances and tug bar (or "ESPN hasn't posted Week N win chances yet"), both projections,
+    starters left, and "What's riding on it": a She wins / She loses (You win / You lose) toggle over the playoff odds
+    from `stakes`, remembered per team in `MU_SIDE` across redraws. No stakes pair, no toggle.
+  - **Lineup** ("Starters", with the projected total): one card of compact rows (slot, headshot and logo, the name with
+    its ESPN status sticker, team and kickoff, the projection as a plain number), each opening to Coach's blurb and scoring lines;
+    a starter with a swap fix is tinted pink with "Swap in <name>". The bench sits behind "Bench · N · K on bye · best
+    <name>", closed on a phone and open from 860px; a change from that default is remembered in `BENCH_OPEN`; bye and IR rows are dimmed.
+  - **Who's next** (live week only, once the week-ahead capture exists): the next opponent, the one player of theirs to
+    watch, and a one-line reason: Injury watch, Her engine or Top threat.
+  - **Ideas**: FantasyPros' own cards, then waiver and trade ideas; three shown, the rest behind "N more ideas".
+  - **How the league looks**: a link to `#league-<id>`, the league-wide half of the Coach landing, built by `coachLeague`
+    in `site/coach/landing.js` from the same pieces as `#coach` (Coach's take, **Where everyone's strong**, **Waiver order
+    this week**, **Injuries and byes**, for the week being played), with the pick's row orange and the team you came from
+    cobalt-soft.
+  - **Where this comes from**: a closed details with the capture's source line.
 - **Season** `#team-<id>.season`: score-by-week chart with the season average, stat tiles, the full audit, week by week, and
   every award and the roster moves as accordion rows. Awards carry their story text and the players they name
   (`build.award_players`); audit cards carry `players`; moves carry `added_ids` / `dropped_ids`.
