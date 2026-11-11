@@ -74,6 +74,27 @@
           "coach_cards": 29
         }
       }
+    },
+    {
+      "date": "2026-11-09",
+      "file": "2026-11-09.json",
+      "generated_at": "2026-11-09T14:22:11Z",
+      "fantasypros_reached": true,
+      "weeks": {}
+    },
+    {
+      "date": "2026-11-10",
+      "file": "2026-11-10.json",
+      "generated_at": "2026-11-10T14:16:32Z",
+      "fantasypros_reached": true,
+      "weeks": {}
+    },
+    {
+      "date": "2026-11-11",
+      "file": "2026-11-11.json",
+      "generated_at": "2026-11-11T19:23:32Z",
+      "fantasypros_reached": true,
+      "weeks": {}
     }
   ]
 }
