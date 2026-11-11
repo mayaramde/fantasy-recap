@@ -1,13 +1,83 @@
 {
-  "generated_at": "2026-11-10T14:16:32Z",
+  "generated_at": "2026-11-11T19:23:32Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-11-10T14:16:32Z"
+    "checked_at": "2026-11-11T19:23:32Z"
   },
   "weeks": {},
   "audit": {
+    "1": {
+      "lineup:C:4360761:w8": {
+        "title": "Week 8's bench had the better receiver",
+        "text": "Week 8's biggest miss: Tre Tucker got the receiver start and came up empty while Michael Wilson had a big day on your bench. When Wilson's active, he has earned the benefit of the doubt."
+      },
+      "pos:K2:WR7": {
+        "title": "Your kicker is outranking your receivers",
+        "text": "Receiver is where an add or a trade helps most. Second in the league at kicker is a lovely thing to own and a strange thing to lead with."
+      },
+      "proj:under:-16016:4360761": {
+        "title": "Your defense is the one starter ESPN underrates",
+        "text": "The Vikings defense has outperformed its projection by more than anyone else you start, so it keeps its spot without a conversation. Michael Wilson has come in under his, so read that number as a wish rather than a forecast."
+      }
+    },
+    "2": {
+      "lineup:B:4259545:w1": {
+        "title": "Your biggest bench regret is still Week 1",
+        "text": "Nothing urgent to fix, just keep checking the bench before you lock the flex, the wild-card spot. Week 1 is still the one the league could bring up: Emeka Egbuka started there while D'Andre Swift outproduced him without leaving the bench."
+      },
+      "pos:WR1:TE8": {
+        "title": "Receivers are carrying this roster solo",
+        "text": "Your receivers lead the league while your tight ends anchor the bottom. Spend the next add on a tight end before your receivers file for workers' comp."
+      },
+      "proj:over:4430878:4360248": {
+        "title": "Smith-Njigba is making the projections look conservative",
+        "text": "Jaxon Smith-Njigba treats his projection like a floor, not a ceiling. Kyle Pitts Sr. can't say the same about his."
+      }
+    },
+    "3": {
+      "lineup:C:4241416:w1": {
+        "title": "Chuba Hubbard made the bench the better lineup",
+        "text": "Trust the bench over the flex call next time it's this close. Week 1 is the only real bruise on an otherwise clean season: Jaylen Waddle got the flex nod while Chuba Hubbard went off from the bench instead."
+      },
+      "pos:K1:QB8": {
+        "title": "Kicker first, quarterbacks last",
+        "text": "Your kicker ranks first in the league and your quarterbacks rank last. The curse is real, at least statistically. If a quarterback upgrade turns up on waivers or in a trade, take it."
+      },
+      "proj:under:4241416:4047650": {
+        "title": "Chuba Hubbard is the safest name in this lineup",
+        "text": "Chuba Hubbard has been your most profitable start against ESPN's number, so he starts no matter who else is up. DK Metcalf's projection keeps promising more than he delivers, the same lesson Week 2 handed you when you started Jaylen Waddle over him and were right."
+      }
+    },
+    "4": {
+      "lineup:C:4248528:w1": {
+        "title": "The season's oldest bench miss",
+        "text": "Quinshon Judkins got the flex nod over Christian Watson in Week 1, and Watson went off from the bench. It's the only miss from that week still on the books."
+      },
+      "pos:TE1:RB7": {
+        "title": "The backfield is no longer last in the league",
+        "text": "Put your next claim into the backfield; tight end is first in the league and asks nothing of you. Last to seventh is not a parade, but we are clapping anyway."
+      },
+      "proj:under:4248528:4569173": {
+        "title": "Watson beat the number, Stevenson didn't",
+        "text": "Christian Watson beat his projection all season, and Rhamondre Stevenson kept falling short of his. On a close running back call, lean away from Stevenson's number; it has been optimistic all year."
+      }
+    },
+    "5": {
+      "lineup:C:4685278:w7": {
+        "title": "The bench outplayed the starting lineup",
+        "text": "Week 7's regret: Jalen Coker got the start at receiver while Luther Burden III had himself a day from the bench. The bench earned a seat at the big-kid table that week."
+      },
+      "pos:TE2:K7": {
+        "title": "The kicker is the one hole left",
+        "text": "Kicker is the one spot worth a waiver claim, with tight end near the top of the league and fine as is. There is a kicker on the wire. There is always a kicker on the wire."
+      },
+      "proj:over:-16030:4695883": {
+        "title": "The Jaguars defense is paying more than it promises",
+        "text": "Lock the Jaguars defense in. No starter of yours has done more with a modest projection. Jalen Coker's projection has been the most optimistic document on this roster."
+      }
+    },
     "6": {
       "lineup:B:4431459:w5": {
         "title": "Your one bench regret, and it's a small one",
@@ -22,74 +92,18 @@
         "text": "Joe Burrow has beaten his projection all season, so trust him over the number when it's close. Makai Lemon keeps coming up short of his, worth remembering on a tight start-sit call. Burrow keeps sending ESPN the receipt."
       }
     },
-    "5": {
-      "lineup:C:4685278:w7": {
-        "title": "The bench outplayed the starting lineup",
-        "text": "Week 7's regret: Jalen Coker got the start at receiver while Luther Burden III had himself a day from the bench. The bench earned a seat at the big-kid table that week."
-      },
-      "pos:RB3:K8": {
-        "title": "The kicker is the only thing holding this back",
-        "text": "Running back is a strength, kicker is dead last. It's the cheapest fix on the roster, and the waiver wire is practically begging to help."
-      },
-      "proj:under:2577417:4695883": {
-        "title": "Dak delivered, Coker didn't",
-        "text": "Dak Prescott kept beating his projection, while Jalen Coker kept falling well short of his. When ESPN's numbers say start Coker, get a second opinion."
-      }
-    },
-    "2": {
-      "lineup:B:4259545:w1": {
-        "title": "Mostly the right calls, a few bench regrets",
-        "text": "Biggest miss: Week 1, starting Emeka Egbuka (11.3) at flex, the wild-card spot, while D'Andre Swift put up 32.4 on your bench, where points don't count."
-      },
-      "pos:WR1:TE8": {
-        "title": "Receivers are carrying this roster solo",
-        "text": "Your receivers lead the league while your tight ends anchor the bottom. Spend the next add on a tight end before your receivers file for workers' comp."
-      },
-      "proj:over:4430878:4360248": {
-        "title": "Smith-Njigba is making the projections look conservative",
-        "text": "Jaxon Smith-Njigba treats his projection like a floor, not a ceiling. Kyle Pitts Sr. can't say the same about his."
-      }
-    },
-    "1": {
-      "lineup:C:4360761:w8": {
-        "title": "Week 8's bench had the better receiver",
-        "text": "Week 8's biggest miss: Tre Tucker got the receiver start and came up empty while Michael Wilson had a big day on your bench. When Wilson's active, he has earned the benefit of the doubt."
-      },
-      "pos:TE2:WR7": {
-        "title": "Tight end is doing the heavy lifting",
-        "text": "Your tight end spot ranks second in the league while receiver sits seventh. If an add or a trade comes up, make it a receiver; the tight end shouldn't have to carry this alone."
-      },
-      "proj:under:4047365:4360761": {
-        "title": "Jacobs beats the number, Wilson trails it",
-        "text": "Josh Jacobs keeps beating his projection, so start him with confidence. Michael Wilson keeps falling short of his, which is exactly why his weekly start-or-sit call is the hardest one on your roster."
-      }
-    },
     "7": {
-      "lineup:C:4431299:w4": {
-        "title": "Rashee Rice gave you nothing, literally",
-        "text": "Don't make the same read twice. Week 4: Rashee Rice started at receiver and gave you a complete blank, while Rome Odunze produced from the bench instead."
+      "lineup:C:4036378:w9": {
+        "title": "The backup had the bigger day in Week 9",
+        "text": "With two startable quarterbacks, let the weekly matchup break the tie instead of the bigger name. In Week 9 that was Josh Allen, and Jordan Love outscored him from the bench. The bench keeps filing the better argument."
       },
       "pos:QB1:FLEX8": {
         "title": "Quarterback is the strength, flex is the sinkhole",
         "text": "Your quarterback ranks first in the league while flex, the wild-card spot, ranks dead last. Whatever's starting there now should not still be starting there."
       },
-      "proj:under:3918298:4429160": {
-        "title": "Josh Allen is outrunning his own projection",
-        "text": "Josh Allen has basically stopped checking his own projection, he's so far past it. De'Von Achane wishes he could say the same about his."
-      }
-    },
-    "4": {
-      "lineup:C:4248528:w1": {
-        "title": "The season's oldest bench miss",
-        "text": "Quinshon Judkins got the flex nod over Christian Watson in Week 1, and Watson went off from the bench. It's the only miss from that week still on the books."
-      },
-      "pos:TE1:RB8": {
-        "title": "Tight end is carrying this team",
-        "text": "Your tight end spot ranks first in the league while running back sits last. The next add or trade should be a running back. Six of them on the roster and still last is the plot twist nobody ordered."
-      },
-      "proj:under:4248528:4569173": {
-        "title": "Watson beat the number, Stevenson didn't",
-        "text": "Christian Watson beat his projection all season, and Rhamondre Stevenson kept falling short of his. On a close running back call, lean away from Stevenson's number; it has been optimistic all year."
+      "proj:under:-16034:4429160": {
+        "title": "Keep the Texans defense in the lineup",
+        "text": "That slot is settled, since the Texans defense keeps clearing its projection. De'Von Achane's number is the least believable one you own."
       }
     },
     "8": {
@@ -97,27 +111,13 @@
         "title": "Tony Pollard had the game Henry was supposed to have",
         "text": "Week 7: Derrick Henry got the start at running back while Tony Pollard erupted from the bench instead. Not every bench decision needs forgiveness, just this one."
       },
-      "pos:WR2:RB7": {
-        "title": "Receivers are leading the way",
-        "text": "Your receivers rank second in the league while running back sits seventh. Start the backs who are actually producing and shop the rest; a crowded backfield only helps if somebody in it scores."
+      "pos:WR2:RB8": {
+        "title": "Receiver second, running back last",
+        "text": "Running back is the position to go shopping for; your receivers are among the league's best and need no help. The backfield spent the weekend finding a new floor."
       },
-      "proj:over:4239993:4870808": {
-        "title": "Tee Higgins keeps beating the spreadsheet",
-        "text": "Tee Higgins keeps clearing his projection by a wide margin, so start him without a second thought. Jeremiyah Love was running short of his before the injury, so give him a week back before trusting the number. Higgins has been overachieving enough for the whole room."
-      }
-    },
-    "3": {
-      "lineup:C:4241416:w1": {
-        "title": "Chuba Hubbard made the bench the better lineup",
-        "text": "Trust the bench over the flex call next time it's this close. Week 1 is the only real bruise on an otherwise clean season: Jaylen Waddle got the flex nod while Chuba Hubbard went off from the bench instead."
-      },
-      "pos:K1:QB8": {
-        "title": "Kicker first, quarterbacks last",
-        "text": "Your kicker ranks first in the league and your quarterbacks rank last. The curse is real, at least statistically. If a quarterback upgrade turns up on waivers or in a trade, take it."
-      },
-      "proj:under:4595348:4047650": {
-        "title": "Nabers delivers, Metcalf trails",
-        "text": "Malik Nabers keeps beating his projection, so he's an every-week start. DK Metcalf keeps falling short of his, which makes him the first receiver to bench on a crowded week. Seven receivers means you can afford to be picky."
+      "proj:over:4239993:4262921": {
+        "title": "Higgins has been better than his number all season",
+        "text": "Tee Higgins starts every week; he has spent the season making his projection look cautious. Justin Jefferson has come in a little under his, which changes nothing, because nobody is benching Justin Jefferson."
       }
     }
   },
