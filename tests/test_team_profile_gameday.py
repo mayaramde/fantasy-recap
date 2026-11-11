@@ -89,7 +89,7 @@ class HeadsUp(unittest.TestCase):
         self.assertIn("X and Y are listed out.", self.line([{"name": "X", "injury": "Out"}, {"name": "Y", "injury": "Out"}]))
 
     def test_mixed_designations_say_each(self):
-        self.assertIn("X is listed out and Y is listed on IR.",
+        self.assertIn("X is listed out and Y is on IR.",
                       self.line([{"name": "X", "injury": "Out"}, {"name": "Y", "injury": "On IR"}]))
 
     def test_questionable_never_triggers_it(self):

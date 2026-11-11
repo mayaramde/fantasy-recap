@@ -312,17 +312,18 @@ manager, record, place, and three chips: playoff odds as a range from the Week h
 or today's single number once the week has kicked off; seed, "Seed N of 8"; and her spot in the waiver order), then a sticky
 **Game day** / **Season** pill bar. Switch team opens a bottom sheet (a modal `<dialog>`: Escape, a tap outside, Close or a
 team closes it) listing all eight in standings order, each with the pink count of fixes for the week its Game day shows, and
-the viewer marked "you". A live redraw waits while the sheet is open. On a phone the chips are one swipeable line, so the
+the viewer marked "you". A live redraw waits while the sheet is open, and puts keyboard focus back on the control it was on. On a phone the chips are one swipeable line, so the
 hero is the same height for every team and the homework card starts within the first 330px.
 
 - **Game day** `#team-<id>` (`.lineup`, `.next` and `.league` redirect here): one week, picked by `gdNext`, with no switch:
   next week once the live week is final and the week-ahead capture exists (or when the live week has nothing for her), else
   the live week. A "Week N" row with its state, then, each drawn only when it has something to say:
-  - **Homework**: "Lineup's clean" (lime, with her `summary` quip) or "N to fix before Sunday" (bubblegum-soft) with one swap
+  - **Homework**: "Lineup's clean" (lime, with her `summary` quip) or "N to fix" ("before Sunday" until the week kicks off;
+    bubblegum-soft) with one swap
     card per fix built from the item's `swap` field (who sits, who starts, the slot and a short reason, a lime gain sticker
     only for a positive gain, the card's own words behind a closed "Coach's full note"; "Nobody on the bench · waiver wire"
     when `swap.in` is null). Fixes without `swap` (empty, hole) render as plain lines. Always drawn, with one fine line under
-    it. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing posted ("Week N is in the books").
+    it. Empty states: no capture ("Rosters aren't in yet") and a final week with nothing for her next week ("Week N is in the books").
   - **Heads up** (only while the live week is still in play): next week's starters the week-ahead capture lists out,
     doubtful, suspended or on IR. Questionable never triggers it.
   - **The matchup**: ESPN's win chances and tug bar (or "ESPN hasn't posted Week N win chances yet"), both projections,
@@ -330,7 +331,7 @@ hero is the same height for every team and the homework card starts within the f
     from `stakes`, remembered per team in `MU_SIDE` across redraws. No stakes pair, no toggle.
   - **Lineup**: the starters as accordion rows (headshot and logo, kickoff, Coach's blurb and scoring lines in the panel);
     a starter with a swap fix is tinted pink with "Swap in <name>". The bench sits behind "Bench · N · K on bye · best
-    <name>", closed on a phone and open from 860px, the choice remembered in `BENCH_OPEN`; bye and IR rows are dimmed.
+    <name>", closed on a phone and open from 860px; a change from that default is remembered in `BENCH_OPEN`; bye and IR rows are dimmed.
   - **Who's next** (live week only, once the week-ahead capture exists): the next opponent, the one player of theirs to
     watch, and a one-line reason: Injury watch, Her engine or Top threat.
   - **Ideas**: FantasyPros' own cards, then waiver and trade ideas; three shown, the rest behind "N more ideas".
