@@ -42,3 +42,31 @@ test('present tenses that end in -ed, irregular pasts, and comparisons', () => {
   assert.equal(herCopy('The only way to lose is a lineup you forgot to set.'), 'The only way to lose is a lineup she forgot to set.');
   assert.equal(herCopy('They gain a little more per week than you do.'), 'They gain a little more per week than she does.');
 });
+
+test('whether "you" is the subject is read off the word before it', () => {
+  assert.equal(herCopy('He lost you points from the RB spot.'), 'He lost her points from the RB spot.');
+  assert.equal(herCopy('ESPN has you projected for 98.'), 'ESPN has her projected for 98.');
+  assert.equal(herCopy('Gibbs carried you past Amie.'), 'Gibbs carried her past Amie.');
+  assert.equal(herCopy('Nobody can stop you now that Gibbs is back.'), 'Nobody can stop her now that Gibbs is back.');
+  assert.equal(herCopy('It looks like you need a kicker.'), 'It looks like she needs a kicker.');
+  assert.equal(herCopy('Do this unless you bring in a kicker.'), 'Do this unless she brings in a kicker.');
+  assert.equal(herCopy('If you no longer need him, drop him.'), 'If she no longer needs him, drop him.');
+  assert.equal(herCopy('Right now you and Amie are tied.'), 'Right now she and Amie are tied.');
+  assert.equal(herCopy('Then you stuck with Waddle.'), 'Then she stuck with Waddle.');
+  assert.equal(herCopy('Check before you double-check the report.'), 'Check before she double-checks the report.');
+  assert.equal(herCopy('You starting Gibbs was right.'), 'Her starting Gibbs was right.');
+});
+
+test('curly apostrophes are kept and conjugated like straight ones', () => {
+  assert.equal(herCopy('You don’t need him.'), 'She doesn’t need him.');
+  assert.equal(herCopy('You’re set and you’ll know.'), 'She’s set and she’ll know.');
+  assert.equal(herCopy('You can’t lose.'), 'She can’t lose.');
+});
+
+test('a relative clause with no "that" keeps "you" as its subject', () => {
+  assert.equal(herCopy('Maye is the only quarterback you roster.'), 'Maye is the only quarterback she rosters.');
+  assert.equal(herCopy('The fix is which ones start, not how many you keep.'), 'The fix is which ones start, not how many she keeps.');
+  assert.equal(herCopy('The only way to lose is a lineup you forgot to set.'), 'The only way to lose is a lineup she forgot to set.');
+  assert.equal(herCopy('Past you is not reliable.'), 'Past her is not reliable.');
+  assert.equal(herCopy("Bye weeks: the NFL's way of telling you to go check your bench."), "Bye weeks: the NFL's way of telling her to go check her bench.");
+});
