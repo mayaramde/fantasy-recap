@@ -455,8 +455,9 @@ tied to one week, so put it in `roster_ideas` under every week you write.
    anything but the three snapshot files above, re-runs `check.py`, opens the
    `Coach: daily FantasyPros cards (<date>)` PR, turns on auto-merge, and closes the older
    coach-daily PRs today's supersedes. It refuses (and turns auto-merge off on) a branch that
-   changes any other file or rewrites an earlier day's history file, and flags a branch whose
-   PR conflicts with `main`. No human review is needed — small, derived data whose
+   changes any other file or rewrites an earlier day's history file (today's own day file may be
+   replaced, for a same-day rerun), flags a branch whose PR conflicts with `main`, and opens an
+   issue when the snapshot has no cards for ESPN's live week (so skipping Step 1's capture shows). No human review is needed — small, derived data whose
    copy already passed Step 5c. Never push to `main` directly. If the push itself fails, say
    so in the Output summary and keep the worktree, so the commit isn't lost.
 4. Remove the worktree and its scratch folder, from the project folder: `git worktree remove --force
