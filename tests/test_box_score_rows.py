@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build-output tests for the matchup box score's rows (player() / week_payload() in site/build.py),
 run against the committed captures in data/<season>/week-NN/facts.json."""
+import functools
 import json
 import sys
 import tempfile
@@ -15,7 +16,9 @@ SEASON_DIR = ROOT / "data" / str(build.LEAGUE["season"])
 FIRST_WITH_STATES = 3          # weeks 1 and 2 were captured before game_state existed
 
 
+@functools.lru_cache(maxsize=None)
 def load(week):
+    """Cached: nothing here mutates a facts dict, and the lines tests read every week."""
     return json.loads((SEASON_DIR / f"week-{week:02d}" / "facts.json").read_text())
 
 
@@ -23,11 +26,18 @@ def rows(payload):
     return [r for g in payload["games"] for s in (g["winner"], g["loser"]) for r in s["starters"] + s["bench"]]
 
 
+def written(folder):
+    """What a build left in box-lines/. write_box_lines clears the folder and only recreates it when
+    it writes a file, so a build with no lines to write leaves no folder at all, not an empty one."""
+    return sorted(p.name for p in folder.iterdir()) if folder.exists() else []
+
+
 WEEKS = sorted(int(d.name.split("-")[1]) for d in SEASON_DIR.glob("week-*") if (d / "facts.json").exists())
 # The newest week on disk can be the live, uncommitted capture, and a week captured before kickoff has
 # no points yet, so ESPN gave it no scoring lines at all. Anything about lines reads the newest week
 # that has them, not whatever was captured last.
 WEEKS_WITH_LINES = [w for w in WEEKS if build.week_lines(load(w))]
+WEEKS_WITHOUT_LINES = [w for w in WEEKS if w not in WEEKS_WITH_LINES]
 
 
 class CompletedWeekRows(unittest.TestCase):
@@ -120,9 +130,9 @@ class LinesFile(unittest.TestCase):
             stale.parent.mkdir()
             stale.write_text("{}")
             build.write_box_lines(out, recap_weeks, preview=False)
-            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), published_files)
+            self.assertEqual(written(out / "box-lines"), published_files)
             build.write_box_lines(out, recap_weeks, preview=True)
-            self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), preview_files)
+            self.assertEqual(written(out / "box-lines"), preview_files)
             if draft in WEEKS_WITH_LINES:
                 got = json.loads((out / build.box_lines_path(draft)).read_text())
                 self.assertEqual(got, {"week": draft, "lines": build.week_lines(load(draft))})
@@ -145,6 +155,12 @@ class LiveWeekRows(unittest.TestCase):
     def test_live_rows_carry_lines_inline(self):
         p = build.week_payload(load(WEEKS_WITH_LINES[-1]), {"status": "live"}, live=True)
         self.assertTrue(any("lines" in r for r in rows(p)))
+
+    @unittest.skipUnless(WEEKS_WITHOUT_LINES, "every captured week carries scoring lines")
+    def test_a_lineless_weeks_live_rows_carry_no_lines(self):
+        """The state this file used to trip on: nobody has scored, so there is nothing to inline."""
+        p = build.week_payload(load(WEEKS_WITHOUT_LINES[-1]), {"status": "live"}, live=True)
+        self.assertFalse(any("lines" in r for r in rows(p)))
 
 
 if __name__ == "__main__":
