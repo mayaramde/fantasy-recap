@@ -24,6 +24,10 @@ def rows(payload):
 
 
 WEEKS = sorted(int(d.name.split("-")[1]) for d in SEASON_DIR.glob("week-*") if (d / "facts.json").exists())
+# The newest week on disk can be the live, uncommitted capture, and a week captured before kickoff has
+# no points yet, so ESPN gave it no scoring lines at all. Anything about lines reads the newest week
+# that has them, not whatever was captured last.
+WEEKS_WITH_LINES = [w for w in WEEKS if build.week_lines(load(w))]
 
 
 class CompletedWeekRows(unittest.TestCase):
@@ -108,9 +112,8 @@ class LinesFile(unittest.TestCase):
         # The newest captured week is the draft under review; every earlier week is published.
         draft = max(WEEKS)
         recap_weeks = [(load(w), {"week": w, "status": "published" if w != draft else "draft"}) for w in WEEKS]
-        with_lines = [w for w in WEEKS if build.week_lines(load(w))]
-        published_files = sorted(Path(build.box_lines_path(w)).name for w in with_lines if w != draft)
-        preview_files = sorted(Path(build.box_lines_path(w)).name for w in with_lines)
+        published_files = sorted(Path(build.box_lines_path(w)).name for w in WEEKS_WITH_LINES if w != draft)
+        preview_files = sorted(Path(build.box_lines_path(w)).name for w in WEEKS_WITH_LINES)
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             stale = out / "box-lines" / "week-99.json"
@@ -120,19 +123,27 @@ class LinesFile(unittest.TestCase):
             self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), published_files)
             build.write_box_lines(out, recap_weeks, preview=True)
             self.assertEqual(sorted(p.name for p in (out / "box-lines").iterdir()), preview_files)
-            got = json.loads((out / build.box_lines_path(draft)).read_text())
-            self.assertEqual(got, {"week": draft, "lines": build.week_lines(load(draft))})
+            if draft in WEEKS_WITH_LINES:
+                got = json.loads((out / build.box_lines_path(draft)).read_text())
+                self.assertEqual(got, {"week": draft, "lines": build.week_lines(load(draft))})
+            else:
+                # A draft captured before kickoff has no lines, so the preview build writes it no file.
+                self.assertFalse((out / build.box_lines_path(draft)).exists())
 
 
 class LiveWeekRows(unittest.TestCase):
-    def test_live_rows_keep_logo_kickoff_and_carry_lines_inline(self):
-        facts = load(max(WEEKS))
-        p = build.week_payload(facts, {"status": "live"}, live=True)
+    def test_live_rows_keep_logo_and_kickoff(self):
+        """True of the newest capture whether or not it has kicked off: the Live page serves it either way."""
+        p = build.week_payload(load(max(WEEKS)), {"status": "live"}, live=True)
         self.assertNotIn("team_logos", p)
         for r in rows(p):
             with self.subTest(player=r["name"]):
                 self.assertIn("logo", r)
                 self.assertIn("kickoff", r)
+
+    @unittest.skipUnless(WEEKS_WITH_LINES, "no captured week carries scoring lines")
+    def test_live_rows_carry_lines_inline(self):
+        p = build.week_payload(load(WEEKS_WITH_LINES[-1]), {"status": "live"}, live=True)
         self.assertTrue(any("lines" in r for r in rows(p)))
 
 
