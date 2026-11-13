@@ -2645,7 +2645,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ? `<tr class="peek-row" id="${id}"${PEEK.has(p.player_id) ? '' : ' hidden'}><td colspan="${cols}">${peekPanel(p, card)}</td></tr>`
     : '');
 
-  /* The expanded row's injury line: "Questionable · Achilles · Back Sun, Nov 15 (ESPN)". The type
+  /* The expanded row's injury line: a "Questionable" sticker, "Achilles", "ESPN expects him back Sun, Nov 15". The type
      and date are ESPN's own (injury_type, injury_return), shown only when the capture has them, and
      a return date that has already passed is dropped rather than shown stale. */
   const ymdLocal = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;

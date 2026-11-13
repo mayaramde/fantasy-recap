@@ -195,21 +195,21 @@ def _add_injury_details(rows, week):
                                        "filterStatsForTopScoringPeriodIds": {"value": 1, "additionalValue": [f"10{SEASON}"]}}})
         res = _get(f"{BASE}?view=kona_playercard&scoringPeriodId={week}", {"x-fantasy-filter": filt})
         cards = {x["player"]["id"]: x["player"] for x in res.get("players") or [] if x.get("player")}
-    except Exception:  # noqa: BLE001 - best effort, like the scoreboard
+        for r in rows:
+            c = cards.get(r["player_id"])
+            if not c:
+                continue
+            if r.get("injury_status") is None:
+                r["injury_status"] = c.get("injuryStatus")
+            d = c.get("injuryDetails")
+            if not d or not r["injury_status"] or r["injury_status"] in ("ACTIVE", "NORMAL"):
+                continue
+            r["injury_type"] = d.get("type") or None
+            ymd = d.get("expectedReturnDate")
+            if isinstance(ymd, list) and len(ymd) == 3 and all(type(n) is int for n in ymd):
+                r["injury_return"] = f"{ymd[0]}-{ymd[1]:02d}-{ymd[2]:02d}"
+    except Exception:  # noqa: BLE001 - best effort, like the scoreboard: a surprise shape never costs the scores
         return
-    for r in rows:
-        c = cards.get(r["player_id"])
-        if not c:
-            continue
-        if r.get("injury_status") is None:
-            r["injury_status"] = c.get("injuryStatus")
-        d = c.get("injuryDetails")
-        if not d or r["injury_status"] in (None, "ACTIVE", "NORMAL"):
-            continue
-        r["injury_type"] = d.get("type") or None
-        ymd = d.get("expectedReturnDate")
-        if isinstance(ymd, list) and len(ymd) == 3 and all(type(n) is int for n in ymd):
-            r["injury_return"] = f"{ymd[0]}-{ymd[1]:02d}-{ymd[2]:02d}"
 
 
 def current_week():

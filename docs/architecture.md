@@ -108,6 +108,9 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   among them) have a null designation for everyone, and `injury_map` treats an all-null week as no report. Collapsed,
   a row shows the designation's short form ("Q"); expanded, the full word, the type and the return date (dropped once
   the date has passed). A bench row's slot column shows his position (`benchPos`), IR rows keep "IR".
+  ESPN's report is as of capture time, so `player()` puts `injury` and its details only on live and next-week
+  rows: a finished week's box score never wears Tuesday's news. And a capture whose injury read failed (all
+  null) is diffed against nothing, so it can't call every listed player "off the injury report".
   `bye` is the Coach cards' own rule
   (`is_on_bye`: game states are known and he has no game), so a bye player has `bye: true` and a null `kickoff`.
   `playing` is still present only while his game is on. The live week's rows also carry `lines` (ESPN's own

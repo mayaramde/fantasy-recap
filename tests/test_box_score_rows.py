@@ -181,6 +181,12 @@ class InjuryDetails(unittest.TestCase):
         self.assertNotIn("injury_type", r)
         self.assertNotIn("injury_return", r)
 
+    def test_finished_week_shows_no_designation(self):
+        # ESPN's report is as of capture time, so a finished week's box score must not wear it
+        r = build.player({**self.BASE, "injury_status": "OUT", "injury_type": "Knee", "injury_return": "2026-12-01"},
+                         live=False, states_known=False)
+        self.assertFalse({"injury", "injury_type", "injury_return"} & set(r))
+
     def test_missing_details_are_absent_not_null(self):
         r = self.row(injury_status="OUT", injury_type=None, injury_return=None)
         self.assertEqual(r["injury"], "Out")
