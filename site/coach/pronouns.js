@@ -8,7 +8,7 @@
 const HER_IRREGULAR = { are: 'is', were: 'was', have: 'has', do: 'does', go: 'goes', "don't": "doesn't",
   "haven't": "hasn't", "aren't": "isn't", "weren't": "wasn't" };
 // Words after a subject "you" that stay as they are: modals, and past tenses that don't end in -ed.
-const HER_KEEP = new Set(('can could will would should might must may shall did had was got made took sat kept left lost '
+const HER_KEEP = new Set(('can cannot could will would should might must may shall did had was got made took sat kept left lost '
   + 'won held ran gave saw knew went drew chose sent spent found told thought brought bought paid said felt came became '
   + 'heard began stood wrote fell forgot caught taught meant built dealt threw grew wore drove broke spoke woke ate tore '
   + 'stuck sold rode led stole swung sank slept hung better ought is').split(' '));
@@ -37,6 +37,34 @@ const HER_OBJECT_AFTER = new Set(('at for to of with from on about without again
 // Words that can't be the verb of a subject "you" ("you and Amie", "you both").
 const HER_NOT_VERB = new Set(('and or but nor both all a an the to in on at for of with by from into onto over off out up '
   + 'down back again this that these those if as than so too here there more less').split(' '));
+// A second verb sharing the same subject across "and"/"or" ("you roster eight and start three" →
+// "she rosters eight and starts three"). Deliberately conservative: a miss leaves the bare verb,
+// which only reads a little off, while a false hit changes what the card claims ("shouldn't panic
+// and drop him" → "and drops him"). The guards below cost some real conjugations; the tests pin
+// both what it fixes and what it knowingly leaves alone.
+// `cut`, `set` and `read` are left out on purpose: their past tense is spelled the same, so
+// "she added Gibbs and cut Waddle" is indistinguishable from a present-tense compound.
+const HER_COMPOUND = new Set(('start sit bench play roster own carry keep hold need want hope lose win get have take '
+  + 'leave trust claim grab add drop trade swap stream ride check watch run score miss pick move wait hand '
+  + 'give send rest fix stash stack chase cover').split(' '));
+// A modal, a negated modal or an infinitive between the subject and the conjunction governs the
+// whole compound, so the second verb stays bare ("she can start him and keep the flex", "she needs
+// to start him and keep the flex", "she shouldn't panic and drop him"). The `n't` alternative is
+// separate because there is no word boundary inside "shouldn't" for `\bshould\b` to match.
+const HER_GOVERNS = /\b(can|could|will|would|should|might|must|may|shall|do|does|did|to)\b|n[’']t\b|\bcannot\b/i;
+// Fixed phrases where "and" joins two nouns that are also on the verb list ("her start and sit
+// calls"). Listed by name rather than inferred, because the general shape is indistinguishable from
+// a real compound ("left on the bench and need a flex" has a noun-list word before "and" too).
+const HER_NOUN_PAIRS = /\b(start and sit|sit and start|add and drop|drop and add|buy and hold|claim and pick|set and forget)\b/i;
+// Periods that do not end a sentence: decimals ("14.2") and the abbreviations in these names.
+// Replacements keep the original length so string offsets still line up.
+const herSentence = (before) => {
+  const masked = before
+    .replace(/(\d)\.(\d)/g, '$1_$2')
+    .replace(/\b(St|Jr|Sr|Mr|Ms|Dr|vs)\./gi, (s) => `${s.slice(0, -1)}_`)
+    .replace(/\b([A-Za-z])\./g, '$1_');
+  return before.slice(masked.search(/[^.;:!?]*$/));
+};
 
 const herNorm = (w) => w.toLowerCase().replace(/’/g, "'");
 
@@ -68,6 +96,22 @@ function herCopy(text) {
       if (!subject || !w || /^[A-Z]/.test(w) || (!adv && /ing$/i.test(w) && !HER_ING.test(w.toLowerCase()))) return cap(y, 'her') + tail;
       if (!adv && HER_NOT_VERB.has(w.toLowerCase())) return cap(y, 'she') + tail;
       return `${cap(y, 'she')}${adv}${sp}${herVerb(w)}`;
+    })
+    // Runs last, on the already-converted text: a bare second verb after "and"/"or" that shares the
+    // subject with a "she" earlier in the same sentence.
+    .replace(/\b(and|or)(\s+)([a-z][a-z'’-]*)/gi, (m, conj, sp, w, at, all) => {
+      if (!HER_COMPOUND.has(herNorm(w))) return m;
+      const sentence = herSentence(all.slice(0, at));
+      const subject = sentence.search(/\bshe\b/i);
+      if (subject === -1) return m;
+      const span = sentence.slice(subject);              // subject up to the conjunction
+      if (HER_GOVERNS.test(span)) return m;
+      // A comma starts a new clause, so the conjunction may join an imperative ("she is thin at
+      // receiver, and check Friday's report") or a comma series, neither of which agrees with "she".
+      if (span.includes(',')) return m;
+      const prev = (sentence.match(/([A-Za-z'’]+)\s*$/) || [])[1];
+      if (prev && HER_NOUN_PAIRS.test(`${prev} ${conj} ${w}`)) return m;
+      return `${conj}${sp}${herVerb(w)}`;
     });
 }
 if (typeof module !== 'undefined') module.exports = { herCopy };
