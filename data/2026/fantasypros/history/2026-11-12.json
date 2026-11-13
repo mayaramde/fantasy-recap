@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-12T16:37:06Z",
+  "generated_at": "2026-11-13T00:37:33Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
@@ -38,7 +38,7 @@
             },
             "clear:open": {
               "title": "Nothing to fix",
-              "text": "Every starter still to play is off the injury report and has a game, and nobody on your bench is projected to beat one of them by enough to bother. Close the tab."
+              "text": "Every starter still to play has a game, and nobody on your bench is projected to beat one of them by enough to bother. Close the tab."
             }
           },
           "summary": {
@@ -58,6 +58,14 @@
             }
           ],
           "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "pos": "TE",
+              "stat": "Best tight end on the wire",
+              "title": "Hockenson fills the tight end hole",
+              "text": "Week 11 takes Hunter Henry away for a bye, and you roster no other tight end, so the slot opens up. Tight end is also where your season has leaked the most points, so this one is not just a bye-week rental. Nobody in this league has claimed T.J. Hockenson, per FantasyPros' ownership check, and its rest-of-season projections rate him the top tight end on the wire. Minnesota's bye is long behind them, which is more than your tight end slot can say."
+            },
             {
               "kind": "trade",
               "level": "watch",
@@ -123,7 +131,7 @@
             },
             "clear:open": {
               "title": "Nothing to fix",
-              "text": "Every starter still to play is healthy with a game on the schedule, and your bench is not projected to beat any of them by a margin worth the tap. Go enjoy your Wednesday."
+              "text": "Every starter still to play has a game on the schedule, and your bench is not projected to beat any of them by a margin worth the tap. Go enjoy your Wednesday."
             }
           },
           "summary": {
@@ -138,6 +146,10 @@
             "matchup:2:4567048:none": {
               "title": "Next up: Amie",
               "text": "Amie is 5-4 and leans on Kenneth Walker III, who has been scoring in bunches. Win the two lineup calls below and this is closer than the records suggest."
+            },
+            "clear:open": {
+              "title": "Nothing to fix",
+              "text": "Every starter has a game and nothing on your bench outprojects what you're already starting. The one unknown is injuries, which ESPN has not published for Week 10 yet, so take another look Sunday morning. Coach saves the notes for the teams with problems. You get the day off."
             }
           },
           "summary": {
@@ -149,11 +161,11 @@
           "advice_cards": [
             {
               "kind": "fp_news",
-              "level": "now",
+              "level": "watch",
               "pos": "RB",
-              "stat": "Did not practice",
-              "title": "Your card is right about Marks",
-              "text": "The swap above is the move. FantasyPros now has Rhamondre Stevenson missing Wednesday's practice outright with a knee tendon problem, no surgery expected but a short absence possible, so ESPN projecting him at nothing is not a glitch, it's agreement. Woody Marks practiced limited and FantasyPros has him on track, though it notes his workload depends on whether David Montgomery is back. Make the swap now, not at kickoff."
+              "stat": "Knee, limited",
+              "title": "Marks is in, and his knee is the open question",
+              "text": "You already moved Rhamondre Stevenson out of the lineup, and FantasyPros backs the call: it has him missing Wednesday's practice with a knee tendon problem, no surgery expected but a short absence possible. The name still worth watching is Woody Marks, limited in practice with a knee of his own and on track per FantasyPros, though it notes his workload depends on whether David Montgomery is back. You fixed this one before Coach could finish typing."
             }
           ],
           "roster_ideas": [
@@ -178,14 +190,10 @@
             "matchup:1:4379399:none": {
               "title": "Next up: Marlee",
               "text": "Marlee is 5-4 and starts James Cook III, her steadiest source of points. Sort the running back slot below and you are in this one."
-            },
-            "swap:4569173:RB:4429059:none": {
-              "title": "Woody Marks over Rhamondre Stevenson",
-              "text": "ESPN projects Stevenson for nothing at all, which is its way of saying it does not expect him to play. FantasyPros has him missing Wednesday's practice with a knee tendon issue and reports he is not expected to need surgery. Move Marks in, and check Friday's report, because Marks is carrying a knee of his own."
             }
           },
           "summary": {
-            "key": "now|swap:4569173:RB:4429059:none",
+            "key": "now|swap:4685702:FLEX:4429059:none",
             "text": "A starter is projected for nothing, and the fix is already on your bench."
           }
         },
@@ -199,7 +207,7 @@
             },
             "clear:open": {
               "title": "Nothing to fix",
-              "text": "Every starter has a game and a clean bill of health, and the bench is not projected to beat any of them by enough to matter. The lineup is done. The worrying is optional."
+              "text": "Every starter has a game, and the bench is not projected to beat any of them by enough to matter. The lineup is done. The worrying is optional."
             }
           },
           "summary": {
@@ -218,7 +226,16 @@
               "text": "The card above wants Garrett Wilson in for Omar Cooper Jr. Read this first: FantasyPros rates Cooper, questionable with an ankle, a shade more likely to play this week than Wilson, who is questionable coming out of concussion protocol and limited again on Wednesday. Both were limited, both are Jets, and the call lands Friday. The card above only sees projections. It has not read the injury report."
             }
           ],
-          "roster_ideas": [],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "pos": "DST",
+              "stat": "Best defense on the wire",
+              "title": "Nobody on your bench plays defense",
+              "text": "Your Rams defense is on a bye in Week 11, and the position goes unrepresented on your roster that week. FantasyPros ranks San Francisco the top defense left for the rest of the season, and its ownership check says the wire still has them. First place should not be forfeiting a lineup slot to the calendar."
+            }
+          ],
           "coach_cards": {
             "matchup:7:3918298:none": {
               "title": "Next up: Samantha",
@@ -239,8 +256,70 @@
           }
         },
         "7": {
-          "advice_cards": [],
-          "roster_ideas": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "pos": "RB",
+              "stat": "Coin flip to play",
+              "title": "Tuten is a coin flip, per FantasyPros",
+              "text": "Bhayshul Tuten starts at running back for you, and FantasyPros lists him questionable with an ankle, missing Wednesday's practice entirely, and rates him a little better than even money to play. None of that reached your card, because ESPN is still sitting on its Week 10 designations. Braelon Allen and Ollie Gordon II sit behind him and neither is on FantasyPros' injury report, so check back before lineups lock. The Tuten projection is a repeat offender around here, and you of all people know what that does to a sentence."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "FLEX",
+              "stat": "A straight one-for-one",
+              "title": "Offer Sam LaPorta to Amie for D'Andre Swift",
+              "text": "You roster two tight ends and the league's thinnest flex, the wild-card spot. Amie rosters seven running backs and one tight end, so the surplus runs the other way on both counts. Two rosters this lopsided practically introduce themselves. Swift is on a bye this week and back in Week 11, so this one starts paying next week. The pitch to send her: you're deep at running back, I'm deep at tight end, and we each need what the other is sitting on. She reads this card too, so no spin. By FantasyPros' rest-of-season projections she comes out ahead week to week, and Dalton Kincaid becomes your only tight end, with FantasyPros listing an ankle on him and still expecting him to play.",
+              "trade": {
+                "partner_id": 2,
+                "give": [
+                  {
+                    "id": 4430027,
+                    "name": "Sam LaPorta",
+                    "pos": "TE"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4259545,
+                    "name": "D'Andre Swift",
+                    "pos": "RB"
+                  }
+                ],
+                "you": {
+                  "near": 1.07,
+                  "playoff": [
+                    0.358,
+                    0.3693
+                  ],
+                  "title": [
+                    0.0532,
+                    0.0537
+                  ]
+                },
+                "them": {
+                  "near": 2.36,
+                  "playoff": [
+                    0.9471,
+                    0.9575
+                  ],
+                  "title": [
+                    0.3491,
+                    0.3876
+                  ]
+                },
+                "week": 10,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
           "coach_cards": {
             "matchup:6:4429795:none": {
               "title": "Next up: Kyra",
@@ -293,7 +372,7 @@
         }
       },
       "league": {
-        "key": "6e90ab4e5822",
+        "key": "dc3e7635aedd",
         "text": "Week 10 kicks off tonight, so every lineup is still fixable. Three of you have something to fix: Tara and Kyra are being outprojected by their own benches, and Cambri's defense is on a bye. The other five are clean, with an asterisk. ESPN hasn't posted a single Week 10 injury designation yet, so clean today is a guess, not a promise."
       }
     },
@@ -325,10 +404,6 @@
               "title": "Next up: Kyra",
               "text": "Week 11 pairs you with the best record in the league, and Jahmyr Gibbs is the name to fear. Worth knowing early so you can build the lineup around it."
             },
-            "watch:3046779:QUESTIONABLE:none:none": {
-              "title": "Jared Goff is questionable",
-              "text": "Questionable means his team has not decided, and the call usually lands about ninety minutes before kickoff. FantasyPros still has him likely to play. You roster no other quarterback. See the pickup below."
-            },
             "watch:4374302:QUESTIONABLE:4685261:ACTIVE": {
               "title": "Amon-Ra St. Brown is questionable",
               "text": "FantasyPros lists a rib issue, has him limited rather than sidelined, and rates him close to certain to play. Germie Bernard is the fallback if that changes. Plan on your namesake suiting up."
@@ -336,14 +411,10 @@
             "watch:4426354:QUESTIONABLE:4685261:ACTIVE": {
               "title": "George Pickens is questionable",
               "text": "Pickens missed Week 9 with a hamstring, and FantasyPros now has him back to limited practice with his coach expecting a return. He is the least certain of your three. Germie Bernard is the healthy swap if Friday goes badly."
-            },
-            "news:3054850:QUESTIONABLE:bench:open": {
-              "title": "Alvin Kamara is questionable",
-              "text": "He is on your bench, so nothing in your lineup changes. Filed under things worth knowing before you plan a drop."
             }
           },
           "summary": {
-            "key": "watch|watch:3046779:QUESTIONABLE:none:none|watch:4374302:QUESTIONABLE:4685261:ACTIVE|watch:4426354:QUESTIONABLE:4685261:ACTIVE",
+            "key": "watch|watch:4374302:QUESTIONABLE:4685261:ACTIVE|watch:4426354:QUESTIONABLE:4685261:ACTIVE",
             "text": "Three names to watch, no decisions due yet. Check back Friday."
           }
         },
@@ -359,6 +430,14 @@
             }
           ],
           "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "pos": "TE",
+              "stat": "Best tight end on the wire",
+              "title": "Hockenson fills the tight end hole",
+              "text": "Week 11 takes Hunter Henry away for a bye, and you roster no other tight end, so the slot opens up. Tight end is also where your season has leaked the most points, so this one is not just a bye-week rental. Nobody in this league has claimed T.J. Hockenson, per FantasyPros' ownership check, and its rest-of-season projections rate him the top tight end on the wire. Minnesota's bye is long behind them, which is more than your tight end slot can say."
+            },
             {
               "kind": "trade",
               "level": "watch",
@@ -438,14 +517,6 @@
               "title": "Swift over Jeanty at running back",
               "text": "ESPN has Swift ahead by a couple of points in Week 11, and FantasyPros calls him a strong weekly starter with double-digit touchdowns already this season. Chicago is back from its bye by then. Easy tap."
             },
-            "watch:3139477:QUESTIONABLE:4431611:ACTIVE": {
-              "title": "Mahomes is questionable, but practicing",
-              "text": "ESPN has him questionable. FantasyPros has him practicing in full, so keep him in the lineup. See the note below."
-            },
-            "news:4696981:OUT:bench:open": {
-              "title": "Cam Skattebo is out",
-              "text": "He is on your bench, so your lineup is unaffected."
-            },
             "news:4608686:OUT:bench:open": {
               "title": "Kyle Monangai is out",
               "text": "Another bench running back, also ruled out. Between him and Skattebo you have two roster spots doing nothing, which is convenient given what you need."
@@ -482,11 +553,11 @@
           "advice_cards": [
             {
               "kind": "fp_news",
-              "level": "now",
+              "level": "watch",
               "pos": "RB",
-              "stat": "Did not practice",
-              "title": "Your card is right about Marks",
-              "text": "The swap above is the move. FantasyPros now has Rhamondre Stevenson missing Wednesday's practice outright with a knee tendon problem, no surgery expected but a short absence possible, so ESPN projecting him at nothing is not a glitch, it's agreement. Woody Marks practiced limited and FantasyPros has him on track, though it notes his workload depends on whether David Montgomery is back. Make the swap now, not at kickoff."
+              "stat": "Knee, limited",
+              "title": "Marks is in, and his knee is the open question",
+              "text": "You already moved Rhamondre Stevenson out of the lineup, and FantasyPros backs the call: it has him missing Wednesday's practice with a knee tendon problem, no surgery expected but a short absence possible. The name still worth watching is Woody Marks, limited in practice with a knee of his own and on track per FantasyPros, though it notes his workload depends on whether David Montgomery is back. You fixed this one before Coach could finish typing."
             }
           ],
           "roster_ideas": [
@@ -520,17 +591,9 @@
               "title": "Your kicker rests too",
               "text": "Jason Myers is a Seahawk, so he shares the bye with your defense, and you roster no other kicker. Two empty slots in one week is a lot of free points to hand over. Both fixes are on the wire."
             },
-            "news:4569173:DOUBTFUL:bench:open": {
-              "title": "Rhamondre Stevenson is doubtful",
-              "text": "ESPN has him doubtful for Week 11, and FantasyPros has him missing practice with a knee tendon issue, though it reports surgery is not expected. He is a bench player by then, so this is about how long you hold the roster spot."
-            },
             "news:4429059:QUESTIONABLE:bench:open": {
               "title": "Woody Marks is questionable",
               "text": "The back you are starting this week is on the Week 11 report too, with a knee. FantasyPros still has him likely to play. Stevenson is on there as well, so Friday's update covers both."
-            },
-            "news:4683062:QUESTIONABLE:bench:open": {
-              "title": "Xavier Worthy is questionable",
-              "text": "A bench receiver on the report, so no lineup decision attached. Your week is busy enough."
             }
           },
           "summary": {
@@ -579,7 +642,16 @@
               "text": "The card above wants Garrett Wilson in for Omar Cooper Jr. Read this first: FantasyPros rates Cooper, questionable with an ankle, a shade more likely to play this week than Wilson, who is questionable coming out of concussion protocol and limited again on Wednesday. Both were limited, both are Jets, and the call lands Friday. The card above only sees projections. It has not read the injury report."
             }
           ],
-          "roster_ideas": [],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "pos": "DST",
+              "stat": "Best defense on the wire",
+              "title": "Nobody on your bench plays defense",
+              "text": "Your Rams defense is on a bye in Week 11, and the position goes unrepresented on your roster that week. FantasyPros ranks San Francisco the top defense left for the rest of the season, and its ownership check says the wire still has them. First place should not be forfeiting a lineup slot to the calendar."
+            }
+          ],
           "coach_cards": {
             "matchup:1:4379399:ACTIVE": {
               "title": "Next up: Marlee",
@@ -616,8 +688,70 @@
           }
         },
         "7": {
-          "advice_cards": [],
-          "roster_ideas": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "pos": "RB",
+              "stat": "Coin flip to play",
+              "title": "Tuten is a coin flip, per FantasyPros",
+              "text": "Bhayshul Tuten starts at running back for you, and FantasyPros lists him questionable with an ankle, missing Wednesday's practice entirely, and rates him a little better than even money to play. None of that reached your card, because ESPN is still sitting on its Week 10 designations. Braelon Allen and Ollie Gordon II sit behind him and neither is on FantasyPros' injury report, so check back before lineups lock. The Tuten projection is a repeat offender around here, and you of all people know what that does to a sentence."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "FLEX",
+              "stat": "A straight one-for-one",
+              "title": "Offer Sam LaPorta to Amie for D'Andre Swift",
+              "text": "You roster two tight ends and the league's thinnest flex, the wild-card spot. Amie rosters seven running backs and one tight end, so the surplus runs the other way on both counts. Two rosters this lopsided practically introduce themselves. Swift is on a bye this week and back in Week 11, so this one starts paying next week. The pitch to send her: you're deep at running back, I'm deep at tight end, and we each need what the other is sitting on. She reads this card too, so no spin. By FantasyPros' rest-of-season projections she comes out ahead week to week, and Dalton Kincaid becomes your only tight end, with FantasyPros listing an ankle on him and still expecting him to play.",
+              "trade": {
+                "partner_id": 2,
+                "give": [
+                  {
+                    "id": 4430027,
+                    "name": "Sam LaPorta",
+                    "pos": "TE"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4259545,
+                    "name": "D'Andre Swift",
+                    "pos": "RB"
+                  }
+                ],
+                "you": {
+                  "near": 1.07,
+                  "playoff": [
+                    0.358,
+                    0.3693
+                  ],
+                  "title": [
+                    0.0532,
+                    0.0537
+                  ]
+                },
+                "them": {
+                  "near": 2.36,
+                  "playoff": [
+                    0.9471,
+                    0.9575
+                  ],
+                  "title": [
+                    0.3491,
+                    0.3876
+                  ]
+                },
+                "week": 10,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
           "coach_cards": {
             "matchup:5:4360310:ACTIVE": {
               "title": "Next up: Maya",
@@ -658,10 +792,6 @@
               "title": "No quarterback in Week 11",
               "text": "New England is on a bye and Maye is the only quarterback you roster, so the slot sits empty unless you claim one. There is a good one on the wire. See the pickup below."
             },
-            "bye:4426385:RB:bye:3916148:ACTIVE": {
-              "title": "Pollard in for Charbonnet",
-              "text": "Seattle rests in Week 11, so Charbonnet is out. Tony Pollard is on your bench, healthy, with a game. Your bench had this one covered."
-            },
             "out:4426515:WR:OUT:4871023:QUESTIONABLE": {
               "title": "Carnell Tate in for Puka Nacua",
               "text": "Nacua is out. Carnell Tate is the bench replacement, though he is listed questionable himself, so keep an eye on him. If neither is available, Jakobi Meyers is the next name down."
@@ -676,13 +806,13 @@
             }
           },
           "summary": {
-            "key": "now|bye:4426385:RB:bye:3916148:ACTIVE|bye:4431452:QB:bye:none:none|out:4426515:WR:OUT:4871023:QUESTIONABLE",
+            "key": "now|bye:4426385:RB:bye:3916148:QUESTIONABLE|bye:4431452:QB:bye:none:none|out:4426515:WR:OUT:4871023:QUESTIONABLE",
             "text": "Two starters on a bye, one ruled out, no backup quarterback."
           }
         }
       },
       "league": {
-        "key": "f058c433b386",
+        "key": "b87f066b37a2",
         "text": "Thirteen starters are sitting this one out, and they are not spread evenly. Kyra loses five, Amie and Cambri three apiece, Tara two. Maya's problem is smaller and meaner, one starter ruled out rather than rested. Marlee, Maddie and Samantha come through clean, which this week counts as a personality trait."
       }
     }

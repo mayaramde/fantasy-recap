@@ -112,20 +112,20 @@
     {
       "date": "2026-11-12",
       "file": "2026-11-12.json",
-      "generated_at": "2026-11-12T16:37:06Z",
+      "generated_at": "2026-11-13T00:37:33Z",
       "fantasypros_reached": true,
       "weeks": {
         "10": {
-          "advice_cards": 4,
-          "roster_ideas": 6,
-          "trades": 1,
+          "advice_cards": 5,
+          "roster_ideas": 9,
+          "trades": 2,
           "coach_cards": 16
         },
         "11": {
-          "advice_cards": 4,
-          "roster_ideas": 5,
-          "trades": 1,
-          "coach_cards": 43
+          "advice_cards": 5,
+          "roster_ideas": 8,
+          "trades": 2,
+          "coach_cards": 36
         }
       }
     }
