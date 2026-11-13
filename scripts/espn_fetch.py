@@ -159,6 +159,10 @@ def _side(s, week, names, games):
             # INJURY_RESERVE, SUSPENSION, ACTIVE... Absent for a D/ST and for anyone
             # ESPN isn't listing.
             "injury_status": p.get("injuryStatus"),
+            # ESPN's read on that injury: what it is and the day it expects him back.
+            # Filled in by _add_injury_details, None when ESPN isn't listing him.
+            "injury_type": None,
+            "injury_return": None,
             "points": round2(_nn(actual.get("appliedTotal") if actual else None, 0)),
             "projected": round2(proj.get("appliedTotal") if proj else None),
             "played": bool(actual),
@@ -178,6 +182,36 @@ def _side(s, week, names, games):
     }
 
 
+def _add_injury_details(rows, week):
+    """The twin of addInjuryDetails() in capture.js: ESPN's injury report for every player in
+    `rows`, written onto the rows in place. The designation (mBoxscore carries none), what the
+    injury is, and the day ESPN expects him back ("2026-11-22"), from ESPN's player-card view.
+    Best effort: on any failure the rows keep what they had."""
+    if not rows:
+        return
+    try:
+        ids = list(dict.fromkeys(r["player_id"] for r in rows))
+        filt = json.dumps({"players": {"filterIds": {"value": ids},
+                                       "filterStatsForTopScoringPeriodIds": {"value": 1, "additionalValue": [f"10{SEASON}"]}}})
+        res = _get(f"{BASE}?view=kona_playercard&scoringPeriodId={week}", {"x-fantasy-filter": filt})
+        cards = {x["player"]["id"]: x["player"] for x in res.get("players") or [] if x.get("player")}
+    except Exception:  # noqa: BLE001 - best effort, like the scoreboard
+        return
+    for r in rows:
+        c = cards.get(r["player_id"])
+        if not c:
+            continue
+        if r.get("injury_status") is None:
+            r["injury_status"] = c.get("injuryStatus")
+        d = c.get("injuryDetails")
+        if not d or r["injury_status"] in (None, "ACTIVE", "NORMAL"):
+            continue
+        r["injury_type"] = d.get("type") or None
+        ymd = d.get("expectedReturnDate")
+        if isinstance(ymd, list) and len(ymd) == 3 and all(type(n) is int for n in ymd):
+            r["injury_return"] = f"{ymd[0]}-{ymd[1]:02d}-{ymd[2]:02d}"
+
+
 def current_week():
     return _get(f"{BASE}?view=mStatus")["status"]["currentMatchupPeriod"]
 
@@ -195,6 +229,7 @@ def fetch_week(week):
                  "home": _side(m.get("home"), week, names, games),
                  "away": _side(m.get("away"), week, names, games)}
                 for m in box.get("schedule") or [] if m.get("matchupPeriodId") == week]
+    _add_injury_details([p for m in matchups for s in (m["home"], m["away"]) if s for p in s["lineup"]], week)
 
     # Names for transacted players who aren't on anyone's current lineup (e.g. dropped)
     txs = [t for t in tx_res.get("transactions") or [] if t.get("status") == "EXECUTED"]
@@ -254,6 +289,9 @@ _PLAYER = {"player_id": "int", "name": "str", "pos": "str", "pro_team_id": "int?
            "game_state?": "str?", "game_clock?": "str?", "kickoff?": "str?",
            # Added for the Coach page; same story for weeks captured before it
            "injury_status?": "str?",
+           # Added for the lineup cards' injury line (type and expected return, "2026-11-22");
+           # absent for weeks captured before it
+           "injury_type?": "str?", "injury_return?": "str?",
            # Added for the player cards on the Coach page: ESPN's scoring for the week,
            # one row per stat. Absent for weeks captured before it, empty for a player
            # ESPN has no stat line for yet.

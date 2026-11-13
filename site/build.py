@@ -158,7 +158,8 @@ def player(p, live, states_known, stats=None):
     `team_logos` map (see week_payload) and its lines live in a file beside the site (see
     week_lines). `playing` is the game clock ("Q3 7:22") while that game is on, so a finished
     week carries no live leftovers, and `injury` is ESPN's designation in plain words, absent
-    when he isn't listed."""
+    when he isn't listed, with `injury_type` ("Hamstring") and `injury_return` ("2026-11-22", the
+    day ESPN expects him back) beside it when the capture has them."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
     row.update(player_id=p.get("player_id"), team=p.get("team"))
     if live:
@@ -176,6 +177,11 @@ def player(p, live, states_known, stats=None):
         row["playing"] = p.get("game_clock") or "on now"
     if INJURY_LABEL.get(p.get("injury_status")):
         row["injury"] = INJURY_LABEL[p["injury_status"]]
+        # ESPN's read on it, for the expanded row: "Hamstring", and the day it expects him back
+        if p.get("injury_type"):
+            row["injury_type"] = p["injury_type"]
+        if p.get("injury_return"):
+            row["injury_return"] = p["injury_return"]
     return row
 
 
@@ -345,12 +351,14 @@ def _pts(x):
 def injury_map(espn):
     """Every rostered player's injury designation in one captured week.
 
-    Empty for a week captured before the site recorded injuries at all: without the
-    field there is no telling a healthy player from an unrecorded one, and guessing
-    would call every designation "new".
+    Empty for a week captured without an injury report: before the site recorded injuries
+    at all, or a played week captured before addInjuryDetails, whose box score view carried
+    the field as null for everyone. Without a report there is no telling a healthy player
+    from an unrecorded one, and guessing would call every designation "new". (ESPN lists
+    every rostered player, ACTIVE included, so a real report is never all null.)
     """
     rows = [p for m in espn["matchups"] for s in (m["home"], m["away"]) if s for p in s["lineup"]]
-    if not any("injury_status" in p for p in rows):
+    if not any(p.get("injury_status") for p in rows):
         return {}
     return {p["player_id"]: p.get("injury_status") for p in rows}
 
