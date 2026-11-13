@@ -158,7 +158,8 @@ def player(p, live, states_known, stats=None):
     `team_logos` map (see week_payload) and its lines live in a file beside the site (see
     week_lines). `playing` is the game clock ("Q3 7:22") while that game is on, so a finished
     week carries no live leftovers, and `injury` is ESPN's designation in plain words, absent
-    when he isn't listed."""
+    when he isn't listed, with `injury_type` ("Hamstring") and `injury_return` ("2026-11-22", the
+    day ESPN expects him back) beside it when the capture has them."""
     row = {k: p.get(k) for k in PLAYER_KEYS}
     row.update(player_id=p.get("player_id"), team=p.get("team"))
     if live:
@@ -174,8 +175,15 @@ def player(p, live, states_known, stats=None):
         row["bye"] = True
     if p.get("game_state") == "in":
         row["playing"] = p.get("game_clock") or "on now"
-    if INJURY_LABEL.get(p.get("injury_status")):
+    # Only on a week still being played (or the week ahead): ESPN's injury report is whatever it says
+    # at capture time, so on a finished week it would pin Tuesday's news on Sunday's box score.
+    if live and INJURY_LABEL.get(p.get("injury_status")):
         row["injury"] = INJURY_LABEL[p["injury_status"]]
+        # ESPN's read on it, for the expanded row: "Hamstring", and the day it expects him back
+        if p.get("injury_type"):
+            row["injury_type"] = p["injury_type"]
+        if p.get("injury_return"):
+            row["injury_return"] = p["injury_return"]
     return row
 
 
@@ -345,12 +353,14 @@ def _pts(x):
 def injury_map(espn):
     """Every rostered player's injury designation in one captured week.
 
-    Empty for a week captured before the site recorded injuries at all: without the
-    field there is no telling a healthy player from an unrecorded one, and guessing
-    would call every designation "new".
+    Empty for a week captured without an injury report: before the site recorded injuries
+    at all, or a played week captured before addInjuryDetails, whose box score view carried
+    the field as null for everyone. Without a report there is no telling a healthy player
+    from an unrecorded one, and guessing would call every designation "new". (ESPN lists
+    every rostered player, ACTIVE included, so a real report is never all null.)
     """
     rows = [p for m in espn["matchups"] for s in (m["home"], m["away"]) if s for p in s["lineup"]]
-    if not any("injury_status" in p for p in rows):
+    if not any(p.get("injury_status") for p in rows):
         return {}
     return {p["player_id"]: p.get("injury_status") for p in rows}
 
@@ -1415,7 +1425,11 @@ def advice_payload(teams, espn, previous, fp=None, week=None, history=None):
     # states at all (the scoreboard is best effort) assume the week is still live rather
     # than silencing every card.
     week_open = not states_known or any(p.get("game_state") == "pre" for p in rows)
-    before = injury_map(previous) if previous else {}
+    # A designation is only "new" or "gone" against a capture that has a report of its own: if this
+    # capture's injury read failed (it's best effort), every row is null, and diffing that against last
+    # week would call every listed player "off the injury report".
+    injuries_known = bool(injury_map(espn))
+    before = injury_map(previous) if previous and injuries_known else {}
     form = player_form(history)
     stats = fp_player_stats(fp, week) if fp and week else None
     matchups = fp_matchups(fp, week) if fp and week else None
@@ -1429,9 +1443,9 @@ def advice_payload(teams, espn, previous, fp=None, week=None, history=None):
         rows_out.append(team_advice(by_id[t["team_id"]], before, previous["week"] if previous else None,
                                     states_known, projected, week_open, fp_items, fp_ideas,
                                     written, written_summary, form=form, stats=stats, matchups=matchups))
-    # Did this capture record injury designations at all? Without them a roster with nobody listed is
-    # "we don't know", never "healthy", so the Coach landing hides what it would say about injuries.
-    injuries_known = bool(injury_map(espn))
+    # injuries_known (above): did this capture record injury designations at all? Without them a roster
+    # with nobody listed is "we don't know", never "healthy", so the Coach landing hides what it would
+    # say about injuries.
     # The Coach's take paragraph: coach-daily's copy when its key still matches the league's situation,
     # else None and the page words it from the numbers itself.
     lkey = league_key(rows_out)

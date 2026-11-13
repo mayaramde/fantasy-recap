@@ -52,8 +52,11 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   and the site simply shows no breakdown for them.
 - **ESPN injury designations** (part of the same ESPN capture): each rostered player's `injuryStatus`
   (`QUESTIONABLE`, `DOUBTFUL`, `OUT`, `INJURY_RESERVE`, `SUSPENSION`, ...) rides along in `espn.json` as
-  `injury_status`. It's what the Coach page and the box-score injury pills are built on. Weeks captured before
-  this existed simply don't carry the field, and the site treats that as "we don't know", never as "healthy".
+  `injury_status`, with ESPN's `injury_type` ("Hamstring") and `injury_return` (the day ESPN expects him back) beside
+  it. All three come from one extra read of ESPN's player-card view (`view=kona_playercard`), since the box score view
+  a played week is captured from carries no designation at all. It's what the Coach page and the box-score injury
+  pills are built on. Weeks captured before this existed simply don't carry the field (or carry it null for everyone),
+  and the site treats that as "we don't know", never as "healthy".
 - **ESPN next week** (same ESPN capture, `fantasyCapture('next')`): rosters and projections for the week
   ahead, from `view=mRoster&scoringPeriodId=N+1` plus the season schedule for the pairings. Lands in
   `data/<season>/next-week/espn.json` — deliberately not under `week-NN/`, where the site would read it as the

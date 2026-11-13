@@ -163,5 +163,36 @@ class LiveWeekRows(unittest.TestCase):
         self.assertFalse(any("lines" in r for r in rows(p)))
 
 
+class InjuryDetails(unittest.TestCase):
+    """ESPN's injury type and expected return ride along on a row only beside a designation."""
+
+    BASE = {"player_id": 1, "name": "A", "pos": "WR", "slot": "BENCH", "points": 0, "projected": 9.5}
+
+    def row(self, **extra):
+        return build.player({**self.BASE, **extra}, live=True, states_known=False)
+
+    def test_listed_player_carries_type_and_return(self):
+        r = self.row(injury_status="QUESTIONABLE", injury_type="Achilles", injury_return="2026-11-15")
+        self.assertEqual((r["injury"], r["injury_type"], r["injury_return"]), ("Questionable", "Achilles", "2026-11-15"))
+
+    def test_unlisted_player_carries_neither(self):
+        r = self.row(injury_status="ACTIVE", injury_type="Ankle", injury_return="2026-11-15")
+        self.assertNotIn("injury", r)
+        self.assertNotIn("injury_type", r)
+        self.assertNotIn("injury_return", r)
+
+    def test_finished_week_shows_no_designation(self):
+        # ESPN's report is as of capture time, so a finished week's box score must not wear it
+        r = build.player({**self.BASE, "injury_status": "OUT", "injury_type": "Knee", "injury_return": "2026-12-01"},
+                         live=False, states_known=False)
+        self.assertFalse({"injury", "injury_type", "injury_return"} & set(r))
+
+    def test_missing_details_are_absent_not_null(self):
+        r = self.row(injury_status="OUT", injury_type=None, injury_return=None)
+        self.assertEqual(r["injury"], "Out")
+        self.assertNotIn("injury_type", r)
+        self.assertNotIn("injury_return", r)
+
+
 if __name__ == "__main__":
     unittest.main()

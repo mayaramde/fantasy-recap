@@ -43,8 +43,8 @@ const SLOT = { 0: 'QB', 2: 'RB', 4: 'WR', 6: 'TE', 16: 'DST', 17: 'K', 20: 'BENC
 const POS = { 1: 'QB', 2: 'RB', 3: 'WR', 4: 'TE', 5: 'K', 16: 'DST' };
 const round2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 
-const get = (qs) =>
-  fetch(`${BASE}?${qs}`, { credentials: 'include' }).then((r) => {
+const get = (qs, headers = {}) =>
+  fetch(`${BASE}?${qs}`, { credentials: 'include', headers }).then((r) => {
     if (!r.ok) throw new Error(`ESPN ${r.status} for ${qs}`);
     return r.json();
   });
@@ -96,6 +96,11 @@ const trimPlayer = (e, week, games) => {
     // ESPN's designation for the week: QUESTIONABLE, DOUBTFUL, OUT, INJURY_RESERVE,
     // SUSPENSION, ACTIVE... Absent for a D/ST and for anyone ESPN isn't listing.
     injury_status: p.injuryStatus ?? null,
+    // (A played week's box score has none; addInjuryDetails fills it in from the player cards.)
+    // ESPN's own read on that injury: what it is ("Hamstring") and the day ESPN expects him
+    // back ("2026-11-22"). Filled in by addInjuryDetails, null when ESPN isn't listing him.
+    injury_type: null,
+    injury_return: null,
     points: round2(actual?.appliedTotal ?? 0),
     projected: round2(pickStat(p.stats, 1, week)?.appliedTotal ?? null),
     played: !!actual,
@@ -142,12 +147,41 @@ const proGames = async (week) => {
   }
 };
 
-return { SEASON, SLOT, POS, round2, get, pickStat, trimPlayer, proGames };
+// ESPN's injury report for every player in `rows`, written onto the rows in place: the
+// designation (the box score view used for a played week doesn't carry one at all, so without
+// this a live week would show nobody as hurt), what the injury is, and the day ESPN expects him
+// back. Only ESPN's player-card view has all three, so this is one extra request for the
+// rostered players. Best effort, like the scoreboard: on any failure the rows keep what they had.
+const addInjuryDetails = async (rows, week) => {
+  if (!rows.length) return;
+  try {
+    const ids = [...new Set(rows.map((r) => r.player_id))];
+    const res = await get(`view=kona_playercard&scoringPeriodId=${week}`, { 'x-fantasy-filter': JSON.stringify({
+      players: { filterIds: { value: ids }, filterStatsForTopScoringPeriodIds: { value: 1, additionalValue: [`10${SEASON}`] } } }) });
+    const cards = {};
+    for (const x of res.players || []) if (x.player) cards[x.player.id] = x.player;
+    for (const r of rows) {
+      const c = cards[r.player_id];
+      if (!c) continue;
+      if (r.injury_status == null) r.injury_status = c.injuryStatus ?? null;
+      const d = c.injuryDetails;
+      if (!d || !r.injury_status || r.injury_status === 'ACTIVE' || r.injury_status === 'NORMAL') continue;
+      r.injury_type = d.type || null;
+      const ymd = d.expectedReturnDate;
+      r.injury_return = Array.isArray(ymd) && ymd.length === 3 && ymd.every(Number.isInteger)
+        ? `${ymd[0]}-${String(ymd[1]).padStart(2, '0')}-${String(ymd[2]).padStart(2, '0')}` : null;
+    }
+  } catch (e) {
+    console.warn('no injury report this capture:', e.message);
+  }
+};
+
+return { SEASON, SLOT, POS, round2, get, pickStat, trimPlayer, proGames, addInjuryDetails };
 }
 
 // One played (or in-progress) week: scores, rosters and the week's transactions.
 async function captureWeek(WEEK) {
-const { SEASON, SLOT, round2, get, pickStat, trimPlayer, proGames } = espnHelpers();
+const { SEASON, SLOT, round2, get, pickStat, trimPlayer, proGames, addInjuryDetails } = espnHelpers();
 
 const [box, teamsRes, statusRes, txRes, games] = await Promise.all([
   get(`view=mBoxscore&view=mMatchupScore&scoringPeriodId=${WEEK}`),
@@ -177,6 +211,7 @@ const side = (s) => {
 const matchups = box.schedule
   .filter((m) => m.matchupPeriodId === WEEK)
   .map((m) => ({ id: m.id, winner: m.winner, home: side(m.home), away: side(m.away) }));
+await addInjuryDetails(matchups.flatMap((m) => [m.home, m.away]).filter(Boolean).flatMap((s) => s.lineup), WEEK);
 
 // Player names for transacted players not on a current lineup (e.g., dropped players)
 const txs = (txRes.transactions || []).filter((t) => t.status === 'EXECUTED');
@@ -264,7 +299,7 @@ return {
 // a file under week-NN/ would look to the site like a week in progress and take the Live
 // page over from the real one.
 async function captureNextWeek(WEEK) {
-const { SEASON, SLOT, round2, get, trimPlayer, proGames } = espnHelpers();
+const { SEASON, SLOT, round2, get, trimPlayer, proGames, addInjuryDetails } = espnHelpers();
 
 const [sched, rosterRes, teamsRes, statusRes, games] = await Promise.all([
   get(`view=mMatchupScore&scoringPeriodId=${WEEK}`),
@@ -278,6 +313,7 @@ const rosters = {};
 for (const t of rosterRes.teams || []) {
   rosters[t.id] = (t.roster?.entries || []).map((e) => trimPlayer(e, WEEK, games));
 }
+await addInjuryDetails(Object.values(rosters).flat(), WEEK);
 
 // A side of a matchup nobody has played: no score, no win probability, and a projected
 // total built from the starters ESPN has in the lineup right now.

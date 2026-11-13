@@ -101,7 +101,17 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   abbreviation), `logo`, `kickoff` and, when it applies, `injury` and `bye: true`. A D/ST has no headshot, so its
   `team` and `logo` come from its pro team id like everyone else's. Each is whatever ESPN gave: the scoreboard is
   best effort, so a capture without game states has a null `kickoff` and no `bye`, and one without `injury_status`
-  has no `injury`. Absent means unknown, never "healthy" or "has a game". `bye` is the Coach cards' own rule
+  has no `injury`. Absent means unknown, never "healthy" or "has a game". Beside `injury`, `injury_type` ("Hamstring")
+  and `injury_return` ("2026-11-22", the day ESPN expects him back) come from ESPN's player-card view
+  (`addInjuryDetails` in `scripts/capture.js`, `_add_injury_details` in `scripts/espn_fetch.py`), which is also where a
+  played week's `injury_status` comes from: the box score view carries none, so captures before this (Weeks 7-9
+  among them) have a null designation for everyone, and `injury_map` treats an all-null week as no report. Collapsed,
+  a row shows the designation's short form ("Q"); expanded, the full word, the type and the return date (dropped once
+  the date has passed). A bench row's slot column shows his position (`benchPos`), IR rows keep "IR".
+  ESPN's report is as of capture time, so `player()` puts `injury` and its details only on live and next-week
+  rows: a finished week's box score never wears Tuesday's news. And a capture whose injury read failed (all
+  null) is diffed against nothing, so it can't call every listed player "off the injury report".
+  `bye` is the Coach cards' own rule
   (`is_on_bye`: game states are known and he has no game), so a bye player has `bye: true` and a null `kickoff`.
   `playing` is still present only while his game is on. The live week's rows also carry `lines` (ESPN's own
   scoring for him, `[{label, value, points}]` as on the Coach cards; absent with no stat line, a D/ST has its own).

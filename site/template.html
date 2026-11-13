@@ -808,6 +808,9 @@
   .peek-body { border: 2px solid var(--edge); border-top: none; border-radius: 0 0 12px 12px;
     background: var(--accent-soft); padding: 4px 12px 10px; display: grid; gap: 8px; }
   .peek-blurb { margin: 0; font-size: 13.5px; }
+  .peek-inj { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 13px; color: var(--ink); }
+  .peek-inj .inj { margin-left: 0; }
+  .peek-inj .ret { color: var(--muted); }
   .peek-lines { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   .peek-lines caption { text-align: left; font: 600 10.5px/1 var(--body); color: var(--muted);
     text-transform: uppercase; letter-spacing: 0.07em; padding-bottom: 4px; }
@@ -1445,6 +1448,7 @@ __LIVE_CSS__
   /* ESPN's injury designation, next to the player's name in any box score */
   .inj { display: inline-block; margin-left: 5px; font: 500 10.5px/1 var(--script); color: var(--on-pop); background: var(--orange); border: 1.5px solid var(--edge); border-radius: 999px; padding: 3px 7px; vertical-align: 1px; white-space: nowrap; }
   .inj.out { background: var(--pink); }
+  abbr.inj { text-decoration: none; cursor: help; }
 
   .empty { padding: 70px 0; text-align: center; color: var(--muted); }
   .empty h1 { font: 800 42px/1 var(--display); color: var(--ink); margin-bottom: 10px; }
@@ -1994,6 +1998,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const SLOT_ORDER = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
   // Injury designations that mean "he isn't playing", so they get the loud color
   const OUTISH = ['Out', 'On IR', 'Suspended', 'Doubtful'];
+  // ESPN's designation as a collapsed row shows it ("Q"); the expanded row spells it out.
+  const INJ_ABBR = { Questionable: 'Q', 'Day to day': 'DTD', Doubtful: 'D', Out: 'OUT', 'On IR': 'IR', Suspended: 'SUSP' };
+  const injAbbr = (label) => INJ_ABBR[label] || label;
+  // The bench's position column: what he plays, since "BN" says nothing an indented Bench row doesn't.
+  const benchPos = (p) => (p.slot === 'IR' ? 'IR' : p.pos === 'DST' ? 'D/ST' : p.pos || 'BN');
   const ADVICE_KIND = { out: 'Injury', bye: 'Bye week', watch: 'Game-time call', swap: 'Lineup swap',
     empty: 'Empty slot', hole: 'Roster hole', news: 'Injury news', back: 'Good news', clear: 'All clear',
     consensus: 'Expert consensus', fp_news: 'FantasyPros news', fp_back: 'FantasyPros update',
@@ -2624,7 +2633,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      one removes itself. Shared by the box scores and the Coach page's next-week lineup. */
   const playerName = (p, live) => esc(p.name)
     + (live && p.logo ? ` <img class="tlogo" src="${esc(p.logo)}" alt="${esc(p.team || '')}" title="${esc(p.team || '')}" width="19" height="19" loading="lazy" onerror="this.remove()">` : '')
-    + (p.injury ? ` <span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report">${esc(p.injury)}</span>` : '')
+    + (p.injury ? ` <abbr class="inj${OUTISH.includes(p.injury) ? ' out' : ''}" title="ESPN's injury report: ${esc(p.injury)}">${esc(injAbbr(p.injury))}</abbr>` : '')
     + (p.playing ? ` <span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '');
 
   /* Player cards (the Coach page's two lineups): `cards` maps an ESPN player id to the
@@ -2645,12 +2654,28 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     ? `<tr class="peek-row" id="${id}"${PEEK.has(p.player_id) ? '' : ' hidden'}><td colspan="${cols}">${peekPanel(p, card)}</td></tr>`
     : '');
 
+  /* The expanded row's injury line: a "Questionable" sticker, "Achilles", "ESPN expects him back Sun, Nov 15". The type
+     and date are ESPN's own (injury_type, injury_return), shown only when the capture has them, and
+     a return date that has already passed is dropped rather than shown stale. */
+  const ymdLocal = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  function injuryLine(p) {
+    if (!p.injury) return '';
+    const back = p.injury_return && /^\d{4}-\d{2}-\d{2}$/.test(p.injury_return) && p.injury_return >= ymdLocal(new Date())
+      ? new Date(`${p.injury_return}T12:00:00`).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+      : '';
+    return `<p class="peek-inj"><span class="inj${OUTISH.includes(p.injury) ? ' out' : ''}">${esc(p.injury)}</span>`
+      + (p.injury_type ? `<span>${esc(p.injury_type)}</span>` : '')
+      + (back ? `<span class="ret">ESPN expects him back ${esc(back)}</span>` : '')
+      + '</p>';
+  }
+
   // Where the points came from and what else is worth knowing; the blurb is drawn by the caller.
   function peekDetail(p, card) {
     const lines = card.lines || [];
     const vd = card.verdict;
     const chips = card.chips || [];
     return `
+        ${injuryLine(p)}
         ${vd ? `<div class="vd-line"><span class="vd vd-${esc(vd.level)}">${esc(vd.label)}</span>${vd.reason ? `<span class="vr">${esc(voice(vd.reason))}</span>` : ''}</div>` : ''}
         ${chips.length ? `<ul class="pchips">${chips.map((c) => `<li><span class="cl">${esc(c.label)}</span><span class="cv">${esc(c.value)}</span></li>`).join('')}</ul>` : ''}
         ${lines.length ? `
@@ -2695,7 +2720,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           <tbody>
             ${starters.map((p) => row(p, 'starter', p.slot)).join('')}
             <tr class="bench-head"><td colspan="4">Bench</td></tr>
-            ${bench.map((p) => row(p, `bench${p.points > floor(p) + 0.005 ? ' hot' : ''}`, p.slot === 'IR' ? 'IR' : 'BN')).join('')}
+            ${bench.map((p) => row(p, `bench${p.points > floor(p) + 0.005 ? ' hot' : ''}`, benchPos(p))).join('')}
           </tbody>
         </table>
         <div class="opt">Best possible lineup <b class="num">${f2(side.optimal)}</b> · ${side.points_left > 0.005 ? `<b class="num">${f2(side.points_left)}</b> left on the bench` : 'perfect lineup'}</div>
@@ -4582,7 +4607,7 @@ __LIVE_JS__
     const bye = !!(card && card.bye);
     const ir = p.slot === 'IR';
     const started = !bye && !next && (p.playing || (card && (card.state === 'in' || card.state === 'post')) || p.points > 0.005);
-    const slot = ir ? 'IR' : bench ? 'BN' : p.slot;
+    const slot = bench ? benchPos(p) : ir ? 'IR' : p.slot;
     // One sticker after the name: ESPN's designation first, else IR or a bye. Never a guess.
     const [abbr, tone] = p.injury ? (HUB_STATUS[p.injury] || [p.injury, OUTISH.includes(p.injury) ? 'out' : 'iffy'])
       : ir ? ['IR', 'ir'] : bye ? ['BYE', 'bye'] : [null, null];
@@ -4599,14 +4624,14 @@ __LIVE_JS__
     return `
       <div class="prow${open ? ' open' : ''}${sw ? ' fix' : ''}" data-key="${esc(key)}">
         <div class="lu-row${bench ? ' bench' : ''}${dst ? ' dst' : ''}${bye || ir ? ' dim' : ''}" role="button" tabindex="0" aria-expanded="${open}" aria-controls="${rid}" data-row>
-          <span class="lu-slot${bench ? ' bn' : ''}${p.slot === 'FLEX' ? ' flex' : ''}">${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
+          <span class="lu-slot${bench ? ' bn' : ''}${p.slot === 'FLEX' ? ' flex' : ''}"${bench && !ir ? ` title="Bench · ${esc(slot)}"` : ''}>${esc(slot === 'DST' ? 'D/ST' : slot)}</span>
           ${face(p, 'lu')}
           <span class="lu-who"><span class="lu-nm">${esc(w.name)}${sticker}</span><span class="lu-sb">${sub}</span>${swapLine}</span>
           <span class="lu-pp${started ? ' on' : ''}">${num}<small>${small}</small></span><span class="chev" aria-hidden="true">▾</span>
         </div>
         <div class="coach" id="${rid}"><div class="cin"><div class="cb">
           <span class="ctag">Coach says</span>
-          ${card ? `<h4>${esc(voice(card.blurb))}</h4><div class="peek-body">${peekDetail(p, card)}</div>` : '<h4>Nothing to say yet.</h4>'}
+          ${card ? `<h4>${esc(voice(card.blurb))}</h4><div class="peek-body">${peekDetail(p, card)}</div>` : `<h4>Nothing to say yet.</h4>${injuryLine(p)}`}
         </div></div></div>
       </div>`;
   }
