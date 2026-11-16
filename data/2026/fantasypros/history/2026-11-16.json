@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T15:04:31Z",
+  "generated_at": "2026-11-16T15:25:48Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
@@ -77,7 +77,7 @@
           },
           "summary": {
             "key": "done",
-            "text": "Your week is done. Nothing here to tap, and a receiver room waiting on next week's tab."
+            "text": "Your week is done. Nothing to tap here. Your receiver room has questions for next week."
           }
         },
         "6": {
@@ -86,7 +86,7 @@
           "coach_cards": {
             "clear:done": {
               "title": "Nothing to fix",
-              "text": "Nothing here is moving any more. Next week wants two bench swaps and a defense off the wire, because the Rams have the week off and two of your starters went with them."
+              "text": "Nothing here is moving any more. The Rams are on a bye and you are double-parked on their roster, so next week wants two bench swaps and a defense off the wire."
             }
           },
           "summary": {
@@ -221,7 +221,7 @@
               "level": "watch",
               "title": "Offer Jayden Daniels to Cambri for Travis Etienne Jr. and Tucker Kraft",
               "stat": "both odds go up",
-              "text": "You carry two quarterbacks and start one of them. Cambri has one, and he is doubtful. Running back has been your worst-producing position all season and she has backs to move, so the shapes fit. The pitch is short, she needs a quarterback, you need a back who scores, and you two do not play each other this week. Kraft is on a bye next week, so he helps you the week after. If she balks at Etienne, Zach Charbonnet is a fair fallback, and FantasyPros still lists Etienne questionable with a hamstring, so check him before you start him. Two rosters built wrong in opposite directions is the only kind of trade that ever gets accepted.",
+              "text": "You carry two quarterbacks and start one of them. Cambri has one, and he is doubtful. Running back has been your worst-producing position all season and she has backs to move, so the shapes fit, and you two do not play each other this week. Kraft is on a bye next week, so he helps you the week after. FantasyPros still lists Etienne questionable with a hamstring, so check him before you start him, and if she balks at Etienne, Zach Charbonnet is a fair fallback. Two rosters built wrong in opposite directions is the only kind of trade that ever gets accepted.",
               "pos": "RB",
               "trade": {
                 "partner_id": 8,
@@ -300,7 +300,7 @@
               "level": "watch",
               "title": "FantasyPros likes Stroud this week too",
               "stat": "quarterback",
-              "text": "FantasyPros' weekly projections put C.J. Stroud ahead of Trevor Lawrence at quarterback next week. Your receiver room is going to need every point the rest of the lineup can find, and this one is free."
+              "text": "FantasyPros' weekly projections put C.J. Stroud ahead of Trevor Lawrence at quarterback next week. The upgrade is already sitting on your bench, so this one does not even need a waiver claim. Nothing to add to cart."
             }
           ],
           "roster_ideas": [
@@ -355,7 +355,7 @@
           "coach_cards": {
             "matchup:1:4379399:ACTIVE": {
               "title": "Next up: Marlee",
-              "text": "Marlee is next and James Cook III is her highest-projected starter. She also has one of the two clean lineups in the league this week, so there is nothing in it left to find. Your edge is the three holes below."
+              "text": "Marlee is next and James Cook III is her highest-projected starter. Hers is one of the two clean lineups in the league, so the only lineup you can beat this week is your own. Three holes, all below."
             },
             "bye:4430737:RB:bye:4696044:ACTIVE": {
               "title": "Kaelon Black takes the Kyren Williams spot",
@@ -363,7 +363,7 @@
             },
             "bye:4426502:WR:bye:4569618:ACTIVE": {
               "title": "Garrett Wilson in for Drake London",
-              "text": "Atlanta is on a bye, so London is out of the picture next week. Garrett Wilson is healthy, playing, and already on your bench. One tap, no thinking required."
+              "text": "Atlanta is on a bye, so London is out of the picture next week. Garrett Wilson is on your bench and his team has a game to play, which is the entire job requirement this week."
             },
             "bye:-16014:DST:bye:none:none": {
               "title": "The Rams defense rests too",
@@ -371,7 +371,7 @@
             },
             "watch:4723820:QUESTIONABLE:15818:ACTIVE": {
               "title": "Omar Cooper Jr. is questionable again",
-              "text": "Cooper played Sunday with an ankle injury, left early and did not draw a single target, per FantasyPros. FantasyPros still rates him likely to play, so keep Keenan Allen on standby and check the late report before you set this one. A full afternoon on the field and not one ball thrown his way tells you more than the designation does."
+              "text": "Cooper played Sunday with an ankle injury, left early and did not draw a single target, per FantasyPros. They still rate him likely to play, so keep Keenan Allen on standby and check the late report before you set this one. Likely to play is carrying a lot of weight in that sentence."
             }
           },
           "summary": {
@@ -421,7 +421,7 @@
               "level": "watch",
               "title": "Offer Travis Etienne Jr. and Tucker Kraft to Tara for Jayden Daniels",
               "stat": "both odds go up",
-              "text": "You have five healthy running backs and no healthy quarterback. Tara carries two quarterbacks and starts one, and running back has been her worst-producing position all season, so a back and your second tight end for Jayden Daniels fixes a real hole on both rosters. Kraft is on a bye next week, so nothing you were going to start leaves the lineup. Say it plainly, and say that you do not play each other this week.",
+              "text": "You have five healthy running backs and no healthy quarterback, which is a strange way to build a roster and an excellent reason to text Tara. She carries two quarterbacks and starts one, and running back has been her worst-producing position all season, so a back and your second tight end for Jayden Daniels fixes a real hole on both rosters. Kraft is on a bye next week, so nothing you were going to start leaves the lineup. Say it plainly, and mention that you do not play each other this week.",
               "pos": "QB",
               "trade": {
                 "partner_id": 4,
@@ -494,7 +494,7 @@
           },
           "summary": {
             "key": "now|bye:4426385:RB:bye:3916148:ACTIVE|empty:WR:0:4426388:ACTIVE|out:4431452:QB:DOUBTFUL:none:none",
-            "text": "An empty receiver spot, a back on a bye, and a doubtful quarterback. All three fixes are below."
+            "text": "An empty receiver spot, a back on a bye, a doubtful quarterback. Three different ways to score nothing."
           }
         }
       },
