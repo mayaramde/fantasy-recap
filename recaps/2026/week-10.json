@@ -1,0 +1,88 @@
+{
+  "season": 2026,
+  "week": 10,
+  "status": "draft",
+  "headline": "George Pickens scores three touchdowns, Marlee posts the season high, and Week 5 is water under the bench",
+  "dek": "Maddie benches a five-touchdown quarterback and wins by 8.28. This recap does not recommend it.",
+  "matchups": {
+    "1-4": "Christian McCaffrey scored 46.3 for Tara, the most by any player in the league this week, and she still lost by 32.46, the biggest margin of the week. Marlee's Vikings D/ST (the team-defense slot) sacked the quarterback eight times. Tara brought the best player on the field. Marlee brought an entire pass rush.",
+    "2-3": "Patrick Mahomes threw five touchdowns for Amie, who claimed him off waivers (the pool of players nobody has rostered) back in Week 3. Best bargain in the league, worst week to cash it in. Maddie won by 8.28, mostly on two Chuba Hubbard touchdowns.",
+    "5-8": "Cambri won by 9.44 on a hard day for both sides. Drake Maye left in the first quarter with an ankle injury, and Maya lost Brock Bowers early to an ankle injury too. Tony Pollard's 23.9 from Cambri's flex (the wild-card spot) made the difference. Nothing on Maya's bench would have changed it.",
+    "6-7": "Kyra went Burrow over Stafford for the third straight week and was right again. Her Friday moves were another story: both put a Warren in, and both Warrens lost the swap. Jahmyr Gibbs's 44.2 out of the backfield covered for them."
+  },
+  "game_balls": [
+    {
+      "manager": "Marlee",
+      "title": "Highest score of the season",
+      "text": "Marlee scored 184.92, beating the season high Amie set in Week 1. George Pickens caught three touchdowns, Amon-Ra St. Brown added 25.8, and the Vikings D/ST recovered three fumbles on top of its eight sacks. Pillaging, as advertised.",
+      "stat": "184.92 pts",
+      "emoji": "🏔️",
+      "player": "George Pickens"
+    },
+    {
+      "manager": "Tara",
+      "title": "Two-way McCaffrey",
+      "text": "Christian McCaffrey caught two touchdowns, ran for another, and added a two-point catch (a bonus play run right after a touchdown) for good measure. He scored more than double his projection. Tara still lost, which makes it unpaid overtime.",
+      "stat": "46.3 pts, league high",
+      "emoji": "🐐",
+      "player": "Christian McCaffrey"
+    },
+    {
+      "manager": "Kyra",
+      "title": "Nine and one",
+      "text": "Jahmyr Gibbs ran for 153 yards and two touchdowns and caught seven passes for 99 more, which is two running backs' worth of work billed as one. Kyra is 9-1 and two games clear of everyone.",
+      "stat": "44.2 pts",
+      "emoji": "🦁",
+      "player": "Jahmyr Gibbs"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Maddie",
+      "title": "The curse was optional this time",
+      "text": "Dak Prescott threw five touchdowns for 34.42 points. Maddie benched him on Wednesday to start Bryce Young, who threw none, and still won by 8.28. The curse didn't find her quarterback this week. She walked it over.",
+      "stat": "−26.32 at QB",
+      "emoji": "🔮",
+      "player": "Dak Prescott"
+    },
+    {
+      "manager": "Samantha",
+      "title": "Diggs, still in the waiting room",
+      "text": "Stefon Diggs has spent nine of this season's ten weeks on Samantha's bench, and this week he scored 20.3 there while Christian Watson scored 6.7 in her lineup. Her best possible lineup would have beaten Kyra. Diggs scored on her bench in Week 1 too. He's very patient.",
+      "stat": "−13.6 at WR",
+      "emoji": "🪑",
+      "player": "Stefon Diggs"
+    },
+    {
+      "manager": "Amie",
+      "title": "Ruled out Saturday, started Sunday",
+      "text": "Kenneth Walker III went from questionable on Friday to ruled out on Saturday, and he was still in Amie's lineup on Sunday, holding the spot like a coat on a chair. Jadarian Price scored 11.4 on her bench, enough on his own to flip an 8.28 loss.",
+      "stat": "11.4 pts benched",
+      "emoji": "📰",
+      "player": "Jadarian Price"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Cambri",
+      "title": "Drake Maye, ankle injury",
+      "text": "Drake Maye was hurt on a first-quarter sack and the Patriots fear a fractured ankle that could end his season; here's hoping the news turns out better than feared.",
+      "stat": "Ankle, out",
+      "player": "Drake Maye"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Questionable",
+      "definition": "An injury tag meaning a player might or might not play that week, so check again before kickoff, like Kenneth Walker III, who went from questionable on Friday to ruled out on Saturday."
+    },
+    {
+      "term": "Pass rush",
+      "definition": "The defenders whose job is to chase down the quarterback before he can throw, and Marlee's Vikings D/ST had a great one this week."
+    },
+    {
+      "term": "Backfield",
+      "definition": "A team's running backs, the players lined up behind the quarterback, like the Lions', where Jahmyr Gibbs caught seven passes this week on top of all his running."
+    }
+  ]
+}
