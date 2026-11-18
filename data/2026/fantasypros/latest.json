@@ -1,24 +1,16 @@
 {
-  "generated_at": "2026-11-17T16:13:21Z",
+  "generated_at": "2026-11-18T15:33:50Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-11-17T16:13:21Z"
+    "checked_at": "2026-11-18T14:19:00Z"
   },
   "weeks": {
     "11": {
       "teams": {
         "1": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "stat": "finger",
-              "title": "FantasyPros has an update on Josh Jacobs",
-              "text": "FantasyPros reports Josh Jacobs had surgery on his broken finger on Friday and is hopeful to be back in two to three weeks. He is on your bench, so nothing in your lineup changes while he heals."
-            }
-          ],
+          "advice_cards": [],
           "roster_ideas": [],
           "coach_cards": {
             "matchup:6:3915511:ACTIVE": {
@@ -36,15 +28,88 @@
           }
         },
         "2": {
-          "advice_cards": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "title": "FantasyPros says Walker might sit this week",
+              "stat": "groin",
+              "text": "FantasyPros reports Ian Rapoport would not be surprised if Kenneth Walker III sat out Week 11 so the groin heals properly, with Emmett Johnson holding the lead role in Kansas City. Walker is your highest-projected starter, so watch the Chiefs report early and keep Cam Skattebo warm. The groin has no interest in your playoff push."
+            }
+          ],
           "roster_ideas": [
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "TE",
+              "title": "Add Chig Okonkwo to cover the tight end bye",
               "stat": "unowned",
-              "title": "Add T.J. Hockenson at tight end",
-              "text": "Hunter Henry is on a bye and he is the only tight end you roster, so nobody is filling that spot on Sunday. T.J. Hockenson is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros projects him the best tight end left on the wire from here to the end of the season. Tight end has been your thinnest position all year, and it will never be cheaper to fix than free."
+              "text": "Tight end has been the thinnest spot on this roster all season, and now Hunter Henry, the only one you have, is on a bye. Chig Okonkwo is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros rates Washington's tight end matchup inside the top ten this week. A free fix for the spot that has never once cooperated.",
+              "pos": "TE"
+            },
+            {
+              "kind": "waiver",
+              "level": "now",
+              "title": "Claim Jordyn Tyson for the receiver holes",
+              "stat": "unowned",
+              "text": "Jaxon Smith-Njigba and Matthew Golden are both resting this week, which leaves you short at receiver however you shuffle. Jordyn Tyson is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros rates New Orleans one of the week's friendlier receiver matchups. It also reported him dominating the Saints' target share last Sunday. He is already doing the job, just not for you.",
+              "pos": "WR"
+            },
+            {
+              "kind": "trade",
+              "level": "watch",
+              "title": "Offer Patrick Mahomes to Cambri for Travis Kelce and Travis Etienne Jr.",
+              "stat": "both odds go up",
+              "text": "You roster two quarterbacks and can start only one, so one of them has spent the season on a very comfortable bench. Cambri has none at all while Drake Maye is hurt, and her lineup gains more per week here than yours does. Back comes Kelce, who turns the league's worst tight end spot into a real one, with Etienne as running back cover. FantasyPros' rest-of-season projections put Kelce well clear of anything you have there now. Pitch it in one line: you are deep at quarterback and bare at tight end, she is the other way round.",
+              "pos": "TE",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 3139477,
+                    "name": "Patrick Mahomes",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
+                  },
+                  {
+                    "id": 15847,
+                    "name": "Travis Kelce",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 5.6,
+                  "playoff": [
+                    0.8986,
+                    0.9159
+                  ],
+                  "title": [
+                    0.3164,
+                    0.3846
+                  ]
+                },
+                "them": {
+                  "near": 8.98,
+                  "playoff": [
+                    0.0581,
+                    0.1067
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0334
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
             }
           ],
           "coach_cards": {
@@ -83,16 +148,9 @@
             {
               "kind": "consensus",
               "level": "now",
-              "stat": "quarterback",
-              "title": "FantasyPros has Dak ahead at quarterback too",
-              "text": "FantasyPros' own weekly projections put Dak Prescott comfortably ahead of Bryce Young at quarterback this week. Both are already on your roster, so the better option costs you a tap and nothing else. The league's worst quarterback spot is fixable from your own bench, which is the nicest thing anyone has said about it all season."
-            },
-            {
-              "kind": "fp_news",
-              "level": "info",
-              "stat": "injured reserve",
-              "title": "Alec Pierce is still on injured reserve",
-              "text": "FantasyPros has Alec Pierce on injured reserve, where he has sat since Week 3, and his coach now declines to put any timetable on a return. Nothing in your lineup changes. At this point he is less a bench receiver than a souvenir."
+              "title": "Dak is the better quarterback this week, per FantasyPros",
+              "stat": "FantasyPros' weekly",
+              "text": "FantasyPros' weekly projections have Dak Prescott ahead of Bryce Young, and that is despite its own ratings calling Carolina's quarterback matchup the easier of the two. So the gap is Prescott, not the opponent. You own both, so it costs one tap. The league's worst quarterback room, fixable from its own bench."
             }
           ],
           "roster_ideas": [],
@@ -112,23 +170,31 @@
           }
         },
         "4": {
-          "advice_cards": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "info",
+              "title": "Woody Marks is out on Thursday",
+              "stat": "concussion",
+              "text": "FantasyPros has Woody Marks ruled out of Houston's Thursday game with a concussion, so cross him off before you start shuffling. He is bench depth and your lineup does not move, but your running back room keeps finding new ways to be the thin one."
+            }
+          ],
           "roster_ideas": [
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "K",
+              "title": "Add Evan McPherson while Myers rests",
               "stat": "unowned",
-              "title": "Add Evan McPherson at kicker",
-              "text": "Jason Myers is on a bye and you roster no other kicker, so right now that spot is a zero with a logo on it. Evan McPherson is unowned in this league, per FantasyPros' ownership numbers, and he is the highest-projected kicker still available for the rest of the season. Cincinnati is not on a bye, so he will actually kick."
+              "text": "Kicker is the one slot you cannot leave blank, and Jason Myers, your only one, is on a bye. Evan McPherson is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros projects him the best kicker left on the wire for the rest of the season. Cincinnati plays, which is the entire job description.",
+              "pos": "K"
             },
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "DST",
+              "title": "Rent the Houston defense this week",
               "stat": "unowned",
-              "title": "Add the Lions defense",
-              "text": "Seattle and Cleveland drew the same bye, so both of your defenses are off at once. Detroit is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros rates its matchup this week among the four easiest of any defense. Two holes, two claims, one afternoon of admin."
+              "text": "Seattle and Cleveland drew the same bye, so both of your defenses are off at once. Nobody in this league owns Houston, per FantasyPros' ownership numbers, and no defense on the board has an easier matchup this week by FantasyPros' ratings. Both of your defenses resting on the same weekend is the schedule being rude. The wire is the apology.",
+              "pos": "DST"
             }
           ],
           "coach_cards": {
@@ -153,28 +219,21 @@
         "5": {
           "advice_cards": [
             {
-              "kind": "fp_news",
+              "kind": "consensus",
               "level": "now",
-              "stat": "ankle",
-              "title": "FantasyPros has Brock Bowers day to day",
-              "text": "FantasyPros reports Brock Bowers is day to day with the ankle he hurt on Sunday. His coach called it less serious than feared but still significant, and he is uncertain for this week. Nobody else on your roster plays tight end, so watch his status early and have a claim ready. Rostering exactly one tight end was always going to get exciting eventually."
-            },
-            {
-              "kind": "fp_back",
-              "level": "watch",
-              "stat": "practicing",
-              "title": "Luther Burden III was back at practice",
-              "text": "FantasyPros had Luther Burden III practicing on Monday, after the concussion that ended his last game before Chicago's bye. He still needs to clear the week, but this is the direction you want. A receiver who practices is worth two who are hoping to."
+              "title": "FantasyPros is firmly on Jonah Coleman",
+              "stat": "FantasyPros' ROS",
+              "text": "FantasyPros' rest-of-season projections have Jonah Coleman well ahead of Rachaad White, and it rates Denver's running back matchup among the easiest in the league this week while Washington's sits in the bottom half. FantasyPros also had Coleman leading the Broncos in rushing in three straight games. The biggest single upgrade available to anybody in this league this week, and you are hiding it on your own bench."
             }
           ],
           "roster_ideas": [
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "TE",
+              "title": "Add Michael Mayer behind Brock Bowers",
               "stat": "unowned",
-              "title": "Add Chig Okonkwo as tight end cover",
-              "text": "Brock Bowers is your only tight end and he is day to day, so Sunday could arrive with nobody in that spot. Chig Okonkwo is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros rates Washington's tight end matchup inside the top ten this week. Insurance is cheaper before you need it."
+              "text": "Brock Bowers is questionable with the ankle, and he is the entire tight end plan. Michael Mayer is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros reported he takes over as Las Vegas' starting tight end whenever Bowers is out. It also rates the Raiders' tight end matchup among the week's four best. Insurance does not get more direct than the man standing behind him.",
+              "pos": "TE"
             }
           ],
           "coach_cards": {
@@ -190,10 +249,6 @@
               "title": "Stroud over Lawrence in Week 11",
               "text": "ESPN flips your quarterbacks for Week 11 and puts Stroud ahead by a few points. You start one of them either way, so the only cost is remembering to tap. Set a reminder. Past you is not reliable."
             },
-            "watch:4685278:QUESTIONABLE:16737:QUESTIONABLE": {
-              "title": "Luther Burden III is questionable",
-              "text": "Questionable means the call usually lands about ninety minutes before kickoff. Mike Evans is the name behind him, and the man who used to beat your starters from the bench has not played since Week 6. Treat this slot as Burden or a problem."
-            },
             "watch:4432665:QUESTIONABLE:none:none": {
               "title": "Brock Bowers is questionable",
               "text": "Bowers left Sunday's game with an ankle injury and was ruled out for the rest of it, per FantasyPros, and ESPN has him questionable for next week. He is the only tight end you roster, so if he sits the spot is empty. Watch the late report and keep a claim ready."
@@ -201,6 +256,10 @@
             "watch:4241478:QUESTIONABLE:16737:QUESTIONABLE": {
               "title": "DeVonta Smith is questionable",
               "text": "Smith is working back from a hamstring, and Mike Evans, the only other name for that slot, is questionable too. If Smith sits, start whichever healthy receiver you trust most rather than the one the projection likes. Hamstrings keep their own calendar."
+            },
+            "back:4685278:starting": {
+              "title": "Luther Burden III is good to go",
+              "text": "He has cleared the league's concussion protocol, Chicago is back from its bye, and he is already in your lineup. Nothing to do here. Enjoy a card that is just good news for once."
             }
           },
           "summary": {
@@ -209,23 +268,67 @@
           }
         },
         "6": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "watch",
-              "stat": "ankle",
-              "title": "Omar Cooper Jr. and that ankle again",
-              "text": "FantasyPros has Omar Cooper Jr. still working through an ankle problem. He was active last week and then left in the first quarter without a single target. Keenan Allen is the healthy fallback if Cooper sits, and check the report early. This is an ankle that clears him and then benches him."
-            }
-          ],
+          "advice_cards": [],
           "roster_ideas": [
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "DST",
+              "title": "Stream the Detroit defense this week",
               "stat": "unowned",
-              "title": "Add the 49ers defense",
-              "text": "The Rams are your only defense and they are resting this week, which leaves the slot to nobody. San Francisco is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros puts its matchup this week in the top third of the league. Rent a defense for a week and hand it back."
+              "text": "The Rams are your only defense and they are on a bye, so that slot is a zero until you claim someone. Detroit is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros rates its matchup among the four easiest of any defense this week. A defense you will own for seven days and never think about again.",
+              "pos": "DST"
+            },
+            {
+              "kind": "trade",
+              "level": "watch",
+              "title": "Offer Matthew Stafford to Cambri for Justin Jefferson",
+              "stat": "a straight 1-for-1",
+              "text": "Joe Burrow starts for you every single week, which makes Stafford the quarterback your gut already decided against. Cambri has none at all while Drake Maye is hurt, so he is worth more to her than to you, and her lineup gains here as well as yours. Back comes Jefferson, straight into the thinnest spot you have: your receivers rank last in the league while your running backs rank first. FantasyPros' rest-of-season projections price Jefferson above Stafford, and it is one for one, so nobody gets cut.",
+              "pos": "WR",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 12483,
+                    "name": "Matthew Stafford",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4262921,
+                    "name": "Justin Jefferson",
+                    "pos": "WR"
+                  }
+                ],
+                "you": {
+                  "near": 5.05,
+                  "playoff": [
+                    1.0,
+                    1.0
+                  ],
+                  "title": [
+                    0.2828,
+                    0.3356
+                  ]
+                },
+                "them": {
+                  "near": 2.44,
+                  "playoff": [
+                    0.0581,
+                    0.0761
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0171
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
             }
           ],
           "coach_cards": {
@@ -256,7 +359,15 @@
           }
         },
         "7": {
-          "advice_cards": [],
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "watch",
+              "title": "Emmett Johnson could have another big week",
+              "stat": "watch the Chiefs",
+              "text": "Kansas City may rest Kenneth Walker III this week: FantasyPros reports Ian Rapoport would not be surprised if the injury kept him out, which would hand Johnson that backfield again. He did exactly that last time out, in what FantasyPros called a workhorse role. He is on your bench while flex is the weakest spot on an otherwise tidy roster, so check the Chiefs report early. The one card on your page asking you to do anything at all."
+            }
+          ],
           "roster_ideas": [],
           "coach_cards": {
             "matchup:5:4360310:ACTIVE": {
@@ -276,21 +387,21 @@
         "8": {
           "advice_cards": [
             {
-              "kind": "fp_back",
-              "level": "watch",
-              "stat": "off the report",
-              "title": "Travis Etienne Jr. is off the injury report",
-              "text": "FantasyPros no longer lists Travis Etienne Jr. with the hamstring that cost him six games. He came off injured reserve and played the whole way last Sunday, even if the carries were quiet. Progress counts even when the box score does not."
+              "kind": "fp_news",
+              "level": "now",
+              "title": "Drake Maye's injury looks serious",
+              "stat": "ankle",
+              "text": "FantasyPros reports the Patriots are concerned Drake Maye fractured his ankle and that he is feared to be out for the season, with further testing still to come. He is the only quarterback you roster, so the claim below is the fix for now. Rough way for a season to turn."
             }
           ],
           "roster_ideas": [
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "QB",
+              "title": "Claim Bo Nix at quarterback",
               "stat": "unowned",
-              "title": "Claim Tyler Shough at quarterback",
-              "text": "With Drake Maye's ankle in question, your quarterback spot could be empty on Sunday. Tyler Shough is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros projects him the highest-scoring quarterback still available this week. A free quarterback is not a fun way to fix this, but it is a fast one."
+              "text": "With Maye hurt you have nobody to start at quarterback, and an empty slot scores nothing. Bo Nix is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros projects him the highest-scoring quarterback still available both this week and for the rest of the season. It also rates Denver's quarterback matchup among the four best on the board. Claim him first and sort the rest out later.",
+              "pos": "QB"
             }
           ],
           "coach_cards": {
@@ -344,7 +455,65 @@
         },
         "2": {
           "advice_cards": [],
-          "roster_ideas": [],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "title": "Offer Patrick Mahomes to Cambri for Travis Kelce and Travis Etienne Jr.",
+              "stat": "both odds go up",
+              "text": "Two quarterbacks, one starting slot, and a tight end spot that ranks last in the league: the fix has been on your own roster the whole time. Cambri has no quarterback at all while Drake Maye is hurt, and her lineup gains more per week here than yours does. Kelce comes back as a genuine tight end, with Etienne as running back cover. FantasyPros' rest-of-season projections put Kelce well clear of anything you have there now.",
+              "pos": "TE",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 3139477,
+                    "name": "Patrick Mahomes",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
+                  },
+                  {
+                    "id": 15847,
+                    "name": "Travis Kelce",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 5.6,
+                  "playoff": [
+                    0.8986,
+                    0.9159
+                  ],
+                  "title": [
+                    0.3164,
+                    0.3846
+                  ]
+                },
+                "them": {
+                  "near": 8.98,
+                  "playoff": [
+                    0.0581,
+                    0.1067
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0334
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
           "coach_cards": {
             "matchup:6:3915511:ACTIVE": {
               "title": "Next up: Kyra",
@@ -365,7 +534,15 @@
           }
         },
         "3": {
-          "advice_cards": [],
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "now",
+              "title": "Dak is the better quarterback next week, per FantasyPros",
+              "stat": "FantasyPros' weekly",
+              "text": "FantasyPros' weekly projections have Dak Prescott ahead of Bryce Young, and that is despite its own ratings calling Carolina's quarterback matchup the easier of the two. So the gap is Prescott, not the opponent. You own both, so it costs one tap. Two quarterbacks, one right answer, and FantasyPros has already circled it for you."
+            }
+          ],
           "roster_ideas": [],
           "coach_cards": {
             "matchup:5:4360310:ACTIVE": {
@@ -414,10 +591,10 @@
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "TE",
+              "title": "Add Michael Mayer behind Brock Bowers",
               "stat": "unowned",
-              "title": "Add Chig Okonkwo as tight end cover",
-              "text": "Brock Bowers is your only tight end and FantasyPros has him day to day, which leaves next week resting on one ankle. Chig Okonkwo is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros still has him among the better tight ends on the wire. Better to own a spare tight end you never start than to start nobody."
+              "text": "Bowers carries the same ankle question into next week, and he is still the only tight end you have. Michael Mayer is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros reported he steps in as Las Vegas' starter whenever Bowers sits. Claim the backup and the ankle stops being your problem.",
+              "pos": "TE"
             }
           ],
           "coach_cards": {
@@ -429,23 +606,76 @@
               "title": "DeVonta Smith is questionable",
               "text": "Smith is still working through a hamstring, and Nico Collins is the healthy fallback if it does not clear. Make the call early rather than at kickoff. Collins is one of only three receivers you have who are off the injury report, so he was getting used either way."
             },
-            "watch:4685278:QUESTIONABLE:4258173:ACTIVE": {
-              "title": "Luther Burden III is questionable",
-              "text": "Burden is working back from a concussion and FantasyPros had him practicing on Monday, so the signs point the right way. Nico Collins is the cover if he does not clear. Your receiver room needs one of these two to be fine."
-            },
             "watch:4432665:QUESTIONABLE:none:none": {
               "title": "Brock Bowers is questionable",
               "text": "Bowers is day to day with an ankle per FantasyPros, and nobody else on your roster plays tight end, so there is no bench answer to this one. Check him early in the week and keep a claim ready."
+            },
+            "back:4685278:starting": {
+              "title": "Luther Burden III is clear for next week",
+              "text": "The concussion protocol is behind him and he keeps his receiver spot. Chicago plays and he is healthy. File it under problems that solved themselves."
             }
           },
           "summary": {
-            "key": "watch|watch:4241478:QUESTIONABLE:4258173:ACTIVE|watch:4432665:QUESTIONABLE:none:none|watch:4685278:QUESTIONABLE:4258173:ACTIVE",
-            "text": "Nothing to fix yet. Three names are questionable, so your week depends on other people's doctors."
+            "key": "watch|watch:4241478:QUESTIONABLE:4258173:ACTIVE|watch:4432665:QUESTIONABLE:none:none",
+            "text": "Nothing broken yet. Two question marks at kickoff, both of them other people's decisions to make."
           }
         },
         "6": {
           "advice_cards": [],
-          "roster_ideas": [],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "title": "Offer Matthew Stafford to Cambri for Justin Jefferson",
+              "stat": "a straight 1-for-1",
+              "text": "Burrow is your quarterback and always will be, so Stafford is a spare. Cambri has none at all while Drake Maye is hurt, so he is worth more to her than to you, and her lineup gains here as well as yours. Jefferson lands in your worst spot: receivers last in the league, running backs first. FantasyPros' rest-of-season projections price Jefferson above Stafford, and one for one means nobody gets cut. The gut that benched Stafford for Burrow in Week 8 can finish the job.",
+              "pos": "WR",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 12483,
+                    "name": "Matthew Stafford",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4262921,
+                    "name": "Justin Jefferson",
+                    "pos": "WR"
+                  }
+                ],
+                "you": {
+                  "near": 5.05,
+                  "playoff": [
+                    1.0,
+                    1.0
+                  ],
+                  "title": [
+                    0.2828,
+                    0.3356
+                  ]
+                },
+                "them": {
+                  "near": 2.44,
+                  "playoff": [
+                    0.0581,
+                    0.0761
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0171
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
           "coach_cards": {
             "matchup:2:4567048:QUESTIONABLE": {
               "title": "Next up: Amie",
@@ -489,10 +719,10 @@
             {
               "kind": "waiver",
               "level": "now",
-              "pos": "QB",
+              "title": "Claim Bo Nix at quarterback",
               "stat": "unowned",
-              "title": "Claim Tyler Shough at quarterback",
-              "text": "Drake Maye's ankle leaves you without a quarterback for next week as well as this one. Tyler Shough is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros has him among the best quarterbacks still available for the rest of the season. He is free, which is the only thing a quarterback has to be right now."
+              "text": "Your quarterback spot is empty next week too while Maye is hurt. Bo Nix is unowned in this league, per FantasyPros' ownership numbers, and FantasyPros projects him the highest-scoring quarterback still available for the rest of the season. Getting the claim in now covers both weeks at once.",
+              "pos": "QB"
             }
           ],
           "coach_cards": {
@@ -516,8 +746,8 @@
         }
       },
       "league": {
-        "key": "735be1702baf",
-        "text": "Next week the byes clear out entirely, and six lineups still have something to fix. Maya and Samantha are the clean two. There is a full week to sort the rest, which is exactly how these things get forgotten."
+        "key": "2ce17d10c4e9",
+        "text": "Bye weeks are finally done: not one starter is resting next week, and six of eight lineups still have something to fix. Maya and Samantha are the clean ones, Samantha for the second week running. For everyone else the schedule has run out of excuses to offer."
       }
     }
   },
@@ -938,15 +1168,15 @@
         "pass_yds": 2838,
         "pass_tds": 20
       },
-      "4373626": {
-        "games": 10,
-        "rush_att": 94,
-        "rush_yds": 383,
-        "rush_tds": 2,
-        "rec_tar": 26,
-        "rec_rec": 23,
-        "rec_yds": 128,
-        "rec_tds": 1
+      "4832955": {
+        "games": 9,
+        "rush_att": 48,
+        "rush_yds": 212,
+        "rush_tds": 1,
+        "rec_tar": 23,
+        "rec_rec": 20,
+        "rec_yds": 307,
+        "rec_tds": 3
       },
       "4429795": {
         "games": 9,
