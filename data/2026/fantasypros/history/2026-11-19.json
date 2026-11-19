@@ -1,0 +1,2758 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-19T17:31:08Z",
+  "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
+  "trade_finder_disclosure_shown": false,
+  "fantasypros": {
+    "reached": true,
+    "checked_at": "2026-11-19T14:19:30Z"
+  },
+  "weeks": {
+    "11": {
+      "teams": {
+        "1": {
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "info",
+              "stat": "Out",
+              "title": "Josh Jacobs came through surgery",
+              "text": "FantasyPros reports Josh Jacobs had successful surgery on his broken finger, with a two-to-three-week timeline. He is in your injured slot until then, so nothing in your lineup changes."
+            },
+            {
+              "kind": "consensus",
+              "level": "info",
+              "stat": "WR",
+              "title": "Your receivers have been the hot hand lately",
+              "text": "Over the last three weeks FantasyPros' leaderboard has George Pickens and Amon-Ra St. Brown both inside the top six receivers in the league, with Ryan Flournoy and DJ Moore close behind them on your bench. Wide receiver is still your lowest-scoring spot for the season, which says more about September than about how this month is going."
+            }
+          ],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:6:3915511:ACTIVE": {
+              "title": "Next up: Kyra",
+              "text": "Kyra brings the best record in the league, and Joe Burrow is her highest-projected starter. Nothing on your side needs changing, so your entire game plan is hoping Burrow has a very ordinary Sunday."
+            },
+            "clear:open": {
+              "title": "Nothing to fix",
+              "text": "Every starter is healthy, playing, and ahead of whoever is behind him on your bench. Close the app before you talk yourself into something."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Nothing to fix. Six other lineups are scrambling and yours is not one of them."
+          }
+        },
+        "2": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "now",
+              "stat": "TE18 this week",
+              "title": "Tight end is thin even if Hockenson plays",
+              "text": "FantasyPros' weekly expert consensus has T.J. Hockenson outside the top fifteen tight ends this week, and Hunter Henry sits behind him on a bye. Tight end has been your lowest-scoring position all season, and no Friday injury report is going to fix that for you."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "now",
+              "pos": "TE",
+              "stat": "TE9 this week",
+              "title": "Claim Chig Okonkwo at tight end",
+              "text": "Nobody in the league owns Chig Okonkwo, per FantasyPros' ownership numbers, and their weekly expert consensus has him inside the top ten tight ends this week. Hockenson is questionable and Hunter Henry is on a bye, so your tight end spot is one bad Friday from empty. Washington also draws one of the friendlier tight end matchups on the board."
+            }
+          ],
+          "coach_cards": {
+            "matchup:4:3117251:ACTIVE": {
+              "title": "Next up: Tara",
+              "text": "Christian McCaffrey is the one name in Tara's lineup that can ruin your afternoon. Keep an eye on him and treat the rest as scenery."
+            },
+            "watch:4567048:QUESTIONABLE:4890973:ACTIVE": {
+              "title": "Kenneth Walker III is likely out",
+              "text": "Plan on starting Ashton Jeanty here. FantasyPros puts Kenneth Walker III's chance of playing down in the low teens after he missed Wednesday's practice, so check once more before kickoff but set the lineup as though he sits."
+            },
+            "watch:4036133:QUESTIONABLE:none:none": {
+              "title": "T.J. Hockenson is questionable",
+              "text": "FantasyPros still gives T.J. Hockenson a good chance to play and had him limited rather than sitting out on Wednesday, which is the injury report's way of shrugging. Your only other tight end is on a bye, so he starts either way. Check before kickoff."
+            },
+            "back:4608686:bench": {
+              "title": "Kyle Monangai is back",
+              "text": "FantasyPros has Kyle Monangai at a full practice and on track to play. That matters less for your bench than for D'Andre Swift, who is in your lineup and now shares the Chicago backfield again. Nothing to change today, just a smaller slice."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4036133:QUESTIONABLE:none:none|watch:4567048:QUESTIONABLE:4890973:ACTIVE",
+            "text": "Walker and Hockenson are both questionable. Your lineup is one injury report away from a rewrite."
+          }
+        },
+        "3": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "watch",
+              "stat": "TE3 vs TE4",
+              "title": "Your two tight ends are closer than they look",
+              "text": "FantasyPros' weekly consensus has Isaiah Likely third among tight ends and Colston Loveland fourth, close enough to call a coin flip. The tiebreaker is the matchup: FantasyPros rates Chicago's tight end draw the easiest of all thirty-two teams this week and the Giants' among the hardest. Owning two top-five tight ends is a nice problem, but only one of them scores for you."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "watch",
+              "pos": "K",
+              "stat": "K8 this week",
+              "title": "Have a kicker ready behind Matt Gay",
+              "text": "Matt Gay is questionable and nobody on your bench kicks. Evan McPherson is unowned per FantasyPros' ownership numbers and sits inside their top ten kickers this week, so he is the cheapest insurance on the wire. Claim him only if Friday's report turns, because kicker is not a spot worth paying for twice."
+            }
+          ],
+          "coach_cards": {
+            "matchup:8:4426338:ACTIVE": {
+              "title": "Next up: Cambri",
+              "text": "Cambri comes in at three and seven, same as you, and Bo Nix is the name to watch on that side. Two teams at three and seven, and somebody has to be four and seven."
+            },
+            "swap:4685720:QB:2577417:ACTIVE": {
+              "title": "Start Dak Prescott at quarterback",
+              "text": "ESPN wants Prescott in that spot, and FantasyPros' weekly projections put him ahead of Bryce Young too. Quarterback has been your weakest position all season, so take the free upgrade sitting on your own bench. The curse does not get a vote this week."
+            },
+            "watch:4249087:QUESTIONABLE:none:none": {
+              "title": "Matt Gay is questionable",
+              "text": "FantasyPros has Matt Gay a shade better than even to play with a hip injury, and nobody on your bench kicks. A questionable kicker is the least dramatic emergency in fantasy football, and still an emergency. Watch Friday's report."
+            }
+          },
+          "summary": {
+            "key": "now|swap:4685720:QB:2577417:ACTIVE",
+            "text": "Your bench quarterback is outprojecting your starter. Easiest quarterback call you have had all year."
+          }
+        },
+        "4": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "now",
+              "stat": "FLEX",
+              "title": "Deebo Samuel is healthy and parked in your injured slot",
+              "text": "FantasyPros has Deebo Samuel Sr. off the injury report entirely, and he scored twice in Week 10. He is still sitting in your injured-reserve slot, where he cannot score for you at all. Move him into the flex, the wild-card spot, ahead of Aaron Jones Sr. A healthy, touchdown-scoring receiver in the injured slot is a working car in long-term parking."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "now",
+              "pos": "DST",
+              "stat": "DST2 this week",
+              "title": "Claim the Houston Texans defense",
+              "text": "Your defense is on a bye and so is your backup, so this slot scores nothing unless you claim somebody. Nobody in the league owns Houston, per FantasyPros' ownership numbers, and their weekly consensus has the Texans the second-best defense on the board with the easiest matchup of any defense this week. Free, and better than what you had."
+            },
+            {
+              "kind": "waiver",
+              "level": "now",
+              "pos": "K",
+              "stat": "K7 this week",
+              "title": "Claim Cairo Santos at kicker",
+              "text": "Jason Myers shares the bye and nobody on your bench kicks, so this is the other empty slot. Cairo Santos is unowned per FantasyPros' ownership numbers, sits inside their top ten kickers this week, and Chicago draws the easiest kicking matchup of all thirty-two teams. The bye week took your kicker and your defense, and the wire is handing both back."
+            }
+          ],
+          "coach_cards": {
+            "matchup:2:4567048:QUESTIONABLE": {
+              "title": "Next up: Amie",
+              "text": "Amie's highest-projected starter, Kenneth Walker III, is carrying a groin problem per FantasyPros' injury report. Check back before kickoff to see who she actually plays. A week where your opponent's plans are also up in the air is as close to fair as this league gets."
+            },
+            "bye:-16026:DST:bye:none:none": {
+              "title": "Both your defenses are on a bye",
+              "text": "Seattle and Cleveland both rest in Week 11, so owning two defenses this week is the same as owning none. The pickup below names a replacement."
+            },
+            "bye:2473037:K:bye:none:none": {
+              "title": "Your kicker rests too",
+              "text": "Jason Myers is a Seahawk, so he shares the bye with your defense, and you roster no other kicker. Two empty slots in one week is a lot of free points to hand over. Both fixes are on the wire."
+            },
+            "news:4429059:OUT:bench:open": {
+              "title": "Woody Marks is out",
+              "text": "FantasyPros has Woody Marks ruled out with a concussion for Thursday night, so he is unavailable rather than merely benched. Your running back room is six deep, which is the one place this roster has never needed the help."
+            }
+          },
+          "summary": {
+            "key": "now|bye:-16026:DST:bye:none:none|bye:2473037:K:bye:none:none",
+            "text": "Both defenses and your kicker share the same bye week."
+          }
+        },
+        "5": {
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "stat": "Questionable",
+              "title": "FantasyPros expects Brock Bowers to sit",
+              "text": "FantasyPros has Brock Bowers very unlikely to play after he missed Wednesday's practice, and tells managers to prepare as though he is out. He is the only tight end you roster, so the waiver wire is the fix this week."
+            },
+            {
+              "kind": "fp_news",
+              "level": "watch",
+              "stat": "Questionable",
+              "title": "Mike Evans is not the backup plan",
+              "text": "FantasyPros still has Mike Evans unlikely to play, with no practice on Wednesday and an Achilles problem that has kept him out since Week 6. The better news is DeVonta Smith, who FantasyPros rates better than even to return after a limited practice. Evans has now spent more of this season as a theoretical option than an actual one."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "now",
+              "pos": "TE",
+              "stat": "TE12 this week",
+              "title": "Claim Michael Mayer at tight end",
+              "text": "Brock Bowers is unlikely to play and he is the only tight end you roster. Michael Mayer is unowned per FantasyPros' ownership numbers, sits just outside their top ten tight ends this week, and steps into the Raiders' starting job while Bowers is out, against one of the easiest tight end matchups on the board. You are not replacing Bowers so much as borrowing his understudy."
+            },
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "TE",
+              "stat": "both odds go up",
+              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
+              "text": "You carry two starting quarterbacks and one tight end; Cambri carries one quarterback and two tight ends. She gets the starter her roster does not have, and you get the two spots yours is thinnest at. The pitch you could send: you are deep at quarterback and would rather have tight end cover and running back depth than a backup you never start. Two quarterbacks and one tight end is a roster assembled by somebody who really likes quarterbacks. If she would rather keep Etienne, Jakobi Meyers in his place scores almost the same. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB",
+                    "ros": 138.1
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB",
+                    "ros": 74.0
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE",
+                    "ros": 67.8
+                  }
+                ],
+                "you": {
+                  "near": 1.83,
+                  "playoff": [
+                    0.9812,
+                    0.9846
+                  ],
+                  "title": [
+                    0.2056,
+                    0.2248
+                  ]
+                },
+                "them": {
+                  "near": 1.08,
+                  "playoff": [
+                    0.0581,
+                    0.0658
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0144
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:7:4362628:ACTIVE": {
+              "title": "Next up: Samantha",
+              "text": "Samantha's highest-projected starter is Ja'Marr Chase, which is the least fun sentence on this page. You cannot do anything about him, so win it in the margins: fill the empty spots and start the healthy bodies."
+            },
+            "watch:4432665:QUESTIONABLE:none:none": {
+              "title": "Brock Bowers is questionable",
+              "text": "Bowers left Sunday's game with an ankle injury and was ruled out for the rest of it, per FantasyPros, and ESPN has him questionable for next week. He is the only tight end you roster, so if he sits the spot is empty. Watch the late report and keep a claim ready."
+            },
+            "watch:4241478:QUESTIONABLE:16737:QUESTIONABLE": {
+              "title": "DeVonta Smith is questionable",
+              "text": "Smith is working back from a hamstring, and Mike Evans, the only other name for that slot, is questionable too. If Smith sits, start whichever healthy receiver you trust most rather than the one the projection likes. Hamstrings keep their own calendar."
+            },
+            "back:4685278:starting": {
+              "title": "Luther Burden III is good to go",
+              "text": "He has cleared the league's concussion protocol, Chicago is back from its bye, and he is already in your lineup. Nothing to do here. Enjoy a card that is just good news for once."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4241478:QUESTIONABLE:16737:QUESTIONABLE|watch:4432665:QUESTIONABLE:none:none",
+            "text": "Bowers and Smith are both questionable, and your tight end plan is currently a rumor."
+          }
+        },
+        "6": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "now",
+              "stat": "TE8 vs TE14",
+              "title": "FantasyPros prefers Tyler Warren at tight end",
+              "text": "FantasyPros' weekly expert consensus puts Tyler Warren eighth among tight ends this week and Mark Andrews fourteenth. Warren is on your bench and both fit the same slot, so this is one tap rather than a roster move. The rankings have been telling you this for a while."
+            }
+          ],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:1:4379399:ACTIVE": {
+              "title": "Next up: Marlee",
+              "text": "Marlee is next and James Cook III is her highest-projected starter. Hers is one of the two clean lineups in the league, so the only lineup you can beat this week is your own. Three holes, all below."
+            },
+            "watch:4880281:QUESTIONABLE:15818:ACTIVE": {
+              "title": "Jordyn Tyson is questionable",
+              "text": "Leave Jordyn Tyson in the lineup. FantasyPros has him very likely to play after a limited practice, and he caught eleven of thirteen targets last week. Eleven of thirteen is not the stat line of a man you bench."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4880281:QUESTIONABLE:15818:ACTIVE",
+            "text": "Tyson is questionable, and that is the only thing wrong with a nine-and-one roster. Leave it alone."
+          }
+        },
+        "7": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "watch",
+              "stat": "FLEX",
+              "title": "Emmett Johnson could be the flex answer",
+              "text": "FantasyPros has Kenneth Walker III very unlikely to play and says Emmett Johnson is in line for the workhorse role in Kansas City again. Johnson is the one name on your bench whose workload could double by Sunday morning, which is the closest thing to a free upgrade this league offers. Watch the Friday report."
+            }
+          ],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:5:4432577:ACTIVE": {
+              "title": "Next up: Maya",
+              "text": "Maya arrives at seven and three with C.J. Stroud as the name to watch on that side. That is the second-best record in the league pointed straight at you, so this is not the week for experiments. Stick to the evidence."
+            },
+            "watch:4882093:QUESTIONABLE:4832955:ACTIVE": {
+              "title": "Bhayshul Tuten is questionable",
+              "text": "Start Bhayshul Tuten. FantasyPros has him almost certain to play after a limited practice and says his recent work should settle any nerves, so Emmett Johnson stays put for now. The questionable tag is becoming his permanent accessory."
+            },
+            "news:4385690:QUESTIONABLE:bench:open": {
+              "title": "Dalton Kincaid is questionable",
+              "text": "FantasyPros has Dalton Kincaid under even odds to play with thumb and ankle trouble, and rates him hard to trust even at full health. Sam LaPorta is your starter at tight end, and Kincaid is the backup to a tight end you were never going to bench anyway."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4882093:QUESTIONABLE:4832955:ACTIVE",
+            "text": "Two questionable names and only one you start. Start Tuten, bench Kincaid, and your Sunday is decided."
+          }
+        },
+        "8": {
+          "advice_cards": [
+            {
+              "kind": "consensus",
+              "level": "info",
+              "stat": "RB",
+              "title": "Tony Pollard is your best back from here",
+              "text": "FantasyPros' rest-of-season projections put Tony Pollard ahead of every other running back you own, Derrick Henry included. Running back is the one spot where this roster has ranked last all year, and he is already in your lineup, so this is less advice than permission to stop second-guessing it."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "info",
+              "pos": "QB",
+              "stat": "an even split",
+              "title": "Offer Jakobi Meyers and Tucker Kraft to Tara for Brock Purdy",
+              "text": "Bo Nix is your only quarterback, and you carry two tight ends and six receivers, so this trades from the deepest parts of your roster for the one position you cannot cover. Tara runs two quarterbacks and is thin at receiver and tight end, so she gets the depth and you get a starter. Worth saying out loud: you play Tara next week, so she will read this card too. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "trade": {
+                "partner_id": 4,
+                "give": [
+                  {
+                    "id": 3916433,
+                    "name": "Jakobi Meyers",
+                    "pos": "WR",
+                    "ros": 74.2
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE",
+                    "ros": 67.8
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4361741,
+                    "name": "Brock Purdy",
+                    "pos": "QB",
+                    "ros": 142.5
+                  }
+                ],
+                "you": {
+                  "near": 1.71,
+                  "playoff": [
+                    0.0581,
+                    0.0704
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0169
+                  ]
+                },
+                "them": {
+                  "near": 2.23,
+                  "playoff": [
+                    0.0239,
+                    0.0257
+                  ],
+                  "title": [
+                    0.0043,
+                    0.0049
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": "next_week"
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:3:4241416:ACTIVE": {
+              "title": "Next up: Maddie",
+              "text": "Maddie is next, and the two of you are matched on record, so this is the most winnable game left on your board. Chuba Hubbard is the name to watch on her side. She also beat you to the Ravens defense this week, so there's a small score to settle."
+            },
+            "news:3916433:QUESTIONABLE:bench:open": {
+              "title": "Jakobi Meyers is questionable",
+              "text": "FantasyPros has Jakobi Meyers nearly certain to play and notes he has been managing this ankle for weeks already. He is one of six receivers where three can start, so the ankle is the least of his problems."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Lineup's clean and the week is a coin flip. For once, nothing here needs you."
+          }
+        }
+      },
+      "league": {
+        "key": "90050fc09e89",
+        "text": "Six of eight lineups are already clean, which is about as peaceful as this league gets. Maddie has a quarterback swap worth one tap, and Tara has both a kicker and a defense sitting this one out. The bye week picked exactly one victim, then went back for seconds."
+      }
+    },
+    "12": {
+      "teams": {
+        "1": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:7:4362628:ACTIVE": {
+              "title": "Next up: Samantha",
+              "text": "Ja'Marr Chase is the highest-projected receiver in this league from here on, and he is Samantha's. Plan around him rather than hoping around him."
+            },
+            "swap:-16003:DST:-16016:none": {
+              "title": "Start Vikings D/ST over Bears D/ST",
+              "text": "Both of your defenses play next week and the Vikings carry the bigger projection of the two. Same slot, one tap, and you already own both. The hard part of this one is remembering to do it."
+            }
+          },
+          "summary": {
+            "key": "now|swap:-16003:DST:-16016:none",
+            "text": "One defense swap and you are done next week. Vikings over Bears."
+          }
+        },
+        "2": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:6:3915511:ACTIVE": {
+              "title": "Next up: Kyra",
+              "text": "Kyra has the best record in the league, and Joe Burrow has scored more than any quarterback in it this season. You will want your best lineup of the month here, not your most hopeful one."
+            },
+            "swap:4567750:WR:4430878:ACTIVE": {
+              "title": "Start Jaxon Smith-Njigba over Emeka Egbuka",
+              "text": "This is the biggest single-tap upgrade on your roster for next week, and both names fit the receiver slot, so nothing else moves. FantasyPros' recent leaderboard has Smith-Njigba among the most productive receivers in football over the last three weeks. Your bench is currently outranking your lineup, which is at least a solvable kind of rude."
+            },
+            "watch:4567048:QUESTIONABLE:4890973:ACTIVE": {
+              "title": "Kenneth Walker III is questionable",
+              "text": "Kenneth Walker III carries the groin injury into next week too, and FantasyPros had him missing practice this week. Ashton Jeanty is the swap if it holds, so watch the Friday report rather than building a lineup around a guess."
+            },
+            "watch:4036133:QUESTIONABLE:3046439:ACTIVE": {
+              "title": "T.J. Hockenson is questionable",
+              "text": "If T.J. Hockenson sits next week, Hunter Henry is back from his bye and takes the tight end spot. FantasyPros had Hockenson limited rather than out this week, so the likelier outcome is that Henry's bye ends and his bench seat doesn't."
+            }
+          },
+          "summary": {
+            "key": "now|swap:4567750:WR:4430878:ACTIVE",
+            "text": "Jaxon Smith-Njigba is on your bench and he should not be. That's the whole note."
+          }
+        },
+        "3": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:5:4360310:ACTIVE": {
+              "title": "Next up: Maya",
+              "text": "Maya is near the top of the standings and Trevor Lawrence is the name to track. She has also made more pickups than anyone in this league, so expect her lineup to look different by the time you check it again."
+            },
+            "swap:4685720:QB:2577417:ACTIVE": {
+              "title": "Start Dak Prescott over Bryce Young",
+              "text": "Same call as this week, with a wider gap next week. Both quarterbacks are yours, so the better one is already in the building. At some point this stops being advice and becomes a standing instruction."
+            },
+            "swap:-16033:DST:-16017:none": {
+              "title": "Start Patriots D/ST over Ravens D/ST",
+              "text": "You own two defenses and the Patriots hold the better projection of the pair next week. The other one sits and watches, which is what you keep it for."
+            },
+            "swap:4429615:FLEX:4362238:ACTIVE": {
+              "title": "Start Chase Brown over Zay Flowers",
+              "text": "Chase Brown edges Zay Flowers for the flex, the wild-card spot that takes a back or a receiver. Brown has quietly caught forty-seven passes this season, which is why the projection likes him. Flex is where you play the hot hand, not the famous one."
+            }
+          },
+          "summary": {
+            "key": "now|swap:-16033:DST:-16017:none|swap:4429615:FLEX:4362238:ACTIVE|swap:4685720:QB:2577417:ACTIVE",
+            "text": "Three swaps waiting: quarterback, defense and flex. Your bench is doing the heavy lifting again."
+          }
+        },
+        "4": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:8:4262921:ACTIVE": {
+              "title": "Next up: Cambri",
+              "text": "Justin Jefferson decides how much work this one is. The rest of that lineup you can safely ignore. Cambri is also without a healthy quarterback, which is her bad luck and not your game plan."
+            },
+            "swap:-16026:DST:-16005:none": {
+              "title": "Start Browns D/ST over Seahawks D/ST",
+              "text": "Both of your defenses are back off their bye, and Cleveland takes the better projection of the two next week. One tap in the same slot, and for once the easiest card on your page."
+            }
+          },
+          "summary": {
+            "key": "now|swap:-16026:DST:-16005:none",
+            "text": "Browns over Seahawks at defense and that's your whole week. The byes are done asking you for favors."
+          }
+        },
+        "5": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "TE",
+              "stat": "both odds go up",
+              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
+              "text": "You carry two starting quarterbacks and one tight end; Cambri carries one quarterback and two tight ends. She gets the starter her roster does not have, and you get the two spots yours is thinnest at. The pitch you could send: you are deep at quarterback and would rather have tight end cover and running back depth than a backup you never start. Two quarterbacks and one tight end is a roster assembled by somebody who really likes quarterbacks. If she would rather keep Etienne, Jakobi Meyers in his place scores almost the same. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB",
+                    "ros": 138.1
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB",
+                    "ros": 74.0
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE",
+                    "ros": 67.8
+                  }
+                ],
+                "you": {
+                  "near": 1.83,
+                  "playoff": [
+                    0.9812,
+                    0.9846
+                  ],
+                  "title": [
+                    0.2056,
+                    0.2248
+                  ]
+                },
+                "them": {
+                  "near": 1.08,
+                  "playoff": [
+                    0.0581,
+                    0.0658
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0144
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:3:4242335:ACTIVE": {
+              "title": "Next up: Maddie",
+              "text": "Jonathan Taylor is the engine of Maddie's lineup, and with her quarterback spot struggling he carries most of it alone. Plan for him, and plan generously."
+            },
+            "watch:4241478:QUESTIONABLE:4258173:ACTIVE": {
+              "title": "DeVonta Smith is questionable",
+              "text": "Smith is still working through a hamstring, and Nico Collins is the healthy fallback if it does not clear. Make the call early rather than at kickoff. Collins is one of only three receivers you have who are off the injury report, so he was getting used either way."
+            },
+            "watch:4432665:QUESTIONABLE:none:none": {
+              "title": "Brock Bowers is questionable",
+              "text": "Bowers is day to day with an ankle per FantasyPros, and nobody else on your roster plays tight end, so there is no bench answer to this one. Check him early in the week and keep a claim ready."
+            },
+            "back:4685278:starting": {
+              "title": "Luther Burden III is clear for next week",
+              "text": "The concussion protocol is behind him and he keeps his receiver spot. Chicago plays and he is healthy. File it under problems that solved themselves."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4241478:QUESTIONABLE:4258173:ACTIVE|watch:4432665:QUESTIONABLE:none:none",
+            "text": "Nothing broken yet. Two question marks at kickoff, both of them other people's decisions to make."
+          }
+        },
+        "6": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:2:4567048:QUESTIONABLE": {
+              "title": "Next up: Amie",
+              "text": "Amie's highest-projected starter, Kenneth Walker III, is questionable with a groin problem per FantasyPros. She has enough running backs that losing one is an inconvenience, not an opening."
+            },
+            "swap:4035538:FLEX:4430737:ACTIVE": {
+              "title": "Start Kyren Williams over David Montgomery at flex",
+              "text": "Flex is the wild-card spot, and next week Kyren Williams is the better bet to fill it. He has carried a full workload all season while Montgomery shares a backfield in Houston. One tap, and your flex stops being the soft spot in the lineup."
+            },
+            "swap:3116365:TE:5083076:ACTIVE": {
+              "title": "Start Harold Fannin Jr. over Mark Andrews",
+              "text": "Both fit the tight end slot, so this is one tap. FantasyPros' rest-of-season projections put Fannin comfortably ahead of Andrews, who has reached the end zone once all year. Andrews has changed rosters twice in this league and the production has never followed him."
+            },
+            "watch:4880281:QUESTIONABLE:4426502:ACTIVE": {
+              "title": "Jordyn Tyson is questionable",
+              "text": "The chest injury follows Jordyn Tyson into next week, and Drake London is the better of your healthy options if he sits. FantasyPros had Tyson practicing in limited fashion rather than sitting out, so London is a plan you probably never open."
+            }
+          },
+          "summary": {
+            "key": "now|swap:3116365:TE:5083076:ACTIVE|swap:4035538:FLEX:4430737:ACTIVE",
+            "text": "Two swaps waiting, one at flex and one at tight end. Your bench is auditioning again."
+          }
+        },
+        "7": {
+          "advice_cards": [],
+          "roster_ideas": [],
+          "coach_cards": {
+            "matchup:1:4374302:ACTIVE": {
+              "title": "Next up: Marlee",
+              "text": "Amon-Ra St. Brown is the receiver to account for in Marlee's lineup. Her kicker has also been the second-best in the league all season, which is a strange sentence and a real problem."
+            },
+            "watch:4882093:QUESTIONABLE:4685247:ACTIVE": {
+              "title": "Bhayshul Tuten is questionable",
+              "text": "Tuten carries the same ankle and foot trouble into next week, with Braelon Allen as the fallback if it finally catches up with him. FantasyPros has been unbothered by the tag all month. So has Tuten."
+            },
+            "news:4385690:QUESTIONABLE:bench:open": {
+              "title": "Dalton Kincaid is questionable",
+              "text": "FantasyPros has Dalton Kincaid under even odds to play with thumb and ankle trouble, and rates him hard to trust even at full health. Sam LaPorta keeps the tight end spot next week regardless, so Kincaid is a name you own rather than a name you start."
+            }
+          },
+          "summary": {
+            "key": "watch|watch:4882093:QUESTIONABLE:4685247:ACTIVE",
+            "text": "Braelon Allen is on standby behind Tuten next week, which is the full extent of your to-do list."
+          }
+        },
+        "8": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "info",
+              "pos": "QB",
+              "stat": "an even split",
+              "title": "Offer Jakobi Meyers and Tucker Kraft to Tara for Brock Purdy",
+              "text": "Bo Nix is your only quarterback, and you carry two tight ends and six receivers, so this trades from the deepest parts of your roster for the one position you cannot cover. Tara runs two quarterbacks and is thin at receiver and tight end, so she gets the depth and you get a starter. Worth saying out loud: you play Tara next week, so she will read this card too. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "trade": {
+                "partner_id": 4,
+                "give": [
+                  {
+                    "id": 3916433,
+                    "name": "Jakobi Meyers",
+                    "pos": "WR",
+                    "ros": 74.2
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE",
+                    "ros": 67.8
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4361741,
+                    "name": "Brock Purdy",
+                    "pos": "QB",
+                    "ros": 142.5
+                  }
+                ],
+                "you": {
+                  "near": 1.71,
+                  "playoff": [
+                    0.0581,
+                    0.0704
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0169
+                  ]
+                },
+                "them": {
+                  "near": 2.23,
+                  "playoff": [
+                    0.0239,
+                    0.0257
+                  ],
+                  "title": [
+                    0.0043,
+                    0.0049
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": "next_week"
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:4:4426348:ACTIVE": {
+              "title": "Next up: Tara",
+              "text": "Jayden Daniels is Tara's highest-projected starter next week. Her running backs have been the weak link all season, so outscore Daniels and you have outscored the lineup."
+            },
+            "news:3916433:QUESTIONABLE:bench:open": {
+              "title": "Jakobi Meyers is questionable",
+              "text": "FantasyPros has Jakobi Meyers nearly certain to play and notes he has been managing this ankle for weeks already. Nothing on your bench changes next week either, which is the quiet luxury of a roster this deep."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Nothing to change for next week. Bank the free weekend."
+          }
+        }
+      },
+      "league": {
+        "key": "4079e7072be8",
+        "text": "Next week the byes are done and five of eight lineups still have something worth changing, most of it one tap. Marlee, Amie, Maddie, Tara and Kyra each have a better starter sitting on the bench already. Maya, Samantha and Cambri are set. Five benches currently think they should be the lineup."
+      }
+    }
+  },
+  "audit": {
+    "6": {
+      "lineup:B:4431459:w5": {
+        "title": "Mostly right, one tight end regret",
+        "text": "You leave less on the bench than almost anyone. The exception is Week 5, when Harold Fannin started at tight end and Tyler Warren had a big one from your bench. You are being told to start Tyler Warren again in Week 11, so the universe is offering a redo."
+      },
+      "pos:RB1:WR8": {
+        "title": "Best backfield, last-place receivers",
+        "text": "Your running backs lead the league and your receivers rank last, which is a strange way to keep winning. A.J. Brown and Drake London should not add up to last place."
+      },
+      "proj:over:3915511:4870795": {
+        "title": "The gut was right about Burrow",
+        "text": "Your lineup has outrun its projections all season, with Joe Burrow the main reason and Makai Lemon the main drag. When your quarterback keeps beating his number, the move is to stop second-guessing him."
+      }
+    },
+    "5": {
+      "lineup:C:4685278:w7": {
+        "title": "Coker started, Burden scored",
+        "text": "Week 7 is the one to learn from: Jalen Coker started at receiver and did nothing while Luther Burden III had his best week of the season on your bench. You roster eight receivers and start three, so the odds of getting it wrong are baked in."
+      },
+      "pos:TE2:K7": {
+        "title": "Brock Bowers is doing the heavy lifting",
+        "text": "Tight end is your second-best position in the league and kicker your seventh, which is the least alarming weak spot available. Ka'imi Fairbairn is actually the best-projected kicker left this season, so this one may fix itself without you touching a thing."
+      },
+      "proj:over:-16030:4695883": {
+        "title": "Your defense is outrunning its projection",
+        "text": "Your lineup finishes a shade ahead of its projections overall, carried by the Jaguars defense comfortably beating its number week after week. Jalen Coker has pulled the other way, which the Week 7 card above already covered."
+      }
+    },
+    "2": {
+      "lineup:B:4259545:w1": {
+        "title": "Nine weeks, one regret",
+        "text": "You squeeze about as much out of your roster as anyone in the league. The one that stings is Week 1, when Emeka Egbuka started in flex, the wild-card spot, and D'Andre Swift went off on your bench. Nine weeks on, Swift is still the one you are told to start, so the lesson landed."
+      },
+      "pos:WR1:TE8": {
+        "title": "Best receivers, last-place tight end",
+        "text": "Your receivers lead the league and your tight end is dead last. You roster exactly one tight end. That is not a position group, it is a hope."
+      },
+      "proj:over:4430878:4360248": {
+        "title": "Smith-Njigba keeps beating his number",
+        "text": "Your lineup has outscored its projections all season, led by Jaxon Smith-Njigba beating his number nearly every week. Kyle Pitts has gone the other way, which brings us back to tight end."
+      }
+    },
+    "1": {
+      "lineup:C:4360761:w8": {
+        "title": "Wilson's best week happened on your bench",
+        "text": "Your worst call this season was Week 8, when Tre Tucker blanked in your lineup and Michael Wilson had his best week of the year on your bench. Eight receivers on the roster, three slots, and the bench keeps picking the right ones."
+      },
+      "pos:K2:WR7": {
+        "title": "Your kicker is carrying this team",
+        "text": "Kicker is your second-best position in the league and wide receiver your seventh, which is a sentence nobody wants written about them. The fix is which ones start, not how many you keep."
+      },
+      "proj:under:-16016:4360761": {
+        "title": "ESPN overrates everyone but your defense",
+        "text": "Your lineup has landed under ESPN's projections all season, with the Vikings defense the one piece quietly beating its number most weeks. Treat the projections as a suggestion."
+      }
+    },
+    "7": {
+      "lineup:C:4036378:w9": {
+        "title": "Week 9 was an expensive quarterback call",
+        "text": "Josh Allen started and had a quiet day while Jordan Love put up the biggest bench score anyone in this league has managed all season. You own two startable quarterbacks, so this decision comes back every single week. Worth five minutes on a Sunday morning."
+      },
+      "pos:QB1:FLEX8": {
+        "title": "Six running backs and nothing to put in flex",
+        "text": "Quarterback is your strongest position in the league and flex, the wild-card spot, is your weakest, despite six running backs on the roster. Depth is not the problem. The top of it is."
+      },
+      "proj:under:-16034:4429160": {
+        "title": "Under the number most weeks",
+        "text": "Your lineup lands under its projections most weeks. De'Von Achane was the biggest shortfall of the season while you held him, and the Texans defense has been the one beating its number. The trade below is aimed at it."
+      }
+    },
+    "4": {
+      "lineup:C:4248528:w1": {
+        "title": "Week 1 belonged to your bench",
+        "text": "Your biggest bench week was Week 1, when Christian Watson put up a monster game while your flex, the wild-card spot, barely scored. Watson has repaid the faith since, which is the actual lesson: your bench runs hot."
+      },
+      "pos:TE1:RB7": {
+        "title": "Best tight end, thinnest backfield",
+        "text": "Trey McBride has made tight end your strongest position in the league, while running back sits seventh despite six of them on your roster. Six backs, seventh place."
+      },
+      "proj:under:4248528:4569173": {
+        "title": "The projections miss you both ways",
+        "text": "Your lineup has come in under its projections most weeks, with Rhamondre Stevenson the steadiest drag and Christian Watson the one beating his number."
+      }
+    },
+    "8": {
+      "lineup:C:3916148:w7": {
+        "title": "Week 7 was the Pollard week",
+        "text": "Derrick Henry started at running back and did very little while Tony Pollard put up the biggest bench score on your roster all season. You started Pollard the next time it mattered and won, so this one is already filed under lesson learned."
+      },
+      "pos:WR2:RB8": {
+        "title": "Last place in the backfield, with six of them",
+        "text": "Your receivers are second in the league and your running backs are last, despite six of them on the roster. Derrick Henry and Travis Etienne are the names on the shirt. Tony Pollard is the one scoring."
+      },
+      "proj:over:4239993:4262921": {
+        "title": "Ahead of the projections, behind on the scoreboard",
+        "text": "Your lineup finishes slightly ahead of its projections, with Tee Higgins the biggest overachiever and Justin Jefferson coming up short more often than a player of his quality should. Nothing here is broken."
+      }
+    },
+    "3": {
+      "lineup:C:4241416:w1": {
+        "title": "Hubbard keeps scoring from the wrong side of the lineup",
+        "text": "Week 1 set the tone: Jaylen Waddle started in flex, the wild-card spot, and Chuba Hubbard outscored him many times over from your bench. Hubbard is still on this roster and still underused. Start the one who keeps scoring."
+      },
+      "pos:K1:QB8": {
+        "title": "Your kicker leads the league",
+        "text": "You have the best kicker in the league and the worst quarterback, which is a hard combination to build a season on. Quarterback is also the position where the wire most often has an upgrade."
+      },
+      "proj:under:4241416:4047650": {
+        "title": "Nobody misses their number by more",
+        "text": "No lineup in the league has fallen further short of its projections than yours, with DK Metcalf the biggest weekly shortfall and Chuba Hubbard the one beating his. The roster is better than the results."
+      }
+    }
+  },
+  "player_stats": {
+    "through_week": 10,
+    "players": {
+      "4432665": {
+        "games": 8,
+        "rush_att": 1,
+        "rush_yds": 2,
+        "rush_tds": 0,
+        "rec_tar": 72,
+        "rec_rec": 50,
+        "rec_yds": 676,
+        "rec_tds": 6
+      },
+      "4241478": {
+        "games": 4,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 41,
+        "rec_rec": 26,
+        "rec_yds": 310,
+        "rec_tds": 2
+      },
+      "4596448": {
+        "games": 9,
+        "rush_att": 167,
+        "rush_yds": 825,
+        "rush_tds": 7,
+        "rec_tar": 28,
+        "rec_rec": 22,
+        "rec_yds": 106,
+        "rec_tds": 1
+      },
+      "4685278": {
+        "games": 9,
+        "rush_att": 8,
+        "rush_yds": 29,
+        "rush_tds": 0,
+        "rec_tar": 66,
+        "rec_rec": 49,
+        "rec_yds": 644,
+        "rec_tds": 4
+      },
+      "4432577": {
+        "games": 9,
+        "rush_att": 23,
+        "rush_yds": 120,
+        "rush_tds": 1,
+        "pass_att": 320,
+        "pass_yds": 2462,
+        "pass_tds": 19
+      },
+      "4702555": {
+        "games": 5,
+        "rush_att": 47,
+        "rush_yds": 191,
+        "rush_tds": 3,
+        "rec_tar": 14,
+        "rec_rec": 13,
+        "rec_yds": 128,
+        "rec_tds": 0
+      },
+      "4258173": {
+        "games": 7,
+        "rush_att": 2,
+        "rush_yds": 12,
+        "rush_tds": 0,
+        "rec_tar": 55,
+        "rec_rec": 37,
+        "rec_yds": 478,
+        "rec_tds": 5
+      },
+      "2971573": {
+        "games": 9,
+        "fg": 19,
+        "fga": 20,
+        "xpt": 24,
+        "xpa": 24
+      },
+      "4430807": {
+        "games": 10,
+        "rush_att": 185,
+        "rush_yds": 951,
+        "rush_tds": 6,
+        "rec_tar": 45,
+        "rec_rec": 35,
+        "rec_yds": 256,
+        "rec_tds": 1
+      },
+      "16800": {
+        "games": 6,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 49,
+        "rec_rec": 30,
+        "rec_yds": 480,
+        "rec_tds": 4
+      },
+      "16737": {
+        "games": 6,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 39,
+        "rec_rec": 27,
+        "rec_yds": 420,
+        "rec_tds": 3
+      },
+      "4360310": {
+        "games": 9,
+        "rush_att": 25,
+        "rush_yds": 106,
+        "rush_tds": 0,
+        "pass_att": 259,
+        "pass_yds": 2284,
+        "pass_tds": 21
+      },
+      "4695883": {
+        "games": 8,
+        "rush_att": 2,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 53,
+        "rec_rec": 31,
+        "rec_yds": 393,
+        "rec_tds": 3
+      },
+      "4697815": {
+        "games": 8,
+        "rush_att": 65,
+        "rush_yds": 275,
+        "rush_tds": 1,
+        "rec_tar": 23,
+        "rec_rec": 19,
+        "rec_yds": 134,
+        "rec_tds": 2
+      },
+      "4870653": {
+        "games": 10,
+        "rush_att": 11,
+        "rush_yds": 43,
+        "rush_tds": 1,
+        "rec_tar": 63,
+        "rec_rec": 40,
+        "rec_yds": 458,
+        "rec_tds": 1
+      },
+      "4429205": {
+        "games": 7,
+        "rush_att": 2,
+        "rush_yds": 2,
+        "rush_tds": 0,
+        "rec_tar": 36,
+        "rec_rec": 18,
+        "rec_yds": 277,
+        "rec_tds": 1
+      },
+      "4362628": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 87,
+        "rec_rec": 64,
+        "rec_yds": 878,
+        "rec_tds": 7
+      },
+      "3918298": {
+        "games": 9,
+        "rush_att": 66,
+        "rush_yds": 290,
+        "rush_tds": 11,
+        "pass_att": 257,
+        "pass_yds": 2223,
+        "pass_tds": 13
+      },
+      "4428331": {
+        "games": 7,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 38,
+        "rec_rec": 30,
+        "rec_yds": 374,
+        "rec_tds": 2
+      },
+      "4427366": {
+        "games": 5,
+        "rush_att": 77,
+        "rush_yds": 265,
+        "rush_tds": 1,
+        "rec_tar": 18,
+        "rec_rec": 17,
+        "rec_yds": 195,
+        "rec_tds": 0
+      },
+      "4882093": {
+        "games": 9,
+        "rush_att": 148,
+        "rush_yds": 609,
+        "rush_tds": 5,
+        "rec_tar": 20,
+        "rec_rec": 18,
+        "rec_yds": 206,
+        "rec_tds": 3
+      },
+      "4430027": {
+        "games": 9,
+        "rush_att": 1,
+        "rush_yds": 2,
+        "rush_tds": 0,
+        "rec_tar": 53,
+        "rec_rec": 36,
+        "rec_yds": 415,
+        "rec_tds": 3
+      },
+      "4711533": {
+        "games": 9,
+        "rush_att": 127,
+        "rush_yds": 539,
+        "rush_tds": 4,
+        "rec_tar": 15,
+        "rec_rec": 11,
+        "rec_yds": 62,
+        "rec_tds": 0
+      },
+      "4571557": {
+        "games": 10,
+        "fg": 23,
+        "fga": 25,
+        "xpt": 19,
+        "xpa": 20
+      },
+      "4431299": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 51,
+        "rec_rec": 32,
+        "rec_yds": 528,
+        "rec_tds": 1
+      },
+      "4678008": {
+        "games": 2,
+        "rush_att": 9,
+        "rush_yds": 30,
+        "rush_tds": 0,
+        "rec_tar": 3,
+        "rec_rec": 2,
+        "rec_yds": 43,
+        "rec_tds": 0
+      },
+      "2976212": {
+        "games": 8,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 59,
+        "rec_rec": 36,
+        "rec_yds": 386,
+        "rec_tds": 6
+      },
+      "4385690": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 41,
+        "rec_rec": 32,
+        "rec_yds": 487,
+        "rec_tds": 2
+      },
+      "4685247": {
+        "games": 10,
+        "rush_att": 128,
+        "rush_yds": 638,
+        "rush_tds": 3,
+        "rec_tar": 25,
+        "rec_rec": 20,
+        "rec_yds": 108,
+        "rec_tds": 0
+      },
+      "4248528": {
+        "games": 10,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 79,
+        "rec_rec": 52,
+        "rec_yds": 916,
+        "rec_tds": 7
+      },
+      "4036378": {
+        "games": 10,
+        "rush_att": 13,
+        "rush_yds": 23,
+        "rush_tds": 2,
+        "pass_att": 368,
+        "pass_yds": 2838,
+        "pass_tds": 20
+      },
+      "4832955": {
+        "games": 9,
+        "rush_att": 48,
+        "rush_yds": 212,
+        "rush_tds": 1,
+        "rec_tar": 23,
+        "rec_rec": 20,
+        "rec_yds": 307,
+        "rec_tds": 3
+      },
+      "4429795": {
+        "games": 9,
+        "rush_att": 199,
+        "rush_yds": 1000,
+        "rush_tds": 11,
+        "rec_tar": 53,
+        "rec_rec": 41,
+        "rec_yds": 384,
+        "rec_tds": 2
+      },
+      "4569618": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 77,
+        "rec_rec": 50,
+        "rec_yds": 633,
+        "rec_tds": 3
+      },
+      "3915511": {
+        "games": 9,
+        "rush_att": 24,
+        "rush_yds": 85,
+        "rush_tds": 3,
+        "pass_att": 340,
+        "pass_yds": 2795,
+        "pass_tds": 27
+      },
+      "4569987": {
+        "games": 9,
+        "rush_att": 126,
+        "rush_yds": 719,
+        "rush_tds": 2,
+        "rec_tar": 42,
+        "rec_rec": 30,
+        "rec_yds": 320,
+        "rec_tds": 1
+      },
+      "4686361": {
+        "games": 9,
+        "fg": 18,
+        "fga": 20,
+        "xpt": 29,
+        "xpa": 30
+      },
+      "4035538": {
+        "games": 5,
+        "rush_att": 52,
+        "rush_yds": 138,
+        "rush_tds": 2,
+        "rec_tar": 7,
+        "rec_rec": 7,
+        "rec_yds": 67,
+        "rec_tds": 1
+      },
+      "4880281": {
+        "games": 2,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 18,
+        "rec_rec": 15,
+        "rec_yds": 110,
+        "rec_tds": 0
+      },
+      "3116365": {
+        "games": 10,
+        "rush_att": 2,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 51,
+        "rec_rec": 39,
+        "rec_yds": 319,
+        "rec_tds": 1
+      },
+      "4426502": {
+        "games": 10,
+        "rush_att": 2,
+        "rush_yds": 4,
+        "rush_tds": 0,
+        "rec_tar": 80,
+        "rec_rec": 50,
+        "rec_yds": 801,
+        "rec_tds": 1
+      },
+      "4047646": {
+        "games": 4,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 26,
+        "rec_rec": 11,
+        "rec_yds": 128,
+        "rec_tds": 0
+      },
+      "4430737": {
+        "games": 10,
+        "rush_att": 139,
+        "rush_yds": 616,
+        "rush_tds": 6,
+        "rec_tar": 51,
+        "rec_rec": 38,
+        "rec_yds": 267,
+        "rec_tds": 1
+      },
+      "4431459": {
+        "games": 8,
+        "rush_att": 4,
+        "rush_yds": 9,
+        "rush_tds": 1,
+        "rec_tar": 56,
+        "rec_rec": 40,
+        "rec_yds": 276,
+        "rec_tds": 2
+      },
+      "5083076": {
+        "games": 10,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 62,
+        "rec_rec": 44,
+        "rec_yds": 544,
+        "rec_tds": 4
+      },
+      "12483": {
+        "games": 10,
+        "rush_att": 17,
+        "rush_yds": 17,
+        "rush_tds": 0,
+        "pass_att": 372,
+        "pass_yds": 2623,
+        "pass_tds": 19
+      },
+      "4429096": {
+        "games": 10,
+        "rush_att": 103,
+        "rush_yds": 547,
+        "rush_tds": 5,
+        "rec_tar": 21,
+        "rec_rec": 13,
+        "rec_yds": 118,
+        "rec_tds": 1
+      },
+      "15818": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 65,
+        "rec_rec": 45,
+        "rec_yds": 412,
+        "rec_tds": 1
+      },
+      "4374302": {
+        "games": 9,
+        "rush_att": 2,
+        "rush_yds": 9,
+        "rush_tds": 0,
+        "rec_tar": 91,
+        "rec_rec": 65,
+        "rec_yds": 755,
+        "rec_tds": 7
+      },
+      "4379399": {
+        "games": 9,
+        "rush_att": 187,
+        "rush_yds": 971,
+        "rush_tds": 9,
+        "rec_tar": 19,
+        "rec_rec": 12,
+        "rec_yds": 110,
+        "rec_tds": 0
+      },
+      "4426354": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 80,
+        "rec_rec": 50,
+        "rec_yds": 678,
+        "rec_tds": 5
+      },
+      "4361579": {
+        "games": 10,
+        "rush_att": 170,
+        "rush_yds": 692,
+        "rush_tds": 9,
+        "rec_tar": 30,
+        "rec_rec": 25,
+        "rec_yds": 131,
+        "rec_tds": 1
+      },
+      "3915416": {
+        "games": 7,
+        "rush_att": 5,
+        "rush_yds": 24,
+        "rush_tds": 0,
+        "rec_tar": 38,
+        "rec_rec": 23,
+        "rec_yds": 375,
+        "rec_tds": 3
+      },
+      "3040151": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 62,
+        "rec_rec": 44,
+        "rec_yds": 557,
+        "rec_tds": 5
+      },
+      "3046779": {
+        "games": 9,
+        "rush_att": 20,
+        "rush_yds": 23,
+        "rush_tds": 1,
+        "pass_att": 304,
+        "pass_yds": 2437,
+        "pass_tds": 18
+      },
+      "4567104": {
+        "games": 9,
+        "fg": 23,
+        "fga": 25,
+        "xpt": 13,
+        "xpa": 13
+      },
+      "4047365": {
+        "games": 3,
+        "rush_att": 36,
+        "rush_yds": 80,
+        "rush_tds": 1,
+        "rec_tar": 13,
+        "rec_rec": 11,
+        "rec_yds": 68,
+        "rec_tds": 2
+      },
+      "4685261": {
+        "games": 9,
+        "rush_att": 2,
+        "rush_yds": 14,
+        "rush_tds": 0,
+        "rec_tar": 45,
+        "rec_rec": 32,
+        "rec_yds": 284,
+        "rec_tds": 1
+      },
+      "4428718": {
+        "games": 10,
+        "rush_att": 2,
+        "rush_yds": -6,
+        "rush_tds": 0,
+        "rec_tar": 58,
+        "rec_rec": 34,
+        "rec_yds": 538,
+        "rec_tds": 4
+      },
+      "4569559": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 54,
+        "rec_rec": 37,
+        "rec_yds": 379,
+        "rec_tds": 3
+      },
+      "3054850": {
+        "games": 8,
+        "rush_att": 49,
+        "rush_yds": 161,
+        "rush_tds": 3,
+        "rec_tar": 35,
+        "rec_rec": 28,
+        "rec_yds": 160,
+        "rec_tds": 2
+      },
+      "5083754": {
+        "games": 10,
+        "rush_att": 1,
+        "rush_yds": 3,
+        "rush_tds": 0,
+        "rec_tar": 54,
+        "rec_rec": 38,
+        "rec_yds": 466,
+        "rec_tds": 3
+      },
+      "4262921": {
+        "games": 9,
+        "rush_att": 1,
+        "rush_yds": -11,
+        "rush_tds": 0,
+        "rec_tar": 64,
+        "rec_rec": 40,
+        "rec_yds": 467,
+        "rec_tds": 4
+      },
+      "3043078": {
+        "games": 10,
+        "rush_att": 185,
+        "rush_yds": 699,
+        "rush_tds": 10,
+        "rec_tar": 19,
+        "rec_rec": 17,
+        "rec_yds": 85,
+        "rec_tds": 1
+      },
+      "4239993": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 73,
+        "rec_rec": 53,
+        "rec_yds": 824,
+        "rec_tds": 6
+      },
+      "4426388": {
+        "games": 9,
+        "rush_att": 1,
+        "rush_yds": 9,
+        "rush_tds": 0,
+        "rec_tar": 53,
+        "rec_rec": 32,
+        "rec_yds": 518,
+        "rec_tds": 5
+      },
+      "3953687": {
+        "games": 10,
+        "fg": 19,
+        "fga": 24,
+        "xpt": 25,
+        "xpa": 27
+      },
+      "15847": {
+        "games": 9,
+        "rush_att": 1,
+        "rush_yds": 1,
+        "rush_tds": 1,
+        "rec_tar": 50,
+        "rec_rec": 35,
+        "rec_yds": 512,
+        "rec_tds": 2
+      },
+      "3916148": {
+        "games": 9,
+        "rush_att": 142,
+        "rush_yds": 628,
+        "rush_tds": 6,
+        "rec_tar": 30,
+        "rec_rec": 22,
+        "rec_yds": 136,
+        "rec_tds": 1
+      },
+      "4426338": {
+        "games": 9,
+        "rush_att": 37,
+        "rush_yds": 116,
+        "rush_tds": 2,
+        "pass_att": 287,
+        "pass_yds": 1730,
+        "pass_tds": 11
+      },
+      "4426515": {
+        "games": 7,
+        "rush_att": 7,
+        "rush_yds": 41,
+        "rush_tds": 1,
+        "rec_tar": 93,
+        "rec_rec": 70,
+        "rec_yds": 715,
+        "rec_tds": 4
+      },
+      "4870808": {
+        "games": 6,
+        "rush_att": 76,
+        "rush_yds": 268,
+        "rush_tds": 1,
+        "rec_tar": 14,
+        "rec_rec": 11,
+        "rec_yds": 36,
+        "rec_tds": 1
+      },
+      "4239996": {
+        "games": 4,
+        "rush_att": 38,
+        "rush_yds": 142,
+        "rush_tds": 0,
+        "rec_tar": 18,
+        "rec_rec": 14,
+        "rec_yds": 71,
+        "rec_tds": 0
+      },
+      "4871023": {
+        "games": 7,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 51,
+        "rec_rec": 34,
+        "rec_yds": 413,
+        "rec_tds": 1
+      },
+      "4241985": {
+        "games": 9,
+        "rush_att": 98,
+        "rush_yds": 324,
+        "rush_tds": 3,
+        "rec_tar": 10,
+        "rec_rec": 9,
+        "rec_yds": 31,
+        "rec_tds": 0
+      },
+      "3916433": {
+        "games": 9,
+        "rush_att": 2,
+        "rush_yds": 2,
+        "rush_tds": 0,
+        "rec_tar": 43,
+        "rec_rec": 29,
+        "rec_yds": 408,
+        "rec_tds": 2
+      },
+      "4426385": {
+        "games": 3,
+        "rush_att": 42,
+        "rush_yds": 194,
+        "rush_tds": 0,
+        "rec_tar": 6,
+        "rec_rec": 4,
+        "rec_yds": 15,
+        "rec_tds": 0
+      },
+      "4572680": {
+        "games": 10,
+        "rush_att": 4,
+        "rush_yds": 13,
+        "rush_tds": 0,
+        "rec_tar": 56,
+        "rec_rec": 37,
+        "rec_yds": 370,
+        "rec_tds": 3
+      },
+      "4242335": {
+        "games": 10,
+        "rush_att": 177,
+        "rush_yds": 739,
+        "rush_tds": 8,
+        "rec_tar": 40,
+        "rec_rec": 28,
+        "rec_yds": 240,
+        "rec_tds": 0
+      },
+      "4595348": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 85,
+        "rec_rec": 58,
+        "rec_yds": 692,
+        "rec_tds": 2
+      },
+      "4241416": {
+        "games": 9,
+        "rush_att": 161,
+        "rush_yds": 711,
+        "rush_tds": 7,
+        "rec_tar": 36,
+        "rec_rec": 31,
+        "rec_yds": 247,
+        "rec_tds": 2
+      },
+      "4685720": {
+        "games": 9,
+        "rush_att": 12,
+        "rush_yds": 48,
+        "rush_tds": 1,
+        "pass_att": 338,
+        "pass_yds": 2397,
+        "pass_tds": 16
+      },
+      "4429615": {
+        "games": 9,
+        "rush_att": 6,
+        "rush_yds": 51,
+        "rush_tds": 0,
+        "rec_tar": 71,
+        "rec_rec": 49,
+        "rec_yds": 688,
+        "rec_tds": 3
+      },
+      "4361050": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 80,
+        "rec_rec": 55,
+        "rec_yds": 575,
+        "rec_tds": 7
+      },
+      "4249087": {
+        "games": 10,
+        "fg": 21,
+        "fga": 23,
+        "xpt": 22,
+        "xpa": 22
+      },
+      "4685472": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 78,
+        "rec_rec": 49,
+        "rec_yds": 660,
+        "rec_tds": 3
+      },
+      "4362238": {
+        "games": 9,
+        "rush_att": 113,
+        "rush_yds": 441,
+        "rush_tds": 1,
+        "rec_tar": 54,
+        "rec_rec": 47,
+        "rec_yds": 246,
+        "rec_tds": 2
+      },
+      "4723086": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 57,
+        "rec_rec": 37,
+        "rec_yds": 363,
+        "rec_tds": 2
+      },
+      "4372016": {
+        "games": 9,
+        "rush_att": 2,
+        "rush_yds": 23,
+        "rush_tds": 0,
+        "rec_tar": 52,
+        "rec_rec": 30,
+        "rec_yds": 337,
+        "rec_tds": 2
+      },
+      "4047650": {
+        "games": 9,
+        "rush_att": 1,
+        "rush_yds": 11,
+        "rush_tds": 0,
+        "rec_tar": 70,
+        "rec_rec": 35,
+        "rec_yds": 432,
+        "rec_tds": 2
+      },
+      "4360078": {
+        "games": 2,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 7,
+        "rec_rec": 5,
+        "rec_yds": 72,
+        "rec_tds": 0
+      },
+      "4832800": {
+        "games": 10,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 63,
+        "rec_rec": 33,
+        "rec_yds": 523,
+        "rec_tds": 3
+      },
+      "2577417": {
+        "games": 10,
+        "rush_att": 29,
+        "rush_yds": 109,
+        "rush_tds": 1,
+        "pass_att": 387,
+        "pass_yds": 2724,
+        "pass_tds": 21
+      },
+      "3117251": {
+        "games": 9,
+        "rush_att": 115,
+        "rush_yds": 519,
+        "rush_tds": 10,
+        "rec_tar": 49,
+        "rec_rec": 40,
+        "rec_yds": 431,
+        "rec_tds": 3
+      },
+      "3929630": {
+        "games": 7,
+        "rush_att": 69,
+        "rush_yds": 296,
+        "rush_tds": 3,
+        "rec_tar": 11,
+        "rec_rec": 7,
+        "rec_yds": 41,
+        "rec_tds": 0
+      },
+      "4361307": {
+        "games": 10,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 99,
+        "rec_rec": 78,
+        "rec_yds": 635,
+        "rec_tds": 5
+      },
+      "4361370": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 87,
+        "rec_rec": 59,
+        "rec_yds": 764,
+        "rec_tds": 2
+      },
+      "4432620": {
+        "games": 9,
+        "rush_att": 2,
+        "rush_yds": 13,
+        "rush_tds": 0,
+        "rec_tar": 64,
+        "rec_rec": 36,
+        "rec_yds": 645,
+        "rec_tds": 6
+      },
+      "2473037": {
+        "games": 10,
+        "fg": 16,
+        "fga": 19,
+        "xpt": 21,
+        "xpa": 23
+      },
+      "3042519": {
+        "games": 9,
+        "rush_att": 126,
+        "rush_yds": 521,
+        "rush_tds": 3,
+        "rec_tar": 23,
+        "rec_rec": 17,
+        "rec_yds": 103,
+        "rec_tds": 0
+      },
+      "4426348": {
+        "games": 7,
+        "rush_att": 42,
+        "rush_yds": 280,
+        "rush_tds": 2,
+        "pass_att": 213,
+        "pass_yds": 1499,
+        "pass_tds": 10
+      },
+      "4685702": {
+        "games": 9,
+        "rush_att": 126,
+        "rush_yds": 423,
+        "rush_tds": 4,
+        "rec_tar": 29,
+        "rec_rec": 25,
+        "rec_yds": 169,
+        "rec_tds": 0
+      },
+      "4569173": {
+        "games": 10,
+        "rush_att": 108,
+        "rush_yds": 403,
+        "rush_tds": 2,
+        "rec_tar": 32,
+        "rec_rec": 27,
+        "rec_yds": 259,
+        "rec_tds": 2
+      },
+      "4432773": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 26,
+        "rec_rec": 13,
+        "rec_yds": 146,
+        "rec_tds": 2
+      },
+      "3126486": {
+        "games": 6,
+        "rush_att": 12,
+        "rush_yds": 156,
+        "rush_tds": 1,
+        "rec_tar": 23,
+        "rec_rec": 19,
+        "rec_yds": 237,
+        "rec_tds": 4
+      },
+      "4361741": {
+        "games": 9,
+        "rush_att": 41,
+        "rush_yds": 222,
+        "rush_tds": 2,
+        "pass_att": 264,
+        "pass_yds": 2369,
+        "pass_tds": 20
+      },
+      "4429059": {
+        "games": 9,
+        "rush_att": 107,
+        "rush_yds": 391,
+        "rush_tds": 2,
+        "rec_tar": 22,
+        "rec_rec": 16,
+        "rec_yds": 113,
+        "rec_tds": 0
+      },
+      "4683062": {
+        "games": 9,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 50,
+        "rec_rec": 33,
+        "rec_yds": 278,
+        "rec_tds": 1
+      },
+      "4241389": {
+        "games": 10,
+        "rush_att": 2,
+        "rush_yds": -6,
+        "rush_tds": 0,
+        "rec_tar": 121,
+        "rec_rec": 77,
+        "rec_yds": 976,
+        "rec_tds": 8
+      },
+      "4567048": {
+        "games": 8,
+        "rush_att": 159,
+        "rush_yds": 872,
+        "rush_tds": 7,
+        "rec_tar": 36,
+        "rec_rec": 26,
+        "rec_yds": 172,
+        "rec_tds": 4
+      },
+      "4567750": {
+        "games": 7,
+        "rush_att": 3,
+        "rush_yds": 12,
+        "rush_tds": 1,
+        "rec_tar": 54,
+        "rec_rec": 31,
+        "rec_yds": 278,
+        "rec_tds": 2
+      },
+      "4259545": {
+        "games": 9,
+        "rush_att": 155,
+        "rush_yds": 576,
+        "rush_tds": 10,
+        "rec_tar": 30,
+        "rec_rec": 24,
+        "rec_yds": 162,
+        "rec_tds": 0
+      },
+      "4696981": {
+        "games": 8,
+        "rush_att": 116,
+        "rush_yds": 496,
+        "rush_tds": 4,
+        "rec_tar": 17,
+        "rec_rec": 14,
+        "rec_yds": 120,
+        "rec_tds": 0
+      },
+      "3139477": {
+        "games": 9,
+        "rush_att": 25,
+        "rush_yds": 100,
+        "rush_tds": 1,
+        "pass_att": 298,
+        "pass_yds": 2385,
+        "pass_tds": 19
+      },
+      "17372": {
+        "games": 9,
+        "fg": 19,
+        "fga": 24,
+        "xpt": 17,
+        "xpa": 17
+      },
+      "4036133": {
+        "games": 8,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 44,
+        "rec_rec": 35,
+        "rec_yds": 328,
+        "rec_tds": 3
+      },
+      "4430878": {
+        "games": 10,
+        "rush_att": 3,
+        "rush_yds": 29,
+        "rush_tds": 0,
+        "rec_tar": 109,
+        "rec_rec": 79,
+        "rec_yds": 1207,
+        "rec_tds": 10
+      },
+      "4890973": {
+        "games": 10,
+        "rush_att": 123,
+        "rush_yds": 380,
+        "rush_tds": 1,
+        "rec_tar": 59,
+        "rec_rec": 46,
+        "rec_yds": 417,
+        "rec_tds": 3
+      },
+      "4431611": {
+        "games": 6,
+        "rush_att": 31,
+        "rush_yds": 145,
+        "rush_tds": 2,
+        "pass_att": 195,
+        "pass_yds": 1546,
+        "pass_tds": 8
+      },
+      "4701936": {
+        "games": 10,
+        "rush_att": 1,
+        "rush_yds": 6,
+        "rush_tds": 0,
+        "rec_tar": 101,
+        "rec_rec": 58,
+        "rec_yds": 853,
+        "rec_tds": 5
+      },
+      "4575131": {
+        "games": 5,
+        "rush_att": 67,
+        "rush_yds": 239,
+        "rush_tds": 2,
+        "rec_tar": 7,
+        "rec_rec": 5,
+        "rec_yds": 40,
+        "rec_tds": 0
+      },
+      "4608686": {
+        "games": 4,
+        "rush_att": 60,
+        "rush_yds": 324,
+        "rush_tds": 3,
+        "rec_tar": 5,
+        "rec_rec": 5,
+        "rec_yds": 39,
+        "rec_tds": 0
+      },
+      "3046439": {
+        "games": 10,
+        "rush_att": 0,
+        "rush_yds": 0,
+        "rush_tds": 0,
+        "rec_tar": 40,
+        "rec_rec": 34,
+        "rec_yds": 383,
+        "rec_tds": 2
+      },
+      "4685512": {
+        "games": 6,
+        "rush_att": 56,
+        "rush_yds": 208,
+        "rush_tds": 1,
+        "rec_tar": 16,
+        "rec_rec": 11,
+        "rec_yds": 91,
+        "rec_tds": 0
+      }
+    },
+    "unmatched": [
+      {
+        "name": "Josh Downs",
+        "team": "KC",
+        "why": "no match"
+      }
+    ]
+  },
+  "matchups": {
+    "week": 11,
+    "teams": {
+      "ARI": {
+        "QB": {
+          "rank": 24,
+          "stars": 0.9
+        },
+        "RB": {
+          "rank": 20,
+          "stars": 1.9
+        },
+        "WR": {
+          "rank": 26,
+          "stars": 0.7
+        },
+        "TE": {
+          "rank": 26,
+          "stars": 0.9
+        },
+        "K": {
+          "rank": 11,
+          "stars": 3.6
+        },
+        "DST": {
+          "rank": 22,
+          "stars": 1.2
+        }
+      },
+      "BAL": {
+        "QB": {
+          "rank": 5,
+          "stars": 4.7
+        },
+        "RB": {
+          "rank": 1,
+          "stars": 5.0
+        },
+        "WR": {
+          "rank": 25,
+          "stars": 0.7
+        },
+        "TE": {
+          "rank": 13,
+          "stars": 3.4
+        },
+        "K": {
+          "rank": 13,
+          "stars": 3.3
+        },
+        "DST": {
+          "rank": 12,
+          "stars": 3.3
+        }
+      },
+      "BUF": {
+        "QB": {
+          "rank": 9,
+          "stars": 4.0
+        },
+        "RB": {
+          "rank": 12,
+          "stars": 3.2
+        },
+        "WR": {
+          "rank": 24,
+          "stars": 1.0
+        },
+        "TE": {
+          "rank": 5,
+          "stars": 4.5
+        },
+        "K": {
+          "rank": 14,
+          "stars": 3.2
+        },
+        "DST": {
+          "rank": 2,
+          "stars": 5.0
+        }
+      },
+      "CAR": {
+        "QB": {
+          "rank": 8,
+          "stars": 4.2
+        },
+        "RB": {
+          "rank": 11,
+          "stars": 3.5
+        },
+        "WR": {
+          "rank": 15,
+          "stars": 2.9
+        },
+        "TE": {
+          "rank": 8,
+          "stars": 4.0
+        },
+        "K": {
+          "rank": 6,
+          "stars": 4.4
+        },
+        "DST": {
+          "rank": 8,
+          "stars": 4.0
+        }
+      },
+      "CHI": {
+        "QB": {
+          "rank": 7,
+          "stars": 4.4
+        },
+        "RB": {
+          "rank": 2,
+          "stars": 5.0
+        },
+        "WR": {
+          "rank": 17,
+          "stars": 2.6
+        },
+        "TE": {
+          "rank": 1,
+          "stars": 4.8
+        },
+        "K": {
+          "rank": 1,
+          "stars": 5.0
+        },
+        "DST": {
+          "rank": 11,
+          "stars": 3.8
+        }
+      },
+      "CIN": {
+        "QB": {
+          "rank": 6,
+          "stars": 4.5
+        },
+        "RB": {
+          "rank": 18,
+          "stars": 2.2
+        },
+        "WR": {
+          "rank": 21,
+          "stars": 1.7
+        },
+        "TE": {
+          "rank": 11,
+          "stars": 3.6
+        },
+        "K": {
+          "rank": 15,
+          "stars": 2.8
+        },
+        "DST": {
+          "rank": 16,
+          "stars": 3.0
+        }
+      },
+      "DAL": {
+        "QB": {
+          "rank": 18,
+          "stars": 2.3
+        },
+        "RB": {
+          "rank": 9,
+          "stars": 3.8
+        },
+        "WR": {
+          "rank": 1,
+          "stars": 5.0
+        },
+        "TE": {
+          "rank": 15,
+          "stars": 3.1
+        },
+        "K": {
+          "rank": 2,
+          "stars": 5.0
+        },
+        "DST": {
+          "rank": 14,
+          "stars": 3.3
+        }
+      },
+      "DEN": {
+        "QB": {
+          "rank": 4,
+          "stars": 4.8
+        },
+        "RB": {
+          "rank": 4,
+          "stars": 5.0
+        },
+        "WR": {
+          "rank": 3,
+          "stars": 5.0
+        },
+        "TE": {
+          "rank": 3,
+          "stars": 4.8
+        },
+        "K": {
+          "rank": 17,
+          "stars": 2.6
+        },
+        "DST": {
+          "rank": 17,
+          "stars": 2.2
+        }
+      },
+      "DET": {
+        "QB": {
+          "rank": 25,
+          "stars": 0.8
+        },
+        "RB": {
+          "rank": 25,
+          "stars": 1.0
+        },
+        "WR": {
+          "rank": 11,
+          "stars": 3.5
+        },
+        "TE": {
+          "rank": 20,
+          "stars": 1.7
+        },
+        "K": {
+          "rank": 9,
+          "stars": 4.0
+        },
+        "DST": {
+          "rank": 4,
+          "stars": 4.6
+        }
+      },
+      "HOU": {
+        "QB": {
+          "rank": 1,
+          "stars": 4.8
+        },
+        "RB": {
+          "rank": 8,
+          "stars": 3.9
+        },
+        "WR": {
+          "rank": 12,
+          "stars": 3.4
+        },
+        "TE": {
+          "rank": 7,
+          "stars": 4.2
+        },
+        "K": {
+          "rank": 5,
+          "stars": 4.6
+        },
+        "DST": {
+          "rank": 1,
+          "stars": 5.0
+        }
+      },
+      "IND": {
+        "QB": {
+          "rank": 16,
+          "stars": 2.6
+        },
+        "RB": {
+          "rank": 16,
+          "stars": 2.5
+        },
+        "WR": {
+          "rank": 9,
+          "stars": 3.9
+        },
+        "TE": {
+          "rank": 21,
+          "stars": 1.5
+        },
+        "K": {
+          "rank": 7,
+          "stars": 4.2
+        },
+        "DST": {
+          "rank": 19,
+          "stars": 1.3
+        }
+      },
+      "JAX": {
+        "QB": {
+          "rank": 11,
+          "stars": 3.6
+        },
+        "RB": {
+          "rank": 14,
+          "stars": 2.8
+        },
+        "WR": {
+          "rank": 13,
+          "stars": 3.2
+        },
+        "TE": {
+          "rank": 22,
+          "stars": 1.3
+        },
+        "K": {
+          "rank": 24,
+          "stars": 1.6
+        },
+        "DST": {
+          "rank": 5,
+          "stars": 4.5
+        }
+      },
+      "KC": {
+        "QB": {
+          "rank": 2,
+          "stars": 4.8
+        },
+        "RB": {
+          "rank": 22,
+          "stars": 1.4
+        },
+        "WR": {
+          "rank": 19,
+          "stars": 2.0
+        },
+        "TE": {
+          "rank": 2,
+          "stars": 4.8
+        },
+        "K": {
+          "rank": 16,
+          "stars": 2.6
+        },
+        "DST": {
+          "rank": 9,
+          "stars": 3.9
+        }
+      },
+      "LV": {
+        "QB": {
+          "rank": 23,
+          "stars": 1.2
+        },
+        "RB": {
+          "rank": 21,
+          "stars": 1.6
+        },
+        "WR": {
+          "rank": 23,
+          "stars": 1.4
+        },
+        "TE": {
+          "rank": 4,
+          "stars": 4.7
+        },
+        "K": {
+          "rank": 18,
+          "stars": 2.4
+        },
+        "DST": {
+          "rank": 23,
+          "stars": 1.2
+        }
+      },
+      "LAC": {
+        "QB": {
+          "rank": 3,
+          "stars": 4.8
+        },
+        "RB": {
+          "rank": 7,
+          "stars": 4.6
+        },
+        "WR": {
+          "rank": 8,
+          "stars": 4.1
+        },
+        "TE": {
+          "rank": 10,
+          "stars": 3.7
+        },
+        "K": {
+          "rank": 21,
+          "stars": 2.1
+        },
+        "DST": {
+          "rank": 7,
+          "stars": 4.1
+        }
+      },
+      "MIA": {
+        "QB": {
+          "rank": 20,
+          "stars": 2.0
+        },
+        "RB": {
+          "rank": 6,
+          "stars": 4.7
+        },
+        "WR": {
+          "rank": 22,
+          "stars": 1.6
+        },
+        "TE": {
+          "rank": 25,
+          "stars": 0.9
+        },
+        "K": {
+          "rank": 19,
+          "stars": 2.2
+        },
+        "DST": {
+          "rank": 21,
+          "stars": 1.2
+        }
+      },
+      "MIN": {
+        "QB": {
+          "rank": 17,
+          "stars": 2.5
+        },
+        "RB": {
+          "rank": 24,
+          "stars": 1.1
+        },
+        "WR": {
+          "rank": 5,
+          "stars": 4.6
+        },
+        "TE": {
+          "rank": 24,
+          "stars": 1.0
+        },
+        "K": {
+          "rank": 8,
+          "stars": 4.2
+        },
+        "DST": {
+          "rank": 25,
+          "stars": 1.2
+        }
+      },
+      "NO": {
+        "QB": {
+          "rank": 12,
+          "stars": 3.4
+        },
+        "RB": {
+          "rank": 5,
+          "stars": 4.9
+        },
+        "WR": {
+          "rank": 7,
+          "stars": 4.2
+        },
+        "TE": {
+          "rank": 16,
+          "stars": 2.9
+        },
+        "K": {
+          "rank": 25,
+          "stars": 1.0
+        },
+        "DST": {
+          "rank": 13,
+          "stars": 3.3
+        }
+      },
+      "NYG": {
+        "QB": {
+          "rank": 22,
+          "stars": 1.4
+        },
+        "RB": {
+          "rank": 26,
+          "stars": 1.0
+        },
+        "WR": {
+          "rank": 18,
+          "stars": 2.2
+        },
+        "TE": {
+          "rank": 19,
+          "stars": 2.0
+        },
+        "K": {
+          "rank": 22,
+          "stars": 1.8
+        },
+        "DST": {
+          "rank": 24,
+          "stars": 1.2
+        }
+      },
+      "NYJ": {
+        "QB": {
+          "rank": 10,
+          "stars": 3.7
+        },
+        "RB": {
+          "rank": 10,
+          "stars": 3.6
+        },
+        "WR": {
+          "rank": 2,
+          "stars": 5.0
+        },
+        "TE": {
+          "rank": 14,
+          "stars": 3.1
+        },
+        "K": {
+          "rank": 12,
+          "stars": 3.5
+        },
+        "DST": {
+          "rank": 3,
+          "stars": 5.0
+        }
+      },
+      "PHI": {
+        "QB": {
+          "rank": 19,
+          "stars": 2.2
+        },
+        "RB": {
+          "rank": 23,
+          "stars": 1.3
+        },
+        "WR": {
+          "rank": 20,
+          "stars": 1.9
+        },
+        "TE": {
+          "rank": 18,
+          "stars": 2.3
+        },
+        "K": {
+          "rank": 3,
+          "stars": 5.0
+        },
+        "DST": {
+          "rank": 15,
+          "stars": 3.0
+        }
+      },
+      "PIT": {
+        "QB": {
+          "rank": 13,
+          "stars": 3.3
+        },
+        "RB": {
+          "rank": 13,
+          "stars": 3.0
+        },
+        "WR": {
+          "rank": 10,
+          "stars": 3.8
+        },
+        "TE": {
+          "rank": 17,
+          "stars": 2.6
+        },
+        "K": {
+          "rank": 4,
+          "stars": 5.0
+        },
+        "DST": {
+          "rank": 6,
+          "stars": 4.4
+        }
+      },
+      "SF": {
+        "QB": {
+          "rank": 26,
+          "stars": 0.8
+        },
+        "RB": {
+          "rank": 15,
+          "stars": 2.7
+        },
+        "WR": {
+          "rank": 16,
+          "stars": 2.7
+        },
+        "TE": {
+          "rank": 23,
+          "stars": 1.2
+        },
+        "K": {
+          "rank": 23,
+          "stars": 1.7
+        },
+        "DST": {
+          "rank": 10,
+          "stars": 3.9
+        }
+      },
+      "TB": {
+        "QB": {
+          "rank": 15,
+          "stars": 2.8
+        },
+        "RB": {
+          "rank": 17,
+          "stars": 2.4
+        },
+        "WR": {
+          "rank": 14,
+          "stars": 3.1
+        },
+        "TE": {
+          "rank": 6,
+          "stars": 4.4
+        },
+        "K": {
+          "rank": 26,
+          "stars": 1.0
+        },
+        "DST": {
+          "rank": 18,
+          "stars": 1.4
+        }
+      },
+      "TEN": {
+        "QB": {
+          "rank": 14,
+          "stars": 3.1
+        },
+        "RB": {
+          "rank": 3,
+          "stars": 5.0
+        },
+        "WR": {
+          "rank": 6,
+          "stars": 4.4
+        },
+        "TE": {
+          "rank": 12,
+          "stars": 3.5
+        },
+        "K": {
+          "rank": 10,
+          "stars": 3.9
+        },
+        "DST": {
+          "rank": 20,
+          "stars": 1.3
+        }
+      },
+      "WSH": {
+        "QB": {
+          "rank": 21,
+          "stars": 1.6
+        },
+        "RB": {
+          "rank": 19,
+          "stars": 2.1
+        },
+        "WR": {
+          "rank": 4,
+          "stars": 4.7
+        },
+        "TE": {
+          "rank": 9,
+          "stars": 3.9
+        },
+        "K": {
+          "rank": 20,
+          "stars": 2.2
+        },
+        "DST": {
+          "rank": 26,
+          "stars": 1.2
+        }
+      }
+    }
+  }
+}
