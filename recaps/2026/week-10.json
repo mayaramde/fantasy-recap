@@ -30,7 +30,7 @@
     {
       "manager": "Kyra",
       "title": "Nine and one",
-      "text": "Jahmyr Gibbs ran for 153 yards and two touchdowns, then caught seven passes for 99 more, because one job apparently wasn't enough. Kyra is 9-1 and two games clear of everyone, and her team is named (Foot)Balls Deep, which is the only unserious thing about her season.",
+      "text": "Jahmyr Gibbs ran for 153 yards and two touchdowns, then caught seven passes for 99 more. Kyra is 9-1 and two games clear of everyone, and her team is named (Foot)Balls Deep, which is the only unserious thing about her season.",
       "stat": "44.2 pts",
       "emoji": "🦁",
       "player": "Jahmyr Gibbs"
@@ -40,7 +40,7 @@
     {
       "manager": "Maddie",
       "title": "The curse was optional this time",
-      "text": "Dak Prescott threw five touchdowns for 34.42 points. Maddie benched him on Wednesday for Bryce Young, who threw none, and won by 8.28 anyway. The curse usually hunts down your quarterback. This week she walked him over and held the door, and the football gods let it slide out of pure confusion.",
+      "text": "Dak Prescott threw five touchdowns for 34.42 points. Maddie benched him on Wednesday for Bryce Young, who threw none, and won by 8.28 anyway. The curse usually hunts down your quarterback. This week she walked him over and held the door.",
       "stat": "−26.32 at QB",
       "emoji": "🔮",
       "player": "Dak Prescott"
@@ -56,7 +56,7 @@
     {
       "manager": "Amie",
       "title": "Ruled out Saturday, started Sunday",
-      "text": "Kenneth Walker III hurt his groin in Thursday's practice and was ruled out on Saturday, and he was still in Amie's lineup on Sunday, holding the spot like a coat on a chair. Jadarian Price scored 11.4 on her bench. That alone flips the 8.28 loss, so the injury report was less a warning than a suggestion Amie declined.",
+      "text": "Kenneth Walker III hurt his groin in Thursday's practice and was ruled out on Saturday, and he was still in Amie's lineup on Sunday, holding the spot like a coat on a chair. Jadarian Price scored 11.4 on her bench. That alone flips the 8.28 loss.",
       "stat": "11.4 pts benched",
       "emoji": "📰",
       "player": "Jadarian Price"
@@ -74,7 +74,7 @@
   "glossary": [
     {
       "term": "Questionable",
-      "definition": "An injury tag meaning a player might play, might not, and the league declines to elaborate, so check again before kickoff, because a ruled-out player left in your lineup scores what Kenneth Walker III scored this week: zero."
+      "definition": "An injury tag meaning a player might play, might not, and the NFL declines to elaborate, so check again before kickoff, because a player who gets ruled out and stays in your lineup scores zero."
     },
     {
       "term": "Pass rush",
