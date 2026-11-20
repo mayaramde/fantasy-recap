@@ -2,10 +2,10 @@
   "season": 2026,
   "week": 10,
   "status": "draft",
-  "headline": "George Pickens scores three touchdowns, Marlee posts the season high, and Week 5 is water under the bench",
-  "dek": "Maddie benches a five-touchdown quarterback and wins by 8.28. This recap does not recommend it.",
+  "headline": "Marlee scores 184.92, Maddie benches a five-touchdown quarterback, and the football gods file a confused report",
+  "dek": "Maddie benches a five-touchdown quarterback and wins by 8.28. This recap does not recommend it, and cannot explain it.",
   "matchups": {
-    "1-4": "Christian McCaffrey scored 46.3 for Tara, the most by any player in the league this week, and she still lost by 32.46, the biggest margin of the week. Marlee's Vikings D/ST (the team-defense slot) sacked the quarterback eight times. Tara brought the best player on the field. Marlee brought an entire pass rush.",
+    "1-4": "Tara started the best player in the league this week. Christian McCaffrey scored 46.3, and she lost by 32.46, the biggest margin of the week. Marlee answered with a Vikings D/ST (the team-defense slot) that sacked the quarterback eight times. One superstar is a great story. Eight sacks is a margin.",
     "2-3": "Patrick Mahomes threw five touchdowns for Amie, who claimed him off waivers (the pool of players nobody has rostered) back in Week 3. Best bargain in the league, worst week to cash it in. Maddie won by 8.28, mostly on two Chuba Hubbard touchdowns.",
     "5-8": "Cambri won by 9.44 on a hard day for both sides. Drake Maye left in the first quarter with an ankle injury, and Maya lost Brock Bowers early to an ankle injury too. Tony Pollard's 23.9 from Cambri's flex (the wild-card spot) made the difference. Nothing on Maya's bench would have changed it.",
     "6-7": "Kyra went Burrow over Stafford for the third straight week and was right again. Her Friday moves were another story: both put a Warren in, and both Warrens lost the swap. Jahmyr Gibbs's 44.2 out of the backfield covered for them."
@@ -14,7 +14,7 @@
     {
       "manager": "Marlee",
       "title": "Highest score of the season",
-      "text": "Marlee scored 184.92, beating the season high Amie set in Week 1. George Pickens caught three touchdowns, Amon-Ra St. Brown added 25.8, and the Vikings D/ST recovered three fumbles on top of its eight sacks. Pillaging, as advertised.",
+      "text": "Marlee scored 184.92, which retires the season high Amie set in Week 1. George Pickens caught three touchdowns, Amon-Ra St. Brown added 25.8, and the Vikings D/ST recovered three fumbles on top of its eight sacks. Amie's record stood for nine weeks. It was a good record. It's over now.",
       "stat": "184.92 pts",
       "emoji": "🏔️",
       "player": "George Pickens"
@@ -22,7 +22,7 @@
     {
       "manager": "Tara",
       "title": "Two-way McCaffrey",
-      "text": "Christian McCaffrey caught two touchdowns, ran for another, and added a two-point catch (a bonus play run right after a touchdown) for good measure. He scored more than double his projection. Tara still lost, which makes it unpaid overtime.",
+      "text": "Christian McCaffrey caught two touchdowns, ran for another, and added a two-point catch (a bonus play run right after a touchdown) for good measure. He scored 46.3 against a 21.76 projection. Tara lost by 32.46 anyway, which is the fantasy version of working a double shift and getting a thank-you email.",
       "stat": "46.3 pts, league high",
       "emoji": "🐐",
       "player": "Christian McCaffrey"
@@ -30,7 +30,7 @@
     {
       "manager": "Kyra",
       "title": "Nine and one",
-      "text": "Jahmyr Gibbs ran for 153 yards and two touchdowns and caught seven passes for 99 more, which is two running backs' worth of work billed as one. Kyra is 9-1 and two games clear of everyone.",
+      "text": "Jahmyr Gibbs ran for 153 yards and two touchdowns, then caught seven passes for 99 more, because one job apparently wasn't enough. Kyra is 9-1 and two games clear of everyone, and her team is named (Foot)Balls Deep, which is the only unserious thing about her season.",
       "stat": "44.2 pts",
       "emoji": "🦁",
       "player": "Jahmyr Gibbs"
@@ -40,7 +40,7 @@
     {
       "manager": "Maddie",
       "title": "The curse was optional this time",
-      "text": "Dak Prescott threw five touchdowns for 34.42 points. Maddie benched him on Wednesday to start Bryce Young, who threw none, and still won by 8.28. The curse didn't find her quarterback this week. She walked it over.",
+      "text": "Dak Prescott threw five touchdowns for 34.42 points. Maddie benched him on Wednesday for Bryce Young, who threw none, and won by 8.28 anyway. The curse usually hunts down your quarterback. This week she walked him over and held the door, and the football gods let it slide out of pure confusion.",
       "stat": "−26.32 at QB",
       "emoji": "🔮",
       "player": "Dak Prescott"
@@ -48,7 +48,7 @@
     {
       "manager": "Samantha",
       "title": "Diggs, still in the waiting room",
-      "text": "Stefon Diggs has spent nine of this season's ten weeks on Samantha's bench, and this week he scored 20.3 there while Christian Watson scored 6.7 in her lineup. Her best possible lineup would have beaten Kyra. Diggs scored on her bench in Week 1 too. He's very patient.",
+      "text": "Stefon Diggs has been on Samantha's bench for nine of ten weeks. This week he scored 20.3 there while Christian Watson put up 6.7 in her lineup. Her best possible lineup would have beaten Kyra. Diggs also scored on her bench in Week 1, so this is less a lineup error than a standing arrangement.",
       "stat": "−13.6 at WR",
       "emoji": "🪑",
       "player": "Stefon Diggs"
@@ -56,7 +56,7 @@
     {
       "manager": "Amie",
       "title": "Ruled out Saturday, started Sunday",
-      "text": "Kenneth Walker III went from questionable on Friday to ruled out on Saturday, and he was still in Amie's lineup on Sunday, holding the spot like a coat on a chair. Jadarian Price scored 11.4 on her bench, enough on his own to flip an 8.28 loss.",
+      "text": "Kenneth Walker III hurt his groin in Thursday's practice and was ruled out on Saturday, and he was still in Amie's lineup on Sunday, holding the spot like a coat on a chair. Jadarian Price scored 11.4 on her bench. That alone flips the 8.28 loss, so the injury report was less a warning than a suggestion Amie declined.",
       "stat": "11.4 pts benched",
       "emoji": "📰",
       "player": "Jadarian Price"
@@ -74,7 +74,7 @@
   "glossary": [
     {
       "term": "Questionable",
-      "definition": "An injury tag meaning a player might or might not play that week, so check again before kickoff, like Kenneth Walker III, who went from questionable on Friday to ruled out on Saturday."
+      "definition": "An injury tag meaning a player might play, might not, and the league declines to elaborate, so check again before kickoff, because a ruled-out player left in your lineup scores what Kenneth Walker III scored this week: zero."
     },
     {
       "term": "Pass rush",
