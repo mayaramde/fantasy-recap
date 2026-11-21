@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-19T17:31:08Z",
+  "generated_at": "2026-11-21T20:24:12Z",
   "league_key": "nfl~884a4682-063e-47e5-acf1-14ae4bbc8db6",
   "trade_finder_disclosure_shown": false,
   "fantasypros": {
     "reached": true,
-    "checked_at": "2026-11-19T14:19:30Z"
+    "checked_at": "2026-11-21T14:38:00Z"
   },
   "weeks": {
     "11": {
@@ -12,26 +12,15 @@
         "1": {
           "advice_cards": [
             {
-              "kind": "fp_news",
-              "level": "info",
-              "stat": "Out",
-              "title": "Josh Jacobs came through surgery",
-              "text": "FantasyPros reports Josh Jacobs had successful surgery on his broken finger, with a two-to-three-week timeline. He is in your injured slot until then, so nothing in your lineup changes."
-            },
-            {
               "kind": "consensus",
               "level": "info",
-              "stat": "WR",
-              "title": "Your receivers have been the hot hand lately",
-              "text": "Over the last three weeks FantasyPros' leaderboard has George Pickens and Amon-Ra St. Brown both inside the top six receivers in the league, with Ryan Flournoy and DJ Moore close behind them on your bench. Wide receiver is still your lowest-scoring spot for the season, which says more about September than about how this month is going."
+              "title": "Jared Goff drew one of the week's worst matchups",
+              "stat": "QB matchup 25th of 32",
+              "text": "There is no move here: Jared Goff is the only quarterback you roster, so he starts regardless. FantasyPros grades Detroit the second-toughest quarterback matchup of any team playing this week, and they still rank Goff inside their top ten quarterbacks. They also grade Dallas the best receiver matchup on the board, which is exactly where George Pickens lines up in your flex. The schedule took from your quarterback and handed it to your flex."
             }
           ],
           "roster_ideas": [],
           "coach_cards": {
-            "matchup:6:3915511:ACTIVE": {
-              "title": "Next up: Kyra",
-              "text": "Kyra brings the best record in the league, and Joe Burrow is her highest-projected starter. Nothing on your side needs changing, so your entire game plan is hoping Burrow has a very ordinary Sunday."
-            },
             "clear:open": {
               "title": "Nothing to fix",
               "text": "Every starter is healthy, playing, and ahead of whoever is behind him on your bench. Close the app before you talk yourself into something."
@@ -39,84 +28,76 @@
           },
           "summary": {
             "key": "clear",
-            "text": "Nothing to fix. Six other lineups are scrambling and yours is not one of them."
+            "text": "Nothing to fix. Six of eight lineups are clean this week, so enjoy the quiet company."
           }
         },
         "2": {
           "advice_cards": [
             {
-              "kind": "consensus",
-              "level": "now",
-              "stat": "TE18 this week",
-              "title": "Tight end is thin even if Hockenson plays",
-              "text": "FantasyPros' weekly expert consensus has T.J. Hockenson outside the top fifteen tight ends this week, and Hunter Henry sits behind him on a bye. Tight end has been your lowest-scoring position all season, and no Friday injury report is going to fix that for you."
+              "kind": "fp_back",
+              "level": "info",
+              "title": "T.J. Hockenson is cleared",
+              "stat": "off the report",
+              "text": "Leave him in. FantasyPros has Hockenson off the injury report after the wrist problem and calls him a low-end starter at tight end, which settles your only real tight end question with Hunter Henry on New England's bye. They do grade Minnesota among the three worst tight end matchups of the week, so cleared to play is not the same as cleared to feast."
             }
           ],
           "roster_ideas": [
             {
               "kind": "waiver",
-              "level": "now",
+              "level": "watch",
               "pos": "TE",
-              "stat": "TE9 this week",
-              "title": "Claim Chig Okonkwo at tight end",
-              "text": "Nobody in the league owns Chig Okonkwo, per FantasyPros' ownership numbers, and their weekly expert consensus has him inside the top ten tight ends this week. Hockenson is questionable and Hunter Henry is on a bye, so your tight end spot is one bad Friday from empty. Washington also draws one of the friendlier tight end matchups on the board."
+              "title": "Chig Okonkwo is still unowned at tight end",
+              "stat": "top ten this week",
+              "text": "No emergency, but worth a claim. Tight end has been your lowest-scoring position all season, and FantasyPros has Okonkwo inside their top ten tight ends this week while grading Washington a top-ten matchup and Minnesota, where Hockenson plays, among the three worst. Nobody in the league owns him, per FantasyPros' ownership numbers. He has been sitting there every week you have needed a tight end, which is its own small insult."
             }
           ],
           "coach_cards": {
-            "matchup:4:3117251:ACTIVE": {
-              "title": "Next up: Tara",
-              "text": "Christian McCaffrey is the one name in Tara's lineup that can ruin your afternoon. Keep an eye on him and treat the rest as scenery."
-            },
-            "watch:4567048:QUESTIONABLE:4890973:ACTIVE": {
-              "title": "Kenneth Walker III is likely out",
-              "text": "Plan on starting Ashton Jeanty here. FantasyPros puts Kenneth Walker III's chance of playing down in the low teens after he missed Wednesday's practice, so check once more before kickoff but set the lineup as though he sits."
-            },
-            "watch:4036133:QUESTIONABLE:none:none": {
-              "title": "T.J. Hockenson is questionable",
-              "text": "FantasyPros still gives T.J. Hockenson a good chance to play and had him limited rather than sitting out on Wednesday, which is the injury report's way of shrugging. Your only other tight end is on a bye, so he starts either way. Check before kickoff."
+            "news:4567048:OUT:bench:open": {
+              "title": "Kenneth Walker III is out again",
+              "text": "Nothing to change; he is on your bench. FantasyPros has Walker ruled out for a second straight week with a groin problem and expects him back for Kansas City's Thursday game in Week 12. Kyle Monangai's return matters more to your lineup than this does, because it splits the Chicago carries you actually start. Walker sitting has made a star of somebody else's rookie."
             },
             "back:4608686:bench": {
-              "title": "Kyle Monangai is back",
-              "text": "FantasyPros has Kyle Monangai at a full practice and on track to play. That matters less for your bench than for D'Andre Swift, who is in your lineup and now shares the Chicago backfield again. Nothing to change today, just a smaller slice."
+              "title": "Kyle Monangai is officially good to go",
+              "text": "No lineup change needed; he is bench depth. FantasyPros has Monangai off the injury report entirely after full practices all week, and the knock-on matters more than the man: D'Andre Swift is in your lineup and now shares that backfield again. The consolation is that FantasyPros grades Chicago the second-best running back matchup of the week. Enough carries for both, in theory."
             }
           },
           "summary": {
-            "key": "watch|watch:4036133:QUESTIONABLE:none:none|watch:4567048:QUESTIONABLE:4890973:ACTIVE",
-            "text": "Walker and Hockenson are both questionable. Your lineup is one injury report away from a rewrite."
+            "key": "clear",
+            "text": "Hockenson is cleared, so your only tight end question answered itself."
           }
         },
         "3": {
           "advice_cards": [
             {
-              "kind": "consensus",
+              "kind": "fp_news",
               "level": "watch",
-              "stat": "TE3 vs TE4",
-              "title": "Your two tight ends are closer than they look",
-              "text": "FantasyPros' weekly consensus has Isaiah Likely third among tight ends and Colston Loveland fourth, close enough to call a coin flip. The tiebreaker is the matchup: FantasyPros rates Chicago's tight end draw the easiest of all thirty-two teams this week and the Giants' among the hardest. Owning two top-five tight ends is a nice problem, but only one of them scores for you."
+              "title": "Jaylen Waddle keeps practicing inside the protocol",
+              "stat": "full practices",
+              "text": "Do not pencil him in yet. FantasyPros has Waddle logging back-to-back full practices while still inside the concussion protocol, which is the one box somebody other than him has to tick. If it clears he is worth a look, because FantasyPros grades Denver the third-best receiver matchup of the week. Full practice, paperwork outstanding."
             }
           ],
           "roster_ideas": [
             {
               "kind": "waiver",
-              "level": "watch",
+              "level": "now",
               "pos": "K",
-              "stat": "K8 this week",
-              "title": "Have a kicker ready behind Matt Gay",
-              "text": "Matt Gay is questionable and nobody on your bench kicks. Evan McPherson is unowned per FantasyPros' ownership numbers and sits inside their top ten kickers this week, so he is the cheapest insurance on the wire. Claim him only if Friday's report turns, because kicker is not a spot worth paying for twice."
+              "title": "Get a kicker in behind Matt Gay",
+              "stat": "K6 this week",
+              "text": "Claim Evan McPherson today. FantasyPros has Gay questionable with a hip and reports Las Vegas worked out three kickers this week in case he cannot go, and nobody on your bench kicks. McPherson is unowned per FantasyPros' ownership numbers and sits inside their top six kickers this week. When a team auditions three replacements, the incumbent has already told you something."
             }
           ],
           "coach_cards": {
-            "matchup:8:4426338:ACTIVE": {
-              "title": "Next up: Cambri",
-              "text": "Cambri comes in at three and seven, same as you, and Bo Nix is the name to watch on that side. Two teams at three and seven, and somebody has to be four and seven."
-            },
             "swap:4685720:QB:2577417:ACTIVE": {
               "title": "Start Dak Prescott at quarterback",
-              "text": "ESPN wants Prescott in that spot, and FantasyPros' weekly projections put him ahead of Bryce Young too. Quarterback has been your weakest position all season, so take the free upgrade sitting on your own bench. The curse does not get a vote this week."
+              "text": "Make the swap. ESPN wants Prescott in that slot and FantasyPros backs it hard, ranking him third among quarterbacks this week to Bryce Young's fifteenth. Quarterback has been your weakest position all season, so this is a free upgrade already sitting on your bench. Last week you benched Prescott's five touchdowns and won anyway, which is not a trick you can file twice."
             },
             "watch:4249087:QUESTIONABLE:none:none": {
               "title": "Matt Gay is questionable",
-              "text": "FantasyPros has Matt Gay a shade better than even to play with a hip injury, and nobody on your bench kicks. A questionable kicker is the least dramatic emergency in fantasy football, and still an emergency. Watch Friday's report."
+              "text": "Have a replacement lined up before Sunday. FantasyPros now has Gay more likely to sit than play with a hip problem, and reports Las Vegas worked out three kickers this week in case. Nobody on your bench kicks, so an empty kicker slot is the live risk here. See the claim below: his team has a backup plan, your roster does not."
+            },
+            "back:4372016:bench": {
+              "title": "Jaylen Waddle is off ESPN's injury report",
+              "text": "Nothing to do; he is on your bench. Worth knowing that FantasyPros still has him inside the concussion protocol despite back-to-back full practices, so the two reports do not quite agree yet. If it clears, FantasyPros grades Denver the third-best receiver matchup of the week."
             }
           },
           "summary": {
@@ -128,130 +109,61 @@
           "advice_cards": [
             {
               "kind": "consensus",
-              "level": "now",
-              "stat": "FLEX",
-              "title": "Deebo Samuel is healthy and parked in your injured slot",
-              "text": "FantasyPros has Deebo Samuel Sr. off the injury report entirely, and he scored twice in Week 10. He is still sitting in your injured-reserve slot, where he cannot score for you at all. Move him into the flex, the wild-card spot, ahead of Aaron Jones Sr. A healthy, touchdown-scoring receiver in the injured slot is a working car in long-term parking."
+              "level": "info",
+              "title": "Trey McBride is the top-ranked tight end this week",
+              "stat": "TE1 in consensus",
+              "text": "Leave tight end alone. FantasyPros' weekly consensus has McBride first among all tight ends, which is worth knowing before you read the trade idea below: a second tight end would be about filling your flex, not replacing him. They also grade Arizona the toughest tight end matchup of any team playing, and still have him first. That is what 99 targets in ten games buys you."
             }
           ],
           "roster_ideas": [
-            {
-              "kind": "waiver",
-              "level": "now",
-              "pos": "DST",
-              "stat": "DST2 this week",
-              "title": "Claim the Houston Texans defense",
-              "text": "Your defense is on a bye and so is your backup, so this slot scores nothing unless you claim somebody. Nobody in the league owns Houston, per FantasyPros' ownership numbers, and their weekly consensus has the Texans the second-best defense on the board with the easiest matchup of any defense this week. Free, and better than what you had."
-            },
-            {
-              "kind": "waiver",
-              "level": "now",
-              "pos": "K",
-              "stat": "K7 this week",
-              "title": "Claim Cairo Santos at kicker",
-              "text": "Jason Myers shares the bye and nobody on your bench kicks, so this is the other empty slot. Cairo Santos is unowned per FantasyPros' ownership numbers, sits inside their top ten kickers this week, and Chicago draws the easiest kicking matchup of all thirty-two teams. The bye week took your kicker and your defense, and the wire is handing both back."
-            }
-          ],
-          "coach_cards": {
-            "matchup:2:4567048:QUESTIONABLE": {
-              "title": "Next up: Amie",
-              "text": "Amie's highest-projected starter, Kenneth Walker III, is carrying a groin problem per FantasyPros' injury report. Check back before kickoff to see who she actually plays. A week where your opponent's plans are also up in the air is as close to fair as this league gets."
-            },
-            "bye:-16026:DST:bye:none:none": {
-              "title": "Both your defenses are on a bye",
-              "text": "Seattle and Cleveland both rest in Week 11, so owning two defenses this week is the same as owning none. The pickup below names a replacement."
-            },
-            "bye:2473037:K:bye:none:none": {
-              "title": "Your kicker rests too",
-              "text": "Jason Myers is a Seahawk, so he shares the bye with your defense, and you roster no other kicker. Two empty slots in one week is a lot of free points to hand over. Both fixes are on the wire."
-            },
-            "news:4429059:OUT:bench:open": {
-              "title": "Woody Marks is out",
-              "text": "FantasyPros has Woody Marks ruled out with a concussion for Thursday night, so he is unavailable rather than merely benched. Your running back room is six deep, which is the one place this roster has never needed the help."
-            }
-          },
-          "summary": {
-            "key": "now|bye:-16026:DST:bye:none:none|bye:2473037:K:bye:none:none",
-            "text": "Both defenses and your kicker share the same bye week."
-          }
-        },
-        "5": {
-          "advice_cards": [
-            {
-              "kind": "fp_news",
-              "level": "now",
-              "stat": "Questionable",
-              "title": "FantasyPros expects Brock Bowers to sit",
-              "text": "FantasyPros has Brock Bowers very unlikely to play after he missed Wednesday's practice, and tells managers to prepare as though he is out. He is the only tight end you roster, so the waiver wire is the fix this week."
-            },
-            {
-              "kind": "fp_news",
-              "level": "watch",
-              "stat": "Questionable",
-              "title": "Mike Evans is not the backup plan",
-              "text": "FantasyPros still has Mike Evans unlikely to play, with no practice on Wednesday and an Achilles problem that has kept him out since Week 6. The better news is DeVonta Smith, who FantasyPros rates better than even to return after a limited practice. Evans has now spent more of this season as a theoretical option than an actual one."
-            }
-          ],
-          "roster_ideas": [
-            {
-              "kind": "waiver",
-              "level": "now",
-              "pos": "TE",
-              "stat": "TE12 this week",
-              "title": "Claim Michael Mayer at tight end",
-              "text": "Brock Bowers is unlikely to play and he is the only tight end you roster. Michael Mayer is unowned per FantasyPros' ownership numbers, sits just outside their top ten tight ends this week, and steps into the Raiders' starting job while Bowers is out, against one of the easiest tight end matchups on the board. You are not replacing Bowers so much as borrowing his understudy."
-            },
             {
               "kind": "trade",
               "level": "watch",
               "pos": "TE",
-              "stat": "both odds go up",
-              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
-              "text": "You carry two starting quarterbacks and one tight end; Cambri carries one quarterback and two tight ends. She gets the starter her roster does not have, and you get the two spots yours is thinnest at. The pitch you could send: you are deep at quarterback and would rather have tight end cover and running back depth than a backup you never start. Two quarterbacks and one tight end is a roster assembled by somebody who really likes quarterbacks. If she would rather keep Etienne, Jakobi Meyers in his place scores almost the same. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "title": "Offer Tyler Bass and the Jets defense to Maddie for Isaiah Likely",
+              "stat": "two spare parts for a starter",
+              "text": "You carry two kickers and two defenses, and only one of each can start. Turning that spare pair into a tight end gives you a second startable one for the flex, the slot Deebo Samuel is currently holding. Maddie carries two tight ends that FantasyPros ranks inside their top four in Week 11, so she keeps the one they rank higher and upgrades a kicker she has listed questionable with a hip. One line to send: you are paying in players you cannot start together for one you can. Both pieces you would send are in your Week 11 lineup, so offer it as a Week 12 move. Nobody has ever won a week with their second kicker.",
               "trade": {
-                "partner_id": 8,
+                "partner_id": 3,
                 "give": [
                   {
-                    "id": 4360310,
-                    "name": "Trevor Lawrence",
-                    "pos": "QB",
-                    "ros": 138.1
+                    "id": 3917232,
+                    "name": "Tyler Bass",
+                    "pos": "K"
+                  },
+                  {
+                    "id": -16020,
+                    "name": "Jets D/ST",
+                    "pos": "DST"
                   }
                 ],
                 "get": [
                   {
-                    "id": 4239996,
-                    "name": "Travis Etienne Jr.",
-                    "pos": "RB",
-                    "ros": 74.0
-                  },
-                  {
-                    "id": 4572680,
-                    "name": "Tucker Kraft",
-                    "pos": "TE",
-                    "ros": 67.8
+                    "id": 4361050,
+                    "name": "Isaiah Likely",
+                    "pos": "TE"
                   }
                 ],
                 "you": {
-                  "near": 1.83,
+                  "near": 3.2,
                   "playoff": [
-                    0.9812,
-                    0.9846
+                    0.0239,
+                    0.0369
                   ],
                   "title": [
-                    0.2056,
-                    0.2248
+                    0.0043,
+                    0.0073
                   ]
                 },
                 "them": {
-                  "near": 1.08,
+                  "near": 1.9,
                   "playoff": [
-                    0.0581,
-                    0.0658
+                    0.0041,
+                    0.0059
                   ],
                   "title": [
-                    0.0124,
-                    0.0144
+                    0.0,
+                    0.0001
                   ]
                 },
                 "week": 11,
@@ -263,175 +175,266 @@
             }
           ],
           "coach_cards": {
-            "matchup:7:4362628:ACTIVE": {
-              "title": "Next up: Samantha",
-              "text": "Samantha's highest-projected starter is Ja'Marr Chase, which is the least fun sentence on this page. You cannot do anything about him, so win it in the margins: fill the empty spots and start the healthy bodies."
+            "news:4429059:OUT:bench:locked": {
+              "title": "Woody Marks is out with a concussion",
+              "text": "Nothing to do here. FantasyPros has Marks ruled out with the concussion he picked up in Week 10, and Houston already played on Thursday. He is bench depth, so your lineup is unaffected. Here's hoping he gets a full clearance soon."
+            }
+          },
+          "summary": {
+            "key": "clear",
+            "text": "Nothing to fix this week. The trade idea below is the only homework."
+          }
+        },
+        "5": {
+          "advice_cards": [
+            {
+              "kind": "fp_news",
+              "level": "now",
+              "title": "Brock Bowers is trending back toward playable",
+              "stat": "ankle and quad",
+              "text": "Keep him in and check again before kickoff. On Wednesday FantasyPros was telling managers to prepare as though Bowers was out; after two limited practices they have him questionable with an ankle and a quad, better than even money to play, and his coach calling him a must-start if he is active. He is still the only tight end you roster, so the claim below is worth making either way. Two injuries, and he is the optimistic story of your week."
             },
+            {
+              "kind": "fp_news",
+              "level": "watch",
+              "title": "Mike Evans is closer than he has been since Week 6",
+              "stat": "questionable",
+              "text": "Treat this as bench news, not a lineup plan. FantasyPros moved Evans from long shot to questionable after limited practices on Thursday and Friday, and they have him trending toward a chance at Sunday night against Minnesota, his first game since the Achilles problem in Week 6. He has outscored your flex from that bench before, so the man knows the assignment."
+            }
+          ],
+          "roster_ideas": [
+            {
+              "kind": "waiver",
+              "level": "now",
+              "pos": "TE",
+              "title": "Michael Mayer is the Bowers insurance policy",
+              "stat": "same offense",
+              "text": "Claim him as cover for the tight end slot. Bowers is the only tight end you roster and he is questionable, and Mayer is the man Las Vegas plays when Bowers cannot, in the same offense against the same defense. FantasyPros grades that Las Vegas tight end matchup among the four best this week, and nobody in the league owns him, per their ownership numbers. The backup plan and the plan share a locker room."
+            },
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "TE",
+              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
+              "stat": "both odds go up",
+              "text": "You roster two starting quarterbacks and start one; Cambri rosters one and has nothing behind him. FantasyPros has Trevor Lawrence eighth among quarterbacks this week and Bo Nix eleventh, so she gets a genuine upgrade, and you get the tight end your bench is missing while Brock Bowers is questionable. The pitch is one line: you are deep where she is thin and thin where she is deep. Tucker Kraft's Green Bay is on a bye in Week 11, so this is a Week 12 move, and Cambri gains slightly more per week than you do, which is the version worth sending. Your spare quarterback has never scored you a point.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 1.6,
+                  "playoff": [
+                    0.9812,
+                    0.9856
+                  ],
+                  "title": [
+                    0.2056,
+                    0.2355
+                  ]
+                },
+                "them": {
+                  "near": 1.82,
+                  "playoff": [
+                    0.0581,
+                    0.069
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0156
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
             "watch:4432665:QUESTIONABLE:none:none": {
               "title": "Brock Bowers is questionable",
-              "text": "Bowers left Sunday's game with an ankle injury and was ruled out for the rest of it, per FantasyPros, and ESPN has him questionable for next week. He is the only tight end you roster, so if he sits the spot is empty. Watch the late report and keep a claim ready."
+              "text": "Keep him in and check the Sunday report. FantasyPros has Bowers questionable with an ankle and a quad after two limited practices, better than even money to play, and his coach says start him if he is active. He is the only tight end you roster, so if he sits the slot is empty. The whole position is one ankle deep."
             },
-            "watch:4241478:QUESTIONABLE:16737:QUESTIONABLE": {
-              "title": "DeVonta Smith is questionable",
-              "text": "Smith is working back from a hamstring, and Mike Evans, the only other name for that slot, is questionable too. If Smith sits, start whichever healthy receiver you trust most rather than the one the projection likes. Hamstrings keep their own calendar."
+            "news:4697815:QUESTIONABLE:bench:open": {
+              "title": "Rachaad White missed Saturday's practice",
+              "text": "He is on your bench, so nothing changes today. FantasyPros reported this morning that White was absent from Washington's Saturday session after a limited Friday, and reads the heel as trending the wrong way. Your running back room is healthy enough that this stays a footnote. A heel that gets worse on a Saturday is just rude scheduling."
             },
             "back:4685278:starting": {
               "title": "Luther Burden III is good to go",
               "text": "He has cleared the league's concussion protocol, Chicago is back from its bye, and he is already in your lineup. Nothing to do here. Enjoy a card that is just good news for once."
+            },
+            "back:4241478:starting": {
+              "title": "DeVonta Smith is good to go",
+              "text": "He is in your flex and he stays there. FantasyPros confirmed on Friday that Smith has cleared the hamstring problem that had cost him every game since Week 6, which is the first clean report on him in a month. They do temper it: with Joe Milton III taking the snaps in Philadelphia, they expect him to be an inconsistent fantasy option. Back is back; dependable is a different word."
             }
           },
           "summary": {
-            "key": "watch|watch:4241478:QUESTIONABLE:16737:QUESTIONABLE|watch:4432665:QUESTIONABLE:none:none",
-            "text": "Bowers and Smith are both questionable, and your tight end plan is currently a rumor."
+            "key": "watch|watch:4432665:QUESTIONABLE:none:none",
+            "text": "Bowers is questionable and he is your only tight end. Claim the insurance."
           }
         },
         "6": {
           "advice_cards": [
             {
               "kind": "consensus",
-              "level": "now",
-              "stat": "TE8 vs TE14",
-              "title": "FantasyPros prefers Tyler Warren at tight end",
-              "text": "FantasyPros' weekly expert consensus puts Tyler Warren eighth among tight ends this week and Mark Andrews fourteenth. Warren is on your bench and both fit the same slot, so this is one tap rather than a roster move. The rankings have been telling you this for a while."
+              "level": "watch",
+              "title": "Your tight end call is closer than the rankings admit",
+              "stat": "TE7 vs TE11",
+              "text": "Mark Andrews is in the lineup and you can leave him there. FantasyPros' weekly consensus does put Tyler Warren a few spots ahead, but their own news desk has Warren at eleven catches across his last four games with no touchdown since Week 2, and they grade Indianapolis the worse tight end matchup of the two. Harold Fannin is on Cleveland's bye, so that is the whole decision. The rankings say Warren, the evidence says shrug."
             }
           ],
           "roster_ideas": [],
           "coach_cards": {
-            "matchup:1:4379399:ACTIVE": {
-              "title": "Next up: Marlee",
-              "text": "Marlee is next and James Cook III is her highest-projected starter. Hers is one of the two clean lineups in the league, so the only lineup you can beat this week is your own. Three holes, all below."
-            },
-            "watch:4880281:QUESTIONABLE:15818:ACTIVE": {
-              "title": "Jordyn Tyson is questionable",
-              "text": "Leave Jordyn Tyson in the lineup. FantasyPros has him very likely to play after a limited practice, and he caught eleven of thirteen targets last week. Eleven of thirteen is not the stat line of a man you bench."
+            "clear:open": {
+              "title": "Nothing to fix",
+              "text": "Every starter is healthy and playing. Five of your bench players are on a bye, so nobody was left to argue the point anyway. Go watch the games."
             }
           },
           "summary": {
-            "key": "watch|watch:4880281:QUESTIONABLE:15818:ACTIVE",
-            "text": "Tyson is questionable, and that is the only thing wrong with a nine-and-one roster. Leave it alone."
+            "key": "clear",
+            "text": "Nothing to fix. Five of your bench players are on bye, so the lineup picked itself."
           }
         },
         "7": {
           "advice_cards": [
             {
               "kind": "consensus",
+              "level": "info",
+              "title": "Emmett Johnson has the Kansas City backfield to himself",
+              "stat": "Walker out",
+              "text": "He is already in your lineup, so this one is a leave-it-alone. FantasyPros has Kenneth Walker ruled out for a second straight week, handing Johnson the full workload again after he answered the first one with 101 rushing yards, 70 through the air and two touchdowns. They do grade Kansas City a bottom-third running back matchup, so expect solid rather than spectacular. For a rookie who started the season behind somebody, that is a fine problem to have."
+            },
+            {
+              "kind": "fp_news",
               "level": "watch",
-              "stat": "FLEX",
-              "title": "Emmett Johnson could be the flex answer",
-              "text": "FantasyPros has Kenneth Walker III very unlikely to play and says Emmett Johnson is in line for the workhorse role in Kansas City again. Johnson is the one name on your bench whose workload could double by Sunday morning, which is the closest thing to a free upgrade this league offers. Watch the Friday report."
+              "title": "Jonathon Brooks is one report from activation",
+              "stat": "three full practices",
+              "text": "Watch the wire today. FantasyPros has Brooks questionable after three full practices and expects Carolina to activate him off injured reserve. He sits in your injured slot until they do, and flex has been your lowest-scoring spot all season, so a healthy back with real carries is worth the roster math. Three full practices is the most convincing thing a groin has done all year."
             }
           ],
           "roster_ideas": [],
           "coach_cards": {
-            "matchup:5:4432577:ACTIVE": {
-              "title": "Next up: Maya",
-              "text": "Maya arrives at seven and three with C.J. Stroud as the name to watch on that side. That is the second-best record in the league pointed straight at you, so this is not the week for experiments. Stick to the evidence."
-            },
-            "watch:4882093:QUESTIONABLE:4832955:ACTIVE": {
-              "title": "Bhayshul Tuten is questionable",
-              "text": "Start Bhayshul Tuten. FantasyPros has him almost certain to play after a limited practice and says his recent work should settle any nerves, so Emmett Johnson stays put for now. The questionable tag is becoming his permanent accessory."
-            },
-            "news:4385690:QUESTIONABLE:bench:open": {
-              "title": "Dalton Kincaid is questionable",
-              "text": "FantasyPros has Dalton Kincaid under even odds to play with thumb and ankle trouble, and rates him hard to trust even at full health. Sam LaPorta is your starter at tight end, and Kincaid is the backup to a tight end you were never going to bench anyway."
+            "news:4385690:DOUBTFUL:bench:open": {
+              "title": "Dalton Kincaid is doubtful",
+              "text": "Sam LaPorta has your tight end slot, so nothing moves. FantasyPros has Kincaid doubtful with a thumb and an ankle after missing practice all week, and expects Dawson Knox to take the Buffalo tight end work if he sits. He is bench depth, so this costs you nothing. A thumb and an ankle is a strange pair to collect at once."
             }
           },
           "summary": {
-            "key": "watch|watch:4882093:QUESTIONABLE:4832955:ACTIVE",
-            "text": "Two questionable names and only one you start. Start Tuten, bench Kincaid, and your Sunday is decided."
+            "key": "clear",
+            "text": "Nothing to fix. Emmett Johnson has the Kansas City backfield and he is already in."
           }
         },
         "8": {
           "advice_cards": [
             {
-              "kind": "consensus",
-              "level": "info",
-              "stat": "RB",
-              "title": "Tony Pollard is your best back from here",
-              "text": "FantasyPros' rest-of-season projections put Tony Pollard ahead of every other running back you own, Derrick Henry included. Running back is the one spot where this roster has ranked last all year, and he is already in your lineup, so this is less advice than permission to stop second-guessing it."
+              "kind": "fp_news",
+              "level": "watch",
+              "title": "Carnell Tate practiced in full on Friday",
+              "stat": "trending to play",
+              "text": "You can leave him in the lineup. FantasyPros has Tate questionable with the shoulder but trending to play after a full Friday practice, which would be his first game since Week 7, and they grade Tennessee a top-six receiver matchup. Jameson Williams is the swap if Sunday's report turns. A shoulder that cleared a full practice has done the convincing part."
             }
           ],
           "roster_ideas": [
             {
               "kind": "trade",
-              "level": "info",
+              "level": "watch",
               "pos": "QB",
-              "stat": "an even split",
-              "title": "Offer Jakobi Meyers and Tucker Kraft to Tara for Brock Purdy",
-              "text": "Bo Nix is your only quarterback, and you carry two tight ends and six receivers, so this trades from the deepest parts of your roster for the one position you cannot cover. Tara runs two quarterbacks and is thin at receiver and tight end, so she gets the depth and you get a starter. Worth saying out loud: you play Tara next week, so she will read this card too. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "title": "Offer Travis Etienne Jr. and Tucker Kraft to Maya for Trevor Lawrence",
+              "stat": "both odds go up",
+              "text": "Bo Nix is your only quarterback, and FantasyPros ranks Trevor Lawrence eighth among quarterbacks this week to Nix's eleventh. You would be sending from your two deepest rooms: six running backs, and a second tight end behind Travis Kelce. Maya carries two starting quarterbacks and one tight end, so the fit is real from both sides. One line to send: she needs a tight end, you need a quarterback, and neither of you needs what the other is sending. Kraft is on Green Bay's bye in Week 11, so it lands for Week 12. Your quarterback room is currently one folding chair.",
               "trade": {
-                "partner_id": 4,
+                "partner_id": 5,
                 "give": [
                   {
-                    "id": 3916433,
-                    "name": "Jakobi Meyers",
-                    "pos": "WR",
-                    "ros": 74.2
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
                   },
                   {
                     "id": 4572680,
                     "name": "Tucker Kraft",
-                    "pos": "TE",
-                    "ros": 67.8
+                    "pos": "TE"
                   }
                 ],
                 "get": [
                   {
-                    "id": 4361741,
-                    "name": "Brock Purdy",
-                    "pos": "QB",
-                    "ros": 142.5
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB"
                   }
                 ],
                 "you": {
-                  "near": 1.71,
+                  "near": 1.82,
                   "playoff": [
                     0.0581,
-                    0.0704
+                    0.069
                   ],
                   "title": [
                     0.0124,
-                    0.0169
+                    0.0156
                   ]
                 },
                 "them": {
-                  "near": 2.23,
+                  "near": 1.6,
                   "playoff": [
-                    0.0239,
-                    0.0257
+                    0.9812,
+                    0.9856
                   ],
                   "title": [
-                    0.0043,
-                    0.0049
+                    0.2056,
+                    0.2355
                   ]
                 },
                 "week": 11,
                 "flags": {
                   "plays_this_week": false,
-                  "rival": "next_week"
+                  "rival": null
                 }
               }
             }
           ],
           "coach_cards": {
-            "matchup:3:4241416:ACTIVE": {
-              "title": "Next up: Maddie",
-              "text": "Maddie is next, and the two of you are matched on record, so this is the most winnable game left on your board. Chuba Hubbard is the name to watch on her side. She also beat you to the Ravens defense this week, so there's a small score to settle."
+            "swap:4241985:FLEX:4239993:ACTIVE": {
+              "title": "Start Tee Higgins over J.K. Dobbins in the flex",
+              "text": "Make this one first; it is the widest lineup gap in the league this week. Both fit the flex, the wild-card slot that takes a runner or a receiver, so it is one tap and nothing else moves. FantasyPros has Higgins at 824 receiving yards and six touchdowns in nine games, which is not a bench resume."
             },
-            "news:3916433:QUESTIONABLE:bench:open": {
-              "title": "Jakobi Meyers is questionable",
-              "text": "FantasyPros has Jakobi Meyers nearly certain to play and notes he has been managing this ankle for weeks already. He is one of six receivers where three can start, so the ankle is the least of his problems."
+            "swap:4239996:RB:3043078:ACTIVE": {
+              "title": "Start Derrick Henry over Travis Etienne Jr.",
+              "text": "Second tap, same idea. FantasyPros grades Baltimore the single best running back matchup of the week, which is where Henry plays, while Etienne, one game back from a hamstring problem, has 142 rushing yards in four games this season. Both fit the running back slot. Your best matchup of the week is currently on your bench."
+            },
+            "watch:4871023:QUESTIONABLE:4426388:ACTIVE": {
+              "title": "Carnell Tate is questionable",
+              "text": "You can leave him in. FantasyPros has Tate trending to play after a full practice on Friday, and grades Tennessee a top-six receiver matchup this week. If the Sunday report turns, Jameson Williams is the swap ESPN already has lined up. Two names for one slot is the comfortable kind of problem."
             }
           },
           "summary": {
-            "key": "clear",
-            "text": "Lineup's clean and the week is a coin flip. For once, nothing here needs you."
+            "key": "now|swap:4239996:RB:3043078:ACTIVE|swap:4241985:FLEX:4239993:ACTIVE",
+            "text": "Two taps and the lineup is fixed: Higgins into the flex, Henry at running back."
           }
         }
       },
       "league": {
-        "key": "90050fc09e89",
-        "text": "Six of eight lineups are already clean, which is about as peaceful as this league gets. Maddie has a quarterback swap worth one tap, and Tara has both a kicker and a defense sitting this one out. The bye week picked exactly one victim, then went back for seconds."
+        "key": "a7ef552b9a5b",
+        "text": "Six of eight lineups are clean, and the two that are not belong to Maddie and Cambri. Maddie has a quarterback swap and a kicker in doubt; Cambri has the widest bench-over-starter gap in the league, sitting in the flex. Nobody has a starter on a bye, which after last week counts as the schedule apologizing."
       }
     },
     "12": {
@@ -466,18 +469,22 @@
               "title": "Start Jaxon Smith-Njigba over Emeka Egbuka",
               "text": "This is the biggest single-tap upgrade on your roster for next week, and both names fit the receiver slot, so nothing else moves. FantasyPros' recent leaderboard has Smith-Njigba among the most productive receivers in football over the last three weeks. Your bench is currently outranking your lineup, which is at least a solvable kind of rude."
             },
-            "watch:4567048:QUESTIONABLE:4890973:ACTIVE": {
-              "title": "Kenneth Walker III is questionable",
-              "text": "Kenneth Walker III carries the groin injury into next week too, and FantasyPros had him missing practice this week. Ashton Jeanty is the swap if it holds, so watch the Friday report rather than building a lineup around a guess."
+            "swap:4890973:FLEX:4701936:ACTIVE": {
+              "title": "Start Matthew Golden over Ashton Jeanty in the flex",
+              "text": "Second swap for next week, same slot rules: the flex takes a runner or a receiver, so this is one tap. FantasyPros has Golden at 101 targets in ten games, the kind of volume that survives a bad matchup, while Jeanty has one rushing touchdown all season. The volume beats the lottery ticket."
             },
-            "watch:4036133:QUESTIONABLE:3046439:ACTIVE": {
-              "title": "T.J. Hockenson is questionable",
-              "text": "If T.J. Hockenson sits next week, Hunter Henry is back from his bye and takes the tight end spot. FantasyPros had Hockenson limited rather than out this week, so the likelier outcome is that Henry's bye ends and his bench seat doesn't."
+            "news:4567048:OUT:bench:open": {
+              "title": "Kenneth Walker III is out this week",
+              "text": "Bench news only. FantasyPros has Walker out again with a groin problem but expects him available for Kansas City's Thursday night game in Week 12, which is the week this card is about. Keep him rostered and check the Wednesday report. A Thursday return leaves very little room for a change of mind."
+            },
+            "back:4608686:bench": {
+              "title": "Kyle Monangai is back in the Chicago rotation",
+              "text": "Nothing to change, but note the knock-on: D'Andre Swift starts for you and now splits that backfield again. FantasyPros has Monangai off the injury report after a full week of practice. Owning both halves of one backfield is a hedge and a tax at the same time."
             }
           },
           "summary": {
-            "key": "now|swap:4567750:WR:4430878:ACTIVE",
-            "text": "Jaxon Smith-Njigba is on your bench and he should not be. That's the whole note."
+            "key": "now|swap:4567750:WR:4430878:ACTIVE|swap:4890973:FLEX:4701936:ACTIVE",
+            "text": "Two taps for next week: Smith-Njigba in at receiver, Golden into the flex."
           }
         },
         "3": {
@@ -490,94 +497,81 @@
             },
             "swap:4685720:QB:2577417:ACTIVE": {
               "title": "Start Dak Prescott over Bryce Young",
-              "text": "Same call as this week, with a wider gap next week. Both quarterbacks are yours, so the better one is already in the building. At some point this stops being advice and becomes a standing instruction."
+              "text": "Same call as this week, with a wider gap next week. Both quarterbacks are yours, so this one is free."
             },
             "swap:-16033:DST:-16017:none": {
               "title": "Start Patriots D/ST over Ravens D/ST",
               "text": "You own two defenses and the Patriots hold the better projection of the pair next week. The other one sits and watches, which is what you keep it for."
             },
-            "swap:4429615:FLEX:4362238:ACTIVE": {
-              "title": "Start Chase Brown over Zay Flowers",
-              "text": "Chase Brown edges Zay Flowers for the flex, the wild-card spot that takes a back or a receiver. Brown has quietly caught forty-seven passes this season, which is why the projection likes him. Flex is where you play the hot hand, not the famous one."
+            "swap:4242335:RB:4362238:ACTIVE": {
+              "title": "Start Chase Brown over Jonathan Taylor",
+              "text": "One tap next week, both in the running back slot. FantasyPros has Brown at 47 catches in nine games, which is how a back stays useful on a quiet afternoon, while Taylor has put the ball on the ground four times this season."
+            },
+            "watch:4249087:QUESTIONABLE:none:none": {
+              "title": "Matt Gay is still questionable",
+              "text": "Same problem, a week later: FantasyPros has Gay more likely to sit than play with a hip, and your bench still has no kicker. If the claim below has not happened by then, this card will be waiting for you. A kicker you cannot replace is the cheapest hole on a roster and the most annoying."
+            },
+            "back:4372016:bench": {
+              "title": "Jaylen Waddle should be clear by next week",
+              "text": "File this under bench depth. FantasyPros has Waddle practicing fully with only the concussion protocol outstanding, so by Week 12 this should be settled. The good matchup and the clearance are arriving in the wrong order."
             }
           },
           "summary": {
-            "key": "now|swap:-16033:DST:-16017:none|swap:4429615:FLEX:4362238:ACTIVE|swap:4685720:QB:2577417:ACTIVE",
-            "text": "Three swaps waiting: quarterback, defense and flex. Your bench is doing the heavy lifting again."
+            "key": "now|swap:-16033:DST:-16017:none|swap:4242335:RB:4362238:ACTIVE|swap:4685720:QB:2577417:ACTIVE",
+            "text": "Three taps next week: Prescott, Chase Brown, Patriots defense. All already yours."
           }
         },
         "4": {
-          "advice_cards": [],
-          "roster_ideas": [],
-          "coach_cards": {
-            "matchup:8:4262921:ACTIVE": {
-              "title": "Next up: Cambri",
-              "text": "Justin Jefferson decides how much work this one is. The rest of that lineup you can safely ignore. Cambri is also without a healthy quarterback, which is her bad luck and not your game plan."
-            },
-            "swap:-16026:DST:-16005:none": {
-              "title": "Start Browns D/ST over Seahawks D/ST",
-              "text": "Both of your defenses are back off their bye, and Cleveland takes the better projection of the two next week. One tap in the same slot, and for once the easiest card on your page."
-            }
-          },
-          "summary": {
-            "key": "now|swap:-16026:DST:-16005:none",
-            "text": "Browns over Seahawks at defense and that's your whole week. The byes are done asking you for favors."
-          }
-        },
-        "5": {
           "advice_cards": [],
           "roster_ideas": [
             {
               "kind": "trade",
               "level": "watch",
               "pos": "TE",
-              "stat": "both odds go up",
-              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
-              "text": "You carry two starting quarterbacks and one tight end; Cambri carries one quarterback and two tight ends. She gets the starter her roster does not have, and you get the two spots yours is thinnest at. The pitch you could send: you are deep at quarterback and would rather have tight end cover and running back depth than a backup you never start. Two quarterbacks and one tight end is a roster assembled by somebody who really likes quarterbacks. If she would rather keep Etienne, Jakobi Meyers in his place scores almost the same. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "title": "Offer Tyler Bass and the Jets defense to Maddie for Isaiah Likely",
+              "stat": "two spare parts for a starter",
+              "text": "You carry two kickers and two defenses, and only one of each can start. Turning that spare pair into a tight end gives you a second startable one for the flex, the slot Deebo Samuel is currently holding. Maddie carries two tight ends that FantasyPros ranks inside their top four in Week 11, so she keeps the one they rank higher and upgrades a kicker she has listed questionable with a hip. One line to send: you are paying in players you cannot start together for one you can. Both pieces you would send are in your Week 11 lineup, so offer it as a Week 12 move. Nobody has ever won a week with their second kicker.",
               "trade": {
-                "partner_id": 8,
+                "partner_id": 3,
                 "give": [
                   {
-                    "id": 4360310,
-                    "name": "Trevor Lawrence",
-                    "pos": "QB",
-                    "ros": 138.1
+                    "id": 3917232,
+                    "name": "Tyler Bass",
+                    "pos": "K"
+                  },
+                  {
+                    "id": -16020,
+                    "name": "Jets D/ST",
+                    "pos": "DST"
                   }
                 ],
                 "get": [
                   {
-                    "id": 4239996,
-                    "name": "Travis Etienne Jr.",
-                    "pos": "RB",
-                    "ros": 74.0
-                  },
-                  {
-                    "id": 4572680,
-                    "name": "Tucker Kraft",
-                    "pos": "TE",
-                    "ros": 67.8
+                    "id": 4361050,
+                    "name": "Isaiah Likely",
+                    "pos": "TE"
                   }
                 ],
                 "you": {
-                  "near": 1.83,
+                  "near": 3.2,
                   "playoff": [
-                    0.9812,
-                    0.9846
+                    0.0239,
+                    0.0369
                   ],
                   "title": [
-                    0.2056,
-                    0.2248
+                    0.0043,
+                    0.0073
                   ]
                 },
                 "them": {
-                  "near": 1.08,
+                  "near": 1.9,
                   "playoff": [
-                    0.0581,
-                    0.0658
+                    0.0041,
+                    0.0059
                   ],
                   "title": [
-                    0.0124,
-                    0.0144
+                    0.0,
+                    0.0001
                   ]
                 },
                 "week": 11,
@@ -589,17 +583,101 @@
             }
           ],
           "coach_cards": {
-            "matchup:3:4242335:ACTIVE": {
-              "title": "Next up: Maddie",
-              "text": "Jonathan Taylor is the engine of Maddie's lineup, and with her quarterback spot struggling he carries most of it alone. Plan for him, and plan generously."
+            "matchup:8:4262921:ACTIVE": {
+              "title": "Next up: Cambri",
+              "text": "You play Cambri next week, and Justin Jefferson is the name that decides how much work it is. Her running backs have ranked last in the league all season, so the receivers are where the points come from. Outscore Jefferson and you have essentially outscored the lineup."
             },
-            "watch:4241478:QUESTIONABLE:4258173:ACTIVE": {
-              "title": "DeVonta Smith is questionable",
-              "text": "Smith is still working through a hamstring, and Nico Collins is the healthy fallback if it does not clear. Make the call early rather than at kickoff. Collins is one of only three receivers you have who are off the injury report, so he was getting used either way."
+            "swap:2473037:K:3917232:ACTIVE": {
+              "title": "Start Tyler Bass over Jason Myers next week",
+              "text": "One tap, and both kickers are yours. FantasyPros has Bass third among kickers this week and perfect on every field goal he has attempted this season, while Myers has missed three. Seattle is on a bye this week anyway. Two kickers, and for once the choice makes itself."
+            },
+            "news:4429059:OUT:bench:open": {
+              "title": "Woody Marks is still out",
+              "text": "Bench depth, nothing to change. FantasyPros has Marks out with a concussion and no return date yet, so treat that slot as empty until there is clearer news. Here's hoping he gets the all-clear soon."
+            }
+          },
+          "summary": {
+            "key": "now|swap:2473037:K:3917232:ACTIVE",
+            "text": "One tap next week: Tyler Bass in at kicker. Myers is on a bye anyway."
+          }
+        },
+        "5": {
+          "advice_cards": [],
+          "roster_ideas": [
+            {
+              "kind": "trade",
+              "level": "watch",
+              "pos": "TE",
+              "title": "Offer Trevor Lawrence to Cambri for Travis Etienne Jr. and Tucker Kraft",
+              "stat": "both odds go up",
+              "text": "You roster two starting quarterbacks and start one; Cambri rosters one and has nothing behind him. FantasyPros has Trevor Lawrence eighth among quarterbacks this week and Bo Nix eleventh, so she gets a genuine upgrade, and you get the tight end your bench is missing while Brock Bowers is questionable. The pitch is one line: you are deep where she is thin and thin where she is deep. Tucker Kraft's Green Bay is on a bye in Week 11, so this is a Week 12 move, and Cambri gains slightly more per week than you do, which is the version worth sending. Your spare quarterback has never scored you a point.",
+              "trade": {
+                "partner_id": 8,
+                "give": [
+                  {
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB"
+                  }
+                ],
+                "get": [
+                  {
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
+                  },
+                  {
+                    "id": 4572680,
+                    "name": "Tucker Kraft",
+                    "pos": "TE"
+                  }
+                ],
+                "you": {
+                  "near": 1.6,
+                  "playoff": [
+                    0.9812,
+                    0.9856
+                  ],
+                  "title": [
+                    0.2056,
+                    0.2355
+                  ]
+                },
+                "them": {
+                  "near": 1.82,
+                  "playoff": [
+                    0.0581,
+                    0.069
+                  ],
+                  "title": [
+                    0.0124,
+                    0.0156
+                  ]
+                },
+                "week": 11,
+                "flags": {
+                  "plays_this_week": false,
+                  "rival": null
+                }
+              }
+            }
+          ],
+          "coach_cards": {
+            "matchup:3:4595348:ACTIVE": {
+              "title": "Next up: Maddie",
+              "text": "You play Maddie next week and Malik Nabers is her highest-projected starter. Her quarterback room has ranked last in the league all season, which is the soft spot to plan around. Everything else on that roster is negotiable."
             },
             "watch:4432665:QUESTIONABLE:none:none": {
               "title": "Brock Bowers is questionable",
-              "text": "Bowers is day to day with an ankle per FantasyPros, and nobody else on your roster plays tight end, so there is no bench answer to this one. Check him early in the week and keep a claim ready."
+              "text": "No bench answer exists; he is the only tight end you roster. FantasyPros has him questionable with an ankle and a quad and his coach calling him a must-start when active, so the Week 12 question is whether that ankle holds up two weeks running. Claim a second tight end and this card stops mattering."
+            },
+            "news:4697815:QUESTIONABLE:bench:open": {
+              "title": "Rachaad White is trending the wrong way",
+              "text": "This one stays on the bench. FantasyPros reported on Saturday that White missed Washington's practice entirely after a limited Friday, which they read as the heel getting worse rather than better. He is depth behind Bucky Irving and Jonah Coleman, so there is nothing to fix. Heels are patient injuries and nobody has that kind of time."
+            },
+            "back:4241478:starting": {
+              "title": "DeVonta Smith is back for good",
+              "text": "He keeps the flex and no action is needed. FantasyPros cleared him of the hamstring problem that had cost him since Week 6, with the caveat that Philadelphia's quarterback situation caps the upside. By Week 12 he will have a game back under him. Healthy and limited is still the better half of that pair."
             },
             "back:4685278:starting": {
               "title": "Luther Burden III is clear for next week",
@@ -607,34 +685,30 @@
             }
           },
           "summary": {
-            "key": "watch|watch:4241478:QUESTIONABLE:4258173:ACTIVE|watch:4432665:QUESTIONABLE:none:none",
-            "text": "Nothing broken yet. Two question marks at kickoff, both of them other people's decisions to make."
+            "key": "watch|watch:4432665:QUESTIONABLE:none:none",
+            "text": "Bowers is the whole tight end plan again next week. Fix that on waivers."
           }
         },
         "6": {
           "advice_cards": [],
           "roster_ideas": [],
           "coach_cards": {
-            "matchup:2:4567048:QUESTIONABLE": {
+            "matchup:2:4241389:ACTIVE": {
               "title": "Next up: Amie",
-              "text": "Amie's highest-projected starter, Kenneth Walker III, is questionable with a groin problem per FantasyPros. She has enough running backs that losing one is an inconvenience, not an opening."
+              "text": "You play Amie next week and CeeDee Lamb is the one to account for; FantasyPros has him at 121 targets in ten games, the most on any roster in this league. Her tight end spot has ranked last all season, so that is where you can give ground. Lamb is the game plan and the problem."
             },
-            "swap:4035538:FLEX:4430737:ACTIVE": {
-              "title": "Start Kyren Williams over David Montgomery at flex",
-              "text": "Flex is the wild-card spot, and next week Kyren Williams is the better bet to fill it. He has carried a full workload all season while Montgomery shares a backfield in Houston. One tap, and your flex stops being the soft spot in the lineup."
+            "swap:4685382:FLEX:4430737:ACTIVE": {
+              "title": "Start Kyren Williams over Omarion Hampton in the flex",
+              "text": "One tap next week; both fit the flex. Kyren Williams is on a bye this week, which is the only reason he is not already in there, and FantasyPros has him comfortably ahead of Hampton for the rest of the season. Hampton has 63 receiving yards in nine games, so there is no second way he helps."
             },
             "swap:3116365:TE:5083076:ACTIVE": {
               "title": "Start Harold Fannin Jr. over Mark Andrews",
               "text": "Both fit the tight end slot, so this is one tap. FantasyPros' rest-of-season projections put Fannin comfortably ahead of Andrews, who has reached the end zone once all year. Andrews has changed rosters twice in this league and the production has never followed him."
-            },
-            "watch:4880281:QUESTIONABLE:4426502:ACTIVE": {
-              "title": "Jordyn Tyson is questionable",
-              "text": "The chest injury follows Jordyn Tyson into next week, and Drake London is the better of your healthy options if he sits. FantasyPros had Tyson practicing in limited fashion rather than sitting out, so London is a plan you probably never open."
             }
           },
           "summary": {
-            "key": "now|swap:3116365:TE:5083076:ACTIVE|swap:4035538:FLEX:4430737:ACTIVE",
-            "text": "Two swaps waiting, one at flex and one at tight end. Your bench is auditioning again."
+            "key": "now|swap:3116365:TE:5083076:ACTIVE|swap:4685382:FLEX:4430737:ACTIVE",
+            "text": "Fannin at tight end, Kyren Williams into the flex, and next week is set."
           }
         },
         "7": {
@@ -645,18 +719,18 @@
               "title": "Next up: Marlee",
               "text": "Amon-Ra St. Brown is the receiver to account for in Marlee's lineup. Her kicker has also been the second-best in the league all season, which is a strange sentence and a real problem."
             },
-            "watch:4882093:QUESTIONABLE:4685247:ACTIVE": {
-              "title": "Bhayshul Tuten is questionable",
-              "text": "Tuten carries the same ankle and foot trouble into next week, with Braelon Allen as the fallback if it finally catches up with him. FantasyPros has been unbothered by the tag all month. So has Tuten."
+            "swap:4431299:WR:4248528:ACTIVE": {
+              "title": "Start Christian Watson over Rome Odunze at receiver",
+              "text": "One tap next week, both in the receiver slot. Watson is on Green Bay's bye this week, which is why he is not in the lineup now, and FantasyPros has him at 916 receiving yards and seven touchdowns in ten games against Odunze's single touchdown. Your best receiver after Chase has been resting."
             },
-            "news:4385690:QUESTIONABLE:bench:open": {
-              "title": "Dalton Kincaid is questionable",
-              "text": "FantasyPros has Dalton Kincaid under even odds to play with thumb and ankle trouble, and rates him hard to trust even at full health. Sam LaPorta keeps the tight end spot next week regardless, so Kincaid is a name you own rather than a name you start."
+            "news:4385690:DOUBTFUL:bench:open": {
+              "title": "Dalton Kincaid is doubtful this week",
+              "text": "Bench depth; Sam LaPorta holds your tight end slot. FantasyPros has Kincaid doubtful with a thumb and an ankle and expects Dawson Knox to take the Buffalo work, so by Week 12 the question is whether Kincaid gets the job back. A thumb is a small thing to lose a job over."
             }
           },
           "summary": {
-            "key": "watch|watch:4882093:QUESTIONABLE:4685247:ACTIVE",
-            "text": "Braelon Allen is on standby behind Tuten next week, which is the full extent of your to-do list."
+            "key": "now|swap:4431299:WR:4248528:ACTIVE",
+            "text": "Christian Watson comes off the bye and straight into your receiver slot."
           }
         },
         "8": {
@@ -664,61 +738,58 @@
           "roster_ideas": [
             {
               "kind": "trade",
-              "level": "info",
+              "level": "watch",
               "pos": "QB",
-              "stat": "an even split",
-              "title": "Offer Jakobi Meyers and Tucker Kraft to Tara for Brock Purdy",
-              "text": "Bo Nix is your only quarterback, and you carry two tight ends and six receivers, so this trades from the deepest parts of your roster for the one position you cannot cover. Tara runs two quarterbacks and is thin at receiver and tight end, so she gets the depth and you get a starter. Worth saying out loud: you play Tara next week, so she will read this card too. Both sides were measured on FantasyPros' rest-of-season projections.",
+              "title": "Offer Travis Etienne Jr. and Tucker Kraft to Maya for Trevor Lawrence",
+              "stat": "both odds go up",
+              "text": "Bo Nix is your only quarterback, and FantasyPros ranks Trevor Lawrence eighth among quarterbacks this week to Nix's eleventh. You would be sending from your two deepest rooms: six running backs, and a second tight end behind Travis Kelce. Maya carries two starting quarterbacks and one tight end, so the fit is real from both sides. One line to send: she needs a tight end, you need a quarterback, and neither of you needs what the other is sending. Kraft is on Green Bay's bye in Week 11, so it lands for Week 12. Your quarterback room is currently one folding chair.",
               "trade": {
-                "partner_id": 4,
+                "partner_id": 5,
                 "give": [
                   {
-                    "id": 3916433,
-                    "name": "Jakobi Meyers",
-                    "pos": "WR",
-                    "ros": 74.2
+                    "id": 4239996,
+                    "name": "Travis Etienne Jr.",
+                    "pos": "RB"
                   },
                   {
                     "id": 4572680,
                     "name": "Tucker Kraft",
-                    "pos": "TE",
-                    "ros": 67.8
+                    "pos": "TE"
                   }
                 ],
                 "get": [
                   {
-                    "id": 4361741,
-                    "name": "Brock Purdy",
-                    "pos": "QB",
-                    "ros": 142.5
+                    "id": 4360310,
+                    "name": "Trevor Lawrence",
+                    "pos": "QB"
                   }
                 ],
                 "you": {
-                  "near": 1.71,
+                  "near": 1.82,
                   "playoff": [
                     0.0581,
-                    0.0704
+                    0.069
                   ],
                   "title": [
                     0.0124,
-                    0.0169
+                    0.0156
                   ]
                 },
                 "them": {
-                  "near": 2.23,
+                  "near": 1.6,
                   "playoff": [
-                    0.0239,
-                    0.0257
+                    0.9812,
+                    0.9856
                   ],
                   "title": [
-                    0.0043,
-                    0.0049
+                    0.2056,
+                    0.2355
                   ]
                 },
                 "week": 11,
                 "flags": {
                   "plays_this_week": false,
-                  "rival": "next_week"
+                  "rival": null
                 }
               }
             }
@@ -726,11 +797,11 @@
           "coach_cards": {
             "matchup:4:4426348:ACTIVE": {
               "title": "Next up: Tara",
-              "text": "Jayden Daniels is Tara's highest-projected starter next week. Her running backs have been the weak link all season, so outscore Daniels and you have outscored the lineup."
+              "text": "Jayden Daniels is Tara's highest-projected starter next week. Her running backs have been the weak link all season, so the ceiling on that roster runs through one quarterback."
             },
-            "news:3916433:QUESTIONABLE:bench:open": {
-              "title": "Jakobi Meyers is questionable",
-              "text": "FantasyPros has Jakobi Meyers nearly certain to play and notes he has been managing this ankle for weeks already. Nothing on your bench changes next week either, which is the quiet luxury of a roster this deep."
+            "clear:open": {
+              "title": "Nothing to fix next week",
+              "text": "Every starter has a game and nobody on your bench is projected to beat them. Make this week's two swaps and next week takes care of itself. A rare week where the roster agrees with itself."
             }
           },
           "summary": {
@@ -740,122 +811,122 @@
         }
       },
       "league": {
-        "key": "4079e7072be8",
-        "text": "Next week the byes are done and five of eight lineups still have something worth changing, most of it one tap. Marlee, Amie, Maddie, Tara and Kyra each have a better starter sitting on the bench already. Maya, Samantha and Cambri are set. Five benches currently think they should be the lineup."
+        "key": "eb302dec52f2",
+        "text": "Six of eight lineups have something worth changing next week, and nearly all of it is one tap. Marlee, Amie, Maddie, Tara, Kyra and Samantha each have a better starter already on the bench; Maya and Cambri are set. The byes are done, which means the schedule has run out of excuses it can hand anybody."
       }
     }
   },
   "audit": {
     "6": {
       "lineup:B:4431459:w5": {
-        "title": "Mostly right, one tight end regret",
-        "text": "You leave less on the bench than almost anyone. The exception is Week 5, when Harold Fannin started at tight end and Tyler Warren had a big one from your bench. You are being told to start Tyler Warren again in Week 11, so the universe is offering a redo."
+        "title": "Mostly right, with one tight end regret",
+        "text": "Your lineup calls have been among the better ones in this league, so the fix here is a small one. The week that stings is Week 5, when Harold Fannin got the tight end slot and Tyler Warren went off on your bench. Both of them were yours, which is the part that never gets easier."
       },
       "pos:RB1:WR8": {
-        "title": "Best backfield, last-place receivers",
-        "text": "Your running backs lead the league and your receivers rank last, which is a strange way to keep winning. A.J. Brown and Drake London should not add up to last place."
+        "title": "Running back is carrying this team",
+        "text": "Your running backs lead the league and your receivers rank last, so every spare move should go to the receiver room. Gibbs and Jaylen Warren have been doing the work of a whole roster."
       },
       "proj:over:3915511:4870795": {
-        "title": "The gut was right about Burrow",
-        "text": "Your lineup has outrun its projections all season, with Joe Burrow the main reason and Makai Lemon the main drag. When your quarterback keeps beating his number, the move is to stop second-guessing him."
+        "title": "Your starters keep beating the projections",
+        "text": "Nothing to change; this is the good version of a surprise. Joe Burrow has been outscoring his projection all season and the forecasts have not caught up, while Makai Lemon keeps landing under his. Keep starting the quarterback and keep expectations modest on the rookie. The projections will adjust eventually, and you will have banked the difference by then."
       }
     },
     "5": {
       "lineup:C:4685278:w7": {
-        "title": "Coker started, Burden scored",
-        "text": "Week 7 is the one to learn from: Jalen Coker started at receiver and did nothing while Luther Burden III had his best week of the season on your bench. You roster eight receivers and start three, so the odds of getting it wrong are baked in."
+        "title": "Your bench keeps getting the good weeks",
+        "text": "This is the one to work on: the gap between the lineup you started and the best one available is among the widest in the league. Week 7 is the exhibit, when Jalen Coker started at receiver and Luther Burden III posted the week of his season from your bench. You owned the solution and started the problem."
       },
-      "pos:TE2:K7": {
-        "title": "Brock Bowers is doing the heavy lifting",
-        "text": "Tight end is your second-best position in the league and kicker your seventh, which is the least alarming weak spot available. Ka'imi Fairbairn is actually the best-projected kicker left this season, so this one may fix itself without you touching a thing."
+      "pos:RB2:K7": {
+        "title": "Kicker is the soft spot, and it is not the kicker",
+        "text": "Second-best running back room in the league, and kicker ranks seventh, but do not go shopping. FantasyPros has Ka'imi Fairbairn first among all kickers this week, so the position is fine from here; the ranking is a record of games already played. Spend your claims on tight end instead. Your worst position is run by the best kicker in football."
       },
-      "proj:over:-16030:4695883": {
-        "title": "Your defense is outrunning its projection",
-        "text": "Your lineup finishes a shade ahead of its projections overall, carried by the Jaguars defense comfortably beating its number week after week. Jalen Coker has pulled the other way, which the Week 7 card above already covered."
-      }
-    },
-    "2": {
-      "lineup:B:4259545:w1": {
-        "title": "Nine weeks, one regret",
-        "text": "You squeeze about as much out of your roster as anyone in the league. The one that stings is Week 1, when Emeka Egbuka started in flex, the wild-card spot, and D'Andre Swift went off on your bench. Nine weeks on, Swift is still the one you are told to start, so the lesson landed."
-      },
-      "pos:WR1:TE8": {
-        "title": "Best receivers, last-place tight end",
-        "text": "Your receivers lead the league and your tight end is dead last. You roster exactly one tight end. That is not a position group, it is a hope."
-      },
-      "proj:over:4430878:4360248": {
-        "title": "Smith-Njigba keeps beating his number",
-        "text": "Your lineup has outscored its projections all season, led by Jaxon Smith-Njigba beating his number nearly every week. Kyle Pitts has gone the other way, which brings us back to tight end."
+      "proj:under:4258173:4695883": {
+        "title": "The projections have been a touch generous",
+        "text": "Your starters have come in slightly under forecast on the season, and it is mostly two names pulling opposite ways. Nico Collins has been beating his number all year while Jalen Coker has been well short of his, and Coker has started more often than that gap deserves. One of them is overperforming quietly and the other is underperforming out loud."
       }
     },
     "1": {
       "lineup:C:4360761:w8": {
-        "title": "Wilson's best week happened on your bench",
-        "text": "Your worst call this season was Week 8, when Tre Tucker blanked in your lineup and Michael Wilson had his best week of the year on your bench. Eight receivers on the roster, three slots, and the bench keeps picking the right ones."
+        "title": "The bench has been the better half",
+        "text": "This is the thing to fix: a lot of points have spent this season on your bench. Week 8 is the one, when Tre Tucker took a receiver slot and scored nothing while Michael Wilson put up a big number behind him. The weeks since have been kinder. A zero and a big number, filed in the wrong order."
       },
-      "pos:K2:WR7": {
-        "title": "Your kicker is carrying this team",
-        "text": "Kicker is your second-best position in the league and wide receiver your seventh, which is a sentence nobody wants written about them. The fix is which ones start, not how many you keep."
+      "pos:TE3:QB7": {
+        "title": "Tight end is the strength, quarterback the gap",
+        "text": "George Kittle has the tight end slot comfortably handled, and quarterback ranks seventh, so that is where a claim helps most. FantasyPros does still have Jared Goff inside their top ten quarterbacks this week, so the position is serviceable rather than broken, and he is the only one you roster. A one-man quarterback room is fine right up until it is not."
       },
       "proj:under:-16016:4360761": {
-        "title": "ESPN overrates everyone but your defense",
-        "text": "Your lineup has landed under ESPN's projections all season, with the Vikings defense the one piece quietly beating its number most weeks. Treat the projections as a suggestion."
+        "title": "The projections have been overrating your starters",
+        "text": "Your lineup has fallen well short of its forecasts on the season, and the split is instructive: the Vikings defense keeps beating its number while Michael Wilson keeps missing his by a wide margin. Start the defense with confidence and treat the Wilson projections as a suggestion. A defense outscoring a receiver is a model asking for help."
+      }
+    },
+    "2": {
+      "lineup:B:4696981:w10": {
+        "title": "Good calls, one recent exception",
+        "text": "Your lineup decisions rank among the best in this league, so there is little to change. Week 10 is the fresh one: Kenneth Walker started at running back and did not score, while Cam Skattebo put up a big afternoon on your bench. Walker has been ruled out twice since, which is its own kind of answer."
+      },
+      "pos:WR1:TE8": {
+        "title": "Best receivers in the league, worst tight ends",
+        "text": "Your receivers rank first and your tight ends rank last, so every claim should go to tight end until that changes. Chig Okonkwo is unowned and FantasyPros has him inside their top ten this week, which is the cheapest fix on the board. CeeDee Lamb has been carrying a position that should not need carrying."
+      },
+      "proj:over:4430878:4360248": {
+        "title": "Your starters are beating the forecasts",
+        "text": "Jaxon Smith-Njigba has been outrunning his projection all season while Kyle Pitts has been well short of his. Keep riding Smith-Njigba. The roster figured this out before the model did."
       }
     },
     "7": {
       "lineup:C:4036378:w9": {
-        "title": "Week 9 was an expensive quarterback call",
-        "text": "Josh Allen started and had a quiet day while Jordan Love put up the biggest bench score anyone in this league has managed all season. You own two startable quarterbacks, so this decision comes back every single week. Worth five minutes on a Sunday morning."
+        "title": "Two quarterbacks, one slot",
+        "text": "Start here. The best available lineup has outscored the one you started by a wide margin this season. Week 9 is the case in point, when Josh Allen started at quarterback and Jordan Love outscored him from your bench. Two good quarterbacks is a nice problem and an expensive one."
       },
-      "pos:QB1:FLEX8": {
-        "title": "Six running backs and nothing to put in flex",
-        "text": "Quarterback is your strongest position in the league and flex, the wild-card spot, is your weakest, despite six running backs on the roster. Depth is not the problem. The top of it is."
+      "pos:DST1:FLEX8": {
+        "title": "Best defense in the league, worst flex",
+        "text": "Your defense ranks first and your flex, the wild-card slot that takes a runner or a receiver, ranks last, so that slot is where attention pays. Emmett Johnson and a returning Jonathon Brooks are the two names most likely to fix it from inside the roster. A first-place defense cannot cover for a last-place flex, though it has been trying."
       },
       "proj:under:-16034:4429160": {
-        "title": "Under the number most weeks",
-        "text": "Your lineup lands under its projections most weeks. De'Von Achane was the biggest shortfall of the season while you held him, and the Texans defense has been the one beating its number. The trade below is aimed at it."
+        "title": "The forecasts have run ahead of the results",
+        "text": "Your starters have landed under their projections on the season. The Texans defense has quietly beaten its number while De'Von Achane has missed his by the widest margin on the roster, which is the gap doing most of the damage. Weight the defense, discount Achane. One of those two is being graded on a different curve."
+      }
+    },
+    "8": {
+      "lineup:B:3916148:w7": {
+        "title": "Mostly sound, one Week 7 exception",
+        "text": "Your lineup calls have been among the better ones here, so this is a narrow complaint. Week 7 is it: Derrick Henry started at running back and had a quiet afternoon while Tony Pollard went off on your bench. Pollard has since taken a starting slot and kept it, which is the rare regret that pays you back."
+      },
+      "pos:WR2:RB8": {
+        "title": "Second-best receivers, last-place backs",
+        "text": "Your receivers rank second in the league and your running backs rank last, which is the whole story of this roster. The trade idea on this page aims squarely at it, and so does starting Derrick Henry this week into what FantasyPros grades the best running back matchup on the board. Six running backs, and not enough of them."
+      },
+      "proj:under:4239993:4870808": {
+        "title": "Slightly under forecast, and fixable",
+        "text": "Your starters have come in a little short of projection this season, and both ends of it are sitting on your bench. Tee Higgins has been beating his number while Jeremiyah Love has been missing his, and Higgins is the one ESPN wants in your flex this week. The fix is a seat change, not a trade."
       }
     },
     "4": {
       "lineup:C:4248528:w1": {
-        "title": "Week 1 belonged to your bench",
-        "text": "Your biggest bench week was Week 1, when Christian Watson put up a monster game while your flex, the wild-card spot, barely scored. Watson has repaid the faith since, which is the actual lesson: your bench runs hot."
+        "title": "The points you left in Week 1",
+        "text": "Worth tightening, though the worst of it is ancient history: Week 1, Quinshon Judkins in the flex for a quiet afternoon while Christian Watson posted a big number on your bench. The recap formally retracted its opinion of that Judkins flex once it started paying off, so consider the matter closed."
       },
       "pos:TE1:RB7": {
-        "title": "Best tight end, thinnest backfield",
-        "text": "Trey McBride has made tight end your strongest position in the league, while running back sits seventh despite six of them on your roster. Six backs, seventh place."
+        "title": "Best tight end in the league, thin at back",
+        "text": "Trey McBride has given you the top tight end production in this league while running back ranks seventh, so that is where the help should go. You carry six running backs, which means the problem is quality and not quantity. You have the bodies; what you need is one of them to be good."
       },
       "proj:under:4248528:4569173": {
-        "title": "The projections miss you both ways",
-        "text": "Your lineup has come in under its projections most weeks, with Rhamondre Stevenson the steadiest drag and Christian Watson the one beating his number."
-      }
-    },
-    "8": {
-      "lineup:C:3916148:w7": {
-        "title": "Week 7 was the Pollard week",
-        "text": "Derrick Henry started at running back and did very little while Tony Pollard put up the biggest bench score on your roster all season. You started Pollard the next time it mattered and won, so this one is already filed under lesson learned."
-      },
-      "pos:WR2:RB8": {
-        "title": "Last place in the backfield, with six of them",
-        "text": "Your receivers are second in the league and your running backs are last, despite six of them on the roster. Derrick Henry and Travis Etienne are the names on the shirt. Tony Pollard is the one scoring."
-      },
-      "proj:over:4239993:4262921": {
-        "title": "Ahead of the projections, behind on the scoreboard",
-        "text": "Your lineup finishes slightly ahead of its projections, with Tee Higgins the biggest overachiever and Justin Jefferson coming up short more often than a player of his quality should. Nothing here is broken."
+        "title": "The forecasts have been too kind",
+        "text": "Your lineup has fallen well short of its projections this season. Christian Watson has been beating his number while Rhamondre Stevenson has been well short of his, and Stevenson is on New England's bye this week anyway. Trust the Watson projection and treat Stevenson's as aspirational."
       }
     },
     "3": {
-      "lineup:C:4241416:w1": {
-        "title": "Hubbard keeps scoring from the wrong side of the lineup",
-        "text": "Week 1 set the tone: Jaylen Waddle started in flex, the wild-card spot, and Chuba Hubbard outscored him many times over from your bench. Hubbard is still on this roster and still underused. Start the one who keeps scoring."
+      "lineup:C:2577417:w10": {
+        "title": "You won the week you got wrong",
+        "text": "This is the clearest fix on your page: more points have sat on your bench this season than on anyone else's. Week 10 is the headline, when Bryce Young started at quarterback and Dak Prescott put up a huge day behind him. You won that week anyway, which is the funniest possible outcome."
       },
-      "pos:K1:QB8": {
-        "title": "Your kicker leads the league",
-        "text": "You have the best kicker in the league and the worst quarterback, which is a hard combination to build a season on. Quarterback is also the position where the wire most often has an upgrade."
+      "pos:K2:QB8": {
+        "title": "Your kicker outranks your quarterback room",
+        "text": "Kicker ranks second in the league and quarterback ranks last, which is not the order those two are supposed to go in. The fix is free: Dak Prescott is on your bench and FantasyPros has him third among quarterbacks this week. Start him."
       },
-      "proj:under:4241416:4047650": {
-        "title": "Nobody misses their number by more",
-        "text": "No lineup in the league has fallen further short of its projections than yours, with DK Metcalf the biggest weekly shortfall and Chuba Hubbard the one beating his. The roster is better than the results."
+      "proj:under:4361050:4047650": {
+        "title": "The biggest projection gap in the league",
+        "text": "Your starters have missed their forecasts by more than anyone else's this season, and it is not subtle. Isaiah Likely has been beating his number while DK Metcalf has been well short of his. The tight end spot is in good hands either way; the receiver slot is where the projections keep getting it wrong, and Metcalf on the bench this week is the projection and the lineup finally agreeing."
       }
     }
   },
@@ -1046,16 +1117,6 @@
         "rec_yds": 374,
         "rec_tds": 2
       },
-      "4427366": {
-        "games": 5,
-        "rush_att": 77,
-        "rush_yds": 265,
-        "rush_tds": 1,
-        "rec_tar": 18,
-        "rec_rec": 17,
-        "rec_yds": 195,
-        "rec_tds": 0
-      },
       "4882093": {
         "games": 9,
         "rush_att": 148,
@@ -1092,6 +1153,26 @@
         "fga": 25,
         "xpt": 19,
         "xpa": 20
+      },
+      "4832955": {
+        "games": 9,
+        "rush_att": 48,
+        "rush_yds": 212,
+        "rush_tds": 1,
+        "rec_tar": 23,
+        "rec_rec": 20,
+        "rec_yds": 307,
+        "rec_tds": 3
+      },
+      "4427366": {
+        "games": 5,
+        "rush_att": 77,
+        "rush_yds": 265,
+        "rush_tds": 1,
+        "rec_tar": 18,
+        "rec_rec": 17,
+        "rec_yds": 195,
+        "rec_tds": 0
       },
       "4431299": {
         "games": 9,
@@ -1162,16 +1243,6 @@
         "pass_yds": 2838,
         "pass_tds": 20
       },
-      "4832955": {
-        "games": 9,
-        "rush_att": 48,
-        "rush_yds": 212,
-        "rush_tds": 1,
-        "rec_tar": 23,
-        "rec_rec": 20,
-        "rec_yds": 307,
-        "rec_tds": 3
-      },
       "4429795": {
         "games": 9,
         "rush_att": 199,
@@ -1218,16 +1289,6 @@
         "xpt": 29,
         "xpa": 30
       },
-      "4035538": {
-        "games": 5,
-        "rush_att": 52,
-        "rush_yds": 138,
-        "rush_tds": 2,
-        "rec_tar": 7,
-        "rec_rec": 7,
-        "rec_yds": 67,
-        "rec_tds": 1
-      },
       "4880281": {
         "games": 2,
         "rush_att": 0,
@@ -1247,6 +1308,16 @@
         "rec_rec": 39,
         "rec_yds": 319,
         "rec_tds": 1
+      },
+      "4685382": {
+        "games": 9,
+        "rush_att": 124,
+        "rush_yds": 474,
+        "rush_tds": 4,
+        "rec_tar": 15,
+        "rec_rec": 12,
+        "rec_yds": 63,
+        "rec_tds": 0
       },
       "4426502": {
         "games": 10,
@@ -1413,16 +1484,6 @@
         "rec_yds": 68,
         "rec_tds": 2
       },
-      "4685261": {
-        "games": 9,
-        "rush_att": 2,
-        "rush_yds": 14,
-        "rush_tds": 0,
-        "rec_tar": 45,
-        "rec_rec": 32,
-        "rec_yds": 284,
-        "rec_tds": 1
-      },
       "4428718": {
         "games": 10,
         "rush_att": 2,
@@ -1463,6 +1524,16 @@
         "rec_yds": 466,
         "rec_tds": 3
       },
+      "4035538": {
+        "games": 5,
+        "rush_att": 52,
+        "rush_yds": 138,
+        "rush_tds": 2,
+        "rec_tar": 7,
+        "rec_rec": 7,
+        "rec_yds": 67,
+        "rec_tds": 1
+      },
       "4262921": {
         "games": 9,
         "rush_att": 1,
@@ -1473,35 +1544,25 @@
         "rec_yds": 467,
         "rec_tds": 4
       },
-      "3043078": {
-        "games": 10,
-        "rush_att": 185,
-        "rush_yds": 699,
-        "rush_tds": 10,
-        "rec_tar": 19,
-        "rec_rec": 17,
-        "rec_yds": 85,
-        "rec_tds": 1
+      "4239996": {
+        "games": 4,
+        "rush_att": 38,
+        "rush_yds": 142,
+        "rush_tds": 0,
+        "rec_tar": 18,
+        "rec_rec": 14,
+        "rec_yds": 71,
+        "rec_tds": 0
       },
-      "4239993": {
-        "games": 9,
+      "4871023": {
+        "games": 7,
         "rush_att": 0,
         "rush_yds": 0,
         "rush_tds": 0,
-        "rec_tar": 73,
-        "rec_rec": 53,
-        "rec_yds": 824,
-        "rec_tds": 6
-      },
-      "4426388": {
-        "games": 9,
-        "rush_att": 1,
-        "rush_yds": 9,
-        "rush_tds": 0,
-        "rec_tar": 53,
-        "rec_rec": 32,
-        "rec_yds": 518,
-        "rec_tds": 5
+        "rec_tar": 51,
+        "rec_rec": 34,
+        "rec_yds": 413,
+        "rec_tds": 1
       },
       "3953687": {
         "games": 10,
@@ -1519,6 +1580,16 @@
         "rec_rec": 35,
         "rec_yds": 512,
         "rec_tds": 2
+      },
+      "4241985": {
+        "games": 9,
+        "rush_att": 98,
+        "rush_yds": 324,
+        "rush_tds": 3,
+        "rec_tar": 10,
+        "rec_rec": 9,
+        "rec_yds": 31,
+        "rec_tds": 0
       },
       "3916148": {
         "games": 9,
@@ -1549,6 +1620,16 @@
         "rec_yds": 715,
         "rec_tds": 4
       },
+      "3043078": {
+        "games": 10,
+        "rush_att": 185,
+        "rush_yds": 699,
+        "rush_tds": 10,
+        "rec_tar": 19,
+        "rec_rec": 17,
+        "rec_yds": 85,
+        "rec_tds": 1
+      },
       "4870808": {
         "games": 6,
         "rush_att": 76,
@@ -1559,35 +1640,25 @@
         "rec_yds": 36,
         "rec_tds": 1
       },
-      "4239996": {
-        "games": 4,
-        "rush_att": 38,
-        "rush_yds": 142,
-        "rush_tds": 0,
-        "rec_tar": 18,
-        "rec_rec": 14,
-        "rec_yds": 71,
-        "rec_tds": 0
-      },
-      "4871023": {
-        "games": 7,
+      "4239993": {
+        "games": 9,
         "rush_att": 0,
         "rush_yds": 0,
         "rush_tds": 0,
-        "rec_tar": 51,
-        "rec_rec": 34,
-        "rec_yds": 413,
-        "rec_tds": 1
+        "rec_tar": 73,
+        "rec_rec": 53,
+        "rec_yds": 824,
+        "rec_tds": 6
       },
-      "4241985": {
+      "4426388": {
         "games": 9,
-        "rush_att": 98,
-        "rush_yds": 324,
-        "rush_tds": 3,
-        "rec_tar": 10,
-        "rec_rec": 9,
-        "rec_yds": 31,
-        "rec_tds": 0
+        "rush_att": 1,
+        "rush_yds": 9,
+        "rush_tds": 0,
+        "rec_tar": 53,
+        "rec_rec": 32,
+        "rec_yds": 518,
+        "rec_tds": 5
       },
       "3916433": {
         "games": 9,
@@ -1814,22 +1885,15 @@
         "rec_yds": 645,
         "rec_tds": 6
       },
-      "2473037": {
-        "games": 10,
-        "fg": 16,
-        "fga": 19,
-        "xpt": 21,
-        "xpa": 23
-      },
-      "3042519": {
-        "games": 9,
-        "rush_att": 126,
-        "rush_yds": 521,
-        "rush_tds": 3,
+      "3126486": {
+        "games": 6,
+        "rush_att": 12,
+        "rush_yds": 156,
+        "rush_tds": 1,
         "rec_tar": 23,
-        "rec_rec": 17,
-        "rec_yds": 103,
-        "rec_tds": 0
+        "rec_rec": 19,
+        "rec_yds": 237,
+        "rec_tds": 4
       },
       "4426348": {
         "games": 7,
@@ -1839,6 +1903,13 @@
         "pass_att": 213,
         "pass_yds": 1499,
         "pass_tds": 10
+      },
+      "3917232": {
+        "games": 9,
+        "fg": 20,
+        "fga": 20,
+        "xpt": 27,
+        "xpa": 29
       },
       "4685702": {
         "games": 9,
@@ -1860,25 +1931,22 @@
         "rec_yds": 259,
         "rec_tds": 2
       },
-      "4432773": {
-        "games": 9,
-        "rush_att": 0,
-        "rush_yds": 0,
-        "rush_tds": 0,
-        "rec_tar": 26,
-        "rec_rec": 13,
-        "rec_yds": 146,
-        "rec_tds": 2
+      "2473037": {
+        "games": 10,
+        "fg": 16,
+        "fga": 19,
+        "xpt": 21,
+        "xpa": 23
       },
-      "3126486": {
-        "games": 6,
-        "rush_att": 12,
-        "rush_yds": 156,
-        "rush_tds": 1,
+      "3042519": {
+        "games": 9,
+        "rush_att": 126,
+        "rush_yds": 521,
+        "rush_tds": 3,
         "rec_tar": 23,
-        "rec_rec": 19,
-        "rec_yds": 237,
-        "rec_tds": 4
+        "rec_rec": 17,
+        "rec_yds": 103,
+        "rec_tds": 0
       },
       "4361741": {
         "games": 9,
@@ -1899,16 +1967,6 @@
         "rec_yds": 113,
         "rec_tds": 0
       },
-      "4683062": {
-        "games": 9,
-        "rush_att": 0,
-        "rush_yds": 0,
-        "rush_tds": 0,
-        "rec_tar": 50,
-        "rec_rec": 33,
-        "rec_yds": 278,
-        "rec_tds": 1
-      },
       "4241389": {
         "games": 10,
         "rush_att": 2,
@@ -1919,15 +1977,15 @@
         "rec_yds": 976,
         "rec_tds": 8
       },
-      "4567048": {
-        "games": 8,
-        "rush_att": 159,
-        "rush_yds": 872,
-        "rush_tds": 7,
-        "rec_tar": 36,
-        "rec_rec": 26,
-        "rec_yds": 172,
-        "rec_tds": 4
+      "4890973": {
+        "games": 10,
+        "rush_att": 123,
+        "rush_yds": 380,
+        "rush_tds": 1,
+        "rec_tar": 59,
+        "rec_rec": 46,
+        "rec_yds": 417,
+        "rec_tds": 3
       },
       "4567750": {
         "games": 7,
@@ -1995,15 +2053,15 @@
         "rec_yds": 1207,
         "rec_tds": 10
       },
-      "4890973": {
-        "games": 10,
-        "rush_att": 123,
-        "rush_yds": 380,
-        "rush_tds": 1,
-        "rec_tar": 59,
-        "rec_rec": 46,
-        "rec_yds": 417,
-        "rec_tds": 3
+      "4567048": {
+        "games": 8,
+        "rush_att": 159,
+        "rush_yds": 872,
+        "rush_tds": 7,
+        "rec_tar": 36,
+        "rec_rec": 26,
+        "rec_yds": 172,
+        "rec_tds": 4
       },
       "4431611": {
         "games": 6,
@@ -2077,20 +2135,20 @@
     "week": 11,
     "teams": {
       "ARI": {
-        "QB": {
-          "rank": 24,
+        "TE": {
+          "rank": 26,
           "stars": 0.9
-        },
-        "RB": {
-          "rank": 20,
-          "stars": 1.9
         },
         "WR": {
           "rank": 26,
           "stars": 0.7
         },
-        "TE": {
-          "rank": 26,
+        "RB": {
+          "rank": 20,
+          "stars": 1.9
+        },
+        "QB": {
+          "rank": 24,
           "stars": 0.9
         },
         "K": {
@@ -2103,21 +2161,21 @@
         }
       },
       "BAL": {
-        "QB": {
-          "rank": 5,
-          "stars": 4.7
-        },
-        "RB": {
-          "rank": 1,
-          "stars": 5.0
+        "TE": {
+          "rank": 13,
+          "stars": 3.4
         },
         "WR": {
           "rank": 25,
           "stars": 0.7
         },
-        "TE": {
-          "rank": 13,
-          "stars": 3.4
+        "RB": {
+          "rank": 1,
+          "stars": 5.0
+        },
+        "QB": {
+          "rank": 5,
+          "stars": 4.7
         },
         "K": {
           "rank": 13,
@@ -2129,21 +2187,21 @@
         }
       },
       "BUF": {
-        "QB": {
-          "rank": 9,
-          "stars": 4.0
-        },
-        "RB": {
-          "rank": 12,
-          "stars": 3.2
+        "TE": {
+          "rank": 5,
+          "stars": 4.5
         },
         "WR": {
           "rank": 24,
           "stars": 1.0
         },
-        "TE": {
-          "rank": 5,
-          "stars": 4.5
+        "RB": {
+          "rank": 12,
+          "stars": 3.2
+        },
+        "QB": {
+          "rank": 9,
+          "stars": 4.0
         },
         "K": {
           "rank": 14,
@@ -2155,21 +2213,21 @@
         }
       },
       "CAR": {
-        "QB": {
+        "TE": {
           "rank": 8,
-          "stars": 4.2
-        },
-        "RB": {
-          "rank": 11,
-          "stars": 3.5
+          "stars": 4.0
         },
         "WR": {
           "rank": 15,
           "stars": 2.9
         },
-        "TE": {
+        "RB": {
+          "rank": 11,
+          "stars": 3.5
+        },
+        "QB": {
           "rank": 8,
-          "stars": 4.0
+          "stars": 4.2
         },
         "K": {
           "rank": 6,
@@ -2181,21 +2239,21 @@
         }
       },
       "CHI": {
-        "QB": {
-          "rank": 7,
-          "stars": 4.4
-        },
-        "RB": {
-          "rank": 2,
-          "stars": 5.0
+        "TE": {
+          "rank": 1,
+          "stars": 4.8
         },
         "WR": {
           "rank": 17,
           "stars": 2.6
         },
-        "TE": {
-          "rank": 1,
-          "stars": 4.8
+        "RB": {
+          "rank": 2,
+          "stars": 5.0
+        },
+        "QB": {
+          "rank": 7,
+          "stars": 4.4
         },
         "K": {
           "rank": 1,
@@ -2207,21 +2265,21 @@
         }
       },
       "CIN": {
-        "QB": {
-          "rank": 6,
-          "stars": 4.5
-        },
-        "RB": {
-          "rank": 18,
-          "stars": 2.2
+        "TE": {
+          "rank": 11,
+          "stars": 3.6
         },
         "WR": {
           "rank": 21,
           "stars": 1.7
         },
-        "TE": {
-          "rank": 11,
-          "stars": 3.6
+        "RB": {
+          "rank": 18,
+          "stars": 2.2
+        },
+        "QB": {
+          "rank": 6,
+          "stars": 4.5
         },
         "K": {
           "rank": 15,
@@ -2233,21 +2291,21 @@
         }
       },
       "DAL": {
-        "QB": {
-          "rank": 18,
-          "stars": 2.3
-        },
-        "RB": {
-          "rank": 9,
-          "stars": 3.8
+        "TE": {
+          "rank": 15,
+          "stars": 3.1
         },
         "WR": {
           "rank": 1,
           "stars": 5.0
         },
-        "TE": {
-          "rank": 15,
-          "stars": 3.1
+        "RB": {
+          "rank": 9,
+          "stars": 3.8
+        },
+        "QB": {
+          "rank": 18,
+          "stars": 2.3
         },
         "K": {
           "rank": 2,
@@ -2259,20 +2317,20 @@
         }
       },
       "DEN": {
-        "QB": {
-          "rank": 4,
+        "TE": {
+          "rank": 3,
           "stars": 4.8
-        },
-        "RB": {
-          "rank": 4,
-          "stars": 5.0
         },
         "WR": {
           "rank": 3,
           "stars": 5.0
         },
-        "TE": {
-          "rank": 3,
+        "RB": {
+          "rank": 4,
+          "stars": 5.0
+        },
+        "QB": {
+          "rank": 4,
           "stars": 4.8
         },
         "K": {
@@ -2285,21 +2343,21 @@
         }
       },
       "DET": {
-        "QB": {
-          "rank": 25,
-          "stars": 0.8
-        },
-        "RB": {
-          "rank": 25,
-          "stars": 1.0
+        "TE": {
+          "rank": 20,
+          "stars": 1.7
         },
         "WR": {
           "rank": 11,
           "stars": 3.5
         },
-        "TE": {
-          "rank": 20,
-          "stars": 1.7
+        "RB": {
+          "rank": 25,
+          "stars": 1.0
+        },
+        "QB": {
+          "rank": 25,
+          "stars": 0.8
         },
         "K": {
           "rank": 9,
@@ -2311,21 +2369,21 @@
         }
       },
       "HOU": {
-        "QB": {
-          "rank": 1,
-          "stars": 4.8
-        },
-        "RB": {
-          "rank": 8,
-          "stars": 3.9
+        "TE": {
+          "rank": 7,
+          "stars": 4.2
         },
         "WR": {
           "rank": 12,
           "stars": 3.4
         },
-        "TE": {
-          "rank": 7,
-          "stars": 4.2
+        "RB": {
+          "rank": 8,
+          "stars": 3.9
+        },
+        "QB": {
+          "rank": 1,
+          "stars": 4.8
         },
         "K": {
           "rank": 5,
@@ -2337,21 +2395,21 @@
         }
       },
       "IND": {
-        "QB": {
-          "rank": 16,
-          "stars": 2.6
-        },
-        "RB": {
-          "rank": 16,
-          "stars": 2.5
+        "TE": {
+          "rank": 21,
+          "stars": 1.5
         },
         "WR": {
           "rank": 9,
           "stars": 3.9
         },
-        "TE": {
-          "rank": 21,
-          "stars": 1.5
+        "RB": {
+          "rank": 16,
+          "stars": 2.5
+        },
+        "QB": {
+          "rank": 16,
+          "stars": 2.6
         },
         "K": {
           "rank": 7,
@@ -2363,21 +2421,21 @@
         }
       },
       "JAX": {
-        "QB": {
-          "rank": 11,
-          "stars": 3.6
-        },
-        "RB": {
-          "rank": 14,
-          "stars": 2.8
+        "TE": {
+          "rank": 22,
+          "stars": 1.3
         },
         "WR": {
           "rank": 13,
           "stars": 3.2
         },
-        "TE": {
-          "rank": 22,
-          "stars": 1.3
+        "RB": {
+          "rank": 14,
+          "stars": 2.8
+        },
+        "QB": {
+          "rank": 11,
+          "stars": 3.6
         },
         "K": {
           "rank": 24,
@@ -2389,19 +2447,19 @@
         }
       },
       "KC": {
-        "QB": {
+        "TE": {
           "rank": 2,
           "stars": 4.8
-        },
-        "RB": {
-          "rank": 22,
-          "stars": 1.4
         },
         "WR": {
           "rank": 19,
           "stars": 2.0
         },
-        "TE": {
+        "RB": {
+          "rank": 22,
+          "stars": 1.4
+        },
+        "QB": {
           "rank": 2,
           "stars": 4.8
         },
@@ -2415,21 +2473,21 @@
         }
       },
       "LV": {
-        "QB": {
-          "rank": 23,
-          "stars": 1.2
-        },
-        "RB": {
-          "rank": 21,
-          "stars": 1.6
+        "TE": {
+          "rank": 4,
+          "stars": 4.7
         },
         "WR": {
           "rank": 23,
           "stars": 1.4
         },
-        "TE": {
-          "rank": 4,
-          "stars": 4.7
+        "RB": {
+          "rank": 21,
+          "stars": 1.6
+        },
+        "QB": {
+          "rank": 23,
+          "stars": 1.2
         },
         "K": {
           "rank": 18,
@@ -2441,21 +2499,21 @@
         }
       },
       "LAC": {
-        "QB": {
-          "rank": 3,
-          "stars": 4.8
-        },
-        "RB": {
-          "rank": 7,
-          "stars": 4.6
+        "TE": {
+          "rank": 10,
+          "stars": 3.7
         },
         "WR": {
           "rank": 8,
           "stars": 4.1
         },
-        "TE": {
-          "rank": 10,
-          "stars": 3.7
+        "RB": {
+          "rank": 7,
+          "stars": 4.6
+        },
+        "QB": {
+          "rank": 3,
+          "stars": 4.8
         },
         "K": {
           "rank": 21,
@@ -2467,21 +2525,21 @@
         }
       },
       "MIA": {
-        "QB": {
-          "rank": 20,
-          "stars": 2.0
-        },
-        "RB": {
-          "rank": 6,
-          "stars": 4.7
+        "TE": {
+          "rank": 25,
+          "stars": 0.9
         },
         "WR": {
           "rank": 22,
           "stars": 1.6
         },
-        "TE": {
-          "rank": 25,
-          "stars": 0.9
+        "RB": {
+          "rank": 6,
+          "stars": 4.7
+        },
+        "QB": {
+          "rank": 20,
+          "stars": 2.0
         },
         "K": {
           "rank": 19,
@@ -2493,21 +2551,21 @@
         }
       },
       "MIN": {
-        "QB": {
-          "rank": 17,
-          "stars": 2.5
-        },
-        "RB": {
+        "TE": {
           "rank": 24,
-          "stars": 1.1
+          "stars": 1.0
         },
         "WR": {
           "rank": 5,
           "stars": 4.6
         },
-        "TE": {
+        "RB": {
           "rank": 24,
-          "stars": 1.0
+          "stars": 1.1
+        },
+        "QB": {
+          "rank": 17,
+          "stars": 2.5
         },
         "K": {
           "rank": 8,
@@ -2519,21 +2577,21 @@
         }
       },
       "NO": {
-        "QB": {
-          "rank": 12,
-          "stars": 3.4
-        },
-        "RB": {
-          "rank": 5,
-          "stars": 4.9
+        "TE": {
+          "rank": 16,
+          "stars": 2.9
         },
         "WR": {
           "rank": 7,
           "stars": 4.2
         },
-        "TE": {
-          "rank": 16,
-          "stars": 2.9
+        "RB": {
+          "rank": 5,
+          "stars": 4.9
+        },
+        "QB": {
+          "rank": 12,
+          "stars": 3.4
         },
         "K": {
           "rank": 25,
@@ -2545,21 +2603,21 @@
         }
       },
       "NYG": {
-        "QB": {
-          "rank": 22,
-          "stars": 1.4
-        },
-        "RB": {
-          "rank": 26,
-          "stars": 1.0
+        "TE": {
+          "rank": 19,
+          "stars": 2.0
         },
         "WR": {
           "rank": 18,
           "stars": 2.2
         },
-        "TE": {
-          "rank": 19,
-          "stars": 2.0
+        "RB": {
+          "rank": 26,
+          "stars": 1.0
+        },
+        "QB": {
+          "rank": 22,
+          "stars": 1.4
         },
         "K": {
           "rank": 22,
@@ -2571,21 +2629,21 @@
         }
       },
       "NYJ": {
-        "QB": {
-          "rank": 10,
-          "stars": 3.7
-        },
-        "RB": {
-          "rank": 10,
-          "stars": 3.6
+        "TE": {
+          "rank": 14,
+          "stars": 3.1
         },
         "WR": {
           "rank": 2,
           "stars": 5.0
         },
-        "TE": {
-          "rank": 14,
-          "stars": 3.1
+        "RB": {
+          "rank": 10,
+          "stars": 3.6
+        },
+        "QB": {
+          "rank": 10,
+          "stars": 3.7
         },
         "K": {
           "rank": 12,
@@ -2597,21 +2655,21 @@
         }
       },
       "PHI": {
-        "QB": {
-          "rank": 19,
-          "stars": 2.2
-        },
-        "RB": {
-          "rank": 23,
-          "stars": 1.3
+        "TE": {
+          "rank": 18,
+          "stars": 2.3
         },
         "WR": {
           "rank": 20,
           "stars": 1.9
         },
-        "TE": {
-          "rank": 18,
-          "stars": 2.3
+        "RB": {
+          "rank": 23,
+          "stars": 1.3
+        },
+        "QB": {
+          "rank": 19,
+          "stars": 2.2
         },
         "K": {
           "rank": 3,
@@ -2623,21 +2681,21 @@
         }
       },
       "PIT": {
-        "QB": {
-          "rank": 13,
-          "stars": 3.3
-        },
-        "RB": {
-          "rank": 13,
-          "stars": 3.0
+        "TE": {
+          "rank": 17,
+          "stars": 2.6
         },
         "WR": {
           "rank": 10,
           "stars": 3.8
         },
-        "TE": {
-          "rank": 17,
-          "stars": 2.6
+        "RB": {
+          "rank": 13,
+          "stars": 3.0
+        },
+        "QB": {
+          "rank": 13,
+          "stars": 3.3
         },
         "K": {
           "rank": 4,
@@ -2649,21 +2707,21 @@
         }
       },
       "SF": {
-        "QB": {
-          "rank": 26,
-          "stars": 0.8
-        },
-        "RB": {
-          "rank": 15,
-          "stars": 2.7
+        "TE": {
+          "rank": 23,
+          "stars": 1.2
         },
         "WR": {
           "rank": 16,
           "stars": 2.7
         },
-        "TE": {
-          "rank": 23,
-          "stars": 1.2
+        "RB": {
+          "rank": 15,
+          "stars": 2.7
+        },
+        "QB": {
+          "rank": 26,
+          "stars": 0.8
         },
         "K": {
           "rank": 23,
@@ -2675,21 +2733,21 @@
         }
       },
       "TB": {
-        "QB": {
-          "rank": 15,
-          "stars": 2.8
-        },
-        "RB": {
-          "rank": 17,
-          "stars": 2.4
+        "TE": {
+          "rank": 6,
+          "stars": 4.4
         },
         "WR": {
           "rank": 14,
           "stars": 3.1
         },
-        "TE": {
-          "rank": 6,
-          "stars": 4.4
+        "RB": {
+          "rank": 17,
+          "stars": 2.4
+        },
+        "QB": {
+          "rank": 15,
+          "stars": 2.8
         },
         "K": {
           "rank": 26,
@@ -2701,21 +2759,21 @@
         }
       },
       "TEN": {
-        "QB": {
-          "rank": 14,
-          "stars": 3.1
-        },
-        "RB": {
-          "rank": 3,
-          "stars": 5.0
+        "TE": {
+          "rank": 12,
+          "stars": 3.5
         },
         "WR": {
           "rank": 6,
           "stars": 4.4
         },
-        "TE": {
-          "rank": 12,
-          "stars": 3.5
+        "RB": {
+          "rank": 3,
+          "stars": 5.0
+        },
+        "QB": {
+          "rank": 14,
+          "stars": 3.1
         },
         "K": {
           "rank": 10,
@@ -2727,21 +2785,21 @@
         }
       },
       "WSH": {
-        "QB": {
-          "rank": 21,
-          "stars": 1.6
-        },
-        "RB": {
-          "rank": 19,
-          "stars": 2.1
+        "TE": {
+          "rank": 9,
+          "stars": 3.9
         },
         "WR": {
           "rank": 4,
           "stars": 4.7
         },
-        "TE": {
-          "rank": 9,
-          "stars": 3.9
+        "RB": {
+          "rank": 19,
+          "stars": 2.1
+        },
+        "QB": {
+          "rank": 21,
+          "stars": 1.6
         },
         "K": {
           "rank": 20,
