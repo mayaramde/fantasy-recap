@@ -544,9 +544,10 @@ def apply_written(items, cards):
 
 def written_audit(team_id, fp):
     """{key: {title, text}} for one team's season-audit cards, from the snapshot's top-level
-    `audit`. No freshness gate, unlike the coach cards: an audit key fully describes weeks
-    that are already over, so copy written for a key that still matches is still true
-    however old the file is. A missing or malformed snapshot just means computed wording."""
+    `audit`. No freshness gate, unlike the coach cards: an audit key fully describes its
+    situation (weeks that are already over, or for Position strength the exact ranks of
+    today's lineup), so copy written for a key that still matches is still true however old
+    the file is. A missing or malformed snapshot just means computed wording."""
     audit = fp.get("audit") if fp else None
     if not isinstance(audit, dict):
         return {}

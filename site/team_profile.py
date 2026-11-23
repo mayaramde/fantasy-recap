@@ -144,10 +144,15 @@ def lineup_iq(rows):
 # A snapshot, not a season tally: the lineup each team has set right now, every starter rated by
 # his points per game this season (on any roster), summed per lineup spot and ranked.
 
-def _finished(p):
+def _finished(p, week_final=True):
     """Did he play a game that's over? A bye, an inactive day, or a game still ahead or under
-    way isn't a game played, so it neither scores nor counts toward his average."""
-    return p.get("played", True) and p.get("game_state") not in ("pre", "in")
+    way isn't a game played, so it neither scores nor counts toward his average. Without a game
+    state (weeks captured before them, or a failed scoreboard read) only a final week's games
+    count: mid-week, a player with a stat on the board may still be playing."""
+    if not p.get("played", True):
+        return False
+    state = p.get("game_state")
+    return state not in ("pre", "in") if state else week_final
 
 
 def per_game(facts_list):
@@ -155,9 +160,10 @@ def per_game(facts_list):
     roster (starting or bench) he was on. Weeks he spent as a free agent aren't captured."""
     seen = {}
     for f in facts_list:
+        final = f.get("complete", True)
         for t in f["teams"]:
             for p in list(t["starters"]) + list(t.get("bench", [])):
-                if _finished(p):
+                if _finished(p, final):
                     seen[(f["week"], p["player_id"])] = p["points"]     # one roster per week
     sums = {}
     for (_, pid), pts in seen.items():

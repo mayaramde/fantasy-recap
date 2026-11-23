@@ -175,6 +175,14 @@ class PositionTest(unittest.TestCase):
                  week(4, [row(1, 0, 0, starters=[dict(p, game_state="in", points=3)])])]    # still playing
         self.assertEqual(tp.per_game(facts), {5: 15})
 
+    def test_without_game_states_only_a_final_week_counts(self):
+        # A failed scoreboard read leaves no game_state: mid-week, a stat on the board
+        # doesn't mean his game is over, so that week waits until it's final.
+        p = player(5, "Steady", "WR", 12, 10)
+        live = dict(week(2, [row(1, 0, 0, starters=[dict(p, points=2)])]), complete=False)
+        self.assertEqual(tp.per_game([week(1, [row(1, 0, 0, starters=[p])]), live]), {5: 12})
+        self.assertEqual(tp.per_game([dict(live, complete=True)]), {5: 2})
+
     def test_empty_slot_or_unseen_starter_adds_nothing(self):
         now = week(1, [row(1, 0, 0, starters=[player(99, "New", "RB", 0, 9)])])
         totals = tp.lineup_totals(now, {}, [1, 2])
