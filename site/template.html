@@ -4374,7 +4374,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
 
   // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from
-  // (today's starters, each rated by his points per game this season).
+  // (today's starters, each rated by his average over the last three weeks).
   function snReport(t) {
     const ranks = t.profile && t.profile.pos_ranks;
     if (!ranks) return '';

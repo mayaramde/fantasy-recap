@@ -146,12 +146,11 @@ def lineup(team_id, **slot_points):
 
 
 class PositionTest(unittest.TestCase):
-    def test_ranks_sum_each_current_starters_points_per_game(self):
+    def test_ranks_follow_each_current_starters_form(self):
         # Same players both weeks (lineup() ids are per team and slot).
         facts = [week(1, [lineup(1, QB=20, TE=2), lineup(2, QB=10, TE=12)]),
                  week(2, [lineup(1, QB=30, TE=4), lineup(2, QB=10, TE=12)])]
-        ppg = tp.per_game(facts)
-        totals = tp.lineup_totals(facts[-1], ppg, [1, 2])
+        totals = tp.lineup_totals(facts[-1], tp.recent_form(facts), [1, 2])
         self.assertEqual((totals[1]["QB"], totals[1]["TE"], totals[2]["TE"]), (25, 3, 12))
         ranks = tp.position_ranks(totals)
         self.assertEqual((ranks[1]["QB"], ranks[1]["TE"], ranks[2]["QB"]), (1, 2, 2))
@@ -182,6 +181,44 @@ class PositionTest(unittest.TestCase):
         live = dict(week(2, [row(1, 0, 0, starters=[dict(p, points=2)])]), complete=False)
         self.assertEqual(tp.per_game([week(1, [row(1, 0, 0, starters=[p])]), live]), {5: 12})
         self.assertEqual(tp.per_game([dict(live, complete=True)]), {5: 2})
+
+    def test_form_is_the_last_three_final_weeks(self):
+        p = player(5, "Hot", "WR", 0, 10)
+        wk = lambda n, pts, **kw: week(n, [row(1, 0, 0, starters=[dict(p, points=pts, **kw)])])
+        facts = [wk(1, 40), wk(2, 9), wk(3, 12), wk(4, 15)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})                     # weeks 2-4, not week 1's 40
+        # A bye in the window leaves two scores to average, not a zero.
+        facts = [wk(1, 40), wk(2, 9), wk(3, 0, played=False), wk(4, 15)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})
+        # A live week that isn't final yet doesn't push a final week out of the window.
+        facts = [wk(1, 40), wk(2, 9), wk(3, 12), wk(4, 15), dict(wk(5, 2), complete=False)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})
+
+    def test_an_injured_zero_is_not_a_score(self):
+        p = player(5, "Hurt", "RB", 0, 10)
+        facts = [week(1, [row(1, 0, 0, starters=[dict(p, points=10)])]),
+                 week(2, [row(1, 0, 0, starters=[dict(p, points=0, injury_status="OUT")])]),
+                 week(3, [row(1, 0, 0, bench=[dict(p, slot="IR", points=0)])])]
+        self.assertEqual(tp.recent_form(facts), {5: 10})
+
+    def test_no_game_in_the_window_falls_back_to_every_week(self):
+        back = player(5, "Back", "RB", 0, 10)
+        other = player(6, "Other", "QB", 20, 20)
+        wk = lambda n, b: week(n, [row(1, 0, 0, starters=[other], bench=[{**back, "slot": "IR", **b}])])
+        facts = [wk(1, {"slot": "RB", "points": 18}), wk(2, {"slot": "RB", "points": 22}),
+                 wk(3, {"points": 0}), wk(4, {"points": 0}), wk(5, {"points": 0})]
+        self.assertEqual(tp.recent_form(facts), {5: 20, 6: 20})
+
+    def test_a_two_spot_group_is_averaged_over_both_spots(self):
+        form = {1: 18, 2: 10, 3: 21}
+        full = week(1, [row(1, 0, 0, starters=[player(1, "A", "RB", 0, 0), player(2, "B", "RB", 0, 0),
+                                              player(3, "Q", "QB", 0, 0)])])
+        totals = tp.lineup_totals(full, form, [1])
+        self.assertEqual((totals[1]["RB"], totals[1]["QB"]), (14, 21))
+        # An empty RB spot counts as zero rather than letting one back stand for two.
+        half = week(1, [row(1, 0, 0, starters=[player(1, "A", "RB", 0, 0)])])
+        self.assertEqual(tp.lineup_totals(half, form, [1])[1]["RB"], 9)
+        self.assertEqual(tp.lineup_totals(half, form, [1], {"RB": 1})[1]["RB"], 18)
 
     def test_empty_slot_or_unseen_starter_adds_nothing(self):
         now = week(1, [row(1, 0, 0, starters=[player(99, "New", "RB", 0, 9)])])

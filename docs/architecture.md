@@ -205,9 +205,13 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `next-week` capture; no tab when that capture is missing or stale): the viewer's team and a league radar on
   top, then **Where everyone's strong**, an 8 × 7 heat grid of each team's league rank (1–8) at QB, RB, WR, TE, FLEX,
   DST and K. The ranks are a snapshot of each team's current lineup, not a season tally: the starters in the newest
-  captured week (the live week once it's captured), each rated by his points per game over every finished game this season
-  on any roster (byes and games still ahead don't count; weeks he spent as a free agent aren't captured), summed per spot
-  (`team_profile.per_game` and `lineup_totals`). They're the same ones behind the profile's Position strength card
+  captured week (the live week once it's captured), each rated by his average over the games he played in the last three
+  final weeks, on any roster (`team_profile.recent_form`). A bye, an injury or an inactive day isn't a score, so he may
+  have two scores to average, or one; with none in that window (back from IR, or new to every roster) he falls back to his
+  average over every captured week, and with none anywhere he rates zero. Weeks he spent as a free agent aren't captured.
+  Each spot's score is the average over its lineup spots (`league.json` `roster_slots`: RB and WR have two each, so
+  `(RB1 + RB2) / 2`, and an empty spot counts as zero), so every spot reads on the same per-player scale
+  (`lineup_totals`). The page shows only the ranks. They're the same ones behind the profile's Position strength card
   (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid. They're baked at
   build time (every `scripts/deploy.sh` run), not refreshed by `/api/live`, and the grid stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
   are no letter grades. A last **AVG** column is the mean of her seven ranks, unshaded. Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
@@ -366,7 +370,7 @@ never clipped; with one chip row the homework card starts within the first 330px
     cobalt-soft.
   - **Where this comes from**: a closed details with the capture's source line.
 - **Season** `#team-<id>.season`: the hero's chips switch to the season (Avg, Best with its week, Vs. everyone). Then, each drawn only when it has something to say:
-  - **Report card**: her row of the strength grid (today's starters, ranked by points per game), from the same
+  - **Report card**: her row of the strength grid (today's starters, ranked by their last three weeks), from the same
     `profile.pos_ranks` as the grid on `#league-<id>`, one tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
   - **Coach's audit**: the audit cards (kind tag, title, stat sticker, text, players) as a scroll-snap row with dots on a
     phone, stacked from 860px.

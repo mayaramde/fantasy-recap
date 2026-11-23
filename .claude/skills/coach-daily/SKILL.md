@@ -156,7 +156,7 @@ Step 5a's. This is judgment, not a formula: decide what's actually worth a manag
 the way you would if she asked directly. An empty list for a team with no real gap is the right
 answer, not a stretch to fill one in.
 
-The brief (Step 5b) names each team's `weak_spot`: her lowest-ranked lineup group in today's lineup (each starter's points per game this season). When a
+The brief (Step 5b) names each team's `weak_spot`: her lowest-ranked lineup group in today's lineup (each starter's average over the last three weeks). When a
 real waiver or trade option exists at that group, prefer it, and set `pos` (`QB`, `RB`, `WR`, `TE`,
 `FLEX`, `DST` or `K`) on every waiver and trade card; the team profile puts a "fills your weak spot"
 sticker on the ones that match. Never invent an option to fill a weak spot.
@@ -337,7 +337,7 @@ numbers. The brief prints the audit even with no live week, so write it every ru
 already names everything the computed text does (the Lineup IQ key carries the worst call's week,
 `:w3`; the Position key carries both ranks, `pos:now:RB1:WR8`), so your copy may name that week, those
 players and those ranks, and it disappears on its own when any of them changes. Position strength is a snapshot of
-today's lineup (each starter's points per game), not a season total: write it as "your starters at X", never "all season",
+today's lineup (each starter's average over the last three weeks), not a season total: write it as "your starters at X", never "all season",
 and name no players in it. Its key carries the ranks but not who's starting, so a name would outlive a trade.
 
 ## Step 5c: voice gate
