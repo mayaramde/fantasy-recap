@@ -3,7 +3,8 @@
 Pure functions over already-loaded facts.json / espn.json dicts: no file I/O and no clock,
 so site/build.py and scripts/coach_brief.py share one source of truth for the audit keys
 coach-daily writes copy against. A key names the exact situation behind a card, and it
-changes only when a newly included week changes that situation.
+changes only when that situation does: a newly included week, or (for Position strength,
+a snapshot of today's lineups) a lineup change that moves a best or worst rank.
 """
 import re
 
@@ -140,16 +141,43 @@ def lineup_iq(rows):
 
 
 # ---------- audit: Position strength ----------
+# A snapshot, not a season tally: the lineup each team has set right now, every starter rated by
+# his points per game this season (on any roster), summed per lineup spot and ranked.
 
-def position_totals(facts_list):
-    """team_id → slot group → her starters' points in that group, over the given weeks."""
-    totals = {}
-    for facts in facts_list:
-        for t in facts["teams"]:
-            g = totals.setdefault(t["team_id"], dict.fromkeys(GROUPS, 0.0))
-            for p in t["starters"]:
-                if p["slot"] in g:
-                    g[p["slot"]] += p["points"]
+def _finished(p):
+    """Did he play a game that's over? A bye, an inactive day, or a game still ahead or under
+    way isn't a game played, so it neither scores nor counts toward his average."""
+    return p.get("played", True) and p.get("game_state") not in ("pre", "in")
+
+
+def per_game(facts_list):
+    """player_id → his points per game over every finished game in the weeks given, whichever
+    roster (starting or bench) he was on. Weeks he spent as a free agent aren't captured."""
+    seen = {}
+    for f in facts_list:
+        for t in f["teams"]:
+            for p in list(t["starters"]) + list(t.get("bench", [])):
+                if _finished(p):
+                    seen[(f["week"], p["player_id"])] = p["points"]     # one roster per week
+    sums = {}
+    for (_, pid), pts in seen.items():
+        e = sums.setdefault(pid, [0.0, 0])
+        e[0] += pts
+        e[1] += 1
+    return {pid: total / games for pid, (total, games) in sums.items()}
+
+
+def lineup_totals(lineup_facts, ppg, team_ids):
+    """team_id → slot group → the summed points per game of the starters she has there now.
+    An empty slot, or a starter with no finished game yet, adds nothing."""
+    totals = {tid: dict.fromkeys(GROUPS, 0.0) for tid in team_ids}
+    for t in lineup_facts["teams"]:
+        g = totals.get(t["team_id"])
+        if g is None:
+            continue
+        for p in t["starters"]:
+            if p["slot"] in g:
+                g[p["slot"]] += ppg.get(p["player_id"], 0.0)
     return totals
 
 
@@ -185,26 +213,23 @@ def position_card(ranks, n_teams=8):
     stat = f"Best: {best} (#{ranks[best]}) · Worst: {worst} (#{ranks[worst]})"
     if ranks[best] == ranks[worst]:
         title = "Even across the board"
-        text = (f"Every spot in your lineup ranks {_ordinal(ranks[best])} in the league. "
+        text = (f"Every spot in your current lineup ranks {_ordinal(ranks[best])} in the league on points per game. "
                 + ("No weak link to fix, which is its own kind of flex." if ranks[best] == 1
                    else "Nothing stands out yet, so any strong pickup helps."))
     else:
         title = f"{GROUP_LABEL[best].split(' (')[0].capitalize()} is carrying this team"
-        text = (f"Your points {_at(best)} rank {_ordinal(ranks[best])} in the league. Your points {_at(worst)} "
-                f"rank {_rank(ranks[worst], n_teams)}, so that's where a pickup, a free agent you add, helps most.")
-    return _card(f"pos:{best}{ranks[best]}:{worst}{ranks[worst]}", "position", stat, title, text), worst
+        text = (f"Your starters {_at(best)} rank {_ordinal(ranks[best])} in the league on points per game. "
+                f"Your starters {_at(worst)} rank {_rank(ranks[worst], n_teams)}, so that's where a pickup, "
+                f"a free agent you add, helps most.")
+    # "now" marks the snapshot: copy written for the old season-total key must not match it.
+    return _card(f"pos:now:{best}{ranks[best]}:{worst}{ranks[worst]}", "position", stat, title, text), worst
 
 
-def position_faces(rows, group, n=2):
-    """His best two starters at `group` by points over the weeks given (ties by id)."""
-    tot = {}
-    for _, r in rows:
-        for p in r["starters"]:
-            if p["slot"] == group:
-                e = tot.setdefault(p["player_id"], [0.0, p])
-                e[0] += p["points"]
-    top = sorted(tot.values(), key=lambda e: (-round(e[0], 2), e[1]["player_id"]))[:n]
-    return [_ref(e[1]) for e in top]
+def position_faces(starters, group, ppg, n=2):
+    """Her two best current starters at `group` by points per game (ties by id)."""
+    at = [p for p in starters if p["slot"] == group]
+    top = sorted(at, key=lambda p: (-round(ppg.get(p["player_id"], 0.0), 2), p["player_id"]))[:n]
+    return [_ref(p) for p in top]
 
 
 # ---------- audit: Projection vs reality ----------
@@ -250,19 +275,31 @@ def projection_card(rows):
 
 # ---------- audit: all three, every team ----------
 
-def audits(facts_list, team_ids):
+def audits(facts_list, team_ids, captured=None):
     """{team_id: {"cards": [lineup_iq, position, projection], "weak_spot": group, "best_spot": group,
-    "ranks": {group: league rank}}}, from the weeks given (the build passes only recapped ones).
-    No weeks → no cards, no spots, no ranks."""
-    ranks = position_ranks(position_totals(facts_list)) if facts_list else {}
+    "ranks": {group: league rank}}}.
+
+    Lineup IQ and Projection vs reality read the weeks given (the build passes only recapped
+    ones). Position strength, and with it the ranks and spots, is a snapshot: the starters in the
+    newest of `captured` (every captured week, oldest first; defaults to `facts_list`), each rated
+    by his points per game across all of them. No weeks → no cards, no spots, no ranks."""
+    captured = captured or facts_list
+    ppg = per_game(captured) if captured else {}
+    now = captured[-1] if captured else None
+    ranks = position_ranks(lineup_totals(now, ppg, team_ids)) if ppg else {}
+    starters = {t["team_id"]: t["starters"] for t in now["teams"]} if now else {}
     out = {}
     for tid in team_ids:
         rows = [(f["week"], t) for f in facts_list for t in f["teams"] if t["team_id"] == tid]
         if not rows:
             out[tid] = {"cards": [], "weak_spot": None, "best_spot": None, "ranks": None}
             continue
-        pos, weak = position_card(ranks[tid], len(team_ids))
-        pos["players"] = position_faces(rows, extremes(ranks[tid])[0])
-        out[tid] = {"cards": [lineup_iq(rows), pos, projection_card(rows)], "weak_spot": weak,
-                    "best_spot": extremes(ranks[tid])[0], "ranks": ranks[tid]}
+        cards, weak, best = [lineup_iq(rows)], None, None
+        if tid in ranks:
+            pos, weak = position_card(ranks[tid], len(team_ids))
+            best = extremes(ranks[tid])[0]
+            pos["players"] = position_faces(starters.get(tid, []), best, ppg)
+            cards.append(pos)
+        cards.append(projection_card(rows))
+        out[tid] = {"cards": cards, "weak_spot": weak, "best_spot": best, "ranks": ranks.get(tid)}
     return out

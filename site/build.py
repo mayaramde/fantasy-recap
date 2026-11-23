@@ -1990,8 +1990,10 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, li
     season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, schedule)
     season["waiver_order"] = waiver_order([e for _, e in captured] + ([ahead] if ahead else []))
     # Team profiles: the audit reads only this output's included weeks (a draft week never
-    # reaches the league site); moves read every captured week, same as the Live page does.
-    profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
+    # reaches the league site); moves, and Position strength's snapshot of today's lineups and
+    # each starter's points per game, read every captured week, same as the Live page does.
+    profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]],
+                                   [f for f, _ in captured])
     names = load_player_names()
     for s in season["standings"]:
         p = profiles[s["team_id"]]

@@ -318,7 +318,7 @@ function coachLanding(next, rows, me) {
       ${b && b.edges.length ? clSection('orange', 'Where the week gets decided', clBattles(b, me), 'The biggest projected gaps at a single lineup spot, across every game.') : ''}
       ${order.length ? clSection('cobalt', 'Waiver wire', clWaiver(order, me, pk), 'Worst record picks first. The order resets every week.') : ''}
     </div>`,
-    sm ? clSection('cobalt', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s lineup spots, ranked against the league. Darker means stronger.') : '',
+    sm ? clSection('cobalt', "Where everyone's strong", clStrength(sm, me, n) + clCallouts(calls), 'Each team\'s starters today, ranked by points per game. Darker means stronger.') : '',
     trades.length ? clSection('lime', 'Trade matchmaker', clTrades(trades), 'Pairs whose weak spots line up with each other\'s strengths.') : '',
   ].join('');
   return body;
@@ -341,7 +341,7 @@ function coachLeague(rows, me, view) {
     clTake(take, v, { bye: known, proj: true }, !written),
     clSection('cobalt', "Where everyone's strong",
       sm ? clStrength(sm, me, n, view) + clCallouts(calls) : '<div class="cl-card"><p class="cl-empty"><b>No grid yet.</b> It fills in once a week has been recapped.</p></div>',
-      'Each team\'s lineup spots, ranked against the league. Darker means stronger.'),
+      'Each team\'s starters today, ranked by points per game. Darker means stronger.'),
     order.length ? clSection('cobalt', 'Waiver order this week', clWaiver(order, me, pk, view), 'Worst record picks first. The order resets every week.') : '',
     clSection('pink', 'Injuries and byes',
       dmg ? clByes(dmg, me, injuryKnown, view) : '<div class="cl-card"><p class="cl-empty">The injury and bye report isn\'t in yet.</p></div>',

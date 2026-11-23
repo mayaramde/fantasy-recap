@@ -4373,7 +4373,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const SN_WEEK = new Map();   // the week picked in each team's season story, so a live redraw keeps it
   const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
 
-  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from.
+  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from
+  // (today's starters, each rated by his points per game this season).
   function snReport(t) {
     const ranks = t.profile && t.profile.pos_ranks;
     if (!ranks) return '';
@@ -4382,7 +4383,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (!cols.length) return '';
     return `
       <section class="sn-sec" aria-labelledby="sn-rc-h">
-        <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>rank of ${n} at each spot</span></div>
+        <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>today's starters, rank of ${n} at each spot</span></div>
         <ol class="sn-rc">${cols.map((c, i) => {
           const r = ranks[c], tone = r <= 2 ? ' top' : r > n - 3 ? ' low' : '';
           return `<li class="sn-cell${tone}${i % 2 ? ' tl' : ''}"><small aria-hidden="true">${c === 'DST' ? 'D/ST' : c}</small><b aria-hidden="true">#${r}</b><span class="vh">${CL_NAME[c] || c}: ${ordinal(r)} of ${n}</span></li>`;

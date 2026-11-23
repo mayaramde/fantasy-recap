@@ -335,8 +335,9 @@ lineup call, never the manager (the A–D band inside a Lineup IQ key is for inv
 mention a grade). Same number rule as above: no decimals or percentages, the stat pill carries the
 numbers. The brief prints the audit even with no live week, so write it every run. Each key
 already names everything the computed text does (the Lineup IQ key carries the worst call's week,
-`:w3`; the Position key carries both ranks, `pos:RB1:WR8`), so your copy may name that week, those
-players and those ranks, and it disappears on its own when any of them changes.
+`:w3`; the Position key carries both ranks, `pos:now:RB1:WR8`), so your copy may name that week, those
+players and those ranks, and it disappears on its own when any of them changes. Position strength is a snapshot of
+today's lineup (each starter's points per game), not a season total: write it as "your starters at X", never "all season".
 
 ## Step 5c: voice gate
 
