@@ -135,7 +135,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `dev.py` (`npm run dev`, alias `dev:vercel` for v0: local server for `web-preview/`, or `web/` with `--prod`, plus `/api/live`; rebuilds and reloads on change; never a deploy path),
   `site_guard.py` (stops CI from deploying over a recap `main` doesn't have yet),
   `fetch_news.py` (ESPN headlines for the Week hub, best effort),
-  `snapshot_history.py` (archives `fantasypros/latest.json` into `history/`)
+  `snapshot_history.py` (archives `fantasypros/latest.json` into `history/`),
+  `make_icons.py` (draws the home-screen app icon into `site/icons/`, committed; `site/build.py` copies it and writes `manifest.webmanifest`)
 - `.github/workflows/`: `checks.yml`, `live-update.yml` (capture + deploy) and `coach-daily-pr.yml` (opens coach-daily's auto-merging PR from its pushed branch); the scheduled Claude routines run locally, see `docs/architecture.md`
 - `tests/`: unittest suites for `check_recaps.py`, the Bash guard hook, the Coach page's written copy, the team
   profile and its playoff odds chip, the playoff odds, the trade evaluation, the Week hub's wire, stakes and headlines, and the news filter (also run by `checks`);

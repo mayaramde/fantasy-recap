@@ -4,7 +4,8 @@ Writes two self-contained single-file sites (pages are hash routes inside one HT
   site/dist/index.html    league site: only weeks whose recap has "status": "published"
   site/dist/preview.html  Maya's review copy: published + draft weeks (drafts are marked)
   site/dist/web/          the league site as a standalone web page for Vercel (index.html + robots.txt
-                          + box-lines/week-NN.json, the box score's scoring lines for each published week)
+                          + box-lines/week-NN.json, the box score's scoring lines for each published week,
+                          + the home-screen icons and manifest.webmanifest from write_app_icons)
 
 A "live" page shows the newest captured week that has no recap in that output yet
 (in progress, or final and waiting for Tuesday's recap). It's data only, no commentary.
@@ -2055,13 +2056,46 @@ FAVICON = ("data:image/svg+xml," "%3Csvg xmlns='http://www.w3.org/2000/svg' view
            "%3Crect x='4' y='2' width='3' height='28' fill='%23151a33'/%3E%3C/svg%3E")
 
 
-def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league."):
+# Home-screen icon, for when someone saves the site to their phone. Drawn by
+# scripts/make_icons.py into site/icons/ (committed); write_app_icons() copies them next to
+# index.html. Without them a home-screen bookmark is a gray tile with a letter in it.
+ICONS = SITE / "icons"
+APP_NAME = "Fantasy Football for the Girls"
+APP_SHORT_NAME = "FF for Girls"  # the label under the home-screen icon; longer names get cut off
+
+
+def write_app_icons(out, short_name=APP_SHORT_NAME):
+    for icon in ("apple-touch-icon.png", "icon-192.png", "icon-512.png"):
+        shutil.copyfile(ICONS / icon, out / icon)
+    manifest = {
+        "name": APP_NAME,
+        "short_name": short_name,
+        "start_url": "/",
+        # "browser" keeps today's behaviour: a saved icon opens the site in the normal browser.
+        "display": "browser",
+        "background_color": "#f3f5fb",  # --bg
+        "icons": [
+            {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+            {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+            {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+        ],
+    }
+    (out / "manifest.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n")
+
+
+def standalone(html, description="Weekly recaps, live scores and standings for our fantasy league.",
+               short_name=APP_SHORT_NAME):
     head = (
         '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         '<meta name="robots" content="noindex, nofollow">\n'
         f'<meta name="description" content="{description}">\n'
         f'<link rel="icon" href="{FAVICON}">\n'
+        # Home-screen icon and name (write_app_icons). use-credentials so the manifest still
+        # loads on preview URLs, which sit behind Vercel's login.
+        '<link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
+        '<link rel="manifest" href="/manifest.webmanifest" crossorigin="use-credentials">\n'
+        f'<meta name="apple-mobile-web-app-title" content="{short_name}">\n'
         '<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}'
         ':root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>\n'
         # Only the Vercel builds have api/live.py behind them. The artifact build leaves
@@ -2117,6 +2151,7 @@ def main():
     web.mkdir(exist_ok=True)
     (web / "index.html").write_text(standalone(html))
     (web / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_app_icons(web)
     write_box_lines(web, recap_weeks, preview=False)
     nxt = next((w.get("next") for w in weeks if w.get("next")), None)
     print(f"index.html: weeks {[(w['week'], 'live' if w.get('live') else 'recap') for w in weeks] or 'none yet'}"
@@ -2134,8 +2169,9 @@ def main():
     # relies on the artifact host's document shell.
     web_preview = dist / "web-preview"
     web_preview.mkdir(exist_ok=True)
-    (web_preview / "index.html").write_text(standalone(html, "Draft recap, not published yet."))
+    (web_preview / "index.html").write_text(standalone(html, "Draft recap, not published yet.", "FF Preview"))
     (web_preview / "robots.txt").write_text("User-agent: *\nDisallow: /\n")
+    write_app_icons(web_preview, "FF Preview")
     write_box_lines(web_preview, recap_weeks, preview=True)
     print(f"preview.html: weeks {[(w['week'], w['status']) for w in weeks]}")
 
