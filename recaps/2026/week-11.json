@@ -1,0 +1,91 @@
+{
+  "season": 2026,
+  "week": 11,
+  "status": "draft",
+  "headline": "Dak Prescott was the best player in the league this week. Maddie would know. She watched.",
+  "dek": "Samantha was projected first and finished last, Marlee beat first place by 59.46, and Cambri started Kelce and found a new way to lose.",
+  "matchups": {
+    "1-6": "A defense nobody wanted three weeks ago outscored three of Kyra's starters combined. Marlee won by 59.46. Kyra is still in first place, which is technically true and has never sounded less impressive.",
+    "2-4": "Tara's best lineup would have won. Instead she looked at her two quarterbacks and started the one who scored fewer points. Brock Purdy scored 22.2 on the bench and Jayden Daniels scored 17.06 in the lineup, and she lost by 6.30. It was a bold call. Unfortunately, this league doesn't award points for boldness. Tara is welcome to ask the commissioner whether she can spare 6.30 and a penny, but the commissioner has already checked her own lineup and is not feeling generous.",
+    "3-8": "Maddie couldn't pick a side in Ravens vs. Panthers, so she started both. Whoever won, she won. The SEC would like a word. Cambri started J.K. Dobbins, whom his own team had already benched. He scored zero, which is exactly what the Broncos expected. Cambri was the only one surprised.",
+    "5-7": "Samantha was projected to finish first and finished last. Her kicker scored one point, and even her best possible lineup loses. Samantha is in law school, so she'll respect that this one was decided on the merits."
+  },
+  "game_balls": [
+    {
+      "manager": "Marlee",
+      "title": "Two weeks, two high scores",
+      "text": "Marlee scored the most points in the league for the second week in a row and left 0.7 on her bench. Her lineup had no bad decisions, unless you count the kicker, and nobody counts the kicker.",
+      "stat": "159.66 pts, week high",
+      "emoji": "🚀"
+    },
+    {
+      "manager": "Amie",
+      "title": "Perfect lineup, actual win",
+      "text": "Amie set a perfect lineup in Week 2 and lost. She did it again this week and won. It took nine weeks for the universe to process the refund.",
+      "stat": "0.0 pts benched",
+      "emoji": "🎯"
+    },
+    {
+      "manager": "Cambri",
+      "title": "...Ready for It? The record wasn't.",
+      "text": "In Week 2, Kelce scored 25.1 on Cambri's bench. This week she started him and he scored 25.4. The Swifties finally got their moment. Cambri is 3-8.",
+      "stat": "25.4 pts at TE",
+      "emoji": "🎤",
+      "player": "Travis Kelce"
+    }
+  ],
+  "flags": [
+    {
+      "manager": "Maddie",
+      "title": "Dak Prescott, unpaid intern",
+      "text": "Dak has scored 70.32 points in two weeks without leaving Maddie's bench. She won both weeks. He's working for exposure, and he isn't getting it.",
+      "stat": "−19.94 at QB",
+      "emoji": "🧸",
+      "player": "Dak Prescott"
+    },
+    {
+      "manager": "Maya",
+      "title": "Mike Evans, bench correspondent",
+      "text": "Mike Evans scored 22.9 on Maya's bench while the receiver she started scored 3.3. She leads the league in pickups and still lost track of the best receiver she already had. She won anyway, so the only casualty is this paragraph, which she will be editing personally.",
+      "stat": "−19.6 at WR",
+      "emoji": "🛋️",
+      "player": "Mike Evans"
+    }
+  ],
+  "tough_breaks": [
+    {
+      "manager": "Samantha",
+      "title": "Chase, the sequel",
+      "text": "Ja'Marr Chase was projected for 25.37 and scored 8.1. He also scored 3.2 for her in Week 1. Nobody asked for a sequel.",
+      "stat": "−17.27 vs projection",
+      "emoji": "🌧️",
+      "player": "Ja'Marr Chase"
+    },
+    {
+      "manager": "Tara",
+      "title": "Third-best score, tied for last",
+      "text": "Tara's kicker outscored Christian McCaffrey, and she lost anyway with the third-best score in the league. She has now lost with McCaffrey scoring 46.3 and lost with McCaffrey getting outscored by a kicker. At least she's thorough.",
+      "stat": "129.76 pts, #3 score",
+      "emoji": "🦵",
+      "player": "Tyler Bass"
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Stack",
+      "definition": "Starting a quarterback together with players from his own offense, so one big game pays you more than once, like Maddie's three Panthers this week."
+    },
+    {
+      "term": "Handcuff",
+      "definition": "The backup running back on the same NFL team as your starter, held in case the starter gets hurt, like J.K. Dobbins behind Denver's Jonah Coleman, who took 24 carries this week to Dobbins's one."
+    },
+    {
+      "term": "Inactive",
+      "definition": "A player his team rules out of a game before kickoff, who scores zero if he's still in your lineup, which is what happened to Brock Bowers this week, after Maya had already swapped him out that morning."
+    },
+    {
+      "term": "Rookie",
+      "definition": "A player in his first NFL season, like Jonah Coleman, who set career highs this week, which is easier when your career is a few months old."
+    }
+  ]
+}
