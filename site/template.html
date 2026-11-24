@@ -636,32 +636,51 @@
   .hub-lineups > summary::-webkit-details-marker { display: none; }
   .hub-lineups > summary::after { content: " ▾"; }
   .hub-lineups[open] > summary::after { content: " ▴"; }
-  .hub-lineups .cols { display: grid; grid-template-columns: 1fr 1fr; border-top: 2px solid var(--edge); }
-  .hub-lineups .cols > div + div { border-left: 2px solid var(--edge); }
-  /* Full lineups: face + NFL badge, name, team and kickoff, a status sticker, the projection. On a phone
-     the two sides stack; the width it reacts to is the card's own, not the window's. */
+  .hub-lineups .cols { border-top: 2px solid var(--edge); }
+  /* Full lineups, head to head: one row per slot, the first team's starter left of the slot pill and the
+     second's mirrored on the right, so both numbers meet in the middle. Each side is face + NFL badge,
+     name, team and kickoff, a status sticker, the number. The width it reacts to is the card's own. */
   .hub-lineups .body { container-type: inline-size; }
-  @container (max-width: 520px) {
-    .hub-lineups .cols { grid-template-columns: 1fr; }
-    .hub-lineups .cols > div + div { border-left: none; border-top: 2px solid var(--edge); }
-  }
-  .hub-lineups table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
-  .hub-lineups caption { padding: 8px 10px 5px; text-align: left; font: 600 11px/1 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-  .hub-lineups caption .cap { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .hub-lineups caption .flag { white-space: nowrap; font: 600 10.5px/1 var(--mono); text-transform: none; letter-spacing: 0; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
-  .hub-lineups td { padding: 7px 6px; border-top: 1px solid var(--rule); vertical-align: middle; }
-  .hub-lineups td.slot { width: 56px; padding-left: 10px; }
+  .hub-lineups table.duel { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; }
+  .hub-lineups .duel thead th { padding: 8px 10px 5px; font: 600 11px/1 var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; vertical-align: bottom; }
+  .hub-lineups .duel thead th.a { text-align: left; }
+  .hub-lineups .duel thead th.b { text-align: right; }
+  .hub-lineups .duel .cap { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+  .hub-lineups .duel thead th.b .cap { flex-direction: row-reverse; }
+  .hub-lineups .duel .flag { white-space: nowrap; font: 600 10.5px/1 var(--mono); text-transform: none; letter-spacing: 0; color: var(--on-pop); background: var(--pink); border: 2px solid var(--edge); border-radius: 999px; padding: 3px 8px; }
+  .hub-lineups .duel td, .hub-lineups .duel tbody th { padding: 7px 8px; border-top: 1px solid var(--rule); vertical-align: middle; }
+  .hub-lineups .duel .slot { width: 58px; padding-left: 0; padding-right: 0; text-align: center; }
+  .hub-lineups .duel tbody th.slot { border-left: 2px solid var(--edge); border-right: 2px solid var(--edge); }
   .hub-lineups .slotpill { display: inline-block; min-width: 36px; padding: 5px 6px; text-align: center; font: 700 11px/1 var(--mono); color: var(--ink); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; }
-  .hub-lineups td.av { width: 56px; padding: 7px 10px 7px 0; }
-  .hub-lineups td.pl { min-width: 0; }
+  .hub-lineups .duel .lu-side { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .hub-lineups .duel .pl.b .lu-side { flex-direction: row-reverse; text-align: right; }
+  .hub-lineups .duel .txt { flex: 1; min-width: 0; }
   .hub-lineups .pl .nm { font-weight: 700; font-size: 14px; line-height: 1.2; overflow-wrap: anywhere; }
   .hub-lineups .pl .sub { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 7px; margin-top: 3px; min-height: 18px; font: 600 12px/1.2 var(--body); color: var(--muted); }
+  .hub-lineups .pl.b .sub { justify-content: flex-end; }
   .hub-lineups .pl .sub b { color: var(--ink); font-weight: 800; }
-  .hub-lineups td.r { width: 52px; padding-right: 10px; text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
-  .hub-lineups td.zero { font-weight: 700; text-decoration: underline; }
-  .hub-lineups tr.k-out td { background: var(--pink-soft); }
-  .hub-lineups tr.k-iffy td { background: var(--orange-soft); }
-  .hub-lineups tr.k-bye td { background: var(--accent-soft); }
+  .hub-lineups .pl .sub .ko { white-space: nowrap; }
+  .hub-lineups .pl .sub .playing { margin-left: 0; }
+  .hub-lineups .duel .n { flex: none; min-width: 38px; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .hub-lineups .duel .pl.a .n { text-align: right; }
+  .hub-lineups .duel .pl.b .n { text-align: left; }
+  .hub-lineups .n.zero { font-weight: 700; text-decoration: underline; }
+  .hub-lineups .n.nopts { color: var(--muted); }
+  .hub-lineups td.k-out { background: var(--pink-soft); }
+  .hub-lineups td.k-iffy { background: var(--orange-soft); }
+  .hub-lineups td.k-bye { background: var(--accent-soft); }
+  /* A phone: no faces, a narrower slot pill and smaller type, so two players fit across with room for the name. */
+  @container (max-width: 520px) {
+    .hub-lineups .duel td, .hub-lineups .duel tbody th { padding: 6px 5px; }
+    .hub-lineups .duel thead th { padding: 8px 6px 5px; }
+    .hub-lineups .duel .slot { width: 46px; }
+    .hub-lineups .slotpill { min-width: 0; padding: 4px 4px; font-size: 10px; border-radius: 8px; }
+    .hub-lineups .duel .lu-side { gap: 6px; }
+    .hub-lineups .duel .pf { display: none; }
+    .hub-lineups .pl .nm { font-size: 12.5px; }
+    .hub-lineups .pl .sub { font-size: 10.5px; gap: 2px 5px; min-height: 0; }
+    .hub-lineups .duel .n { min-width: 30px; font-size: 12px; }
+  }
   .hub-lineups .st { display: inline-block; padding: 3px 7px 2px; font: 600 10.5px/1 var(--script); letter-spacing: 0.05em; text-transform: uppercase; color: var(--on-pop);
     background: var(--card); border: 2px solid var(--edge); border-radius: 999px; box-shadow: 1px 1px 0 var(--edge); transform: rotate(-3deg); white-space: nowrap; }
   .hub-lineups .st.out { background: var(--pink); }
@@ -735,7 +754,6 @@
     .story.sc .fig { font-size: 40px; } .story.sc .nm { font-size: 20px; }
     .hub-sides .nm { font-size: 22px; } .hub-score { font-size: 32px; }
     .hub-edges { gap: 4px; padding-inline: 12px; } .hub-edges .eg { font-size: 11.5px; }
-    .hub-lineups .cols { grid-template-columns: 1fr; } .hub-lineups .cols > div + div { border-left: none; border-top: 2px solid var(--edge); }
   }
   .recap-when { margin-top: 22px; display: flex; gap: 12px; align-items: center; padding: 12px 16px; background: var(--accent-soft); border: 2px solid var(--edge); border-radius: 14px; font-size: 14px; font-weight: 600; }
   .recap-when .d { flex: none; font: 900 26px/0.9 var(--display); background: var(--card); border: 2px solid var(--edge); border-radius: 10px; padding: 6px 9px 4px; }
@@ -3397,34 +3415,48 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   }
   // `live` swaps the right-hand number from his projection (the Week hub, before kickoff) to the points
   // he has scored (the Live page), and adds the pulsing "on now" sticker while his game is on.
-  function hubRow(p, hasProj, live) {
+  // One side of a lineup row: face, name, team and kickoff, a status sticker, and the number. The right
+  // side (`side` 'b') is mirrored in CSS so both numbers sit next to the slot pill, where they compare.
+  // An empty cell is a slot one side has filled and the other hasn't.
+  function hubSide(p, side, hasProj, live) {
+    if (!p) return `<td class="pl ${side} empty"><span class="sr">Empty</span></td>`;
     const st = hubStatus(p);
-    const bits = [p.team ? `<b>${esc(p.team)}</b>` : '', p.bye ? '' : esc(kickoffText(p.kickoff))].filter(Boolean).join(' · ');
+    const ko = p.bye ? '' : kickoffText(p.kickoff);
+    const bits = [p.team ? `<b>${esc(p.team)}</b>` : '', ko ? `<span class="ko">${esc(ko)}</span>` : ''].filter(Boolean).join(' · ');
     const sticker = st ? `<span class="st ${st.tone}" title="${esc(st.label)}"><span aria-hidden="true">${esc(st.abbr)}</span><span class="sr">${esc(st.label)}</span></span>` : '';
     const onNow = live && p.playing ? `<span class="playing" title="His game is on right now"><span class="live-dot" aria-hidden="true"></span>${esc(p.playing)}</span>` : '';
-    const num = live ? `<td class="r${noPts(p)}">${ptsText(p)}</td>`
-      : `<td class="r${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</td>`;
-    return `
-        <tr${st ? ` class="k-${st.tone}"` : ''}>
-          <td class="slot"><span class="slotpill">${esc(p.slot)}</span></td>
-          <td class="av">${face(p, 'sm')}</td>
-          <td class="pl"><div class="nm">${esc(p.name)}</div><div class="sub">${bits ? `<span>${bits}</span>` : ''}${onNow}${sticker}</div></td>
-          ${num}
-        </tr>`;
+    const num = live ? `<span class="n${noPts(p)}">${ptsText(p)}</span>`
+      : `<span class="n${hasProj && !p.projected ? ' zero' : ''}">${f1(p.projected)}</span>`;
+    return `<td class="pl ${side}${st ? ` k-${st.tone}` : ''}"><div class="lu-side">${face(p, 'sm')}<div class="txt"><div class="nm">${esc(p.name)}</div><div class="sub">${bits ? `<span>${bits}</span>` : ''}${onNow}${sticker}</div></div>${num}</div></td>`;
   }
 
-  // The two-column "Full lineups" body, shared by the Week hub and the Live page's game cards.
+  // The "Full lineups" body, shared by the Week hub and the Live page's game cards: one row per lineup
+  // slot, the first team's starter on the left and the second's on the right, so QB faces QB. Slots repeat
+  // in the order each team lists them (RB 1 against RB 1); a slot outside SLOT_ORDER goes last.
   function lineupCols(a, b, hasProj, live) {
-    const table = (s) => {
-      const rows = [...(s.starters || [])].sort((x, y) => SLOT_ORDER.indexOf(x.slot) - SLOT_ORDER.indexOf(y.slot));
-      if (!rows.length) {
-        return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span></div></caption></table><div class="none">${esc(s.manager)} has no starters yet. This fills in once ESPN has a lineup.</div></div>`;
-      }
-      const toFix = rows.filter((p) => hubStatus(p)).length;
-      return `<div><table><caption><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to check</span>` : ''}</div></caption><tbody>${
-        rows.map((p) => hubRow(p, hasProj, live)).join('')}</tbody></table></div>`;
+    const bySlot = (s) => {
+      const m = new Map();
+      for (const p of s.starters || []) { if (!m.has(p.slot)) m.set(p.slot, []); m.get(p.slot).push(p); }
+      return m;
     };
-    return `<div class="cols">${table(a)}${table(b)}</div>`;
+    const [ma, mb] = [bySlot(a), bySlot(b)];
+    const slots = [...new Set([...SLOT_ORDER, ...ma.keys(), ...mb.keys()])].filter((s) => ma.has(s) || mb.has(s));
+    const rows = [];
+    for (const slot of slots) {
+      const [la, lb] = [ma.get(slot) || [], mb.get(slot) || []];
+      for (let i = 0; i < Math.max(la.length, lb.length); i++) {
+        rows.push(`
+        <tr>${hubSide(la[i], 'a', hasProj, live)}<th scope="row" class="slot"><span class="slotpill">${esc(slot)}</span></th>${hubSide(lb[i], 'b', hasProj, live)}</tr>`);
+      }
+    }
+    const head = (s, side) => {
+      const toFix = (s.starters || []).filter((p) => hubStatus(p)).length;
+      return `<th scope="col" class="${side}"><div class="cap"><span>${esc(s.manager)}</span>${toFix ? `<span class="flag">${toFix} to check</span>` : ''}</div></th>`;
+    };
+    const none = [a, b].filter((s) => !(s.starters || []).length)
+      .map((s) => `<div class="none">${esc(s.manager)} has no starters yet. This fills in once ESPN has a lineup.</div>`).join('');
+    return `<div class="cols"><table class="duel"><thead><tr>${head(a, 'a')}<th scope="col" class="slot"><span class="sr">Slot</span></th>${head(b, 'b')}</tr></thead>${
+      rows.length ? `<tbody>${rows.join('')}</tbody>` : ''}</table>${none}</div>`;
   }
 
   function hubGame(w, g, { mine, swing }) {

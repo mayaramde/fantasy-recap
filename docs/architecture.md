@@ -136,10 +136,12 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `scripts/fp_player_stats.py` from FantasyPros' `get_player_stats` in `coach-daily` Step 4a (no new credentials): keyed
   by ESPN player id, paired with FantasyPros by name, NFL team and position, with whoever doesn't pair listed in
   `player_stats.unmatched` and never guessed. About 23 KB more on the live payload, `/api/live` included.
-  The Week hub's "Full lineups" draws them (`hubRow` in `site/template.html`): the player's face with his NFL
-  badge (a D/ST gets its logo), team and kickoff in the viewer's own time zone, a status sticker (Q, DTD, D, OUT, IR,
-  SUSP or BYE; a designation wins over a bye), a soft row tint for a row with a status, and an "N to check" flag on
-  the side. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".
+  The Week hub's "Full lineups" draws them (`lineupCols` and `hubSide` in `site/template.html`), head to head: one
+  row per lineup slot, the first team's starter left of the slot pill and the second's mirrored on the right (QB
+  against QB, RB 1 against RB 1), so both numbers meet in the middle. Each side has the player's face with his NFL
+  badge (a D/ST gets its logo; faces drop on a phone-width card), team and kickoff in the viewer's own time zone, a
+  status sticker (Q, DTD, D, OUT, IR, SUSP or BYE; a designation wins over a bye) and a soft tint on that player's
+  half of the row, and each team's column header has an "N to check" flag. With no injury report in the capture the legend is replaced by a note saying a blank isn't "healthy".
 - **Player outlook** (each Coach lineup card, `player_cards()` in `site/build.py`; refreshed by `/api/live` like the rest of
   the card): `verdict` `{label, level, reason}` and `chips` `[{label, value}]` ride on every card beside `blurb`/`notes`.
   The verdict exists only while his game is ahead (`None` after kickoff, on IR): Start (`go`), Consider swap or Watch
