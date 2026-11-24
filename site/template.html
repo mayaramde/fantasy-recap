@@ -905,14 +905,13 @@
   /* recap page awards: filter chips, grouped by kind, a round sticker beside each manager */
   .rp-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   /* the awards picker: one kind at a time, three equal buttons on one row, each tinted like its cards
-     (soft tint with a color dot; the picked one takes the full fill) */
+     (soft tint with the kind's emoji; the picked one takes the full fill) */
   .rp-filters.rp-kinds { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; }
   .rp .rp-kinds .chip { --k: var(--orange); --s: var(--orange-soft); display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 48px; padding: 6px 10px; border-radius: 14px; background: var(--s); font-size: 14px; line-height: 1.1; text-align: center; }
   .rp .rp-kinds .chip.flags { --k: var(--pink); --s: var(--pink-soft); }
   .rp .rp-kinds .chip.breaks { --k: var(--lime); --s: var(--lime-soft); }
-  .rp .rp-kinds .chip i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--k); border: 2px solid var(--edge); }
+  .rp .rp-kinds .chip i { flex: none; font-style: normal; font-size: 17px; line-height: 1; }
   .rp .rp-kinds .chip.sel { background: var(--k); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
-  .rp .rp-kinds .chip.sel i { background: var(--on-pop); border-color: var(--on-pop); }
   .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .rp .chip:hover { transform: translateY(-2px); }
   .rp .chip.sel { background: var(--ink); color: var(--bg); }
@@ -2079,11 +2078,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     info: { title: 'Good to know', marker: 'book', sub: 'No action needed, just news from your roster.' },
   };
   const KIND = {
-    game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good',
+    game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good', emoji: '🏆',
       sub: 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.' },
-    flags: { cls: 'flags', label: 'Flag', title: 'Flags on the play', marker: 'flag', tag: 'bad',
+    flags: { cls: 'flags', label: 'Flag', title: 'Flags on the play', marker: 'flag', tag: 'bad', emoji: '🚩',
       sub: 'When a player breaks a rule, the referee throws a yellow flag. These are lineup crimes, mostly points left on the bench.' },
-    tough_breaks: { cls: 'breaks', label: 'Tough break', title: 'Tough breaks', marker: 'break', tag: 'info',
+    tough_breaks: { cls: 'breaks', label: 'Tough break', title: 'Tough breaks', marker: 'break', tag: 'info', emoji: '🚽',
       sub: 'Not your fault. The football gods just chose violence.' },
   };
   const AWARD_KINDS = Object.keys(KIND);
@@ -3034,7 +3033,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
         <div class="rp-filters rp-kinds" role="group" aria-label="Pick an award type" style="--n: ${kinds.length}">
           ${kinds.map((k) =>
-            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><i aria-hidden="true"></i>${KIND[k].title}</button>`).join('')}
+            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><i aria-hidden="true">${KIND[k].emoji}</i>${KIND[k].title}</button>`).join('')}
         </div>
         ${awardGroups(w, { rp: true, filter })}
       </section>` : ''}
