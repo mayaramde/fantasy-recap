@@ -690,6 +690,32 @@
   .hub-rank .tr span.me { background: var(--orange); }
   .hub-rank .v { font: 500 12.5px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
   .hub-note { font: 500 11.5px/1.4 var(--mono); color: var(--muted); margin: 8px 0 0; }
+  /* Where everyone's strong, panel size (clMiniStrength in site/coach/landing.js, This week only): the Coach grid's blue cells at sticker size. */
+  .cl-card.ls-mini { padding: 8px 12px 10px; width: fit-content; max-width: 100%; }
+  /* The panel with its callouts underneath; on a desktop the cells grow to a readable size. */
+  .ls-strong { display: grid; gap: 16px; justify-items: start; }
+  .ls-strong .cl-callouts { margin-top: 0; justify-self: stretch; }
+  .cl-page.wk-league { margin-top: 12px; }
+  .ls-mini table { width: 100%; border-collapse: collapse; }
+  .ls-mini td:not(.avg) { min-width: 30px; }
+  .ls-mini thead th { font: 600 10.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; padding: 0 0 6px; text-align: center; }
+  .ls-mini tbody th { font: 800 17px/1 var(--display); text-align: left; padding: 3px 8px 3px 4px; border-radius: 6px; }
+  .ls-mini tbody th .cl-go { display: block; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; } .ls-mini tbody th .cl-go:hover { text-decoration: underline; }
+  .ls-mini tbody tr.me th { background: var(--orange-soft); }
+  .ls-mini td { padding: 2px; text-align: center; }
+  .ls-mini .cl-hc { height: 24px; min-width: 24px; border-radius: 5px; font-size: 14px; }
+  .ls-mini th.avg, .ls-mini td.avg { border-left: 2px solid var(--edge); padding-left: 6px; }
+  .ls-avg { display: inline-block; min-width: 38px; padding: 4px 4px 3px; border: 2px solid var(--edge); border-radius: 6px; font: 800 15px/1 var(--display); color: #151a33; }
+  @media (max-width: 480px) { .ls-mini tbody th { font-size: 15px; } .ls-mini tbody th .cl-go { max-width: 76px; } .ls-mini .cl-hc { height: 22px; min-width: 20px; font-size: 12.5px; } }
+  @media (min-width: 900px) {
+    .cl-card.ls-mini { padding: 12px 18px 14px; }
+    .ls-mini thead th { font-size: 12.5px; padding-bottom: 8px; }
+    .ls-mini tbody th { font-size: 24px; padding-right: 14px; } .ls-mini tbody th .cl-go { max-width: 160px; }
+    .ls-mini td { padding: 3px; } .ls-mini td:not(.avg) { min-width: 58px; }
+    .ls-mini .cl-hc { height: 40px; border-radius: 8px; font-size: 21px; }
+    .ls-mini th.avg, .ls-mini td.avg { padding-left: 12px; }
+    .ls-avg { min-width: 58px; padding: 8px 6px 7px; font-size: 21px; border-radius: 8px; }
+  }
   .hub-day { font: 600 11.5px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 12px 0 4px; margin: 0; }
   .hub-ev { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
   .hub-ev:last-child { border-bottom: none; }
@@ -1973,7 +1999,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     asked() { try { return localStorage.getItem(KEY_ASKED) === '1' || askedMem; } catch { return askedMem; } },
   };
   // Coach is one nav item for everyone. With a pick it opens that person's team; without one it
-  // is the league landing. (The tab itself is shown and pointed by viewingAs.sync(), on every route.)
+  // is the name picker. (The tab itself is shown and pointed by viewingAs.sync(), on every route.)
   const coachHref = () => { const me = myTeam.get(); return me ? `#team-${me}` : coachUrl(leadWithNext(), null); };
   // Whose team is on screen is not who is looking: a team page that isn't the pick's is written about
   // "her", not "you" (see voice()). route() clears it, teamPage() sets it.
@@ -3146,7 +3172,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <p class="dek">${liveLabel(w)} ${!w.complete && liveStale(w.captured_at, Date.now(), window.FANTASY_LIVE_API) ? `<span class="lv-stale">Updated ${updated(w.captured_at)}, a few minutes behind</span>.` : `Updated ${updated(w.captured_at)}.`} ${window.FANTASY_LIVE_API ? `Scores refresh about every ${w.complete || !anyPlaying ? 'minute' : `${LIVE_PLAYING / 1000} seconds`}${w.complete ? '' : anyPlaying ? ' while games are on' : ', and nothing is on the field right now'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
       </div>
 
-      ${showBanner ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
+      ${showBanner ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has ${myTeam.get() ? 'your' : 'every team\'s'} swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}${myTeam.get() ? '' : '. Pick yours'}.</span><span class="go">Open Coach →</span></a>` : ''}
 
       ${w.complete ? `<section>
         ${secHead('board', 'Scoreboard')}
@@ -3172,6 +3198,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
           </div>
         </div>
       </section>
+      ${weekLeague(w, advice() || [], myTeam.get(), { decided: false })}
       <p class="sec-sub" style="margin-top:28px">Standings only count finished weeks, so this week shows up there once the recap drops Tuesday.</p>`;
   }
 
@@ -3827,7 +3854,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
             <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
           </a>`).join('')}</div>
       </section>
-      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}` : `
+      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>${myTeam.get() ? 'Your' : 'Every team\'s'} Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}` : `
       <div class="hub-grid">
         <section style="margin-top:0">
           ${secHead('board', 'Matchups')}
@@ -3841,6 +3868,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </div>`}
 
       ${w.complete ? `<div class="tab-src">${wireSection()}</div>` : ''}
+      ${weekLeague(w, mine, myTeam.get())}
       ${bottomPanels(w)}
 
       <p class="sec-sub" style="margin-top:28px">${next ? nextSource() : coachSource(w)}</p>`;
@@ -3914,21 +3942,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${others.length ? `<section>${secHead('board', 'Other games this week')}<div class="other-games">${others.map((o) => `<a href="${base(w)}.game-${o.key}">${esc(o.winner.manager)} ${f2(o.winner.points)} · ${esc(o.loser.manager)} ${f2(o.loser.points)}</a>`).join('')}</div></section>` : ''}`;
   }
 
-  /* Lineup rankings: the Coach page's "Where everyone's strong" grid (same profile.pos_ranks as each
-     team's Report card), so the league can compare lineups where it compares records. Left out until
-     every team has ranks, same as on the Coach page. */
-  function standingsStrength(rows) {
-    if (!rows.length || !rows.every((t) => t.profile && t.profile.pos_ranks)) return '';
-    const sm = strengthMap(rows.map((t) => ({ id: t.team_id, manager: t.manager, ranks: t.profile.pos_ranks })));
-    sm.rows.sort((a, b) => a.overall - b.overall);      // best lineup on top; ties keep standings order
-    return `
-      <section>
-        ${secHead('board', 'Lineup rankings')}
-        <p class="sec-sub">Each team's starters today, ranked against the league at every lineup spot on their last three weeks. Best lineup on top. In the spot columns darker blue means stronger; in AVG, lime is the strongest lineup and pink the weakest. Tap a name for that team's profile.</p>
-        <div class="cl-page">${clStrength(sm, myTeam.get(), rows.length)}</div>
-      </section>`;
-  }
-
   function standingsPage() {
     const rows = SEASON.standings;
     const weeks = SEASON.weeks_played;
@@ -3955,8 +3968,6 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>
 
       ${playoffPicture()}
-
-      ${standingsStrength(rows)}
 
       ${weeks.length ? `
       <section>
@@ -3992,7 +4003,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
      #team-<id> is Game day: one week's homework, the matchup and what's riding on it, the lineup and
      what's next, for the week worth looking at (see gdNext; there's no week switch). #team-<id>.season
      is the whole season: the chart, the audit, every game, awards and moves. The old .lineup, .next and
-     .league routes land on Game day, and the league-wide view (once the League tab) is #league-<id>. */
+     .league routes land on Game day, and the league-wide picture (once the League tab, then #league-<id>) is on This week. */
   const TP_TABS = [['gameday', 'Game day', ''], ['season', 'Season', '.season']];
   const tpHead = (color, title, more = '') =>
     `<div class="tp-head"><span class="mark" style="--c:var(${color})" aria-hidden="true"></span><h2>${title}</h2>${more}</div>`;
@@ -4088,22 +4099,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </dialog>`;
   }
 
-  /* The league-wide view, reached from a team's Game day: the same pieces as the Coach landing (Coach's
+  /* The league-wide view, reached from a team's Game day: built from site/coach/landing.js (Coach's
      take, the strength grid, the waiver order, injuries and byes; site/coach/landing.js), for this week,
      with the team you came from marked. */
-  function leaguePage(view) {
-    const t = TEAMS[view];
-    const back = !t ? '' : view === myTeam.get() ? 'Back to your Game day' : `Back to ${esc(t.manager)}'s Game day`;
-    return `
-      <div class="page-head">
-        <div class="kicker">${LIVE ? `Week ${LIVE.week} · ` : ''}the whole league</div>
-        <h1>How the league looks</h1>
-        ${t ? `<p class="dek"><a href="#team-${view}">${back}</a></p>` : ''}
-      </div>
-      <div class="cl-page cl-intab">${coachLeague(coachRows(false) || [], myTeam.get(), t ? view : null)}</div>
-      ${LIVE ? `<p class="cl-foot">${esc(coachSource(LIVE))}</p>` : ''}`;
-  }
-
   function teamPage(id, tab = 'gameday') {
     const t = TEAMS[id];
     if (!t) return notFound();
@@ -4163,7 +4161,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   /* ---------- Game day ----------
      One week, picked for her (gdNext), top to bottom: the homework, a heads-up about next week while this
      one is still being played, the matchup and what's riding on it, the lineup, who's next, ideas, a way
-     into the league view and where it all comes from. A block with nothing to say isn't drawn at all; the
+     into the league page and where it all comes from. A block with nothing to say isn't drawn at all; the
      homework card is the only one that always is. */
   const GD_STICKER = { OUT: 'OUT', INJURY_RESERVE: 'IR', SUSPENSION: 'SUSP', DOUBTFUL: 'DOUBT', QUESTIONABLE: 'Q', DAY_TO_DAY: 'DTD', bye: 'BYE' };
   // A gain worth printing: the swap field's gain is ESPN's projections as they are, so on an out card it can
@@ -4351,12 +4349,12 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>`;
   }
 
-  // The way into the league-wide view, with her spot in this week's waiver order.
+  // The way to the league-wide picture on This week, with her spot in this week's waiver order.
   function gdLeague(id, you) {
     if (!advice()) return '';
     const wv = waiverSpot(id);
     const who = you ? 'You pick' : `${esc(TEAMS[id].manager)} picks`;
-    return `<a class="gd-league" href="#league-${id}"><span><b>How the league looks</b><span>Strength grid, waiver order, byes.${wv ? ` ${who} ${ordinal(wv)}.` : ''}</span></span><i aria-hidden="true">→</i></a>`;
+    return `<a class="gd-league" href="#live"><span><b>How the league looks</b><span>Strength grid, waiver order and trade ideas, on This week.${wv ? ` ${who} ${ordinal(wv)}.` : ''}</span></span><i aria-hidden="true">→</i></a>`;
   }
 
   const gdSource = (next) => `<details class="gd-src" data-hub-open="gd-src"${HUB_OPEN.has('gd-src') ? ' open' : ''}><summary><span aria-hidden="true">ⓘ</span> Where this comes from</summary><p>${esc(voice(next ? nextSource() : coachSource(LIVE)))}</p></details>`;
@@ -4392,7 +4390,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const SN_WEEK = new Map();   // the week picked in each team's season story, so a live redraw keeps it
   const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
 
-  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from
+  // Her row of the strength grid: the same profile.pos_ranks This week's grid is built from
   // (today's starters, each rated by his average over the last three weeks).
   function snReport(t) {
     const ranks = t.profile && t.profile.pos_ranks;
@@ -4561,48 +4559,28 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const coachSource = (w) => `Everything here comes from ESPN's own projections and injury report, captured ${updated(w.captured_at)}. A projection is the experts' guess at how many points a player will score. Useful, not gospel. Nothing on this page changes your lineup for you: make the moves in the ESPN app.`;
   const nextSource = () => `Next week's rosters, projections and injury report as ESPN had them ${updated(ahead().captured_at)}. All of it moves as the week gets closer${ahead().projected ? '' : ", and ESPN hasn't published next week's projections yet, so this is byes and injuries only"}. Worth another look on Saturday. Nothing here changes your lineup for you: make the moves in the ESPN app.`;
 
-  /* The Coach landing's week switch: `next` false is the week being played, true is the week after it.
-     Same cards, same components, different source. A flip switch, not a second row of tabs, since it's
-     one choice with only two states. (A team's Game day picks its own week, so it has no switch.) */
-  function weekToggle(next) {
-    if (!ahead()) return '';
-    const tab = (isNext, label, week) => `<a href="${coachUrl(isNext, null)}" ${isNext === next ? 'aria-current="page"' : ''}>${label} <span class="wk-n">W${week}</span></a>`;
-    return `<div class="week-toggle" data-state="${next ? 'next' : 'this'}" role="group" aria-label="Choose a week"><span class="knob" aria-hidden="true"></span>${tab(false, 'This week', LIVE.week)}${tab(true, 'Next week', ahead().week)}</div>`;
-  }
-
-  function teamSwitch(active, next) {
-    return `<nav class="team-switch" aria-label="Choose a team">${coachRows(next).map((a) => `
-      <a href="${coachUrl(next, a.team_id)}" ${a.team_id === active ? 'aria-current="page"' : ''}>${esc(a.manager)}${a.counts.now ? `<span class="dot" title="${a.counts.now} to fix">!</span>` : ''}</a>`).join('')}</nav>`;
-  }
-
-  /* The Coach landing is the league's view: what Coach thinks of all eight teams, then a way
-     into each team's own report. The modules live in site/coach/ (pure insight functions with
-     tests, plus landing.js for the markup), inlined below. */
+  /* Coach's league-wide modules live in site/coach/ (pure insight functions with tests, plus
+     landing.js for the markup), inlined below. They're drawn on This week (weekLeague); the Coach tab
+     itself is one team's report. */
 __COACH_JS__
 __LIVE_JS__
 
+  /* The Coach tab with no team picked: Coach is always one team's report, so it asks whose. The
+     league-wide modules that used to sit here are on This week. With a pick, the router never gets
+     here: #coach goes straight to her team. */
   function coachPage(next) {
     const week = next ? ahead().week : LIVE.week;
     const rows = coachRows(next);
-    const me = myTeam.get();
-    const mine = rows.find((r) => r.team_id === me);
     return `
       <div class="cl-wide">
       <div class="page-head cl-pagehead">
-        <div class="kicker-row">
-          <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
-          ${weekToggle(next)}
-        </div>
-        ${next ? `<p class="cl-weeknote">${esc(clWeekNote(next, rows))}</p>` : ''}
+        <div class="kicker">Week ${week} · ${next ? 'not played yet' : (LIVE.complete ? 'final' : 'live')}</div>
         <h1>Coach</h1>
-        <p class="dek">${next
-          ? `Coach is already on Week ${week}. Nothing has kicked off, so there's time to fix.`
-          : `Coach read all ${rows.length} rosters so you don't have to. The league first, then tap a team for her full report.${liveShut() ? ` Every Week ${week} game is done, so nothing here can change until${ahead() ? ` <a href="${coachUrl(true, null)}">Week ${ahead().week}</a>` : ' next week'}.` : ''}`}</p>
+        <p class="dek">Coach read all ${rows.length} rosters so you don't have to. Pick your team for its full report. The whole league's picture is on <a href="#live">This week</a>.</p>
       </div>
       <div class="cl-page">
-        ${coachLanding(next, rows, me)}
+        ${clPickCard(clTeams(rows), rows)}
       </div>
-      <p class="cl-foot">${next ? nextSource() : coachSource(LIVE)}</p>
       </div>`;
   }
 
@@ -4752,7 +4730,7 @@ __LIVE_JS__
      lights up in orange (the "You" badge) everywhere. It does not change which team is on screen,
      which is always the URL's (#team-<id>), so a link to anyone's team still shows that team, written
      about as "her". A wrong pick is one tap from undone: every change raises a toast with an Undo
-     button, and "League view" is always at the bottom of the menu. */
+     button. There's no "nobody" entry in the menu: the league-wide picture is This week, for everyone. */
   const viewingAs = (() => {
     const host = $('#va'), toast = $('#va-toast'), dlg = $('#who-dialog'), coachTab = $('#nav-coach');
     const fixes = (id) => { const a = coachFor(id, false); return a ? a.counts.now : 0; };
@@ -4761,17 +4739,15 @@ __LIVE_JS__
     function draw(focusMenu) {
       if (!SEASON.standings.length) { host.hidden = true; return; }
       const me = myTeam.get(), t = me && TEAMS[me];
-      const label = t ? `Viewing as ${t.manager}` : 'League view';
+      const label = t ? `Viewing as ${t.manager}` : 'Pick your team';
       drawn = `${me}|${isOpen}|${SEASON.standings.map((x) => record(x)).join()}`;
       host.innerHTML = `
         <button type="button" class="va-btn" id="va-btn" aria-haspopup="menu" aria-expanded="${isOpen}" aria-controls="va-menu" aria-label="${esc(label)}. Change who you are viewing as.">
-          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${t ? `<span class="va-pre">Viewing as </span>${esc(t.manager)}` : 'League view'}</span><small aria-hidden="true">▾</small></button>
+          <span class="dot" aria-hidden="true"></span><b class="ini" aria-hidden="true">${t ? esc(t.manager[0]) : '★'}</b><span class="va-txt">${t ? `<span class="va-pre">Viewing as </span>${esc(t.manager)}` : 'Pick your team'}</span><small aria-hidden="true">▾</small></button>
         <div class="va-menu" id="va-menu" role="menu" aria-label="Viewing as"${isOpen ? '' : ' hidden'}>
           <h2 role="presentation">Viewing the site as</h2>
           ${t ? `<a class="it open-team" role="menuitem" href="#team-${me}"><span>Open ${esc(t.manager)}'s team page</span><span aria-hidden="true">→</span></a>` : ''}
           ${SEASON.standings.map((x) => `<button type="button" class="it" role="menuitemradio" aria-checked="${x.team_id === me}" data-as="${x.team_id}"><span class="ck" aria-hidden="true">${x.team_id === me ? '✓' : ''}</span>${esc(x.manager)}<span class="rec">${record(x)}</span></button>`).join('')}
-          <hr role="separator">
-          <button type="button" class="it" role="menuitemradio" aria-checked="${!me}" data-as="0"><span class="ck" aria-hidden="true">${me ? '' : '✓'}</span>League view<span class="rec">no one</span></button>
         </div>`;
       if (focusMenu) {
         const first = host.querySelector('[aria-checked="true"]') || host.querySelector('.it');
@@ -4792,7 +4768,7 @@ __LIVE_JS__
       }
     }
 
-    // The Coach nav item follows the pick (her team, else the league landing) and shows whenever it has somewhere to go.
+    // The Coach nav item follows the pick (her team, else the name picker) and shows whenever it has somewhere to go.
     function sync() {
       const me = myTeam.get();
       coachTab.hidden = !(advice() || me);
@@ -4813,7 +4789,7 @@ __LIVE_JS__
     function apply(id) {
       const was = myTeam.get();
       if (id) myTeam.set(id); else myTeam.clear();
-      // Letting go of the pick while on that team's own pages goes back to the league landing.
+      // Letting go of the pick while on that team's own pages goes back to Coach's name picker.
       if (!id && was && advice() && new RegExp(`^#team-${was}(\\.|$)`).test(location.hash)) { location.hash = '#coach'; return; }
       route();
     }
@@ -4830,7 +4806,7 @@ __LIVE_JS__
       if (id === prev) { setOpen(false, { refocus: true }); return; }
       isOpen = false;
       apply(id);
-      say(id ? `Viewing as ${nameOf(id)}` : 'Back to the league view', () => { apply(prev); });
+      say(id ? `Viewing as ${nameOf(id)}` : 'No team picked', () => { apply(prev); });
       const b = $('#va-btn'); if (b) b.focus({ preventScroll: true });
     }
 
@@ -4882,7 +4858,7 @@ __LIVE_JS__
       if (!pick) return;
       const id = Number(pick.dataset.pick), prev = myTeam.get() || 0;
       dlg.close();
-      if (id !== prev) { apply(id); say(id ? `Viewing as ${nameOf(id)}` : 'League view. You can pick a team any time.', () => { apply(prev); }); }
+      if (id !== prev) { apply(id); say(id ? `Viewing as ${nameOf(id)}` : 'No team picked. You can pick one any time.', () => { apply(prev); }); }
       else apply(id);
     });
     // Escape, the backdrop or "Just looking" all count as an answer, so it never nags.
@@ -4952,9 +4928,10 @@ __BTS_JS__
     else if ((m = /^behind-the-scenes(?:\.(big|data|api|harness|deploy|safe|cheat))?$/.exec(h))) { html = btsPage(); nav = 'behind-the-scenes'; btsSection = m[1] || ''; }
     else if (h === 'live' && LIVE) { html = liveOrLanding(LIVE); nav = 'live'; }
     else if ((m = /^live\.game-(\d+-\d+)$/.exec(h)) && LIVE) { html = matchupPage(LIVE, m[1]); nav = 'live'; }
-    // With a pick, Coach is her team's Game day; the league view is a link from there (#league-<id>).
+    // With a pick, Coach is her team's Game day; without one, the name picker.
     else if ((h === 'coach' || h === 'coach-next') && myTeam.get()) { location.replace(`#team-${myTeam.get()}`); return; }
-    else if ((m = /^league-(\d+)$/.exec(h)) && TEAMS[Number(m[1])]) { html = leaguePage(Number(m[1])); nav = 'coach'; }
+    // The old league page (#league-<id>) is retired: its modules are on This week, so old links land there.
+    else if ((m = /^league-(\d+)$/.exec(h))) { location.replace(LIVE ? '#live' : TEAMS[Number(m[1])] ? `#team-${m[1]}` : '#'); return; }
     else if (h === 'coach' && advice()) { html = coachPage(false); nav = 'coach'; }
     else if (h === 'coach-next' && ahead()) { html = coachPage(true); nav = 'coach'; }
     else if ((m = /^coach(-next)?-(\d+)$/.exec(h))) { if (TEAMS[Number(m[2])]) myTeam.set(Number(m[2])); location.replace(lineupUrl(!!m[1], m[2])); return; }
@@ -5163,13 +5140,12 @@ __BTS_JS__
     if (pickBtn) viewingAs.pickCard(Number(pickBtn.dataset.clPick));
     const openTeam = e.target.closest('#main [data-open-team]');
     if (openTeam && !e.target.closest('a, button')) location.hash = `#team-${openTeam.dataset.openTeam}`;
-    if (e.target.closest('button[data-cl-more]')) { clShowAll = !clShowAll; route(); const again = document.querySelector('button[data-cl-more]'); if (again) again.focus({ preventScroll: true }); }
   });
 
   // "Pick your team" on the Live hero opens the same Who are you? picker as the Viewing as chip.
   document.addEventListener('click', (e) => { if (e.target.closest && e.target.closest('[data-ask-team]')) viewingAs.ask(); });
 
-  // A team name in the League tab or the landing is a role=button; Enter and Space open it like a tap.
+  // A team name in the league page or This week's modules is a role=button; Enter and Space open it like a tap.
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
     const el = e.target.closest && e.target.closest('#main [role="button"][data-open-team]');

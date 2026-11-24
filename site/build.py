@@ -38,9 +38,11 @@ import playoffs  # noqa: E402
 import team_profile  # noqa: E402
 
 SITE = ROOT / "site"
-# Coach landing modules, inlined in this order (landing.js calls the ones before it).
-COACH_JS = ("seasonAverage", "vitals", "fixes", "byeDamage", "battles", "pickups", "strengthMap", "callouts",
-            "tradeMatches", "headlines", "take", "pronouns", "landing")
+# Coach's browser-side modules, inlined in this order (landing.js calls the ones before it). The
+# retired Coach landing and league page also used seasonAverage, vitals, fixes, byeDamage, pickups,
+# headlines and take; those files and their tests stay in site/coach/, but nothing on the page calls
+# them, so they aren't shipped.
+COACH_JS = ("battles", "strengthMap", "callouts", "tradeMatches", "pronouns", "landing")
 LEAGUE = json.loads((ROOT / "league.json").read_text())
 
 AWARD_KEYS = ("game_balls", "flags", "tough_breaks")

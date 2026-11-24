@@ -113,12 +113,13 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `bts.css` and `bts.js` (all `bts-` prefixed), and `sprite.svg` (its illustrated icons, shipped once per document). `site/build.py`
   stitches them into `template.html`. Its claims about how the site works are audited in `docs/behind-the-scenes-audit.md`;
   change the copy and that file together.
-- `site/coach/`: the Coach tab's landing (the league overview shown before anyone opens a team's report). One pure
+- `site/coach/`: Coach's league-wide modules (This week's "Around the league" and the Coach tab's name picker).
+  One pure
   insight function per file (`vitals`, `fixes`, `byeDamage`, `battles`, `pickups`, `strengthMap`, `callouts`,
   `tradeMatches`, `take`), the editable headline list `headlines.js`, `landing.js` (markup) and `coach.css`.
   `site/build.py` inlines them into `template.html`. They run in the browser so they refresh with `/api/live`;
   `tests/coach/*.test.js` (run with `node --test tests/coach/*.test.js`, also in CI) check them against the Week 6
-  golden values in `tests/fixtures/week-06/`. `tests/coach_preview.py` renders the page for a look in a browser.
+  golden values in `tests/fixtures/week-06/`. `tests/coach_preview.py` renders the Coach tab for a look in a browser (the league modules are in `tests/hub_preview.py`'s pages).
 - `site/live/`: the Live scoreboard's logic (`live.js`, pure, tested by `node --test tests/live/*.test.js`) and CSS;
   `site/build.py` inlines them into `template.html`. `tests/live_preview.py` renders its states for a look in a browser.
 - `site/team_profile.py`: the team profile's audit cards (and their keys) and roster moves; pure functions shared by
