@@ -904,6 +904,15 @@
 
   /* recap page awards: filter chips, grouped by kind, a round sticker beside each manager */
   .rp-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  /* the awards picker: one kind at a time, three equal buttons on one row, each tinted like its cards
+     (soft tint with the kind's emoji; the picked one takes the full fill) */
+  .rp-filters.rp-kinds { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; }
+  .rp .rp-kinds .chip { --k: var(--orange); --s: var(--orange-soft); display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 48px; padding: 6px 10px; border-radius: 14px; background: var(--s); font-size: 14px; line-height: 1.1; text-align: center; }
+  .rp .rp-kinds .chip.flags { --k: var(--pink); --s: var(--pink-soft); }
+  .rp .rp-kinds .chip.breaks { --k: var(--lime); --s: var(--lime-soft); }
+  /* the emoji flows inline with the label, so it stays right beside the first word when the label wraps */
+  .rp .rp-kinds .chip i { font-style: normal; font-size: 16px; line-height: 1; margin-right: 5px; vertical-align: -1px; }
+  .rp .rp-kinds .chip.sel { background: var(--k); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
   .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .rp .chip:hover { transform: translateY(-2px); }
   .rp .chip.sel { background: var(--ink); color: var(--bg); }
@@ -1218,6 +1227,8 @@
   .rp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
   @media (max-width: 980px) { .rp-two { grid-template-columns: minmax(0, 1fr); } }
   .rp-std-card { margin-top: 22px; border: 2px solid var(--edge); border-radius: 22px; background: var(--card); box-shadow: 6px 6px 0 var(--accent); overflow: hidden; }
+  /* the tie note sits inside the card, so it needs the card's own inset to clear the rounded corners */
+  .rp-std-card .tie-note { margin: 0; padding: 12px 18px 16px; border-top: 2px solid var(--rule); }
   .rp-std { width: 100%; border-collapse: collapse; }
   .rp-std th { padding: 0 12px; height: 42px; background: var(--board); color: var(--on-board); font: 600 13px/1 var(--script); letter-spacing: 0.03em; text-align: left; white-space: nowrap; }
   .rp-std th:first-child, .rp-std td:first-child { padding-left: 18px; }
@@ -2068,11 +2079,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     info: { title: 'Good to know', marker: 'book', sub: 'No action needed, just news from your roster.' },
   };
   const KIND = {
-    game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good',
+    game_balls: { cls: 'balls', label: 'Game ball', title: 'Game balls', marker: 'ball', tag: 'good', emoji: '🏆',
       sub: 'In the NFL, the MVP of a win gets the actual game ball. Here, you get a card on a website.' },
-    flags: { cls: 'flags', label: 'Flag', title: 'Flags on the play', marker: 'flag', tag: 'bad',
+    flags: { cls: 'flags', label: 'Flag', title: 'Flags on the play', marker: 'flag', tag: 'bad', emoji: '🚩',
       sub: 'When a player breaks a rule, the referee throws a yellow flag. These are lineup crimes, mostly points left on the bench.' },
-    tough_breaks: { cls: 'breaks', label: 'Tough break', title: 'Tough breaks', marker: 'break', tag: 'info',
+    tough_breaks: { cls: 'breaks', label: 'Tough break', title: 'Tough breaks', marker: 'break', tag: 'info', emoji: '🚽',
       sub: 'Not your fault. The football gods just chose violence.' },
   };
   const AWARD_KINDS = Object.keys(KIND);
@@ -2809,9 +2820,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   /* ---------- recap page (#week-N) pieces ---------- */
   // What the page remembers while it's redrawn (the live refresh re-routes now and then):
   // which game is open, which award filter is on, which glossary term is expanded.
-  const RP = { week: null, game: null, filter: 'all', term: null, me: undefined };
+  const RP = { week: null, game: null, filter: null, term: null, me: undefined };
   const rpState = (w) => {
-    if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: 'all', term: null });
+    if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: null, term: null });
     return RP;
   };
 
@@ -2946,8 +2957,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   };
   // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
   // so its filter chips can hide them.
-  const awardGroups = (w, { rp = false, filter = 'all' } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
-    <section class="awc-grp ${KIND[k].cls}${rp ? ' rp-grp' : ''}"${rp ? ` data-rp-kind="${k}"${filter === 'all' || filter === k ? '' : ' hidden'}` : ''}>
+  const awardGroups = (w, { rp = false, filter = null } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
+    <section class="awc-grp ${KIND[k].cls}${rp ? ' rp-grp' : ''}"${rp ? ` data-rp-kind="${k}"${filter === k ? '' : ' hidden'}` : ''}>
       <div class="awc-gh"><h3 class="awc-gb">${KIND[k].title}</h3><span class="awc-cnt">${w[k].length} ${w[k].length === 1 ? 'card' : 'cards'}</span></div>
       <p class="awc-sub">${KIND[k].sub}</p>
       ${awardGrid(w[k], k)}
@@ -2990,7 +3001,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (st.me !== me) { st.me = me; st.game = null; }
     const mineKey = (w.games.find(isMyGame) || {}).key;
     const open = w.games.some((g) => g.key === st.game) ? st.game : (mineKey || (w.games[0] || {}).key);
-    const filter = st.filter === 'all' || kinds.includes(st.filter) ? st.filter : 'all';
+    // One kind of award at a time, game balls first.
+    const filter = kinds.includes(st.filter) ? st.filter : kinds[0];
     const term = st.term == null ? 0 : st.term;
     return `
       ${LIVE ? `<a class="live-banner" href="#live"><span>${deadZone() ? '' : '<span class="live-dot" aria-hidden="true"></span>'}${deadZone() ? `Week ${LIVE.week}: scores, coach cards and who's up next` : liveLabel(LIVE)}</span><span class="go">${deadZone() ? 'Take a look →' : (LIVE.complete ? 'Final scores →' : 'Live scores →')}</span></a>` : ''}
@@ -3020,9 +3032,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${kinds.length ? `
       <section class="rp-aw">
         ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
-        <div class="rp-filters" role="group" aria-label="Filter awards">
-          ${[['all', `All ${nAwards} awards`], ...kinds.map((k) => [k, KIND[k].title])].map(([k, label]) =>
-            `<button type="button" class="chip${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}">${label}</button>`).join('')}
+        <div class="rp-filters rp-kinds" role="group" aria-label="Pick an award type" style="--n: ${kinds.length}">
+          ${kinds.map((k) =>
+            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><span><i aria-hidden="true">${KIND[k].emoji}</i>${KIND[k].title}</span></button>`).join('')}
         </div>
         ${awardGroups(w, { rp: true, filter })}
       </section>` : ''}
@@ -5079,7 +5091,7 @@ __BTS_JS__
       RP.filter = kind;
       root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.setAttribute('aria-pressed', b === chip ? 'true' : 'false'));
       root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.classList.toggle('sel', b === chip));
-      root.querySelectorAll('.rp-grp').forEach((g) => { g.hidden = kind !== 'all' && g.dataset.rpKind !== kind; });
+      root.querySelectorAll('.rp-grp').forEach((g) => { g.hidden = g.dataset.rpKind !== kind; });
       return;
     }
     const term = e.target.closest('button[data-rp-term]');
