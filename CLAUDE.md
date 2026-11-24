@@ -5,7 +5,7 @@ League facts (IDs, teams, managers, roster slots, playoff format) live in `leagu
 
 ## Harness: Fantasy Recap
 
-**Goal:** produce the weekly recap (capture, write, fact-check, voice-check, ship) and the daily Coach
+**Goal:** produce the weekly recap (capture, write, voice-check, fact-check, ship) and the daily Coach
 cards, without ever publishing anything unreviewed or touching a Vercel token.
 
 **Entry point — applies to every prompt in this repo:** You MUST invoke the
@@ -20,6 +20,12 @@ the project's usual review practice.
 
 The skills say *how* the work gets done. `docs/architecture.md` says *when* the automated tasks
 run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys and the Vercel dashboard.
+
+**Harness change history**
+
+| Date | Change | Target | Reason |
+|---|---|---|---|
+| 2026-11-24 | Voice-first recap pipeline: write → `check.py` → voice-check → one truth-only fact-check; Week 11 becomes the calibration; scoreboard-led fields score ≤2 | `voice-check`, `recap-fact-checker`, `recap-write`, `fantasy-orchestrator`, Voice section | Recaps kept reading flat: the calibration and formula were fact-first, and each voice rewrite went back through a literal fact-check that sanded the jokes down |
 
 ## Data sources
 - **ESPN** (primary): the league is **public** (the commissioner's setting since 2026-10-09), so it's read
@@ -157,7 +163,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   login, so only Maya can open it; only the production aliases are public (`docs/vercel.md` §7).
 
 ## Recap content
-- Matchup results, high/low scores, standings
+- Matchup results, high/low scores, standings: the page already shows these (scorecards, standings), so the
+  copy never restates them. It jokes about them.
 - Good decisions: waiver pickups that paid off, smart benchings/starts
 - Bench blunders: points left on the bench (optimal lineup vs actual)
 - Unexpectedly screwed: injuries mid-game, big misses vs projection, bad-luck losses (e.g., 2nd-highest score but lost).
@@ -167,9 +174,15 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
 ## Voice
 This is the voice for everything Claude writes on the site, not just the weekly recap: recap copy, Coach cards, Live page copy, labels, empty states. Cheeky, a little smug, on everyone's side, like the friend at the watch party who's actually paying attention, dialed by surface (below). The league is "Fantasy Football for the Girls" and for most members this is their first season, so explain jargon in passing ("flex, the wild-card spot") and never talk down. Never a stats recap with a joke sprinkled on top.
 
-**Calibration.** Read `recaps/2026/week-01.json`, `week-02.json` and `week-05.json` before writing anything. They're what this voice sounds like when it works. Swap one out only when a newer published recap reads at that same level.
+**Calibration.** Read `recaps/2026/week-11.json` before writing anything. Maya wrote it, and it's what this voice sounds like when it works: every section leads with a funny premise, and the facts only show up to serve it. Weeks 1-10 are not calibration; they lead with scores and stat lines and read like a box score. Add a newer published recap only when it reads at Week 11's level.
 
-**The formula.** State a real fact, then turn it with a short line. One joke per section: headline, dek, each matchup blurb, each game ball/flag/tough break. Pick the best and cut the rest. Deletion test: if removing the joke leaves the sentence reading the same, it was a fact with a qualifier stapled on ("no excuse required"). Flat (the fact alone) to funny (the turn):
+**The formula. Joke first** (recap copy; Coach cards stay advice-first per the dial table below). Lead each section with the funny angle on what happened; the fact is the setup inside the joke, not the content. Readers see the scoreboard (who won, the score, the margin) right above the copy, so a section that opens with it, or has nothing but it, is a scorecard, not a blurb. A margin can still appear as a beat inside a joke (Week 11: "Marlee won by 59.46" between two jokes; "spare 6.30 and a penny"). The Week 11 shape:
+- "Maddie couldn't pick a side in Ravens vs. Panthers, so she started both. Whoever won, she won."
+- "Kyra is still in first place, which is technically true and has never sounded less impressive."
+- "Dak Prescott was the best player in the league this week. Maddie would know. She watched."
+- "Amie set a perfect lineup in Week 2 and lost. She did it again this week and won. It took nine weeks for the universe to process the refund."
+
+One main joke per section (headline, dek, each matchup blurb, each game ball/flag/tough break), and a second beat only when it builds on the first (Week 11's 2-4: the bold call, then the commissioner who has seen her own lineup). Cut beats that just sit next to each other. Scoreboard test: if a section opens with the winner, score or margin, or has no joke left once you delete those, rewrite it. Deletion test: if removing the joke leaves the sentence reading the same, it was a fact with a qualifier stapled on ("no excuse required"). Older turns that still work (the fact, then the line that makes it funny):
 - "Cambri's 153.96 would have beaten six of the other seven teams." → "She drew the seventh."
 - "Amie started the best possible lineup and still lost." → "...which feels illegal but isn't."
 - "Ja'Marr Chase scored 3.2 against a 19.9 projection." → "Ja'Marr Chase forgot it was game day."
@@ -179,20 +192,20 @@ This is the voice for everything Claude writes on the site, not just the weekly 
 
 Get the joke from something true and checkable: a team name, a real callback, a stat that's absurd on its own. Allowed: playful personification of players, luck, projections and the fantasy gods, and obviously hyperbolic asides to the reader. Not allowed: stating as fact a real person's mood, intent, effort, injury cause, or any off-field event. Other techniques: deadpan hyperbole, a 2-6 word coda that never re-explains the joke, an accurate pop-culture tie-in, team-name wordplay, a fourth-wall aside to Maya.
 
-**Mechanics.** No em dashes in site copy; use a period or comma. Short sentences, one stat line per player, one comparison per blurb, and don't explain or moralize after the joke lands. **Numbers budget** (new copy; the calibration recaps predate it): lead with the story, at most three numbers in a matchup blurb besides the margin; detail belongs in awards and stat fields. **No recycled punchlines:** never reuse a punchline shape or stock phrase from the last three published recaps.
+**Mechanics.** No em dashes in site copy; use a period or comma. Short sentences, one stat line per player, one comparison per blurb, and don't explain or moralize after the joke lands. **Numbers budget:** a number goes in the copy only when it's part of the joke (Dak's 70.32 points from the bench; Purdy's 22.2 on the bench against Daniels's 17.06 in the lineup). Aim for two or fewer per matchup blurb; more only when each one sets up the joke. Everything else belongs in the award `stat` chips. Any number that does appear stays exact. **No recycled punchlines:** never reuse a punchline shape or stock phrase from the last three published recaps.
 
-**Punch at decisions, hug the person.** Roast lineup decisions, projections, stat lines, the fantasy gods, never a manager's character or competence. Don't stack a second joke on whoever's already taken one this issue; her next mention is a hug. Maya's own team gets roasted too, by name, same as anyone else's.
+**Punch at decisions, hug the person.** Roast lineup decisions, projections, stat lines, the fantasy gods, never a manager's character or competence. A manager can take more than one joke in an issue when each is about a different decision (Week 11 had three on Cambri's lineup calls); what she never gets is a joke about who she is. Maya's own team gets roasted too, by name, same as anyone else's.
 
 **Serious moments: play it straight.** A season-ending injury or real bad news gets one warm, plain sentence and nothing else — no joke here or about the other side of the same matchup. Never guess at an injury or its cause; cite a real source (see Recap content) or leave it out.
 
-**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-11); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
+**Running threads.** Pull on whichever threads this week's facts actually revive (Week 11 used several); never force-feed one the week didn't earn, and never lean on a retired one. Drawn from the published recaps (Weeks 1-11); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
 - Mark Andrews: dropped by Maya, then Marlee's up-and-down tight end (Weeks 1, 2, 3).
 - Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1), and again at WR, "Mike Evans, bench correspondent" (Week 11).
 - Marlee's Michael Wilson: benched for big games (Weeks 3, 4), started over George Pickens (Week 5). Parked in Week 8 out of respect for Lamar Jackson's injury, so it's still live.
 - Marlee's namesake, Amon-Ra St. Brown: zero on her bench (Week 6), back in the lineup earning the name (Week 7), 25.8 in her season-high 184.92 (Week 10).
 - Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5), Bryce Young 5.42 (Week 7), "the curse". Week 10 flipped it: she benched Dak Prescott's five touchdowns for Young and won anyway, "she walked him over and held the door". Week 11 did it again (Dak 35.9 on the bench, a win anyway): "Dak Prescott, unpaid intern", "working for exposure".
 - Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while (kept out Weeks 7, 8, 9, 10, 11). In Week 8 she started Pollard and won ("This week she started Pollard"); Pollard won it from her flex again in Week 10. Week 11 lost with J.K. Dobbins's zero in her flex, "found a new way to lose".
-- Kyra's gut at quarterback: Stafford over Burrow and right (Week 2), Burrow over Stafford and right again (Week 8), and a third straight week of it, right again (Week 10), "the gut is now taking appointments".
+- Kyra's gut at quarterback: Stafford over Burrow and right (Week 2), Burrow over Stafford and right again (Week 8), "the gut is now taking appointments" (Week 8), and a third time, right again (Week 10).
 - The projection vs. Bhayshul Tuten, as a court case: "the projection loses its case" (Week 6), "repeat offender" weighing a plea deal (Week 8).
 - Waddle Deez Nutz benching its own Waddle: "Loyalty pays" when she started him (Week 2), namesake on the bench (Week 6), five straight weeks benched, "the team name is not a suggestion" (Week 8), a sixth straight week and right this time, "Correctly, this time" (Week 9).
 - Cambri benching Travis Kelce: he outscored her starter from the bench (Weeks 2, 9). Week 9 used Taylor Swift's "The Man": "Cambri had the man, and she sat him." Week 11 she started him for 25.4 and lost anyway, "...Ready for It? The record wasn't."
