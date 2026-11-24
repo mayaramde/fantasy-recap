@@ -706,6 +706,8 @@
   .ls-mini .cl-hc { height: 24px; min-width: 24px; border-radius: 5px; font-size: 14px; }
   .ls-mini th.avg, .ls-mini td.avg { border-left: 2px solid var(--edge); padding-left: 6px; }
   .ls-avg { display: inline-block; min-width: 38px; padding: 4px 4px 3px; border: 2px solid var(--edge); border-radius: 6px; font: 800 15px/1 var(--display); color: #151a33; }
+  /* Below the desktop size the panel fills the column (fit-content left a gap on the right of a phone); the cells widen with it. */
+  @media (max-width: 899px) { .cl-card.ls-mini { width: 100%; } }
   @media (max-width: 480px) { .ls-mini tbody th { font-size: 15px; } .ls-mini tbody th .cl-go { max-width: 76px; } .ls-mini .cl-hc { height: 22px; min-width: 20px; font-size: 12.5px; } }
   @media (min-width: 900px) {
     .cl-card.ls-mini { padding: 12px 18px 14px; }
