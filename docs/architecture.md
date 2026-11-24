@@ -192,6 +192,13 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   Projected) over the same sections the desktop draws. Local state, not persisted, and it never refetches.
 - **After the last game**: the final scores and stickers as before, plus the wire and the headlines. No
   stakes, edge strip or Coach's desk for a week nobody can change.
+- **Lineup rankings** (`weekStrength` in `site/template.html`, on all three states of the tab: under Coach's desk
+  before kickoff, after the final scores once the week is over, and under Top scorers and the wire on the Live page): a compact
+  copy of the Coach page's "Where everyone's strong" grid (`strengthMap` from `site/coach/`, the same blue rank
+  cells and lime-to-pink AVG), rows sorted best lineup first (by `overall`; ties keep standings order), with a link
+  to the full grid on Coach. Built from the same `profile.pos_ranks` (today's starters on their last three weeks, see
+  Coach page), so it's baked at build time and `/api/live` doesn't refresh it. Left out until every team has ranks.
+  It lived on Standings until the ranks became a snapshot of today's lineup rather than a season tally.
 - A module with nothing to show is left out, never drawn empty.
 - `tests/hub_preview.py <dir>` renders both states from committed data for a look in a browser. A normal build
   of committed data has no live week, so a Vercel branch preview never shows this page; review it with
@@ -297,12 +304,9 @@ harness, `recap-write`'s lookups) has a time series. This is the contract:
 
 ## Standings page
 
-`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, **Lineup rankings**,
-Points by week and the luck report.
-
-- **Lineup rankings** (`standingsStrength` in `site/template.html`): the Coach page's "Where everyone's strong" grid
-  (`strengthMap` + `clStrength` from `site/coach/`), rows sorted best lineup first (by `overall`; ties keep standings order), built from the same `profile.pos_ranks`
-  (today's starters on their last three weeks, see Coach page). Left out until every team has ranks.
+`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**,
+Points by week and the luck report. Lineup rankings moved to the This week / Live tab (below): they're a snapshot of
+today's starters, not a season tally.
 
 - **Playoff odds** (`site/playoffs.py`, baked at build time into `season.playoffs`; `/api/live` never touches them):
   the rest of the regular season and the bracket, simulated 8,000 times from each team's recapped scores. The format

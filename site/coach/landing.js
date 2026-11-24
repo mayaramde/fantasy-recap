@@ -227,7 +227,7 @@ function clStrength(sm, me, n, view) {
         const label = `${r.manager} at ${CL_NAME[c]}: ${ord(rk)} of ${n}${tag ? `, ${tag[1]}` : ''}`;
         return `<td title="${esc(label)}" aria-label="${esc(label)}"><div class="cl-hc h${rk}"><span aria-hidden="true">${rk}</span>${tag ? `<i class="cl-corner ${tag[0]}">${tag[2]}</i>` : ''}</div></td>`;
       }).join('')}
-      <td class="avg" title="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}" aria-label="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}"><div class="cl-hc cl-avg" style="${clAvgTone(r.overall, n)}" aria-hidden="true">${r.overall === 1 ? '<i class="cl-top">🏆</i>' : ''}<span>${r.avg.toFixed(1)}</span><span class="cl-meter"><i style="width:${r.meter}%"></i></span></div></td></tr>`).join('');
+      <td class="avg" title="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}" aria-label="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}"><div class="cl-hc cl-avg" style="${clAvgTone(r.overall, n)}" aria-hidden="true">${r.overall === 1 ? '<i class="cl-trophy">🏆</i>' : ''}<span>${r.avg.toFixed(1)}</span><span class="cl-meter"><i style="width:${r.meter}%"></i></span></div></td></tr>`).join('');
   const foot = (cls, label, by) => `<tr class="${cls}"><th scope="row">${label}</th>${sm.cols.map((c) => `<td title="${esc(`${label} at ${CL_NAME[c]}: ${by[c] || 'nobody'}`)}"><span>${esc(by[c] || '')}</span></td>`).join('')}<td class="avg"></td></tr>`;
   return `
     <div class="cl-heat table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">

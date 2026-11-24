@@ -185,7 +185,7 @@
   .cl-heat th.avg, .cl-heat td.avg { border-left: 2px solid var(--edge); padding-left: 10px; }
   .cl-heat tbody td.avg { padding-right: 6px; }
   .cl-heat th.avg { width: 88px; }
-  .cl-top { position: absolute; top: -12px; left: -10px; right: auto; display: block; width: max-content; z-index: 2; padding: 3px 4px; font: 14px/1 var(--body); font-style: normal; color: var(--on-pop); background: #ffffff; border: 2px solid var(--edge); border-radius: 6px; transform: rotate(-8deg); }
+  .cl-trophy { position: absolute; top: -12px; left: -10px; right: auto; display: block; width: max-content; z-index: 2; padding: 3px 4px; font: 14px/1 var(--body); font-style: normal; color: var(--on-pop); background: #ffffff; border: 2px solid var(--edge); border-radius: 6px; transform: rotate(-8deg); }
   .cl-meter { display: block; width: 70%; height: 6px; border: 1.5px solid currentColor; border-radius: 4px; overflow: hidden; }
   .cl-meter i { display: block; height: 100%; background: currentColor; }
   .cl-heat thead th .cl-lower { display: block; margin-top: 3px; font: 600 9px/1 var(--mono); letter-spacing: 0; text-transform: none; }
@@ -209,7 +209,7 @@
     .cl-hc.cl-avg { gap: 3px; font-size: 15px; box-shadow: 2px 2px 0 var(--drop); } .cl-meter { height: 4px; border-width: 1px; }
     .cl-heat th.avg, .cl-heat td.avg { padding-left: 5px; } .cl-heat th.avg { width: 50px; }
     .cl-heat thead th { font-size: 10px; letter-spacing: 0; }
-    .cl-top { top: -14px; left: -9px; padding: 2px 3px; font-size: 11px; }
+    .cl-trophy { top: -14px; left: -9px; padding: 2px 3px; font-size: 11px; }
     .cl-heat tfoot td { font-size: 9px; }
   }
   .cl-callouts { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; }
