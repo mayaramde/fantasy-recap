@@ -177,16 +177,17 @@
   .cl-heat td.avg { font: 800 24px/1 var(--display); }
   /* AVG is a rank average, so lower is stronger: shaded by its place in the league like every
      other cell (darkest = best lineup) and drawn with a strength bar that fills for the best. */
-  .cl-hc.cl-avg { flex-direction: column; gap: 5px; border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); }
+  .cl-hc.cl-avg { flex-direction: column; gap: 5px; color: #151a33; border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); }
+  .cl-swatch { display: inline-block; width: 14px; height: 14px; margin: 0 5px 0 4px; vertical-align: -2px; border: 2px solid var(--edge); border-radius: 4px; }
+  .cl-swatch.lime { background: #c7f04a; } .cl-swatch.pink { background: #ff6fb5; }
   /* AVG is the row's result, not an eighth spot: a ruled-off column, like the total on a receipt,
-     and a sticker-framed cell. The best lineup gets the one lime trophy sticker. */
+     and a sticker-framed cell. AVG fills lime (best) to pink (worst), and the best lineup gets a trophy sticker. */
   .cl-heat th.avg, .cl-heat td.avg { border-left: 2px solid var(--edge); padding-left: 10px; }
   .cl-heat tbody td.avg { padding-right: 6px; }
   .cl-heat th.avg { width: 88px; }
-  .cl-top { position: absolute; top: -12px; left: -10px; right: auto; display: block; width: max-content; z-index: 2; padding: 3px 4px; font: 14px/1 var(--body); font-style: normal; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 6px; transform: rotate(-8deg); }
+  .cl-top { position: absolute; top: -12px; left: -10px; right: auto; display: block; width: max-content; z-index: 2; padding: 3px 4px; font: 14px/1 var(--body); font-style: normal; color: var(--on-pop); background: #ffffff; border: 2px solid var(--edge); border-radius: 6px; transform: rotate(-8deg); }
   .cl-meter { display: block; width: 70%; height: 6px; border: 1.5px solid currentColor; border-radius: 4px; overflow: hidden; }
   .cl-meter i { display: block; height: 100%; background: currentColor; }
-  .cl-meter-key { display: inline-block; width: 28px; color: var(--ink); vertical-align: middle; margin-right: 6px; }
   .cl-heat thead th .cl-lower { display: block; margin-top: 3px; font: 600 9px/1 var(--mono); letter-spacing: 0; text-transform: none; }
   .cl-hc { position: relative; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 800 24px/1 var(--display); color: #151a33; }
   .cl-hc.h1 { background: #2e4bf2; color: #fff; } .cl-hc.h2 { background: #4963f3; color: #fff; }

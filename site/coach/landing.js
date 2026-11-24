@@ -208,6 +208,15 @@ function clWaiver(order, me, p, view) {
     </div>`;
 }
 
+/* AVG's fill runs lime (the best lineup) through white to pink (the weakest), the same lime and
+   pink as the League best / League worst rows under it. Fixed colors with ink text, like the blue
+   spot cells, so it reads the same in dark mode. */
+function clAvgTone(overall, n) {
+  const t = n > 1 ? (overall - 1) / (n - 1) : 0;
+  const [pop, pct] = t <= 0.5 ? ['#c7f04a', Math.round((1 - 2 * t) * 100)] : ['#ff6fb5', Math.round((2 * t - 1) * 100)];
+  return `background: color-mix(in srgb, ${pop} ${pct}%, #ffffff)`;
+}
+
 function clStrength(sm, me, n, view) {
   const ord = (r) => ordinal(r);
   const body = sm.rows.map((r) => `
@@ -218,7 +227,7 @@ function clStrength(sm, me, n, view) {
         const label = `${r.manager} at ${CL_NAME[c]}: ${ord(rk)} of ${n}${tag ? `, ${tag[1]}` : ''}`;
         return `<td title="${esc(label)}" aria-label="${esc(label)}"><div class="cl-hc h${rk}"><span aria-hidden="true">${rk}</span>${tag ? `<i class="cl-corner ${tag[0]}">${tag[2]}</i>` : ''}</div></td>`;
       }).join('')}
-      <td class="avg" title="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}" aria-label="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}"><div class="cl-hc cl-avg h${r.overall}" aria-hidden="true">${r.overall === 1 ? '<i class="cl-top">🏆</i>' : ''}<span>${r.avg.toFixed(1)}</span><span class="cl-meter"><i style="width:${r.meter}%"></i></span></div></td></tr>`).join('');
+      <td class="avg" title="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}" aria-label="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}"><div class="cl-hc cl-avg" style="${clAvgTone(r.overall, n)}" aria-hidden="true">${r.overall === 1 ? '<i class="cl-top">🏆</i>' : ''}<span>${r.avg.toFixed(1)}</span><span class="cl-meter"><i style="width:${r.meter}%"></i></span></div></td></tr>`).join('');
   const foot = (cls, label, by) => `<tr class="${cls}"><th scope="row">${label}</th>${sm.cols.map((c) => `<td title="${esc(`${label} at ${CL_NAME[c]}: ${by[c] || 'nobody'}`)}"><span>${esc(by[c] || '')}</span></td>`).join('')}<td class="avg"></td></tr>`;
   return `
     <div class="cl-heat table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
@@ -226,7 +235,7 @@ function clStrength(sm, me, n, view) {
         <tbody>${body}</tbody>
         <tfoot>${foot('best', 'League best', sm.bestBy)}${foot('worst', 'League worst', sm.worstBy)}</tfoot></table>
     </div>
-    <p class="cl-key"><span class="cl-corner best" aria-hidden="true">${CL_ICON.up}</span>best spot <span class="cl-corner weak" aria-hidden="true">${CL_ICON.down}</span>weakest spot · 1 is the league's best, ${n} the worst · <span class="cl-meter cl-meter-key" aria-hidden="true"><i style="width:80%"></i></span>a fuller AVG bar is a stronger lineup</p>`;
+    <p class="cl-key"><span class="cl-corner best" aria-hidden="true">${CL_ICON.up}</span>best spot <span class="cl-corner weak" aria-hidden="true">${CL_ICON.down}</span>weakest spot · 1 is the league's best, ${n} the worst <span class="cl-key-avg">AVG: <span class="cl-swatch lime" aria-hidden="true"></span>strongest lineup <span class="cl-swatch pink" aria-hidden="true"></span>weakest · a fuller bar is stronger</span></p>`;
 }
 
 function clCallouts(list) {
