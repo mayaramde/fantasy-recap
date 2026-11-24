@@ -248,6 +248,26 @@
           "coach_cards": 29
         }
       }
+    },
+    {
+      "date": "2026-11-23",
+      "file": "2026-11-23.json",
+      "generated_at": "2026-11-23T18:25:00Z",
+      "fantasypros_reached": true,
+      "weeks": {
+        "11": {
+          "advice_cards": 5,
+          "roster_ideas": 3,
+          "trades": 1,
+          "coach_cards": 14
+        },
+        "12": {
+          "advice_cards": 5,
+          "roster_ideas": 3,
+          "trades": 1,
+          "coach_cards": 31
+        }
+      }
     }
   ]
 }
