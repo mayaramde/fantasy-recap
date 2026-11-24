@@ -177,7 +177,13 @@
   .cl-heat td.avg { font: 800 24px/1 var(--display); }
   /* AVG is a rank average, so lower is stronger: shaded by its place in the league like every
      other cell (darkest = best lineup) and drawn with a strength bar that fills for the best. */
-  .cl-hc.cl-avg { flex-direction: column; gap: 5px; }
+  .cl-hc.cl-avg { flex-direction: column; gap: 5px; border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); }
+  /* AVG is the row's result, not an eighth spot: a ruled-off column, like the total on a receipt,
+     and a sticker-framed cell. The best lineup gets the one lime trophy sticker. */
+  .cl-heat th.avg, .cl-heat td.avg { border-left: 2px solid var(--edge); padding-left: 10px; }
+  .cl-heat tbody td.avg { padding-right: 6px; }
+  .cl-heat th.avg { width: 88px; }
+  .cl-top { position: absolute; top: -12px; left: -10px; right: auto; display: block; width: max-content; z-index: 2; padding: 3px 4px; font: 14px/1 var(--body); font-style: normal; color: var(--on-pop); background: var(--lime); border: 2px solid var(--edge); border-radius: 6px; transform: rotate(-8deg); }
   .cl-meter { display: block; width: 70%; height: 6px; border: 1.5px solid currentColor; border-radius: 4px; overflow: hidden; }
   .cl-meter i { display: block; height: 100%; background: currentColor; }
   .cl-meter-key { display: inline-block; width: 28px; color: var(--ink); vertical-align: middle; margin-right: 6px; }
@@ -199,7 +205,10 @@
     .cl-heat thead th:first-child, .cl-heat tbody th, .cl-heat tfoot th { width: 84px; padding-left: 8px; }
     .cl-heat tbody th { font-size: 17px; } .cl-heat tbody th .cl-you { display: none; }
     .cl-hc { height: 36px; font-size: 18px; } .cl-heat td:last-child { width: 44px; } .cl-heat td.avg { font-size: 16px; }
-    .cl-hc.cl-avg { gap: 3px; font-size: 15px; } .cl-meter { height: 4px; border-width: 1px; }
+    .cl-hc.cl-avg { gap: 3px; font-size: 15px; box-shadow: 2px 2px 0 var(--drop); } .cl-meter { height: 4px; border-width: 1px; }
+    .cl-heat th.avg, .cl-heat td.avg { padding-left: 5px; } .cl-heat th.avg { width: 50px; }
+    .cl-heat thead th { font-size: 10px; letter-spacing: 0; }
+    .cl-top { top: -14px; left: -9px; padding: 2px 3px; font-size: 11px; }
     .cl-heat tfoot td { font-size: 9px; }
   }
   .cl-callouts { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; }
