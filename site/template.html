@@ -1227,6 +1227,8 @@
   .rp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
   @media (max-width: 980px) { .rp-two { grid-template-columns: minmax(0, 1fr); } }
   .rp-std-card { margin-top: 22px; border: 2px solid var(--edge); border-radius: 22px; background: var(--card); box-shadow: 6px 6px 0 var(--accent); overflow: hidden; }
+  /* the tie note sits inside the card, so it needs the card's own inset to clear the rounded corners */
+  .rp-std-card .tie-note { margin: 0; padding: 12px 18px 16px; border-top: 2px solid var(--rule); }
   .rp-std { width: 100%; border-collapse: collapse; }
   .rp-std th { padding: 0 12px; height: 42px; background: var(--board); color: var(--on-board); font: 600 13px/1 var(--script); letter-spacing: 0.03em; text-align: left; white-space: nowrap; }
   .rp-std th:first-child, .rp-std td:first-child { padding-left: 18px; }
