@@ -297,8 +297,12 @@ harness, `recap-write`'s lookups) has a time series. This is the contract:
 
 ## Standings page
 
-`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, Points by week and
-the luck report.
+`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, **Lineup rankings**,
+Points by week and the luck report.
+
+- **Lineup rankings** (`standingsStrength` in `site/template.html`): the Coach page's "Where everyone's strong" grid
+  (`strengthMap` + `clStrength` from `site/coach/`), rows in standings order, built from the same `profile.pos_ranks`
+  (today's starters on their last three weeks, see Coach page). Left out until every team has ranks.
 
 - **Playoff odds** (`site/playoffs.py`, baked at build time into `season.playoffs`; `/api/live` never touches them):
   the rest of the regular season and the bracket, simulated 8,000 times from each team's recapped scores. The format
