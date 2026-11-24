@@ -910,7 +910,8 @@
   .rp .rp-kinds .chip { --k: var(--orange); --s: var(--orange-soft); display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 48px; padding: 6px 10px; border-radius: 14px; background: var(--s); font-size: 14px; line-height: 1.1; text-align: center; }
   .rp .rp-kinds .chip.flags { --k: var(--pink); --s: var(--pink-soft); }
   .rp .rp-kinds .chip.breaks { --k: var(--lime); --s: var(--lime-soft); }
-  .rp .rp-kinds .chip i { flex: none; font-style: normal; font-size: 17px; line-height: 1; }
+  /* the emoji flows inline with the label, so it stays right beside the first word when the label wraps */
+  .rp .rp-kinds .chip i { font-style: normal; font-size: 16px; line-height: 1; margin-right: 5px; vertical-align: -1px; }
   .rp .rp-kinds .chip.sel { background: var(--k); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
   .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .rp .chip:hover { transform: translateY(-2px); }
@@ -3033,7 +3034,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
         <div class="rp-filters rp-kinds" role="group" aria-label="Pick an award type" style="--n: ${kinds.length}">
           ${kinds.map((k) =>
-            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><i aria-hidden="true">${KIND[k].emoji}</i>${KIND[k].title}</button>`).join('')}
+            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><span><i aria-hidden="true">${KIND[k].emoji}</i>${KIND[k].title}</span></button>`).join('')}
         </div>
         ${awardGroups(w, { rp: true, filter })}
       </section>` : ''}
