@@ -904,6 +904,15 @@
 
   /* recap page awards: filter chips, grouped by kind, a round sticker beside each manager */
   .rp-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  /* the awards picker: one kind at a time, three equal buttons on one row, each tinted like its cards
+     (soft tint with a color dot; the picked one takes the full fill) */
+  .rp-filters.rp-kinds { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 8px; }
+  .rp .rp-kinds .chip { --k: var(--orange); --s: var(--orange-soft); display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 48px; padding: 6px 10px; border-radius: 14px; background: var(--s); font-size: 14px; line-height: 1.1; text-align: center; }
+  .rp .rp-kinds .chip.flags { --k: var(--pink); --s: var(--pink-soft); }
+  .rp .rp-kinds .chip.breaks { --k: var(--lime); --s: var(--lime-soft); }
+  .rp .rp-kinds .chip i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--k); border: 2px solid var(--edge); }
+  .rp .rp-kinds .chip.sel { background: var(--k); color: var(--on-pop); box-shadow: 3px 3px 0 var(--drop); }
+  .rp .rp-kinds .chip.sel i { background: var(--on-pop); border-color: var(--on-pop); }
   .rp .chip { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 2px solid var(--edge); background: var(--card); color: var(--ink); font: 700 15px/1 var(--body); box-shadow: 2px 2px 0 var(--drop); cursor: pointer; }
   .rp .chip:hover { transform: translateY(-2px); }
   .rp .chip.sel { background: var(--ink); color: var(--bg); }
@@ -2809,9 +2818,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   /* ---------- recap page (#week-N) pieces ---------- */
   // What the page remembers while it's redrawn (the live refresh re-routes now and then):
   // which game is open, which award filter is on, which glossary term is expanded.
-  const RP = { week: null, game: null, filter: 'all', term: null, me: undefined };
+  const RP = { week: null, game: null, filter: null, term: null, me: undefined };
   const rpState = (w) => {
-    if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: 'all', term: null });
+    if (RP.week !== w.week) Object.assign(RP, { week: w.week, game: null, filter: null, term: null });
     return RP;
   };
 
@@ -2946,8 +2955,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   };
   // Kinds in order, each with a tilted badge and a card count. `rp` marks the recap page's groups
   // so its filter chips can hide them.
-  const awardGroups = (w, { rp = false, filter = 'all' } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
-    <section class="awc-grp ${KIND[k].cls}${rp ? ' rp-grp' : ''}"${rp ? ` data-rp-kind="${k}"${filter === 'all' || filter === k ? '' : ' hidden'}` : ''}>
+  const awardGroups = (w, { rp = false, filter = null } = {}) => `<div class="awc-list">${AWARD_KINDS.filter((k) => w[k].length).map((k) => `
+    <section class="awc-grp ${KIND[k].cls}${rp ? ' rp-grp' : ''}"${rp ? ` data-rp-kind="${k}"${filter === k ? '' : ' hidden'}` : ''}>
       <div class="awc-gh"><h3 class="awc-gb">${KIND[k].title}</h3><span class="awc-cnt">${w[k].length} ${w[k].length === 1 ? 'card' : 'cards'}</span></div>
       <p class="awc-sub">${KIND[k].sub}</p>
       ${awardGrid(w[k], k)}
@@ -2990,7 +2999,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (st.me !== me) { st.me = me; st.game = null; }
     const mineKey = (w.games.find(isMyGame) || {}).key;
     const open = w.games.some((g) => g.key === st.game) ? st.game : (mineKey || (w.games[0] || {}).key);
-    const filter = st.filter === 'all' || kinds.includes(st.filter) ? st.filter : 'all';
+    // One kind of award at a time, game balls first.
+    const filter = kinds.includes(st.filter) ? st.filter : kinds[0];
     const term = st.term == null ? 0 : st.term;
     return `
       ${LIVE ? `<a class="live-banner" href="#live"><span>${deadZone() ? '' : '<span class="live-dot" aria-hidden="true"></span>'}${deadZone() ? `Week ${LIVE.week}: scores, coach cards and who's up next` : liveLabel(LIVE)}</span><span class="go">${deadZone() ? 'Take a look →' : (LIVE.complete ? 'Final scores →' : 'Live scores →')}</span></a>` : ''}
@@ -3020,9 +3030,9 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${kinds.length ? `
       <section class="rp-aw">
         ${secHead('ball', 'The awards', `<a class="more" href="#week-${w.week}.awards">All ${nAwards} awards →</a>`)}
-        <div class="rp-filters" role="group" aria-label="Filter awards">
-          ${[['all', `All ${nAwards} awards`], ...kinds.map((k) => [k, KIND[k].title])].map(([k, label]) =>
-            `<button type="button" class="chip${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}">${label}</button>`).join('')}
+        <div class="rp-filters rp-kinds" role="group" aria-label="Pick an award type" style="--n: ${kinds.length}">
+          ${kinds.map((k) =>
+            `<button type="button" class="chip ${KIND[k].cls}${k === filter ? ' sel' : ''}" data-rp-filter="${k}" aria-pressed="${k === filter}"><i aria-hidden="true"></i>${KIND[k].title}</button>`).join('')}
         </div>
         ${awardGroups(w, { rp: true, filter })}
       </section>` : ''}
@@ -5079,7 +5089,7 @@ __BTS_JS__
       RP.filter = kind;
       root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.setAttribute('aria-pressed', b === chip ? 'true' : 'false'));
       root.querySelectorAll('button[data-rp-filter]').forEach((b) => b.classList.toggle('sel', b === chip));
-      root.querySelectorAll('.rp-grp').forEach((g) => { g.hidden = kind !== 'all' && g.dataset.rpKind !== kind; });
+      root.querySelectorAll('.rp-grp').forEach((g) => { g.hidden = g.dataset.rpKind !== kind; });
       return;
     }
     const term = e.target.closest('button[data-rp-term]');
