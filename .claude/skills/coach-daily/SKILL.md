@@ -303,7 +303,7 @@ against those keys, so managers never read a fill-in-the-blank template.
    `summary` line per team under its exact `summary_key`. A `summary` is the one-line quip on that team's Game day
    when her lineup is clean: **110 characters at most** (the site drops a longer one and shows the computed wording), advice
    first, then one line of personality. Also write the week's **`league`** paragraph, `{key, text}`, under the
-   brief's `league.key`: two or three sentences for the dark "Coach's take" card at the top of the league page (`#league-<id>`), summing
+   brief's `league.key`: two or three sentences (not shown on the site since the league page was retired in Nov 2026, but still checked and cached), summing
    up the whole league from the brief's `league` facts (how many lineups have something to fix, how many starters
    are on bye, who is clean). It follows the same rules as everything else here: no decimals, percentages or point
    counts, counts in words ("seven of eight lineups"), no pronouns for a manager (name them), the headline above it

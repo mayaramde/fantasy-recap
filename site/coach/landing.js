@@ -1,6 +1,6 @@
 /* ---------- Coach's league-wide modules ----------
-   The markup for "Around the league" on the This week / Live tab (weekLeague), the league page a
-   team's Game day links to (coachLeague, #league-<id>) and the Coach tab's name picker (clPickCard).
+   The markup for "Around the league" on the This week / Live tab (weekLeague) and the Coach tab's
+   name picker (clPickCard).
    Browser-side only (it reads the page's own data and helpers), inlined into template.html by
    site/build.py after the pure insight functions in this folder. Read-only: nothing here
    changes a lineup or claims a trade. A module whose inputs aren't there is left out. */
@@ -74,52 +74,12 @@ function clGames(next, rows) {
 
 const clYou = (on) => (on ? '<span class="cl-you">You</span>' : '');
 /* "You" is the Viewing-as pick (orange); "viewing" is whichever team's profile is open (cobalt-soft).
-   Only the league page (#league-<id>) passes a `view`; This week has nobody open, so it only ever lights "you". */
+   This week has nobody open, so it only ever lights "you"; `view` is kept for a caller that has one. */
 const clTone = (id, me, view) => (id === me ? ' me' : view != null && id === view ? ' view' : '');
 const clTag = (id, me, view) => (id === me ? clYou(true) : view != null && id === view ? '<span class="cl-viewing">Viewing</span>' : '');
 /* A name that opens that team's profile. role=button, not a link: the router handles the tap
    (and Enter / Space) in template.html, so a name inside a table row or list item stays valid markup. */
 const clOpen = (id, name) => `role="button" tabindex="0" data-open-team="${id}" title="Open ${esc(name)}'s team"`;
-
-function clTake(take, v, show, unwritten = false) {
-  const tile = (tone, label, big, sub) => `<div class="cl-vital"><span class="cl-chip ${tone}">${label}</span><span class="cl-vn">${big}</span>${sub ? `<span class="cl-vs">${sub}</span>` : ''}</div>`;
-  const tiles = [
-    tile('lime', 'Lineups to fix', `${v.fixTeams}<small> / ${v.total}</small>`, 'teams with something to fix'),
-    show.bye ? tile('pink', 'Starters on bye', String(v.byeStarters), `across ${v.byeTeams} ${v.byeTeams === 1 ? 'team' : 'teams'}${v.noStarterHurt ? ' · no starter is hurt' : ''}`) : '',
-    show.proj ? tile('orange', 'Swap gains', `+${f1(v.swapGain)}`, 'projected points on benches') : '',
-    show.proj && v.avgProjection ? tile('blue', 'Avg projection', f1(v.avgProjection), v.seasonAvg ? `season average is ${f1(v.seasonAvg)}` : '') : '',
-  ].filter(Boolean).join('');
-  const PILL = { 'Cleanest lineup': 'lime', 'Biggest swap': 'orange', 'Most on bye': 'pink' };
-  return `
-    <div class="cl-top">
-      <section class="cl-take${unwritten ? ' light' : ''}" aria-labelledby="cl-take-h">
-        <span class="cl-take-label">Coach's take</span>
-        <h2 id="cl-take-h">${esc(take.headline)}</h2>
-        <p>${esc(take.paragraph)}</p>
-        ${unwritten ? '<p class="cl-unwritten">Coach hasn\'t written today\'s take yet.</p>' : ''}
-        ${take.pills.length ? `<ul class="cl-pills">${take.pills.map((p) => `<li class="${PILL[p.label] || ''}"><span>${esc(p.label)}</span>${esc(p.text)}</li>`).join('')}</ul>` : ''}
-      </section>
-      <div class="cl-vitals" role="group" aria-label="League vitals">${tiles}</div>
-    </div>`;
-}
-
-function clByes(d, me, injuryKnown, view) {
-  const strip = !injuryKnown ? ''
-    : d.injured.length
-    ? `<div class="cl-injury"><h4>Hurt starters</h4><ul>${d.injured.map((p) => `<li><b>${esc(p.manager)}</b> ${esc(p.name)} <span class="cl-pill pink">${esc(p.status)}</span> <small>${esc(p.spot)}</small></li>`).join('')}</ul></div>`
-    : `<div class="cl-injury clean">${CL_ICON.check}<span><b>Injury report is clean.</b> No starter is hurt.</span></div>`;
-  return `
-    <div class="cl-card cl-byes">
-      ${d.tiles.length ? `<ul class="cl-tiles">${d.tiles.map((t) => `<li><div class="cl-tn2"><b>${t.count}</b><span>${esc(t.team)} on bye</span></div><small>${esc(t.names.join(' · '))}</small></li>`).join('')}</ul>` : '<p class="cl-empty">No NFL team is off this week.</p>'}
-      <div class="cl-label">Exposure by manager</div>
-      <ul class="cl-expo">${d.exposure.map((e) => `
-        <li><span class="cl-nm${clTone(e.team_id, me, view)}">${esc(e.manager)}</span>
-          <span class="cl-segs" aria-hidden="true">${e.starters ? `<i class="s" style="width:${e.starters * 34}px"></i>` : ''}${e.bench ? `<i class="b" style="width:${e.bench * 34}px"></i>` : ''}</span>
-          <span class="cl-el">${esc(e.label)}</span></li>`).join('')}</ul>
-      <p class="cl-legend"><span><i class="s" aria-hidden="true"></i>Starter on bye</span><span><i class="b" aria-hidden="true"></i>Bench on bye</span></p>
-      ${strip}
-    </div>`;
-}
 
 function clBattles(b, me) {
   const maxEdge = b.edges.length ? b.edges[0].margin : 1;
@@ -180,7 +140,8 @@ function clCallouts(list) {
 }
 
 function clTrades(cards) {
-  const col = (label, xs) => `<div><span class="cl-col-l">${label}</span><b>${xs.map((x) => `${x.spot} ${ordinal(x.rank)}`).join(' · ')}</b></div>`;
+  // One spot per line: a run-on "RB 7th · DST 7th · K 7th" wraps mid-list in a narrow side.
+  const col = (label, xs) => `<div><span class="cl-col-l">${label}</span>${xs.map((x) => `<b>${x.spot} ${ordinal(x.rank)}</b>`).join('')}</div>`;
   const text = (c) => {
     const a = c.a.needs.map((x) => x.spot).join(' and '), b = c.b.needs.map((x) => x.spot).join(' and ');
     return c.kind === 'perfect'
@@ -199,26 +160,6 @@ function clTrades(cards) {
         <p>${esc(text(c))}</p>
       </li>`).join('')}</ul>
     <p class="cl-note">Ideas, not offers: trades happen in the ESPN app.</p>`;
-}
-
-/* What the league page is built from, computed once per render: the normalized teams, the
-   league's vitals and take, the strength grid and the waiver order. */
-function clModel(next, rows) {
-  const teams = clTeams(rows);
-  const known = rows.some((r) => Array.isArray(r.report));
-  const projected = next ? !!ahead().projected : true;
-  const n = teams.length;
-  const injuryKnown = rows.some((r) => r.injuries_known);
-  const v = vitals(teams, { seasonAvg: seasonAverage(SEASON.standings || []), injuriesKnown: injuryKnown });
-  const take = coachTake(teams, v, COACH_HEADLINES, { projected });
-  // coach-daily's paragraph, while it still describes the league as it is; the template wording otherwise.
-  const written = (rows.find((r) => r.league_take) || {}).league_take;
-  if (written) take.paragraph = written;
-  const withRanks = teams.length && teams.every((t) => t.ranks);
-  const sm = withRanks ? strengthMap(teams.map((t) => ({ id: t.id, manager: t.manager, ranks: t.ranks }))) : null;
-  // Waiver order resets after each week's games, so next week's isn't known yet: no module, no chips.
-  const order = next ? [] : SEASON.waiver_order ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean) : [...(SEASON.standings || [])].reverse();
-  return { teams, known, projected, n, injuryKnown, v, take, written: !!written, sm, order };
 }
 
 /* "Make this page yours": the whole Coach tab for someone who hasn't picked a name, since Coach is
@@ -240,30 +181,6 @@ function clPickCard(teams, rows) {
     </section>`;
 }
 
-/* The league page (#league-<id>, linked from a team's Game day): Coach's take, the strength
-   grid, the waiver order, injuries and byes. `me` is the Viewing-as pick (orange), `view` the team
-   whose profile is open (cobalt-soft). Each module that has nothing to show says so instead of
-   drawing an empty table. */
-function coachLeague(rows, me, view) {
-  if (!rows.length) {
-    return clSection('cobalt', 'The league', '<div class="cl-card"><p class="cl-empty">No rosters to read yet. This fills in once Coach has captured this week.</p></div>');
-  }
-  const { teams, known, n, injuryKnown, v, take, written, sm, order } = clModel(false, rows);
-  const pk = pickups((LIVE && LIVE.wire) || []);
-  const dmg = known ? byeDamage(teams) : null;
-  const calls = sm ? callouts(sm.rows, n) : [];
-  const body = [
-    clTake(take, v, { bye: known, proj: true }, !written),
-    clSection('cobalt', "Where everyone's strong",
-      sm ? clStrength(sm, me, n, view) + clCallouts(calls) : '<div class="cl-card"><p class="cl-empty"><b>No grid yet.</b> It fills in once a week has been recapped.</p></div>',
-      'Each team\'s starters today, ranked by their last three weeks. Darker means stronger.'),
-    order.length ? clSection('cobalt', 'Waiver order this week', clWaiver(order, me, pk, view), 'Worst record picks first. The order resets every week.') : '',
-    clSection('pink', 'Injuries and byes',
-      dmg ? clByes(dmg, me, injuryKnown, view) : '<div class="cl-card"><p class="cl-empty">The injury and bye report isn\'t in yet.</p></div>',
-      'A bye means his NFL team doesn\'t play, so he scores zero.'),
-  ].join('');
-  return body;
-}
 
 /* The strength grid at panel size, for This week: the same blue rank cells and lime-to-pink AVG as
    clStrength, best lineup on top (ties keep standings order), without the corner stickers or the
@@ -284,18 +201,19 @@ function clMiniStrength(sm, me, n) {
 }
 
 /* "Around the league" on the This week / Live tab: the league-wide modules that used to open the
-   Coach tab for anyone who hadn't picked a team. Where the week gets decided (only while games are
-   still ahead or on), the waiver order (the League wire above it already counts pickups, so this one
+   Coach tab for anyone who hadn't picked a team. Where the week gets decided (only before kickoff:
+   it reads pre-game projections, which a game in progress has already moved past; the Live page passes
+   `decided: false`), the waiver order (the League wire above it already counts pickups, so this one
    doesn't), where everyone's strong and the trade matchmaker. Always this week: `rows` are this
    week's Coach rows, which only the trade matchmaker needs (to skip a spot that's empty or on a bye).
    Nothing to show, nothing drawn. */
-function weekLeague(w, rows, me) {
+function weekLeague(w, rows, me, { decided = !w.complete } = {}) {
   const stand = SEASON.standings || [];
   const n = stand.length;
   const teams = rows.length ? clTeams(rows) : [];
   const sm = n && stand.every((t) => t.profile && t.profile.pos_ranks)
     ? strengthMap(stand.map((t) => ({ id: t.team_id, manager: t.manager, ranks: t.profile.pos_ranks }))) : null;
-  const b = w.complete ? null : battles(clGames(false, rows));
+  const b = decided ? battles(clGames(false, rows)) : null;
   const order = SEASON.waiver_order ? SEASON.waiver_order.map((id) => TEAMS[id]).filter(Boolean) : [...stand].reverse();
   const trades = sm ? tradeMatches(sm.rows, unavailableSpots(teams)) : [];
   const calls = sm ? callouts(sm.rows, n) : [];

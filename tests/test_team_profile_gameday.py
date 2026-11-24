@@ -35,9 +35,12 @@ class Structure(unittest.TestCase):
         self.assertIn(r"/^team-(\d+)\.(lineup|next|league)$/", SRC)
         self.assertIn("location.replace(`#team-${m[1]}`)", SRC)
 
-    def test_league_view_has_its_own_route(self):
+    def test_retired_league_page_lands_on_this_week(self):
+        # The league page's modules moved to This week; old #league-<id> links land there.
         self.assertIn(r"/^league-(\d+)$/", SRC)
-        self.assertIn('href="#league-${id}"', SRC)
+        self.assertIn("location.replace(LIVE ? '#live'", SRC)
+        self.assertNotIn('href="#league-${id}"', SRC)
+        self.assertNotIn("function leaguePage", SRC)
 
     def test_redraw_skips_an_open_sheet(self):
         self.assertIn("(document.getElementById('tp-sheet') || {}).open", SRC)
