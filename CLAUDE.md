@@ -185,27 +185,30 @@ Get the joke from something true and checkable: a team name, a real callback, a 
 
 **Serious moments: play it straight.** A season-ending injury or real bad news gets one warm, plain sentence and nothing else — no joke here or about the other side of the same matchup. Never guess at an injury or its cause; cite a real source (see Recap content) or leave it out.
 
-**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-10); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
+**Running threads.** Pull on one, maybe two per issue, not every live thread. Drawn from the published recaps (Weeks 1-11); `recap-ship` refreshes this list in each publish PR (add live threads, retire dead ones, cite weeks):
 - Mark Andrews: dropped by Maya, then Marlee's up-and-down tight end (Weeks 1, 2, 3).
-- Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1).
+- Maya's flex and Mike Evans: Evans outscoring her starter from the bench (Weeks 4, 5; flex flop Week 1), and again at WR, "Mike Evans, bench correspondent" (Week 11).
 - Marlee's Michael Wilson: benched for big games (Weeks 3, 4), started over George Pickens (Week 5). Parked in Week 8 out of respect for Lamar Jackson's injury, so it's still live.
 - Marlee's namesake, Amon-Ra St. Brown: zero on her bench (Week 6), back in the lineup earning the name (Week 7), 25.8 in her season-high 184.92 (Week 10).
-- Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5), Bryce Young 5.42 (Week 7), "the curse". Week 10 flipped it: she benched Dak Prescott's five touchdowns for Young and won anyway, "she walked him over and held the door".
-- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while (kept out Weeks 7, 8, 9, 10). In Week 8 she started Pollard and won ("This week she started Pollard"); Pollard won it from her flex again in Week 10.
+- Maddie's quarterbacks: Jaxson Dart 0.8 (Week 2), Tyler Shough −0.16 (Week 5), Bryce Young 5.42 (Week 7), "the curse". Week 10 flipped it: she benched Dak Prescott's five touchdowns for Young and won anyway, "she walked him over and held the door". Week 11 did it again (Dak 35.9 on the bench, a win anyway): "Dak Prescott, unpaid intern", "working for exposure".
+- Cambri losing games she should win, "her superpower" (Weeks 1, 3, 5; Week 7 with the winner on her bench). She has headlined Weeks 5 and 6, so keep her out of the headline for a while (kept out Weeks 7, 8, 9, 10, 11). In Week 8 she started Pollard and won ("This week she started Pollard"); Pollard won it from her flex again in Week 10. Week 11 lost with J.K. Dobbins's zero in her flex, "found a new way to lose".
 - Kyra's gut at quarterback: Stafford over Burrow and right (Week 2), Burrow over Stafford and right again (Week 8), and a third straight week of it, right again (Week 10), "the gut is now taking appointments".
 - The projection vs. Bhayshul Tuten, as a court case: "the projection loses its case" (Week 6), "repeat offender" weighing a plea deal (Week 8).
 - Waddle Deez Nutz benching its own Waddle: "Loyalty pays" when she started him (Week 2), namesake on the bench (Week 6), five straight weeks benched, "the team name is not a suggestion" (Week 8), a sixth straight week and right this time, "Correctly, this time" (Week 9).
-- Cambri benching Travis Kelce: he outscored her starter from the bench (Weeks 2, 9). Week 9 used Taylor Swift's "The Man": "Cambri had the man, and she sat him."
-- Maya's pickup habit: 32 pickups, the most in the league, "Add to cart, 32 times" (Week 9).
+- Cambri benching Travis Kelce: he outscored her starter from the bench (Weeks 2, 9). Week 9 used Taylor Swift's "The Man": "Cambri had the man, and she sat him." Week 11 she started him for 25.4 and lost anyway, "...Ready for It? The record wasn't."
+- Maya's pickup habit: 32 pickups, the most in the league, "Add to cart, 32 times" (Week 9); "leads the league in pickups" (Week 11).
 - Maya vs. Amie: Amie's big weeks keep running into Maya's league high (Weeks 2, 9), "Maya owes her a fruit basket" (Week 9).
 - Samantha's Stefon Diggs: on her bench nine of ten weeks, scoring there in Weeks 1 and 10, "less a lineup error than a standing arrangement" (Week 10).
 - Amie's season high: her Week 1 177.96 stood until Marlee's 184.92, "It was a good record. It's over now." (Week 10).
-- Samantha's courtroom: she's in law school (per Maya), "No further questions" with Exhibits A and B (Week 9). Pairs with the Tuten court case.
+- Marlee's back-to-back weekly highs (Weeks 10, 11), the second against first-place Kyra, "still in first place, which is technically true" (Week 11).
+- Amie's perfect lineups: lost anyway in Week 2 ("feels illegal but isn't"), won in Week 11, "It took nine weeks for the universe to process the refund."
+- Tara and Christian McCaffrey: lost with his 46.3 (Week 10), lost with her kicker outscoring him (Week 11), "At least she's thorough."
+- Samantha's courtroom: she's in law school (per Maya), "No further questions" with Exhibits A and B (Week 9), "decided on the merits" after her projected-first, finished-last week (Week 11). Pairs with the Tuten court case.
 - Resting: the recap-author-as-defendant bit about Maya (Weeks 4, 5, 6). Skip it for a few weeks.
 - Serious: Lamar Jackson, thumb surgery and IR (Week 8). No jokes about it, and go easy on Marlee's matchup while he's out.
 - Serious: Josh Jacobs, broken finger and surgery, up to three weeks (Week 9). Maya asked for one light touch, the KATSEYE "Pinky Up" choreography line; otherwise keep it plain.
-- Serious: Drake Maye, feared fractured ankle that could end his season (Week 10). No jokes about it, and go easy on Cambri's matchup while he's out.
-- Retired: Ja'Marr Chase "forgot it was game day" (Week 1; he remembered, Week 8), the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5), Tara's Quinshon Judkins flex (Weeks 1, 3; paid off, and the recap formally retracted, Week 7).
+- Serious: Drake Maye, feared fractured ankle that could end his season (Week 10); out at least six weeks per FantasyPros (2026-11-22). No jokes about him. Maya chose to roast Cambri's lineup calls in Week 11 anyway, so her matchup is fair game again; Maye himself stays off-limits.
+- Retired: Ja'Marr Chase "forgot it was game day" (Week 1; he remembered, Week 8; Week 11 called back his Week 1 bust once, "Nobody asked for a sequel", so leave it alone now), the Waddle bet (last seen Week 3), Christian Watson on Tara's bench (paid off Week 5), Tara's Quinshon Judkins flex (Weeks 1, 3; paid off, and the recap formally retracted, Week 7).
 
 **Dial by surface:**
 | Surface | Dial |
