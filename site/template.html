@@ -3918,10 +3918,11 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   function standingsStrength(rows) {
     if (!rows.length || !rows.every((t) => t.profile && t.profile.pos_ranks)) return '';
     const sm = strengthMap(rows.map((t) => ({ id: t.team_id, manager: t.manager, ranks: t.profile.pos_ranks })));
+    sm.rows.sort((a, b) => a.overall - b.overall);      // best lineup on top; ties keep standings order
     return `
       <section>
         ${secHead('board', 'Lineup rankings')}
-        <p class="sec-sub">Each team's starters today, ranked against the league at every lineup spot on their last three weeks. Darker means stronger. Tap a name for that team's profile.</p>
+        <p class="sec-sub">Each team's starters today, ranked against the league at every lineup spot on their last three weeks. Best lineup on top. Darker means stronger, and a fuller bar is a stronger lineup. Tap a name for that team's profile.</p>
         <div class="cl-page">${clStrength(sm, myTeam.get(), rows.length)}</div>
       </section>`;
   }

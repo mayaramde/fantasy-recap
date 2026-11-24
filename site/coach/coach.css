@@ -175,6 +175,13 @@
   .cl-heat tbody td { padding: 3px; }
   .cl-heat td:last-child { width: 72px; }
   .cl-heat td.avg { font: 800 24px/1 var(--display); }
+  /* AVG is a rank average, so lower is stronger: shaded by its place in the league like every
+     other cell (darkest = best lineup) and drawn with a strength bar that fills for the best. */
+  .cl-hc.cl-avg { flex-direction: column; gap: 5px; }
+  .cl-meter { display: block; width: 70%; height: 6px; border: 1.5px solid currentColor; border-radius: 4px; overflow: hidden; }
+  .cl-meter i { display: block; height: 100%; background: currentColor; }
+  .cl-meter-key { display: inline-block; width: 28px; color: var(--ink); vertical-align: middle; margin-right: 6px; }
+  .cl-heat thead th .cl-lower { display: block; margin-top: 3px; font: 600 9px/1 var(--mono); letter-spacing: 0; text-transform: none; }
   .cl-hc { position: relative; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 800 24px/1 var(--display); color: #151a33; }
   .cl-hc.h1 { background: #2e4bf2; color: #fff; } .cl-hc.h2 { background: #4963f3; color: #fff; }
   .cl-hc.h3 { background: #657af5; } .cl-hc.h4 { background: #8092f6; } .cl-hc.h5 { background: #9caaf8; }
@@ -192,6 +199,7 @@
     .cl-heat thead th:first-child, .cl-heat tbody th, .cl-heat tfoot th { width: 84px; padding-left: 8px; }
     .cl-heat tbody th { font-size: 17px; } .cl-heat tbody th .cl-you { display: none; }
     .cl-hc { height: 36px; font-size: 18px; } .cl-heat td:last-child { width: 44px; } .cl-heat td.avg { font-size: 16px; }
+    .cl-hc.cl-avg { gap: 3px; font-size: 15px; } .cl-meter { height: 4px; border-width: 1px; }
     .cl-heat tfoot td { font-size: 9px; }
   }
   .cl-callouts { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 16px; }

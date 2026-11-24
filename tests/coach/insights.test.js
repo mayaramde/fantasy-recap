@@ -93,6 +93,17 @@ test('strength map: per-team averages and best/weakest spot', () => {
   assert.equal(kyra.weak, 'WR');   // WR and DST tie at 8th: first occurrence wins
 });
 
+test('strength map: overall rank and strength bar, lower average is stronger', () => {
+  // averages [4.4, 4.3, 4.1, 4.6, 4.1, 4.3, 5.4, 4.7]: the two 4.1s share 1st, the two 4.3s share 3rd
+  assert.deepEqual(sm.rows.map((r) => r.overall), [5, 3, 1, 6, 1, 3, 8, 7]);
+  const meter = (avg) => sm.rows.find((r) => r.avg === avg).meter;
+  assert.equal(meter(4.1), 100);                     // the best average fills the bar
+  assert.equal(meter(5.4), 10);                      // the worst keeps a sliver
+  assert.ok(meter(4.4) < meter(4.1) && meter(4.4) > meter(5.4));
+  const flat = strengthMap([{ id: 1, manager: 'A', ranks: { QB: 1 } }, { id: 2, manager: 'B', ranks: { QB: 1 } }], ['QB']);
+  assert.deepEqual(flat.rows.map((r) => [r.overall, r.meter]), [[1, 100], [1, 100]]);
+});
+
 test('strength map: league best and worst per spot', () => {
   const cols = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
   assert.deepEqual(cols.map((c) => sm.bestBy[c]), ['Samantha', 'Kyra', 'Amie', 'Tara', 'Kyra', 'Samantha', 'Marlee']);

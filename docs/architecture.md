@@ -214,7 +214,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   (`lineup_totals`). The page shows only the ranks. They're the same ones behind the profile's Position strength card
   (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid. They're baked at
   build time (every `scripts/deploy.sh` run), not refreshed by `/api/live`, and the grid stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
-  are no letter grades. A last **AVG** column is the mean of her seven ranks, unshaded. Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
+  are no letter grades. A last **AVG** column is the mean of her seven ranks; since lower is stronger, its cell is shaded by the team's place in the league (`strengthMap`'s `overall`, darkest for the best lineup), its header says "lower = better", and a strength bar fills for the best average and shrinks to a sliver for the worst (`meter`, scaled to the league's own range). Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
   worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
   `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
   the card). Each team's own week lives
@@ -301,7 +301,7 @@ harness, `recap-write`'s lookups) has a time series. This is the contract:
 Points by week and the luck report.
 
 - **Lineup rankings** (`standingsStrength` in `site/template.html`): the Coach page's "Where everyone's strong" grid
-  (`strengthMap` + `clStrength` from `site/coach/`), rows in standings order, built from the same `profile.pos_ranks`
+  (`strengthMap` + `clStrength` from `site/coach/`), rows sorted best lineup first (by `overall`; ties keep standings order), built from the same `profile.pos_ranks`
   (today's starters on their last three weeks, see Coach page). Left out until every team has ranks.
 
 - **Playoff odds** (`site/playoffs.py`, baked at build time into `season.playoffs`; `/api/live` never touches them):

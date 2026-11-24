@@ -218,15 +218,15 @@ function clStrength(sm, me, n, view) {
         const label = `${r.manager} at ${CL_NAME[c]}: ${ord(rk)} of ${n}${tag ? `, ${tag[1]}` : ''}`;
         return `<td title="${esc(label)}" aria-label="${esc(label)}"><div class="cl-hc h${rk}"><span aria-hidden="true">${rk}</span>${tag ? `<i class="cl-corner ${tag[0]}">${tag[2]}</i>` : ''}</div></td>`;
       }).join('')}
-      <td class="avg" aria-label="${esc(r.manager)}, average rank ${r.avg.toFixed(1)}"><span aria-hidden="true">${r.avg.toFixed(1)}</span></td></tr>`).join('');
+      <td class="avg" title="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}" aria-label="${esc(`${r.manager}: average rank ${r.avg.toFixed(1)}, ${ord(r.overall)} best lineup of ${n}`)}"><div class="cl-hc cl-avg h${r.overall}" aria-hidden="true"><span>${r.avg.toFixed(1)}</span><span class="cl-meter"><i style="width:${r.meter}%"></i></span></div></td></tr>`).join('');
   const foot = (cls, label, by) => `<tr class="${cls}"><th scope="row">${label}</th>${sm.cols.map((c) => `<td title="${esc(`${label} at ${CL_NAME[c]}: ${by[c] || 'nobody'}`)}"><span>${esc(by[c] || '')}</span></td>`).join('')}<td></td></tr>`;
   return `
     <div class="cl-heat table-scroll" role="region" aria-label="Lineup spot rankings, scrolls sideways" tabindex="0">
-      <table><thead><tr><th scope="col">Manager</th>${sm.cols.map((c) => `<th scope="col" title="${CL_NAME[c]}">${c}</th>`).join('')}<th scope="col" title="average rank">AVG</th></tr></thead>
+      <table><thead><tr><th scope="col">Manager</th>${sm.cols.map((c) => `<th scope="col" title="${CL_NAME[c]}">${c}</th>`).join('')}<th scope="col" title="Average rank across the seven spots. Lower is stronger: the darker the cell and the fuller its bar, the better the lineup.">AVG<small class="cl-lower">lower = better</small></th></tr></thead>
         <tbody>${body}</tbody>
         <tfoot>${foot('best', 'League best', sm.bestBy)}${foot('worst', 'League worst', sm.worstBy)}</tfoot></table>
     </div>
-    <p class="cl-key"><span class="cl-corner best" aria-hidden="true">${CL_ICON.up}</span>best spot <span class="cl-corner weak" aria-hidden="true">${CL_ICON.down}</span>weakest spot · 1 is the league's best, ${n} the worst</p>`;
+    <p class="cl-key"><span class="cl-corner best" aria-hidden="true">${CL_ICON.up}</span>best spot <span class="cl-corner weak" aria-hidden="true">${CL_ICON.down}</span>weakest spot · 1 is the league's best, ${n} the worst · <span class="cl-meter cl-meter-key" aria-hidden="true"><i style="width:80%"></i></span>a fuller AVG bar is a stronger lineup</p>`;
 }
 
 function clCallouts(list) {
