@@ -107,7 +107,8 @@ run and what the Live and Coach pages compute. `docs/vercel.md` covers deploys a
   `bts.css` and `bts.js` (all `bts-` prefixed), and `sprite.svg` (its illustrated icons, shipped once per document). `site/build.py`
   stitches them into `template.html`. Its claims about how the site works are audited in `docs/behind-the-scenes-audit.md`;
   change the copy and that file together.
-- `site/coach/`: the Coach tab's landing (the league overview shown before anyone opens a team's report). One pure
+- `site/coach/`: Coach's league-wide modules (This week's "Around the league", the `#league-<id>` page, and the
+  Coach tab's name picker). One pure
   insight function per file (`vitals`, `fixes`, `byeDamage`, `battles`, `pickups`, `strengthMap`, `callouts`,
   `tradeMatches`, `take`), the editable headline list `headlines.js`, `landing.js` (markup) and `coach.css`.
   `site/build.py` inlines them into `template.html`. They run in the browser so they refresh with `/api/live`;

@@ -192,13 +192,17 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   Projected) over the same sections the desktop draws. Local state, not persisted, and it never refetches.
 - **After the last game**: the final scores and stickers as before, plus the wire and the headlines. No
   stakes, edge strip or Coach's desk for a week nobody can change.
-- **Lineup rankings** (`weekStrength` in `site/template.html`, on all three states of the tab: under Coach's desk
-  before kickoff, after the final scores once the week is over, and under Top scorers and the wire on the Live page): a compact
-  copy of the Coach page's "Where everyone's strong" grid (`strengthMap` from `site/coach/`, the same blue rank
-  cells and lime-to-pink AVG), rows sorted best lineup first (by `overall`; ties keep standings order), with a link
-  to the full grid on Coach. Built from the same `profile.pos_ranks` (today's starters on their last three weeks, see
-  Coach page), so it's baked at build time and `/api/live` doesn't refresh it. Left out until every team has ranks.
-  It lived on Standings until the ranks became a snapshot of today's lineup rather than a season tally.
+- **Around the league** (`weekLeague` in `site/coach/landing.js`, on all three states of the tab: under the matchups
+  and Coach's desk before kickoff, after the wire once the week is final, and under Top scorers and the wire on the
+  Live page): the league-wide modules that used to open the Coach tab for anyone without a pick, built from the same
+  pure functions in `site/coach/`. **Where the week gets decided** (`battles`, the biggest projected gaps at one
+  lineup spot; left out once every game is final), **Waiver wire** (ESPN's `waiver_rank`, worst record first; no pickup
+  counts here, the League wire already has them), **Where everyone's strong** (`clMiniStrength`: the strength grid at
+  panel size, same blue rank cells and lime-to-pink AVG as the Coach grid, best lineup first, beside its `callouts`)
+  and **Trade matchmaker** (`tradeMatches`, skipping a spot that's empty or on a bye in this week's Coach rows). The
+  ranks are `profile.pos_ranks` (today's starters on their last three weeks, see Coach page below), baked at build time,
+  so `/api/live` doesn't refresh that grid. The grid lived on Standings until the ranks became a snapshot of today's
+  lineup rather than a season tally.
 - A module with nothing to show is left out, never drawn empty.
 - `tests/hub_preview.py <dir>` renders both states from committed data for a look in a browser. A normal build
   of committed data has no live week, so a Vercel branch preview never shows this page; review it with
@@ -206,8 +210,14 @@ first kickoff, and again once every game is final and the recap isn't out yet.
 
 ## Coach page
 
-- (With a pick, `#coach` and `#coach-next` redirect to her team's **Game day**, `#team-<id>`; the landing below is what
-  the league view, with no pick, sees, opening with a "Make this page yours" name picker.)
+- The Coach tab is always one team's report. With a pick, `#coach` and `#coach-next` redirect to her team's **Game
+  day**, `#team-<id>`; with none they show only a "Make this page yours" name picker (`coachPage` + `clPickCard`). The
+  league-wide modules that used to sit there (fix board, team cards, where the week gets decided, waiver wire, the
+  strength grid, trade matchmaker) were retired from the tab in Nov 2026; the last four are on This week (Around the
+  league, above).
+- **How the strength ranks are computed** (they're drawn on This week, on the league page `#league-<id>` a team's
+  Game day links to, and in each profile's Position strength card). The grid that used to live at `#coach` /
+  `#coach-next` read:
 - A league-wide grid at `#coach` (the week being played) and `#coach-next` (the week after it, from the
   `next-week` capture; no tab when that capture is missing or stale): the viewer's team and a league radar on
   top, then **Where everyone's strong**, an 8 × 7 heat grid of each team's league rank (1–8) at QB, RB, WR, TE, FLEX,
@@ -329,14 +339,14 @@ today's starters, not a season tally.
 
 **Viewing as** (every page): a glowing chip in the site header (`viewingAs` in `site/template.html`) says whose eyes the
 site is wearing. First visit with nothing saved asks "Who are you?" (8 teams or "Just looking"). The menu lists all 8
-teams, "Open <name>'s team page" and "League view"; every change raises an Undo toast. The pick lives in
+teams and "Open <name>'s team page" (there's no "nobody" entry; with no pick the chip reads "Pick your team"); every change raises an Undo toast. The pick lives in
 `localStorage` (`ffg-coach-team`, and `ffg-viewing-asked` so it never nags), with in-memory fallbacks when storage is
-blocked. The pick is "who I am", and it decides where Coach goes: the single **Coach** nav item opens `#team-<me>` (the league
-landing `#coach` with no pick), and `#coach` / `#coach-next` redirect to `#team-<me>` once someone is picked. It also
+blocked. The pick is "who I am", and it decides where Coach goes: the single **Coach** nav item opens `#team-<me>` (the name
+picker at `#coach` with no pick), and `#coach` / `#coach-next` redirect to `#team-<me>` once someone is picked. It also
 lights the pick's team orange (the "You" badge). Which team is on screen is the URL's, not the pick's, so `#team-<other>`
 still shows that team with the same layout, written about as "her" (`herCopy` in `site/coach/pronouns.js` swaps the
-second person in the computed and written copy); the hero's **Switch team** sheet is the way to another team. Letting go of the pick (League view) while on that team's pages returns to `#coach`. Every change, including the
-landing's "Make this page yours" chips, raises the Undo toast, since a wrong pick now changes what opens.
+second person in the computed and written copy); the hero's **Switch team** sheet is the way to another team. Every change, including the
+Coach picker's "Make this page yours" chips, raises the Undo toast, since a wrong pick now changes what opens.
 Browsing a team never makes it "you". On phones the header collapses to a 48px bar past 70px of scroll (and reopens
 below 20px); `siteHead` adds the height it gave up back as a margin, and `tpSticky` keeps the team tab bar's sticky `top`
 equal to the header's measured height (scroll, resize, header resize, fonts).

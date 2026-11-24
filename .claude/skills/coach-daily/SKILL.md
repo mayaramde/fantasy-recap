@@ -300,10 +300,10 @@ against those keys, so managers never read a fill-in-the-blank template.
    block too (see **Season audit** below); that key is not a week. With no live week, `audit`
    is the only key, so skip items 2-3 and write the audit.
 2. For **every** card under a week key in the brief, write a `title` and `text` under its exact `key`, and one
-   `summary` line per team under its exact `summary_key`. A `summary` is the one-line quip on that team's card on
-   the Coach landing: **110 characters at most** (the site drops a longer one and shows the computed wording), advice
+   `summary` line per team under its exact `summary_key`. A `summary` is the one-line quip on that team's Game day
+   when her lineup is clean: **110 characters at most** (the site drops a longer one and shows the computed wording), advice
    first, then one line of personality. Also write the week's **`league`** paragraph, `{key, text}`, under the
-   brief's `league.key`: two or three sentences for the dark "Coach's take" card at the top of the landing, summing
+   brief's `league.key`: two or three sentences for the dark "Coach's take" card at the top of the league page (`#league-<id>`), summing
    up the whole league from the brief's `league` facts (how many lineups have something to fix, how many starters
    are on bye, who is clean). It follows the same rules as everything else here: no decimals, percentages or point
    counts, counts in words ("seven of eight lineups"), no pronouns for a manager (name them), the headline above it
