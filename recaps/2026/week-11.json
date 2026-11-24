@@ -2,33 +2,33 @@
   "season": 2026,
   "week": 11,
   "status": "draft",
-  "headline": "Marlee drops 159.66 on first place. Kyra's still on top, she just knows Marlee's address now.",
-  "dek": "Kyra's lead is down to one game, and Cambri started Travis Kelce on his best day of the season. The Swifties in this league have been vindicated.",
+  "headline": "Dak Prescott was the best player in the league this week. Maddie would know. She watched.",
+  "dek": "Samantha was projected first and finished last, Marlee beat first place by 59.46, and Cambri started Kelce and found a new way to lose.",
   "matchups": {
-    "1-6": "Kyra came in 9-1 and two games clear of everyone. Marlee beat her by 59.46, the biggest margin of the week, and the lead is down to one game. Everyone else just got a race for first back for free.",
-    "2-4": "Ashton Jeanty scored 27.9 from Amie's flex (the wild-card spot), the exact number D'Andre Swift scored on her bench back in Week 8. Same points, better seat. Tara lost the closest game of the week by 6.3.",
-    "3-8": "Maddie started three Carolina Panthers, Bryce Young, Chuba Hubbard and Tetairoa McMillan, as a stack (players from the same offense, so one good game pays several times), and won by 19.16. Her lineup was basically a Panthers watch party. Travis Kelce had his best game of the season for Cambri, and he gets his own section below.",
-    "5-7": "Rookie Jonah Coleman scored three touchdowns and 34.9 points, the best of the week, and Maya won by 32.1. She added him off free agency in Week 9, and the cart is still paying out. Samantha had the week's low."
+    "1-6": "A defense nobody wanted three weeks ago outscored three of Kyra's starters combined. Marlee won by 59.46. Kyra is still in first place, which is technically true and has never sounded less impressive.",
+    "2-4": "Tara's best lineup would have won. Instead she looked at her two quarterbacks and started the one who scored fewer points. Brock Purdy scored 22.2 on the bench and Jayden Daniels scored 17.06 in the lineup, and she lost by 6.30. It was a bold call. Unfortunately, this league doesn't award points for boldness. Tara is welcome to ask the commissioner whether she can spare 6.30 and a penny, but the commissioner has already checked her own lineup and is not feeling generous.",
+    "3-8": "Maddie couldn't pick a side in Ravens vs. Panthers, so she started both. Whoever won, she won. The SEC would like a word. Cambri started J.K. Dobbins, whom his own team had already benched. He scored zero, which is exactly what the Broncos expected. Cambri was the only one surprised.",
+    "5-7": "Samantha was projected to finish first and finished last. Her kicker scored one point, and even her best possible lineup loses. Samantha is in law school, so she'll respect that this one was decided on the merits."
   },
   "game_balls": [
     {
       "manager": "Marlee",
-      "title": "Bad week to be in first",
-      "text": "Marlee scored 159.66, the high of the week, and left 0.7 points on her bench. Six of her starters scored 17 or more. Her bench had lint.",
+      "title": "Two weeks, two high scores",
+      "text": "Marlee scored the most points in the league for the second week in a row and left 0.7 on her bench. Her lineup had no bad decisions, unless you count the kicker, and nobody counts the kicker.",
       "stat": "159.66 pts, week high",
       "emoji": "🚀"
     },
     {
       "manager": "Amie",
-      "title": "Perfect lineup, and this one won",
-      "text": "Amie left zero points on her bench, the only manager who did. CeeDee Lamb led the way with 30.2. In Week 2 her perfect lineup lost anyway. This one won by 6.3. Perfect, now with results.",
+      "title": "Perfect lineup, actual win",
+      "text": "Amie set a perfect lineup in Week 2 and lost. She did it again this week and won. It took nine weeks for the universe to process the refund.",
       "stat": "0.0 pts benched",
       "emoji": "🎯"
     },
     {
       "manager": "Cambri",
-      "title": "Kelce gets the start",
-      "text": "In Week 2, Travis Kelce scored 25.1 on Cambri's bench. This week she started him, and he scored 25.4, more than double his 11.34 projection. Same performance, three-tenths better, and the scoreboard finally noticed.",
+      "title": "...Ready for It? The record wasn't.",
+      "text": "In Week 2, Kelce scored 25.1 on Cambri's bench. This week she started him and he scored 25.4. The Swifties finally got their moment. Cambri is 3-8.",
       "stat": "25.4 pts at TE",
       "emoji": "🎤",
       "player": "Travis Kelce"
@@ -37,16 +37,16 @@
   "flags": [
     {
       "manager": "Maddie",
-      "title": "Emotional-support quarterback",
-      "text": "Dak Prescott scored 35.9 on Maddie's bench, a week after scoring 34.42 there. Bryce Young started both games and scored 15.96 this time. She won both. Dak is now her emotional-support quarterback.",
+      "title": "Dak Prescott, unpaid intern",
+      "text": "Dak has scored 70 points in two weeks without leaving Maddie's bench. She won both weeks. He's working for exposure, and he isn't getting it.",
       "stat": "−19.94 at QB",
-      "emoji": "🧿",
+      "emoji": "🧸",
       "player": "Dak Prescott"
     },
     {
       "manager": "Maya",
-      "title": "Mike Evans, reporting from the bench",
-      "text": "Mike Evans scored 22.9 on Maya's bench while Luther Burden III caught two passes for 10 yards in her lineup. She won by 32.1, so the only casualty is this paragraph.",
+      "title": "Mike Evans, bench correspondent",
+      "text": "Mike Evans scored 22.9 on Maya's bench while the receiver she started scored 3.3. She leads the league in pickups and still lost track of the best receiver she already had. She won anyway, so the only casualty is this paragraph, which she will be editing personally.",
       "stat": "−19.6 at WR",
       "emoji": "🛋️",
       "player": "Mike Evans"
@@ -55,16 +55,16 @@
   "tough_breaks": [
     {
       "manager": "Samantha",
-      "title": "Chase vs. the weather",
-      "text": "Ja'Marr Chase caught five passes for 31 yards on a rainy night, the biggest miss against projection of any starter this week. A week earlier he'd scored 34.1. Samantha's 91.06 was the low of the week. Rain checks are not a fantasy stat.",
+      "title": "Chase, the sequel",
+      "text": "Ja'Marr Chase was projected for 25 and scored 8. He also scored 3 for her in Week 1. Nobody asked for a sequel.",
       "stat": "−17.27 vs projection",
       "emoji": "🌧️",
       "player": "Ja'Marr Chase"
     },
     {
       "manager": "Tara",
-      "title": "Third-best score, closest loss",
-      "text": "Tara scored 129.76, the third-best total of the week, and lost by 6.3. Tyler Bass, the kicker she picked up on Friday, kicked 17 points. Christian McCaffrey, fresh off last week's double shift, finished behind him.",
+      "title": "Third-best score, tied for last",
+      "text": "Tara's kicker outscored Christian McCaffrey, and she lost anyway with the third-best score in the league. She has now lost with McCaffrey scoring 46 and lost with McCaffrey getting outscored by a kicker. At least she's thorough.",
       "stat": "129.76 pts, #3 score",
       "emoji": "🦵",
       "player": "Tyler Bass"
