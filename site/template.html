@@ -3912,6 +3912,21 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       ${others.length ? `<section>${secHead('board', 'Other games this week')}<div class="other-games">${others.map((o) => `<a href="${base(w)}.game-${o.key}">${esc(o.winner.manager)} ${f2(o.winner.points)} · ${esc(o.loser.manager)} ${f2(o.loser.points)}</a>`).join('')}</div></section>` : ''}`;
   }
 
+  /* Lineup rankings: the Coach page's "Where everyone's strong" grid (same profile.pos_ranks as each
+     team's Report card), so the league can compare lineups where it compares records. Left out until
+     every team has ranks, same as on the Coach page. */
+  function standingsStrength(rows) {
+    if (!rows.length || !rows.every((t) => t.profile && t.profile.pos_ranks)) return '';
+    const sm = strengthMap(rows.map((t) => ({ id: t.team_id, manager: t.manager, ranks: t.profile.pos_ranks })));
+    sm.rows.sort((a, b) => a.overall - b.overall);      // best lineup on top; ties keep standings order
+    return `
+      <section>
+        ${secHead('board', 'Lineup rankings')}
+        <p class="sec-sub">Each team's starters today, ranked against the league at every lineup spot on their last three weeks. Best lineup on top. In the spot columns darker blue means stronger; in AVG, lime is the strongest lineup and pink the weakest. Tap a name for that team's profile.</p>
+        <div class="cl-page">${clStrength(sm, myTeam.get(), rows.length)}</div>
+      </section>`;
+  }
+
   function standingsPage() {
     const rows = SEASON.standings;
     const weeks = SEASON.weeks_played;
@@ -3938,6 +3953,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </section>
 
       ${playoffPicture()}
+
+      ${standingsStrength(rows)}
 
       ${weeks.length ? `
       <section>
@@ -4373,7 +4390,8 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
   const SN_WEEK = new Map();   // the week picked in each team's season story, so a live redraw keeps it
   const SN_COLS = ['QB', 'RB', 'WR', 'TE', 'FLEX', 'DST', 'K'];
 
-  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from.
+  // Her row of the strength grid: the same profile.pos_ranks the grid on #league-<id> is built from
+  // (today's starters, each rated by his average over the last three weeks).
   function snReport(t) {
     const ranks = t.profile && t.profile.pos_ranks;
     if (!ranks) return '';
@@ -4382,7 +4400,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     if (!cols.length) return '';
     return `
       <section class="sn-sec" aria-labelledby="sn-rc-h">
-        <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>rank of ${n} at each spot</span></div>
+        <div class="gd-sh"><h2 id="sn-rc-h">Report card</h2><span>today's starters, rank of ${n} at each spot</span></div>
         <ol class="sn-rc">${cols.map((c, i) => {
           const r = ranks[c], tone = r <= 2 ? ' top' : r > n - 3 ? ' low' : '';
           return `<li class="sn-cell${tone}${i % 2 ? ' tl' : ''}"><small aria-hidden="true">${c === 'DST' ? 'D/ST' : c}</small><b aria-hidden="true">#${r}</b><span class="vh">${CL_NAME[c] || c}: ${ordinal(r)} of ${n}</span></li>`;

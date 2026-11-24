@@ -141,30 +141,102 @@ def week(wk, teams):
 
 
 def lineup(team_id, **slot_points):
-    starters = [player(i, f"{team_id}-{slot}", slot, pts, 10) for i, (slot, pts) in enumerate(slot_points.items())]
+    starters = [player(team_id * 100 + i, f"{team_id}-{slot}", slot, pts, 10) for i, (slot, pts) in enumerate(slot_points.items())]
     return row(team_id, sum(slot_points.values()), 0, starters=starters)
 
 
 class PositionTest(unittest.TestCase):
-    def test_totals_and_ranks(self):
+    def test_ranks_follow_each_current_starters_form(self):
+        # Same players both weeks (lineup() ids are per team and slot).
         facts = [week(1, [lineup(1, QB=20, TE=2), lineup(2, QB=10, TE=12)]),
-                 week(2, [lineup(1, QB=20, TE=2), lineup(2, QB=10, TE=12)])]
-        totals = tp.position_totals(facts)
-        self.assertEqual((totals[1]["QB"], totals[2]["TE"]), (40, 24))
+                 week(2, [lineup(1, QB=30, TE=4), lineup(2, QB=10, TE=12)])]
+        totals = tp.lineup_totals(facts[-1], tp.recent_form(facts), [1, 2])
+        self.assertEqual((totals[1]["QB"], totals[1]["TE"], totals[2]["TE"]), (25, 3, 12))
         ranks = tp.position_ranks(totals)
         self.assertEqual((ranks[1]["QB"], ranks[1]["TE"], ranks[2]["QB"]), (1, 2, 2))
+
+    def test_snapshot_follows_the_lineup_not_the_season_tally(self):
+        # Team 1 piled up QB points with a quarterback she has since traded to team 2. The
+        # season total would still call her QB spot the best; today's lineup says otherwise.
+        star, backup = player(7, "Star", "QB", 30, 20), player(8, "Backup", "QB", 5, 10)
+        w1 = week(1, [row(1, 0, 0, starters=[star]), row(2, 0, 0, starters=[backup])])
+        w2 = week(2, [row(1, 0, 0, starters=[dict(star, points=30)]), row(2, 0, 0, starters=[dict(backup, points=5)])])
+        w3 = week(3, [row(1, 0, 0, starters=[dict(backup, played=False, points=0)]),
+                      row(2, 0, 0, starters=[dict(star, game_state="pre", points=0)])])
+        ranks = tp.position_ranks(tp.lineup_totals(w3, tp.per_game([w1, w2, w3]), [1, 2]))
+        self.assertEqual((ranks[1]["QB"], ranks[2]["QB"]), (2, 1))
+
+    def test_byes_and_unfinished_games_do_not_drag_the_average(self):
+        p = player(5, "Steady", "WR", 12, 10)
+        facts = [week(1, [row(1, 0, 0, starters=[p])]),
+                 week(2, [row(1, 0, 0, bench=[dict(p, slot="BENCH", points=18)])]),        # bench games count
+                 week(3, [row(1, 0, 0, starters=[dict(p, played=False, points=0)])]),       # bye
+                 week(4, [row(1, 0, 0, starters=[dict(p, game_state="in", points=3)])])]    # still playing
+        self.assertEqual(tp.per_game(facts), {5: 15})
+
+    def test_without_game_states_only_a_final_week_counts(self):
+        # A failed scoreboard read leaves no game_state: mid-week, a stat on the board
+        # doesn't mean his game is over, so that week waits until it's final.
+        p = player(5, "Steady", "WR", 12, 10)
+        live = dict(week(2, [row(1, 0, 0, starters=[dict(p, points=2)])]), complete=False)
+        self.assertEqual(tp.per_game([week(1, [row(1, 0, 0, starters=[p])]), live]), {5: 12})
+        self.assertEqual(tp.per_game([dict(live, complete=True)]), {5: 2})
+
+    def test_form_is_the_last_three_final_weeks(self):
+        p = player(5, "Hot", "WR", 0, 10)
+        wk = lambda n, pts, **kw: week(n, [row(1, 0, 0, starters=[dict(p, points=pts, **kw)])])
+        facts = [wk(1, 40), wk(2, 9), wk(3, 12), wk(4, 15)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})                     # weeks 2-4, not week 1's 40
+        # A bye in the window leaves two scores to average, not a zero.
+        facts = [wk(1, 40), wk(2, 9), wk(3, 0, played=False), wk(4, 15)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})
+        # A live week that isn't final yet doesn't push a final week out of the window.
+        facts = [wk(1, 40), wk(2, 9), wk(3, 12), wk(4, 15), dict(wk(5, 2), complete=False)]
+        self.assertEqual(tp.recent_form(facts), {5: 12})
+
+    def test_an_injured_zero_is_not_a_score(self):
+        p = player(5, "Hurt", "RB", 0, 10)
+        facts = [week(1, [row(1, 0, 0, starters=[dict(p, points=10)])]),
+                 week(2, [row(1, 0, 0, starters=[dict(p, points=0, injury_status="OUT")])]),
+                 week(3, [row(1, 0, 0, bench=[dict(p, slot="IR", points=0)])])]
+        self.assertEqual(tp.recent_form(facts), {5: 10})
+
+    def test_no_game_in_the_window_falls_back_to_every_week(self):
+        back = player(5, "Back", "RB", 0, 10)
+        other = player(6, "Other", "QB", 20, 20)
+        wk = lambda n, b: week(n, [row(1, 0, 0, starters=[other], bench=[{**back, "slot": "IR", **b}])])
+        facts = [wk(1, {"slot": "RB", "points": 18}), wk(2, {"slot": "RB", "points": 22}),
+                 wk(3, {"points": 0}), wk(4, {"points": 0}), wk(5, {"points": 0})]
+        self.assertEqual(tp.recent_form(facts), {5: 20, 6: 20})
+
+    def test_a_two_spot_group_is_averaged_over_both_spots(self):
+        form = {1: 18, 2: 10, 3: 21}
+        full = week(1, [row(1, 0, 0, starters=[player(1, "A", "RB", 0, 0), player(2, "B", "RB", 0, 0),
+                                              player(3, "Q", "QB", 0, 0)])])
+        totals = tp.lineup_totals(full, form, [1])
+        self.assertEqual((totals[1]["RB"], totals[1]["QB"]), (14, 21))
+        # An empty RB spot counts as zero rather than letting one back stand for two.
+        half = week(1, [row(1, 0, 0, starters=[player(1, "A", "RB", 0, 0)])])
+        self.assertEqual(tp.lineup_totals(half, form, [1])[1]["RB"], 9)
+        self.assertEqual(tp.lineup_totals(half, form, [1], {"RB": 1})[1]["RB"], 18)
+
+    def test_empty_slot_or_unseen_starter_adds_nothing(self):
+        now = week(1, [row(1, 0, 0, starters=[player(99, "New", "RB", 0, 9)])])
+        totals = tp.lineup_totals(now, {}, [1, 2])
+        self.assertEqual(totals[1]["RB"], 0)
+        self.assertEqual(totals[2], dict.fromkeys(tp.GROUPS, 0.0))
 
     def test_card_key_and_weak_spot(self):
         ranks = {"QB": 1, "RB": 4, "WR": 3, "TE": 8, "FLEX": 2, "DST": 5, "K": 6}
         card, weak = tp.position_card(ranks)
-        self.assertEqual((card["key"], weak), ("pos:QB1:TE8", "TE"))
+        self.assertEqual((card["key"], weak), ("pos:now:QB1:TE8", "TE"))
         self.assertEqual(card["stat"], "Best: QB (#1) · Worst: TE (#8)")
         self.assertIn("tight end", card["text"])
 
     def test_ties_break_by_slot_order_and_are_stable(self):
         ranks = {"QB": 3, "RB": 1, "WR": 1, "TE": 7, "FLEX": 7, "DST": 4, "K": 5}
         for _ in range(3):
-            self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:RB1:TE7")
+            self.assertEqual(tp.position_card(dict(ranks))[0]["key"], "pos:now:RB1:TE7")
 
     def test_extremes_match_the_card(self):
         ranks = {"QB": 3, "RB": 1, "WR": 1, "TE": 7, "FLEX": 7, "DST": 4, "K": 5}
@@ -172,7 +244,7 @@ class PositionTest(unittest.TestCase):
 
     def test_same_rank_everywhere(self):
         card, weak = tp.position_card(dict.fromkeys(tp.GROUPS, 1))
-        self.assertEqual((card["key"], weak), ("pos:RB1:RB1", "RB"))
+        self.assertEqual((card["key"], weak), ("pos:now:RB1:RB1", "RB"))
 
     def test_tied_weak_spot_prefers_rb_and_wr_over_qb(self):
         # Waiver pickups that move the needle are mostly RBs and WRs; a tied QB is the last
@@ -262,6 +334,25 @@ class AuditsTest(unittest.TestCase):
         self.assertEqual(a[1]["best_spot"], "RB")
         self.assertEqual(a[2]["best_spot"], "TE")
 
+    def test_ranks_come_from_the_newest_capture_even_before_its_recap(self):
+        # Week 1 is recapped; week 2 is the live week, where the two teams have swapped
+        # tight ends. Lineup IQ stays on recapped weeks, the ranks follow today's lineups.
+        hi, lo = player(1, "Hi", "TE", 20, 10), player(2, "Lo", "TE", 2, 10)
+        w1 = week(1, [row(1, 20, 20, starters=[hi]), row(2, 2, 2, starters=[lo])])
+        w2 = week(2, [row(1, 0, 0, starters=[dict(lo, game_state="pre", points=0)]),
+                      row(2, 0, 0, starters=[dict(hi, game_state="pre", points=0)])])
+        a = tp.audits([w1], [1, 2], [w1, w2])
+        self.assertEqual((a[1]["ranks"]["TE"], a[2]["ranks"]["TE"]), (2, 1))
+        self.assertEqual(a[2]["cards"][1]["players"][0]["id"], 1)
+        self.assertEqual(a[1]["cards"][0]["stat"], tp.audits([w1], [1, 2])[1]["cards"][0]["stat"])
+
+    def test_no_finished_game_yet_means_no_ranks_and_no_position_card(self):
+        w1 = week(1, [row(1, 0, 0, starters=[dict(player(1, "A", "QB", 0, 20), game_state="pre")])])
+        a = tp.audits([w1], [1])
+        self.assertIsNone(a[1]["ranks"])
+        self.assertIsNone(a[1]["weak_spot"])
+        self.assertEqual([c["kind"] for c in a[1]["cards"]], ["lineup_iq", "projection"])
+
 
 if __name__ == "__main__":
     unittest.main()
@@ -280,10 +371,10 @@ class FacesTest(unittest.TestCase):
         rows = [(1, row(6, 90, 100, left=5, worst=call("Ghost", "Nobody", 12, 5), bench=[]))]
         self.assertEqual(tp.lineup_iq(rows)["players"], [])
 
-    def test_position_faces_are_the_two_best_starters_at_that_spot(self):
-        rows = [(1, row(6, 0, 0, starters=[player(1, "A", "RB", 10, 0), player(2, "B", "RB", 20, 0), player(3, "C", "WR", 99, 0)])),
-                (2, row(6, 0, 0, starters=[player(1, "A", "RB", 15, 0), player(4, "D", "RB", 1, 0)]))]
-        self.assertEqual([p["id"] for p in tp.position_faces(rows, "RB")], [1, 2])      # A 25, B 20, D 1
+    def test_position_faces_are_the_two_best_current_starters_at_that_spot(self):
+        starters = [player(1, "A", "RB", 0, 0), player(2, "B", "RB", 0, 0), player(4, "D", "RB", 0, 0), player(3, "C", "WR", 0, 0)]
+        ppg = {1: 12.5, 2: 20, 3: 99, 4: 1}
+        self.assertEqual([p["id"] for p in tp.position_faces(starters, "RB", ppg)], [2, 1])
 
     def test_projection_faces_are_the_biggest_beat_and_miss(self):
         rows = [(w, row(6, 0, 0, starters=[player(1, "Over", "WR", 20, 10), player(2, "Under", "RB", 5, 15)])) for w in (1, 2)]

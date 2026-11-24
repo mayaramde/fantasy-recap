@@ -544,9 +544,10 @@ def apply_written(items, cards):
 
 def written_audit(team_id, fp):
     """{key: {title, text}} for one team's season-audit cards, from the snapshot's top-level
-    `audit`. No freshness gate, unlike the coach cards: an audit key fully describes weeks
-    that are already over, so copy written for a key that still matches is still true
-    however old the file is. A missing or malformed snapshot just means computed wording."""
+    `audit`. No freshness gate, unlike the coach cards: an audit key fully describes its
+    situation (weeks that are already over, or for Position strength the exact ranks of
+    today's lineup), so copy written for a key that still matches is still true however old
+    the file is. A missing or malformed snapshot just means computed wording."""
     audit = fp.get("audit") if fp else None
     if not isinstance(audit, dict):
         return {}
@@ -1990,8 +1991,12 @@ def site_data(recap_weeks, captured, preview, ahead=None, fp=None, news=None, li
     season["playoffs"] = playoffs.build(season["standings"], season["weeks_played"], LEAGUE, schedule)
     season["waiver_order"] = waiver_order([e for _, e in captured] + ([ahead] if ahead else []))
     # Team profiles: the audit reads only this output's included weeks (a draft week never
-    # reaches the league site); moves read every captured week, same as the Live page does.
-    profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]])
+    # reaches the league site); moves, and Position strength's snapshot of today's lineups and
+    # each starter's last-three-weeks form, read every captured week, same as the Live page does.
+    # league.json names its flex "FLEX (RB/WR/TE)": the first word is the lineup slot.
+    slots = {k.split()[0]: n for k, n in LEAGUE.get("roster_slots", {}).items() if k != "BENCH"} or None
+    profiles = team_profile.audits([f for f, _ in included], [t["team_id"] for t in LEAGUE["teams"]],
+                                   [f for f, _ in captured], slots)
     names = load_player_names()
     for s in season["standings"]:
         p = profiles[s["team_id"]]

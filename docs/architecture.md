@@ -204,10 +204,17 @@ first kickoff, and again once every game is final and the recap isn't out yet.
 - A league-wide grid at `#coach` (the week being played) and `#coach-next` (the week after it, from the
   `next-week` capture; no tab when that capture is missing or stale): the viewer's team and a league radar on
   top, then **Where everyone's strong**, an 8 × 7 heat grid of each team's league rank (1–8) at QB, RB, WR, TE, FLEX,
-  DST and K. The ranks are season points at each lineup spot, the same ones behind the profile's Position strength
-  card (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid and it
-  stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
-  are no letter grades. A last **AVG** column is the mean of her seven ranks, unshaded. Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
+  DST and K. The ranks are a snapshot of each team's current lineup, not a season tally: the starters in the newest
+  captured week (the live week once it's captured), each rated by his average over the games he played in the last three
+  final weeks, on any roster (`team_profile.recent_form`). A bye, an injury or an inactive day isn't a score, so he may
+  have two scores to average, or one; with none in that window (back from IR, or new to every roster) he falls back to his
+  average over every captured week, and with none anywhere he rates zero. Weeks he spent as a free agent aren't captured.
+  Each spot's score is the average over its lineup spots (`league.json` `roster_slots`: RB and WR have two each, so
+  `(RB1 + RB2) / 2`, and an empty spot counts as zero), so every spot reads on the same per-player scale
+  (`lineup_totals`). The page shows only the ranks. They're the same ones behind the profile's Position strength card
+  (`team_profile.position_ranks`, shipped as `profile.pos_ranks`), so both weeks' tabs show the same grid. They're baked at
+  build time (every `scripts/deploy.sh` run), not refreshed by `/api/live`, and the grid stays empty until a week has a recap. Each team's best spot gets a lime sticker and her weakest a pink one; there
+  are no letter grades. A last **AVG** column is the mean of her seven ranks; since lower is stronger, its cell runs lime (best lineup) through white to pink (weakest) by the team's place in the league (`strengthMap`'s `overall`, `clAvgTone`), the same lime and pink as the League best / worst rows, its header says "lower = better", and a strength bar fills for the best average and shrinks to a sliver for the worst (`meter`, scaled to the league's own range). The column is ruled off from the seven spots like a receipt's total, its cells framed as stickers, and the best lineup (`overall` 1) gets a 🏆 sticker. Under it sit two cards: **Waiver order this week** (ESPN's `waiver_rank`, which resets to
   worst-record-first each week) and **Injuries and byes** (`report` on each advice row, from
   `build.injury_report`: every hurt or bye-week player, starters first; its This week / Next week toggle is local to
   the card). Each team's own week lives
@@ -290,8 +297,12 @@ harness, `recap-write`'s lookups) has a time series. This is the contract:
 
 ## Standings page
 
-`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, Points by week and
-the luck report.
+`#standings`: the table (wins, then points for, recapped weeks only), then the **playoff picture**, **Lineup rankings**,
+Points by week and the luck report.
+
+- **Lineup rankings** (`standingsStrength` in `site/template.html`): the Coach page's "Where everyone's strong" grid
+  (`strengthMap` + `clStrength` from `site/coach/`), rows sorted best lineup first (by `overall`; ties keep standings order), built from the same `profile.pos_ranks`
+  (today's starters on their last three weeks, see Coach page). Left out until every team has ranks.
 
 - **Playoff odds** (`site/playoffs.py`, baked at build time into `season.playoffs`; `/api/live` never touches them):
   the rest of the regular season and the bracket, simulated 8,000 times from each team's recapped scores. The format
@@ -363,8 +374,8 @@ never clipped; with one chip row the homework card starts within the first 330px
     cobalt-soft.
   - **Where this comes from**: a closed details with the capture's source line.
 - **Season** `#team-<id>.season`: the hero's chips switch to the season (Avg, Best with its week, Vs. everyone). Then, each drawn only when it has something to say:
-  - **Report card**: her row of the strength grid, from the same `profile.pos_ranks` as the grid on `#league-<id>`, one
-    tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
+  - **Report card**: her row of the strength grid (today's starters, ranked by their last three weeks), from the same
+    `profile.pos_ranks` as the grid on `#league-<id>`, one tilted sticker per spot (QB, RB, WR, TE, FLEX, D/ST, K) with her rank; the league's top 2 lime, bottom 3 pink.
   - **Coach's audit**: the audit cards (kind tag, title, stat sticker, text, players) as a scroll-snap row with dots on a
     phone, stacked from 860px.
   - **Season story**: one bar per week (cobalt win, bubblegum loss, tangerine tie) with a dashed average line. The bars are buttons (`aria-pressed`, arrow keys, Home and End move between weeks); the
@@ -378,11 +389,11 @@ never clipped; with one chip row the homework card starts within the first 330px
   Before Week 1 is final the tab is one card, "Season starts after Week 1". Audit cards carry `players`; moves carry
   `added_ids` / `dropped_ids`.
 
-- **Audit** (`site/team_profile.py`, from recapped weeks only): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
-  Position strength (`pos:<best><rank>:<worst><rank>`, e.g. `pos:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
+- **Audit** (`site/team_profile.py`, from recapped weeks only, except Position strength): Lineup IQ (`lineup:<band>:<benched id>:w<week>`, or `:none` / `:scattered`),
+  Position strength (the current-lineup snapshot above; `pos:now:<best><rank>:<worst><rank>`, e.g. `pos:now:RB1:WR8`; the worst group is her `weak_spot`) and Projection vs reality
   (`proj:<over|under>:<top id>:<bottom id>`). The A–D band exists only in the key, never on the page.
   `coach-daily` writes copy per key into `latest.json`'s top-level `audit`; it applies on key match alone, with no
-  36-hour gate, since the key already describes finished weeks.
+  36-hour gate, since the key already names the exact situation (finished weeks, or for Position strength the exact ranks).
 - **Roster ideas** whose optional `pos` equals her `weak_spot` get a "fills your weak spot" sticker.
 - **Moves**: adds, drops and trades from every captured week (the live week included), newest first. ESPN's
   "Player 12345" placeholders are filled from `data/player_names.json` when `analyze.py` has looked them up.
