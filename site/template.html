@@ -867,6 +867,8 @@
   .awc-list { container-type: inline-size; display: flex; flex-direction: column; gap: 36px; margin-top: 18px; }
   .awc-grp { display: flex; flex-direction: column; gap: 16px; }
   .awc-grp[hidden] { display: none; }
+  /* the groups are <section>s, so the recap page's 64px section margin would stack on the list's gap */
+  .rp .awc-grp { margin-top: 0; }
   .awc-gh { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; }
   .awc-gb { background: var(--k); color: var(--on-pop); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--drop); border-radius: 10px; padding: 8px 14px 6px; transform: rotate(-2deg); font: 900 28px/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
   .awc-cnt { font: 500 13px/1 var(--mono); color: var(--muted); }
