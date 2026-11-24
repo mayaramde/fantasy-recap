@@ -301,7 +301,7 @@ function weekLeague(w, rows, me) {
   const calls = sm ? callouts(sm.rows, n) : [];
   const duo = [
     b && b.edges.length ? clSection('orange', 'Where the week gets decided', clBattles(b, me), 'The biggest projected gaps at a single lineup spot, across every game.') : '',
-    order.length ? clSection('cobalt', 'Waiver wire', clWaiver(order, me, null), 'Worst record picks first. The order resets every week.') : '',
+    order.length ? clSection('cobalt', 'Waiver order this week', clWaiver(order, me, null), 'Worst record picks first. The order resets every week.') : '',
   ].filter(Boolean);
   const body = [
     duo.length ? `<div class="cl-duo wx">${duo.join('')}</div>` : '',

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the Coach landing from committed data, for looking at in a browser.
+"""Render the Coach tab (its name picker, with no team picked) from committed data, for looking at in a browser.
 
 Like hub_preview.py, this makes the week after the newest capture (same rosters, nothing kicked off) because a
 normal build holds only recapped weeks. On top of that it puts a few starters and bench players on a bye, in the

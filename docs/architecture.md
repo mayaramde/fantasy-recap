@@ -196,7 +196,7 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   and Coach's desk before kickoff, after the wire once the week is final, and under Top scorers and the wire on the
   Live page): the league-wide modules that used to open the Coach tab for anyone without a pick, built from the same
   pure functions in `site/coach/`. **Where the week gets decided** (`battles`, the biggest projected gaps at one
-  lineup spot; left out once every game is final), **Waiver wire** (ESPN's `waiver_rank`, worst record first; no pickup
+  lineup spot; left out once every game is final), **Waiver order this week** (ESPN's `waiver_rank`, worst record first; no pickup
   counts here, the League wire already has them), **Where everyone's strong** (`clMiniStrength`: the strength grid at
   panel size, same blue rank cells and lime-to-pink AVG as the Coach grid, best lineup first, beside its `callouts`)
   and **Trade matchmaker** (`tradeMatches`, skipping a spot that's empty or on a bye in this week's Coach rows). The
@@ -258,8 +258,8 @@ first kickoff, and again once every game is final and the recap isn't out yet.
   `summary`). The page shows the written title and text only while that key is still computed, so advice for a
   situation that has since changed falls back to the computed wording on its own. Written copy never carries a
   decimal or a percentage (the build rejects it); the live number stays in the computed stat pill.
-- **The Coach landing's quips and take.** The one-line quip on each team's card is that team's `summary`, capped at
-  110 characters (the build drops a longer one). The dark "Coach's take" paragraph is the week's `league` entry,
+- **The quips and take.** The one-line quip on a team's Game day when her lineup is clean is that team's `summary`, capped at
+  110 characters (the build drops a longer one). The dark "Coach's take" paragraph on the league page (`#league-<id>`) is the week's `league` entry,
   filed under `league_key` (a hash of every team's `summary_key`, printed by `coach_brief.py` next to the facts it
   sums up). Both are cached by key: `coach-daily` carries yesterday's entry forward while its key is unchanged and
   writes fresh copy only when the situation moved. Missing, stale, over-length or mismatched copy falls back to
@@ -382,8 +382,8 @@ never clipped; with one chip row the homework card starts within the first 330px
   - **Who's next** (live week only, once the week-ahead capture exists): the next opponent, the one player of theirs to
     watch, and a one-line reason: Injury watch, Her engine or Top threat.
   - **Ideas**: FantasyPros' own cards, then waiver and trade ideas; three shown, the rest behind "N more ideas".
-  - **How the league looks**: a link to `#league-<id>`, the league-wide half of the Coach landing, built by `coachLeague`
-    in `site/coach/landing.js` from the same pieces as `#coach` (Coach's take, **Where everyone's strong**, **Waiver order
+  - **How the league looks**: a link to `#league-<id>`, the league page, built by `coachLeague`
+    in `site/coach/landing.js` (Coach's take, **Where everyone's strong**, **Waiver order
     this week**, **Injuries and byes**, for the week being played), with the pick's row orange and the team you came from
     cobalt-soft.
   - **Where this comes from**: a closed details with the capture's source line.

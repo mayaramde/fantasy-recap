@@ -691,11 +691,11 @@
   .hub-rank .v { font: 500 12.5px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
   .hub-note { font: 500 11.5px/1.4 var(--mono); color: var(--muted); margin: 8px 0 0; }
   /* Where everyone's strong, panel size (clMiniStrength in site/coach/landing.js, This week only): the Coach grid's blue cells at sticker size. */
-  .ls-mini { padding: 8px 12px 10px; width: fit-content; max-width: 100%; }
+  .cl-card.ls-mini { padding: 8px 12px 10px; width: fit-content; max-width: 100%; }
   /* The panel beside its callouts once there's room; stacked on a phone. */
   .ls-strong { display: grid; gap: 16px; align-items: start; }
   @media (min-width: 900px) { .ls-strong { grid-template-columns: auto minmax(0, 1fr); } .ls-strong .cl-callouts { margin-top: 0; } }
-  .wk-league { margin-top: 12px; }
+  .cl-page.wk-league { margin-top: 12px; }
   .ls-mini table { width: 100%; border-collapse: collapse; }
   .ls-mini td:not(.avg) { min-width: 30px; }
   .ls-mini thead th { font: 600 10.5px/1 var(--mono); color: var(--muted); letter-spacing: 0.04em; padding: 0 0 6px; text-align: center; }
@@ -1988,7 +1988,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
     asked() { try { return localStorage.getItem(KEY_ASKED) === '1' || askedMem; } catch { return askedMem; } },
   };
   // Coach is one nav item for everyone. With a pick it opens that person's team; without one it
-  // is the league landing. (The tab itself is shown and pointed by viewingAs.sync(), on every route.)
+  // is the name picker. (The tab itself is shown and pointed by viewingAs.sync(), on every route.)
   const coachHref = () => { const me = myTeam.get(); return me ? `#team-${me}` : coachUrl(leadWithNext(), null); };
   // Whose team is on screen is not who is looking: a team page that isn't the pick's is written about
   // "her", not "you" (see voice()). route() clears it, teamPage() sets it.
@@ -3161,7 +3161,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
         <p class="dek">${liveLabel(w)} ${!w.complete && liveStale(w.captured_at, Date.now(), window.FANTASY_LIVE_API) ? `<span class="lv-stale">Updated ${updated(w.captured_at)}, a few minutes behind</span>.` : `Updated ${updated(w.captured_at)}.`} ${window.FANTASY_LIVE_API ? `Scores refresh about every ${w.complete || !anyPlaying ? 'minute' : `${LIVE_PLAYING / 1000} seconds`}${w.complete ? '' : anyPlaying ? ' while games are on' : ', and nothing is on the field right now'}.` : `Scores refresh once a day${w.complete ? '' : ', so the real-time numbers are on ESPN'}.`}</p>
       </div>
 
-      ${showBanner ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has every team's swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}.</span><span class="go">Open Coach →</span></a>` : ''}
+      ${showBanner ? `<a class="live-banner" href="${coachHref()}"><span>Want to know what to do about it? <b>Coach</b> has ${myTeam.get() ? 'your' : 'every team\'s'} swaps, injuries and empty slots for Week ${leadWithNext() ? ahead().week : w.week}${myTeam.get() ? '' : '. Pick yours'}.</span><span class="go">Open Coach →</span></a>` : ''}
 
       ${w.complete ? `<section>
         ${secHead('board', 'Scoreboard')}
@@ -3843,7 +3843,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
             <span class="l">${esc(g.loser.manager)} <span class="num">${f2(g.loser.points)}</span></span>
           </a>`).join('')}</div>
       </section>
-      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>Every team's Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}` : `
+      ${rows.length ? `<a class="live-banner" href="${coachHref()}"><span>${myTeam.get() ? 'Your' : 'Every team\'s'} Week ${weekNum} to-do list is on <b>Coach</b>: swaps, injuries and empty slots.</span><span class="go">Open Coach →</span></a>` : ''}` : `
       <div class="hub-grid">
         <section style="margin-top:0">
           ${secHead('board', 'Matchups')}
@@ -4088,7 +4088,7 @@ __BTS_SPRITE__<template id="bts-tpl">__BTS_PAGE__</template>
       </dialog>`;
   }
 
-  /* The league-wide view, reached from a team's Game day: the same pieces as the Coach landing (Coach's
+  /* The league-wide view, reached from a team's Game day: built from site/coach/landing.js (Coach's
      take, the strength grid, the waiver order, injuries and byes; site/coach/landing.js), for this week,
      with the team you came from marked. */
   function leaguePage(view) {
@@ -4770,7 +4770,7 @@ __LIVE_JS__
       }
     }
 
-    // The Coach nav item follows the pick (her team, else the league landing) and shows whenever it has somewhere to go.
+    // The Coach nav item follows the pick (her team, else the name picker) and shows whenever it has somewhere to go.
     function sync() {
       const me = myTeam.get();
       coachTab.hidden = !(advice() || me);
@@ -4791,7 +4791,7 @@ __LIVE_JS__
     function apply(id) {
       const was = myTeam.get();
       if (id) myTeam.set(id); else myTeam.clear();
-      // Letting go of the pick while on that team's own pages goes back to the league landing.
+      // Letting go of the pick while on that team's own pages goes back to Coach's name picker.
       if (!id && was && advice() && new RegExp(`^#team-${was}(\\.|$)`).test(location.hash)) { location.hash = '#coach'; return; }
       route();
     }
