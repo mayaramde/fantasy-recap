@@ -20,7 +20,7 @@ previous one's output. The two read-only judges, `recap-fact-checker` and
 inside `recap-write` and `recap-ship`, because their value is being
 independent of whatever produced the thing they review. `voice-check` is a
 third read-only judge, spawned the same way but by this orchestrator itself,
-between `recap-write`'s fact-check and its draft PR (Phase 2).
+right after `recap-write` writes the draft and before the final fact-check (Phase 2).
 
 ## Team
 
@@ -68,39 +68,48 @@ and is complete before moving on. If capture fails and the documented fallback a
 ### Phase 2: write — runs `recap-write`
 
 Input: `data/<season>/week-NN/{espn.json,facts.json}`, FantasyPros context, (if a revision)
-the existing draft. Output: a fact-checked, voice-checked `recaps/<season>/week-NN.json` with
+the existing draft. Output: a voice-checked, fact-checked `recaps/<season>/week-NN.json` with
 `status: "draft"`, the `Week NN recap draft` PR, and a review preview URL for the user.
 
-Order: `recap-write` Steps 1-3 (write, `check.py`, fact-check), then the voice gate below, then
-`recap-write` Step 4 (draft PR and preview). If the fact-checker still FAILs after two revise
-rounds, stop and show the user its last report. Voice rounds are capped separately (below).
+Order, **voice first, truth gate last**: `recap-write` Steps 1-2 (joke-first write, `check.py`),
+then the voice gate below, then `recap-write` Step 3 (one final fact-check), then Step 4 (draft
+PR and preview). Why this order: the old one (fact-check, voice, re-fact-check every round) ran
+each joke through a literal fact-check after every rewrite, and the recaps came out reading like
+box scores. The fact-checker now runs once, flags only false claims, and fixes them with the
+smallest change that keeps the joke. If it still FAILs after two fix rounds, stop and show the
+user its last report. Voice rounds are capped separately (below).
 
-**Voice gate.** Once the draft passes the fact-check, spawn the `voice-check` agent on it (the
+**Voice gate.** Once the draft passes `check.py`, spawn the `voice-check` agent on it (the
 `Agent` tool, `subagent_type: voice-check`), passing the draft's path and, for a partial
 revision like one blurb or the glossary, which fields changed so it judges those rather than
-re-litigating the whole recap. It reads CLAUDE.md's Voice section and the calibration recaps
-itself and scores recap fields 1-5. The fact-checker doesn't judge tone, so this is the only
-voice check, and `recap-write`'s joke pass (Step 1b) is what it's checking against.
+re-litigating the whole recap. It reads CLAUDE.md's Voice section and the Week 11 calibration
+recap itself and scores recap fields 1-5; a scoreboard-led field (one that opens with the
+winner, score or margin, or has no joke without them) scores at most 2.
+The fact-checker doesn't judge tone, so this is the only voice check, and `recap-write`'s joke
+pass (Step 1b) is what it's checking against.
 
-- **reads as intended** → on to `recap-write` Step 4.
+- **reads as intended** → on to `recap-write` Step 3 (the final fact-check).
 - **reads flat** or **breaks a rule** → hand its report back to `recap-write` to revise the
-  fields it scored low (its rewrites, the missed callbacks, the reused phrases), then re-run the
-  fact-check (a rewrite can break a number or a citation) and the voice gate. **Voice rounds have
-  their own cap of two**, separate from the fact-check's two (a rewrite that breaks a fact still
-  spends a fact-check round, not a voice round).
-- **Voice cap spent, still flat** → do not stall the unattended Tuesday run. Open the draft PR
-  and the preview anyway (`recap-write` Step 4), put `voice-check`'s last report in the PR body,
-  and tell Maya "voice: reads flat, report attached". A **breaks a rule** verdict (em dash, joke
-  on a real injury, roast at a person, invented injury or motive) is not waived this way: fix it
-  before opening the PR. If it survives the voice cap, cut the offending field's joke back to
-  plain fact (or drop the field if it's optional), re-run `check.py`, and tell Maya which field
-  was stripped; don't loop. Nothing publishes without Maya's approval, so a flat draft only ever
+  fields it scored low (its rewrites, the missed callbacks, the reused phrases), re-run
+  `check.py`, then the voice gate again. Don't fact-check between voice rounds; the final
+  fact-check catches anything a rewrite got wrong. **The voice cap is two `voice-check` runs in
+  total** (the first review plus one re-review after revisions, the same as `coach-daily`),
+  separate from the fact-check's two fix rounds.
+- **Voice cap spent, still flat** → do not stall the unattended Tuesday run. First, a **breaks a
+  rule** verdict (em dash, joke on a real injury, roast at a person, invented injury or motive)
+  is not waived: if one survives the voice cap, cut the offending field's joke back to plain fact
+  (or drop the field if it's optional), re-run `check.py`, and note which field was stripped;
+  don't loop. This happens **before** the final fact-check, so the stripped line gets checked
+  too. Then run the final fact-check, open the draft PR and the preview anyway (`recap-write`
+  Steps 3-4), put `voice-check`'s last report in the PR body, and tell Maya "voice: reads flat,
+  report attached" (and which field, if any, was stripped). Nothing publishes without Maya's approval, so a flat draft only ever
   reaches a preview.
-- **Fact-check** still FAILing after its two rounds is unchanged: stop and show both reports.
+- **Fact-check** still FAILing after its two fix rounds: stop and show the user the
+  fact-checker's last report (and `voice-check`'s, if the voice cap was spent).
 
 ### Phase 3: ship — runs `recap-ship`
 
-Input: `recaps/<season>/week-NN.json` (status `draft`, fact-checked and voice-checked, or carrying a "reads flat" voice report in its PR body, which `recap-ship` shows Maya with the preview). **Nothing
+Input: `recaps/<season>/week-NN.json` (status `draft`, voice-checked and fact-checked, or carrying a "reads flat" voice report in its PR body, which `recap-ship` shows Maya with the preview). **Nothing
 publishes without the user's explicit approval of the preview.** Then `recap-ship` flips
 `status` to `"published"` and opens the `Publish week NN recap` PR — CI deploys the live
 site automatically once that PR merges (`live-update.yml`'s `push` trigger), not this skill.
@@ -120,20 +129,24 @@ file (its Step 5b), since that PR merges without a human reading it. Doesn't tou
 |-----------|----------|
 | ESPN capture 401s and the documented fallback (`capture_node.mjs`) also fails | Stop. The league has likely gone private again: tell the user (the commissioner switches it back to public) — don't guess at data. |
 | FantasyPros MCP is unavailable or gated (premium tool) | `recap-write` proceeds on ESPN data alone, notes the gap; never invents an injury/bad-luck cause it can't source. |
-| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the fact-check and the voice gate and re-deploy the preview — don't skip re-verification because "it was already approved." |
+| The user approves a preview, then asks for a change before shipping | Loop back to `recap-write` for that change, then re-run the voice gate and the final fact-check and re-deploy the preview — don't skip re-verification because "it was already approved." |
+| Maya supplies her own copy | It's the calibration standard, so skip the voice gate for her lines. Run `check.py` and a fact-check limited to claims of fact, flag anything false or against a hard rule to her, and change her wording only with her OK. |
 
 ## Test scenarios
 
-- **Normal:** "draft the week 4 recap" → no `recaps/2026/week-04.json` yet → capture → write →
-  fact-check PASS → voice-check "reads as intended" → draft PR open, preview URL shared,
-  waiting on approval.
-- **Flat voice:** correct numbers and sourced injuries, but every blurb is a fact with a
-  qualifier stapled on → fact-check PASS → `voice-check` "reads flat" with scores and rewrites →
-  up to two voice rounds back through `recap-write` and both judges → clean → draft PR and
-  preview. Still flat after two: draft PR and preview anyway, report in the PR body, "voice:
-  reads flat, report attached" to Maya.
+- **Normal:** "draft the week 4 recap" → no `recaps/2026/week-04.json` yet → capture → joke-first
+  write → `check.py` → voice-check "reads as intended" → final fact-check PASS → draft PR open,
+  preview URL shared, waiting on approval.
+- **Flat voice:** blurbs that open with "X won by N" and save the joke for the end →
+  `voice-check` "reads flat" (scoreboard restatements score <= 2) with joke-first rewrites → up
+  to two voice rounds back through `recap-write` → final fact-check → draft PR and preview.
+  Still flat after two: draft PR and preview anyway, report in the PR body, "voice: reads flat,
+  report attached" to Maya.
+- **Fact fix keeps the joke:** the final fact-check finds "finally started Kelce" is false (he
+  started earlier weeks) → smallest true fix ("started") applied, re-checked, no extra voice round.
 - **Revision:** "tweak the Cambri blurb in this week's recap" → draft already exists → straight
-  to `recap-write` with the existing draft, skipping capture → fact-check → updated draft.
+  to `recap-write` with the existing draft, skipping capture → voice gate on that field → final
+  fact-check → updated draft.
 - **Triage:** "what does PPR mean" → answered directly, no skill invoked. "make the standings
   table sortable" (`site/`) → the normal engineering flow, not this skill.
 - **Ship:** "publish the recap" with an existing fact-checked draft → straight to `recap-ship`,
